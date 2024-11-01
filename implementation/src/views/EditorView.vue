@@ -42,8 +42,7 @@
                     <div class="resize resize--middle-right"></div>
                     <div class="resize resize--middle-left"></div>
 
-                    <div class="rotate">
-                    </div>
+                    <div class="rotate"></div>
                     <div class="actions"></div>
                 </div>
             </div>
