@@ -23,21 +23,38 @@
         > .block {
             position: absolute;
             display: block;
-            cursor: pointer;
-
-            // TODO: temporary
-            outline: 4px solid rgba(101, 194, 183, 0.48);
 
             > .block-content {
                 transform-origin: top left;
                 contain: layout style;
+
+                outline: 0;
             }
 
+            // --- STATES-ABLE ---
+            &--selectable {
+                cursor: pointer;
+            }
+            &--resizable {
+            }
+            &--rotatable {
+            }
+            &--movable {
+
+                &--selected {
+                    cursor: move;
+                }
+
+            }
+
+            // --- STATES ---
             &--selected {
-                outline: 4px dashed rgba(101, 194, 183, 1);
+                //outline: 4px solid rgba(101, 194, 183, 1);
+                box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.24);
             }
 
-            &--watermark {
+            // --- TYPES ---
+            &--type-watermark {
                 display: flex;
                 justify-content: center;
                 align-items: center;

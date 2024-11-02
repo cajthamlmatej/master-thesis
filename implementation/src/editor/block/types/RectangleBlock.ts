@@ -13,7 +13,7 @@ export class RectangleBlock extends Block {
         const element = document.createElement("div");
 
         element.classList.add("block");
-        element.classList.add("block--rectangle");
+        element.classList.add("block--type-rectangle");
 
         element.style.backgroundColor = this.color;
 

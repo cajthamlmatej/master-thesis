@@ -15,7 +15,7 @@ export class TextBlock extends Block {
         const element = document.createElement("div");
 
         element.classList.add("block");
-        element.classList.add("block--text");
+        element.classList.add("block--type-text");
 
         const content = document.createElement("div");
 
@@ -45,16 +45,39 @@ export class TextBlock extends Block {
         return this.element.querySelector(".block-content")! as HTMLElement;
     }
 
+
+    private state: "DESELECTED" | "SELECTED" | "INPUT" = "DESELECTED";
+    override onMounted() {
+        super.onMounted();
+
+        const content = this.getContent();
+        content.addEventListener("click", (e: MouseEvent) => this.enableEdit(e));
+        content.addEventListener("input", (e) => this.handleInput(e));
+    }
+
     override onSelected() {
         super.onSelected();
+
+        this.state = "SELECTED";
+        console.log("Selected text block SELECTED");
+    }
+
+    private enableEdit(e: MouseEvent) {
+        console.log("Enable edit");
+        if(this.state !== "SELECTED") return;
+
+        console.log("Enable edit INPUT");
+        this.state = "INPUT";
 
         const content = this.getContent();
         content.setAttribute("contenteditable", "true");
 
-        content.addEventListener("input", (e) => this.handleInput(e));
+        // content.focus();
     }
 
     private handleInput(e: Event) {
+        if(this.state !== "INPUT") return;
+
         const content = this.getContent();
         this.content = content.innerHTML;
 
@@ -71,6 +94,9 @@ export class TextBlock extends Block {
         content.removeAttribute("contenteditable");
 
         content.removeEventListener("input", (e) => this.handleInput(e));
+
+        this.state = "DESELECTED";
+        console.log("Selected text block DESELECTED");
     }
 
     override synchronize() {

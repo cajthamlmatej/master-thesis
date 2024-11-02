@@ -123,6 +123,8 @@ export abstract class Block {
      * Synchronizes the block element in DOM with the block properties.
      */
     public synchronize() {
+        if (!this.element) return;
+
         this.element.style.left = this.position.x + "px";
         this.element.style.top = this.position.y + "px";
 
@@ -130,6 +132,24 @@ export abstract class Block {
         this.element.style.height = this.size.height + "px";
 
         this.element.style.transform = `rotate(${this.rotation}deg)`;
+
+        this.element.classList.remove("block--selectable", "block--movable", "block--resizable", "block--rotatable");
+
+        const support = this.editorSupport();
+
+        if(support.selection) {
+            this.element.classList.add("block--selectable");
+        }
+        if(support.movement) {
+            this.element.classList.add("block--movable");
+        }
+        if(support.proportionalResizing || support.nonProportionalResizingX || support.nonProportionalResizingY) {
+            this.element.classList.add("block--resizable");
+        }
+        if(support.rotation) {
+            this.element.classList.add("block--rotatable");
+        }
+
     }
 
     /**

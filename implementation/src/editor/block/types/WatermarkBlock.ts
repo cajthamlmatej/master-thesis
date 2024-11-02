@@ -12,7 +12,7 @@ export class WatermarkBlock extends Block {
         const element = document.createElement("div");
 
         element.classList.add("block");
-        element.classList.add("block--watermark");
+        element.classList.add("block--type-watermark");
 
         element.innerText = "Made by CajthamlMaterials";
 
