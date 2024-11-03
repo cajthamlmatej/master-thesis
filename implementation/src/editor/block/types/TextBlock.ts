@@ -64,8 +64,17 @@ export class TextBlock extends Block {
         return true;
     }
 
+    private lastClick: number = 0;
     override onClicked(event: MouseEvent) {
         super.onClicked(event);
+
+        const now = Date.now();
+        const diff = now - this.lastClick;
+
+        this.lastClick = now;
+        if(diff > 600) {
+            return;
+        }
 
         this.getContent().setAttribute("contenteditable", "true");
         this.enableEdit(event);
