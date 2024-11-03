@@ -30,6 +30,31 @@ export class EditorContext {
             }
         },
         {
+            name: "duplicate",
+            label: "Duplicate",
+            visible: (selected: Block[], editor: Editor) => {
+                return selected.every(b => b.editorSupport().selection) && selected.length >= 1;
+            },
+            action: (selected: Block[], editor: Editor) => {
+                let newBlocks: Block[] = [];
+                for(let block of selected) {
+                    const clone = block.clone();
+
+                    editor.addBlock(clone);
+
+                    clone.move(clone.position.x + 20, clone.position.y + 20);
+
+                    newBlocks.push(clone);
+                }
+
+                // Cannot be done in the loop above, because we need cant modify the selection while iterating over it
+                editor.getSelector().clearSelection();
+                for(let block of newBlocks) {
+                    editor.getSelector().selectBlock(block, true);
+                }
+            }
+        },
+        {
             name: "delete",
             label: "Delete",
             visible: (selected: Block[], editor: Editor) => {
