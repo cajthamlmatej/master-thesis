@@ -48,7 +48,7 @@
                     cursor: move;
                 }
             }
-            &--hover {
+            &--hover.block--selectable {
                 outline: 4px dashed rgba(0, 0, 0, 0.24);
             }
 
