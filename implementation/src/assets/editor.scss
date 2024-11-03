@@ -76,6 +76,21 @@
                     overflow-wrap: break-word;
                 }
             }
+            &--type-image {
+                img {
+                    display: block;
+                    height: 100%;
+                    width: 100%;
+                    object-fit: contain;
+
+                    user-drag: none;
+                    user-select: none;
+                    -moz-user-select: none;
+                    -webkit-user-drag: none;
+                    -webkit-user-select: none;
+                    -ms-user-select: none;
+                }
+            }
         }
     }
 

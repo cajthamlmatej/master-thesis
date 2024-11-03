@@ -1,0 +1,80 @@
+import {Block} from "@/editor/block/Block";
+import {BlockType} from "@/editor/block/BlockType";
+import {generateUUID} from "@/utils/uuid";
+
+export class ImageBlock extends Block {
+    private imageUrl: string;
+
+    private imageElement!: HTMLImageElement;
+
+    constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, imageUrl: string) {
+        super(id, BlockType.IMAGE, position, size);
+        this.imageUrl = imageUrl;
+    }
+
+    render(): HTMLElement {
+        const element = document.createElement("div");
+
+        element.classList.add("block");
+        element.classList.add("block--type-image");
+
+        const content = document.createElement("img");
+
+        content.src = this.imageUrl;
+
+        element.appendChild(content);
+
+        this.imageElement = content;
+
+        return element;
+    }
+
+    override onMounted() {
+        super.onMounted();
+
+        const image = new Image();
+        image.src = this.imageUrl;
+
+        image.addEventListener("load", () => {
+            const ratio = image.width / image.height;
+
+            this.size.height = this.size.width / ratio;
+
+            this.synchronize();
+        });
+    }
+
+    override editorSupport() {
+        return {
+            selection: true,
+            movement: true,
+            proportionalResizing: true,
+            nonProportionalResizingX: true,
+            nonProportionalResizingY: true,
+            rotation: true,
+            zIndex: true
+        }
+    }
+
+    override getContent() {
+        return undefined;
+    }
+
+    override synchronize() {
+        super.synchronize();
+
+        if (!this.imageElement) {
+            return;
+        }
+
+        this.imageElement.src = this.imageUrl;
+    }
+
+    override clone(): Block {
+        return new ImageBlock(
+            generateUUID(),
+            {x: this.position.x, y: this.position.y},
+            {width: this.size.width, height: this.size.height},
+            this.imageUrl);
+    }
+}

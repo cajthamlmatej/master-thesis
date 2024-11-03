@@ -6,12 +6,13 @@
 </template>
 
 <script setup lang="ts">
-import Editor from "@/editor/Editor.ts";
+import Editor from "@/editor/Editor";
 import {onMounted, ref} from "vue";
 import {TextBlock} from "@/editor/block/types/TextBlock";
 import {generateUUID} from "@/utils/uuid";
 import {RectangleBlock} from "@/editor/block/types/RectangleBlock";
 import {WatermarkBlock} from "@/editor/block/types/WatermarkBlock";
+import {ImageBlock} from "@/editor/block/types/ImageBlock";
 
 const editorElement = ref<HTMLElement | null>(null);
 
@@ -47,6 +48,15 @@ onMounted(() => {
         ));
     editor.addBlock(
         new WatermarkBlock(generateUUID()));
+
+    const img = new ImageBlock(
+        generateUUID(),
+        {x: 40, y: 500},
+        {width: 200, height: 200},
+        "https://ssps.cajthaml.eu/img/logo-main-for-light-main.png"
+    );
+    img.rotate(-30);
+    editor.addBlock(img);
 })
 </script>
 
