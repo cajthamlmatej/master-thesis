@@ -13,7 +13,7 @@ export class EditorContext {
             name: "copy",
             label: "Copy",
             visible: (selected: Block[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().selection);
+                return selected.every(b => b.editorSupport().selection) && selected.length >= 1;
             },
             action: (selected: Block[], editor: Editor) => {
                 editor.getClipboard().markForCopy(selected);
@@ -33,7 +33,7 @@ export class EditorContext {
             name: "zIndexUp",
             label: "Push forward",
             visible: (selected: Block[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().zIndex);
+                return selected.every(b => b.editorSupport().zIndex) && selected.length >= 1;
             },
             action: (selected: Block[], editor: Editor) => {
                 selected.forEach(b => b.zIndexUp());
@@ -43,7 +43,7 @@ export class EditorContext {
             name: "zIndexDown",
             label: "Push backward",
             visible: (selected: Block[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().zIndex);
+                return selected.every(b => b.editorSupport().zIndex) && selected.length >= 1;
             },
             action: (selected: Block[], editor: Editor) => {
                 selected.forEach(b => b.zIndexDown());
@@ -53,7 +53,7 @@ export class EditorContext {
             name: "zIndexTop",
             label: "Push to front",
             visible: (selected: Block[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().zIndex);
+                return selected.every(b => b.editorSupport().zIndex) && selected.length >= 1;
             },
             action: (selected: Block[], editor: Editor) => {
                 selected.forEach(b => b.zIndexMaxUp());
@@ -63,7 +63,7 @@ export class EditorContext {
             name: "zIndexBottom",
             label: "Push to back",
             visible: (selected: Block[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().zIndex);
+                return selected.every(b => b.editorSupport().zIndex) && selected.length >= 1;
             },
             action: (selected: Block[], editor: Editor) => {
                 selected.forEach(b => b.zIndexMaxDown());
@@ -126,32 +126,38 @@ export class EditorContext {
             // Disable classic context menu
             event.preventDefault();
 
-            const blockElement = (event.target as HTMLElement).closest(".block");
+            // note(Matej): Not needed probably? We dont need to check what he clicked on
+            // const blockElement = (event.target as HTMLElement).closest(".block");
+            //
+            // // Is a block?
+            // if (blockElement) {
+            //     const block = this.editor.getBlockById(blockElement.getAttribute("data-block-id")!);
+            //
+            //     if (!block) {
+            //         console.error("[EditorSelector] Clicked block not found (by id).");
+            //         return;
+            //     }
+            //
+            //     if (this.editor.getSelector().isSelected(block)) {
+            //         this.position = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
+            //         this.active = true;
+            //         this.handleContext();
+            //         this.handleVisibility();
+            //     }
+            //     return;
+            // }
 
-            // Is a block?
-            if (blockElement) {
-                const block = this.editor.getBlockById(blockElement.getAttribute("data-block-id")!);
+            // Probably clicked inside the editor and not in a block, try to show it, if actions are available
+            this.position = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
 
-                if (!block) {
-                    console.error("[EditorSelector] Clicked block not found (by id).");
-                    return;
-                }
-
-                if (this.editor.getSelector().isSelected(block)) {
-                    this.position = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
-                    this.active = true;
-                    this.handleContext();
-                    this.handleVisibility();
-                }
-                return;
-            }
-
-            // Probably clicked inside the editor and not in a block, disable context menu
-            this.active = false;
+            this.active = true;
+            this.handleContext();
             this.handleVisibility();
         });
 
         window.addEventListener("click", (event) => {
+            if(event.button !== 0) return;
+
             this.active = false;
             this.handleVisibility();
         });
@@ -182,6 +188,7 @@ export class EditorContext {
 
         if (visibleActions === 0) {
             this.active = false;
+            this.handleVisibility();
         }
     }
 
@@ -190,8 +197,6 @@ export class EditorContext {
             this.element.classList.remove("editor-context--active");
         } else {
             this.element.classList.add("editor-context--active");
-
-            this.handleContext();
         }
     }
 
