@@ -17,7 +17,12 @@ export abstract class Block {
     public element!: HTMLElement;
     public editor!: Editor;
 
-    protected constructor(id: string, type: BlockType, position: {x: number, y: number}, size: {width: number, height: number}) {
+    public selected: boolean = false;
+    public resizing: boolean = false;
+    public moving: boolean = false;
+    public rotating: boolean = false;
+
+    protected constructor(id: string, type: BlockType, position: { x: number, y: number }, size: { width: number, height: number }) {
         this.id = id;
         this.type = type;
         this.position = position;
@@ -28,6 +33,7 @@ export abstract class Block {
      * Renders the block element for the first time for the editor in the DOM.
      */
     abstract render(): HTMLElement;
+
     public abstract editorSupport(): {
         selection: boolean;
         movement: boolean;
@@ -36,6 +42,16 @@ export abstract class Block {
         nonProportionalResizingY: boolean;
         rotation: boolean;
     }
+
+    /**
+     * After editorSupport() has been called, this method can be used to check if the block can currently do a certain action.
+     * The element could be in a state, that doesnt allow the action to be performed.
+     * @param action
+     */
+    public canCurrentlyDo(action: 'select' | 'move' | 'resize' | 'rotate') {
+        return true;
+    }
+
     public abstract getContent(): HTMLElement | undefined;
 
 
@@ -51,6 +67,8 @@ export abstract class Block {
      */
     public onSelected() {
         this.element.classList.add("block--selected");
+        this.selected = true;
+        // To be implemented by subclasses
     }
 
     /**
@@ -58,6 +76,11 @@ export abstract class Block {
      */
     public onDeselected() {
         this.element.classList.remove("block--selected");
+        this.selected = false;
+    }
+
+    public onResizeStarted() {
+        this.resizing = true;
     }
 
     /**
@@ -65,22 +88,26 @@ export abstract class Block {
      * @param type
      * @param start The starting width and height of the block.
      */
-    public onResizeCompleted(type: 'PROPORTIONAL' | 'NON_PROPORTIONAL', start: {
-        width: number;
-        height: number;
-    }) {
+    public onResizeCompleted(type: 'PROPORTIONAL' | 'NON_PROPORTIONAL', start: { width: number; height: number; }) {
         // To be implemented by subclasses
+        this.resizing = false;
+    }
+
+    public onMovementStarted() {
+        this.moving = true;
     }
 
     /**
      * Called when the block is done being moved.
      * @param start The starting position of the block.
      */
-    public onMovementCompleted(start: {
-        x: number;
-        y: number;
-    }) {
+    public onMovementCompleted(start: { x: number; y: number; }) {
         // To be implemented by subclasses
+        this.moving = false;
+    }
+
+    public onRotationStarted() {
+        this.rotating = true;
     }
 
     /**
@@ -89,8 +116,16 @@ export abstract class Block {
      */
     public onRotationCompleted(start: number) {
         // To be implemented by subclasses
+        this.rotating = false;
     }
 
+    /**
+     * Is called when the block is clicked while it is selected.
+     * @param event The mouse event that triggered the click.
+     */
+    public onClicked(event: MouseEvent) {
+        // To be implemented by subclasses
+    }
 
 
     public setEditor(editor: Editor) {
@@ -101,22 +136,29 @@ export abstract class Block {
         this.editor = editor;
     }
 
-    public move(x: number, y: number) {
+    public move(x: number, y: number, skipSynchronization: boolean = false) {
         this.position.x = x;
         this.position.y = y;
 
-        this.synchronize();
+        if (!skipSynchronization) this.synchronize();
     }
-    public rotate(rotation: number) {
+
+    public rotate(rotation: number, skipSynchronization: boolean = false) {
         this.rotation = rotation;
 
-        this.synchronize();
+        if (!skipSynchronization) this.synchronize();
     }
 
-    public overlaps(range: {top: number, right: number, bottom: number, left: number}) {
+    public resize(width: number, height: number, skipSynchronization: boolean = false) {
+        this.size.width = width;
+        this.size.height = height;
+
+        if (!skipSynchronization) this.synchronize();
+    }
+
+    public overlaps(range: { top: number, right: number, bottom: number, left: number }) {
         return this.position.x < range.right && this.position.x + this.size.width > range.left && this.position.y < range.bottom && this.position.y + this.size.height > range.top;
     }
-
 
 
     /**
@@ -137,16 +179,16 @@ export abstract class Block {
 
         const support = this.editorSupport();
 
-        if(support.selection) {
+        if (support.selection) {
             this.element.classList.add("block--selectable");
         }
-        if(support.movement) {
+        if (support.movement) {
             this.element.classList.add("block--movable");
         }
-        if(support.proportionalResizing || support.nonProportionalResizingX || support.nonProportionalResizingY) {
+        if (support.proportionalResizing || support.nonProportionalResizingX || support.nonProportionalResizingY) {
             this.element.classList.add("block--resizable");
         }
-        if(support.rotation) {
+        if (support.rotation) {
             this.element.classList.add("block--rotatable");
         }
 
@@ -158,7 +200,7 @@ export abstract class Block {
     public matchRenderedHeight() {
         this.size.height = this.element.clientHeight;
 
-        if(this.getContent()) {
+        if (this.getContent()) {
             this.size.height = this.getContent()!.clientHeight;
         }
 

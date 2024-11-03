@@ -11,7 +11,7 @@ export class TextBlock extends Block {
         this.fontSize = fontSize;
     }
 
-    render(): HTMLElement {
+    override render(): HTMLElement {
         const element = document.createElement("div");
 
         element.classList.add("block");
@@ -46,37 +46,46 @@ export class TextBlock extends Block {
     }
 
 
-    private state: "DESELECTED" | "SELECTED" | "INPUT" = "DESELECTED";
+    private editable: boolean = false;
     override onMounted() {
         super.onMounted();
 
         const content = this.getContent();
-        content.addEventListener("click", (e: MouseEvent) => this.enableEdit(e));
         content.addEventListener("input", (e) => this.handleInput(e));
+        content.addEventListener("mouseup", (e) => this.handleInputClick(e));
     }
 
-    override onSelected() {
-        super.onSelected();
+    override canCurrentlyDo(action: "select" | "move" | "resize" | "rotate"): boolean {
+        if(action === "move") {
+            return !this.editable;
+        }
+        return true;
+    }
 
-        this.state = "SELECTED";
-        console.log("Selected text block SELECTED");
+    override onClicked(event: MouseEvent) {
+        super.onClicked(event);
+
+        this.getContent().setAttribute("contenteditable", "true");
+        this.enableEdit(event);
     }
 
     private enableEdit(e: MouseEvent) {
-        console.log("Enable edit");
-        if(this.state !== "SELECTED") return;
+        this.editable = true;
+    }
 
-        console.log("Enable edit INPUT");
-        this.state = "INPUT";
-
-        const content = this.getContent();
-        content.setAttribute("contenteditable", "true");
-
-        // content.focus();
+    private handleInputClick(e: MouseEvent) {
+        if(!this.editable) {
+            e.preventDefault();
+            return;
+        }
     }
 
     private handleInput(e: Event) {
-        if(this.state !== "INPUT") return;
+        if(!this.editable) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            return;
+        }
 
         const content = this.getContent();
         this.content = content.innerHTML;
@@ -90,13 +99,22 @@ export class TextBlock extends Block {
     override onDeselected() {
         super.onDeselected();
 
-        const content = this.getContent();
-        content.removeAttribute("contenteditable");
+        this.getContent().removeAttribute("contenteditable");
 
-        content.removeEventListener("input", (e) => this.handleInput(e));
+        this.editable = false;
+    }
 
-        this.state = "DESELECTED";
-        console.log("Selected text block DESELECTED");
+    override onRotationStarted() {
+        super.onRotationStarted();
+        this.getContent().blur();
+    }
+    override onMovementStarted() {
+        super.onMovementStarted();
+        this.getContent().blur();
+    }
+    override onResizeStarted() {
+        super.onResizeStarted();
+        this.getContent().blur();
     }
 
     override synchronize() {

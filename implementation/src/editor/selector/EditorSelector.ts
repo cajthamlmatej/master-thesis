@@ -66,9 +66,7 @@ export class EditorSelector {
                     return;
                 }
 
-                this.selectBlock(block, event.shiftKey);
-
-                this.handleVisibility();
+                this.setupMovementOrSelect(event, block);
                 return;
             }
 
@@ -281,8 +279,14 @@ export class EditorSelector {
         block.onDeselected();
     }
 
-    private selectBlock(block: Block, addToSelection: boolean = false) {
+    private selectBlock(block: Block, addToSelection: boolean = false, event?: MouseEvent) {
         if (!addToSelection) {
+            if(this.selectedBlocks.length === 1 && this.selectedBlocks[0] === block && event) {
+                block.onClicked(event);
+
+                return
+            }
+
             this.deselectAllBlocks();
         }
 
@@ -307,10 +311,61 @@ export class EditorSelector {
 
 
 
-    private setupMovement(event: MouseEvent, moveElement: HTMLElement) {
+    private setupMovementOrSelect(event: MouseEvent, block: Block) {
         let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
 
+        this.selectBlock(block, event.shiftKey, event);
+
+        if(event.shiftKey) {
+            // If shift is pressed, do not move the block
+            return;
+        }
+
+        let moved = false;
+        const mouseMoveHandler = (event: MouseEvent) => {
+            if(moved) return;
+
+            let {x: deltaX, y: deltaY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
+
+            deltaX -= initialX;
+            deltaY -= initialY;
+
+            if(Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+                moved = true;
+            }
+
+            if(moved && block.canCurrentlyDo("move")) {
+                this.handleVisibility();
+                this.setupMovement(event, block.element, {x: initialX, y: initialY});
+
+                window.removeEventListener("mousemove", mouseMoveHandler);
+                window.removeEventListener("mouseup", mouseUpHandler);
+            }
+        };
+
+        const mouseUpHandler = () => {
+            window.removeEventListener("mousemove", mouseMoveHandler);
+            window.removeEventListener("mouseup", mouseUpHandler);
+
+            this.selectBlock(block, event.shiftKey, event);
+            this.handleVisibility();
+        };
+
+        window.addEventListener("mousemove", mouseMoveHandler);
+        window.addEventListener("mouseup", mouseUpHandler);
+    }
+
+    private setupMovement(event: MouseEvent, moveElement: HTMLElement, initial?: {x: number, y: number}) {
+        let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
+
+        if(initial) {
+            initialX = initial.x;
+            initialY = initial.y;
+        }
+
         const initialPositions = this.selectedBlocks.map(block => {
+            block.onMovementStarted();
+
             return {
                 block,
                 x: block.position.x,
@@ -359,9 +414,9 @@ export class EditorSelector {
         const isProportionalX = type.includes('middle-left') || type.includes('middle-right');
         const isProportionalY = type.includes('top-middle') || type.includes('bottom-middle');
 
-        //const supportsNonProportionalResizing = this.selectedBlocks.every(b => b.editorSupport().nonProportionalResizingX && b.editorSupport().nonProportionalResizingY);
-
         const blockInitialData = this.selectedBlocks.map(block => {
+            block.onResizeStarted();
+
             const c0_x = block.position.x + block.size.width / 2.0;
             const c0_y = block.position.y + block.size.height / 2.0;
 
@@ -490,11 +545,9 @@ export class EditorSelector {
                 const newL: number = matrix.c * q_x + matrix.a * p_x;
                 const newT: number = matrix.d * q_y + matrix.b * p_y;
 
-                block.move(newL, newT);
-                block.size = {
-                    width: wtmp,
-                    height: htmp
-                }
+                block.move(newL, newT, true);
+                block.resize(wtmp, htmp, true);
+                block.synchronize();
 
                 const content = block.getContent();
                 if(content) {
@@ -539,12 +592,16 @@ export class EditorSelector {
 
         let currentAngle = 0;
         let lastAngle = Math.atan2(initialY - centerY, initialX - centerX);
-        const initialPositions = this.selectedBlocks.map(block => ({
-            block,
-            rotation: block.rotation,
-            offsetX: block.position.x + (block.size.width / 2) - centerX,
-            offsetY: block.position.y + (block.size.height / 2) - centerY
-        }));
+        const initialPositions = this.selectedBlocks.map(block => {
+            block.onRotationStarted();
+
+            return {
+                block,
+                rotation: block.rotation,
+                offsetX: block.position.x + (block.size.width / 2) - centerX,
+                offsetY: block.position.y + (block.size.height / 2) - centerY
+            }
+        });
 
         const mouseMoveHandler = (event: MouseEvent) => {
             const { x: currentX, y: currentY } = this.editor.screenToEditorCoordinates(
