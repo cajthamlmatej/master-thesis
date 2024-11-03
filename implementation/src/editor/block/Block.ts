@@ -70,6 +70,13 @@ export abstract class Block {
     }
 
     /**
+     * Called when the block is unmounted from the DOM.
+     */
+    public onUnmounted() {
+
+    }
+
+    /**
      * Called when the block is selected.
      */
     public onSelected() {
@@ -281,4 +288,5 @@ export abstract class Block {
 
         this.synchronize();
     }
+
 }

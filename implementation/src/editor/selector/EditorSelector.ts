@@ -297,7 +297,10 @@ export class EditorSelector {
         this.selectedBlocks = [];
     }
 
-    private deselectBlock(block: Block) {
+    public deselectBlock(block: Block) {
+        this.selectedBlocks = this.selectedBlocks.filter(b => b !== block);
+        this.recalculateSelectionArea();
+        this.handleVisibility();
         block.onDeselected();
     }
 
@@ -314,8 +317,6 @@ export class EditorSelector {
 
         if (this.selectedBlocks.includes(block)) {
             this.deselectBlock(block);
-            this.selectedBlocks = this.selectedBlocks.filter(b => b !== block);
-            this.recalculateSelectionArea();
             return;
         }
 
