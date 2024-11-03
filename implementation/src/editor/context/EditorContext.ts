@@ -30,6 +30,16 @@ export class EditorContext {
             }
         },
         {
+            name: "delete",
+            label: "Delete",
+            visible: (selected: Block[], editor: Editor) => {
+                return selected.every(b => b.editorSupport().selection) && selected.length >= 1;
+            },
+            action: (selected: Block[], editor: Editor) => {
+                selected.forEach(b => editor.removeBlock(b));
+            }
+        },
+        {
             name: "zIndexUp",
             label: "Push forward",
             visible: (selected: Block[], editor: Editor) => {

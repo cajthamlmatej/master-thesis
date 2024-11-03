@@ -32,4 +32,7 @@ export class EditorClipboard {
         }
     }
 
+    public clear() {
+        this.clipboard = [];
+    }
 }
