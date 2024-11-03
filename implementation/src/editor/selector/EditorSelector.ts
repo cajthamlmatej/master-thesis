@@ -292,7 +292,7 @@ export class EditorSelector {
         block.onDeselected();
     }
 
-    private selectBlock(block: Block, addToSelection: boolean = false, event?: MouseEvent) {
+    public selectBlock(block: Block, addToSelection: boolean = false, event?: MouseEvent) {
         if (!addToSelection) {
             if(this.selectedBlocks.length === 1 && this.selectedBlocks[0] === block && event) {
                 block.onClicked(event);
@@ -320,6 +320,7 @@ export class EditorSelector {
         this.selectedBlocks.push(block);
 
         this.recalculateSelectionArea();
+        this.handleVisibility();
     }
 
     public isSelected(block: Block, soloOnly: boolean = false) {
@@ -331,6 +332,10 @@ export class EditorSelector {
     }
     public getSelectedBlocks() {
         return this.selectedBlocks;
+    }
+    public clearSelection() {
+        this.deselectAllBlocks();
+        this.handleVisibility();
     }
 
     private setupMovementOrSelect(event: MouseEvent, block: Block) {

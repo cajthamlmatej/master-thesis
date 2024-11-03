@@ -2,6 +2,7 @@ import {Block} from "@/editor/block/Block";
 import {BlockType} from "@/editor/block/BlockType";
 import editor from "@/components/Editor.vue";
 import type Editor from "@/editor/Editor";
+import {generateUUID} from "@/utils/uuid";
 
 export class WatermarkBlock extends Block {
     constructor(id: string) {
@@ -58,9 +59,15 @@ export class WatermarkBlock extends Block {
         this.position = this.getPosition();
     }
 
-    onMovementCompleted(start: { x: number; y: number }) {
+    public onMovementCompleted(start: { x: number; y: number }) {
         super.onMovementCompleted(start);
 
         this.position = this.getPosition();
     }
+
+    public override clone(): Block {
+        return new WatermarkBlock(generateUUID());
+    }
+
+
 }

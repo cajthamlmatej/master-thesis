@@ -10,6 +10,26 @@ export class EditorContext {
 
     private actions = [
         {
+            name: "copy",
+            label: "Copy",
+            visible: (selected: Block[], editor: Editor) => {
+                return selected.every(b => b.editorSupport().selection);
+            },
+            action: (selected: Block[], editor: Editor) => {
+                editor.getClipboard().markForCopy(selected);
+            },
+        },
+        {
+            name: "paste",
+            label: "Paste",
+            visible: (selected: Block[], editor: Editor) => {
+                return editor.getClipboard().hasContent();
+            },
+            action: (selected: Block[], editor: Editor) => {
+                editor.getClipboard().paste();
+            }
+        },
+        {
             name: "zIndexUp",
             label: "Push forward",
             visible: (selected: Block[], editor: Editor) => {
@@ -67,14 +87,14 @@ export class EditorContext {
 
         contextElement.classList.add("editor-context");
 
-        for(const action of this.getActions()) {
+        for (const action of this.getActions()) {
             const actionElement = document.createElement("div");
             actionElement.classList.add("action");
             actionElement.setAttribute("data-action", action.name);
             actionElement.innerText = action.label;
 
             actionElement.addEventListener("mousedown", (e) => {
-                console.debug("Action", action.name, "executed for" , this.editor.getSelector().getSelectedBlocks().length, "blocks");
+                console.debug("Action", action.name, "executed for", this.editor.getSelector().getSelectedBlocks().length, "blocks");
                 action.action(this.editor.getSelector().getSelectedBlocks(), this.editor);
 
                 this.active = false;
@@ -148,7 +168,7 @@ export class EditorContext {
             const actionElement = this.element.querySelector(`.action[data-action="${action.name}"]`);
 
             if (actionElement) {
-                if(visible) {
+                if (visible) {
                     actionElement.classList.add("action--visible");
                 } else {
                     actionElement.classList.remove("action--visible");

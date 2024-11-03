@@ -1,6 +1,7 @@
 import type {Block} from "@/editor/block/Block";
 import {EditorSelector} from "@/editor/selector/EditorSelector";
 import {EditorContext} from "@/editor/context/EditorContext";
+import {EditorClipboard} from "@/editor/clipboard/EditorClipboard";
 
 interface EditorOptions {
     size: {
@@ -22,6 +23,7 @@ export default class Editor {
     private blocks: Block[] = [];
     private readonly selector: EditorSelector;
     private readonly context: EditorContext;
+    private readonly clipboard: EditorClipboard;
 
     constructor(editorElement: HTMLElement, options?: EditorOptions) {
         this.editorElement = editorElement;
@@ -31,6 +33,7 @@ export default class Editor {
 
         this.context = new EditorContext(this);
         this.selector = new EditorSelector(this);
+        this.clipboard = new EditorClipboard(this);
     }
 
     public getSize() {
@@ -97,6 +100,9 @@ export default class Editor {
     }
     public getContext() {
         return this.context;
+    }
+    public getClipboard() {
+        return this.clipboard;
     }
 
     private markElementAsBlock(element: HTMLElement, block: Block) {

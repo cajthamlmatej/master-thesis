@@ -1,5 +1,6 @@
 import type {BlockType} from "@/editor/block/BlockType";
 import type Editor from "@/editor/Editor";
+import {generateUUID} from "@/utils/uuid";
 
 export abstract class Block {
     public id: string;
@@ -55,6 +56,8 @@ export abstract class Block {
     }
 
     public abstract getContent(): HTMLElement | undefined;
+
+    public abstract clone(): Block;
 
 
     /**

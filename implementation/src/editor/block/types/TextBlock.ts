@@ -1,5 +1,6 @@
 import {Block} from "@/editor/block/Block";
 import {BlockType} from "@/editor/block/BlockType";
+import {generateUUID} from "@/utils/uuid";
 
 export class TextBlock extends Block {
     private content: string;
@@ -148,4 +149,8 @@ export class TextBlock extends Block {
         this.synchronize();
     }
 
+
+    override clone(): Block {
+        return new TextBlock(generateUUID(), { ...this.position }, { ...this.size }, this.content, this.fontSize);
+    }
 }

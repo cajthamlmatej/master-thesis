@@ -1,5 +1,6 @@
 import {Block} from "@/editor/block/Block";
 import {BlockType} from "@/editor/block/BlockType";
+import {generateUUID} from "@/utils/uuid";
 
 export class RectangleBlock extends Block {
     private color: string;
@@ -42,4 +43,11 @@ export class RectangleBlock extends Block {
         this.element.style.backgroundColor = this.color;
     }
 
+    override clone(): Block {
+        return new RectangleBlock(
+            generateUUID(), // note(Matej): TODO: Is this ok? And it is in multiple places.
+            {x: this.position.x, y: this.position.y},
+            {width: this.size.width, height: this.size.height},
+            this.color);
+    }
 }

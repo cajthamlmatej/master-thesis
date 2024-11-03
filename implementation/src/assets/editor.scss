@@ -304,14 +304,14 @@
 
         user-select: none;
 
-        &--active {
-            display: block;
-        }
-
         background-color: white;
         box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.24);
         border-radius: 0.1em;
         //padding: 0.25em;
+
+        &--active {
+            display: block;
+        }
 
         > .action {
             display: none;
