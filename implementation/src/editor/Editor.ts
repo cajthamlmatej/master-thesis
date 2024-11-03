@@ -81,10 +81,28 @@ export default class Editor {
         block.element = element;
 
         const maxZIndex = this.blocks.reduce((acc, block) => Math.max(acc, block.zIndex), 0);
-        block.zIndex = maxZIndex + 1;
+        block.zIndex = Math.max(0, Math.min(1000, maxZIndex + 1));
 
         block.onMounted();
         block.synchronize();
+    }
+    public removeBlock(block: Block | string) {
+        const blockId = typeof block === "string" ? block : block.id;
+        const blockIndex = this.blocks.findIndex(block => block.id === blockId);
+
+        if (blockIndex === -1) {
+            console.error("[Editor] Block not found. Cannot remove.");
+            return;
+        }
+
+        const blockInstance = this.blocks[blockIndex];
+        blockInstance.element.remove();
+        blockInstance.onUnmounted();
+        this.blocks.splice(blockIndex, 1);
+
+        if(this.selector.isSelected(blockInstance)) {
+            this.selector.deselectBlock(blockInstance);
+        }
     }
 
     public getElement() {
