@@ -34,17 +34,22 @@
             // --- STATES-ABLE ---
             &--selectable {
                 cursor: pointer;
+
+                &:not(&.block--selected):hover {
+                    outline: 4px dashed rgba(0, 0, 0, 0.24);
+                }
             }
             &--resizable {
             }
             &--rotatable {
             }
             &--movable {
-
-                &--selected {
+                &.block--selected {
                     cursor: move;
                 }
-
+            }
+            &--hover {
+                outline: 4px dashed rgba(0, 0, 0, 0.24);
             }
 
             // --- STATES ---
@@ -292,6 +297,19 @@
         }
     }
 
+    > .editor-select-box {
+        display: none;
+        background: #6c29ff1a;
+        border: 2px dashed #6c29ff;
+
+        position: absolute;
+        z-index: 2000;
+        pointer-events: none;
+
+        &--active {
+            display: block;
+        }
+    }
 
     > .editor-context {
         --selector-size: 4px;

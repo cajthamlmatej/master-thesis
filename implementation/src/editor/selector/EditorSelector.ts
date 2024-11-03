@@ -5,6 +5,7 @@ export class EditorSelector {
     private editor: Editor;
     private selectedBlocks: Block[] = [];
     private element!: HTMLElement;
+    private selectBoxElement!: HTMLElement;
     private selectionArea = {
         x: 0,
         y: 0,
@@ -45,9 +46,15 @@ export class EditorSelector {
 <div class="rotate"></div>
 <div class="actions"></div>`
 
+        const selectorBoxElement = document.createElement("div");
+
+        selectorBoxElement.classList.add("editor-select-box");
+
         this.editor.getElement().appendChild(selectorElement);
+        this.editor.getElement().appendChild(selectorBoxElement);
 
         this.element = selectorElement;
+        this.selectBoxElement = selectorBoxElement;
 
         this.setupEvents();
     }
@@ -86,6 +93,8 @@ export class EditorSelector {
             // Probably clicked inside the editor and not in a block, deselect all blocks
             this.deselectAllBlocks();
             this.handleVisibility();
+
+            this.setupSelectBox(event);
         });
 
         // Moving blocks
@@ -337,6 +346,7 @@ export class EditorSelector {
         this.deselectAllBlocks();
         this.handleVisibility();
     }
+
 
     private setupMovementOrSelect(event: MouseEvent, block: Block) {
         let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
@@ -684,4 +694,72 @@ export class EditorSelector {
         window.addEventListener("mouseup", mouseUpHandler);
     }
 
+    private setupSelectBox(event: MouseEvent) {
+        let { x: initialX, y: initialY } = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
+
+        let box = {
+            x: initialX,
+            y: initialY,
+            width: 0,
+            height: 0
+        };
+
+        const updateBox = () => {
+            this.selectBoxElement.classList.add("editor-select-box--active");
+            this.selectBoxElement.style.left = box.x + "px";
+            this.selectBoxElement.style.top = box.y + "px";
+            this.selectBoxElement.style.width = Math.abs(box.width) + "px";
+            this.selectBoxElement.style.height = Math.abs(box.height) + "px";
+        };
+
+        const mouseMoveHandler = (event: MouseEvent) => {
+            let { x: currentX, y: currentY } = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
+
+            box.width = currentX - initialX;
+            box.height = currentY - initialY;
+            box.x = initialX + (box.width < 0 ? box.width : 0);
+            box.y = initialY + (box.height < 0 ? box.height : 0);
+
+            updateBox();
+
+            let range = {topLeft: {x: box.x, y: box.y}, bottomRight: {x: box.x + Math.abs(box.width), y: box.y + Math.abs(box.height)}};
+
+            for(let block of this.editor.getBlocks()) {
+                if(block.overlaps(range)) {
+                    if(!block.hovering) {
+                        block.onHoverStarted();
+                    }
+                } else {
+                    if(block.hovering) {
+                        block.onHoverEnded();
+                    }
+                }
+            }
+        };
+
+        const mouseUpHandler = () => {
+            window.removeEventListener("mousemove", mouseMoveHandler);
+            window.removeEventListener("mouseup", mouseUpHandler);
+
+            let range = {topLeft: {x: box.x, y: box.y}, bottomRight: {x: box.x + Math.abs(box.width), y: box.y + Math.abs(box.height)}};
+
+            // Find all blocks that overlap with the box
+            const foundBlocks = [];
+
+            for(let block of this.editor.getBlocks()) {
+                if(block.overlaps(range)) {
+                    foundBlocks.push(block);
+                }
+            }
+
+            // Select all found blocks
+            for(let block of foundBlocks) {
+                this.selectBlock(block, true);
+            }
+            this.selectBoxElement.classList.remove("editor-select-box--active");
+        };
+
+        window.addEventListener("mousemove", mouseMoveHandler);
+        window.addEventListener("mouseup", mouseUpHandler);
+    }
 }

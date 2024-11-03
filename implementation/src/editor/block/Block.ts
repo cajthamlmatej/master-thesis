@@ -1,6 +1,7 @@
 import type {BlockType} from "@/editor/block/BlockType";
 import type Editor from "@/editor/Editor";
 import {generateUUID} from "@/utils/uuid";
+import {twoPolygonsIntersect} from "@/utils/collision";
 
 export abstract class Block {
     public id: string;
@@ -23,6 +24,7 @@ export abstract class Block {
     public resizing: boolean = false;
     public moving: boolean = false;
     public rotating: boolean = false;
+    public hovering: boolean = false;
 
     protected constructor(id: string, type: BlockType, position: { x: number, y: number }, size: { width: number, height: number }) {
         this.id = id;
@@ -82,6 +84,17 @@ export abstract class Block {
     public onDeselected() {
         this.element.classList.remove("block--selected");
         this.selected = false;
+    }
+
+    public onHoverStarted() {
+        this.element.classList.add("block--hover");
+        this.hovering = true;
+        // To be implemented by subclasses
+    }
+
+    public onHoverEnded() {
+        this.element.classList.remove("block--hover");
+        this.hovering = false;
     }
 
     public onResizeStarted() {
@@ -183,8 +196,42 @@ export abstract class Block {
         this.synchronize();
     }
 
-    public overlaps(range: { top: number, right: number, bottom: number, left: number }) {
-        return this.position.x < range.right && this.position.x + this.size.width > range.left && this.position.y < range.bottom && this.position.y + this.size.height > range.top;
+    /**
+     * Checks if supplied box range overlaps with this block including rotation.
+     * @param range The range to check for overlap.
+     */
+    public overlaps(range: { topLeft: { x: number, y: number }, bottomRight: { x: number, y: number } }) {
+        const { x, y } = this.position;
+        const { width, height } = this.size;
+        const angle = this.rotation * (Math.PI / 180);
+
+        const corners = [
+            { x: x, y: y },
+            { x: x, y: y+height },
+            { x: x + width, y: y },
+            { x: x + width, y: y + height }
+        ];
+
+        const pivot = { x: x + width/2, y: y + height/2 };
+
+        const rotatedCorners = corners.map(corner => {
+            const relativeX = corner.x - pivot.x;
+            const relativeY = corner.y - pivot.y;
+
+            const rotatedX = relativeX * Math.cos(angle) - relativeY * Math.sin(angle) + pivot.x;
+            const rotatedY = relativeX * Math.sin(angle) + relativeY * Math.cos(angle) + pivot.y;
+
+            return { x: rotatedX, y: rotatedY };
+        });
+
+        const rangeCorners = [
+            range.topLeft,
+            { x: range.topLeft.x, y: range.bottomRight.y },
+            { x: range.bottomRight.x, y: range.topLeft.y },
+            range.bottomRight
+        ];
+
+        return twoPolygonsIntersect(rotatedCorners, rangeCorners);
     }
 
 
