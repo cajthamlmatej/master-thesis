@@ -107,10 +107,28 @@ export class TextBlock extends Block {
         this.editor.getSelector().handleSelector();
     }
 
+    private removed = false;
     override onDeselected() {
+        if(this.removed) {
+            // Block was removed, do not do anything.
+            // note(Matej): This exist because this deselect call removeBlock, which calls onDeselected again
+            return;
+        }
+
         super.onDeselected();
 
         this.getContent().removeAttribute("contenteditable");
+
+        // User was editing and stopped editing, remove block if the content is empty
+        if(this.editable) {
+            const content = this.content.replace(/<br>/g, "").replace(/\n?\r?/g, "").replace(/&nbsp;/g, "").trim();
+            console.log("Content", content, content.length);
+
+            if(content.length === 0) {
+                this.editor.removeBlock(this);
+                this.removed = true;
+            }
+        }
 
         this.editable = false;
     }
@@ -157,7 +175,6 @@ export class TextBlock extends Block {
 
         this.synchronize();
     }
-
 
     override clone(): Block {
         return new TextBlock(generateUUID(), { ...this.position }, { ...this.size }, this.content, this.fontSize);
