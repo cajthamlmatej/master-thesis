@@ -6,6 +6,8 @@ import type Editor from "@/editor/Editor";
 export class WatermarkBlock extends Block {
     constructor(id: string) {
         super(id, BlockType.TEXT, { x:0, y:0 }, { width: 200, height: 50 });
+
+        this.zIndex = 1001;
     }
 
     render(): HTMLElement {
@@ -15,8 +17,6 @@ export class WatermarkBlock extends Block {
         element.classList.add("block--type-watermark");
 
         element.innerText = "Made by CajthamlMaterials";
-
-        element.style.zIndex = "1000";
 
         return element;
     }
@@ -29,7 +29,8 @@ export class WatermarkBlock extends Block {
             proportionalResizing: false,
             nonProportionalResizingX: false,
             nonProportionalResizingY: false,
-            rotation: false
+            rotation: false,
+            zIndex: false
         }
     }
 

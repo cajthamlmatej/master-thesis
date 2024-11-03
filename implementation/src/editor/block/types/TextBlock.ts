@@ -37,7 +37,8 @@ export class TextBlock extends Block {
             proportionalResizing: true,
             nonProportionalResizingX: true,
             nonProportionalResizingY: false,
-            rotation: true
+            rotation: true,
+            zIndex: true
         }
     }
 

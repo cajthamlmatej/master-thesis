@@ -23,26 +23,31 @@ export class EditorSelector {
     }
 
     private setupSelector() {
-        this.editor.getElement().innerHTML += `<div class="editor-selector">
-    <div class="move move--top"></div>
-    <div class="move move--right"></div>
-    <div class="move move--bottom"></div>
-    <div class="move move--left"></div>
+        const selectorElement = document.createElement("div");
+        selectorElement.classList.add("editor-selector");
 
-    <div class="resize resize--top-left"></div>
-    <div class="resize resize--top-right"></div>
-    <div class="resize resize--bottom-right"></div>
-    <div class="resize resize--bottom-left"></div>
-    <div class="resize resize--middle-right"></div>
-    <div class="resize resize--middle-left"></div>
+        selectorElement.innerHTML =
+`<div class="move move--top"></div>
+<div class="move move--right"></div>
+<div class="move move--bottom"></div>
+<div class="move move--left"></div>
 
-    <div class="resize resize--top-middle"></div>
-    <div class="resize resize--bottom-middle"></div>
+<div class="resize resize--top-left"></div>
+<div class="resize resize--top-right"></div>
+<div class="resize resize--bottom-right"></div>
+<div class="resize resize--bottom-left"></div>
+<div class="resize resize--middle-right"></div>
+<div class="resize resize--middle-left"></div>
 
-    <div class="rotate"></div>
-    <div class="actions"></div>
-</div>`
-        this.element = this.editor.getElement().querySelector(".editor-selector")! as HTMLElement;
+<div class="resize resize--top-middle"></div>
+<div class="resize resize--bottom-middle"></div>
+
+<div class="rotate"></div>
+<div class="actions"></div>`
+
+        this.editor.getElement().appendChild(selectorElement);
+
+        this.element = selectorElement;
 
         this.setupEvents();
     }
@@ -63,6 +68,14 @@ export class EditorSelector {
 
                 if (!block) {
                     console.error("[EditorSelector] Clicked block not found (by id).");
+                    return;
+                }
+
+                if(event.button !== 0) {
+                    if(!this.isSelected(block)) {
+                        this.selectBlock(block, event.shiftKey, event);
+                        this.handleVisibility();
+                    }
                     return;
                 }
 
@@ -309,12 +322,22 @@ export class EditorSelector {
         this.recalculateSelectionArea();
     }
 
+    public isSelected(block: Block, soloOnly: boolean = false) {
+        if(soloOnly) {
+            return this.selectedBlocks.length === 1 && this.selectedBlocks[0] === block;
+        }
 
+        return this.selectedBlocks.includes(block);
+    }
+    public getSelectedBlocks() {
+        return this.selectedBlocks;
+    }
 
     private setupMovementOrSelect(event: MouseEvent, block: Block) {
         let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
 
         this.selectBlock(block, event.shiftKey, event);
+        this.handleVisibility();
 
         if(event.shiftKey) {
             // If shift is pressed, do not move the block
@@ -335,7 +358,6 @@ export class EditorSelector {
             }
 
             if(moved && block.canCurrentlyDo("move")) {
-                this.handleVisibility();
                 this.setupMovement(event, block.element, {x: initialX, y: initialY});
 
                 window.removeEventListener("mousemove", mouseMoveHandler);
@@ -347,7 +369,7 @@ export class EditorSelector {
             window.removeEventListener("mousemove", mouseMoveHandler);
             window.removeEventListener("mouseup", mouseUpHandler);
 
-            this.selectBlock(block, event.shiftKey, event);
+            //this.selectBlock(block, event.shiftKey, event);
             this.handleVisibility();
         };
 
@@ -656,4 +678,5 @@ export class EditorSelector {
         window.addEventListener("mousemove", mouseMoveHandler);
         window.addEventListener("mouseup", mouseUpHandler);
     }
+
 }

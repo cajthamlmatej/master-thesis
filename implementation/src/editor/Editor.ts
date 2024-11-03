@@ -1,5 +1,6 @@
 import type {Block} from "@/editor/block/Block";
 import {EditorSelector} from "@/editor/selector/EditorSelector";
+import {EditorContext} from "@/editor/context/EditorContext";
 
 interface EditorOptions {
     size: {
@@ -19,7 +20,8 @@ export default class Editor {
     }
 
     private blocks: Block[] = [];
-    private selector: EditorSelector;
+    private readonly selector: EditorSelector;
+    private readonly context: EditorContext;
 
     constructor(editorElement: HTMLElement, options?: EditorOptions) {
         this.editorElement = editorElement;
@@ -27,6 +29,7 @@ export default class Editor {
         this.parseOptions(options);
         this.setupEditor();
 
+        this.context = new EditorContext(this);
         this.selector = new EditorSelector(this);
     }
 
@@ -73,6 +76,10 @@ export default class Editor {
         editorContentElement.appendChild(element);
 
         block.element = element;
+
+        const maxZIndex = this.blocks.reduce((acc, block) => Math.max(acc, block.zIndex), 0);
+        block.zIndex = maxZIndex + 1;
+
         block.onMounted();
         block.synchronize();
     }
@@ -87,6 +94,9 @@ export default class Editor {
 
     public getSelector() {
         return this.selector;
+    }
+    public getContext() {
+        return this.context;
     }
 
     private markElementAsBlock(element: HTMLElement, block: Block) {
@@ -153,6 +163,9 @@ export default class Editor {
 
     private setupEditorContent() {
         this.editorElement.innerHTML = `<div class="editor-content"></div>`
+    }
+    public getBlocks() {
+        return this.blocks;
     }
 
 

@@ -13,6 +13,7 @@ export abstract class Block {
         height: number;
     }
     public rotation: number = 0;
+    public zIndex: number = 0;
 
     public element!: HTMLElement;
     public editor!: Editor;
@@ -41,11 +42,12 @@ export abstract class Block {
         nonProportionalResizingX: boolean;
         nonProportionalResizingY: boolean;
         rotation: boolean;
+        zIndex: boolean;
     }
 
     /**
      * After editorSupport() has been called, this method can be used to check if the block can currently do a certain action.
-     * The element could be in a state, that doesnt allow the action to be performed.
+     * The element could be in a state, that doesn't allow the action to be performed.
      * @param action
      */
     public canCurrentlyDo(action: 'select' | 'move' | 'resize' | 'rotate') {
@@ -136,6 +138,7 @@ export abstract class Block {
         this.editor = editor;
     }
 
+
     public move(x: number, y: number, skipSynchronization: boolean = false) {
         this.position.x = x;
         this.position.y = y;
@@ -156,6 +159,27 @@ export abstract class Block {
         if (!skipSynchronization) this.synchronize();
     }
 
+    public zIndexUp() {
+        this.zIndex = Math.max(0, Math.min(1000, this.zIndex + 1));
+        this.synchronize();
+    }
+    public zIndexDown() {
+        this.zIndex = Math.max(0, Math.min(1000, this.zIndex - 1));
+        this.synchronize();
+    }
+    public zIndexMaxDown() {
+        const lowest = this.editor.getBlocks().reduce((acc, block) => Math.min(acc, block.zIndex), this.zIndex);
+
+        this.zIndex = Math.max(0, Math.min(1000, lowest - 1));
+        this.synchronize();
+    }
+    public zIndexMaxUp() {
+        const highest = this.editor.getBlocks().reduce((acc, block) => Math.max(acc, block.zIndex), this.zIndex);
+
+        this.zIndex = Math.max(0, Math.min(1000, highest + 1));
+        this.synchronize();
+    }
+
     public overlaps(range: { top: number, right: number, bottom: number, left: number }) {
         return this.position.x < range.right && this.position.x + this.size.width > range.left && this.position.y < range.bottom && this.position.y + this.size.height > range.top;
     }
@@ -174,6 +198,7 @@ export abstract class Block {
         this.element.style.height = this.size.height + "px";
 
         this.element.style.transform = `rotate(${this.rotation}deg)`;
+        this.element.style.zIndex = this.zIndex.toString();
 
         this.element.classList.remove("block--selectable", "block--movable", "block--resizable", "block--rotatable");
 

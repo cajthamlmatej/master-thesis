@@ -1,6 +1,6 @@
 <template>
     <div class="editor-container">
-        <div class="editor" ref="editorElement">
+        <div class="editor" ref="editorElement" v-once v-html="''" :key="'editor'">
         </div>
     </div>
 </template>
@@ -15,16 +15,14 @@ import {WatermarkBlock} from "@/editor/block/types/WatermarkBlock";
 
 const editorElement = ref<HTMLElement | null>(null);
 
-const editor = ref<Editor | null>(null);
-
 onMounted(() => {
     if (!editorElement.value) {
         console.error("Editor element not found");
         return;
     }
 
-    editor.value = new Editor(editorElement.value);
-    editor.value.addBlock(
+    const editor = new Editor(editorElement.value);
+    editor.addBlock(
         new TextBlock(
             generateUUID(),
             {x: 300, y: 100},
@@ -32,7 +30,7 @@ onMounted(() => {
             "<div>Test</div>",
             24
         ));
-    editor.value.addBlock(
+    editor.addBlock(
         new TextBlock(
             generateUUID(),
             {x: 420, y: 300},
@@ -40,14 +38,14 @@ onMounted(() => {
             "<div>Ahoj</div><div>Světe</div>",
             24
         ));
-    editor.value.addBlock(
+    editor.addBlock(
         new RectangleBlock(
             generateUUID(),
             {x: 20, y: 20},
             {width: 40, height: 40},
             "#ff8e3c"
         ));
-    editor.value.addBlock(
+    editor.addBlock(
         new WatermarkBlock(generateUUID()));
 })
 </script>

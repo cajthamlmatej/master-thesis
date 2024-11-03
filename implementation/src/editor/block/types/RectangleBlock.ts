@@ -27,7 +27,8 @@ export class RectangleBlock extends Block {
             proportionalResizing: true,
             nonProportionalResizingX: true,
             nonProportionalResizingY: true,
-            rotation: true
+            rotation: true,
+            zIndex: true
         }
     }
 

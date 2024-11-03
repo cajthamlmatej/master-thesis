@@ -78,7 +78,7 @@
         --selector-size: 4px;
 
         position: absolute;
-        z-index: 100;
+        z-index: 2000;
         top: 0;
         left: 0;
         width: 300px;
@@ -287,6 +287,43 @@
 
         &--rotation {
             > .rotate {
+                display: block;
+            }
+        }
+    }
+
+
+    > .editor-context {
+        --selector-size: 4px;
+
+        position: absolute;
+        z-index: 2100;
+        top: 0;
+        left: 0;
+        display: none;
+
+        user-select: none;
+
+        &--active {
+            display: block;
+        }
+
+        background-color: white;
+        box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.24);
+        border-radius: 0.1em;
+        //padding: 0.25em;
+
+        > .action {
+            display: none;
+            cursor: pointer;
+            padding: 0.25em;
+            border-radius: 0.1em;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+
+            &--visible {
                 display: block;
             }
         }
