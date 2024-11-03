@@ -121,8 +121,9 @@ export class TextBlock extends Block {
 
         // User was editing and stopped editing, remove block if the content is empty
         if(this.editable) {
-            const content = this.content.replace(/<br>/g, "").replace(/\n?\r?/g, "").replace(/&nbsp;/g, "").trim();
-            console.log("Content", content, content.length);
+            const content = this.content.replace(/<br>/g, "")
+                .replace(/\n?\r?/g, "")
+                .replace(/&nbsp;/g, "").trim();
 
             if(content.length === 0) {
                 this.editor.removeBlock(this);
