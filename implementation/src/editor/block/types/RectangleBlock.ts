@@ -6,7 +6,7 @@ export class RectangleBlock extends Block {
     private color: string;
 
     constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, color: string) {
-        super(id, BlockType.TEXT, position, size);
+        super(id, BlockType.RECTANGLE, position, size);
         this.color = color;
     }
 
