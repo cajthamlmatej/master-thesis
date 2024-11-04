@@ -6,8 +6,8 @@ export class TextBlock extends Block {
     private content: string;
     private fontSize: number;
 
-    constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, content: string, fontSize: number) {
-        super(id, BlockType.TEXT, position, size);
+    constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number, content: string, fontSize: number) {
+        super(id, BlockType.TEXT, position, size, rotation, zIndex);
         this.content = content;
         this.fontSize = fontSize;
     }
@@ -178,6 +178,6 @@ export class TextBlock extends Block {
     }
 
     override clone(): Block {
-        return new TextBlock(generateUUID(), { ...this.position }, { ...this.size }, this.content, this.fontSize);
+        return new TextBlock(generateUUID(), { ...this.position }, { ...this.size }, this.rotation, this.zIndex, this.content, this.fontSize);
     }
 }

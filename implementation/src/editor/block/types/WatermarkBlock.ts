@@ -6,9 +6,7 @@ import {generateUUID} from "@/utils/uuid";
 
 export class WatermarkBlock extends Block {
     constructor(id: string) {
-        super(id, BlockType.WATERMARK, { x:0, y:0 }, { width: 200, height: 50 });
-
-        this.zIndex = 1001;
+        super(id, BlockType.WATERMARK, { x:0, y:0 }, { width: 200, height: 50 }, 0, 1001);
     }
 
     render(): HTMLElement {

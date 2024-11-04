@@ -5,8 +5,8 @@ import {generateUUID} from "@/utils/uuid";
 export class RectangleBlock extends Block {
     private color: string;
 
-    constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, color: string) {
-        super(id, BlockType.RECTANGLE, position, size);
+    constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number, color: string) {
+        super(id, BlockType.RECTANGLE, position, size, rotation, zIndex);
         this.color = color;
     }
 
@@ -48,6 +48,8 @@ export class RectangleBlock extends Block {
             generateUUID(), // note(Matej): TODO: Is this ok? And it is in multiple places.
             {x: this.position.x, y: this.position.y},
             {width: this.size.width, height: this.size.height},
+            this.rotation,
+            this.zIndex,
             this.color);
     }
 }

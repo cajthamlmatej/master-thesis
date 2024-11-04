@@ -28,6 +28,8 @@ onMounted(() => {
             generateUUID(),
             {x: 300, y: 100},
             {width: 300, height: 36},
+            0,
+            0,
             "<div>Test</div>",
             24
         ));
@@ -36,6 +38,8 @@ onMounted(() => {
             generateUUID(),
             {x: 420, y: 300},
             {width: 390, height: 36*2},
+            0,
+            0,
             "<div>Ahoj</div><div>Světe</div>",
             24
         ));
@@ -44,6 +48,8 @@ onMounted(() => {
             generateUUID(),
             {x: 20, y: 20},
             {width: 40, height: 40},
+            0,
+            0,
             "#ff8e3c"
         ));
     editor.addBlock(
@@ -53,6 +59,8 @@ onMounted(() => {
         generateUUID(),
         {x: 40, y: 500},
         {width: 200, height: 200},
+        0,
+        0,
         "https://ssps.cajthaml.eu/img/logo-main-for-light-main.png"
     );
     img.rotate(-30);

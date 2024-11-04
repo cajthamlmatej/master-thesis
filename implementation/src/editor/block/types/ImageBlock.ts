@@ -7,8 +7,8 @@ export class ImageBlock extends Block {
 
     private imageElement!: HTMLImageElement;
 
-    constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, imageUrl: string) {
-        super(id, BlockType.IMAGE, position, size);
+    constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number = 0, zIndex: number = 0, imageUrl: string) {
+        super(id, BlockType.IMAGE, position, size, rotation, zIndex);
         this.imageUrl = imageUrl;
     }
 
@@ -75,6 +75,8 @@ export class ImageBlock extends Block {
             generateUUID(),
             {x: this.position.x, y: this.position.y},
             {width: this.size.width, height: this.size.height},
+            this.rotation,
+            this.zIndex,
             this.imageUrl);
     }
 }

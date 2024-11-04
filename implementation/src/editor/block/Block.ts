@@ -26,11 +26,13 @@ export abstract class Block {
     public rotating: boolean = false;
     public hovering: boolean = false;
 
-    protected constructor(id: string, type: BlockType, position: { x: number, y: number }, size: { width: number, height: number }) {
+    protected constructor(id: string, type: BlockType, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number) {
         this.id = id;
         this.type = type;
         this.position = position;
         this.size = size;
+        this.rotation = rotation;
+        this.zIndex = zIndex;
     }
 
     /**
