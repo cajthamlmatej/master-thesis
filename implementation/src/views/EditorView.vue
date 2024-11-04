@@ -554,7 +554,7 @@ const setupSelector = () => {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 article.editor-view {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
