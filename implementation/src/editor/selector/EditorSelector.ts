@@ -756,6 +756,9 @@ export class EditorSelector {
             // Select all found blocks
             for(let block of foundBlocks) {
                 this.selectBlock(block, true);
+                if(block.hovering) {
+                    block.onHoverEnded();
+                }
             }
             this.selectBoxElement.classList.remove("editor-select-box--active");
         };

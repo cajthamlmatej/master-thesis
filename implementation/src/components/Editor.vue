@@ -59,11 +59,10 @@ onMounted(() => {
         generateUUID(),
         {x: 40, y: 500},
         {width: 200, height: 200},
-        0,
+        -30,
         0,
         "https://ssps.cajthaml.eu/img/logo-main-for-light-main.png"
     );
-    img.rotate(-30);
     editor.addBlock(img);
 })
 </script>
