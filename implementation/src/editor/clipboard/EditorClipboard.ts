@@ -18,7 +18,7 @@ export class EditorClipboard {
         return this.clipboard.length > 0;
     }
 
-    public paste() {
+    public paste(position: { x: number, y: number } | undefined = undefined) {
         const copiedBlocks = this.clipboard.map(b => b.clone());
 
         this.editor.getSelector().clearSelection();
@@ -26,7 +26,11 @@ export class EditorClipboard {
         for (const block of copiedBlocks) {
             this.editor.addBlock(block);
 
-            block.move(block.position.x + 20, block.position.y + 20);
+            if(position) {
+                block.move(position.x, position.y);
+            } else {
+                block.move(block.position.x + 20, block.position.y + 20);
+            }
 
             this.editor.getSelector().selectBlock(block, true);
         }

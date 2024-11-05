@@ -26,7 +26,7 @@ export class EditorContext {
                 return editor.getClipboard().hasContent();
             },
             action: (selected: Block[], editor: Editor) => {
-                editor.getClipboard().paste();
+                editor.getClipboard().paste(this.position);
             }
         },
         {
