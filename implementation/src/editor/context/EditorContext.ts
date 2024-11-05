@@ -143,7 +143,7 @@ export class EditorContext {
             contextElement.appendChild(actionElement);
         }
 
-        this.editor.getElement().appendChild(contextElement);
+        this.editor.getEditorElement().appendChild(contextElement);
 
         this.element = contextElement;
 
@@ -154,7 +154,7 @@ export class EditorContext {
         // Selecting blocks
         window.addEventListener("contextmenu", (event) => {
             // If the element is not in the editor, do not do anything
-            if (!this.editor.getElement().contains(event.target as Node)) {
+            if (!this.editor.getEditorElement().contains(event.target as Node)) {
                 return;
             }
 

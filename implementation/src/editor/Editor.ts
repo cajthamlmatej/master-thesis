@@ -12,6 +12,8 @@ interface EditorOptions {
 
 export default class Editor {
     private static readonly SCALING_PRECISION: number = 2;
+    private static readonly MIN_PADDING = 32;
+    private static readonly PADDING = Editor.MIN_PADDING * 5;
 
     private readonly editorElement: HTMLElement;
     private scale: number = 1;
@@ -105,8 +107,11 @@ export default class Editor {
         }
     }
 
-    public getElement() {
+    public getEditorElement() {
         return this.editorElement;
+    }
+    public getWrapperElement() {
+        return this.editorElement.parentElement!;
     }
 
     public getBlockById(blockId: string) {
@@ -153,15 +158,23 @@ export default class Editor {
         }
 
         // Set the editor scale to arbitrary value
-        this.editorElement.style.width = `100px`;
-        this.editorElement.style.height = `100px`;
+        this.editorElement.style.width = `10px`;
+        this.editorElement.style.height = `10px`;
 
         const parentWidth = parent.clientWidth;
         const parentHeight = parent.clientHeight;
 
+        let targetWidth = parentWidth - Editor.MIN_PADDING;
+        let targetHeight = parentHeight - Editor.MIN_PADDING;
+
+        if(parentWidth > screen.width / 2 && parentHeight > screen.height / 2) {
+            targetWidth = parentWidth - Editor.PADDING;
+            targetHeight = parentHeight - Editor.PADDING;
+        }
+
         // Determine scale to fully fit the parent (using only the transform scale)
-        const scaleX = parentWidth / this.size.width;
-        const scaleY = parentHeight / this.size.height;
+        const scaleX = targetWidth / this.size.width;
+        const scaleY = targetHeight / this.size.height;
 
         let scale = Math.min(scaleX, scaleY);
         let precisionFactor = Math.pow(10, Editor.SCALING_PRECISION);
@@ -200,13 +213,16 @@ export default class Editor {
      * @param color
      */
     debugPoint(initialX: number, initialY: number, color: string) {
+        const size = 10;
+
         const point = document.createElement("div");
         point.style.position = "absolute";
-        point.style.width = "10px";
-        point.style.height = "10px";
+        point.style.width = size + "px";
+        point.style.height = size + "px";
+        point.style.borderRadius = "50%";
         point.style.backgroundColor = color;
-        point.style.left = initialX + "px";
-        point.style.top = initialY + "px";
+        point.style.left = (initialX-size/2) + "px";
+        point.style.top = (initialY-size/2) + "px";
         this.getEditorContentElement().appendChild(point);
     }
 }

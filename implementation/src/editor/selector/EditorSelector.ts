@@ -50,8 +50,8 @@ export class EditorSelector {
 
         selectorBoxElement.classList.add("editor-select-box");
 
-        this.editor.getElement().appendChild(selectorElement);
-        this.editor.getElement().appendChild(selectorBoxElement);
+        this.editor.getEditorElement().appendChild(selectorElement);
+        this.editor.getEditorElement().appendChild(selectorBoxElement);
 
         this.element = selectorElement;
         this.selectBoxElement = selectorBoxElement;
@@ -63,7 +63,7 @@ export class EditorSelector {
         // Selecting blocks
         window.addEventListener("mousedown", (event) => {
             // If the element is not in the editor, do not do anything
-            if (!this.editor.getElement().contains(event.target as Node)) {
+            if (!this.editor.getWrapperElement().contains(event.target as Node)) {
                 return;
             }
 

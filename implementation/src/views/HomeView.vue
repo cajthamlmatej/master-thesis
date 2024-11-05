@@ -1,6 +1,8 @@
 <template>
     <article class="editor-view">
-        <Editor />
+        <div class="wrapper">
+            <Editor />
+        </div>
     </article>
 </template>
 
@@ -12,7 +14,13 @@ import Editor from "@/components/Editor.vue";
 article.editor-view {
     width: 100%;
     height: 100vh;
+    padding: 32px;
     min-height: 0;
     min-width: 0;
+
+    .wrapper {
+        width: 100%;
+        height: 100%;
+    }
 }
 </style>
