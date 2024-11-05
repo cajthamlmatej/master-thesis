@@ -282,9 +282,18 @@ export class EditorSelector {
         this.handleSelector();
     }
 
+    private updateSelectionArea() {
+        this.selectionArea.baseX = this.selectionArea.x;
+        this.selectionArea.baseY = this.selectionArea.y;
+    }
+
     private moveSelectionArea(deltaX: number, deltaY: number) {
         this.selectionArea.x = this.selectionArea.baseX + deltaX;
         this.selectionArea.y = this.selectionArea.baseY + deltaY;
+        // this.editor.debugPoint(this.selectionArea.x, this.selectionArea.y, "blue");
+        // this.editor.debugPoint(this.selectionArea.x + this.selectionArea.width, this.selectionArea.y + this.selectionArea.height, "blue");
+        // this.editor.debugPoint(this.selectionArea.x + this.selectionArea.width, this.selectionArea.y, "blue");
+        // this.editor.debugPoint(this.selectionArea.x, this.selectionArea.y + this.selectionArea.height, "blue");
     }
 
 
@@ -433,7 +442,8 @@ export class EditorSelector {
             }
 
             this.handleSelector();
-            // this.recalculateSelectionArea();
+            //this.recalculateSelectionArea();
+            this.updateSelectionArea();
         };
 
         window.addEventListener("mousemove", mouseMoveHandler);
