@@ -1,49 +1,50 @@
-export const twoPolygonsIntersect = (polygon1: { x: number, y: number }[], polygon2: { x: number, y: number }[]) => {
-    const getEdges = (polygon: { x: number, y: number }[]) => {
-        const edges: { x: number, y: number }[] = [];
-        for (let i = 0; i < polygon.length; i++) {
-            const nextIndex = (i + 1) % polygon.length;
-            edges.push({
-                x: polygon[nextIndex].x - polygon[i].x,
-                y: polygon[nextIndex].y - polygon[i].y
-            });
-        }
-        return edges;
-    };
+/**
+ * Check is two convex polygons intersect each other.
+ *
+ * Source: https://stackoverflow.com/questions/10962379/how-to-check-intersection-between-2-rotated-rectangles
+ * @param a polygon made of points {x, y}
+ * @param b polygon made of points {x, y}
+ */
+export const twoPolygonsIntersect = (a: { x: number, y: number }[], b: { x: number, y: number }[]) => {
+    let polygons = [a, b];
+    let minA: number | undefined, maxA: number | undefined, projected, i, i1, j, minB, maxB;
 
-    const projectPolygon = (polygon: { x: number, y: number }[], axis: { x: number, y: number }) => {
-        let min = Infinity;
-        let max = -Infinity;
+    for (i = 0; i < polygons.length; i++) {
+        let polygon = polygons[i];
+        for (i1 = 0; i1 < polygon.length; i1++) {
 
-        for (const vertex of polygon) {
-            const projection = (vertex.x * axis.x + vertex.y * axis.y);
-            if (projection < min) min = projection;
-            if (projection > max) max = projection;
-        }
+            let i2 = (i1 + 1) % polygon.length;
+            let p1 = polygon[i1];
+            let p2 = polygon[i2];
 
-        return { min, max };
-    };
+            let normal = { x: p2.y - p1.y, y: p1.x - p2.x };
 
-    const overlap = (minA: number, maxA: number, minB: number, maxB: number) => {
-        return maxA >= minB && maxB >= minA;
-    };
+            minA = maxA = undefined;
+            for (j = 0; j < a.length; j++) {
+                projected = normal.x * a[j].x + normal.y * a[j].y;
+                if (minA == undefined || projected < minA) {
+                    minA = projected;
+                }
+                if (maxA == undefined || projected > maxA) {
+                    maxA = projected;
+                }
+            }
 
-    const edges1 = getEdges(polygon1);
-    const edges2 = getEdges(polygon2);
+            minB = maxB = undefined;
+            for (j = 0; j < b.length; j++) {
+                projected = normal.x * b[j].x + normal.y * b[j].y;
+                if (minB == undefined || projected < minB) {
+                    minB = projected;
+                }
+                if (maxB == undefined || projected > maxB) {
+                    maxB = projected;
+                }
+            }
 
-    for (const edge of [...edges1, ...edges2]) {
-        // Get the perpendicular axis to the edge
-        const axis = { x: -edge.y, y: edge.x };
-
-        // Project both polygons onto the axis
-        const { min: minA, max: maxA } = projectPolygon(polygon1, axis);
-        const { min: minB, max: maxB } = projectPolygon(polygon2, axis);
-
-        // Check for overlap
-        if (!overlap(minA, maxA, minB, maxB)) {
-            return false; // No intersection
+            if ((maxA == undefined || minB == undefined || minA == undefined || maxB == undefined) || maxA < minB || maxB < minA) {
+                return false;
+            }
         }
     }
-
-    return true; // Intersecting
+    return true;
 }

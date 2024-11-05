@@ -217,8 +217,8 @@ export abstract class Block {
         const corners = [
             { x: x, y: y },
             { x: x, y: y+height },
+            { x: x + width, y: y + height },
             { x: x + width, y: y },
-            { x: x + width, y: y + height }
         ];
 
         const pivot = { x: x + width/2, y: y + height/2 };
@@ -236,8 +236,8 @@ export abstract class Block {
         const rangeCorners = [
             range.topLeft,
             { x: range.topLeft.x, y: range.bottomRight.y },
+            range.bottomRight,
             { x: range.bottomRight.x, y: range.topLeft.y },
-            range.bottomRight
         ];
 
         return twoPolygonsIntersect(rotatedCorners, rangeCorners);
