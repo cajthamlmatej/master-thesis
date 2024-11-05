@@ -193,13 +193,13 @@ export abstract class Block {
         this.synchronize();
     }
     public zIndexMaxDown() {
-        const lowest = this.editor.getBlocks().reduce((acc, block) => Math.min(acc, block.zIndex), this.zIndex);
+        const lowest = this.editor.getBlocks().filter(b => b.editorSupport().selection).reduce((acc, block) => Math.min(acc, block.zIndex), this.zIndex);
 
         this.zIndex = Math.max(0, Math.min(1000, lowest - 1));
         this.synchronize();
     }
     public zIndexMaxUp() {
-        const highest = this.editor.getBlocks().reduce((acc, block) => Math.max(acc, block.zIndex), this.zIndex);
+        const highest = this.editor.getBlocks().filter(b => b.editorSupport().selection).reduce((acc, block) => Math.max(acc, block.zIndex), this.zIndex);
 
         this.zIndex = Math.max(0, Math.min(1000, highest + 1));
         this.synchronize();
