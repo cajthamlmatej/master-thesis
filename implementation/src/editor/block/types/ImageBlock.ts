@@ -49,8 +49,8 @@ export class ImageBlock extends Block {
             selection: true,
             movement: true,
             proportionalResizing: true,
-            nonProportionalResizingX: true,
-            nonProportionalResizingY: true,
+            nonProportionalResizingX: false,
+            nonProportionalResizingY: false,
             rotation: true,
             zIndex: true
         }
