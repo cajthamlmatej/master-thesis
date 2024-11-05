@@ -1,8 +1,19 @@
 <template>
-    <div class="editor-container">
-        <div class="editor" ref="editorElement" v-once v-html="''" :key="'editor'">
+    <article class="editor-view">
+        <nav class="main">
+            <div class="logo"></div>
+
+            <button @mousedown="(e) => add(e, 'text')"><span class="mdi mdi-pencil-plus-outline"></span></button>
+            <button @mousedown="(e) => add(e, 'rectangle')"><span class="mdi mdi-shape-square-plus"></span></button>
+            <button @mousedown="(e) => add(e, 'image')"><span class="mdi mdi-image-plus-outline"></span></button>
+        </nav>
+
+        <div class="editor-container">
+            <div class="editor" ref="editorElement" v-once v-html="''" :key="'editor'">
+            </div>
         </div>
-    </div>
+
+    </article>
 </template>
 
 <script setup lang="ts">
@@ -13,8 +24,11 @@ import {generateUUID} from "@/utils/uuid";
 import {RectangleBlock} from "@/editor/block/types/RectangleBlock";
 import {WatermarkBlock} from "@/editor/block/types/WatermarkBlock";
 import {ImageBlock} from "@/editor/block/types/ImageBlock";
+import type {Block} from "@/editor/block/Block";
 
 const editorElement = ref<HTMLElement | null>(null);
+
+let editor!: Editor;
 
 onMounted(() => {
     if (!editorElement.value) {
@@ -22,7 +36,8 @@ onMounted(() => {
         return;
     }
 
-    const editor = new Editor(editorElement.value);
+    editor = new Editor(editorElement.value);
+
     editor.addBlock(
         new TextBlock(
             generateUUID(),
@@ -64,15 +79,135 @@ onMounted(() => {
         "https://ssps.cajthaml.eu/img/logo-main-for-light-main.png"
     );
     editor.addBlock(img);
-})
+});
+
+const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image') => {
+    const {x: startX, y: startY} = editor.screenToEditorCoordinates(event.clientX, event.clientY);
+
+    if (!editor) {
+        console.error("Editor not initialized");
+        return;
+    }
+
+    let block!: Block;
+
+    switch (type) {
+        case 'text':
+            block = new TextBlock(
+                generateUUID(),
+                {x: -100, y: -100},
+                {width: 300, height: 36},
+                0,
+                0,
+                "<div>Test</div>",
+                24
+            );
+            break;
+        case 'rectangle':
+            block = new RectangleBlock(
+                generateUUID(),
+                {x: -100, y: -100},
+                {width: 40, height: 40},
+                0,
+                0,
+                "#3cc4ff"
+            );
+            break;
+        case 'image':
+            block = new ImageBlock(
+                generateUUID(),
+                {x: -100, y: -100},
+                {width: 200, height: 200},
+                0,
+                0,
+                "https://robohash.org/"+generateUUID()+"?set=set4"
+            );
+            break;
+    }
+
+    editor.addBlock(block);
+    block.move(startX, startY);
+
+    const move = (event: MouseEvent) => {
+        const {x, y} = editor.screenToEditorCoordinates(event.clientX, event.clientY);
+
+        block.move(x, y);
+    };
+
+    const up = () => {
+        window.removeEventListener("mousemove", move);
+        window.removeEventListener("mouseup", up);
+
+        const diffX = block.position.x - startX;
+        const diffY = block.position.y - startY;
+
+        if(Math.abs(diffX) < 10 && Math.abs(diffY) < 10) {
+            block.move(0, 0);
+        }
+
+        editor.getSelector().selectBlock(block);
+    };
+
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", up);
+};
 </script>
 
 <style scoped lang="scss">
+article.editor-view {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+
+    nav.main {
+        position: relative;
+        z-index: 100;
+
+        grid-row: 1 / 2;
+        grid-column: 1 / 2;
+
+        padding: 1rem;
+        background-color: #f5f5f5;
+        border-right: 2px solid #e9ecef;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        gap: 1rem;
+
+        button {
+            width: 100%;
+            aspect-ratio: 1/1;
+
+            padding: 0.5rem 1rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background-color: #6bacec;
+            margin-bottom: 2em;
+        }
+    }
+}
+
 .editor-container {
     user-select: none;
     width: 100%;
     height: 100%;
     background-color: #f5f5f5;
+    grid-row: 1 / 2;
+    grid-column: 2 / 3;
 
     display: flex;
     justify-content: center;
