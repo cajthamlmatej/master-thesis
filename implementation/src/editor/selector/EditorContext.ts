@@ -58,7 +58,7 @@ export class EditorContext {
             name: "delete",
             label: "Delete",
             visible: (selected: Block[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().selection) && selected.length >= 1;
+                return selected.every(b => b.editorSupport().selection && !b.locked) && selected.length >= 1
             },
             action: (selected: Block[], editor: Editor) => {
                 selected.forEach(b => editor.removeBlock(b));
@@ -68,7 +68,7 @@ export class EditorContext {
             name: "zIndexUp",
             label: "Push forward",
             visible: (selected: Block[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().zIndex) && selected.length >= 1;
+                return selected.every(b => b.editorSupport().zIndex && !b.locked) && selected.length >= 1;
             },
             action: (selected: Block[], editor: Editor) => {
                 selected.forEach(b => b.zIndexUp());
@@ -78,7 +78,7 @@ export class EditorContext {
             name: "zIndexDown",
             label: "Push backward",
             visible: (selected: Block[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().zIndex) && selected.length >= 1;
+                return selected.every(b => b.editorSupport().zIndex && !b.locked) && selected.length >= 1;
             },
             action: (selected: Block[], editor: Editor) => {
                 selected.forEach(b => b.zIndexDown());
@@ -88,7 +88,7 @@ export class EditorContext {
             name: "zIndexTop",
             label: "Push to front",
             visible: (selected: Block[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().zIndex) && selected.length >= 1;
+                return selected.every(b => b.editorSupport().zIndex && !b.locked) && selected.length >= 1;
             },
             action: (selected: Block[], editor: Editor) => {
                 selected.forEach(b => b.zIndexMaxUp());
@@ -98,7 +98,7 @@ export class EditorContext {
             name: "zIndexBottom",
             label: "Push to back",
             visible: (selected: Block[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().zIndex) && selected.length >= 1;
+                return selected.every(b => b.editorSupport().zIndex && !b.locked) && selected.length >= 1;
             },
             action: (selected: Block[], editor: Editor) => {
                 selected.forEach(b => b.zIndexMaxDown());
