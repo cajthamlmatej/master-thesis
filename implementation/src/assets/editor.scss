@@ -48,7 +48,7 @@
                     cursor: move;
                 }
             }
-            &--hover.block--selectable:not(.block--locked) {
+            &--hover.block--selectable:not(&.block--locked) {
                 outline: 4px dashed rgba(0, 0, 0, 0.24);
             }
 
