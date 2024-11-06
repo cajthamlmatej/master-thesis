@@ -68,7 +68,8 @@ export class ImageBlock extends Block {
             return;
         }
 
-        this.imageElement.src = this.imageUrl;
+        if(this.imageElement.src !== this.imageUrl)
+            this.imageElement.src = this.imageUrl;
     }
 
     override clone(): Block {
