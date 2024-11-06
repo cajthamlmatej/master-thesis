@@ -52,7 +52,8 @@ export class ImageBlock extends Block {
             nonProportionalResizingX: false,
             nonProportionalResizingY: false,
             rotation: true,
-            zIndex: true
+            zIndex: true,
+            lock: true,
         }
     }
 

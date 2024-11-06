@@ -1,5 +1,7 @@
 import type {Block} from "@/editor/block/Block";
 import type Editor from "@/editor/Editor";
+import Event from "@/utils/Event";
+import {EditorSelectorContext} from "@/editor/selector/EditorSelectorContext";
 
 export class EditorSelector {
     private editor: Editor;
@@ -16,11 +18,17 @@ export class EditorSelector {
         baseX: 0,
         baseY: 0
     };
+    private context: EditorSelectorContext;
+
+    public EVENT_SELECTION_CHANGED = new Event<Block[]>();
+    public EVENT_SELECTION_AREA_CHANGED = new Event<{x: number, y: number, width: number, height: number, rotation: number}>();
 
     constructor(editor: Editor) {
         this.editor = editor;
 
         this.setupSelector();
+
+        this.context = new EditorSelectorContext(this);
     }
 
     private setupSelector() {
@@ -79,6 +87,7 @@ export class EditorSelector {
                 }
 
                 if(event.button !== 0) {
+                    // If user clicked with any other button than main, select if not selected, because the other action may need the block to be selected
                     if(!this.isSelected(block)) {
                         this.selectBlock(block, event.shiftKey, event);
                         this.handleVisibility();
@@ -143,6 +152,12 @@ export class EditorSelector {
      * @private
      */
     public handleSelector() {
+        this.element.classList.remove("editor-selector--proportional-resizing");
+        this.element.classList.remove("editor-selector--non-proportional-resizing-x");
+        this.element.classList.remove("editor-selector--non-proportional-resizing-y");
+        this.element.classList.remove("editor-selector--move");
+        this.element.classList.remove("editor-selector--rotation");
+
         if(this.selectedBlocks.length > 1) {
             const sizeAndPosition = this.selectionArea;
 
@@ -153,11 +168,10 @@ export class EditorSelector {
 
             this.element.style.transform = `rotate(${sizeAndPosition.rotation}deg)`;
 
-            this.element.classList.remove("editor-selector--proportional-resizing");
-            this.element.classList.remove("editor-selector--non-proportional-resizing-x");
-            this.element.classList.remove("editor-selector--non-proportional-resizing-y");
-
-            if(this.selectedBlocks.every(b => b.editorSupport().proportionalResizing)) {
+            if(this.selectedBlocks.every(b => b.editorSupport().movement) && this.selectedBlocks.every(b => b.canCurrentlyDo("move"))) {
+                this.element.classList.add("editor-selector--move");
+            }
+            if(this.selectedBlocks.every(b => b.editorSupport().proportionalResizing) && this.selectedBlocks.every(b => b.canCurrentlyDo("resize"))) {
                 this.element.classList.add("editor-selector--proportional-resizing");
             }
             // note(Matej): theoretically it is working, but it is not very intuitive so I am disabling it
@@ -167,7 +181,7 @@ export class EditorSelector {
             // if(this.selectedBlocks.every(b => b.editorSupport().nonProportionalResizingY)) {
             //     this.element.classList.add("editor-selector--non-proportional-resizing-y");
             // }
-            if(this.selectedBlocks.every(b => b.editorSupport().rotation)) {
+            if(this.selectedBlocks.every(b => b.editorSupport().rotation) && this.selectedBlocks.every(b => b.canCurrentlyDo("rotate"))) {
                 this.element.classList.add("editor-selector--rotation");
             }
         } else {
@@ -182,22 +196,21 @@ export class EditorSelector {
 
             this.element.style.transform = `rotate(${this.selectionArea.rotation}deg)`;
 
-            this.element.classList.remove("editor-selector--proportional-resizing");
-            this.element.classList.remove("editor-selector--non-proportional-resizing-x");
-            this.element.classList.remove("editor-selector--non-proportional-resizing-y");
-
             const editorSupport = block.editorSupport();
 
-            if(editorSupport.proportionalResizing) {
+            if(editorSupport.movement && block.canCurrentlyDo("move")) {
+                this.element.classList.add("editor-selector--move");
+            }
+            if(editorSupport.proportionalResizing && block.canCurrentlyDo("resize")) {
                 this.element.classList.add("editor-selector--proportional-resizing");
             }
-            if(editorSupport.nonProportionalResizingX) {
+            if(editorSupport.nonProportionalResizingX && block.canCurrentlyDo("resize")) {
                 this.element.classList.add("editor-selector--non-proportional-resizing-x");
             }
-            if(editorSupport.nonProportionalResizingY) {
+            if(editorSupport.nonProportionalResizingY && block.canCurrentlyDo("resize")) {
                 this.element.classList.add("editor-selector--non-proportional-resizing-y");
             }
-            if(editorSupport.rotation) {
+            if(editorSupport.rotation && block.canCurrentlyDo("rotate")) {
                 this.element.classList.add("editor-selector--rotation");
             }
         }
@@ -280,12 +293,21 @@ export class EditorSelector {
         this.selectionArea.baseY = this.selectionArea.y;
 
         this.handleSelector();
+        this.EVENT_SELECTION_AREA_CHANGED.emit({
+            x: this.selectionArea.x,
+            y: this.selectionArea.y,
+            width: this.selectionArea.width,
+            height: this.selectionArea.height,
+            rotation: this.selectionArea.rotation
+        });
     }
 
     private updateSelectionArea() {
         this.selectionArea.baseX = this.selectionArea.x;
         this.selectionArea.baseY = this.selectionArea.y;
+        this.selectionArea.baseRotation = this.selectionArea.rotation;
     }
+
 
     private moveSelectionArea(deltaX: number, deltaY: number) {
         this.selectionArea.x = this.selectionArea.baseX + deltaX;
@@ -294,6 +316,26 @@ export class EditorSelector {
         // this.editor.debugPoint(this.selectionArea.x + this.selectionArea.width, this.selectionArea.y + this.selectionArea.height, "blue");
         // this.editor.debugPoint(this.selectionArea.x + this.selectionArea.width, this.selectionArea.y, "blue");
         // this.editor.debugPoint(this.selectionArea.x, this.selectionArea.y + this.selectionArea.height, "blue");
+
+        this.EVENT_SELECTION_AREA_CHANGED.emit({
+            x: this.selectionArea.x,
+            y: this.selectionArea.y,
+            width: this.selectionArea.width,
+            height: this.selectionArea.height,
+            rotation: this.selectionArea.rotation
+        });
+    }
+
+    private rotateSelectionArea(deltaRotation: number) {
+        this.selectionArea.rotation = this.selectionArea.baseRotation + deltaRotation;
+
+        this.EVENT_SELECTION_AREA_CHANGED.emit({
+            x: this.selectionArea.x,
+            y: this.selectionArea.y,
+            width: this.selectionArea.width,
+            height: this.selectionArea.height,
+            rotation: this.selectionArea.rotation
+        });
     }
 
 
@@ -311,6 +353,7 @@ export class EditorSelector {
         this.recalculateSelectionArea();
         this.handleVisibility();
         block.onDeselected();
+        this.EVENT_SELECTION_CHANGED.emit(this.selectedBlocks);
     }
 
     public selectBlock(block: Block, addToSelection: boolean = false, event?: MouseEvent) {
@@ -337,6 +380,7 @@ export class EditorSelector {
 
         block.onSelected();
         this.selectedBlocks.push(block);
+        this.EVENT_SELECTION_CHANGED.emit(this.selectedBlocks);
 
         this.recalculateSelectionArea();
         this.handleVisibility();
@@ -380,6 +424,15 @@ export class EditorSelector {
 
             if(Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
                 moved = true;
+            }
+
+            if(moved && block.locked) {
+                this.setupSelectBox(event);
+                this.deselectBlock(block);
+
+                window.removeEventListener("mousemove", mouseMoveHandler);
+                window.removeEventListener("mouseup", mouseUpHandler);
+                return;
             }
 
             if(moved && block.canCurrentlyDo("move")) {
@@ -682,7 +735,7 @@ export class EditorSelector {
             }
 
             // Update selection area rotation
-            this.selectionArea.rotation = this.selectionArea.baseRotation + (currentAngle * 180) / Math.PI;
+            this.rotateSelectionArea( (currentAngle * 180) / Math.PI);
 
             lastAngle = angle;
 
@@ -696,8 +749,7 @@ export class EditorSelector {
             for (const { block, rotation } of initialPositions) {
                 block.onRotationCompleted(rotation);
             }
-
-            this.selectionArea.baseRotation = this.selectionArea.rotation;
+            this.updateSelectionArea();
             // this.recalculateSelectionArea();
         };
 
@@ -705,7 +757,8 @@ export class EditorSelector {
         window.addEventListener("mouseup", mouseUpHandler);
     }
 
-    private setupSelectBox(event: MouseEvent) {
+    private setupSelectBox(event: MouseEvent){
+        const clickedBlockElement = (event.target as HTMLElement).closest(".block");
         let { x: initialX, y: initialY } = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
 
         let box = {
@@ -736,7 +789,7 @@ export class EditorSelector {
             let range = {topLeft: {x: box.x, y: box.y}, bottomRight: {x: box.x + Math.abs(box.width), y: box.y + Math.abs(box.height)}};
 
             for(let block of this.editor.getBlocks()) {
-                if(block.overlaps(range)) {
+                if(block.overlaps(range) && !block.locked) {
                     if(!block.hovering) {
                         block.onHoverStarted();
                     }
@@ -758,7 +811,7 @@ export class EditorSelector {
             const foundBlocks = [];
 
             for(let block of this.editor.getBlocks()) {
-                if(block.overlaps(range)) {
+                if(block.overlaps(range) && !block.locked) {
                     foundBlocks.push(block);
                 }
             }
@@ -775,5 +828,13 @@ export class EditorSelector {
 
         window.addEventListener("mousemove", mouseMoveHandler);
         window.addEventListener("mouseup", mouseUpHandler);
+    }
+
+    public getElement() {
+        return this.element;
+    }
+
+    public getEditor() {
+        return this.editor;
     }
 }

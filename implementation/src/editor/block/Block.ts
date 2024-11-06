@@ -2,6 +2,7 @@ import type {BlockType} from "@/editor/block/BlockType";
 import type Editor from "@/editor/Editor";
 import {generateUUID} from "@/utils/uuid";
 import {twoPolygonsIntersect} from "@/utils/collision";
+import {getRotatedRectanglePoints} from "@/utils/spaceManipulation";
 
 export abstract class Block {
     public id: string;
@@ -16,6 +17,7 @@ export abstract class Block {
     }
     public rotation: number = 0;
     public zIndex: number = 0;
+    public locked: boolean = false;
 
     public element!: HTMLElement;
     public editor!: Editor;
@@ -48,6 +50,7 @@ export abstract class Block {
         nonProportionalResizingY: boolean;
         rotation: boolean;
         zIndex: boolean;
+        lock: boolean;
     }
 
     /**
@@ -56,6 +59,10 @@ export abstract class Block {
      * @param action
      */
     public canCurrentlyDo(action: 'select' | 'move' | 'resize' | 'rotate') {
+        if (this.locked && action !== 'select') {
+            return false;
+        }
+
         return true;
     }
 
@@ -210,28 +217,7 @@ export abstract class Block {
      * @param range The range to check for overlap.
      */
     public overlaps(range: { topLeft: { x: number, y: number }, bottomRight: { x: number, y: number } }) {
-        const { x, y } = this.position;
-        const { width, height } = this.size;
-        const angle = this.rotation * (Math.PI / 180);
-
-        const corners = [
-            { x: x, y: y },
-            { x: x, y: y+height },
-            { x: x + width, y: y + height },
-            { x: x + width, y: y },
-        ];
-
-        const pivot = { x: x + width/2, y: y + height/2 };
-
-        const rotatedCorners = corners.map(corner => {
-            const relativeX = corner.x - pivot.x;
-            const relativeY = corner.y - pivot.y;
-
-            const rotatedX = relativeX * Math.cos(angle) - relativeY * Math.sin(angle) + pivot.x;
-            const rotatedY = relativeX * Math.sin(angle) + relativeY * Math.cos(angle) + pivot.y;
-
-            return { x: rotatedX, y: rotatedY };
-        });
+        const rotatedCorners = getRotatedRectanglePoints(this.position.x, this.position.y, this.size.width, this.size.height, this.rotation);
 
         const rangeCorners = [
             range.topLeft,
@@ -276,6 +262,10 @@ export abstract class Block {
             this.element.classList.add("block--rotatable");
         }
 
+        if (this.locked) {
+            this.element.classList.add("block--locked");
+        }
+
     }
 
     /**
@@ -291,4 +281,12 @@ export abstract class Block {
         this.synchronize();
     }
 
+    public lock() {
+        this.locked = true;
+        this.synchronize();
+    }
+    public unlock() {
+        this.locked = false;
+        this.synchronize();
+    }
 }

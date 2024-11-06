@@ -1,6 +1,6 @@
 import type {Block} from "@/editor/block/Block";
 import {EditorSelector} from "@/editor/selector/EditorSelector";
-import {EditorContext} from "@/editor/context/EditorContext";
+import {EditorContext} from "@/editor/selector/EditorContext";
 import {EditorClipboard} from "@/editor/clipboard/EditorClipboard";
 
 interface EditorOptions {
@@ -49,6 +49,14 @@ export default class Editor {
         return {
             x: (screenX - offset.x) / scale,
             y: (screenY - offset.y) / scale
+        }
+    }
+    public capPositionToEditorBounds(x: number, y: number) {
+        const size = this.getSize();
+
+        return {
+            x: Math.max(0, Math.min(size.width, x)),
+            y: Math.max(0, Math.min(size.height, y))
         }
     }
 
@@ -201,6 +209,7 @@ export default class Editor {
     private setupEditorContent() {
         this.editorElement.innerHTML = `<div class="editor-content"></div>`
     }
+
     public getBlocks() {
         return this.blocks;
     }
@@ -221,6 +230,7 @@ export default class Editor {
         point.style.height = size + "px";
         point.style.borderRadius = "50%";
         point.style.backgroundColor = color;
+        point.style.zIndex = "100000";
         point.style.left = (initialX-size/2) + "px";
         point.style.top = (initialY-size/2) + "px";
         this.getEditorContentElement().appendChild(point);

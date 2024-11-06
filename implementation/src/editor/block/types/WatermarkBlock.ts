@@ -29,7 +29,8 @@ export class WatermarkBlock extends Block {
             nonProportionalResizingX: false,
             nonProportionalResizingY: false,
             rotation: false,
-            zIndex: false
+            zIndex: false,
+            lock: false,
         }
     }
 

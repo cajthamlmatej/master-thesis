@@ -39,7 +39,8 @@ export class TextBlock extends Block {
             nonProportionalResizingX: true,
             nonProportionalResizingY: false,
             rotation: true,
-            zIndex: true
+            zIndex: true,
+            lock: true,
         }
     }
 
@@ -58,6 +59,10 @@ export class TextBlock extends Block {
     }
 
     override canCurrentlyDo(action: "select" | "move" | "resize" | "rotate"): boolean {
+        if(this.locked && action !== "select") {
+            return false;
+        }
+
         if(action === "move") {
             return !this.editable;
         }
@@ -72,7 +77,7 @@ export class TextBlock extends Block {
         const diff = now - this.lastClick;
 
         this.lastClick = now;
-        if(diff > 600) {
+        if(diff > 600 || this.locked) {
             return;
         }
 

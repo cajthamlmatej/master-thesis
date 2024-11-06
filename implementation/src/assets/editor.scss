@@ -35,7 +35,7 @@
             &--selectable {
                 cursor: pointer;
 
-                &:not(&.block--selected):hover {
+                &:not(&.block--selected):hover:not(&.block--locked) {
                     outline: 4px dashed rgba(0, 0, 0, 0.24);
                 }
             }
@@ -48,7 +48,7 @@
                     cursor: move;
                 }
             }
-            &--hover.block--selectable {
+            &--hover.block--selectable:not(.block--locked) {
                 outline: 4px dashed rgba(0, 0, 0, 0.24);
             }
 
@@ -114,6 +114,7 @@
         }
 
         > .move {
+            display: none;
             position: absolute;
             pointer-events: auto;
             cursor: move;
@@ -273,6 +274,16 @@
             }
         }
 
+
+        &--move {
+            > .move {
+                display: block;
+            }
+        }
+        &:not(&--move) {
+            border: 4px dashed rgba(0, 0, 0, 0.2);;
+        }
+
         &--proportional-resizing {
             > .resize--top-left, > .resize--top-right, > .resize--bottom-left, > .resize--bottom-right {
                 display: block;
@@ -359,6 +370,51 @@
 
             &--visible {
                 display: block;
+            }
+        }
+    }
+
+
+    > .editor-selector-context {
+        --action-size: 40px;
+        --x: 0;
+        --y: 0;
+
+        display: none;
+        position: absolute;
+        z-index: 2100;
+
+        user-select: none;
+        top: calc(var(--y) - 1.5 * var(--action-size));
+        left: var(--x);
+        transform: translateX(-50%);
+
+        gap: 0.25em;
+
+        &--active {
+            display: flex;
+        }
+
+        > .action {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            width: var(--action-size);
+            height: var(--action-size);
+            padding: 0.25em;
+            background-color: #a7d75e;
+            border-radius: 50%;
+            font-size: 1.5em;
+            color: white;
+
+            &:hover {
+                background-color: #749443;
+            }
+
+            &--visible {
+                display: flex;
             }
         }
     }
