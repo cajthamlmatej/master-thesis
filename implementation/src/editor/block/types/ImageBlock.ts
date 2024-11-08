@@ -46,6 +46,7 @@ export class ImageBlock extends Block {
 
     override editorSupport() {
         return {
+            group: true,
             selection: true,
             movement: true,
             proportionalResizing: true,

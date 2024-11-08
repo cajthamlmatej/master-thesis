@@ -23,6 +23,7 @@ export class RectangleBlock extends Block {
 
     override editorSupport() {
         return {
+            group: true,
             selection: true,
             movement: true,
             proportionalResizing: true,

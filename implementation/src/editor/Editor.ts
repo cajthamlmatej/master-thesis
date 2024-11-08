@@ -125,6 +125,9 @@ export default class Editor {
     public getBlockById(blockId: string) {
         return this.blocks.find(block => block.id === blockId);
     }
+    public getBlocksInGroup(group: string) {
+        return this.blocks.filter(block => block.group === group);
+    }
 
     public getSelector() {
         return this.selector;

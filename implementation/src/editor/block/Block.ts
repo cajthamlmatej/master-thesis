@@ -18,6 +18,7 @@ export abstract class Block {
     public rotation: number = 0;
     public zIndex: number = 0;
     public locked: boolean = false;
+    public group: string | undefined = undefined;
 
     public element!: HTMLElement;
     public editor!: Editor;
@@ -43,6 +44,7 @@ export abstract class Block {
     abstract render(): HTMLElement;
 
     public abstract editorSupport(): {
+        group: boolean;
         selection: boolean;
         movement: boolean;
         proportionalResizing: boolean;

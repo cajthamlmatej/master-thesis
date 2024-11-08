@@ -96,8 +96,6 @@
     }
 
     > .editor-selector {
-        --selector-size: 4px;
-
         position: absolute;
         z-index: 2000;
         top: 0;
@@ -114,6 +112,7 @@
         }
 
         > .move {
+            --selector-size: 8px;
             display: none;
             position: absolute;
             pointer-events: auto;
@@ -201,6 +200,7 @@
         }
 
         > .resize {
+            --selector-size: 4px;
             display: none;
             position: absolute;
             width: calc(4*var(--selector-size));

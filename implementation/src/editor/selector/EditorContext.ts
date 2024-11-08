@@ -1,5 +1,6 @@
 import Editor from "@/editor/Editor";
 import type {Block} from "@/editor/block/Block";
+import {generateUUID} from "@/utils/uuid";
 
 export class EditorContext {
     private editor: Editor;
@@ -9,6 +10,21 @@ export class EditorContext {
     private position: { x: number, y: number } = {x: 0, y: 0};
 
     private actions = [
+        // {
+        //     name: "group",
+        //     label: "Group",
+        //     visible: (selected: Block[], editor: Editor) => {
+        //         return selected.every(b => b.editorSupport().group) && selected.length >= 1;
+        //     },
+        //     action: (selected: Block[], editor: Editor) => {
+        //         let groupId = generateUUID();
+        //
+        //         for (let block of selected) {
+        //             block.group = groupId;
+        //         }
+        //         // TODO: Remove old groups, if they are <=1 blocks
+        //     },
+        // },
         {
             name: "copy",
             label: "Copy",

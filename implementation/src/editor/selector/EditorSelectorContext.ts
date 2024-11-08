@@ -2,6 +2,7 @@ import Editor from "@/editor/Editor";
 import type {Block} from "@/editor/block/Block";
 import type {EditorSelector} from "@/editor/selector/EditorSelector";
 import {getRotatedRectanglePoints} from "@/utils/spaceManipulation";
+import {generateUUID} from "@/utils/uuid";
 
 export class EditorSelectorContext {
     private selector: EditorSelector;
@@ -11,6 +12,61 @@ export class EditorSelectorContext {
     private position: { x: number, y: number } = {x: 0, y: 0};
 
     private actions = [
+        {
+            name: "group",
+            label: "Group",
+            icon: "mdi mdi-group",
+            visible: (selected: Block[], editor: Editor) => {
+                const groups = selected.reduce((acc, b) => acc.add(b.group), new Set<string | undefined>());
+                return selected.every(b => b.editorSupport().group)
+                    && selected.length > 1
+                    && (groups.size > 1 || (groups.size == 1 && groups.has(undefined)));
+            },
+            action: (selected: Block[], editor: Editor) => {
+                let groupId = generateUUID();
+                let handleGroups = new Set<string>();
+
+                for (const block of selected) {
+                    if(block.group) {
+                        handleGroups.add(block.group);
+                    }
+
+                    block.group = groupId;
+                }
+
+                for(const group of handleGroups) {
+                    const groupBlocks = editor.getBlocksInGroup(group)
+
+                    if(groupBlocks.length <= 1) {
+                        for(const block of groupBlocks) {
+                            block.group = undefined;
+                        }
+                    }
+                }
+
+                this.selector.handleSelector();
+                this.handleContext(this.selector.getSelectedBlocks());
+            },
+        },
+        {
+            name: "ungroup",
+            label: "Ungroup",
+            icon: "mdi mdi-ungroup",
+            visible: (selected: Block[], editor: Editor) => {
+                const groups = selected.reduce((acc, b) => acc.add(b.group), new Set<string | undefined>());
+                return selected.every(b => b.editorSupport().group)
+                    && selected.length > 1
+                    && groups.size == 1 && !groups.has(undefined);
+            },
+            action: (selected: Block[], editor: Editor) => {
+                for (const block of selected) {
+                    block.group = undefined;
+                }
+
+                this.selector.handleSelector();
+                this.handleContext(this.selector.getSelectedBlocks());
+            },
+        },
         {
             name: "lock",
             label: "Lock",

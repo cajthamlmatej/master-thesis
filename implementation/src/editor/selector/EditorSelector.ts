@@ -308,7 +308,6 @@ export class EditorSelector {
         this.selectionArea.baseRotation = this.selectionArea.rotation;
     }
 
-
     private moveSelectionArea(deltaX: number, deltaY: number) {
         this.selectionArea.x = this.selectionArea.baseX + deltaX;
         this.selectionArea.y = this.selectionArea.baseY + deltaY;
@@ -363,7 +362,61 @@ export class EditorSelector {
 
                 return
             }
+        }
 
+        if(block.group) {
+            if(addToSelection) {
+                // Add all with this group
+                for (const b of this.editor.getBlocksInGroup(block.group)) {
+                    if(!this.selectedBlocks.includes(b)) {
+                        this.selectedBlocks.push(b);
+                        b.onSelected();
+                    }
+                }
+
+                this.EVENT_SELECTION_CHANGED.emit(this.selectedBlocks);
+
+                this.recalculateSelectionArea();
+                this.handleVisibility();
+                return;
+            }
+
+            if(this.selectedBlocks.length == 0) {
+                // Select all with this group
+                for (const b of this.editor.getBlocksInGroup(block.group)) {
+                    this.selectedBlocks.push(b);
+                    b.onSelected();
+                }
+
+                this.EVENT_SELECTION_CHANGED.emit(this.selectedBlocks);
+
+                this.recalculateSelectionArea();
+                this.handleVisibility();
+                return;
+            }
+
+            const allSelectedAreInGroup = this.selectedBlocks.every(b => b.group === block.group);
+            const allInGroupAreSelected = this.editor.getBlocksInGroup(block.group).every(b => this.selectedBlocks.includes(b));
+
+            if(allSelectedAreInGroup && allInGroupAreSelected) {
+                // Deselect all with this group but not the clicked one
+                for (const b of this.editor.getBlocksInGroup(block.group)) {
+                    if(b !== block) {
+                        this.deselectBlock(b);
+                    }
+                }
+
+                this.EVENT_SELECTION_CHANGED.emit(this.selectedBlocks);
+
+                this.recalculateSelectionArea();
+                this.handleVisibility();
+                return;
+            }
+
+            return;
+        }
+
+        if (!addToSelection) {
             this.deselectAllBlocks();
         }
 
