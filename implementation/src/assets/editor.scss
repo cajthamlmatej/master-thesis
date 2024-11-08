@@ -301,6 +301,7 @@
         }
 
         > .rotate {
+            --selector-size: 4px;
             display: none;
             position: absolute;
             bottom: calc(-1 * 2 * 6 * var(--selector-size));
