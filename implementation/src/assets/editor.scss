@@ -353,6 +353,7 @@
         box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.24);
         border-radius: 0.1em;
         //padding: 0.25em;
+        width: max-content;
 
         &--active {
             display: block;
