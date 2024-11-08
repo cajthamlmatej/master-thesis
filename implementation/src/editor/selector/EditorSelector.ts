@@ -413,6 +413,19 @@ export class EditorSelector {
                 return;
             }
 
+
+            this.deselectAllBlocks();
+            for (const b of this.editor.getBlocksInGroup(block.group)) {
+                this.selectedBlocks.push(b);
+                b.onSelected();
+            }
+
+            this.EVENT_SELECTION_CHANGED.emit(this.selectedBlocks);
+
+            this.recalculateSelectionArea();
+            this.handleVisibility();
+
+
             return;
         }
 
