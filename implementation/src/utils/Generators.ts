@@ -8,3 +8,7 @@ var MD5 = function(d){var r = M(V(Y(X(d),8*d.length)));return r.toLowerCase()};f
 export const generateMD5 = (data: string): string => {
     return MD5(data);
 }
+
+export const colorFromSeed = (seed: string): string => {
+    return "#" + (generateMD5(seed).substring(0, 6));
+}

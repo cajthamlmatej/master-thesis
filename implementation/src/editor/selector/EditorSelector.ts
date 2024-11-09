@@ -3,13 +3,26 @@ import type Editor from "@/editor/Editor";
 import Event from "@/utils/Event";
 import {EditorSelectorContext} from "@/editor/selector/EditorSelectorContext";
 import {generateMD5} from "@/utils/Generators";
+import {boundingBoxOfElements} from "@/utils/Area";
+import EditorSelectorEvents from "@/editor/selector/EditorSelectorEvents";
+
+interface SelectionArea {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    rotation: number;
+    baseRotation: number;
+    baseX: number;
+    baseY: number;
+}
 
 export class EditorSelector {
-    private editor: Editor;
+    private readonly editor: Editor;
     private selectedBlocks: Block[] = [];
     private element!: HTMLElement;
     private selectBoxElement!: HTMLElement;
-    private selectionArea = {
+    private selectionArea: SelectionArea = {
         x: 0,
         y: 0,
         width: 0,
@@ -19,19 +32,15 @@ export class EditorSelector {
         baseX: 0,
         baseY: 0
     };
-    private groupAreaElement!: HTMLElement;
-    private groupAreas = new Map<string, {x: number, y: number, baseX: number, baseY: number, width: number, height: number, color: string}>();
-    private context: EditorSelectorContext;
 
-    public EVENT_SELECTION_CHANGED = new Event<Block[]>();
-    public EVENT_SELECTION_AREA_CHANGED = new Event<{x: number, y: number, width: number, height: number, rotation: number}>();
+    public readonly events = new EditorSelectorEvents();
 
     constructor(editor: Editor) {
         this.editor = editor;
 
         this.setupSelector();
 
-        this.context = new EditorSelectorContext(this);
+        new EditorSelectorContext(this);
     }
 
     private setupSelector() {
@@ -60,16 +69,11 @@ export class EditorSelector {
         const selectorBoxElement = document.createElement("div");
         selectorBoxElement.classList.add("editor-select-box");
 
-        const groupAreaElement = document.createElement("div");
-        groupAreaElement.classList.add("editor-group-areas");
-
         this.editor.getEditorElement().appendChild(selectorElement);
         this.editor.getEditorElement().appendChild(selectorBoxElement);
-        this.editor.getEditorElement().appendChild(groupAreaElement);
 
         this.element = selectorElement;
         this.selectBoxElement = selectorBoxElement;
-        this.groupAreaElement = groupAreaElement;
 
         this.setupEvents();
     }
@@ -153,6 +157,9 @@ export class EditorSelector {
     }
 
 
+    public getEditor() {
+        return this.editor;
+    }
 
     /**
      * Checks if the selector should be visible and updates its position, size, rotation and visible actions.
@@ -234,56 +241,11 @@ export class EditorSelector {
     }
 
 
-
-    private boxAreaAroundElements(blocks: HTMLElement[]) {
-        let x = 0;
-        let y = 0;
-        let width = 0;
-        let height = 0;
-
-        for (const blockElement of blocks) {
-            const blockRect = blockElement.getBoundingClientRect();
-
-            if (x === 0 || blockRect.left < x) {
-                x = blockRect.left;
-            }
-
-            if (y === 0 || blockRect.top < y) {
-                y = blockRect.top;
-            }
-
-            if (blockRect.right > width) {
-                width = blockRect.right;
-            }
-
-            if (blockRect.bottom > height) {
-                height = blockRect.bottom;
-            }
-        }
-
-        let inEditor = this.editor.screenToEditorCoordinates(x, y);
-
-        // Offset the x and y to the editor
-        let offset = this.editor.getOffset();
-        width -= offset.x;
-        height -= offset.y;
-
-        width /= this.editor.getScale();
-        height /= this.editor.getScale();
-
-        return {
-            x: inEditor.x,
-            y: inEditor.y,
-            width: width - inEditor.x,
-            height: height - inEditor.y,
-        }
-    }
-
     private recalculateSelectionArea() {
         this.element.style.transform = "rotate(0deg)";
 
         this.selectionArea = {
-            ...this.boxAreaAroundElements(this.selectedBlocks.map(b => b.element)),
+            ...boundingBoxOfElements(this.selectedBlocks.map(b => b.element), this.editor),
             rotation: 0,
             baseRotation: 0,
             baseX: 0,
@@ -299,58 +261,13 @@ export class EditorSelector {
         this.selectionArea.baseY = this.selectionArea.y;
 
         this.handleSelector();
-        this.EVENT_SELECTION_AREA_CHANGED.emit({
+        this.events.SELECTION_AREA_CHANGED.emit({
             x: this.selectionArea.x,
             y: this.selectionArea.y,
             width: this.selectionArea.width,
             height: this.selectionArea.height,
             rotation: this.selectionArea.rotation
         });
-
-        this.recalculateGroupAreas();
-    }
-
-    public recalculateGroupAreas() {
-        this.groupAreas.clear();
-
-        for (const block of this.selectedBlocks.reduce((acc, block) => acc.add(block), new Set<Block>())) {
-            if(!block.group) continue;
-
-            const groupBlocks = this.editor.getBlocksInGroup(block.group);
-
-            if(groupBlocks.length <= 1) continue;
-
-            const area = this.boxAreaAroundElements(groupBlocks.map(b => b.element));
-
-            this.groupAreas.set(block.group, {
-                x: area.x,
-                y: area.y,
-                baseX: area.x,
-                baseY: area.y,
-                width: area.width,
-                height: area.height,
-                color: generateMD5(block.group).substring(0, 6)
-            });
-        }
-
-        this.handleGroupAreas();
-    }
-
-    private handleGroupAreas() {
-        if(this.groupAreas.size === 0) {
-            this.groupAreaElement.innerHTML = "";
-            return;
-        }
-
-        let html = "";
-
-        for (const [group, area] of this.groupAreas) {
-            html += `<div class="group-area"
-                style="left: ${area.x}px; top: ${area.y}px; width: ${area.width}px; height: ${area.height}px;
-                --group-area-color: #${area.color}"></div>`;
-        }
-
-        this.groupAreaElement.innerHTML = html;
     }
 
     private updateSelectionArea() {
@@ -367,29 +284,25 @@ export class EditorSelector {
         // this.editor.debugPoint(this.selectionArea.x + this.selectionArea.width, this.selectionArea.y, "blue");
         // this.editor.debugPoint(this.selectionArea.x, this.selectionArea.y + this.selectionArea.height, "blue");
 
-        this.EVENT_SELECTION_AREA_CHANGED.emit({
+        this.events.SELECTION_AREA_CHANGED.emit({
             x: this.selectionArea.x,
             y: this.selectionArea.y,
             width: this.selectionArea.width,
             height: this.selectionArea.height,
             rotation: this.selectionArea.rotation
         });
-
-        this.recalculateGroupAreas();
     }
 
     private rotateSelectionArea(deltaRotation: number) {
         this.selectionArea.rotation = this.selectionArea.baseRotation + deltaRotation;
 
-        this.EVENT_SELECTION_AREA_CHANGED.emit({
+        this.events.SELECTION_AREA_CHANGED.emit({
             x: this.selectionArea.x,
             y: this.selectionArea.y,
             width: this.selectionArea.width,
             height: this.selectionArea.height,
             rotation: this.selectionArea.rotation
         });
-
-        this.recalculateGroupAreas();
     }
 
 
@@ -407,7 +320,7 @@ export class EditorSelector {
         this.recalculateSelectionArea();
         this.handleVisibility();
         block.onDeselected();
-        this.EVENT_SELECTION_CHANGED.emit(this.selectedBlocks);
+        this.events.SELECTION_CHANGED.emit(this.selectedBlocks);
     }
 
 
@@ -430,7 +343,7 @@ export class EditorSelector {
                     }
                 }
 
-                this.EVENT_SELECTION_CHANGED.emit(this.selectedBlocks);
+                this.events.SELECTION_CHANGED.emit(this.selectedBlocks);
 
                 this.recalculateSelectionArea();
                 this.handleVisibility();
@@ -444,7 +357,7 @@ export class EditorSelector {
                     b.onSelected();
                 }
 
-                this.EVENT_SELECTION_CHANGED.emit(this.selectedBlocks);
+                this.events.SELECTION_CHANGED.emit(this.selectedBlocks);
 
                 this.recalculateSelectionArea();
                 this.handleVisibility();
@@ -462,7 +375,7 @@ export class EditorSelector {
                     }
                 }
 
-                this.EVENT_SELECTION_CHANGED.emit(this.selectedBlocks);
+                this.events.SELECTION_CHANGED.emit(this.selectedBlocks);
 
                 this.recalculateSelectionArea();
                 this.handleVisibility();
@@ -476,7 +389,7 @@ export class EditorSelector {
                 b.onSelected();
             }
 
-            this.EVENT_SELECTION_CHANGED.emit(this.selectedBlocks);
+            this.events.SELECTION_CHANGED.emit(this.selectedBlocks);
 
             this.recalculateSelectionArea();
             this.handleVisibility();
@@ -502,7 +415,7 @@ export class EditorSelector {
 
         block.onSelected();
         this.selectedBlocks.push(block);
-        this.EVENT_SELECTION_CHANGED.emit(this.selectedBlocks);
+        this.events.SELECTION_CHANGED.emit(this.selectedBlocks);
 
         this.recalculateSelectionArea();
         this.handleVisibility();
@@ -951,13 +864,5 @@ export class EditorSelector {
 
         window.addEventListener("mousemove", mouseMoveHandler);
         window.addEventListener("mouseup", mouseUpHandler);
-    }
-
-    public getElement() {
-        return this.element;
-    }
-
-    public getEditor() {
-        return this.editor;
     }
 }

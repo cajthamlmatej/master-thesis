@@ -23,6 +23,8 @@ export class EditorSelectorContext {
                     && (groups.size > 1 || (groups.size == 1 && groups.has(undefined)));
             },
             action: (selected: Block[], editor: Editor) => {
+                let modified = new Set<Block>();
+
                 let groupId = generateUUID();
                 let handleGroups = new Set<string>();
 
@@ -32,6 +34,7 @@ export class EditorSelectorContext {
                     }
 
                     block.group = groupId;
+                    modified.add(block);
                 }
 
                 for(const group of handleGroups) {
@@ -40,13 +43,15 @@ export class EditorSelectorContext {
                     if(groupBlocks.length <= 1) {
                         for(const block of groupBlocks) {
                             block.group = undefined;
+                            modified.add(block);
                         }
                     }
                 }
 
+                this.selector.getEditor().events.BLOCK_GROUP_CHANGED.emit(Array.from(modified));
+
                 this.selector.handleSelector();
                 this.handleContext(this.selector.getSelectedBlocks());
-                this.selector.recalculateGroupAreas();
             },
         },
         {
@@ -64,9 +69,12 @@ export class EditorSelectorContext {
                     block.group = undefined;
                 }
 
+                this.selector.getEditor().events.BLOCK_GROUP_CHANGED.emit(Array.from(selected));
+
+                // TODO: handle groups that are now empty (<= 1 block)
+
                 this.selector.handleSelector();
                 this.handleContext(this.selector.getSelectedBlocks());
-                this.selector.recalculateGroupAreas();
             },
         },
         {
@@ -105,10 +113,10 @@ export class EditorSelectorContext {
         this.selector = selector;
 
         this.setupContext();
-        this.selector.EVENT_SELECTION_CHANGED.on((selected) => {
+        this.selector.events.SELECTION_CHANGED.on((selected) => {
             this.handleContext(selected)
         });
-        this.selector.EVENT_SELECTION_AREA_CHANGED.on((data) => {
+        this.selector.events.SELECTION_AREA_CHANGED.on((data) => {
             this.recalculatePosition(data);
         });
     }

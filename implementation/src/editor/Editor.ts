@@ -2,6 +2,8 @@ import type {Block} from "@/editor/block/Block";
 import {EditorSelector} from "@/editor/selector/EditorSelector";
 import {EditorContext} from "@/editor/selector/EditorContext";
 import {EditorClipboard} from "@/editor/clipboard/EditorClipboard";
+import EditorEvents from "@/editor/EditorEvents";
+import EditorGroupAreaVisualiser from "@/editor/groups/EditorGroupAreaVisualiser";
 
 interface EditorOptions {
     size: {
@@ -27,6 +29,8 @@ export default class Editor {
     private readonly context: EditorContext;
     private readonly clipboard: EditorClipboard;
 
+    public readonly events = new EditorEvents();
+
     constructor(editorElement: HTMLElement, options?: EditorOptions) {
         this.editorElement = editorElement;
 
@@ -36,12 +40,26 @@ export default class Editor {
         this.context = new EditorContext(this);
         this.selector = new EditorSelector(this);
         this.clipboard = new EditorClipboard(this);
+
+        // TODO: this enabling is weirdly placed
+        new EditorGroupAreaVisualiser(this);
+    }
+
+    private parseOptions(options?: EditorOptions) {
+        if(!options) return;
+
+        if (options.size) {
+            this.size = options.size;
+        }
+    }
+    private setupEditor() {
+        this.setupScaling();
+        this.setupEditorContent();
     }
 
     public getSize() {
         return this.size;
     }
-
     public screenToEditorCoordinates(screenX: number, screenY: number) {
         const offset = this.getOffset();
         const scale = this.getScale();
@@ -59,7 +77,6 @@ export default class Editor {
             y: Math.max(0, Math.min(size.height, y))
         }
     }
-
     public getOffset() {
         const rect = this.editorElement.getBoundingClientRect();
         return {
@@ -67,11 +84,22 @@ export default class Editor {
             y: rect.top
         }
     }
-
     public getScale() {
         return this.scale;
     }
 
+
+    public getEditorElement() {
+        return this.editorElement;
+    }
+    public getWrapperElement() {
+        return this.editorElement.parentElement!;
+    }
+
+
+    public getBlocks() {
+        return this.blocks;
+    }
     public addBlock(block: Block) {
         // Check if the block is already added
         if (this.blocks.includes(block)) {
@@ -83,10 +111,9 @@ export default class Editor {
         this.blocks.push(block);
 
         const element = block.render();
-        this.markElementAsBlock(element, block);
+        element.setAttribute("data-block-id", block.id);
 
-        const editorContentElement = this.getEditorContentElement();
-        editorContentElement.appendChild(element);
+        this.editorElement.querySelector(".editor-content")!.appendChild(element);
 
         block.element = element;
 
@@ -114,20 +141,13 @@ export default class Editor {
             this.selector.deselectBlock(blockInstance);
         }
     }
-
-    public getEditorElement() {
-        return this.editorElement;
-    }
-    public getWrapperElement() {
-        return this.editorElement.parentElement!;
-    }
-
     public getBlockById(blockId: string) {
         return this.blocks.find(block => block.id === blockId);
     }
     public getBlocksInGroup(group: string) {
         return this.blocks.filter(block => block.group === group);
     }
+
 
     public getSelector() {
         return this.selector;
@@ -139,26 +159,6 @@ export default class Editor {
         return this.clipboard;
     }
 
-    private markElementAsBlock(element: HTMLElement, block: Block) {
-        element.setAttribute("data-block-id", block.id);
-    }
-
-    private getEditorContentElement() {
-        return this.editorElement.querySelector(".editor-content")!;
-    }
-
-    private parseOptions(options?: EditorOptions) {
-        if(!options) return;
-
-        if (options.size) {
-            this.size = options.size;
-        }
-    }
-
-    private setupEditor() {
-        this.setupScaling();
-        this.setupEditorContent();
-    }
 
     private calculateScale() {
         const parent = this.editorElement.parentElement;
@@ -200,7 +200,6 @@ export default class Editor {
 
         this.scale = scale;
     }
-
     private setupScaling() {
         this.calculateScale();
 
@@ -208,14 +207,10 @@ export default class Editor {
             this.calculateScale();
         });
     }
-
     private setupEditorContent() {
         this.editorElement.innerHTML = `<div class="editor-content"></div>`
     }
 
-    public getBlocks() {
-        return this.blocks;
-    }
 
 
     /**
@@ -236,6 +231,6 @@ export default class Editor {
         point.style.zIndex = "100000";
         point.style.left = (initialX-size/2) + "px";
         point.style.top = (initialY-size/2) + "px";
-        this.getEditorContentElement().appendChild(point);
+        this.editorElement.querySelector(".editor-content")!.appendChild(point);
     }
 }
