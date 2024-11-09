@@ -1,6 +1,6 @@
 import type {Block} from "@/editor/block/Block";
 import {EditorSelector} from "@/editor/selector/EditorSelector";
-import {EditorContext} from "@/editor/selector/EditorContext";
+import {EditorContext} from "@/editor/context/EditorContext";
 import {EditorClipboard} from "@/editor/clipboard/EditorClipboard";
 import EditorEvents from "@/editor/EditorEvents";
 import EditorGroupAreaVisualiser from "@/editor/groups/EditorGroupAreaVisualiser";

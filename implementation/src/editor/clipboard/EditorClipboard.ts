@@ -21,7 +21,7 @@ export class EditorClipboard {
     public paste(position: { x: number, y: number } | undefined = undefined) {
         const copiedBlocks = this.clipboard.map(b => b.clone());
 
-        this.editor.getSelector().clearSelection();
+        this.editor.getSelector().deselectAllBlocks();
 
         for (const block of copiedBlocks) {
             this.editor.addBlock(block);

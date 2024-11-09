@@ -21,7 +21,7 @@ export default class EditorGroupAreaVisualiser {
         this.editor = editor;
 
         this.editor.events.BLOCK_GROUP_CHANGED.on((blocks) => this.handleGroupsChanged(blocks));
-        this.editor.getSelector().events.SELECTION_AREA_CHANGED.on(() => this.recalculate());
+        this.editor.getSelector().events.AREA_CHANGED.on(() => this.recalculate());
 
         const groupAreaElement = document.createElement("div");
         groupAreaElement.classList.add("editor-group-areas");

@@ -64,7 +64,7 @@ export class EditorContext {
                 }
 
                 // Cannot be done in the loop above, because we need cant modify the selection while iterating over it
-                editor.getSelector().clearSelection();
+                editor.getSelector().deselectAllBlocks();
                 for(let block of newBlocks) {
                     editor.getSelector().selectBlock(block, true);
                 }

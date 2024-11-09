@@ -50,7 +50,6 @@ export class EditorSelectorContext {
 
                 this.selector.getEditor().events.BLOCK_GROUP_CHANGED.emit(Array.from(modified));
 
-                this.selector.handleSelector();
                 this.handleContext(this.selector.getSelectedBlocks());
             },
         },
@@ -73,7 +72,6 @@ export class EditorSelectorContext {
 
                 // TODO: handle groups that are now empty (<= 1 block)
 
-                this.selector.handleSelector();
                 this.handleContext(this.selector.getSelectedBlocks());
             },
         },
@@ -88,7 +86,10 @@ export class EditorSelectorContext {
                 for (const block of selected) {
                     block.lock();
                 }
-                this.selector.handleSelector();
+                this.selector.getEditor().events.BLOCK_LOCK_CHANGED.emit({
+                    blocks: selected,
+                    locked: true
+                });
                 this.handleContext(this.selector.getSelectedBlocks());
             },
         },
@@ -103,7 +104,10 @@ export class EditorSelectorContext {
                 for (const block of selected) {
                     block.unlock();
                 }
-                this.selector.handleSelector();
+                this.selector.getEditor().events.BLOCK_LOCK_CHANGED.emit({
+                    blocks: selected,
+                    locked: false
+                });
                 this.handleContext(this.selector.getSelectedBlocks());
             },
         },
@@ -113,10 +117,10 @@ export class EditorSelectorContext {
         this.selector = selector;
 
         this.setupContext();
-        this.selector.events.SELECTION_CHANGED.on((selected) => {
+        this.selector.events.SELECTED_BLOCK_CHANGED.on((selected) => {
             this.handleContext(selected)
         });
-        this.selector.events.SELECTION_AREA_CHANGED.on((data) => {
+        this.selector.events.AREA_CHANGED.on((data) => {
             this.recalculatePosition(data);
         });
     }
