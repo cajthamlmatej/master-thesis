@@ -20,7 +20,7 @@
 import Editor from "@/editor/Editor";
 import {onMounted, ref} from "vue";
 import {TextBlock} from "@/editor/block/types/TextBlock";
-import {generateUUID} from "@/utils/uuid";
+import {generateUUID} from "@/utils/Generators";
 import {RectangleBlock} from "@/editor/block/types/RectangleBlock";
 import {WatermarkBlock} from "@/editor/block/types/WatermarkBlock";
 import {ImageBlock} from "@/editor/block/types/ImageBlock";
@@ -59,15 +59,6 @@ onMounted(() => {
             24
         ));
     editor.addBlock(
-        new RectangleBlock(
-            generateUUID(),
-            {x: 20, y: 20},
-            {width: 40, height: 40},
-            0,
-            0,
-            "#ff8e3c"
-        ));
-    editor.addBlock(
         new WatermarkBlock(generateUUID()));
 
     const img = new ImageBlock(
@@ -78,6 +69,17 @@ onMounted(() => {
         0,
         "https://ssps.cajthaml.eu/img/logo-main-for-light-main.png"
     );
+    img.group = "group1";
+    const rectangle = new RectangleBlock(
+        generateUUID(),
+        {x: 20, y: 20},
+        {width: 40, height: 40},
+        0,
+        0,
+        "#ff8e3c"
+    );
+    rectangle.group = "group1";
+    editor.addBlock(rectangle);
     editor.addBlock(img);
 });
 

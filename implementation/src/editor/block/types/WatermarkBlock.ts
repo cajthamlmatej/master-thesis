@@ -2,7 +2,7 @@ import {Block} from "@/editor/block/Block";
 import {BlockType} from "@/editor/block/BlockType";
 import editor from "@/components/Editor.vue";
 import type Editor from "@/editor/Editor";
-import {generateUUID} from "@/utils/uuid";
+import {generateUUID} from "@/utils/Generators";
 
 export class WatermarkBlock extends Block {
     constructor(id: string) {

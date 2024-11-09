@@ -1,6 +1,6 @@
 import Editor from "@/editor/Editor";
 import type {Block} from "@/editor/block/Block";
-import {generateUUID} from "@/utils/uuid";
+import {generateUUID} from "@/utils/Generators";
 
 export class EditorContext {
     private editor: Editor;

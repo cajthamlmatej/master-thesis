@@ -1,6 +1,6 @@
 import {Block} from "@/editor/block/Block";
 import {BlockType} from "@/editor/block/BlockType";
-import {generateUUID} from "@/utils/uuid";
+import {generateUUID} from "@/utils/Generators";
 
 export class ImageBlock extends Block {
     private imageUrl: string;

@@ -1,6 +1,6 @@
 import type {BlockType} from "@/editor/block/BlockType";
 import type Editor from "@/editor/Editor";
-import {generateUUID} from "@/utils/uuid";
+import {generateUUID} from "@/utils/Generators";
 import {twoPolygonsIntersect} from "@/utils/collision";
 import {getRotatedRectanglePoints} from "@/utils/spaceManipulation";
 

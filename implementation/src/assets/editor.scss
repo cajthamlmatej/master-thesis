@@ -377,7 +377,6 @@
         }
     }
 
-
     > .editor-selector-context {
         --action-size: 40px;
         --x: 0;
@@ -419,6 +418,25 @@
             &--visible {
                 display: flex;
             }
+        }
+    }
+
+    > .editor-group-areas {
+        position: absolute;
+        z-index: 1000;
+
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        user-select: none;
+        pointer-events: none;
+
+        > .group-area {
+            position: absolute;
+            border: 3px dotted;
+            border-color: var(--group-area-color, #6c29ff);
         }
     }
 }

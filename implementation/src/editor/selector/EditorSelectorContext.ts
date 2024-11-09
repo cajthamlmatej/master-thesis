@@ -2,7 +2,7 @@ import Editor from "@/editor/Editor";
 import type {Block} from "@/editor/block/Block";
 import type {EditorSelector} from "@/editor/selector/EditorSelector";
 import {getRotatedRectanglePoints} from "@/utils/spaceManipulation";
-import {generateUUID} from "@/utils/uuid";
+import {generateUUID} from "@/utils/Generators";
 
 export class EditorSelectorContext {
     private selector: EditorSelector;
@@ -46,6 +46,7 @@ export class EditorSelectorContext {
 
                 this.selector.handleSelector();
                 this.handleContext(this.selector.getSelectedBlocks());
+                this.selector.recalculateGroupAreas();
             },
         },
         {
@@ -65,6 +66,7 @@ export class EditorSelectorContext {
 
                 this.selector.handleSelector();
                 this.handleContext(this.selector.getSelectedBlocks());
+                this.selector.recalculateGroupAreas();
             },
         },
         {
