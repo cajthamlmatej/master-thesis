@@ -591,6 +591,7 @@ export default class EditorSelectorArea {
 
     private setupRotation(event: MouseEvent, rotateElement: HTMLElement) {
         let { x: initialX, y: initialY } = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
+        const PER_OBJECT = this.editor.getPreferences().PER_OBJECT_TRANSFORMATION;
 
         const sizeAndPosition = this.selectionArea;
 
@@ -605,8 +606,8 @@ export default class EditorSelectorArea {
             return {
                 block,
                 rotation: block.rotation,
-                offsetX: block.position.x + (block.size.width / 2) - centerX,
-                offsetY: block.position.y + (block.size.height / 2) - centerY
+                offsetX: PER_OBJECT ? 0 : block.position.x + (block.size.width / 2) - centerX,
+                offsetY: PER_OBJECT ? 0 : block.position.y + (block.size.height / 2) - centerY,
             }
         });
 
@@ -628,12 +629,19 @@ export default class EditorSelectorArea {
             for (const position of initialPositions) {
                 const { block, rotation, offsetX, offsetY } = position;
 
-                // Calculate the rotated position of the block around the center
-                let rotatedX = centerX + offsetX * Math.cos(currentAngle) - offsetY * Math.sin(currentAngle);
-                let rotatedY = centerY + offsetX * Math.sin(currentAngle) + offsetY * Math.cos(currentAngle);
+                let rotatedX, rotatedY;
 
-                rotatedX -= block.size.width / 2;
-                rotatedY -= block.size.height / 2;
+                // Calculate the rotated position of the block around the center
+                if(PER_OBJECT) {
+                    rotatedX = block.position.x;
+                    rotatedY = block.position.y;
+                } else {
+                    rotatedX = centerX + offsetX * Math.cos(currentAngle) - offsetY * Math.sin(currentAngle);
+                    rotatedY = centerY + offsetX * Math.sin(currentAngle) + offsetY * Math.cos(currentAngle);
+
+                    rotatedX -= block.size.width / 2;
+                    rotatedY -= block.size.height / 2;
+                }
 
                 // Set the new position and rotation
                 block.move(rotatedX, rotatedY);
@@ -656,6 +664,11 @@ export default class EditorSelectorArea {
                 block.onRotationCompleted(rotation);
             }
             this.updateSelectionArea();
+
+            if(PER_OBJECT) {
+                // The rotation is now out of sync with the blocks, so we need to recalculate it
+                this.recalculateSelectionArea();
+            }
             // this.recalculateSelectionArea();
         };
 

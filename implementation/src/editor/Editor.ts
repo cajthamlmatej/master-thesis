@@ -4,6 +4,7 @@ import {EditorContext} from "@/editor/context/EditorContext";
 import {EditorClipboard} from "@/editor/clipboard/EditorClipboard";
 import EditorEvents from "@/editor/EditorEvents";
 import EditorGroupAreaVisualiser from "@/editor/groups/EditorGroupAreaVisualiser";
+import EditorPreferences from "@/editor/EditorPreferences";
 
 interface EditorOptions {
     size: {
@@ -23,6 +24,7 @@ export default class Editor {
         width: 1200,
         height: 800
     }
+    private preferences!: EditorPreferences;
 
     private blocks: Block[] = [];
     private readonly selector: EditorSelector;
@@ -31,10 +33,11 @@ export default class Editor {
 
     public readonly events = new EditorEvents();
 
-    constructor(editorElement: HTMLElement, options?: EditorOptions) {
+    constructor(editorElement: HTMLElement, options?: EditorOptions, preferences?: EditorPreferences) {
         this.editorElement = editorElement;
 
         this.parseOptions(options);
+        this.parsePreferences(preferences);
         this.setupEditor();
 
         this.context = new EditorContext(this);
@@ -51,6 +54,15 @@ export default class Editor {
         if (options.size) {
             this.size = options.size;
         }
+    }
+
+    private parsePreferences(preferences: EditorPreferences | undefined) {
+        if(!preferences) {
+            this.preferences = new EditorPreferences();
+            return;
+        }
+
+        this.preferences = preferences;
     }
     private setupEditor() {
         this.setupScaling();
@@ -88,7 +100,6 @@ export default class Editor {
         return this.scale;
     }
 
-
     public getEditorElement() {
         return this.editorElement;
     }
@@ -96,7 +107,9 @@ export default class Editor {
         return this.editorElement.parentElement!;
     }
 
-
+    public getPreferences() {
+        return this.preferences;
+    }
     public getBlocks() {
         return this.blocks;
     }
