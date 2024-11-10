@@ -592,6 +592,7 @@ export default class EditorSelectorArea {
     private setupRotation(event: MouseEvent, rotateElement: HTMLElement) {
         let { x: initialX, y: initialY } = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
         const PER_OBJECT = this.editor.getPreferences().PER_OBJECT_TRANSFORMATION;
+        const SNAPPING_COUNT = this.editor.getPreferences().ROTATION_SNAPPING_COUNT;
 
         const sizeAndPosition = this.selectionArea;
 
@@ -599,6 +600,7 @@ export default class EditorSelectorArea {
         const centerY = sizeAndPosition.y + (sizeAndPosition.height / 2);
 
         let currentAngle = 0;
+        let snappedAngle = 0;
         let lastAngle = Math.atan2(initialY - centerY, initialX - centerX);
         const initialPositions = this.selector.getSelectedBlocks().map(block => {
             block.onRotationStarted();
@@ -626,6 +628,12 @@ export default class EditorSelectorArea {
 
             currentAngle += diff;
 
+            if(event.shiftKey) {
+                snappedAngle = currentAngle - (currentAngle % (Math.PI / SNAPPING_COUNT));
+            } else {
+                snappedAngle = currentAngle;
+            }
+
             for (const position of initialPositions) {
                 const { block, rotation, offsetX, offsetY } = position;
 
@@ -636,8 +644,8 @@ export default class EditorSelectorArea {
                     rotatedX = block.position.x;
                     rotatedY = block.position.y;
                 } else {
-                    rotatedX = centerX + offsetX * Math.cos(currentAngle) - offsetY * Math.sin(currentAngle);
-                    rotatedY = centerY + offsetX * Math.sin(currentAngle) + offsetY * Math.cos(currentAngle);
+                    rotatedX = centerX + offsetX * Math.cos(snappedAngle) - offsetY * Math.sin(snappedAngle);
+                    rotatedY = centerY + offsetX * Math.sin(snappedAngle) + offsetY * Math.cos(snappedAngle);
 
                     rotatedX -= block.size.width / 2;
                     rotatedY -= block.size.height / 2;
@@ -645,11 +653,11 @@ export default class EditorSelectorArea {
 
                 // Set the new position and rotation
                 block.move(rotatedX, rotatedY);
-                block.rotate(rotation + (currentAngle * 180) / Math.PI);
+                block.rotate(rotation + (snappedAngle * 180) / Math.PI);
             }
 
             // Update selection area rotation
-            this.rotateSelectionArea( (currentAngle * 180) / Math.PI);
+            this.rotateSelectionArea( (snappedAngle * 180) / Math.PI);
 
             lastAngle = angle;
 
