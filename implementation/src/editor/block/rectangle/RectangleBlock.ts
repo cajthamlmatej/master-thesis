@@ -1,12 +1,11 @@
 import {Block} from "@/editor/block/Block";
-import {BlockType} from "@/editor/block/BlockType";
 import {generateUUID} from "@/utils/Generators";
 
 export class RectangleBlock extends Block {
     private color: string;
 
     constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number, color: string) {
-        super(id, BlockType.RECTANGLE, position, size, rotation, zIndex);
+        super(id, "rectangle", position, size, rotation, zIndex);
         this.color = color;
     }
 
@@ -53,5 +52,12 @@ export class RectangleBlock extends Block {
             this.rotation,
             this.zIndex,
             this.color);
+    }
+
+    public override serialize(): Object {
+        return {
+            ...this.serializeBase(),
+            color: this.color,
+        }
     }
 }

@@ -5,9 +5,8 @@ import {getRotatedRectanglePoints} from "@/utils/spaceManipulation";
 import {generateUUID} from "@/utils/Generators";
 
 export class EditorSelectorContext {
-    private selector: EditorSelector;
     public element!: HTMLElement;
-
+    private selector: EditorSelector;
     private active: boolean = false;
     private position: { x: number, y: number } = {x: 0, y: 0};
 
@@ -29,7 +28,7 @@ export class EditorSelectorContext {
                 let handleGroups = new Set<string>();
 
                 for (const block of selected) {
-                    if(block.group) {
+                    if (block.group) {
                         handleGroups.add(block.group);
                     }
 
@@ -37,11 +36,11 @@ export class EditorSelectorContext {
                     modified.add(block);
                 }
 
-                for(const group of handleGroups) {
+                for (const group of handleGroups) {
                     const groupBlocks = editor.getBlocksInGroup(group)
 
-                    if(groupBlocks.length <= 1) {
-                        for(const block of groupBlocks) {
+                    if (groupBlocks.length <= 1) {
+                        for (const block of groupBlocks) {
                             block.group = undefined;
                             modified.add(block);
                         }
@@ -125,6 +124,48 @@ export class EditorSelectorContext {
         });
     }
 
+    public handleContext(selected: Block[]) {
+        if (!selected || selected.length == 0) {
+            this.active = false;
+            this.handleVisibility();
+            return;
+        } else {
+            this.active = true;
+        }
+
+        for (const action of this.getActions()) {
+            const visible = action.visible(this.selector.getSelectedBlocks(), this.selector.getEditor());
+            console.log("Action", action.name, "visible:", visible);
+            const actionElement = this.element.querySelector(`.action[data-action="${action.name}"]`);
+
+            if (actionElement) {
+                if (visible) {
+                    actionElement.classList.add("action--visible");
+                } else {
+                    actionElement.classList.remove("action--visible");
+                }
+            }
+        }
+    }
+
+    public recalculatePosition(data: { x: number; y: number; width: number; height: number; rotation: number }) {
+        const rotatedPoints = getRotatedRectanglePoints(data.x, data.y, data.width, data.height, data.rotation);
+
+        const top = Math.min(...rotatedPoints.map(p => p.y));
+        const left = Math.min(...rotatedPoints.map(p => p.x));
+        const right = Math.max(...rotatedPoints.map(p => p.x));
+
+        this.position = {
+            x: (left + right) / 2,
+            y: top,
+        };
+        this.position = this.selector.getEditor().capPositionToEditorBounds(this.position.x, this.position.y);
+
+        this.handleVisibility();
+        this.element.style.setProperty("--x", this.position.x + "px");
+        this.element.style.setProperty("--y", this.position.y + "px");
+    }
+
     private getActions() {
         return this.actions;
     }
@@ -156,55 +197,12 @@ export class EditorSelectorContext {
         this.element = contextElement;
     }
 
-
-    public handleContext(selected: Block[]) {
-        if(!selected || selected.length == 0) {
-            this.active = false;
-            this.handleVisibility();
-            return;
-        } else {
-            this.active = true;
-        }
-
-        for (const action of this.getActions()) {
-            const visible = action.visible(this.selector.getSelectedBlocks(), this.selector.getEditor());
-            console.log("Action", action.name, "visible:", visible);
-            const actionElement = this.element.querySelector(`.action[data-action="${action.name}"]`);
-
-            if (actionElement) {
-                if (visible) {
-                    actionElement.classList.add("action--visible");
-                } else {
-                    actionElement.classList.remove("action--visible");
-                }
-            }
-        }
-    }
-
     private handleVisibility() {
         if (!this.active) {
             this.element.classList.remove("editor-selector-context--active");
         } else {
             this.element.classList.add("editor-selector-context--active");
         }
-    }
-
-    public recalculatePosition(data: { x: number; y: number; width: number; height: number; rotation: number }) {
-        const rotatedPoints = getRotatedRectanglePoints(data.x, data.y, data.width, data.height, data.rotation);
-
-        const top = Math.min(...rotatedPoints.map(p => p.y));
-        const left = Math.min(...rotatedPoints.map(p => p.x));
-        const right = Math.max(...rotatedPoints.map(p => p.x));
-
-        this.position = {
-            x: (left + right) / 2,
-            y: top,
-        };
-        this.position = this.selector.getEditor().capPositionToEditorBounds(this.position.x, this.position.y);
-
-        this.handleVisibility();
-        this.element.style.setProperty("--x", this.position.x + "px");
-        this.element.style.setProperty("--y", this.position.y + "px");
     }
 
 

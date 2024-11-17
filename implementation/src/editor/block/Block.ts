@@ -1,12 +1,10 @@
-import type {BlockType} from "@/editor/block/BlockType";
 import type Editor from "@/editor/Editor";
-import {generateUUID} from "@/utils/Generators";
 import {twoPolygonsIntersect} from "@/utils/collision";
 import {getRotatedRectanglePoints} from "@/utils/spaceManipulation";
 
 export abstract class Block {
     public id: string;
-    public type: BlockType;
+    public type: string;
     public position: {
         x: number;
         y: number;
@@ -29,7 +27,7 @@ export abstract class Block {
     public rotating: boolean = false;
     public hovering: boolean = false;
 
-    protected constructor(id: string, type: BlockType, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number) {
+    protected constructor(id: string, type: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number) {
         this.id = id;
         this.type = type;
         this.position = position;
@@ -41,7 +39,7 @@ export abstract class Block {
     /**
      * Renders the block element for the first time for the editor in the DOM.
      */
-    abstract render(): HTMLElement;
+    public abstract render(): HTMLElement;
 
     public abstract editorSupport(): {
         group: boolean;
@@ -53,6 +51,144 @@ export abstract class Block {
         rotation: boolean;
         zIndex: boolean;
         lock: boolean;
+    }
+
+    public abstract clone(): Block;
+
+    public abstract serialize(): Object;
+
+    public getContent(): HTMLElement | undefined {
+        return undefined;
+    }
+
+    public move(x: number, y: number, skipSynchronization: boolean = false) {
+        this.position.x = x;
+        this.position.y = y;
+
+        if (!skipSynchronization) this.synchronize();
+    }
+
+    public rotate(rotation: number, skipSynchronization: boolean = false) {
+        this.rotation = rotation;
+
+        if (!skipSynchronization) this.synchronize();
+    }
+
+    public resize(width: number, height: number, skipSynchronization: boolean = false) {
+        this.size.width = width;
+        this.size.height = height;
+
+        if (!skipSynchronization) this.synchronize();
+    }
+
+    public zIndexUp() {
+        this.zIndex = Math.max(0, Math.min(1000, this.zIndex + 1));
+        this.synchronize();
+    }
+
+    public zIndexDown() {
+        this.zIndex = Math.max(0, Math.min(1000, this.zIndex - 1));
+        this.synchronize();
+    }
+
+    public zIndexMaxDown() {
+        const lowest = this.editor.getBlocks().filter(b => b.editorSupport().selection).reduce((acc, block) => Math.min(acc, block.zIndex), this.zIndex);
+
+        this.zIndex = Math.max(0, Math.min(1000, lowest - 1));
+        this.synchronize();
+    }
+
+    public zIndexMaxUp() {
+        const highest = this.editor.getBlocks().filter(b => b.editorSupport().selection).reduce((acc, block) => Math.max(acc, block.zIndex), this.zIndex);
+
+        this.zIndex = Math.max(0, Math.min(1000, highest + 1));
+        this.synchronize();
+    }
+
+    /**
+     * Synchronizes the block element in DOM with the block properties.
+     */
+    public synchronize() {
+        if (!this.element) return;
+
+        this.element.style.left = this.position.x + "px";
+        this.element.style.top = this.position.y + "px";
+
+        this.element.style.width = this.size.width + "px";
+        this.element.style.height = this.size.height + "px";
+
+        this.element.style.transform = `rotate(${this.rotation}deg)`;
+        this.element.style.zIndex = this.zIndex.toString();
+
+        this.element.classList.remove("block--selectable", "block--movable", "block--resizable", "block--rotatable");
+
+        const support = this.editorSupport();
+
+        if (support.selection) {
+            this.element.classList.add("block--selectable");
+        }
+        if (support.movement) {
+            this.element.classList.add("block--movable");
+        }
+        if (support.proportionalResizing || support.nonProportionalResizingX || support.nonProportionalResizingY) {
+            this.element.classList.add("block--resizable");
+        }
+        if (support.rotation) {
+            this.element.classList.add("block--rotatable");
+        }
+
+        if (this.locked) {
+            this.element.classList.add("block--locked");
+        }
+
+    }
+
+    /**
+     * Matches the width of the block with the rendered width of the block element.
+     */
+    public matchRenderedHeight() {
+        this.size.height = this.element.clientHeight;
+
+        if (this.getContent()) {
+            this.size.height = this.getContent()!.clientHeight;
+        }
+
+        this.synchronize();
+    }
+
+    public lock() {
+        this.locked = true;
+        this.synchronize();
+    }
+
+    public unlock() {
+        this.locked = false;
+        this.synchronize();
+    }
+
+    public setEditor(editor: Editor) {
+        if (this.editor) {
+            throw new Error("Block already has an editor.");
+        }
+
+        this.editor = editor;
+    }
+
+    /**
+     * Checks if supplied box range overlaps with this block including rotation.
+     * @param range The range to check for overlap.
+     */
+    public overlaps(range: { topLeft: { x: number, y: number }, bottomRight: { x: number, y: number } }) {
+        const rotatedCorners = getRotatedRectanglePoints(this.position.x, this.position.y, this.size.width, this.size.height, this.rotation);
+
+        const rangeCorners = [
+            range.topLeft,
+            {x: range.topLeft.x, y: range.bottomRight.y},
+            range.bottomRight,
+            {x: range.bottomRight.x, y: range.topLeft.y},
+        ];
+
+        return twoPolygonsIntersect(rotatedCorners, rangeCorners);
     }
 
     /**
@@ -68,17 +204,15 @@ export abstract class Block {
         return true;
     }
 
-    public abstract getContent(): HTMLElement | undefined;
-
-    public abstract clone(): Block;
-
-
     /**
      * Called when the block is mounted in the DOM.
      */
     public onMounted() {
         // To be implemented by subclasses
     }
+
+
+    /** ------------------- EVENTS ------------------- */
 
     /**
      * Called when the block is unmounted from the DOM.
@@ -163,132 +297,17 @@ export abstract class Block {
         // To be implemented by subclasses
     }
 
-
-    public setEditor(editor: Editor) {
-        if (this.editor) {
-            throw new Error("Block already has an editor.");
-        }
-
-        this.editor = editor;
+    protected serializeBase(): Object {
+        return {
+            id: this.id,
+            type: this.type,
+            position: this.position,
+            size: this.size,
+            rotation: this.rotation,
+            zIndex: this.zIndex,
+            locked: this.locked,
+            group: this.group,
+        };
     }
 
-
-    public move(x: number, y: number, skipSynchronization: boolean = false) {
-        this.position.x = x;
-        this.position.y = y;
-
-        if (!skipSynchronization) this.synchronize();
-    }
-
-    public rotate(rotation: number, skipSynchronization: boolean = false) {
-        this.rotation = rotation;
-
-        if (!skipSynchronization) this.synchronize();
-    }
-
-    public resize(width: number, height: number, skipSynchronization: boolean = false) {
-        this.size.width = width;
-        this.size.height = height;
-
-        if (!skipSynchronization) this.synchronize();
-    }
-
-    public zIndexUp() {
-        this.zIndex = Math.max(0, Math.min(1000, this.zIndex + 1));
-        this.synchronize();
-    }
-    public zIndexDown() {
-        this.zIndex = Math.max(0, Math.min(1000, this.zIndex - 1));
-        this.synchronize();
-    }
-    public zIndexMaxDown() {
-        const lowest = this.editor.getBlocks().filter(b => b.editorSupport().selection).reduce((acc, block) => Math.min(acc, block.zIndex), this.zIndex);
-
-        this.zIndex = Math.max(0, Math.min(1000, lowest - 1));
-        this.synchronize();
-    }
-    public zIndexMaxUp() {
-        const highest = this.editor.getBlocks().filter(b => b.editorSupport().selection).reduce((acc, block) => Math.max(acc, block.zIndex), this.zIndex);
-
-        this.zIndex = Math.max(0, Math.min(1000, highest + 1));
-        this.synchronize();
-    }
-
-    /**
-     * Checks if supplied box range overlaps with this block including rotation.
-     * @param range The range to check for overlap.
-     */
-    public overlaps(range: { topLeft: { x: number, y: number }, bottomRight: { x: number, y: number } }) {
-        const rotatedCorners = getRotatedRectanglePoints(this.position.x, this.position.y, this.size.width, this.size.height, this.rotation);
-
-        const rangeCorners = [
-            range.topLeft,
-            { x: range.topLeft.x, y: range.bottomRight.y },
-            range.bottomRight,
-            { x: range.bottomRight.x, y: range.topLeft.y },
-        ];
-
-        return twoPolygonsIntersect(rotatedCorners, rangeCorners);
-    }
-
-
-    /**
-     * Synchronizes the block element in DOM with the block properties.
-     */
-    public synchronize() {
-        if (!this.element) return;
-
-        this.element.style.left = this.position.x + "px";
-        this.element.style.top = this.position.y + "px";
-
-        this.element.style.width = this.size.width + "px";
-        this.element.style.height = this.size.height + "px";
-
-        this.element.style.transform = `rotate(${this.rotation}deg)`;
-        this.element.style.zIndex = this.zIndex.toString();
-
-        this.element.classList.remove("block--selectable", "block--movable", "block--resizable", "block--rotatable");
-
-        const support = this.editorSupport();
-
-        if (support.selection) {
-            this.element.classList.add("block--selectable");
-        }
-        if (support.movement) {
-            this.element.classList.add("block--movable");
-        }
-        if (support.proportionalResizing || support.nonProportionalResizingX || support.nonProportionalResizingY) {
-            this.element.classList.add("block--resizable");
-        }
-        if (support.rotation) {
-            this.element.classList.add("block--rotatable");
-        }
-
-        if (this.locked) {
-            this.element.classList.add("block--locked");
-        }
-
-    }
-
-    /**
-     * Matches the width of the block with the rendered width of the block element.
-     */
-    public matchRenderedHeight() {
-        this.size.height = this.element.clientHeight;
-
-        if (this.getContent()) {
-            this.size.height = this.getContent()!.clientHeight;
-        }
-
-        this.synchronize();
-    }
-
-    public lock() {
-        this.locked = true;
-        this.synchronize();
-    }
-    public unlock() {
-        this.locked = false;
-        this.synchronize();
-    }
 }

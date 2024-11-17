@@ -1,5 +1,4 @@
 import {Block} from "@/editor/block/Block";
-import {BlockType} from "@/editor/block/BlockType";
 import {generateUUID} from "@/utils/Generators";
 
 export class ImageBlock extends Block {
@@ -8,7 +7,7 @@ export class ImageBlock extends Block {
     private imageElement!: HTMLImageElement;
 
     constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number = 0, zIndex: number = 0, imageUrl: string) {
-        super(id, BlockType.IMAGE, position, size, rotation, zIndex);
+        super(id, "image", position, size, rotation, zIndex);
         this.imageUrl = imageUrl;
     }
 
@@ -69,7 +68,7 @@ export class ImageBlock extends Block {
             return;
         }
 
-        if(this.imageElement.src !== this.imageUrl)
+        if (this.imageElement.src !== this.imageUrl)
             this.imageElement.src = this.imageUrl;
     }
 
@@ -81,5 +80,12 @@ export class ImageBlock extends Block {
             this.rotation,
             this.zIndex,
             this.imageUrl);
+    }
+
+    public override serialize(): Object {
+        return {
+            ...this.serializeBase(),
+            imageUrl: this.imageUrl,
+        }
     }
 }

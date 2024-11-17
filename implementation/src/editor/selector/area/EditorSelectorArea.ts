@@ -46,6 +46,78 @@ export default class EditorSelectorArea {
         this.editor.events.BLOCK_GROUP_CHANGED.on((blocks) => {
             this.handleSelector();
         });
+        this.editor.events.BLOCK_CONTENT_CHANGED.on((block) => {
+            this.handleSelector();
+        });
+    }
+
+    /**
+     * Checks if the selector should be visible and updates its position, size, rotation and visible actions.
+     * @private
+     */
+    public handleSelector() {
+        this.element.classList.remove("editor-selector--proportional-resizing");
+        this.element.classList.remove("editor-selector--non-proportional-resizing-x");
+        this.element.classList.remove("editor-selector--non-proportional-resizing-y");
+        this.element.classList.remove("editor-selector--move");
+        this.element.classList.remove("editor-selector--rotation");
+
+        if (this.selector.getSelectedBlocks().length > 1) {
+            const sizeAndPosition = this.selectionArea;
+
+            this.element.style.left = sizeAndPosition.x + "px";
+            this.element.style.top = sizeAndPosition.y + "px";
+            this.element.style.width = sizeAndPosition.width + "px";
+            this.element.style.height = sizeAndPosition.height + "px";
+
+            this.element.style.transform = `rotate(${sizeAndPosition.rotation}deg)`;
+
+            if (this.selector.getSelectedBlocks().every(b => b.editorSupport().movement) && this.selector.getSelectedBlocks().every(b => b.canCurrentlyDo("move"))) {
+                this.element.classList.add("editor-selector--move");
+            }
+            if (this.selector.getSelectedBlocks().every(b => b.editorSupport().proportionalResizing) && this.selector.getSelectedBlocks().every(b => b.canCurrentlyDo("resize"))) {
+                this.element.classList.add("editor-selector--proportional-resizing");
+            }
+            // note(Matej): theoretically it is working, but it is not very intuitive so I am disabling it
+            // if(this.selectedBlocks.every(b => b.editorSupport().nonProportionalResizingX)) {
+            //     this.element.classList.add("editor-selector--non-proportional-resizing-x");
+            // }
+            // if(this.selectedBlocks.every(b => b.editorSupport().nonProportionalResizingY)) {
+            //     this.element.classList.add("editor-selector--non-proportional-resizing-y");
+            // }
+            if (this.selector.getSelectedBlocks().every(b => b.editorSupport().rotation) && this.selector.getSelectedBlocks().every(b => b.canCurrentlyDo("rotate"))) {
+                this.element.classList.add("editor-selector--rotation");
+            }
+        } else {
+            const block = this.selector.getSelectedBlocks()[0];
+
+            if (!block) return;
+
+            this.element.style.left = block.position.x + "px";
+            this.element.style.top = block.position.y + "px";
+            this.element.style.width = block.size.width + "px";
+            this.element.style.height = block.size.height + "px";
+
+            this.element.style.transform = `rotate(${this.selectionArea.rotation}deg)`;
+
+            const editorSupport = block.editorSupport();
+
+            if (editorSupport.movement && block.canCurrentlyDo("move")) {
+                this.element.classList.add("editor-selector--move");
+            }
+            if (editorSupport.proportionalResizing && block.canCurrentlyDo("resize")) {
+                this.element.classList.add("editor-selector--proportional-resizing");
+            }
+            if (editorSupport.nonProportionalResizingX && block.canCurrentlyDo("resize")) {
+                this.element.classList.add("editor-selector--non-proportional-resizing-x");
+            }
+            if (editorSupport.nonProportionalResizingY && block.canCurrentlyDo("resize")) {
+                this.element.classList.add("editor-selector--non-proportional-resizing-y");
+            }
+            if (editorSupport.rotation && block.canCurrentlyDo("rotate")) {
+                this.element.classList.add("editor-selector--rotation");
+            }
+        }
     }
 
     private setupSelector() {
@@ -102,9 +174,9 @@ export default class EditorSelectorArea {
                     return;
                 }
 
-                if(event.button !== 0) {
+                if (event.button !== 0) {
                     // If user clicked with any other button than main, select if not selected, because the other action may need the block to be selected
-                    if(!this.selector.isSelected(block)) {
+                    if (!this.selector.isSelected(block)) {
                         this.selector.selectBlock(block, event.shiftKey, event);
                         this.handleVisibility();
                     }
@@ -161,77 +233,6 @@ export default class EditorSelectorArea {
         });
     }
 
-
-
-    /**
-     * Checks if the selector should be visible and updates its position, size, rotation and visible actions.
-     * @private
-     */
-    public handleSelector() {
-        this.element.classList.remove("editor-selector--proportional-resizing");
-        this.element.classList.remove("editor-selector--non-proportional-resizing-x");
-        this.element.classList.remove("editor-selector--non-proportional-resizing-y");
-        this.element.classList.remove("editor-selector--move");
-        this.element.classList.remove("editor-selector--rotation");
-
-        if(this.selector.getSelectedBlocks().length > 1) {
-            const sizeAndPosition = this.selectionArea;
-
-            this.element.style.left = sizeAndPosition.x + "px";
-            this.element.style.top = sizeAndPosition.y + "px";
-            this.element.style.width = sizeAndPosition.width + "px";
-            this.element.style.height = sizeAndPosition.height + "px";
-
-            this.element.style.transform = `rotate(${sizeAndPosition.rotation}deg)`;
-
-            if(this.selector.getSelectedBlocks().every(b => b.editorSupport().movement) && this.selector.getSelectedBlocks().every(b => b.canCurrentlyDo("move"))) {
-                this.element.classList.add("editor-selector--move");
-            }
-            if(this.selector.getSelectedBlocks().every(b => b.editorSupport().proportionalResizing) && this.selector.getSelectedBlocks().every(b => b.canCurrentlyDo("resize"))) {
-                this.element.classList.add("editor-selector--proportional-resizing");
-            }
-            // note(Matej): theoretically it is working, but it is not very intuitive so I am disabling it
-            // if(this.selectedBlocks.every(b => b.editorSupport().nonProportionalResizingX)) {
-            //     this.element.classList.add("editor-selector--non-proportional-resizing-x");
-            // }
-            // if(this.selectedBlocks.every(b => b.editorSupport().nonProportionalResizingY)) {
-            //     this.element.classList.add("editor-selector--non-proportional-resizing-y");
-            // }
-            if(this.selector.getSelectedBlocks().every(b => b.editorSupport().rotation) && this.selector.getSelectedBlocks().every(b => b.canCurrentlyDo("rotate"))) {
-                this.element.classList.add("editor-selector--rotation");
-            }
-        } else {
-            const block = this.selector.getSelectedBlocks()[0];
-
-            if(!block) return;
-
-            this.element.style.left = block.position.x + "px";
-            this.element.style.top = block.position.y + "px";
-            this.element.style.width = block.size.width + "px";
-            this.element.style.height = block.size.height + "px";
-
-            this.element.style.transform = `rotate(${this.selectionArea.rotation}deg)`;
-
-            const editorSupport = block.editorSupport();
-
-            if(editorSupport.movement && block.canCurrentlyDo("move")) {
-                this.element.classList.add("editor-selector--move");
-            }
-            if(editorSupport.proportionalResizing && block.canCurrentlyDo("resize")) {
-                this.element.classList.add("editor-selector--proportional-resizing");
-            }
-            if(editorSupport.nonProportionalResizingX && block.canCurrentlyDo("resize")) {
-                this.element.classList.add("editor-selector--non-proportional-resizing-x");
-            }
-            if(editorSupport.nonProportionalResizingY && block.canCurrentlyDo("resize")) {
-                this.element.classList.add("editor-selector--non-proportional-resizing-y");
-            }
-            if(editorSupport.rotation && block.canCurrentlyDo("rotate")) {
-                this.element.classList.add("editor-selector--rotation");
-            }
-        }
-    }
-
     private handleVisibility() {
         if (this.selector.getSelectedBlocks().length === 0) {
             this.element.classList.remove("editor-selector--active");
@@ -254,7 +255,7 @@ export default class EditorSelectorArea {
             baseY: 0
         };
 
-        if(this.selector.getSelectedBlocks().length == 1) {
+        if (this.selector.getSelectedBlocks().length == 1) {
             this.selectionArea.rotation = this.selector.getSelectedBlocks()[0].rotation;
             this.selectionArea.baseRotation = this.selector.getSelectedBlocks()[0].rotation;
         }
@@ -314,25 +315,25 @@ export default class EditorSelectorArea {
         this.selector.selectBlock(block, event.shiftKey, event);
         this.handleVisibility();
 
-        if(event.shiftKey) {
+        if (event.shiftKey) {
             // If shift is pressed, do not move the block
             return;
         }
 
         let moved = false;
         const mouseMoveHandler = (event: MouseEvent) => {
-            if(moved) return;
+            if (moved) return;
 
             let {x: deltaX, y: deltaY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
 
             deltaX -= initialX;
             deltaY -= initialY;
 
-            if(Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+            if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
                 moved = true;
             }
 
-            if(moved && block.locked) {
+            if (moved && block.locked) {
                 this.setupSelectBox(event);
                 this.selector.deselectBlock(block);
 
@@ -341,7 +342,7 @@ export default class EditorSelectorArea {
                 return;
             }
 
-            if(moved && block.canCurrentlyDo("move")) {
+            if (moved && block.canCurrentlyDo("move")) {
                 this.setupMovement(event, block.element, {x: initialX, y: initialY});
 
                 window.removeEventListener("mousemove", mouseMoveHandler);
@@ -361,10 +362,10 @@ export default class EditorSelectorArea {
         window.addEventListener("mouseup", mouseUpHandler);
     }
 
-    private setupMovement(event: MouseEvent, moveElement: HTMLElement, initial?: {x: number, y: number}) {
+    private setupMovement(event: MouseEvent, moveElement: HTMLElement, initial?: { x: number, y: number }) {
         let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
 
-        if(initial) {
+        if (initial) {
             initialX = initial.x;
             initialY = initial.y;
         }
@@ -427,10 +428,10 @@ export default class EditorSelectorArea {
             const c0_x = block.position.x + block.size.width / 2.0;
             const c0_y = block.position.y + block.size.height / 2.0;
 
-            const a: 0 | 1 = isLeft     ? 1 : 0;
-            const b: 0 | 1 = isBottom   ? 1 : 0;
-            const c: 0 | 1 = a === 1    ? 0 : 1;
-            const d: 0 | 1 = b === 1    ? 0 : 1;
+            const a: 0 | 1 = isLeft ? 1 : 0;
+            const b: 0 | 1 = isBottom ? 1 : 0;
+            const c: 0 | 1 = a === 1 ? 0 : 1;
+            const d: 0 | 1 = b === 1 ? 0 : 1;
 
             const matrix = {
                 a: c,
@@ -513,7 +514,7 @@ export default class EditorSelectorArea {
 
 
                 if (isNotProportional) {
-                    if(isProportionalX) {
+                    if (isProportionalX) {
                         wtmp = Math.max(wtmp, minWidth);
                         htmp = block.size.height;
                     } else if (isProportionalY) {
@@ -557,7 +558,7 @@ export default class EditorSelectorArea {
                 block.synchronize();
 
                 const content = block.getContent();
-                if(content) {
+                if (content) {
                     if (isProportional) {
                         content.style.transform = `scale(${wtmp / width})`;
                     } else {
@@ -590,7 +591,7 @@ export default class EditorSelectorArea {
     }
 
     private setupRotation(event: MouseEvent, rotateElement: HTMLElement) {
-        let { x: initialX, y: initialY } = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
+        let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
         const PER_OBJECT = this.editor.getPreferences().PER_OBJECT_TRANSFORMATION;
         const SNAPPING_COUNT = this.editor.getPreferences().ROTATION_SNAPPING_COUNT;
 
@@ -614,7 +615,7 @@ export default class EditorSelectorArea {
         });
 
         const mouseMoveHandler = (event: MouseEvent) => {
-            const { x: currentX, y: currentY } = this.editor.screenToEditorCoordinates(
+            const {x: currentX, y: currentY} = this.editor.screenToEditorCoordinates(
                 event.clientX,
                 event.clientY
             );
@@ -628,19 +629,19 @@ export default class EditorSelectorArea {
 
             currentAngle += diff;
 
-            if(event.shiftKey) {
+            if (event.shiftKey) {
                 snappedAngle = currentAngle - (currentAngle % (Math.PI / SNAPPING_COUNT));
             } else {
                 snappedAngle = currentAngle;
             }
 
             for (const position of initialPositions) {
-                const { block, rotation, offsetX, offsetY } = position;
+                const {block, rotation, offsetX, offsetY} = position;
 
                 let rotatedX, rotatedY;
 
                 // Calculate the rotated position of the block around the center
-                if(PER_OBJECT) {
+                if (PER_OBJECT) {
                     rotatedX = block.position.x;
                     rotatedY = block.position.y;
                 } else {
@@ -657,7 +658,7 @@ export default class EditorSelectorArea {
             }
 
             // Update selection area rotation
-            this.rotateSelectionArea( (snappedAngle * 180) / Math.PI);
+            this.rotateSelectionArea((snappedAngle * 180) / Math.PI);
 
             lastAngle = angle;
 
@@ -668,12 +669,12 @@ export default class EditorSelectorArea {
             window.removeEventListener("mousemove", mouseMoveHandler);
             window.removeEventListener("mouseup", mouseUpHandler);
 
-            for (const { block, rotation } of initialPositions) {
+            for (const {block, rotation} of initialPositions) {
                 block.onRotationCompleted(rotation);
             }
             this.updateSelectionArea();
 
-            if(PER_OBJECT) {
+            if (PER_OBJECT) {
                 // The rotation is now out of sync with the blocks, so we need to recalculate it
                 this.recalculateSelectionArea();
             }
@@ -684,8 +685,8 @@ export default class EditorSelectorArea {
         window.addEventListener("mouseup", mouseUpHandler);
     }
 
-    private setupSelectBox(event: MouseEvent){
-        let { x: initialX, y: initialY } = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
+    private setupSelectBox(event: MouseEvent) {
+        let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
 
         let box = {
             x: initialX,
@@ -703,7 +704,7 @@ export default class EditorSelectorArea {
         };
 
         const mouseMoveHandler = (event: MouseEvent) => {
-            let { x: currentX, y: currentY } = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
+            let {x: currentX, y: currentY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
 
             box.width = currentX - initialX;
             box.height = currentY - initialY;
@@ -714,13 +715,13 @@ export default class EditorSelectorArea {
 
             let range = {topLeft: {x: box.x, y: box.y}, bottomRight: {x: box.x + Math.abs(box.width), y: box.y + Math.abs(box.height)}};
 
-            for(let block of this.editor.getBlocks()) {
-                if(block.overlaps(range) && !block.locked) {
-                    if(!block.hovering) {
+            for (let block of this.editor.getBlocks()) {
+                if (block.overlaps(range) && !block.locked) {
+                    if (!block.hovering) {
                         block.onHoverStarted();
                     }
                 } else {
-                    if(block.hovering) {
+                    if (block.hovering) {
                         block.onHoverEnded();
                     }
                 }
@@ -736,16 +737,16 @@ export default class EditorSelectorArea {
             // Find all blocks that overlap with the box
             const foundBlocks = [];
 
-            for(let block of this.editor.getBlocks()) {
-                if(block.overlaps(range) && !block.locked) {
+            for (let block of this.editor.getBlocks()) {
+                if (block.overlaps(range) && !block.locked) {
                     foundBlocks.push(block);
                 }
             }
 
             // Select all found blocks
-            for(let block of foundBlocks) {
+            for (let block of foundBlocks) {
                 this.selector.selectBlock(block, true);
-                if(block.hovering) {
+                if (block.hovering) {
                     block.onHoverEnded();
                 }
             }

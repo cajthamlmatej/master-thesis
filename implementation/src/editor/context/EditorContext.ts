@@ -1,11 +1,9 @@
 import Editor from "@/editor/Editor";
 import type {Block} from "@/editor/block/Block";
-import {generateUUID} from "@/utils/Generators";
 
 export class EditorContext {
-    private editor: Editor;
     public element!: HTMLElement;
-
+    private editor: Editor;
     private active: boolean = false;
     private position: { x: number, y: number } = {x: 0, y: 0};
 
@@ -53,7 +51,7 @@ export class EditorContext {
             },
             action: (selected: Block[], editor: Editor) => {
                 let newBlocks: Block[] = [];
-                for(let block of selected) {
+                for (let block of selected) {
                     const clone = block.clone();
 
                     editor.addBlock(clone);
@@ -65,7 +63,7 @@ export class EditorContext {
 
                 // Cannot be done in the loop above, because we need cant modify the selection while iterating over it
                 editor.getSelector().deselectAllBlocks();
-                for(let block of newBlocks) {
+                for (let block of newBlocks) {
                     editor.getSelector().selectBlock(block, true);
                 }
             }
@@ -127,6 +125,35 @@ export class EditorContext {
         this.editor = editor;
 
         this.setupContext();
+    }
+
+    public handleContext() {
+        this.element.style.left = this.position.x + "px";
+        this.element.style.top = this.position.y + "px";
+
+        let visibleActions = 0;
+
+        for (const action of this.getActions()) {
+            const visible = action.visible(this.editor.getSelector().getSelectedBlocks(), this.editor);
+            const actionElement = this.element.querySelector(`.action[data-action="${action.name}"]`);
+
+            if (actionElement) {
+                if (visible) {
+                    actionElement.classList.add("action--visible");
+                } else {
+                    actionElement.classList.remove("action--visible");
+                }
+            }
+
+            if (visible) {
+                visibleActions++;
+            }
+        }
+
+        if (visibleActions === 0) {
+            this.active = false;
+            this.handleVisibility();
+        }
     }
 
     private getActions() {
@@ -207,40 +234,11 @@ export class EditorContext {
         });
 
         window.addEventListener("click", (event) => {
-            if(event.button !== 0) return;
+            if (event.button !== 0) return;
 
             this.active = false;
             this.handleVisibility();
         });
-    }
-
-    public handleContext() {
-        this.element.style.left = this.position.x + "px";
-        this.element.style.top = this.position.y + "px";
-
-        let visibleActions = 0;
-
-        for (const action of this.getActions()) {
-            const visible = action.visible(this.editor.getSelector().getSelectedBlocks(), this.editor);
-            const actionElement = this.element.querySelector(`.action[data-action="${action.name}"]`);
-
-            if (actionElement) {
-                if (visible) {
-                    actionElement.classList.add("action--visible");
-                } else {
-                    actionElement.classList.remove("action--visible");
-                }
-            }
-
-            if (visible) {
-                visibleActions++;
-            }
-        }
-
-        if (visibleActions === 0) {
-            this.active = false;
-            this.handleVisibility();
-        }
     }
 
     private handleVisibility() {

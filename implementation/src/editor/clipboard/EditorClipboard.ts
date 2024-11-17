@@ -26,7 +26,7 @@ export class EditorClipboard {
         for (const block of copiedBlocks) {
             this.editor.addBlock(block);
 
-            if(position) {
+            if (position) {
                 block.move(position.x, position.y);
             } else {
                 block.move(block.position.x + 20, block.position.y + 20);

@@ -1,12 +1,9 @@
 import {Block} from "@/editor/block/Block";
-import {BlockType} from "@/editor/block/BlockType";
-import editor from "@/components/Editor.vue";
-import type Editor from "@/editor/Editor";
 import {generateUUID} from "@/utils/Generators";
 
 export class WatermarkBlock extends Block {
     constructor(id: string) {
-        super(id, BlockType.WATERMARK, { x:0, y:0 }, { width: 200, height: 50 }, 0, 1001);
+        super(id, "watermark", {x: 0, y: 0}, {width: 200, height: 50}, 0, 1001);
     }
 
     render(): HTMLElement {
@@ -48,13 +45,6 @@ export class WatermarkBlock extends Block {
         this.position = this.getPosition();
     }
 
-    private getPosition() {
-        return {
-            x: 30,
-            y: this.editor.getSize().height - 30 - 50
-        }
-    }
-
     override move(x: number, y: number) {
         this.position = this.getPosition();
     }
@@ -69,5 +59,16 @@ export class WatermarkBlock extends Block {
         return new WatermarkBlock(generateUUID());
     }
 
+    public override serialize(): Object {
+        return {
+            ...this.serializeBase()
+        }
+    }
 
+    private getPosition() {
+        return {
+            x: 30,
+            y: this.editor.getSize().height - 30 - 50
+        }
+    }
 }

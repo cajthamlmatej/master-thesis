@@ -4,6 +4,7 @@ import type {EditorMode} from "@/editor/EditorMode";
 
 export default class EditorEvents {
 
+    public BLOCK_CONTENT_CHANGED = new Event<Block>();
     public BLOCK_GROUP_CHANGED = new Event<Block[]>();
     public BLOCK_LOCK_CHANGED = new Event<{
         blocks: Block[],

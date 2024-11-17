@@ -1,6 +1,6 @@
 import type Editor from "@/editor/Editor";
 import type {Block} from "@/editor/block/Block";
-import {colorFromSeed, generateMD5} from "@/utils/Generators";
+import {colorFromSeed} from "@/utils/Generators";
 import {boundingBoxOfElements} from "@/utils/Area";
 
 interface GroupArea {
@@ -31,10 +31,6 @@ export default class EditorGroupAreaVisualiser {
         this.element = groupAreaElement;
     }
 
-    private handleGroupsChanged(blocks: Block[]) {
-        this.recalculate();
-    }
-
     public recalculate() {
         this.areas.clear();
 
@@ -42,11 +38,11 @@ export default class EditorGroupAreaVisualiser {
             .reduce((acc, block) => acc.add(block), new Set<Block>());
 
         for (const block of uniqueGroups) {
-            if(!block.group) continue;
+            if (!block.group) continue;
 
             const groupBlocks = this.editor.getBlocksInGroup(block.group);
 
-            if(groupBlocks.length <= 1) continue;
+            if (groupBlocks.length <= 1) continue;
 
             const area = boundingBoxOfElements(groupBlocks.map(b => b.element), this.editor);
 
@@ -62,8 +58,12 @@ export default class EditorGroupAreaVisualiser {
         this.visualise();
     }
 
+    private handleGroupsChanged(blocks: Block[]) {
+        this.recalculate();
+    }
+
     private visualise() {
-        if(this.areas.size === 0) {
+        if (this.areas.size === 0) {
             this.element.innerHTML = "";
             return;
         }

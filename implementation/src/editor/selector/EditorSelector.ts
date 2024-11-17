@@ -1,16 +1,14 @@
 import type {Block} from "@/editor/block/Block";
 import type Editor from "@/editor/Editor";
 import {EditorSelectorContext} from "@/editor/selector/EditorSelectorContext";
-import {boundingBoxOfElements} from "@/utils/Area";
 import EditorSelectorEvents from "@/editor/selector/EditorSelectorEvents";
 import EditorSelectorArea from "@/editor/selector/area/EditorSelectorArea";
 
 
 export class EditorSelector {
+    public readonly events = new EditorSelectorEvents();
     private readonly editor: Editor;
     private selectedBlocks: Block[] = [];
-
-    public readonly events = new EditorSelectorEvents();
 
     constructor(editor: Editor) {
         this.editor = editor;
@@ -18,7 +16,7 @@ export class EditorSelector {
         new EditorSelectorContext(this);
         new EditorSelectorArea(this);
         this.editor.events.MODE_CHANGED.on((mode) => {
-            if(mode !== "select") {
+            if (mode !== "select") {
                 this.deselectAllBlocks();
             }
         });
@@ -45,21 +43,21 @@ export class EditorSelector {
      * @param event the event that will be passed to the block if it was already selected
      */
     public selectBlock(block: Block, addToSelection: boolean = false, event?: MouseEvent) {
-        if(this.editor.getMode() !== "select") return;
+        if (this.editor.getMode() !== "select") return;
 
         if (!addToSelection) {
-            if(this.selectedBlocks.length === 1 && this.selectedBlocks[0] === block && event) {
+            if (this.selectedBlocks.length === 1 && this.selectedBlocks[0] === block && event) {
                 block.onClicked(event);
 
                 return
             }
         }
 
-        if(block.group) {
-            if(addToSelection) {
+        if (block.group) {
+            if (addToSelection) {
                 // Add all with this group
                 for (const b of this.editor.getBlocksInGroup(block.group)) {
-                    if(!this.selectedBlocks.includes(b)) {
+                    if (!this.selectedBlocks.includes(b)) {
                         this.selectedBlocks.push(b);
                         b.onSelected();
                     }
@@ -69,7 +67,7 @@ export class EditorSelector {
                 return;
             }
 
-            if(this.selectedBlocks.length == 0) {
+            if (this.selectedBlocks.length == 0) {
                 // Select all with this group
                 for (const b of this.editor.getBlocksInGroup(block.group)) {
                     this.selectedBlocks.push(b);
@@ -83,10 +81,10 @@ export class EditorSelector {
             const allSelectedAreInGroup = this.selectedBlocks.every(b => b.group === block.group);
             const allInGroupAreSelected = this.editor.getBlocksInGroup(block.group).every(b => this.selectedBlocks.includes(b));
 
-            if(allSelectedAreInGroup && allInGroupAreSelected) {
+            if (allSelectedAreInGroup && allInGroupAreSelected) {
                 // Deselect all with this group but not the clicked one
                 for (const b of this.editor.getBlocksInGroup(block.group)) {
-                    if(b !== block) {
+                    if (b !== block) {
                         this.deselectBlock(b);
                     }
                 }
@@ -118,7 +116,7 @@ export class EditorSelector {
 
         const editorSupport = block.editorSupport();
 
-        if(!editorSupport.selection) {
+        if (!editorSupport.selection) {
             return;
         }
 
@@ -133,7 +131,7 @@ export class EditorSelector {
      * @param soloOnly if is counted only if the block is the only selected block
      */
     public isSelected(block: Block, soloOnly: boolean = false) {
-        if(soloOnly) {
+        if (soloOnly) {
             return this.selectedBlocks.length === 1 && this.selectedBlocks[0] === block;
         }
 
