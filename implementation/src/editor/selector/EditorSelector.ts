@@ -17,6 +17,11 @@ export class EditorSelector {
 
         new EditorSelectorContext(this);
         new EditorSelectorArea(this);
+        this.editor.events.MODE_CHANGED.on((mode) => {
+            if(mode !== "select") {
+                this.deselectAllBlocks();
+            }
+        });
     }
 
     public getEditor() {
@@ -40,6 +45,8 @@ export class EditorSelector {
      * @param event the event that will be passed to the block if it was already selected
      */
     public selectBlock(block: Block, addToSelection: boolean = false, event?: MouseEvent) {
+        if(this.editor.getMode() !== "select") return;
+
         if (!addToSelection) {
             if(this.selectedBlocks.length === 1 && this.selectedBlocks[0] === block && event) {
                 block.onClicked(event);

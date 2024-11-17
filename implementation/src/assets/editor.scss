@@ -1,18 +1,20 @@
 .editor {
-    --editor-scale: 1;
+    transform-origin: top left;
 
     // Arbitrary size for the correct sizing of the editor
     width: 100px;
     height: 100px;
 
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
 
     flex-shrink: 0;
     flex-grow: 0;
 
     background-color: #fff;
 
-    transform: scale(var(--editor-scale));
+    // --- OTHERS ---
 
     > .editor-content {
         position: relative;
@@ -437,6 +439,20 @@
             position: absolute;
             border: 3px dotted;
             border-color: var(--group-area-color, #6c29ff);
+        }
+    }
+
+
+    // --- MODES ---
+    &--mode-move {
+        cursor: move;
+
+        > .editor-content > .block--selectable {
+            cursor: move;
+
+            &:not(&.block--selected):hover:not(&.block--locked) {
+                outline: 0;
+            }
         }
     }
 }

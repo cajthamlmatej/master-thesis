@@ -6,6 +6,12 @@
             <button @mousedown="(e) => add(e, 'text')"><span class="mdi mdi-pencil-plus-outline"></span></button>
             <button @mousedown="(e) => add(e, 'rectangle')"><span class="mdi mdi-shape-square-plus"></span></button>
             <button @mousedown="(e) => add(e, 'image')"><span class="mdi mdi-image-plus-outline"></span></button>
+
+            <div class="spacer"></div>
+
+            <button @click="fit"><span class="mdi mdi-fit-to-screen-outline"></span></button>
+            <button @click="changeMode"><span class="mdi mdi-cursor-move" v-if="mode === 'select'"></span><span
+                class="mdi mdi-cursor-default" v-else></span></button>
         </nav>
 
         <div class="editor-container">
@@ -25,6 +31,7 @@ import {RectangleBlock} from "@/editor/block/types/RectangleBlock";
 import {WatermarkBlock} from "@/editor/block/types/WatermarkBlock";
 import {ImageBlock} from "@/editor/block/types/ImageBlock";
 import type {Block} from "@/editor/block/Block";
+import {EditorMode} from "@/editor/EditorMode";
 
 const editorElement = ref<HTMLElement | null>(null);
 
@@ -52,7 +59,7 @@ onMounted(() => {
         new TextBlock(
             generateUUID(),
             {x: 420, y: 300},
-            {width: 390, height: 36*2},
+            {width: 390, height: 36 * 2},
             0,
             0,
             "<div>Ahoj</div><div>Světe</div>",
@@ -82,6 +89,14 @@ onMounted(() => {
     editor.addBlock(rectangle);
     editor.addBlock(img);
 });
+
+const mode = ref<'select' | 'move'>('move');
+
+const changeMode = () => {
+    mode.value = mode.value === 'select' ? 'move' : 'select';
+    editor.setMode(mode.value === 'select' ? EditorMode.SELECT : EditorMode.MOVE);
+};
+const fit = () => editor.fitToParent();
 
 const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image') => {
     const {x: startX, y: startY} = editor.screenToEditorCoordinates(event.clientX, event.clientY);
@@ -122,7 +137,7 @@ const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image') => {
                 {width: 200, height: 200},
                 0,
                 0,
-                "https://robohash.org/"+generateUUID()+"?set=set4"
+                "https://robohash.org/" + generateUUID() + "?set=set4"
             );
             break;
     }
@@ -143,7 +158,7 @@ const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image') => {
         const diffX = block.position.x - startX;
         const diffY = block.position.y - startY;
 
-        if(Math.abs(diffX) < 10 && Math.abs(diffY) < 10) {
+        if (Math.abs(diffX) < 10 && Math.abs(diffY) < 10) {
             block.move(0, 0);
         }
 
@@ -182,6 +197,11 @@ article.editor-view {
 
         gap: 1rem;
 
+        .spacer {
+            flex-grow: 2;
+            flex-basis: 100%;
+        }
+
         button {
             width: 100%;
             aspect-ratio: 1/1;
@@ -199,6 +219,7 @@ article.editor-view {
             height: 50px;
             background-color: #6bacec;
             margin-bottom: 2em;
+            flex-shrink: 0;
         }
     }
 }
@@ -211,10 +232,7 @@ article.editor-view {
     grid-row: 1 / 2;
     grid-column: 2 / 3;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     overflow: hidden;
+    position: relative;
 }
 </style>

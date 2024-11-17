@@ -5,32 +5,33 @@ import {EditorClipboard} from "@/editor/clipboard/EditorClipboard";
 import EditorEvents from "@/editor/EditorEvents";
 import EditorGroupAreaVisualiser from "@/editor/groups/EditorGroupAreaVisualiser";
 import EditorPreferences from "@/editor/EditorPreferences";
-
-interface EditorOptions {
-    size: {
-        width: number;
-        height: number;
-    }
-}
+import {EditorMode} from "@/editor/EditorMode";
+import type {EditorOptions} from "@/editor/EditorOptions";
 
 export default class Editor {
-    private static readonly SCALING_PRECISION: number = 2;
-    private static readonly MIN_PADDING = 32;
-    private static readonly PADDING = Editor.MIN_PADDING * 5;
+    private static readonly DEFAULT_PADDING = 32;
 
     private readonly editorElement: HTMLElement;
+
+    private mode: EditorMode = EditorMode.MOVE;
+
     private scale: number = 1;
     private size = {
         width: 1200,
         height: 800
     }
-    private preferences!: EditorPreferences;
+    private position = {
+        x: 0,
+        y: 0
+    };
 
     private blocks: Block[] = [];
+
     private readonly selector: EditorSelector;
     private readonly context: EditorContext;
     private readonly clipboard: EditorClipboard;
 
+    private preferences!: EditorPreferences;
     public readonly events = new EditorEvents();
 
     constructor(editorElement: HTMLElement, options?: EditorOptions, preferences?: EditorPreferences) {
@@ -46,10 +47,11 @@ export default class Editor {
 
         // TODO: this enabling is weirdly placed
         new EditorGroupAreaVisualiser(this);
+        this.setMode(EditorMode.MOVE);
     }
 
     private parseOptions(options?: EditorOptions) {
-        if(!options) return;
+        if (!options) return;
 
         if (options.size) {
             this.size = options.size;
@@ -57,21 +59,24 @@ export default class Editor {
     }
 
     private parsePreferences(preferences: EditorPreferences | undefined) {
-        if(!preferences) {
+        if (!preferences) {
             this.preferences = new EditorPreferences();
             return;
         }
 
         this.preferences = preferences;
     }
+
     private setupEditor() {
-        this.setupScaling();
+        this.setupUsage();
         this.setupEditorContent();
+        this.fitToParent();
     }
 
     public getSize() {
         return this.size;
     }
+
     public screenToEditorCoordinates(screenX: number, screenY: number) {
         const offset = this.getOffset();
         const scale = this.getScale();
@@ -81,6 +86,7 @@ export default class Editor {
             y: (screenY - offset.y) / scale
         }
     }
+
     public capPositionToEditorBounds(x: number, y: number) {
         const size = this.getSize();
 
@@ -89,6 +95,7 @@ export default class Editor {
             y: Math.max(0, Math.min(size.height, y))
         }
     }
+
     public getOffset() {
         const rect = this.editorElement.getBoundingClientRect();
         return {
@@ -96,13 +103,19 @@ export default class Editor {
             y: rect.top
         }
     }
+
     public getScale() {
         return this.scale;
+    }
+
+    public getMode() {
+        return this.mode;
     }
 
     public getEditorElement() {
         return this.editorElement;
     }
+
     public getWrapperElement() {
         return this.editorElement.parentElement!;
     }
@@ -110,9 +123,11 @@ export default class Editor {
     public getPreferences() {
         return this.preferences;
     }
+
     public getBlocks() {
         return this.blocks;
     }
+
     public addBlock(block: Block) {
         // Check if the block is already added
         if (this.blocks.includes(block)) {
@@ -136,6 +151,7 @@ export default class Editor {
         block.onMounted();
         block.synchronize();
     }
+
     public removeBlock(block: Block | string) {
         const blockId = typeof block === "string" ? block : block.id;
         const blockIndex = this.blocks.findIndex(block => block.id === blockId);
@@ -150,13 +166,15 @@ export default class Editor {
         blockInstance.onUnmounted();
         this.blocks.splice(blockIndex, 1);
 
-        if(this.selector.isSelected(blockInstance)) {
+        if (this.selector.isSelected(blockInstance)) {
             this.selector.deselectBlock(blockInstance);
         }
     }
+
     public getBlockById(blockId: string) {
         return this.blocks.find(block => block.id === blockId);
     }
+
     public getBlocksInGroup(group: string) {
         return this.blocks.filter(block => block.group === group);
     }
@@ -165,15 +183,89 @@ export default class Editor {
     public getSelector() {
         return this.selector;
     }
+
     public getContext() {
         return this.context;
     }
+
     public getClipboard() {
         return this.clipboard;
     }
 
+    public setMode(mode: EditorMode) {
+        this.mode = mode;
 
-    private calculateScale() {
+        for (let mode of Object.values(EditorMode)) {
+            this.editorElement.classList.remove("editor--mode-" + mode);
+        }
+
+        this.editorElement.classList.add("editor--mode-" + mode);
+        this.events.MODE_CHANGED.emit(mode);
+    }
+
+    private setupUsage() {
+        window.addEventListener("resize", () => {
+            if (this.preferences.KEEP_EDITOR_TO_FIT_PARENT) {
+                this.fitToParent();
+            }
+        });
+        window.addEventListener("mousedown", (event) => {
+            if (this.mode !== EditorMode.MOVE) return;
+
+            if (event.button !== 0) return;
+
+            // Is inside the editor?
+            if (!this.editorElement.parentElement!.contains(event.target as Node)) return;
+
+            const handleMove = (event: MouseEvent) => {
+                const offsetX = event.movementX;
+                const offsetY = event.movementY;
+
+                this.position = {
+                    x: this.position.x + offsetX,
+                    y: this.position.y + offsetY
+                };
+
+                this.updateElement();
+            };
+            const handleUp = (event: MouseEvent) => {
+                window.removeEventListener("mousemove", handleMove);
+                window.removeEventListener("mouseup", handleUp);
+            };
+
+            window.addEventListener("mousemove", handleMove);
+            window.addEventListener("mouseup", handleUp);
+        });
+        window.addEventListener("wheel", (event) => {
+            if (this.mode !== EditorMode.MOVE) return;
+
+            if (!this.editorElement.parentElement!.contains(event.target as Node)) return;
+
+            const rect = this.editorElement.getBoundingClientRect();
+            // Get the mouse position relative to the editor element
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+
+            // Calculate the new scale based on the wheel event
+            const newScale = this.scale - event.deltaY / 1000;
+            const scale = Math.max(0.1, Math.min(2, newScale));
+
+            // To keep the position under the cursor, calculate the offset difference
+            const scaleChange = scale / this.scale;
+
+            // Adjust the position to keep the same point under the cursor
+            this.position.x = mouseX - (mouseX - this.position.x) * scaleChange;
+            this.position.y = mouseY - (mouseY - this.position.y) * scaleChange;
+
+            // Apply the new scale
+            this.scale = scale;
+
+            // Update the element after scaling and adjusting its position
+            this.updateElement();
+        });
+    }
+
+    public fitToParent() {
         const parent = this.editorElement.parentElement;
 
         if (!parent) {
@@ -181,49 +273,45 @@ export default class Editor {
             return;
         }
 
-        // Set the editor scale to arbitrary value
-        this.editorElement.style.width = `10px`;
-        this.editorElement.style.height = `10px`;
+        const parentWidth = parent.clientWidth - Editor.DEFAULT_PADDING;
+        const parentHeight = parent.clientHeight - Editor.DEFAULT_PADDING;
 
-        const parentWidth = parent.clientWidth;
-        const parentHeight = parent.clientHeight;
+        // Calculate the scale to fit the parent
+        const scaleX = parentWidth / this.size.width;
+        const scaleY = parentHeight / this.size.height;
 
-        let targetWidth = parentWidth - Editor.MIN_PADDING;
-        let targetHeight = parentHeight - Editor.MIN_PADDING;
-
-        if(parentWidth > screen.width / 2 && parentHeight > screen.height / 2) {
-            targetWidth = parentWidth - Editor.PADDING;
-            targetHeight = parentHeight - Editor.PADDING;
-        }
-
-        // Determine scale to fully fit the parent (using only the transform scale)
-        const scaleX = targetWidth / this.size.width;
-        const scaleY = targetHeight / this.size.height;
-
-        let scale = Math.min(scaleX, scaleY);
-        let precisionFactor = Math.pow(10, Editor.SCALING_PRECISION);
-        scale = Math.floor(scale * precisionFactor) / precisionFactor;
-
-        // Restore the original size
-        this.editorElement.style.width = `${this.size.width}px`;
-        this.editorElement.style.height = `${this.size.height}px`;
-
-        // Set the scale
-        this.editorElement.style.setProperty('--editor-scale', scale.toString());
+        const scale = Math.min(scaleX, scaleY);
 
         this.scale = scale;
-    }
-    private setupScaling() {
-        this.calculateScale();
 
-        window.addEventListener("resize", () => {
-            this.calculateScale();
-        });
+        // Calculate the scaled dimensions
+        const scaledWidth = this.size.width * scale;
+        const scaledHeight = this.size.height * scale;
+
+        // Set the position to center
+        const offsetX = (parentWidth - scaledWidth) / 2 + Editor.DEFAULT_PADDING / 2;
+        const offsetY = (parentHeight - scaledHeight) / 2 + Editor.DEFAULT_PADDING / 2;
+
+        this.position = {
+            x: offsetX,
+            y: offsetY
+        }
+
+        this.updateElement();
     }
+
+    private updateElement() {
+        this.editorElement.style.left = this.position.x + "px";
+        this.editorElement.style.top = this.position.y + "px";
+        this.editorElement.style.transform = `scale(${this.scale})`;
+        this.editorElement.style.width = this.size.width + "px";
+        this.editorElement.style.height = this.size.height + "px";
+    }
+
+
     private setupEditorContent() {
         this.editorElement.innerHTML = `<div class="editor-content"></div>`
     }
-
 
 
     /**
@@ -242,8 +330,8 @@ export default class Editor {
         point.style.borderRadius = "50%";
         point.style.backgroundColor = color;
         point.style.zIndex = "100000";
-        point.style.left = (initialX-size/2) + "px";
-        point.style.top = (initialY-size/2) + "px";
+        point.style.left = (initialX - size / 2) + "px";
+        point.style.top = (initialY - size / 2) + "px";
         this.editorElement.querySelector(".editor-content")!.appendChild(point);
     }
 }
