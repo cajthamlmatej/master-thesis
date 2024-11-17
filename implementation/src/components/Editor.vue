@@ -9,6 +9,7 @@
 
             <div class="spacer"></div>
 
+            <button @click="clear"><span class="mdi mdi-delete-variant"></span></button>
             <button @click="open"><span class="mdi mdi-open-in-new"></span></button>
             <button @click="fit"><span class="mdi mdi-fit-to-screen-outline"></span></button>
             <button @click="changeMode"><span class="mdi mdi-cursor-move" v-if="mode === 'select'"></span><span
@@ -66,6 +67,13 @@ const open = () => {
 
     router.push({name: "Player", query: {data: encodeBase64(data)}});
 };
+const clear = () => {
+    for(let block of [...editor.getBlocks()]) {
+        if(!block.editorSupport().selection) continue;
+
+        editor.removeBlock(block);
+    }
+}
 
 const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image') => {
     const {x: startX, y: startY} = editor.screenToEditorCoordinates(event.clientX, event.clientY);
