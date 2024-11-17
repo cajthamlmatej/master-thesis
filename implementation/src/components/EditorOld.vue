@@ -25,12 +25,12 @@
 <script setup lang="ts">
 import Editor from "@/editor/Editor";
 import {onMounted, ref} from "vue";
-import {TextBlock} from "@/editor/block/text/TextBlock";
+import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
 import {generateUUID} from "@/utils/Generators";
-import {RectangleBlock} from "@/editor/block/rectangle/RectangleBlock";
-import {WatermarkBlock} from "@/editor/block/watermark/WatermarkBlock";
-import {ImageBlock} from "@/editor/block/image/ImageBlock";
-import type {Block} from "@/editor/block/Block";
+import {RectangleEditorBlock} from "@/editor/block/rectangle/RectangleEditorBlock";
+import {WatermarkEditorBlock} from "@/editor/block/watermark/WatermarkEditorBlock";
+import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
+import type {EditorBlock} from "@/editor/block/EditorBlock";
 import {EditorMode} from "@/editor/EditorMode";
 import {EditorDeserializer} from "@/editor/EditorDeserializer";
 import {EditorSerializer} from "@/editor/EditorSerializer";
@@ -48,7 +48,7 @@ onMounted(() => {
     editor = new Editor(editorElement.value);
 
     editor.addBlock(
-        new TextBlock(
+        new TextEditorBlock(
             generateUUID(),
             {x: 300, y: 100},
             {width: 300, height: 36},
@@ -58,7 +58,7 @@ onMounted(() => {
             24
         ));
     editor.addBlock(
-        new TextBlock(
+        new TextEditorBlock(
             generateUUID(),
             {x: 420, y: 300},
             {width: 390, height: 36 * 2},
@@ -68,9 +68,9 @@ onMounted(() => {
             24
         ));
     editor.addBlock(
-        new WatermarkBlock(generateUUID()));
+        new WatermarkEditorBlock(generateUUID()));
 
-    const img = new ImageBlock(
+    const img = new ImageEditorBlock(
         generateUUID(),
         {x: 40, y: 500},
         {width: 200, height: 200},
@@ -79,7 +79,7 @@ onMounted(() => {
         "https://ssps.cajthaml.eu/img/logo-main-for-light-main.png"
     );
     img.group = "group1";
-    const rectangle = new RectangleBlock(
+    const rectangle = new RectangleEditorBlock(
         generateUUID(),
         {x: 20, y: 20},
         {width: 40, height: 40},
@@ -110,11 +110,11 @@ const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image') => {
         return;
     }
 
-    let block!: Block;
+    let block!: EditorBlock;
 
     switch (type) {
         case 'text':
-            block = new TextBlock(
+            block = new TextEditorBlock(
                 generateUUID(),
                 {x: -100, y: -100},
                 {width: 300, height: 36},
@@ -125,7 +125,7 @@ const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image') => {
             );
             break;
         case 'rectangle':
-            block = new RectangleBlock(
+            block = new RectangleEditorBlock(
                 generateUUID(),
                 {x: -100, y: -100},
                 {width: 40, height: 40},
@@ -135,7 +135,7 @@ const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image') => {
             );
             break;
         case 'image':
-            block = new ImageBlock(
+            block = new ImageEditorBlock(
                 generateUUID(),
                 {x: -100, y: -100},
                 {width: 200, height: 200},

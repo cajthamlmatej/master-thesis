@@ -1,6 +1,6 @@
 import {boundingBoxOfElements} from "@/utils/Area";
 import type {EditorSelector} from "@/editor/selector/EditorSelector";
-import {Block} from "@/editor/block/Block";
+import {EditorBlock} from "@/editor/block/EditorBlock";
 import type Editor from "@/editor/Editor";
 
 interface SelectionArea {
@@ -309,7 +309,7 @@ export default class EditorSelectorArea {
     }
 
 
-    private setupMovementOrSelect(event: MouseEvent, block: Block) {
+    private setupMovementOrSelect(event: MouseEvent, block: EditorBlock) {
         let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
 
         this.selector.selectBlock(block, event.shiftKey, event);

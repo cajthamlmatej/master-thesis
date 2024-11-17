@@ -1,5 +1,5 @@
 import Editor from "@/editor/Editor";
-import type {Block} from "@/editor/block/Block";
+import type {EditorBlock} from "@/editor/block/EditorBlock";
 
 export class EditorContext {
     public element!: HTMLElement;
@@ -26,31 +26,31 @@ export class EditorContext {
         {
             name: "copy",
             label: "Copy",
-            visible: (selected: Block[], editor: Editor) => {
+            visible: (selected: EditorBlock[], editor: Editor) => {
                 return selected.every(b => b.editorSupport().selection) && selected.length >= 1;
             },
-            action: (selected: Block[], editor: Editor) => {
+            action: (selected: EditorBlock[], editor: Editor) => {
                 editor.getClipboard().markForCopy(selected);
             },
         },
         {
             name: "paste",
             label: "Paste",
-            visible: (selected: Block[], editor: Editor) => {
+            visible: (selected: EditorBlock[], editor: Editor) => {
                 return editor.getClipboard().hasContent();
             },
-            action: (selected: Block[], editor: Editor) => {
+            action: (selected: EditorBlock[], editor: Editor) => {
                 editor.getClipboard().paste(this.position);
             }
         },
         {
             name: "duplicate",
             label: "Duplicate",
-            visible: (selected: Block[], editor: Editor) => {
+            visible: (selected: EditorBlock[], editor: Editor) => {
                 return selected.every(b => b.editorSupport().selection) && selected.length >= 1;
             },
-            action: (selected: Block[], editor: Editor) => {
-                let newBlocks: Block[] = [];
+            action: (selected: EditorBlock[], editor: Editor) => {
+                let newBlocks: EditorBlock[] = [];
                 for (let block of selected) {
                     const clone = block.clone();
 
@@ -71,50 +71,50 @@ export class EditorContext {
         {
             name: "delete",
             label: "Delete",
-            visible: (selected: Block[], editor: Editor) => {
+            visible: (selected: EditorBlock[], editor: Editor) => {
                 return selected.every(b => b.editorSupport().selection && !b.locked) && selected.length >= 1
             },
-            action: (selected: Block[], editor: Editor) => {
+            action: (selected: EditorBlock[], editor: Editor) => {
                 selected.forEach(b => editor.removeBlock(b));
             }
         },
         {
             name: "zIndexUp",
             label: "Push forward",
-            visible: (selected: Block[], editor: Editor) => {
+            visible: (selected: EditorBlock[], editor: Editor) => {
                 return selected.every(b => b.editorSupport().zIndex && !b.locked) && selected.length >= 1;
             },
-            action: (selected: Block[], editor: Editor) => {
+            action: (selected: EditorBlock[], editor: Editor) => {
                 selected.forEach(b => b.zIndexUp());
             }
         },
         {
             name: "zIndexDown",
             label: "Push backward",
-            visible: (selected: Block[], editor: Editor) => {
+            visible: (selected: EditorBlock[], editor: Editor) => {
                 return selected.every(b => b.editorSupport().zIndex && !b.locked) && selected.length >= 1;
             },
-            action: (selected: Block[], editor: Editor) => {
+            action: (selected: EditorBlock[], editor: Editor) => {
                 selected.forEach(b => b.zIndexDown());
             }
         },
         {
             name: "zIndexTop",
             label: "Push to front",
-            visible: (selected: Block[], editor: Editor) => {
+            visible: (selected: EditorBlock[], editor: Editor) => {
                 return selected.every(b => b.editorSupport().zIndex && !b.locked) && selected.length >= 1;
             },
-            action: (selected: Block[], editor: Editor) => {
+            action: (selected: EditorBlock[], editor: Editor) => {
                 selected.forEach(b => b.zIndexMaxUp());
             }
         },
         {
             name: "zIndexBottom",
             label: "Push to back",
-            visible: (selected: Block[], editor: Editor) => {
+            visible: (selected: EditorBlock[], editor: Editor) => {
                 return selected.every(b => b.editorSupport().zIndex && !b.locked) && selected.length >= 1;
             },
-            action: (selected: Block[], editor: Editor) => {
+            action: (selected: EditorBlock[], editor: Editor) => {
                 selected.forEach(b => b.zIndexMaxDown());
             }
         }

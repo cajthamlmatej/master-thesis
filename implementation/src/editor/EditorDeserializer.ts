@@ -10,8 +10,8 @@ export class EditorDeserializer {
 
         const editor = new Editor(element, editorData, preferences);
 
-        for(let blockData of blocksData) {
-            const block = editor.blockRegistry.deserialize(blockData);
+        for (let blockData of blocksData) {
+            const block = editor.blockRegistry.deserializeEditor(blockData);
 
             if (block) {
                 editor.addBlock(block, false);

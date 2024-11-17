@@ -9,6 +9,7 @@
 
             <div class="spacer"></div>
 
+            <button @click="open"><span class="mdi mdi-open-in-new"></span></button>
             <button @click="fit"><span class="mdi mdi-fit-to-screen-outline"></span></button>
             <button @click="changeMode"><span class="mdi mdi-cursor-move" v-if="mode === 'select'"></span><span
                 class="mdi mdi-cursor-default" v-else></span></button>
@@ -25,15 +26,16 @@
 <script setup lang="ts">
 import Editor from "@/editor/Editor";
 import {onMounted, ref} from "vue";
-import {TextBlock} from "@/editor/block/text/TextBlock";
-import {generateUUID} from "@/utils/Generators";
-import {RectangleBlock} from "@/editor/block/rectangle/RectangleBlock";
-import {WatermarkBlock} from "@/editor/block/watermark/WatermarkBlock";
-import {ImageBlock} from "@/editor/block/image/ImageBlock";
-import type {Block} from "@/editor/block/Block";
+import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
+import {encodeBase64, generateUUID} from "@/utils/Generators";
+import {RectangleEditorBlock} from "@/editor/block/rectangle/RectangleEditorBlock";
+import {WatermarkEditorBlock} from "@/editor/block/watermark/WatermarkEditorBlock";
+import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
+import type {EditorBlock} from "@/editor/block/EditorBlock";
 import {EditorMode} from "@/editor/EditorMode";
 import {EditorDeserializer} from "@/editor/EditorDeserializer";
 import {EditorSerializer} from "@/editor/EditorSerializer";
+import {useRouter} from "vue-router";
 
 const editorElement = ref<HTMLElement | null>(null);
 
@@ -50,13 +52,20 @@ onMounted(() => {
     editor = deserializer.deserialize(data, editorElement.value);
 });
 
-const mode = ref<'select' | 'move'>('move');
+const mode = ref<'select' | 'move'>('select');
 
 const changeMode = () => {
     mode.value = mode.value === 'select' ? 'move' : 'select';
     editor.setMode(mode.value === 'select' ? EditorMode.SELECT : EditorMode.MOVE);
 };
 const fit = () => editor.fitToParent();
+const router = useRouter();
+const open = () => {
+    const serializer = new EditorSerializer(editor);
+    const data = serializer.serialize();
+
+    router.push({name: "Player", query: {data: encodeBase64(data)}});
+};
 
 const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image') => {
     const {x: startX, y: startY} = editor.screenToEditorCoordinates(event.clientX, event.clientY);
@@ -66,11 +75,11 @@ const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image') => {
         return;
     }
 
-    let block!: Block;
+    let block!: EditorBlock;
 
     switch (type) {
         case 'text':
-            block = new TextBlock(
+            block = new TextEditorBlock(
                 generateUUID(),
                 {x: -100, y: -100},
                 {width: 300, height: 36},
@@ -81,7 +90,7 @@ const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image') => {
             );
             break;
         case 'rectangle':
-            block = new RectangleBlock(
+            block = new RectangleEditorBlock(
                 generateUUID(),
                 {x: -100, y: -100},
                 {width: 40, height: 40},
@@ -91,7 +100,7 @@ const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image') => {
             );
             break;
         case 'image':
-            block = new ImageBlock(
+            block = new ImageEditorBlock(
                 generateUUID(),
                 {x: -100, y: -100},
                 {width: 200, height: 200},

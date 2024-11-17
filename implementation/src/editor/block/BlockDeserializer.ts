@@ -1,5 +1,8 @@
-import type {Block} from "@/editor/block/Block";
+import type {EditorBlock} from "@/editor/block/EditorBlock";
+import type {PlayerBlock} from "@/editor/block/PlayerBlock";
 
 export interface BlockDeserializer {
-    deserialize(data: any): Block;
+    deserializeEditor(data: any): EditorBlock;
+
+    deserializePlayer(data: any): PlayerBlock;
 }

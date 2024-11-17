@@ -1,7 +1,7 @@
-import {Block} from "@/editor/block/Block";
+import {EditorBlock} from "@/editor/block/EditorBlock";
 import {generateUUID} from "@/utils/Generators";
 
-export class RectangleBlock extends Block {
+export class RectangleEditorBlock extends EditorBlock {
     private color: string;
 
     constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number, color: string) {
@@ -44,8 +44,8 @@ export class RectangleBlock extends Block {
         this.element.style.backgroundColor = this.color;
     }
 
-    override clone(): Block {
-        return new RectangleBlock(
+    override clone(): EditorBlock {
+        return new RectangleEditorBlock(
             generateUUID(), // note(Matej): TODO: Is this ok? And it is in multiple places.
             {x: this.position.x, y: this.position.y},
             {width: this.size.width, height: this.size.height},

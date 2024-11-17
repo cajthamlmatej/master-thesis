@@ -2,7 +2,7 @@ import type Editor from "@/editor/Editor";
 import {twoPolygonsIntersect} from "@/utils/collision";
 import {getRotatedRectanglePoints} from "@/utils/spaceManipulation";
 
-export abstract class Block {
+export abstract class EditorBlock {
     public id: string;
     public type: string;
     public position: {
@@ -53,7 +53,7 @@ export abstract class Block {
         lock: boolean;
     }
 
-    public abstract clone(): Block;
+    public abstract clone(): EditorBlock;
 
     public abstract serialize(): Object;
 

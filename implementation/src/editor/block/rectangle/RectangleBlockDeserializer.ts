@@ -1,16 +1,22 @@
 import type {BlockDeserializer} from "@/editor/block/BlockDeserializer";
-import type {Block} from "@/editor/block/Block";
-import {TextBlock} from "@/editor/block/text/TextBlock";
-import {ImageBlock} from "@/editor/block/image/ImageBlock";
-import {RectangleBlock} from "@/editor/block/rectangle/RectangleBlock";
+import type {EditorBlock} from "@/editor/block/EditorBlock";
+import {RectangleEditorBlock} from "@/editor/block/rectangle/RectangleEditorBlock";
+import type {PlayerBlock} from "@/editor/block/PlayerBlock";
+import {RectanglePlayerBlock} from "@/editor/block/rectangle/RectanglePlayerBlock";
 
 export class RectangleBlockDeserializer implements BlockDeserializer {
-    deserialize(data: any): Block {
-        const block = new RectangleBlock(data.id, data.position, data.size, data.rotation, data.zIndex, data.color);
+    deserializeEditor(data: any): EditorBlock {
+        const block = new RectangleEditorBlock(data.id, data.position, data.size, data.rotation, data.zIndex, data.color);
 
         if (data.locked)
             block.lock();
 
+        block.group = data.group;
+
         return block;
+    }
+
+    deserializePlayer(data: any): PlayerBlock {
+        return new RectanglePlayerBlock(data.id, data.position, data.size, data.rotation, data.zIndex, data.color);
     }
 }

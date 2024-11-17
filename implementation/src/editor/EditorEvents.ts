@@ -1,13 +1,13 @@
 import Event from "@/utils/Event";
-import type {Block} from "@/editor/block/Block";
+import type {EditorBlock} from "@/editor/block/EditorBlock";
 import type {EditorMode} from "@/editor/EditorMode";
 
 export default class EditorEvents {
 
-    public BLOCK_CONTENT_CHANGED = new Event<Block>();
-    public BLOCK_GROUP_CHANGED = new Event<Block[]>();
+    public BLOCK_CONTENT_CHANGED = new Event<EditorBlock>();
+    public BLOCK_GROUP_CHANGED = new Event<EditorBlock[]>();
     public BLOCK_LOCK_CHANGED = new Event<{
-        blocks: Block[],
+        blocks: EditorBlock[],
         locked: boolean
     }>();
     public MODE_CHANGED = new Event<EditorMode>();

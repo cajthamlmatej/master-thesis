@@ -1,16 +1,16 @@
 import Editor from "@/editor/Editor";
-import type {Block} from "@/editor/block/Block";
+import type {EditorBlock} from "@/editor/block/EditorBlock";
 
 export class EditorClipboard {
 
     private editor: Editor;
-    private clipboard: Block[] = [];
+    private clipboard: EditorBlock[] = [];
 
     constructor(editor: Editor) {
         this.editor = editor;
     }
 
-    public markForCopy(blocks: Block[]) {
+    public markForCopy(blocks: EditorBlock[]) {
         this.clipboard = blocks;
     }
 

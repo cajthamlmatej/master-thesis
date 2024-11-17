@@ -1,3 +1,73 @@
+.player {
+    transform-origin: top left;
+
+    // Arbitrary size for the correct sizing of the editor
+    width: 100px;
+    height: 100px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    flex-shrink: 0;
+    flex-grow: 0;
+
+    background-color: #fff;
+
+    > .player-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+
+        > .block {
+            position: absolute;
+            display: block;
+
+            > .block-content {
+                transform-origin: top left;
+                contain: layout style;
+
+                outline: 0;
+            }
+
+            &--type-watermark {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+                font-size: 24px;
+                font-family: sans-serif;
+            }
+            &--type-text {
+                // Wrap all text in a span to allow for easy selection
+                div {
+                    display: block;
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                }
+            }
+            &--type-image {
+                img {
+                    display: block;
+                    height: 100%;
+                    width: 100%;
+                    object-fit: contain;
+
+                    user-focus: none;
+                    user-select: none;
+                    pointer-events: none;
+                    -moz-user-select: none;
+                    -webkit-user-drag: none;
+                    -webkit-user-select: none;
+                    -ms-user-select: none;
+                }
+            }
+        }
+    }
+}
+
 .editor {
     transform-origin: top left;
 

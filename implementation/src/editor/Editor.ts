@@ -1,4 +1,4 @@
-import type {Block} from "@/editor/block/Block";
+import type {EditorBlock} from "@/editor/block/EditorBlock";
 import {EditorSelector} from "@/editor/selector/EditorSelector";
 import {EditorContext} from "@/editor/context/EditorContext";
 import {EditorClipboard} from "@/editor/clipboard/EditorClipboard";
@@ -8,14 +8,18 @@ import EditorPreferences from "@/editor/EditorPreferences";
 import {EditorMode} from "@/editor/EditorMode";
 import type {EditorOptions} from "@/editor/EditorOptions";
 import {BlockRegistry} from "@/editor/block/BlockRegistry";
-import {TextBlock} from "@/editor/block/text/TextBlock";
+import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
 import {TextBlockDeserializer} from "@/editor/block/text/TextBlockDeserializer";
-import {ImageBlock} from "@/editor/block/image/ImageBlock";
+import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
 import {ImageBlockDeserializer} from "@/editor/block/image/ImageBlockDeserializer";
-import {RectangleBlock} from "@/editor/block/rectangle/RectangleBlock";
+import {RectangleEditorBlock} from "@/editor/block/rectangle/RectangleEditorBlock";
 import {RectangleBlockDeserializer} from "@/editor/block/rectangle/RectangleBlockDeserializer";
-import {WatermarkBlock} from "@/editor/block/watermark/WatermarkBlock";
+import {WatermarkEditorBlock} from "@/editor/block/watermark/WatermarkEditorBlock";
 import {WatermarkBlockDeserializer} from "@/editor/block/watermark/WatermarkBlockDeserializer";
+import {ImagePlayerBlock} from "@/editor/block/image/ImagePlayerBlock";
+import {TextPlayerBlock} from "@/editor/block/text/TextPlayerBlock";
+import {RectanglePlayerBlock} from "@/editor/block/rectangle/RectanglePlayerBlock";
+import {WatermarkPlayerBlock} from "@/editor/block/watermark/WatermarkPlayerBlock";
 
 export default class Editor {
     private static readonly DEFAULT_PADDING = 32;
@@ -23,10 +27,10 @@ export default class Editor {
     public readonly blockRegistry: BlockRegistry;
 
     private size = {width: 1200, height: 800};
-    private blocks: Block[] = [];
+    private blocks: EditorBlock[] = [];
 
     private readonly editorElement: HTMLElement;
-    private mode: EditorMode = EditorMode.MOVE;
+    private mode: EditorMode = EditorMode.SELECT;
     private scale: number = 1;
     private position = {x: 0, y: 0};
     private preferences!: EditorPreferences;
@@ -41,10 +45,10 @@ export default class Editor {
 
         // Setup basic blocks
         // TODO: this should be handled somewhere else
-        this.blockRegistry.register("text", TextBlock, TextBlockDeserializer);
-        this.blockRegistry.register("image", ImageBlock, ImageBlockDeserializer);
-        this.blockRegistry.register("rectangle", RectangleBlock, RectangleBlockDeserializer);
-        this.blockRegistry.register("watermark", WatermarkBlock, WatermarkBlockDeserializer);
+        this.blockRegistry.register("text", TextEditorBlock, TextPlayerBlock, TextBlockDeserializer);
+        this.blockRegistry.register("image", ImageEditorBlock, ImagePlayerBlock, ImageBlockDeserializer);
+        this.blockRegistry.register("rectangle", RectangleEditorBlock, RectanglePlayerBlock, RectangleBlockDeserializer);
+        this.blockRegistry.register("watermark", WatermarkEditorBlock, WatermarkPlayerBlock, WatermarkBlockDeserializer);
 
 
         this.parseOptions(options);
@@ -57,7 +61,7 @@ export default class Editor {
 
         // TODO: this enabling is weirdly placed
         new EditorGroupAreaVisualiser(this);
-        this.setMode(EditorMode.MOVE);
+        this.setMode(EditorMode.SELECT);
     }
 
     public getSize() {
@@ -115,7 +119,7 @@ export default class Editor {
         return this.blocks;
     }
 
-    public addBlock(block: Block, newBlock: boolean = true) {
+    public addBlock(block: EditorBlock, newBlock: boolean = true) {
         // Check if the block is already added
         if (this.blocks.includes(block)) {
             console.error("[Editor] Block is already added. Not adding again.");
@@ -128,6 +132,7 @@ export default class Editor {
         const element = block.render();
         element.setAttribute("data-block-id", block.id);
 
+        // TODO: this is ugly
         this.editorElement.querySelector(".editor-content")!.appendChild(element);
 
         block.element = element;
@@ -143,7 +148,7 @@ export default class Editor {
         block.synchronize();
     }
 
-    public removeBlock(block: Block | string) {
+    public removeBlock(block: EditorBlock | string) {
         const blockId = typeof block === "string" ? block : block.id;
         const blockIndex = this.blocks.findIndex(block => block.id === blockId);
 

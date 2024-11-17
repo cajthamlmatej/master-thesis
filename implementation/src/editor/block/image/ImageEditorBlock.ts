@@ -1,7 +1,7 @@
-import {Block} from "@/editor/block/Block";
+import {EditorBlock} from "@/editor/block/EditorBlock";
 import {generateUUID} from "@/utils/Generators";
 
-export class ImageBlock extends Block {
+export class ImageEditorBlock extends EditorBlock {
     private imageUrl: string;
 
     private imageElement!: HTMLImageElement;
@@ -72,8 +72,8 @@ export class ImageBlock extends Block {
             this.imageElement.src = this.imageUrl;
     }
 
-    override clone(): Block {
-        return new ImageBlock(
+    override clone(): EditorBlock {
+        return new ImageEditorBlock(
             generateUUID(),
             {x: this.position.x, y: this.position.y},
             {width: this.size.width, height: this.size.height},

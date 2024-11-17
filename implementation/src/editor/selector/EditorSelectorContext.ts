@@ -1,5 +1,5 @@
 import Editor from "@/editor/Editor";
-import type {Block} from "@/editor/block/Block";
+import type {EditorBlock} from "@/editor/block/EditorBlock";
 import type {EditorSelector} from "@/editor/selector/EditorSelector";
 import {getRotatedRectanglePoints} from "@/utils/spaceManipulation";
 import {generateUUID} from "@/utils/Generators";
@@ -15,14 +15,14 @@ export class EditorSelectorContext {
             name: "group",
             label: "Group",
             icon: "mdi mdi-group",
-            visible: (selected: Block[], editor: Editor) => {
+            visible: (selected: EditorBlock[], editor: Editor) => {
                 const groups = selected.reduce((acc, b) => acc.add(b.group), new Set<string | undefined>());
                 return selected.every(b => b.editorSupport().group)
                     && selected.length > 1
                     && (groups.size > 1 || (groups.size == 1 && groups.has(undefined)));
             },
-            action: (selected: Block[], editor: Editor) => {
-                let modified = new Set<Block>();
+            action: (selected: EditorBlock[], editor: Editor) => {
+                let modified = new Set<EditorBlock>();
 
                 let groupId = generateUUID();
                 let handleGroups = new Set<string>();
@@ -56,13 +56,13 @@ export class EditorSelectorContext {
             name: "ungroup",
             label: "Ungroup",
             icon: "mdi mdi-ungroup",
-            visible: (selected: Block[], editor: Editor) => {
+            visible: (selected: EditorBlock[], editor: Editor) => {
                 const groups = selected.reduce((acc, b) => acc.add(b.group), new Set<string | undefined>());
                 return selected.every(b => b.editorSupport().group)
                     && selected.length > 1
                     && groups.size == 1 && !groups.has(undefined);
             },
-            action: (selected: Block[], editor: Editor) => {
+            action: (selected: EditorBlock[], editor: Editor) => {
                 for (const block of selected) {
                     block.group = undefined;
                 }
@@ -78,10 +78,10 @@ export class EditorSelectorContext {
             name: "lock",
             label: "Lock",
             icon: "mdi mdi-lock",
-            visible: (selected: Block[], editor: Editor) => {
+            visible: (selected: EditorBlock[], editor: Editor) => {
                 return selected.every(b => b.editorSupport().lock && !b.locked);
             },
-            action: (selected: Block[], editor: Editor) => {
+            action: (selected: EditorBlock[], editor: Editor) => {
                 for (const block of selected) {
                     block.lock();
                 }
@@ -96,10 +96,10 @@ export class EditorSelectorContext {
             name: "unlock",
             label: "Unlock",
             icon: "mdi mdi-lock-open",
-            visible: (selected: Block[], editor: Editor) => {
+            visible: (selected: EditorBlock[], editor: Editor) => {
                 return selected.every(b => b.editorSupport().lock) && selected.some(b => b.locked);
             },
-            action: (selected: Block[], editor: Editor) => {
+            action: (selected: EditorBlock[], editor: Editor) => {
                 for (const block of selected) {
                     block.unlock();
                 }
@@ -124,7 +124,7 @@ export class EditorSelectorContext {
         });
     }
 
-    public handleContext(selected: Block[]) {
+    public handleContext(selected: EditorBlock[]) {
         if (!selected || selected.length == 0) {
             this.active = false;
             this.handleVisibility();

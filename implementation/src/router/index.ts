@@ -11,6 +11,11 @@ const router = createRouter({
             component: HomeView
         },
         {
+            path: '/player',
+            name: 'Player',
+            component: () => import('../views/PlayerView.vue'),
+        },
+        {
             path: '/old',
             component: EditorView
         },

@@ -1,7 +1,7 @@
-import {Block} from "@/editor/block/Block";
+import {EditorBlock} from "@/editor/block/EditorBlock";
 import {generateUUID} from "@/utils/Generators";
 
-export class TextBlock extends Block {
+export class TextEditorBlock extends EditorBlock {
     private content: string;
     private fontSize: number;
     private editable: boolean = false;
@@ -156,8 +156,8 @@ export class TextBlock extends Block {
         this.synchronize();
     }
 
-    override clone(): Block {
-        return new TextBlock(generateUUID(), {...this.position}, {...this.size}, this.rotation, this.zIndex, this.content, this.fontSize);
+    override clone(): EditorBlock {
+        return new TextEditorBlock(generateUUID(), {...this.position}, {...this.size}, this.rotation, this.zIndex, this.content, this.fontSize);
     }
 
     public override serialize(): Object {

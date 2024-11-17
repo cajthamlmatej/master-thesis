@@ -1,5 +1,5 @@
 import type Editor from "@/editor/Editor";
-import type {Block} from "@/editor/block/Block";
+import type {EditorBlock} from "@/editor/block/EditorBlock";
 import {colorFromSeed} from "@/utils/Generators";
 import {boundingBoxOfElements} from "@/utils/Area";
 
@@ -35,7 +35,7 @@ export default class EditorGroupAreaVisualiser {
         this.areas.clear();
 
         const uniqueGroups = this.editor.getSelector().getSelectedBlocks()
-            .reduce((acc, block) => acc.add(block), new Set<Block>());
+            .reduce((acc, block) => acc.add(block), new Set<EditorBlock>());
 
         for (const block of uniqueGroups) {
             if (!block.group) continue;
@@ -58,7 +58,7 @@ export default class EditorGroupAreaVisualiser {
         this.visualise();
     }
 
-    private handleGroupsChanged(blocks: Block[]) {
+    private handleGroupsChanged(blocks: EditorBlock[]) {
         this.recalculate();
     }
 

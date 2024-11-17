@@ -1,4 +1,4 @@
-import type {Block} from "@/editor/block/Block";
+import type {EditorBlock} from "@/editor/block/EditorBlock";
 import type Editor from "@/editor/Editor";
 import {EditorSelectorContext} from "@/editor/selector/EditorSelectorContext";
 import EditorSelectorEvents from "@/editor/selector/EditorSelectorEvents";
@@ -8,7 +8,7 @@ import EditorSelectorArea from "@/editor/selector/area/EditorSelectorArea";
 export class EditorSelector {
     public readonly events = new EditorSelectorEvents();
     private readonly editor: Editor;
-    private selectedBlocks: Block[] = [];
+    private selectedBlocks: EditorBlock[] = [];
 
     constructor(editor: Editor) {
         this.editor = editor;
@@ -30,7 +30,7 @@ export class EditorSelector {
      * Deselects a block.
      * @param block to be deselected
      */
-    public deselectBlock(block: Block) {
+    public deselectBlock(block: EditorBlock) {
         this.selectedBlocks = this.selectedBlocks.filter(b => b !== block);
         block.onDeselected();
         this.events.SELECTED_BLOCK_CHANGED.emit(this.selectedBlocks);
@@ -42,7 +42,7 @@ export class EditorSelector {
      * @param addToSelection if the block should be added to the current selection, otherwise the current selection will be cleared
      * @param event the event that will be passed to the block if it was already selected
      */
-    public selectBlock(block: Block, addToSelection: boolean = false, event?: MouseEvent) {
+    public selectBlock(block: EditorBlock, addToSelection: boolean = false, event?: MouseEvent) {
         if (this.editor.getMode() !== "select") return;
 
         if (!addToSelection) {
@@ -130,7 +130,7 @@ export class EditorSelector {
      * @param block to check
      * @param soloOnly if is counted only if the block is the only selected block
      */
-    public isSelected(block: Block, soloOnly: boolean = false) {
+    public isSelected(block: EditorBlock, soloOnly: boolean = false) {
         if (soloOnly) {
             return this.selectedBlocks.length === 1 && this.selectedBlocks[0] === block;
         }

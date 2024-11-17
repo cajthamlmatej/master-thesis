@@ -1,7 +1,7 @@
-import {Block} from "@/editor/block/Block";
+import {EditorBlock} from "@/editor/block/EditorBlock";
 import {generateUUID} from "@/utils/Generators";
 
-export class WatermarkBlock extends Block {
+export class WatermarkEditorBlock extends EditorBlock {
     constructor(id: string) {
         super(id, "watermark", {x: 0, y: 0}, {width: 200, height: 50}, 0, 1001);
     }
@@ -32,10 +32,6 @@ export class WatermarkBlock extends Block {
         }
     }
 
-    override getContent() {
-        return undefined;
-    }
-
     override onMounted() {
         super.onMounted();
 
@@ -55,8 +51,8 @@ export class WatermarkBlock extends Block {
         this.position = this.getPosition();
     }
 
-    public override clone(): Block {
-        return new WatermarkBlock(generateUUID());
+    public override clone(): EditorBlock {
+        return new WatermarkEditorBlock(generateUUID());
     }
 
     public override serialize(): Object {
