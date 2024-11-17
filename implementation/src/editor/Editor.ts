@@ -132,8 +132,10 @@ export default class Editor {
 
         block.element = element;
 
-        if(newBlock) {
-            const maxZIndex = this.blocks.reduce((acc, block) => Math.max(acc, block.zIndex), 0);
+        if (newBlock) {
+            const maxZIndex = this.blocks
+                .filter(b => b.editorSupport().selection)
+                .reduce((acc, block) => Math.max(acc, block.zIndex), 0);
             block.zIndex = Math.max(0, Math.min(1000, maxZIndex + 1));
         }
 

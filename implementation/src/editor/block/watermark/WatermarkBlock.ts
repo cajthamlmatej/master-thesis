@@ -20,7 +20,7 @@ export class WatermarkBlock extends Block {
 
     override editorSupport() {
         return {
-            group: true,
+            group: false,
             selection: false,
             movement: false,
             proportionalResizing: false,
