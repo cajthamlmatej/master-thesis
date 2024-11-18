@@ -49,6 +49,12 @@ export default class EditorSelectorArea {
         this.editor.events.BLOCK_CONTENT_CHANGED.on((block) => {
             this.handleSelector();
         });
+        this.editor.events.BLOCK_POSITION_CHANGED.on((blockData) => {
+            if(blockData.manual) {
+                this.recalculateSelectionArea();
+                this.handleVisibility();
+            }
+        });
     }
 
     /**

@@ -1,6 +1,9 @@
 import type Editor from "@/editor/Editor";
 import {twoPolygonsIntersect} from "@/utils/collision";
 import {getRotatedRectanglePoints} from "@/utils/spaceManipulation";
+import type {Property} from "@/editor/property/Property";
+import {PositionProperty} from "@/editor/property/base/PositionProperty";
+import type {Type} from "@/utils/TypeScriptTypes";
 
 export abstract class EditorBlock {
     public id: string;
@@ -57,13 +60,24 @@ export abstract class EditorBlock {
 
     public abstract serialize(): Object;
 
+    public getProperties(): Property[] {
+        return [
+            new PositionProperty()
+        ]
+    }
+
     public getContent(): HTMLElement | undefined {
         return undefined;
     }
 
-    public move(x: number, y: number, skipSynchronization: boolean = false) {
-        this.position.x = x;
-        this.position.y = y;
+    public move(x: number, y: number, skipSynchronization: boolean = false, manual: boolean = false) {
+        this.position.x = Math.floor(x);
+        this.position.y = Math.floor(y);
+
+        this.editor.events.BLOCK_POSITION_CHANGED.emit({
+            block: this,
+            manual: manual
+        });
 
         if (!skipSynchronization) this.synchronize();
     }

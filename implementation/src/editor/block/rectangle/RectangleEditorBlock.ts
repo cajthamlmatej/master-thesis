@@ -1,5 +1,8 @@
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {generateUUID} from "@/utils/Generators";
+import type {Type} from "@/utils/TypeScriptTypes";
+import type {Property} from "@/editor/property/Property";
+import {ColorProperty} from "@/editor/property/base/ColorProperty";
 
 export class RectangleEditorBlock extends EditorBlock {
     private color: string;
@@ -52,6 +55,14 @@ export class RectangleEditorBlock extends EditorBlock {
             this.rotation,
             this.zIndex,
             this.color);
+    }
+
+
+    getProperties(): Property[] {
+        return [
+            ...super.getProperties(),
+            new ColorProperty("color")
+        ];
     }
 
     public override serialize(): Object {

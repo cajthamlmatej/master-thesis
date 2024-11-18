@@ -11,5 +11,6 @@ export default class EditorEvents {
         locked: boolean
     }>();
     public MODE_CHANGED = new Event<EditorMode>();
+    public BLOCK_POSITION_CHANGED: Event<{block: EditorBlock, manual: boolean}> = new Event<{block: EditorBlock, manual: boolean}>();
 
 };

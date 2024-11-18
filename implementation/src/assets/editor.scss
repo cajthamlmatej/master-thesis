@@ -526,3 +526,55 @@
         }
     }
 }
+
+.editor-property {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    padding: 1em;
+
+    > .property {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+
+        > .label {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.75em;
+            letter-spacing: 0.1em;
+        }
+
+        > .property-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5em;
+
+            &--row {
+                flex-direction: row;
+            }
+
+            > .property-data {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5em;
+                flex-basis: 100%;
+
+                &--row {
+                    flex-direction: row;
+                    align-items: center;
+                }
+
+                > label {
+                    font-size: 0.75em;
+                    text-transform: uppercase;
+                    letter-spacing: 0.1em;
+                }
+
+                > input {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
