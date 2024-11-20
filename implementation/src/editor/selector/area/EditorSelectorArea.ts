@@ -260,19 +260,25 @@ export default class EditorSelectorArea {
     private recalculateSelectionArea() {
         this.element.style.transform = "rotate(0deg)";
 
-        this.selectionArea = {
-            ...boundingBoxOfElements(this.selector.getSelectedBlocks().map(b => b.element), this.editor),
-            rotation: 0,
-            baseRotation: 0,
-            baseX: 0,
-            baseY: 0
-        };
-
         if (this.selector.getSelectedBlocks().length == 1) {
-            this.selectionArea.rotation = this.selector.getSelectedBlocks()[0].rotation;
-            this.selectionArea.baseRotation = this.selector.getSelectedBlocks()[0].rotation;
+            const element = this.selector.getSelectedBlocks()[0];
+            this.selectionArea.x = element.position.x;
+            this.selectionArea.y = element.position.y;
+            this.selectionArea.width = element.size.width;
+            this.selectionArea.height = element.size.height;
+
+            this.selectionArea.rotation = element.rotation;
+        } else {
+            this.selectionArea = {
+                ...boundingBoxOfElements(this.selector.getSelectedBlocks().map(b => b.element), this.editor),
+                rotation: 0,
+                baseRotation: 0,
+                baseX: 0,
+                baseY: 0
+            };
         }
 
+        this.selectionArea.baseRotation = this.selectionArea.rotation;
         this.selectionArea.baseX = this.selectionArea.x;
         this.selectionArea.baseY = this.selectionArea.y;
 
@@ -688,7 +694,7 @@ export default class EditorSelectorArea {
             }
             this.updateSelectionArea();
 
-            if (PER_OBJECT) {
+            if (PER_OBJECT && this.selector.getSelectedBlocks().length !== 1) {
                 // The rotation is now out of sync with the blocks, so we need to recalculate it
                 this.recalculateSelectionArea();
             }
