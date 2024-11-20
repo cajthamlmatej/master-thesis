@@ -7,6 +7,7 @@ import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {BlockEventListener, LISTENER_METADATA_KEY} from "@/editor/block/events/BlockListener";
 import type {SerializeEntry} from "@/editor/block/serialization/BlockPropertySerialize";
 import {BlockSerialize, SERIALIZER_METADATA_KEY} from "@/editor/block/serialization/BlockPropertySerialize";
+import {RotationProperty} from "@/editor/property/base/RotationProperty";
 
 export abstract class EditorBlock {
     @BlockSerialize("id")
@@ -139,7 +140,8 @@ export abstract class EditorBlock {
 
     public getProperties(): Property[] {
         return [
-            new PositionProperty()
+            new PositionProperty(),
+            new RotationProperty()
         ]
     }
 
@@ -163,8 +165,13 @@ export abstract class EditorBlock {
         if (!skipSynchronization) this.synchronize();
     }
 
-    public rotate(rotation: number, skipSynchronization: boolean = false) {
+    public rotate(rotation: number, skipSynchronization: boolean = false, manual: boolean = false) {
         this.rotation = rotation;
+
+        this.editor.events.BLOCK_ROTATION_CHANGED.emit({
+            block: this,
+            manual: manual
+        });
 
         if (!skipSynchronization) this.synchronize();
     }

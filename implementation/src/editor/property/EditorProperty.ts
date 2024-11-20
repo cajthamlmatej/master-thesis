@@ -35,7 +35,6 @@ export class EditorProperty {
             .reduce((acc: Property[], property) => acc.some(p => p.getID() === property.getID()) ? acc : [...acc, property], []);
 
         this.activeProperties = properties;
-        console.log(properties);
 
         for (const property of properties) {
             const element = document.createElement("div");
