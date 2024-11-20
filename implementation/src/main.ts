@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import './assets/reset.css'
 import './assets/editor.scss'
 

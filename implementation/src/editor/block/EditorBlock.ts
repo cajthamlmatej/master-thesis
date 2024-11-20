@@ -3,7 +3,8 @@ import {twoPolygonsIntersect} from "@/utils/collision";
 import {getRotatedRectanglePoints} from "@/utils/spaceManipulation";
 import type {Property} from "@/editor/property/Property";
 import {PositionProperty} from "@/editor/property/base/PositionProperty";
-import type {Type} from "@/utils/TypeScriptTypes";
+import {BlockEvent} from "@/editor/block/BlockEvent";
+import {BlockEventListener, LISTENER_METADATA_KEY} from "@/editor/block/BlockListener";
 
 export abstract class EditorBlock {
     public id: string;
@@ -23,12 +24,6 @@ export abstract class EditorBlock {
 
     public element!: HTMLElement;
     public editor!: Editor;
-
-    public selected: boolean = false;
-    public resizing: boolean = false;
-    public moving: boolean = false;
-    public rotating: boolean = false;
-    public hovering: boolean = false;
 
     protected constructor(id: string, type: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number) {
         this.id = id;
@@ -64,6 +59,23 @@ export abstract class EditorBlock {
         return [
             new PositionProperty()
         ]
+    }
+
+    /**
+     * Serializes the base properties of the block.
+     * @protected
+     */
+    protected serializeBase(): Object {
+        return {
+            id: this.id,
+            type: this.type,
+            position: this.position,
+            size: this.size,
+            rotation: this.rotation,
+            zIndex: this.zIndex,
+            locked: this.locked,
+            group: this.group,
+        };
     }
 
     public getContent(): HTMLElement | undefined {
@@ -120,6 +132,36 @@ export abstract class EditorBlock {
     }
 
     /**
+     * Locks the block element for the block to be uneditable.
+     */
+    public lock() {
+        this.locked = true;
+        this.synchronize();
+    }
+
+    /**
+     * Unlocks the block element for the block to be editable.
+     */
+    public unlock() {
+        this.locked = false;
+        this.synchronize();
+    }
+
+    /**
+     * Sets the editor for the block.
+     *
+     * If the block already has an editor, an error is thrown.
+     * @param editor The editor to set.
+     */
+    public setEditor(editor: Editor) {
+        if (this.editor) {
+            throw new Error("Block already has an editor.");
+        }
+
+        this.editor = editor;
+    }
+
+    /**
      * Synchronizes the block element in DOM with the block properties.
      */
     public synchronize() {
@@ -170,24 +212,6 @@ export abstract class EditorBlock {
         this.synchronize();
     }
 
-    public lock() {
-        this.locked = true;
-        this.synchronize();
-    }
-
-    public unlock() {
-        this.locked = false;
-        this.synchronize();
-    }
-
-    public setEditor(editor: Editor) {
-        if (this.editor) {
-            throw new Error("Block already has an editor.");
-        }
-
-        this.editor = editor;
-    }
-
     /**
      * Checks if supplied box range overlaps with this block including rotation.
      * @param range The range to check for overlap.
@@ -219,109 +243,110 @@ export abstract class EditorBlock {
     }
 
     /**
-     * Called when the block is mounted in the DOM.
+     * Calls all event listeners for the supplied event with the supplied arguments.
+     *
+     * Listeners are methods that are decorated with `@BlockEventListener(event: BlockEvent)`.
+     * @param event The event to call the listeners for.
+     * @param args The arguments to pass to the listeners.
      */
-    public onMounted() {
-        // To be implemented by subclasses
+    public processEvent(event: BlockEvent, ...args: any[]) {
+        const instance = this as any;
+        const keys = Reflect.getMetadataKeys(this);
+
+        for (const key of keys) {
+            if(!key.startsWith(LISTENER_METADATA_KEY)) continue;
+
+            const metadata = Reflect.getMetadata(key, this);
+
+            if(!metadata) continue;
+
+            const listeners = metadata.get(event);
+
+            if(!listeners) continue;
+
+            for (const listener of listeners) {
+                if(!instance[listener]) {
+                    console.error(`Listener ${listener} for event ${event} does not exist on block ${this.id} (${this.type}).`);
+                    continue
+                }
+
+                instance[listener](...args);
+            }
+        }
     }
 
-
-    /** ------------------- EVENTS ------------------- */
-
     /**
-     * Called when the block is unmounted from the DOM.
+     * Determines if the block is currently selected.
      */
-    public onUnmounted() {
-
-    }
-
+    public selected: boolean = false;
     /**
-     * Called when the block is selected.
+     * Determines if the block is currently resizing.
      */
-    public onSelected() {
+    public resizing: boolean = false;
+    /**
+     * Determines if the block is currently moving.
+     */
+    public moving: boolean = false;
+    /**
+     * Determines if the block is currently rotating.
+     */
+    public rotating: boolean = false;
+    /**
+     * Determines if the block is currently hovering.
+     */
+    public hovering: boolean = false;
+
+    @BlockEventListener(BlockEvent.SELECTED)
+    private _onSelected() {
         this.element.classList.add("block--selected");
         this.selected = true;
-        // To be implemented by subclasses
     }
 
-    /**
-     * Called when the block is deselected.
-     */
-    public onDeselected() {
+    @BlockEventListener(BlockEvent.DESELECTED)
+    private _onDeselected() {
         this.element.classList.remove("block--selected");
         this.selected = false;
     }
 
-    public onHoverStarted() {
+    @BlockEventListener(BlockEvent.HOVER_STARTED)
+    private _onHoverStarted() {
         this.element.classList.add("block--hover");
         this.hovering = true;
-        // To be implemented by subclasses
     }
 
-    public onHoverEnded() {
+    @BlockEventListener(BlockEvent.HOVER_ENDED)
+    private _onHoverEnded() {
         this.element.classList.remove("block--hover");
         this.hovering = false;
     }
 
-    public onResizeStarted() {
+    @BlockEventListener(BlockEvent.RESIZING_STARTED)
+    private _onResizeStarted() {
         this.resizing = true;
     }
 
-    /**
-     * Called when the block is done being resized.
-     * @param type
-     * @param start The starting width and height of the block.
-     */
-    public onResizeCompleted(type: 'PROPORTIONAL' | 'NON_PROPORTIONAL', start: { width: number; height: number; }) {
-        // To be implemented by subclasses
+    @BlockEventListener(BlockEvent.RESIZING_ENDED)
+    private _onResizeCompleted(type: 'PROPORTIONAL' | 'NON_PROPORTIONAL', start: { width: number; height: number; }) {
         this.resizing = false;
     }
 
-    public onMovementStarted() {
+    @BlockEventListener(BlockEvent.MOVEMENT_STARTED)
+    private _onMovementStarted() {
         this.moving = true;
     }
 
-    /**
-     * Called when the block is done being moved.
-     * @param start The starting position of the block.
-     */
-    public onMovementCompleted(start: { x: number; y: number; }) {
-        // To be implemented by subclasses
+    @BlockEventListener(BlockEvent.MOVEMENT_ENDED)
+    private _onMovementCompleted(start: { x: number; y: number; }) {
         this.moving = false;
     }
 
-    public onRotationStarted() {
+    @BlockEventListener(BlockEvent.ROTATION_STARTED)
+    private _onRotationStarted() {
         this.rotating = true;
     }
 
-    /**
-     * Called when the block is done being rotated.
-     * @param start The starting rotation of the block.
-     */
-    public onRotationCompleted(start: number) {
-        // To be implemented by subclasses
+    @BlockEventListener(BlockEvent.ROTATION_ENDED)
+    private _onRotationCompleted(start: number) {
         this.rotating = false;
     }
-
-    /**
-     * Is called when the block is clicked while it is selected.
-     * @param event The mouse event that triggered the click.
-     */
-    public onClicked(event: MouseEvent) {
-        // To be implemented by subclasses
-    }
-
-    protected serializeBase(): Object {
-        return {
-            id: this.id,
-            type: this.type,
-            position: this.position,
-            size: this.size,
-            rotation: this.rotation,
-            zIndex: this.zIndex,
-            locked: this.locked,
-            group: this.group,
-        };
-    }
-
 }

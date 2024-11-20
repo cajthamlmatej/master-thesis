@@ -3,6 +3,7 @@ import type Editor from "@/editor/Editor";
 import {EditorSelectorContext} from "@/editor/selector/EditorSelectorContext";
 import EditorSelectorEvents from "@/editor/selector/EditorSelectorEvents";
 import EditorSelectorArea from "@/editor/selector/area/EditorSelectorArea";
+import {BlockEvent} from "@/editor/block/BlockEvent";
 
 
 export class EditorSelector {
@@ -32,7 +33,7 @@ export class EditorSelector {
      */
     public deselectBlock(block: EditorBlock) {
         this.selectedBlocks = this.selectedBlocks.filter(b => b !== block);
-        block.onDeselected();
+        block.processEvent(BlockEvent.DESELECTED);
         this.events.SELECTED_BLOCK_CHANGED.emit(this.selectedBlocks);
     }
 
@@ -47,7 +48,7 @@ export class EditorSelector {
 
         if (!addToSelection) {
             if (this.selectedBlocks.length === 1 && this.selectedBlocks[0] === block && event) {
-                block.onClicked(event);
+                block.processEvent(BlockEvent.CLICKED, event);
 
                 return
             }
@@ -59,7 +60,7 @@ export class EditorSelector {
                 for (const b of this.editor.getBlocksInGroup(block.group)) {
                     if (!this.selectedBlocks.includes(b)) {
                         this.selectedBlocks.push(b);
-                        b.onSelected();
+                        b.processEvent(BlockEvent.SELECTED);
                     }
                 }
 
@@ -71,7 +72,7 @@ export class EditorSelector {
                 // Select all with this group
                 for (const b of this.editor.getBlocksInGroup(block.group)) {
                     this.selectedBlocks.push(b);
-                    b.onSelected();
+                    b.processEvent(BlockEvent.SELECTED);
                 }
 
                 this.events.SELECTED_BLOCK_CHANGED.emit(this.selectedBlocks);
@@ -97,7 +98,7 @@ export class EditorSelector {
             this.deselectAllBlocks();
             for (const b of this.editor.getBlocksInGroup(block.group)) {
                 this.selectedBlocks.push(b);
-                b.onSelected();
+                b.processEvent(BlockEvent.SELECTED);
             }
 
             this.events.SELECTED_BLOCK_CHANGED.emit(this.selectedBlocks);
@@ -120,7 +121,7 @@ export class EditorSelector {
             return;
         }
 
-        block.onSelected();
+        block.processEvent(BlockEvent.SELECTED);
         this.selectedBlocks.push(block);
         this.events.SELECTED_BLOCK_CHANGED.emit(this.selectedBlocks);
     }

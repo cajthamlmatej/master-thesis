@@ -20,6 +20,8 @@ import {ImagePlayerBlock} from "@/editor/block/image/ImagePlayerBlock";
 import {TextPlayerBlock} from "@/editor/block/text/TextPlayerBlock";
 import {RectanglePlayerBlock} from "@/editor/block/rectangle/RectanglePlayerBlock";
 import {WatermarkPlayerBlock} from "@/editor/block/watermark/WatermarkPlayerBlock";
+import {BlockEvent} from "@/editor/block/BlockEvent";
+import {LISTENER_METADATA_KEY} from "@/editor/block/BlockListener";
 
 export default class Editor {
     private static readonly DEFAULT_PADDING = 32;
@@ -144,8 +146,25 @@ export default class Editor {
             block.zIndex = Math.max(0, Math.min(1000, maxZIndex + 1));
         }
 
-        block.onMounted();
+        block.processEvent(BlockEvent.MOUNTED);
         block.synchronize();
+        // console.log("[Editor] Block added", block);
+        //
+        // for (let block of this.blocks) {
+        //     console.group("Block " + block.id);
+        //     console.log(block);
+        //     console.log(Reflect.getMetadataKeys(block));
+        //
+        //     for(let key of Reflect.getMetadataKeys(block)) {
+        //         console.group(key);
+        //
+        //         console.log(Reflect.getMetadata(key, block));
+        //
+        //         console.groupEnd();
+        //     }
+        //
+        //     console.groupEnd();
+        // }
     }
 
     public removeBlock(block: EditorBlock | string) {
@@ -159,7 +178,7 @@ export default class Editor {
 
         const blockInstance = this.blocks[blockIndex];
         blockInstance.element.remove();
-        blockInstance.onUnmounted();
+        blockInstance.processEvent(BlockEvent.UNMOUNTED);
         this.blocks.splice(blockIndex, 1);
 
         if (this.selector.isSelected(blockInstance)) {

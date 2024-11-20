@@ -1,5 +1,7 @@
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {generateUUID} from "@/utils/Generators";
+import {BlockEventListener} from "@/editor/block/BlockListener";
+import {BlockEvent} from "@/editor/block/BlockEvent";
 
 export class WatermarkEditorBlock extends EditorBlock {
     constructor(id: string) {
@@ -32,9 +34,8 @@ export class WatermarkEditorBlock extends EditorBlock {
         }
     }
 
-    override onMounted() {
-        super.onMounted();
-
+    @BlockEventListener(BlockEvent.MOUNTED)
+    private onMounted() {
         this.size.height = 50;
         this.size.width = 200;
 
@@ -45,9 +46,8 @@ export class WatermarkEditorBlock extends EditorBlock {
         this.position = this.getPosition();
     }
 
-    public onMovementCompleted(start: { x: number; y: number }) {
-        super.onMovementCompleted(start);
-
+    @BlockEventListener(BlockEvent.MOVEMENT_ENDED)
+    private onMovementCompleted(start: { x: number; y: number }) {
         this.position = this.getPosition();
     }
 

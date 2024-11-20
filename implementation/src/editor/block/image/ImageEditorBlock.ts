@@ -1,5 +1,7 @@
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {generateUUID} from "@/utils/Generators";
+import {BlockEvent} from "@/editor/block/BlockEvent";
+import {BlockEventListener} from "@/editor/block/BlockListener";
 
 export class ImageEditorBlock extends EditorBlock {
     private imageUrl: string;
@@ -11,6 +13,7 @@ export class ImageEditorBlock extends EditorBlock {
         this.imageUrl = imageUrl;
     }
 
+    // noinspection DuplicatedCode
     render(): HTMLElement {
         const element = document.createElement("div");
 
@@ -27,10 +30,8 @@ export class ImageEditorBlock extends EditorBlock {
 
         return element;
     }
-
-    override onMounted() {
-        super.onMounted();
-
+    @BlockEventListener(BlockEvent.MOUNTED)
+    loadImage() {
         const image = new Image();
         image.src = this.imageUrl;
 

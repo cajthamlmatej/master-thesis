@@ -2,6 +2,7 @@ import {boundingBoxOfElements} from "@/utils/Area";
 import type {EditorSelector} from "@/editor/selector/EditorSelector";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import type Editor from "@/editor/Editor";
+import {BlockEvent} from "@/editor/block/BlockEvent";
 
 interface SelectionArea {
     x: number;
@@ -377,7 +378,7 @@ export default class EditorSelectorArea {
         }
 
         const initialPositions = this.selector.getSelectedBlocks().map(block => {
-            block.onMovementStarted();
+            block.processEvent(BlockEvent.MOVEMENT_STARTED);
 
             return {
                 block,
@@ -404,7 +405,7 @@ export default class EditorSelectorArea {
             window.removeEventListener("mouseup", mouseUpHandler);
 
             for (const {block, x, y} of initialPositions) {
-                block.onMovementCompleted({x: x, y: y});
+                block.processEvent(BlockEvent.MOVEMENT_ENDED, {x: x, y: y});
             }
 
             this.handleSelector();
@@ -429,7 +430,7 @@ export default class EditorSelectorArea {
         const isProportionalY = type.includes('top-middle') || type.includes('bottom-middle');
 
         const blockInitialData = this.selector.getSelectedBlocks().map(block => {
-            block.onResizeStarted();
+            block.processEvent(BlockEvent.RESIZING_STARTED);
 
             const c0_x = block.position.x + block.size.width / 2.0;
             const c0_y = block.position.y + block.size.height / 2.0;
@@ -585,7 +586,8 @@ export default class EditorSelectorArea {
             const type = [...resizeElement.classList].find(c => c.startsWith('resize--'))?.replace('resize--', '') ?? 'top-left';
 
             for (const {block, width, height} of blockInitialData) {
-                block.onResizeCompleted(
+
+                block.processEvent(BlockEvent.RESIZING_ENDED,
                     ['bottom-right', 'top-left', 'top-right', 'bottom-left'].includes(type) ? "PROPORTIONAL" : "NON_PROPORTIONAL",
                     {width: width, height: height});
             }
@@ -610,7 +612,7 @@ export default class EditorSelectorArea {
         let snappedAngle = 0;
         let lastAngle = Math.atan2(initialY - centerY, initialX - centerX);
         const initialPositions = this.selector.getSelectedBlocks().map(block => {
-            block.onRotationStarted();
+            block.processEvent(BlockEvent.ROTATION_STARTED);
 
             return {
                 block,
@@ -676,7 +678,7 @@ export default class EditorSelectorArea {
             window.removeEventListener("mouseup", mouseUpHandler);
 
             for (const {block, rotation} of initialPositions) {
-                block.onRotationCompleted(rotation);
+                block.processEvent(BlockEvent.ROTATION_ENDED, rotation);
             }
             this.updateSelectionArea();
 
@@ -724,11 +726,11 @@ export default class EditorSelectorArea {
             for (let block of this.editor.getBlocks()) {
                 if (block.overlaps(range) && !block.locked) {
                     if (!block.hovering) {
-                        block.onHoverStarted();
+                        block.processEvent(BlockEvent.HOVER_STARTED);
                     }
                 } else {
                     if (block.hovering) {
-                        block.onHoverEnded();
+                        block.processEvent(BlockEvent.HOVER_ENDED);
                     }
                 }
             }
@@ -753,7 +755,7 @@ export default class EditorSelectorArea {
             for (let block of foundBlocks) {
                 this.selector.selectBlock(block, true);
                 if (block.hovering) {
-                    block.onHoverEnded();
+                    block.processEvent(BlockEvent.HOVER_ENDED);
                 }
             }
             this.selectBoxElement.classList.remove("editor-select-box--active");
