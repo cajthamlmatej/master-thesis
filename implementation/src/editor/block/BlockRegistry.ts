@@ -1,5 +1,5 @@
 import {EditorBlock} from "@/editor/block/EditorBlock";
-import type {BlockDeserializer} from "@/editor/block/BlockDeserializer";
+import type {BlockDeserializer} from "@/editor/block/serialization/BlockDeserializer";
 import type {Type} from "@/utils/TypeScriptTypes";
 import type {PlayerBlock} from "@/editor/block/PlayerBlock";
 

@@ -2,7 +2,7 @@ import {boundingBoxOfElements} from "@/utils/Area";
 import type {EditorSelector} from "@/editor/selector/EditorSelector";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import type Editor from "@/editor/Editor";
-import {BlockEvent} from "@/editor/block/BlockEvent";
+import {BlockEvent} from "@/editor/block/events/BlockEvent";
 
 interface SelectionArea {
     x: number;

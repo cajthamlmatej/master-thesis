@@ -1,7 +1,12 @@
-import type {BlockEvent} from "@/editor/block/BlockEvent";
+import type {BlockEvent} from "@/editor/block/events/BlockEvent";
 
 export const LISTENER_METADATA_KEY = "block-event-listener";
 
+/**
+ * Decorator for block event listeners that will be called when the event is emitted.
+ * @param event
+ * @constructor
+ */
 export function BlockEventListener(event: BlockEvent): MethodDecorator {
     return function (
         target: Object,

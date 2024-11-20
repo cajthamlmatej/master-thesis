@@ -1,7 +1,7 @@
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {generateUUID} from "@/utils/Generators";
-import {BlockEventListener} from "@/editor/block/BlockListener";
-import {BlockEvent} from "@/editor/block/BlockEvent";
+import {BlockEventListener} from "@/editor/block/events/BlockListener";
+import {BlockEvent} from "@/editor/block/events/BlockEvent";
 
 export class WatermarkEditorBlock extends EditorBlock {
     constructor(id: string) {
@@ -40,12 +40,10 @@ export class WatermarkEditorBlock extends EditorBlock {
     override clone(): EditorBlock {
         return new WatermarkEditorBlock(generateUUID());
     }
-
     override serialize(): Object {
-        return {
-            ...this.serializeBase()
-        }
+        return {}
     }
+
 
     private calculatePosition() {
         return {

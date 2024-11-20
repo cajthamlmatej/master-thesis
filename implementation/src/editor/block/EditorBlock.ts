@@ -3,23 +3,33 @@ import {twoPolygonsIntersect} from "@/utils/collision";
 import {getRotatedRectanglePoints} from "@/utils/spaceManipulation";
 import type {Property} from "@/editor/property/Property";
 import {PositionProperty} from "@/editor/property/base/PositionProperty";
-import {BlockEvent} from "@/editor/block/BlockEvent";
-import {BlockEventListener, LISTENER_METADATA_KEY} from "@/editor/block/BlockListener";
+import {BlockEvent} from "@/editor/block/events/BlockEvent";
+import {BlockEventListener, LISTENER_METADATA_KEY} from "@/editor/block/events/BlockListener";
+import {BlockSerialize, SERIALIZER_METADATA_KEY} from "@/editor/block/serialization/BlockPropertySerialize";
+import type {SerializeEntry} from "@/editor/block/serialization/BlockPropertySerialize";
 
 export abstract class EditorBlock {
+    @BlockSerialize("id")
     public id: string;
+    @BlockSerialize("type")
     public type: string;
+    @BlockSerialize("position")
     public position: {
         x: number;
         y: number;
     }
+    @BlockSerialize("size")
     public size: {
         width: number;
         height: number;
     }
+    @BlockSerialize("rotation")
     public rotation: number = 0;
+    @BlockSerialize("zIndex")
     public zIndex: number = 0;
+    @BlockSerialize("locked")
     public locked: boolean = false;
+    @BlockSerialize("group")
     public group: string | undefined = undefined;
 
     public element!: HTMLElement;
@@ -39,10 +49,50 @@ export abstract class EditorBlock {
      */
     public abstract render(): HTMLElement;
 
+    /**
+     * Returns a new instance of the block with the same properties.
+     */
     public abstract clone(): EditorBlock;
 
-    public abstract serialize(): Object;
+    /**
+     * Serializes the block properties to an object, so it can be saved.
+     */
+    public serialize(): Object {
+        const serialized: any = {};
 
+        const instance = this as any;
+        const keys = Reflect.getMetadataKeys(this);
+
+        for (const key of keys) {
+            if(!key.startsWith(SERIALIZER_METADATA_KEY)) continue;
+
+            const metadata = Reflect.getMetadata(key, this);
+
+            if(!metadata) continue;
+
+            const serializers = metadata as Set<SerializeEntry>;
+
+            for (const serializer of serializers) {
+                if(!(serializer.propertyKey in instance)) {
+                    console.error(`Property ${serializer.propertyKey} does not exist on block ${this.id} (${this.type}).`);
+                    continue;
+                }
+
+                if(serializer.key in serialized) {
+                    console.error(`Key ${serializer.key} already exists on block ${this.id} (${this.type}).`);
+                    continue;
+                }
+
+                serialized[serializer.key] = instance[serializer.propertyKey];
+            }
+        }
+
+        return serialized;
+    }
+
+    /**
+     * Returns the editor support for the block.
+     */
     public editorSupport(): {
         group: boolean;
         selection: boolean;
@@ -74,22 +124,9 @@ export abstract class EditorBlock {
     }
 
     /**
-     * Serializes the base properties of the block.
-     * @protected
+     * Returns the content element of the block, if it has one.
+     * Can be used to
      */
-    protected serializeBase(): Object {
-        return {
-            id: this.id,
-            type: this.type,
-            position: this.position,
-            size: this.size,
-            rotation: this.rotation,
-            zIndex: this.zIndex,
-            locked: this.locked,
-            group: this.group,
-        };
-    }
-
     public getContent(): HTMLElement | undefined {
         return undefined;
     }

@@ -1,10 +1,12 @@
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {generateUUID} from "@/utils/Generators";
-import {BlockEvent} from "@/editor/block/BlockEvent";
-import {BlockEventListener} from "@/editor/block/BlockListener";
+import {BlockEvent} from "@/editor/block/events/BlockEvent";
+import {BlockEventListener} from "@/editor/block/events/BlockListener";
+import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 
 export class ImageEditorBlock extends EditorBlock {
-    private imageUrl: string;
+    @BlockSerialize("imageUrl")
+    private readonly imageUrl: string;
 
     private imageElement!: HTMLImageElement;
 
@@ -52,11 +54,9 @@ export class ImageEditorBlock extends EditorBlock {
             this.imageUrl);
     }
 
-    override serialize(): Object {
-        return {
-            ...this.serializeBase(),
-            imageUrl: this.imageUrl,
-        }
+    @BlockEventListener(BlockEvent.SELECTED)
+    onSelected() {
+        console.log(this.serialize());
     }
 
     @BlockEventListener(BlockEvent.MOUNTED)

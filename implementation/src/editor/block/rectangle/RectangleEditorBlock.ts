@@ -3,8 +3,10 @@ import {generateUUID} from "@/utils/Generators";
 import type {Type} from "@/utils/TypeScriptTypes";
 import type {Property} from "@/editor/property/Property";
 import {ColorProperty} from "@/editor/property/base/ColorProperty";
+import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 
 export class RectangleEditorBlock extends EditorBlock {
+    @BlockSerialize("color")
     private color: string;
 
     constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number, color: string) {
@@ -45,12 +47,5 @@ export class RectangleEditorBlock extends EditorBlock {
             ...super.getProperties(),
             new ColorProperty("color")
         ];
-    }
-
-    override serialize(): Object {
-        return {
-            ...this.serializeBase(),
-            color: this.color,
-        }
     }
 }

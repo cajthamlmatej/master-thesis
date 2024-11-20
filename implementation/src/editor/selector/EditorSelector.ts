@@ -3,7 +3,7 @@ import type Editor from "@/editor/Editor";
 import {EditorSelectorContext} from "@/editor/selector/EditorSelectorContext";
 import EditorSelectorEvents from "@/editor/selector/EditorSelectorEvents";
 import EditorSelectorArea from "@/editor/selector/area/EditorSelectorArea";
-import {BlockEvent} from "@/editor/block/BlockEvent";
+import {BlockEvent} from "@/editor/block/events/BlockEvent";
 
 
 export class EditorSelector {

@@ -1,11 +1,15 @@
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {generateUUID} from "@/utils/Generators";
-import {BlockEventListener} from "@/editor/block/BlockListener";
-import {BlockEvent} from "@/editor/block/BlockEvent";
+import {BlockEventListener} from "@/editor/block/events/BlockListener";
+import {BlockEvent} from "@/editor/block/events/BlockEvent";
+import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 
 export class TextEditorBlock extends EditorBlock {
+    @BlockSerialize("content")
     private content: string;
+    @BlockSerialize("fontSize")
     private fontSize: number;
+
     private editable: boolean = false;
     private lastClick: number = 0;
     private removed = false;
@@ -81,14 +85,6 @@ export class TextEditorBlock extends EditorBlock {
 
     override clone(): EditorBlock {
         return new TextEditorBlock(generateUUID(), {...this.position}, {...this.size}, this.rotation, this.zIndex, this.content, this.fontSize);
-    }
-
-    override serialize(): Object {
-        return {
-            ...this.serializeBase(),
-            content: this.content,
-            fontSize: this.fontSize,
-        }
     }
 
     @BlockEventListener(BlockEvent.MOUNTED)

@@ -1,4 +1,4 @@
-import type {BlockDeserializer} from "@/editor/block/BlockDeserializer";
+import type {BlockDeserializer} from "@/editor/block/serialization/BlockDeserializer";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 import {WatermarkEditorBlock} from "@/editor/block/watermark/WatermarkEditorBlock";
 import type {PlayerBlock} from "@/editor/block/PlayerBlock";
