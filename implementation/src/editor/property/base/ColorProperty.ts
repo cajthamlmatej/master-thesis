@@ -1,8 +1,8 @@
 import {Property} from "@/editor/property/Property";
-import {EditorBlock} from "@/editor/block/EditorBlock";
 
 export class ColorProperty extends Property {
     private field: string;
+
     constructor(field: string) {
         super();
         this.field = field;
@@ -29,24 +29,24 @@ export class ColorProperty extends Property {
         this.recalculateValues(colorInput);
 
         colorInput?.addEventListener('input', () => {
-            for(let block of this.blocks) {
+            for (let block of this.blocks) {
                 (block as any)[this.field] = colorInput!.value;
                 (block as any).synchronize();
             }
         });
     }
 
+    public override destroy(): void {
+        this.element.innerHTML = "";
+    }
+
     private recalculateValues(colorInput: HTMLInputElement | null) {
-        for(let block of this.blocks) {
-            if((block as any)[this.field] !== (this.blocks[0] as any)[this.field]) {
+        for (let block of this.blocks) {
+            if ((block as any)[this.field] !== (this.blocks[0] as any)[this.field]) {
                 colorInput!.value = "#ffffff";
                 return;
             }
             colorInput!.value = (block as any)[this.field];
         }
-    }
-
-    public override destroy(): void {
-        this.element.innerHTML = "";
     }
 }

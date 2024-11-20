@@ -37,9 +37,11 @@ export class WatermarkEditorBlock extends EditorBlock {
     override move(x: number, y: number) {
         this.position = this.calculatePosition();
     }
+
     override clone(): EditorBlock {
         return new WatermarkEditorBlock(generateUUID());
     }
+
     override serialize(): Object {
         return {}
     }

@@ -9,6 +9,7 @@ export class PasteAction extends ContextAction {
     override isVisible(param: ActionParameters) {
         return param.editor.getClipboard().hasContent();
     }
+
     override run(param: ActionParameters) {
         param.editor.getClipboard().paste(param.position);
     }

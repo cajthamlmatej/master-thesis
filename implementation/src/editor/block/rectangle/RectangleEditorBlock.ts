@@ -1,6 +1,5 @@
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {generateUUID} from "@/utils/Generators";
-import type {Type} from "@/utils/TypeScriptTypes";
 import type {Property} from "@/editor/property/Property";
 import {ColorProperty} from "@/editor/property/base/ColorProperty";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";

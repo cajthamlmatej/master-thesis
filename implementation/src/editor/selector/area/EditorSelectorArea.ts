@@ -51,7 +51,7 @@ export default class EditorSelectorArea {
             this.handleSelector();
         });
         this.editor.events.BLOCK_POSITION_CHANGED.on((blockData) => {
-            if(blockData.manual) {
+            if (blockData.manual) {
                 this.recalculateSelectionArea();
                 this.handleVisibility();
             }

@@ -1,9 +1,8 @@
 import {Property} from "@/editor/property/Property";
-import {EditorBlock} from "@/editor/block/EditorBlock";
 
 export class PositionProperty extends Property {
     public override setup(): void {
-        if(this.blocks.length != 1) {
+        if (this.blocks.length != 1) {
             this.element.innerHTML = "";
             return;
         }
@@ -29,12 +28,12 @@ export class PositionProperty extends Property {
         this.recalculateValues(xInput, yInput);
 
         xInput?.addEventListener('input', () => {
-            for(let block of this.blocks) {
+            for (let block of this.blocks) {
                 block.move(parseInt(xInput!.value), block.position.y, false, true);
             }
         });
         yInput?.addEventListener('input', () => {
-            for(let block of this.blocks) {
+            for (let block of this.blocks) {
                 block.move(block.position.x, parseInt(yInput!.value), false, true);
             }
         });
@@ -44,22 +43,22 @@ export class PositionProperty extends Property {
         });
     }
 
+    public override destroy(): void {
+        this.element.innerHTML = "";
+    }
+
     private recalculateValues(xInput: HTMLInputElement | null, yInput: HTMLInputElement | null) {
         let defaultX: string | number = this.blocks[0].position.x;
         let defaultY: string | number = this.blocks[0].position.y;
 
-        if(!this.blocks.every(block => block.position.x === defaultX)) {
+        if (!this.blocks.every(block => block.position.x === defaultX)) {
             defaultX = "";
         }
-        if(!this.blocks.every(block => block.position.y === defaultY)) {
+        if (!this.blocks.every(block => block.position.y === defaultY)) {
             defaultY = "";
         }
 
         xInput!.value = defaultX.toString();
         yInput!.value = defaultY.toString();
-    }
-
-    public override destroy(): void {
-        this.element.innerHTML = "";
     }
 }

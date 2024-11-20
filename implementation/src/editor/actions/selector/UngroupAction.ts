@@ -1,7 +1,5 @@
 import {SelectorAction} from "@/editor/actions/SelectorAction";
 import type {ActionParameters} from "@/editor/actions/EditorAction";
-import {EditorBlock} from "@/editor/block/EditorBlock";
-import {generateUUID} from "@/utils/Generators";
 
 export class UngroupAction extends SelectorAction {
     constructor() {

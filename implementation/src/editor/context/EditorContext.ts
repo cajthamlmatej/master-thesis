@@ -1,5 +1,4 @@
 import Editor from "@/editor/Editor";
-import type {EditorBlock} from "@/editor/block/EditorBlock";
 import type {ContextAction} from "@/editor/actions/ContextAction";
 import {CopyAction} from "@/editor/actions/context/CopyAction";
 import {DeleteAction} from "@/editor/actions/context/DeleteAction";
@@ -12,10 +11,9 @@ import {ZIndexDownAction} from "@/editor/actions/context/ZIndexDownAction";
 
 export class EditorContext {
     public element!: HTMLElement;
+    public position: { x: number, y: number } = {x: 0, y: 0};
     private editor: Editor;
     private active: boolean = false;
-    public position: { x: number, y: number } = {x: 0, y: 0};
-
     private actions: ContextAction[] = [];
 
     constructor(editor: Editor) {

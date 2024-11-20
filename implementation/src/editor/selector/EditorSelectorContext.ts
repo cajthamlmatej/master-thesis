@@ -1,8 +1,6 @@
-import Editor from "@/editor/Editor";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 import type {EditorSelector} from "@/editor/selector/EditorSelector";
 import {getRotatedRectanglePoints} from "@/utils/spaceManipulation";
-import {generateUUID} from "@/utils/Generators";
 import {SelectorAction} from "@/editor/actions/SelectorAction";
 import {GroupAction} from "@/editor/actions/selector/GroupAction";
 import {UngroupAction} from "@/editor/actions/selector/UngroupAction";

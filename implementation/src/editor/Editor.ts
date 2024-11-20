@@ -21,7 +21,6 @@ import {TextPlayerBlock} from "@/editor/block/text/TextPlayerBlock";
 import {RectanglePlayerBlock} from "@/editor/block/rectangle/RectanglePlayerBlock";
 import {WatermarkPlayerBlock} from "@/editor/block/watermark/WatermarkPlayerBlock";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
-import {LISTENER_METADATA_KEY} from "@/editor/block/events/BlockListener";
 
 export default class Editor {
     private static readonly DEFAULT_PADDING = 32;

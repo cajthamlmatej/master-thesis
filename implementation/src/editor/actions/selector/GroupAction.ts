@@ -14,6 +14,7 @@ export class GroupAction extends SelectorAction {
             && param.selected.length > 1
             && (groups.size > 1 || (groups.size == 1 && groups.has(undefined)));
     }
+
     override run(param: ActionParameters) {
         let modified = new Set<EditorBlock>();
 

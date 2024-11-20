@@ -16,13 +16,13 @@ export function BlockEventListener(event: BlockEvent): MethodDecorator {
         const className = target.constructor.name;
         const key = `${LISTENER_METADATA_KEY}:${className}`;
 
-        if(Reflect.getMetadata(key, target) === undefined) {
+        if (Reflect.getMetadata(key, target) === undefined) {
             Reflect.defineMetadata(key, new Map<BlockEvent, Set<string | symbol>>(), target);
         }
 
         const map = Reflect.getMetadata(key, target) as Map<BlockEvent, Set<string | symbol>>;
 
-        if(!map.has(event)) {
+        if (!map.has(event)) {
             map.set(event, new Set<string | symbol>());
         }
 

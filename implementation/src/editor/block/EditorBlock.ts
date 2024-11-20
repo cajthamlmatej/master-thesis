@@ -5,8 +5,8 @@ import type {Property} from "@/editor/property/Property";
 import {PositionProperty} from "@/editor/property/base/PositionProperty";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {BlockEventListener, LISTENER_METADATA_KEY} from "@/editor/block/events/BlockListener";
-import {BlockSerialize, SERIALIZER_METADATA_KEY} from "@/editor/block/serialization/BlockPropertySerialize";
 import type {SerializeEntry} from "@/editor/block/serialization/BlockPropertySerialize";
+import {BlockSerialize, SERIALIZER_METADATA_KEY} from "@/editor/block/serialization/BlockPropertySerialize";
 
 export abstract class EditorBlock {
     @BlockSerialize("id")
@@ -34,6 +34,26 @@ export abstract class EditorBlock {
 
     public element!: HTMLElement;
     public editor!: Editor;
+    /**
+     * Determines if the block is currently selected.
+     */
+    public selected: boolean = false;
+    /**
+     * Determines if the block is currently resizing.
+     */
+    public resizing: boolean = false;
+    /**
+     * Determines if the block is currently moving.
+     */
+    public moving: boolean = false;
+    /**
+     * Determines if the block is currently rotating.
+     */
+    public rotating: boolean = false;
+    /**
+     * Determines if the block is currently hovering.
+     */
+    public hovering: boolean = false;
 
     protected constructor(id: string, type: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number) {
         this.id = id;
@@ -64,21 +84,21 @@ export abstract class EditorBlock {
         const keys = Reflect.getMetadataKeys(this);
 
         for (const key of keys) {
-            if(!key.startsWith(SERIALIZER_METADATA_KEY)) continue;
+            if (!key.startsWith(SERIALIZER_METADATA_KEY)) continue;
 
             const metadata = Reflect.getMetadata(key, this);
 
-            if(!metadata) continue;
+            if (!metadata) continue;
 
             const serializers = metadata as Set<SerializeEntry>;
 
             for (const serializer of serializers) {
-                if(!(serializer.propertyKey in instance)) {
+                if (!(serializer.propertyKey in instance)) {
                     console.error(`Property ${serializer.propertyKey} does not exist on block ${this.id} (${this.type}).`);
                     continue;
                 }
 
-                if(serializer.key in serialized) {
+                if (serializer.key in serialized) {
                     console.error(`Key ${serializer.key} already exists on block ${this.id} (${this.type}).`);
                     continue;
                 }
@@ -303,18 +323,18 @@ export abstract class EditorBlock {
         const keys = Reflect.getMetadataKeys(this);
 
         for (const key of keys) {
-            if(!key.startsWith(LISTENER_METADATA_KEY)) continue;
+            if (!key.startsWith(LISTENER_METADATA_KEY)) continue;
 
             const metadata = Reflect.getMetadata(key, this);
 
-            if(!metadata) continue;
+            if (!metadata) continue;
 
             const listeners = metadata.get(event);
 
-            if(!listeners) continue;
+            if (!listeners) continue;
 
             for (const listener of listeners) {
-                if(!instance[listener]) {
+                if (!instance[listener]) {
                     console.error(`Listener ${listener} for event ${event} does not exist on block ${this.id} (${this.type}).`);
                     continue
                 }
@@ -323,27 +343,6 @@ export abstract class EditorBlock {
             }
         }
     }
-
-    /**
-     * Determines if the block is currently selected.
-     */
-    public selected: boolean = false;
-    /**
-     * Determines if the block is currently resizing.
-     */
-    public resizing: boolean = false;
-    /**
-     * Determines if the block is currently moving.
-     */
-    public moving: boolean = false;
-    /**
-     * Determines if the block is currently rotating.
-     */
-    public rotating: boolean = false;
-    /**
-     * Determines if the block is currently hovering.
-     */
-    public hovering: boolean = false;
 
     @BlockEventListener(BlockEvent.SELECTED)
     private _onSelected() {

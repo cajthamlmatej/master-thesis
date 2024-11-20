@@ -17,5 +17,6 @@ export abstract class Property {
     }
 
     public abstract setup(): void;
+
     public abstract destroy(): void;
 }
