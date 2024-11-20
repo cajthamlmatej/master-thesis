@@ -12,7 +12,7 @@ export class RectangleEditorBlock extends EditorBlock {
         this.color = color;
     }
 
-    render(): HTMLElement {
+    override render(): HTMLElement {
         const element = document.createElement("div");
 
         element.classList.add("block");
@@ -21,24 +21,6 @@ export class RectangleEditorBlock extends EditorBlock {
         element.style.backgroundColor = this.color;
 
         return element;
-    }
-
-    override editorSupport() {
-        return {
-            group: true,
-            selection: true,
-            movement: true,
-            proportionalResizing: true,
-            nonProportionalResizingX: true,
-            nonProportionalResizingY: true,
-            rotation: true,
-            zIndex: true,
-            lock: true,
-        }
-    }
-
-    override getContent() {
-        return undefined;
     }
 
     override synchronize() {
@@ -58,14 +40,14 @@ export class RectangleEditorBlock extends EditorBlock {
     }
 
 
-    getProperties(): Property[] {
+    override getProperties(): Property[] {
         return [
             ...super.getProperties(),
             new ColorProperty("color")
         ];
     }
 
-    public override serialize(): Object {
+    override serialize(): Object {
         return {
             ...this.serializeBase(),
             color: this.color,

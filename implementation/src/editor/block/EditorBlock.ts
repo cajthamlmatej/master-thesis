@@ -39,7 +39,11 @@ export abstract class EditorBlock {
      */
     public abstract render(): HTMLElement;
 
-    public abstract editorSupport(): {
+    public abstract clone(): EditorBlock;
+
+    public abstract serialize(): Object;
+
+    public editorSupport(): {
         group: boolean;
         selection: boolean;
         movement: boolean;
@@ -49,11 +53,19 @@ export abstract class EditorBlock {
         rotation: boolean;
         zIndex: boolean;
         lock: boolean;
+    } {
+        return {
+            group: true,
+            selection: true,
+            movement: true,
+            proportionalResizing: true,
+            nonProportionalResizingX: true,
+            nonProportionalResizingY: true,
+            rotation: true,
+            zIndex: true,
+            lock: true,
+        }
     }
-
-    public abstract clone(): EditorBlock;
-
-    public abstract serialize(): Object;
 
     public getProperties(): Property[] {
         return [

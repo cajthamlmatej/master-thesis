@@ -14,7 +14,7 @@ export class ImageEditorBlock extends EditorBlock {
     }
 
     // noinspection DuplicatedCode
-    render(): HTMLElement {
+    override render(): HTMLElement {
         const element = document.createElement("div");
 
         element.classList.add("block");
@@ -29,37 +29,6 @@ export class ImageEditorBlock extends EditorBlock {
         this.imageElement = content;
 
         return element;
-    }
-    @BlockEventListener(BlockEvent.MOUNTED)
-    loadImage() {
-        const image = new Image();
-        image.src = this.imageUrl;
-
-        image.addEventListener("load", () => {
-            const ratio = image.width / image.height;
-
-            this.size.height = this.size.width / ratio;
-
-            this.synchronize();
-        });
-    }
-
-    override editorSupport() {
-        return {
-            group: true,
-            selection: true,
-            movement: true,
-            proportionalResizing: true,
-            nonProportionalResizingX: false,
-            nonProportionalResizingY: false,
-            rotation: true,
-            zIndex: true,
-            lock: true,
-        }
-    }
-
-    override getContent() {
-        return undefined;
     }
 
     override synchronize() {
@@ -83,10 +52,24 @@ export class ImageEditorBlock extends EditorBlock {
             this.imageUrl);
     }
 
-    public override serialize(): Object {
+    override serialize(): Object {
         return {
             ...this.serializeBase(),
             imageUrl: this.imageUrl,
         }
+    }
+
+    @BlockEventListener(BlockEvent.MOUNTED)
+    loadImage() {
+        const image = new Image();
+        image.src = this.imageUrl;
+
+        image.addEventListener("load", () => {
+            const ratio = image.width / image.height;
+
+            this.size.height = this.size.width / ratio;
+
+            this.synchronize();
+        });
     }
 }

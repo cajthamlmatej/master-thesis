@@ -34,37 +34,37 @@ export class WatermarkEditorBlock extends EditorBlock {
         }
     }
 
-    @BlockEventListener(BlockEvent.MOUNTED)
-    private onMounted() {
-        this.size.height = 50;
-        this.size.width = 200;
-
-        this.position = this.getPosition();
-    }
-
     override move(x: number, y: number) {
-        this.position = this.getPosition();
+        this.position = this.calculatePosition();
     }
-
-    @BlockEventListener(BlockEvent.MOVEMENT_ENDED)
-    private onMovementCompleted(start: { x: number; y: number }) {
-        this.position = this.getPosition();
-    }
-
-    public override clone(): EditorBlock {
+    override clone(): EditorBlock {
         return new WatermarkEditorBlock(generateUUID());
     }
 
-    public override serialize(): Object {
+    override serialize(): Object {
         return {
             ...this.serializeBase()
         }
     }
 
-    private getPosition() {
+    private calculatePosition() {
         return {
             x: 30,
             y: this.editor.getSize().height - 30 - 50
         }
     }
+
+    @BlockEventListener(BlockEvent.MOUNTED)
+    private onMounted() {
+        this.size.height = 50;
+        this.size.width = 200;
+
+        this.position = this.calculatePosition();
+    }
+
+    @BlockEventListener(BlockEvent.MOVEMENT_ENDED)
+    private onMovementCompleted(start: { x: number; y: number }) {
+        this.position = this.calculatePosition();
+    }
+
 }
