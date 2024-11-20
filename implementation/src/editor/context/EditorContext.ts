@@ -1,128 +1,33 @@
 import Editor from "@/editor/Editor";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
+import type {ContextAction} from "@/editor/actions/ContextAction";
+import {CopyAction} from "@/editor/actions/context/CopyAction";
+import {DeleteAction} from "@/editor/actions/context/DeleteAction";
+import {DuplicateAction} from "@/editor/actions/context/DuplicateAction";
+import {PasteAction} from "@/editor/actions/context/PasteAction";
+import {ZIndexUpAction} from "@/editor/actions/context/ZIndexUpAction";
+import {ZIndexTopAction} from "@/editor/actions/context/ZIndexTopAction";
+import {ZIndexBottomAction} from "@/editor/actions/context/ZIndexBottomAction";
+import {ZIndexDownAction} from "@/editor/actions/context/ZIndexDownAction";
 
 export class EditorContext {
     public element!: HTMLElement;
     private editor: Editor;
     private active: boolean = false;
-    private position: { x: number, y: number } = {x: 0, y: 0};
+    public position: { x: number, y: number } = {x: 0, y: 0};
 
-    private actions = [
-        // {
-        //     name: "group",
-        //     label: "Group",
-        //     visible: (selected: Block[], editor: Editor) => {
-        //         return selected.every(b => b.editorSupport().group) && selected.length >= 1;
-        //     },
-        //     action: (selected: Block[], editor: Editor) => {
-        //         let groupId = generateUUID();
-        //
-        //         for (let block of selected) {
-        //             block.group = groupId;
-        //         }
-        //         // TODO: Remove old groups, if they are <=1 blocks
-        //     },
-        // },
-        {
-            name: "copy",
-            label: "Copy",
-            visible: (selected: EditorBlock[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().selection) && selected.length >= 1;
-            },
-            action: (selected: EditorBlock[], editor: Editor) => {
-                editor.getClipboard().markForCopy(selected);
-            },
-        },
-        {
-            name: "paste",
-            label: "Paste",
-            visible: (selected: EditorBlock[], editor: Editor) => {
-                return editor.getClipboard().hasContent();
-            },
-            action: (selected: EditorBlock[], editor: Editor) => {
-                editor.getClipboard().paste(this.position);
-            }
-        },
-        {
-            name: "duplicate",
-            label: "Duplicate",
-            visible: (selected: EditorBlock[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().selection) && selected.length >= 1;
-            },
-            action: (selected: EditorBlock[], editor: Editor) => {
-                let newBlocks: EditorBlock[] = [];
-                for (let block of selected) {
-                    const clone = block.clone();
-
-                    editor.addBlock(clone);
-
-                    clone.move(clone.position.x + 20, clone.position.y + 20);
-
-                    newBlocks.push(clone);
-                }
-
-                // Cannot be done in the loop above, because we need cant modify the selection while iterating over it
-                editor.getSelector().deselectAllBlocks();
-                for (let block of newBlocks) {
-                    editor.getSelector().selectBlock(block, true);
-                }
-            }
-        },
-        {
-            name: "delete",
-            label: "Delete",
-            visible: (selected: EditorBlock[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().selection && !b.locked) && selected.length >= 1
-            },
-            action: (selected: EditorBlock[], editor: Editor) => {
-                selected.forEach(b => editor.removeBlock(b));
-            }
-        },
-        {
-            name: "zIndexUp",
-            label: "Push forward",
-            visible: (selected: EditorBlock[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().zIndex && !b.locked) && selected.length >= 1;
-            },
-            action: (selected: EditorBlock[], editor: Editor) => {
-                selected.forEach(b => b.zIndexUp());
-            }
-        },
-        {
-            name: "zIndexDown",
-            label: "Push backward",
-            visible: (selected: EditorBlock[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().zIndex && !b.locked) && selected.length >= 1;
-            },
-            action: (selected: EditorBlock[], editor: Editor) => {
-                selected.forEach(b => b.zIndexDown());
-            }
-        },
-        {
-            name: "zIndexTop",
-            label: "Push to front",
-            visible: (selected: EditorBlock[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().zIndex && !b.locked) && selected.length >= 1;
-            },
-            action: (selected: EditorBlock[], editor: Editor) => {
-                selected.forEach(b => b.zIndexMaxUp());
-            }
-        },
-        {
-            name: "zIndexBottom",
-            label: "Push to back",
-            visible: (selected: EditorBlock[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().zIndex && !b.locked) && selected.length >= 1;
-            },
-            action: (selected: EditorBlock[], editor: Editor) => {
-                selected.forEach(b => b.zIndexMaxDown());
-            }
-        }
-        // TODO: move up to specific classes & add way to register custom actions
-    ]
+    private actions: ContextAction[] = [];
 
     constructor(editor: Editor) {
         this.editor = editor;
+        this.actions.push(new CopyAction());
+        this.actions.push(new DeleteAction());
+        this.actions.push(new DuplicateAction());
+        this.actions.push(new PasteAction());
+        this.actions.push(new ZIndexUpAction());
+        this.actions.push(new ZIndexDownAction());
+        this.actions.push(new ZIndexTopAction());
+        this.actions.push(new ZIndexBottomAction());
 
         this.setupContext();
     }
@@ -134,7 +39,11 @@ export class EditorContext {
         let visibleActions = 0;
 
         for (const action of this.getActions()) {
-            const visible = action.visible(this.editor.getSelector().getSelectedBlocks(), this.editor);
+            const visible = action.isVisible({
+                selected: this.editor.getSelector().getSelectedBlocks(),
+                editor: this.editor,
+                position: this.position
+            });
             const actionElement = this.element.querySelector(`.action[data-action="${action.name}"]`);
 
             if (actionElement) {
@@ -173,7 +82,11 @@ export class EditorContext {
 
             actionElement.addEventListener("mousedown", (e) => {
                 console.debug("Action", action.name, "executed for", this.editor.getSelector().getSelectedBlocks().length, "blocks");
-                action.action(this.editor.getSelector().getSelectedBlocks(), this.editor);
+                action.run({
+                    selected: this.editor.getSelector().getSelectedBlocks(),
+                    editor: this.editor,
+                    position: this.position
+                });
 
                 this.active = false;
 

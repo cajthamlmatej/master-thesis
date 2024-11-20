@@ -3,6 +3,11 @@ import type {EditorBlock} from "@/editor/block/EditorBlock";
 import type {EditorSelector} from "@/editor/selector/EditorSelector";
 import {getRotatedRectanglePoints} from "@/utils/spaceManipulation";
 import {generateUUID} from "@/utils/Generators";
+import {SelectorAction} from "@/editor/actions/SelectorAction";
+import {GroupAction} from "@/editor/actions/selector/GroupAction";
+import {UngroupAction} from "@/editor/actions/selector/UngroupAction";
+import {LockAction} from "@/editor/actions/selector/LockAction";
+import {UnlockAction} from "@/editor/actions/selector/UnlockAction";
 
 export class EditorSelectorContext {
     public element!: HTMLElement;
@@ -10,110 +15,14 @@ export class EditorSelectorContext {
     private active: boolean = false;
     private position: { x: number, y: number } = {x: 0, y: 0};
 
-    private actions = [
-        {
-            name: "group",
-            label: "Group",
-            icon: "mdi mdi-group",
-            visible: (selected: EditorBlock[], editor: Editor) => {
-                const groups = selected.reduce((acc, b) => acc.add(b.group), new Set<string | undefined>());
-                return selected.every(b => b.editorSupport().group)
-                    && selected.length > 1
-                    && (groups.size > 1 || (groups.size == 1 && groups.has(undefined)));
-            },
-            action: (selected: EditorBlock[], editor: Editor) => {
-                let modified = new Set<EditorBlock>();
-
-                let groupId = generateUUID();
-                let handleGroups = new Set<string>();
-
-                for (const block of selected) {
-                    if (block.group) {
-                        handleGroups.add(block.group);
-                    }
-
-                    block.group = groupId;
-                    modified.add(block);
-                }
-
-                for (const group of handleGroups) {
-                    const groupBlocks = editor.getBlocksInGroup(group)
-
-                    if (groupBlocks.length <= 1) {
-                        for (const block of groupBlocks) {
-                            block.group = undefined;
-                            modified.add(block);
-                        }
-                    }
-                }
-
-                this.selector.getEditor().events.BLOCK_GROUP_CHANGED.emit(Array.from(modified));
-
-                this.handleContext(this.selector.getSelectedBlocks());
-            },
-        },
-        {
-            name: "ungroup",
-            label: "Ungroup",
-            icon: "mdi mdi-ungroup",
-            visible: (selected: EditorBlock[], editor: Editor) => {
-                const groups = selected.reduce((acc, b) => acc.add(b.group), new Set<string | undefined>());
-                return selected.every(b => b.editorSupport().group)
-                    && selected.length > 1
-                    && groups.size == 1 && !groups.has(undefined);
-            },
-            action: (selected: EditorBlock[], editor: Editor) => {
-                for (const block of selected) {
-                    block.group = undefined;
-                }
-
-                this.selector.getEditor().events.BLOCK_GROUP_CHANGED.emit(Array.from(selected));
-
-                // TODO: handle groups that are now empty (<= 1 block)
-
-                this.handleContext(this.selector.getSelectedBlocks());
-            },
-        },
-        {
-            name: "lock",
-            label: "Lock",
-            icon: "mdi mdi-lock",
-            visible: (selected: EditorBlock[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().lock && !b.locked);
-            },
-            action: (selected: EditorBlock[], editor: Editor) => {
-                for (const block of selected) {
-                    block.lock();
-                }
-                this.selector.getEditor().events.BLOCK_LOCK_CHANGED.emit({
-                    blocks: selected,
-                    locked: true
-                });
-                this.handleContext(this.selector.getSelectedBlocks());
-            },
-        },
-        {
-            name: "unlock",
-            label: "Unlock",
-            icon: "mdi mdi-lock-open",
-            visible: (selected: EditorBlock[], editor: Editor) => {
-                return selected.every(b => b.editorSupport().lock) && selected.some(b => b.locked);
-            },
-            action: (selected: EditorBlock[], editor: Editor) => {
-                for (const block of selected) {
-                    block.unlock();
-                }
-                this.selector.getEditor().events.BLOCK_LOCK_CHANGED.emit({
-                    blocks: selected,
-                    locked: false
-                });
-                this.handleContext(this.selector.getSelectedBlocks());
-            },
-        },
-    ]
+    private actions: SelectorAction[] = [];
 
     constructor(selector: EditorSelector) {
         this.selector = selector;
+        this.actions.push(new GroupAction());
+        this.actions.push(new UngroupAction());
+        this.actions.push(new LockAction());
+        this.actions.push(new UnlockAction());
 
         this.setupContext();
         this.selector.events.SELECTED_BLOCK_CHANGED.on((selected) => {
@@ -134,7 +43,11 @@ export class EditorSelectorContext {
         }
 
         for (const action of this.getActions()) {
-            const visible = action.visible(this.selector.getSelectedBlocks(), this.selector.getEditor());
+            const visible = action.isVisible({
+                editor: this.selector.getEditor(),
+                selected: selected,
+                position: {x: this.position.x, y: this.position.y}
+            });
             console.log("Action", action.name, "visible:", visible);
             const actionElement = this.element.querySelector(`.action[data-action="${action.name}"]`);
 
@@ -183,7 +96,12 @@ export class EditorSelectorContext {
 
             actionElement.addEventListener("mousedown", (e) => {
                 console.debug("Action", action.name, "executed for", this.selector.getSelectedBlocks().length, "blocks");
-                action.action(this.selector.getSelectedBlocks(), this.selector.getEditor());
+                action.run({
+                    editor: this.selector.getEditor(),
+                    selected: this.selector.getSelectedBlocks(),
+                    position: {x: this.position.x, y: this.position.y}
+                });
+                this.handleContext(this.selector.getSelectedBlocks());
 
                 e.preventDefault();
                 e.stopImmediatePropagation();
