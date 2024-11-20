@@ -13,6 +13,10 @@ export class ColorProperty extends Property {
         return super.getID() + "-" + this.field;
     }
 
+    public override isVisible(): boolean {
+        return this.blocks.every(block => this.field in block);
+    }
+
     public override setup(): void {
         this.element.innerHTML = `
             <p class="label">Color</p>

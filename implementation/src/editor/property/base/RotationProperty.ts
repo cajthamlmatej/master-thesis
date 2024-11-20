@@ -1,6 +1,11 @@
 import {Property} from "@/editor/property/Property";
 
 export class RotationProperty extends Property {
+
+    public override isVisible(): boolean {
+        return true;
+    }
+
     public override setup(): void {
         this.element.innerHTML = `
             <p class="label">Rotation</p>

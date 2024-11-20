@@ -40,9 +40,14 @@ export class EditorProperty {
             const element = document.createElement("div");
             element.classList.add("property");
             element.classList.add("property--type-" + (typeof property).toLowerCase().replace("property", ""));
-            this.element.appendChild(element);
 
             property.initialize(element, this, blocks);
+
+            if(!property.isVisible()) {
+                continue;
+            }
+            this.element.appendChild(element);
+
             property.setup();
         }
     }

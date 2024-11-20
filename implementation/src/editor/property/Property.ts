@@ -16,6 +16,8 @@ export abstract class Property {
         return this.constructor.name;
     }
 
+    public abstract isVisible(): boolean;
+
     public abstract setup(): void;
 
     public abstract destroy(): void;

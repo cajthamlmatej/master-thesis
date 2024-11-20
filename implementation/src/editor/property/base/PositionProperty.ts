@@ -1,12 +1,12 @@
 import {Property} from "@/editor/property/Property";
 
 export class PositionProperty extends Property {
-    public override setup(): void {
-        if (this.blocks.length != 1) {
-            this.element.innerHTML = "";
-            return;
-        }
 
+    public override isVisible(): boolean {
+        return this.blocks.length === 1;
+    }
+
+    public override setup(): void {
         this.element.innerHTML = `
             <p class="label">Position</p>
             <div class="property-content property-content--row">
