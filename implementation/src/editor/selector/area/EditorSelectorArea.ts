@@ -3,37 +3,45 @@ import type {EditorSelector} from "@/editor/selector/EditorSelector";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import type Editor from "@/editor/Editor";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
-
-interface SelectionArea {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    rotation: number;
-    baseRotation: number;
-    baseX: number;
-    baseY: number;
-}
+import type {SelectorCommand} from "@/editor/selector/area/SelectorCommand";
+import {RotatingSelectorCommand} from "@/editor/selector/area/command/RotatingSelectorCommand";
+import {ResizingSelectorCommand} from "@/editor/selector/area/command/ResizingSelectorCommand";
+import {MovingSelectorCommand} from "@/editor/selector/area/command/MovingSelectorCommand";
 
 export default class EditorSelectorArea {
     private readonly selector: EditorSelector;
     private readonly editor: Editor;
+
+    private commands: SelectorCommand[] = [];
+
     private element!: HTMLElement;
     private selectBoxElement!: HTMLElement;
-    private selectionArea: SelectionArea = {
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0,
-        rotation: 0,
-        baseRotation: 0,
-        baseX: 0,
-        baseY: 0
-    };
+
+    private x: number;
+    private y: number;
+    private width: number;
+    private height: number;
+    private rotation: number;
+    private baseRotation: number;
+    private baseX: number;
+    private baseY: number;
 
     constructor(selector: EditorSelector) {
         this.selector = selector;
         this.editor = selector.getEditor();
+
+        this.commands.push(new RotatingSelectorCommand());
+        this.commands.push(new MovingSelectorCommand());
+        this.commands.push(new ResizingSelectorCommand());
+
+        this.x = 0;
+        this.y = 0;
+        this.width = 0;
+        this.height = 0;
+        this.rotation = 0;
+        this.baseRotation = 0;
+        this.baseX = 0;
+        this.baseY = 0;
 
         this.setupSelector();
 
@@ -65,8 +73,20 @@ export default class EditorSelectorArea {
     }
 
     /**
+     * Returns the current selection area.
+     */
+    public getArea() {
+        return {
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height,
+            rotation: this.rotation
+        };
+    }
+
+    /**
      * Checks if the selector should be visible and updates its position, size, rotation and visible actions.
-     * @private
      */
     public handleSelector() {
         this.element.classList.remove("editor-selector--proportional-resizing");
@@ -76,14 +96,12 @@ export default class EditorSelectorArea {
         this.element.classList.remove("editor-selector--rotation");
 
         if (this.selector.getSelectedBlocks().length > 1) {
-            const sizeAndPosition = this.selectionArea;
+            this.element.style.left = this.x + "px";
+            this.element.style.top = this.y + "px";
+            this.element.style.width = this.width + "px";
+            this.element.style.height = this.height + "px";
 
-            this.element.style.left = sizeAndPosition.x + "px";
-            this.element.style.top = sizeAndPosition.y + "px";
-            this.element.style.width = sizeAndPosition.width + "px";
-            this.element.style.height = sizeAndPosition.height + "px";
-
-            this.element.style.transform = `rotate(${sizeAndPosition.rotation}deg)`;
+            this.element.style.transform = `rotate(${this.rotation}deg)`;
 
             if (this.selector.getSelectedBlocks().every(b => b.editorSupport().movement) && this.selector.getSelectedBlocks().every(b => b.canCurrentlyDo("move"))) {
                 this.element.classList.add("editor-selector--move");
@@ -111,7 +129,7 @@ export default class EditorSelectorArea {
             this.element.style.width = block.size.width + "px";
             this.element.style.height = block.size.height + "px";
 
-            this.element.style.transform = `rotate(${this.selectionArea.rotation}deg)`;
+            this.element.style.transform = `rotate(${this.rotation}deg)`;
 
             const editorSupport = block.editorSupport();
 
@@ -133,28 +151,125 @@ export default class EditorSelectorArea {
         }
     }
 
+    /**
+     * Returns the editor instance.
+     */
+    public getEditor() {
+        return this.editor;
+    }
+
+    /**
+     * Recalculates the selection area based on the selected blocks.
+     */
+    public recalculateSelectionArea() {
+        this.element.style.transform = "rotate(0deg)";
+
+        if (this.selector.getSelectedBlocks().length == 1) {
+            const element = this.selector.getSelectedBlocks()[0];
+            this.x = element.position.x;
+            this.y = element.position.y;
+            this.width = element.size.width;
+            this.height = element.size.height;
+
+            this.rotation = element.rotation;
+        } else {
+            const data = boundingBoxOfElements(this.selector.getSelectedBlocks().map(b => b.element), this.editor);
+
+            this.x = data.x;
+            this.y = data.y;
+            this.width = data.width;
+            this.height = data.height;
+            this.rotation = 0;
+            this.baseRotation = 0;
+            this.baseX = 0;
+            this.baseY = 0;
+        }
+
+        this.baseRotation = this.rotation;
+        this.baseX = this.x;
+        this.baseY = this.y;
+
+        this.handleSelector();
+        this.selector.events.AREA_CHANGED.emit({
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height,
+            rotation: this.rotation
+        });
+    }
+
+    /**
+     * Updates the selection area to the current position, size and rotation for future movement.
+     */
+    public updateSelectionArea() {
+        this.baseX = this.x;
+        this.baseY = this.y;
+        this.baseRotation = this.rotation;
+    }
+
+    /**
+     * Moves the selection area by the given delta.
+     * @param deltaX
+     * @param deltaY
+     */
+    public moveSelectionArea(deltaX: number, deltaY: number) {
+        this.x = this.baseX + deltaX;
+        this.y = this.baseY + deltaY;
+        // this.editor.debugPoint(this.x, this.y, "blue");
+        // this.editor.debugPoint(this.x + this.width, this.y + this.height, "blue");
+        // this.editor.debugPoint(this.x + this.width, this.y, "blue");
+        // this.editor.debugPoint(this.x, this.y + this.height, "blue");
+
+        this.selector.events.AREA_CHANGED.emit({
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height,
+            rotation: this.rotation
+        });
+    }
+
+    /**
+     * Resizes the selection area by the given delta.
+     * @param deltaRotation
+     */
+    public rotateSelectionArea(deltaRotation: number) {
+        this.rotation = this.baseRotation + deltaRotation;
+
+        this.selector.events.AREA_CHANGED.emit({
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height,
+            rotation: this.rotation
+        });
+    }
+
+
+
     private setupSelector() {
         const selectorElement = document.createElement("div");
         selectorElement.classList.add("editor-selector");
 
-        selectorElement.innerHTML =
-            `<div class="move move--top"></div>
-<div class="move move--right"></div>
-<div class="move move--bottom"></div>
-<div class="move move--left"></div>
+        selectorElement.innerHTML = `<div class="actions"></div>`;
 
-<div class="resize resize--top-left"></div>
-<div class="resize resize--top-right"></div>
-<div class="resize resize--bottom-right"></div>
-<div class="resize resize--bottom-left"></div>
-<div class="resize resize--middle-right"></div>
-<div class="resize resize--middle-left"></div>
+        for (let command of this.commands) {
+            let elements = command.getElements();
 
-<div class="resize resize--top-middle"></div>
-<div class="resize resize--bottom-middle"></div>
+            for (let element of elements instanceof Array ? elements : [elements]) {
+                selectorElement.appendChild(element);
 
-<div class="rotate"></div>
-<div class="actions"></div>`
+                element.addEventListener("mousedown", (event) => {
+                    if (!(event instanceof MouseEvent)) return;
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    command.execute(event, element, this);
+                });
+            }
+        }
 
         const selectorBoxElement = document.createElement("div");
         selectorBoxElement.classList.add("editor-select-box");
@@ -206,44 +321,6 @@ export default class EditorSelectorArea {
 
             this.setupSelectBox(event);
         });
-
-        // Moving blocks
-        const movementElements = this.element.querySelectorAll(".move");
-
-        for (let moveElement of movementElements) {
-            moveElement.addEventListener("mousedown", (event) => {
-                if (!(event instanceof MouseEvent)) return;
-
-                event.preventDefault();
-                event.stopPropagation();
-
-                this.setupMovement(event, moveElement as HTMLElement);
-            });
-        }
-
-        // Resizing blocks
-        const resizeElements = this.element.querySelectorAll(".resize");
-
-        for (let resizeElement of resizeElements) {
-            resizeElement.addEventListener("mousedown", (event) => {
-                if (!(event instanceof MouseEvent)) return;
-
-                event.preventDefault();
-                event.stopPropagation();
-
-                this.setupResizing(event, resizeElement as HTMLElement);
-            });
-        }
-
-        // Rotating blocks
-        const rotateElement = this.element.querySelector(".rotate")! as HTMLElement;
-
-        rotateElement.addEventListener("mousedown", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            this.setupRotation(event, rotateElement);
-        });
     }
 
     private handleVisibility() {
@@ -256,85 +333,13 @@ export default class EditorSelectorArea {
         }
     }
 
+    private setupMovementOrSelect(originalEvent: MouseEvent, block: EditorBlock) {
+        let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(originalEvent.clientX, originalEvent.clientY);
 
-    private recalculateSelectionArea() {
-        this.element.style.transform = "rotate(0deg)";
-
-        if (this.selector.getSelectedBlocks().length == 1) {
-            const element = this.selector.getSelectedBlocks()[0];
-            this.selectionArea.x = element.position.x;
-            this.selectionArea.y = element.position.y;
-            this.selectionArea.width = element.size.width;
-            this.selectionArea.height = element.size.height;
-
-            this.selectionArea.rotation = element.rotation;
-        } else {
-            this.selectionArea = {
-                ...boundingBoxOfElements(this.selector.getSelectedBlocks().map(b => b.element), this.editor),
-                rotation: 0,
-                baseRotation: 0,
-                baseX: 0,
-                baseY: 0
-            };
-        }
-
-        this.selectionArea.baseRotation = this.selectionArea.rotation;
-        this.selectionArea.baseX = this.selectionArea.x;
-        this.selectionArea.baseY = this.selectionArea.y;
-
-        this.handleSelector();
-        this.selector.events.AREA_CHANGED.emit({
-            x: this.selectionArea.x,
-            y: this.selectionArea.y,
-            width: this.selectionArea.width,
-            height: this.selectionArea.height,
-            rotation: this.selectionArea.rotation
-        });
-    }
-
-    private updateSelectionArea() {
-        this.selectionArea.baseX = this.selectionArea.x;
-        this.selectionArea.baseY = this.selectionArea.y;
-        this.selectionArea.baseRotation = this.selectionArea.rotation;
-    }
-
-    private moveSelectionArea(deltaX: number, deltaY: number) {
-        this.selectionArea.x = this.selectionArea.baseX + deltaX;
-        this.selectionArea.y = this.selectionArea.baseY + deltaY;
-        // this.editor.debugPoint(this.selectionArea.x, this.selectionArea.y, "blue");
-        // this.editor.debugPoint(this.selectionArea.x + this.selectionArea.width, this.selectionArea.y + this.selectionArea.height, "blue");
-        // this.editor.debugPoint(this.selectionArea.x + this.selectionArea.width, this.selectionArea.y, "blue");
-        // this.editor.debugPoint(this.selectionArea.x, this.selectionArea.y + this.selectionArea.height, "blue");
-
-        this.selector.events.AREA_CHANGED.emit({
-            x: this.selectionArea.x,
-            y: this.selectionArea.y,
-            width: this.selectionArea.width,
-            height: this.selectionArea.height,
-            rotation: this.selectionArea.rotation
-        });
-    }
-
-    private rotateSelectionArea(deltaRotation: number) {
-        this.selectionArea.rotation = this.selectionArea.baseRotation + deltaRotation;
-
-        this.selector.events.AREA_CHANGED.emit({
-            x: this.selectionArea.x,
-            y: this.selectionArea.y,
-            width: this.selectionArea.width,
-            height: this.selectionArea.height,
-            rotation: this.selectionArea.rotation
-        });
-    }
-
-
-    private setupMovementOrSelect(event: MouseEvent, block: EditorBlock) {
-        let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
-
-        this.selector.selectBlock(block, event.shiftKey, event);
+        this.selector.selectBlock(block, originalEvent.shiftKey, originalEvent);
         this.handleVisibility();
 
-        if (event.shiftKey) {
+        if (originalEvent.shiftKey) {
             // If shift is pressed, do not move the block
             return;
         }
@@ -362,7 +367,7 @@ export default class EditorSelectorArea {
             }
 
             if (moved && block.canCurrentlyDo("move")) {
-                this.setupMovement(event, block.element, {x: initialX, y: initialY});
+                this.commands.find(c => c instanceof MovingSelectorCommand)!.execute(originalEvent, block.element, this);
 
                 window.removeEventListener("mousemove", mouseMoveHandler);
                 window.removeEventListener("mouseup", mouseUpHandler);
@@ -375,330 +380,6 @@ export default class EditorSelectorArea {
 
             //this.selectBlock(block, event.shiftKey, event);
             this.handleVisibility();
-        };
-
-        window.addEventListener("mousemove", mouseMoveHandler);
-        window.addEventListener("mouseup", mouseUpHandler);
-    }
-
-    private setupMovement(event: MouseEvent, moveElement: HTMLElement, initial?: { x: number, y: number }) {
-        let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
-
-        if (initial) {
-            initialX = initial.x;
-            initialY = initial.y;
-        }
-
-        const initialPositions = this.selector.getSelectedBlocks().map(block => {
-            block.processEvent(BlockEvent.MOVEMENT_STARTED);
-
-            return {
-                block,
-                x: block.position.x,
-                y: block.position.y
-            };
-        });
-
-        const mouseMoveHandler = (event: MouseEvent) => {
-            let {x: deltaX, y: deltaY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
-
-            for (const {block, x, y} of initialPositions) {
-                block.move(x + deltaX - initialX, y + deltaY - initialY);
-
-                block.element.blur();
-            }
-
-            this.moveSelectionArea(deltaX - initialX, deltaY - initialY);
-            this.handleSelector();
-        };
-
-        const mouseUpHandler = () => {
-            window.removeEventListener("mousemove", mouseMoveHandler);
-            window.removeEventListener("mouseup", mouseUpHandler);
-
-            for (const {block, x, y} of initialPositions) {
-                block.processEvent(BlockEvent.MOVEMENT_ENDED, {x: x, y: y});
-            }
-
-            this.handleSelector();
-            //this.recalculateSelectionArea();
-            this.updateSelectionArea();
-        };
-
-        window.addEventListener("mousemove", mouseMoveHandler);
-        window.addEventListener("mouseup", mouseUpHandler);
-    }
-
-    private setupResizing(event: MouseEvent, resizeElement: HTMLElement, minWidth: number = 10) {
-        let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
-
-        const type = [...resizeElement.classList].find(c => c.startsWith('resize--'))?.replace('resize--', '') ?? 'top-left';
-
-        const isLeft = type.includes('left');
-        const isBottom = type.includes('bottom');
-        const isNotProportional = type.includes('middle');
-        const isProportional = !isNotProportional;
-        const isProportionalX = type.includes('middle-left') || type.includes('middle-right');
-        const isProportionalY = type.includes('top-middle') || type.includes('bottom-middle');
-
-        const blockInitialData = this.selector.getSelectedBlocks().map(block => {
-            block.processEvent(BlockEvent.RESIZING_STARTED);
-
-            const c0_x = block.position.x + block.size.width / 2.0;
-            const c0_y = block.position.y + block.size.height / 2.0;
-
-            const a: 0 | 1 = isLeft ? 1 : 0;
-            const b: 0 | 1 = isBottom ? 1 : 0;
-            const c: 0 | 1 = a === 1 ? 0 : 1;
-            const d: 0 | 1 = b === 1 ? 0 : 1;
-
-            const matrix = {
-                a: c,
-                b: b,
-                c: a,
-                d: d,
-            };
-
-            const l = block.position.x;
-            const t = block.position.y;
-            const w = block.size.width;
-            const h = block.size.height;
-
-            const q0_x: number = l + matrix.a * w;
-            const q0_y: number = t + matrix.b * h;
-
-            const p0_x: number = l + matrix.c * w;
-            const p0_y: number = t + matrix.d * h;
-
-            const theta: number = (Math.PI * 2 * block.rotation) / 360;
-            const cos_t: number = Math.cos(theta);
-            const sin_t: number = Math.sin(theta);
-
-            const qp0_x = q0_x * cos_t - q0_y * sin_t - c0_x * cos_t + c0_y * sin_t + c0_x;
-            const qp0_y = q0_x * sin_t + q0_y * cos_t - c0_x * sin_t - c0_y * cos_t + c0_y;
-
-            const pp_x = p0_x * cos_t - p0_y * sin_t - c0_x * cos_t + c0_y * sin_t + c0_x;
-            const pp_y = p0_x * sin_t + p0_y * cos_t - c0_x * sin_t - c0_y * cos_t + c0_y;
-
-            return {
-                block,
-                qp0_x,
-                qp0_y,
-                pp_x,
-                pp_y,
-                aspectRatio: block.size.width / block.size.height,
-                width: block.size.width,
-                height: block.size.height
-            }
-        });
-
-
-        const mouseMoveHandler = (event: MouseEvent) => {
-            let {x: deltaX, y: deltaY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
-
-            deltaX -= initialX;
-            deltaY -= initialY;
-
-            for (const {block, qp0_x, qp0_y, pp_x, pp_y, aspectRatio, width} of blockInitialData) {
-                const qp_x: number = qp0_x + deltaX;
-                const qp_y: number = qp0_y + deltaY;
-
-                const cp_x: number = (qp_x + pp_x) / 2.0;
-                const cp_y: number = (qp_y + pp_y) / 2.0;
-
-                const mtheta: number = (-1 * Math.PI * 2 * block.rotation) / 360;
-                const cos_mt: number = Math.cos(mtheta);
-                const sin_mt: number = Math.sin(mtheta);
-
-                let q_x: number = qp_x * cos_mt - qp_y * sin_mt - cos_mt * cp_x + sin_mt * cp_y + cp_x;
-                let q_y: number = qp_x * sin_mt + qp_y * cos_mt - sin_mt * cp_x - cos_mt * cp_y + cp_y;
-
-                let p_x: number = pp_x * cos_mt - pp_y * sin_mt - cos_mt * cp_x + sin_mt * cp_y + cp_x;
-                let p_y: number = pp_x * sin_mt + pp_y * cos_mt - sin_mt * cp_x - cos_mt * cp_y + cp_y;
-
-                const a: 0 | 1 = isLeft ? 1 : 0;
-                const b: 0 | 1 = isBottom ? 1 : 0;
-                const c: 0 | 1 = a === 1 ? 0 : 1;
-                const d: 0 | 1 = b === 1 ? 0 : 1;
-
-                const matrix = {
-                    a: c,
-                    b: b,
-                    c: a,
-                    d: d,
-                };
-
-                let wtmp: number = matrix.a * (q_x - p_x) + matrix.c * (p_x - q_x);
-                let htmp: number = matrix.b * (q_y - p_y) + matrix.d * (p_y - q_y);
-
-
-                if (isNotProportional) {
-                    if (isProportionalX) {
-                        wtmp = Math.max(wtmp, minWidth);
-                        htmp = block.size.height;
-                    } else if (isProportionalY) {
-                        htmp = Math.max(htmp, minWidth);
-                        wtmp = block.size.width;
-                    }
-                } else {
-                    wtmp = Math.max(wtmp, minWidth);
-                    htmp = wtmp / aspectRatio;
-                }
-
-
-                const theta: number = -1 * mtheta;
-                const cos_t: number = Math.cos(theta);
-                const sin_t: number = Math.sin(theta);
-
-                const dh_x: number = -sin_t * htmp;
-                const dh_y: number = cos_t * htmp;
-
-                const dw_x: number = cos_t * wtmp;
-                const dw_y: number = sin_t * wtmp;
-
-                const qp_x_min: number = pp_x + (matrix.a - matrix.c) * dw_x + (matrix.b - matrix.d) * dh_x;
-                const qp_y_min: number = pp_y + (matrix.a - matrix.c) * dw_y + (matrix.b - matrix.d) * dh_y;
-
-                const cp_x_min: number = (qp_x_min + pp_x) / 2.0;
-                const cp_y_min: number = (qp_y_min + pp_y) / 2.0;
-
-                q_x = qp_x_min * cos_mt - qp_y_min * sin_mt - cos_mt * cp_x_min + sin_mt * cp_y_min + cp_x_min;
-                q_y = qp_x_min * sin_mt + qp_y_min * cos_mt - sin_mt * cp_x_min - cos_mt * cp_y_min + cp_y_min;
-
-                p_x = pp_x * cos_mt - pp_y * sin_mt - cos_mt * cp_x_min + sin_mt * cp_y_min + cp_x_min;
-                p_y = pp_x * sin_mt + pp_y * cos_mt - sin_mt * cp_x_min - cos_mt * cp_y_min + cp_y_min;
-
-
-                const newL: number = matrix.c * q_x + matrix.a * p_x;
-                const newT: number = matrix.d * q_y + matrix.b * p_y;
-
-                block.move(newL, newT, true);
-                block.resize(wtmp, htmp, true);
-                block.synchronize();
-
-                const content = block.getContent();
-                if (content) {
-                    if (isProportional) {
-                        content.style.transform = `scale(${wtmp / width})`;
-                    } else {
-                        block.matchRenderedHeight();
-                    }
-                }
-
-                block.element.blur();
-            }
-
-            this.recalculateSelectionArea();
-        };
-
-        const mouseUpHandler = () => {
-            window.removeEventListener("mousemove", mouseMoveHandler);
-            window.removeEventListener("mouseup", mouseUpHandler);
-
-            const type = [...resizeElement.classList].find(c => c.startsWith('resize--'))?.replace('resize--', '') ?? 'top-left';
-
-            for (const {block, width, height} of blockInitialData) {
-
-                block.processEvent(BlockEvent.RESIZING_ENDED,
-                    ['bottom-right', 'top-left', 'top-right', 'bottom-left'].includes(type) ? "PROPORTIONAL" : "NON_PROPORTIONAL",
-                    {width: width, height: height});
-            }
-            this.recalculateSelectionArea();
-        };
-
-        window.addEventListener("mousemove", mouseMoveHandler);
-        window.addEventListener("mouseup", mouseUpHandler);
-    }
-
-    private setupRotation(event: MouseEvent, rotateElement: HTMLElement) {
-        let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
-        const PER_OBJECT = this.editor.getPreferences().PER_OBJECT_TRANSFORMATION;
-        const SNAPPING_COUNT = this.editor.getPreferences().ROTATION_SNAPPING_COUNT;
-
-        const sizeAndPosition = this.selectionArea;
-
-        const centerX = sizeAndPosition.x + (sizeAndPosition.width / 2);
-        const centerY = sizeAndPosition.y + (sizeAndPosition.height / 2);
-
-        let currentAngle = 0;
-        let snappedAngle = 0;
-        let lastAngle = Math.atan2(initialY - centerY, initialX - centerX);
-        const initialPositions = this.selector.getSelectedBlocks().map(block => {
-            block.processEvent(BlockEvent.ROTATION_STARTED);
-
-            return {
-                block,
-                rotation: block.rotation,
-                offsetX: PER_OBJECT ? 0 : block.position.x + (block.size.width / 2) - centerX,
-                offsetY: PER_OBJECT ? 0 : block.position.y + (block.size.height / 2) - centerY,
-            }
-        });
-
-        const mouseMoveHandler = (event: MouseEvent) => {
-            const {x: currentX, y: currentY} = this.editor.screenToEditorCoordinates(
-                event.clientX,
-                event.clientY
-            );
-
-            const angle = Math.atan2(currentY - centerY, currentX - centerX);
-
-            let diff = angle - lastAngle;
-
-            if (diff > Math.PI) diff -= Math.PI * 2;
-            if (diff < -Math.PI) diff += Math.PI * 2;
-
-            currentAngle += diff;
-
-            if (event.shiftKey) {
-                snappedAngle = currentAngle - (currentAngle % (Math.PI / SNAPPING_COUNT));
-            } else {
-                snappedAngle = currentAngle;
-            }
-
-            for (const position of initialPositions) {
-                const {block, rotation, offsetX, offsetY} = position;
-
-                let rotatedX, rotatedY;
-
-                // Calculate the rotated position of the block around the center
-                if (PER_OBJECT) {
-                    rotatedX = block.position.x;
-                    rotatedY = block.position.y;
-                } else {
-                    rotatedX = centerX + offsetX * Math.cos(snappedAngle) - offsetY * Math.sin(snappedAngle);
-                    rotatedY = centerY + offsetX * Math.sin(snappedAngle) + offsetY * Math.cos(snappedAngle);
-
-                    rotatedX -= block.size.width / 2;
-                    rotatedY -= block.size.height / 2;
-                }
-
-                // Set the new position and rotation
-                block.move(rotatedX, rotatedY);
-                block.rotate(rotation + (snappedAngle * 180) / Math.PI);
-            }
-
-            // Update selection area rotation
-            this.rotateSelectionArea((snappedAngle * 180) / Math.PI);
-
-            lastAngle = angle;
-
-            this.handleSelector();
-        };
-
-        const mouseUpHandler = () => {
-            window.removeEventListener("mousemove", mouseMoveHandler);
-            window.removeEventListener("mouseup", mouseUpHandler);
-
-            for (const {block, rotation} of initialPositions) {
-                block.processEvent(BlockEvent.ROTATION_ENDED, rotation);
-            }
-            this.updateSelectionArea();
-
-            if (PER_OBJECT && this.selector.getSelectedBlocks().length !== 1) {
-                // The rotation is now out of sync with the blocks, so we need to recalculate it
-                this.recalculateSelectionArea();
-            }
-            // this.recalculateSelectionArea();
         };
 
         window.addEventListener("mousemove", mouseMoveHandler);
