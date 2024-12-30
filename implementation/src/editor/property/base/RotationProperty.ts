@@ -22,7 +22,7 @@ export class RotationProperty extends Property {
         this.recalculateValues(rotationInput);
 
         rotationInput?.addEventListener('input', () => {
-            let degrees = parseFloat(rotationInput!.value);
+            let degrees = parseFloat(rotationInput!.value) % 360;
 
             for (let block of this.blocks) {
                 block.rotate(degrees, false, true);
@@ -30,7 +30,20 @@ export class RotationProperty extends Property {
         });
 
         this.editorProperty.getEditor().events.BLOCK_ROTATION_CHANGED.on((data) => {
+            if(data.manual)
+                return;
+
             this.recalculateValues(rotationInput);
+        });
+
+        const label = this.element.querySelector<HTMLLabelElement>('.label')!;
+        this.lockOnElement(label, (changeX, changeY) => {
+            for (let block of this.blocks) {
+                block.rotate((block.rotation + changeX) % 360, false, true);
+            }
+
+            this.recalculateValues(rotationInput);
+            return true;
         });
     }
 

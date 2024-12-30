@@ -41,6 +41,27 @@ export class PositionProperty extends Property {
         this.editorProperty.getEditor().events.BLOCK_POSITION_CHANGED.on((data) => {
             this.recalculateValues(xInput, yInput);
         });
+
+
+        const xLabel = this.element.querySelector<HTMLLabelElement>('label[for="x"]')!;
+        const yLabel = this.element.querySelector<HTMLLabelElement>('label[for="y"]')!;
+
+        this.lockOnElement(xLabel, (changeX, changeY) => {
+            for (let block of this.blocks) {
+                block.move(block.position.x + changeX, block.position.y, false, true);
+            }
+
+            this.recalculateValues(xInput, yInput);
+            return true;
+        });
+        this.lockOnElement(yLabel, (changeX, changeY) => {
+            for (let block of this.blocks) {
+                block.move(block.position.x, block.position.y + changeX, false, true);
+            }
+
+            this.recalculateValues(xInput, yInput);
+            return true;
+        });
     }
 
     public override destroy(): void {

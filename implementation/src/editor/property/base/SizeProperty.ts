@@ -48,7 +48,7 @@ export class SizeProperty extends Property {
             let resizeSuccess = true;
             for (let block of this.blocks) {
                 const newWidth = block.size.width + changeX;
-                const newHeight = block.size.height + changeY;
+                const newHeight = block.size.height + changeX;
 
                 // Check resize constraints
                 if (newWidth < 1 || newHeight < 1) {
@@ -67,7 +67,7 @@ export class SizeProperty extends Property {
             let resizeSuccess = true;
             for (let block of this.blocks) {
                 const newWidth = block.size.width + changeX;
-                const newHeight = block.size.height + changeY;
+                const newHeight = block.size.height + changeX;
 
                 // Check resize constraints
                 if (newWidth < 1 || newHeight < 1) {
