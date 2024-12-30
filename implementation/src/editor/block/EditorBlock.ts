@@ -8,6 +8,7 @@ import {BlockEventListener, LISTENER_METADATA_KEY} from "@/editor/block/events/B
 import type {SerializeEntry} from "@/editor/block/serialization/BlockPropertySerialize";
 import {BlockSerialize, SERIALIZER_METADATA_KEY} from "@/editor/block/serialization/BlockPropertySerialize";
 import {RotationProperty} from "@/editor/property/base/RotationProperty";
+import {SizeProperty} from "@/editor/property/base/SizeProperty";
 
 export abstract class EditorBlock {
     @BlockSerialize("id")
@@ -34,7 +35,7 @@ export abstract class EditorBlock {
     public group: string | undefined = undefined;
 
     public element!: HTMLElement;
-    public editor!: Editor;
+    private editor!: Editor;
     /**
      * Determines if the block is currently selected.
      */
@@ -153,6 +154,13 @@ export abstract class EditorBlock {
         return undefined;
     }
 
+    /**
+     * Returns the editor for the block.
+     */
+    public getEditor() {
+        return this.editor;
+    }
+
     public move(x: number, y: number, skipSynchronization: boolean = false, manual: boolean = false) {
         this.position.x = Math.floor(x);
         this.position.y = Math.floor(y);
@@ -176,9 +184,17 @@ export abstract class EditorBlock {
         if (!skipSynchronization) this.synchronize();
     }
 
-    public resize(width: number, height: number, skipSynchronization: boolean = false) {
+    public resize(width: number, height: number, skipSynchronization: boolean = false, manual: boolean = false) {
+        if(width < 1) width = 1;
+        if(height < 1) height = 1;
+
         this.size.width = width;
         this.size.height = height;
+
+        this.editor.events.BLOCK_SIZE_CHANGED.emit({
+            block: this,
+            manual: manual
+        });
 
         if (!skipSynchronization) this.synchronize();
     }
