@@ -81,6 +81,10 @@ export class RotatingSelectorCommand extends SelectorCommand {
             // Update selection area rotation
             selectorArea.rotateSelectionArea((snappedAngle * 180) / Math.PI);
 
+            if(PER_OBJECT) {
+                selectorArea.recalculateSelectionArea();
+            }
+
             lastAngle = angle;
 
             selectorArea.handleSelector();
@@ -95,11 +99,11 @@ export class RotatingSelectorCommand extends SelectorCommand {
             }
             selectorArea.updateSelectionArea();
 
-            if (PER_OBJECT && selectorArea.getEditor().getSelector().getSelectedBlocks().length !== 1) {
-                // The rotation is now out of sync with the blocks, so we need to recalculate it
-                selectorArea.recalculateSelectionArea();
-            }
-            // this.recalculateSelectionArea();
+            // if (PER_OBJECT && selectorArea.getEditor().getSelector().getSelectedBlocks().length !== 1) {
+            //     // The rotation is now out of sync with the blocks, so we need to recalculate it
+            //     selectorArea.recalculateSelectionArea();
+            // }
+            selectorArea.recalculateSelectionArea();
         };
 
         window.addEventListener("mousemove", mouseMoveHandler);
