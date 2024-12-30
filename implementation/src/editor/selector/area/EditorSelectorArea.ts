@@ -70,6 +70,12 @@ export default class EditorSelectorArea {
                 this.handleVisibility();
             }
         });
+        this.editor.events.BLOCK_SIZE_CHANGED.on((blockData) => {
+            if (blockData.manual) {
+                this.recalculateSelectionArea();
+                this.handleVisibility();
+            }
+        });
     }
 
     /**
