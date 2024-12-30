@@ -142,7 +142,8 @@ export abstract class EditorBlock {
     public getProperties(): Property[] {
         return [
             new PositionProperty(),
-            new RotationProperty()
+            new RotationProperty(),
+            new SizeProperty()
         ]
     }
 
