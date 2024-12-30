@@ -6,6 +6,7 @@ import {GroupAction} from "@/editor/actions/selector/GroupAction";
 import {UngroupAction} from "@/editor/actions/selector/UngroupAction";
 import {LockAction} from "@/editor/actions/selector/LockAction";
 import {UnlockAction} from "@/editor/actions/selector/UnlockAction";
+import {BringBackAction} from "@/editor/actions/selector/BringBackAction";
 
 export class EditorSelectorContext {
     public element!: HTMLElement;
@@ -21,10 +22,14 @@ export class EditorSelectorContext {
         this.actions.push(new UngroupAction());
         this.actions.push(new LockAction());
         this.actions.push(new UnlockAction());
+        this.actions.push(new BringBackAction());
 
         this.setupContext();
         this.selector.events.SELECTED_BLOCK_CHANGED.on((selected) => {
             this.handleContext(selected)
+        });
+        this.selector.getEditor().events.BLOCK_POSITION_CHANGED.on((data) => {
+            this.handleContext(this.selector.getSelectedBlocks());
         });
         this.selector.events.AREA_CHANGED.on((data) => {
             this.recalculatePosition(data);
