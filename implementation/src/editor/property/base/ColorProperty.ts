@@ -1,11 +1,12 @@
 import {Property} from "@/editor/property/Property";
 import {ColorProperty as BaseColorProperty} from "@/editor/property/type/ColorProperty";
-import {RectangleEditorBlock} from "@/editor/block/rectangle/RectangleEditorBlock";
 
-export class ColorProperty extends BaseColorProperty<RectangleEditorBlock> {
+import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
+
+export class ColorProperty<T extends ShapeEditorBlock = ShapeEditorBlock> extends BaseColorProperty<T> {
 
     constructor() {
-        super("Background Color", "backgroundColor");
+        super("Color", "color");
     }
 
     public override isVisible(): boolean {

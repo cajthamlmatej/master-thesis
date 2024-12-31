@@ -1,12 +1,13 @@
 import {AggregatorProperty} from "@/editor/property/type/AggregatorProperty";
 import {NumberProperty} from "@/editor/property/type/NumberProperty";
+import type {EditorBlock} from "@/editor/block/EditorBlock";
 
-export class PositionProperty extends AggregatorProperty {
+export class PositionProperty<T extends EditorBlock = EditorBlock> extends AggregatorProperty<T> {
 
 
     constructor() {
         super("Position", [
-            class XProperty extends NumberProperty {
+            class XProperty<T extends EditorBlock = EditorBlock> extends NumberProperty<T> {
 
                 constructor() {
                     super("X", "base-position-x");
@@ -52,7 +53,7 @@ export class PositionProperty extends AggregatorProperty {
                     return true;
                 }
             },
-            class YProperty extends NumberProperty {
+            class YProperty<T extends EditorBlock = EditorBlock> extends NumberProperty<T> {
 
                 constructor() {
                     super("Y", "base-position-y");

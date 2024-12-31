@@ -1,7 +1,8 @@
 import {Property} from "@/editor/property/Property";
 import {NumberProperty} from "@/editor/property/type/NumberProperty";
+import type {EditorBlock} from "@/editor/block/EditorBlock";
 
-export class RotationProperty extends NumberProperty {
+export class RotationProperty<T extends EditorBlock = EditorBlock> extends NumberProperty<T> {
 
     constructor() {
         super("Rotation", "base-rotation");
