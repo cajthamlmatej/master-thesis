@@ -4,7 +4,6 @@
             <div class="logo"></div>
 
             <button @mousedown="(e) => add(e, 'text')"><span class="mdi mdi-pencil-plus-outline"></span></button>
-            <button @mousedown="(e) => add(e, 'rectangle')"><span class="mdi mdi-shape-square-plus"></span></button>
             <button @mousedown="(e) => add(e, 'image')"><span class="mdi mdi-image-plus-outline"></span></button>
 
             <div class="spacer"></div>

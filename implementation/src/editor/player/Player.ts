@@ -3,13 +3,10 @@ import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
 import {TextBlockDeserializer} from "@/editor/block/text/TextBlockDeserializer";
 import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
 import {ImageBlockDeserializer} from "@/editor/block/image/ImageBlockDeserializer";
-import {RectangleEditorBlock} from "@/editor/block/rectangle/RectangleEditorBlock";
-import {RectangleBlockDeserializer} from "@/editor/block/rectangle/RectangleBlockDeserializer";
 import {WatermarkEditorBlock} from "@/editor/block/watermark/WatermarkEditorBlock";
 import {WatermarkBlockDeserializer} from "@/editor/block/watermark/WatermarkBlockDeserializer";
 import {ImagePlayerBlock} from "@/editor/block/image/ImagePlayerBlock";
 import {TextPlayerBlock} from "@/editor/block/text/TextPlayerBlock";
-import {RectanglePlayerBlock} from "@/editor/block/rectangle/RectanglePlayerBlock";
 import {WatermarkPlayerBlock} from "@/editor/block/watermark/WatermarkPlayerBlock";
 import {PlayerBlock} from "@/editor/block/PlayerBlock";
 
@@ -32,7 +29,6 @@ export default class Player {
         // TODO: this should be handled somewhere else
         this.blockRegistry.register("text", TextEditorBlock, TextPlayerBlock, TextBlockDeserializer);
         this.blockRegistry.register("image", ImageEditorBlock, ImagePlayerBlock, ImageBlockDeserializer);
-        this.blockRegistry.register("rectangle", RectangleEditorBlock, RectanglePlayerBlock, RectangleBlockDeserializer);
         this.blockRegistry.register("watermark", WatermarkEditorBlock, WatermarkPlayerBlock, WatermarkBlockDeserializer);
 
         this.element = element;
