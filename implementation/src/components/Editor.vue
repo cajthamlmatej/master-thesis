@@ -168,6 +168,8 @@ article.editor-view {
     height: 100%;
     min-height: 0;
     min-width: 0;
+    position: relative;
+    overflow: hidden;
 
     nav.main {
         position: relative;
@@ -217,7 +219,6 @@ article.editor-view {
         grid-column: 3 / 4;
         background-color: #f5f5f5;
         border-left: 2px solid #e9ecef;
-        position: relative;
     }
 }
 

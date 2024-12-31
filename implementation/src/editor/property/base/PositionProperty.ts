@@ -46,7 +46,7 @@ export class PositionProperty extends Property {
         const xLabel = this.element.querySelector<HTMLLabelElement>('label[for="x"]')!;
         const yLabel = this.element.querySelector<HTMLLabelElement>('label[for="y"]')!;
 
-        this.lockOnElement(xLabel, (changeX, changeY) => {
+        this.editorProperty.lockOnElement(xLabel, (changeX, changeY) => {
             for (let block of this.blocks) {
                 block.move(block.position.x + changeX, block.position.y, false, true);
             }
@@ -54,7 +54,7 @@ export class PositionProperty extends Property {
             this.recalculateValues(xInput, yInput);
             return true;
         });
-        this.lockOnElement(yLabel, (changeX, changeY) => {
+        this.editorProperty.lockOnElement(yLabel, (changeX, changeY) => {
             for (let block of this.blocks) {
                 block.move(block.position.x, block.position.y + changeX, false, true);
             }

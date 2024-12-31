@@ -37,7 +37,7 @@ export class RotationProperty extends Property {
         });
 
         const label = this.element.querySelector<HTMLLabelElement>('.label')!;
-        this.lockOnElement(label, (changeX, changeY) => {
+        this.editorProperty.lockOnElement(label, (changeX, changeY) => {
             for (let block of this.blocks) {
                 block.rotate((block.rotation + changeX) % 360, false, true);
             }

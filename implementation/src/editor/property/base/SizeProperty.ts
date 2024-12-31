@@ -44,7 +44,7 @@ export class SizeProperty extends Property {
         const widthLabel = this.element.querySelector<HTMLLabelElement>('label[for="width"]')!;
         const heightLabel = this.element.querySelector<HTMLLabelElement>('label[for="height"]')!;
 
-        this.lockOnElement(widthLabel, (changeX, changeY) => {
+        this.editorProperty.lockOnElement(widthLabel, (changeX, changeY) => {
             let resizeSuccess = true;
             for (let block of this.blocks) {
                 const newWidth = block.size.width + changeX;
@@ -63,7 +63,7 @@ export class SizeProperty extends Property {
 
             return resizeSuccess;
         });
-        this.lockOnElement(heightLabel, (changeX, changeY) => {
+        this.editorProperty.lockOnElement(heightLabel, (changeX, changeY) => {
             let resizeSuccess = true;
             for (let block of this.blocks) {
                 const newWidth = block.size.width + changeX;
