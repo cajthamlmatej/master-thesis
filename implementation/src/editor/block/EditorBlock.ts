@@ -35,7 +35,7 @@ export abstract class EditorBlock {
     public group: string | undefined = undefined;
 
     public element!: HTMLElement;
-    private editor!: Editor;
+    protected editor!: Editor;
     /**
      * Determines if the block is currently selected.
      */
