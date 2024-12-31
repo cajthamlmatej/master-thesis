@@ -7,7 +7,7 @@ export class BringBackAction extends SelectorAction {
     }
 
     override isVisible(param: ActionParameters) {
-        return param.selected.every(b => b.editorSupport().selection)
+        return param.selected.every(b => b.editorSupport().selection && !b.locked)
             && param.selected.some(b => b.position.x < 0 || b.position.y < 0
                 || b.position.x + b.size.width > param.editor.getSize().width
                 || b.position.y + b.size.height > param.editor.getSize().height);
