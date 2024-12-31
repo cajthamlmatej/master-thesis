@@ -5,6 +5,7 @@
 
             <button @mousedown="(e) => add(e, 'text')"><span class="mdi mdi-pencil-plus-outline"></span></button>
             <button @mousedown="(e) => add(e, 'image')"><span class="mdi mdi-image-plus-outline"></span></button>
+            <button @mousedown="(e) => add(e, 'shape')"><span class="mdi mdi-shape-plus-outline"></span></button>
 
             <div class="spacer"></div>
 
@@ -32,7 +33,6 @@ import Editor from "@/editor/Editor";
 import {onMounted, ref} from "vue";
 import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
 import {encodeBase64, generateUUID} from "@/utils/Generators";
-import {RectangleEditorBlock} from "@/editor/block/rectangle/RectangleEditorBlock";
 import {WatermarkEditorBlock} from "@/editor/block/watermark/WatermarkEditorBlock";
 import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
@@ -41,6 +41,7 @@ import {EditorDeserializer} from "@/editor/EditorDeserializer";
 import {EditorSerializer} from "@/editor/EditorSerializer";
 import {useRouter} from "vue-router";
 import {EditorProperty} from "@/editor/property/EditorProperty";
+import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
 
 const editorElement = ref<HTMLElement | null>(null);
 const editorPropertyElement = ref<HTMLElement | null>(null);
@@ -57,7 +58,7 @@ onMounted(() => {
         return;
     }
 
-    const data = `{"editor":{"size":{"width":1200,"height":800}},"blocks":[{"id":"c0aefad7-f60d-4cdb-a5a8-074e1c2f3200","type":"text","position":{"x":300,"y":100},"size":{"width":300,"height":36},"rotation":0,"zIndex":1,"locked":false,"content":"<div>Test</div>","fontSize":24},{"id":"a49ae9fd-7217-42a0-8ed9-6afce28a759a","type":"text","position":{"x":420,"y":300},"size":{"width":390,"height":72},"rotation":0,"zIndex":2,"locked":false,"content":"<div>Ahoj</div><div>Světe</div>","fontSize":24},{"id":"a6b762b2-cbe8-48c9-ae81-4e6f9dd7121a","type":"watermark","position":{"x":30,"y":720},"size":{"width":200,"height":50},"rotation":0,"zIndex":3,"locked":false},{"id":"37aa85e8-e9c7-411f-8b71-cd9fc14bb47c","type":"rectangle","position":{"x":20,"y":20},"size":{"width":40,"height":40},"rotation":0,"zIndex":4,"locked":false,"group":"group1","color":"#ff8e3c"},{"id":"eb080762-2a7b-4499-8725-d453896483a2","type":"image","position":{"x":40,"y":500},"size":{"width":200,"height":200},"rotation":-30,"zIndex":5,"locked":false,"group":"group1","imageUrl":"https://ssps.cajthaml.eu/img/logo-main-for-light-main.png"}]}`;
+    const data = `{"editor":{"size":{"width":1200,"height":800}},"blocks":[{"id":"c0aefad7-f60d-4cdb-a5a8-074e1c2f3200","type":"text","position":{"x":300,"y":100},"size":{"width":300,"height":36},"rotation":0,"zIndex":1,"locked":false,"content":"<div>Test</div>","fontSize":24},{"id":"a49ae9fd-7217-42a0-8ed9-6afce28a759a","type":"text","position":{"x":420,"y":300},"size":{"width":390,"height":72},"rotation":0,"zIndex":2,"locked":false,"content":"<div>Ahoj</div><div>Světe</div>","fontSize":24},{"id":"a6b762b2-cbe8-48c9-ae81-4e6f9dd7121a","type":"watermark","position":{"x":30,"y":720},"size":{"width":200,"height":50},"rotation":0,"zIndex":3,"locked":false},{"id":"eb080762-2a7b-4499-8725-d453896483a2","type":"image","position":{"x":40,"y":500},"size":{"width":200,"height":200},"rotation":-30,"zIndex":5,"locked":false,"group":"group1","imageUrl":"https://ssps.cajthaml.eu/img/logo-main-for-light-main.png"},{"id":"eb080762-2a7b-4499-8725-e453896483a2","type":"shape","position":{"x":500,"y":200},"size":{"width":200,"height":200},"rotation":0,"zIndex":50,"locked":false,"color":"#fe0aaf","shape":"star"}]}`;
     const deserializer = new EditorDeserializer();
     editor = deserializer.deserialize(data, editorElement.value);
 
@@ -86,7 +87,7 @@ const clear = () => {
     }
 }
 
-const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image') => {
+const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image' | 'shape') => {
     const {x: startX, y: startY} = editor.screenToEditorCoordinates(event.clientX, event.clientY);
 
     if (!editor) {
@@ -108,14 +109,15 @@ const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image') => {
                 24
             );
             break;
-        case 'rectangle':
-            block = new RectangleEditorBlock(
+        case 'shape':
+            block = new ShapeEditorBlock(
                 generateUUID(),
                 {x: -100, y: -100},
                 {width: 40, height: 40},
                 0,
                 0,
-                "#3cc4ff"
+                "#beff3c",
+                "arrow-1"
             );
             break;
         case 'image':

@@ -18,6 +18,9 @@ import {ImagePlayerBlock} from "@/editor/block/image/ImagePlayerBlock";
 import {TextPlayerBlock} from "@/editor/block/text/TextPlayerBlock";
 import {WatermarkPlayerBlock} from "@/editor/block/watermark/WatermarkPlayerBlock";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
+import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
+import {ShapeBlockDeserializer} from "@/editor/block/shape/ShapeBlockDeserializer";
+import {ShapePlayerBlock} from "@/editor/block/shape/ShapePlayerBlock";
 
 export default class Editor {
     private static readonly DEFAULT_PADDING = 32;
@@ -46,6 +49,7 @@ export default class Editor {
         this.blockRegistry.register("text", TextEditorBlock, TextPlayerBlock, TextBlockDeserializer);
         this.blockRegistry.register("image", ImageEditorBlock, ImagePlayerBlock, ImageBlockDeserializer);
         this.blockRegistry.register("watermark", WatermarkEditorBlock, WatermarkPlayerBlock, WatermarkBlockDeserializer);
+        this.blockRegistry.register("shape", ShapeEditorBlock, ShapePlayerBlock, ShapeBlockDeserializer);
 
 
         this.parseOptions(options);
