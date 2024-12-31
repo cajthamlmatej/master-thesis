@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 
 import './assets/reset.css'
+import './assets/main.scss'
 import './assets/editor.scss'
 
 import { createApp } from 'vue'
