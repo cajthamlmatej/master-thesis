@@ -10,7 +10,7 @@ export class ColorProperty<T extends ShapeEditorBlock = ShapeEditorBlock> extend
     }
 
     public override isVisible(): boolean {
-        return this.blocks.every(block => "color" in block);
+        return this.blocks.every(block => block.type === "shape");
     }
 
     public override destroy(): void {
@@ -20,7 +20,6 @@ export class ColorProperty<T extends ShapeEditorBlock = ShapeEditorBlock> extend
     applyValue(value: string): boolean {
         for (let block of this.blocks) {
             block.changeColor(value);
-            block.synchronize();
         }
 
         return true;

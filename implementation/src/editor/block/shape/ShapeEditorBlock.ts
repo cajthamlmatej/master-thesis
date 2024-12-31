@@ -2,8 +2,10 @@ import {EditorBlock} from "@/editor/block/EditorBlock";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 import {generateUUID} from "@/utils/Generators";
 import {Property} from "@/editor/property/Property";
-import {ColorProperty} from "@/editor/property/base/ColorProperty";
+import {ColorProperty} from "@/editor/block/shape/property/ColorProperty";
 import {shapes} from "@/editor/block/shape/Shapes";
+import {ShapeProperty} from "@/editor/block/shape/property/ShapeProperty";
+import {BlockEvent} from "@/editor/block/events/BlockEvent";
 
 export class ShapeEditorBlock extends EditorBlock {
     @BlockSerialize("color")
@@ -50,6 +52,7 @@ export class ShapeEditorBlock extends EditorBlock {
         }
 
         content.innerHTML = shape.html;
+        content.className = "block-content";
         for(const c of shape.class || [])
             content.classList.add(c);
     }
@@ -83,7 +86,8 @@ export class ShapeEditorBlock extends EditorBlock {
     override getProperties(): Property<this>[] {
         return [
             ...super.getProperties(),
-            new ColorProperty()
+            new ColorProperty(),
+            new ShapeProperty()
         ];
     }
 
@@ -96,7 +100,16 @@ export class ShapeEditorBlock extends EditorBlock {
     changeShape(value: string) {
         this.shape = value;
 
+        this.size.height = this.element.querySelector(".block-content")!.clientHeight;
+
+        const shape = shapes.find(s => s.name === this.shape);
+
+        if(shape && !shape.nonProportionalResizing) {
+            this.size.width = this.size.height;
+        }
+
         this.synchronize();
-        this.matchRenderedHeight();
+
+        this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
     }
 }
