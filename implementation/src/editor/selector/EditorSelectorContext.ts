@@ -51,7 +51,6 @@ export class EditorSelectorContext {
                 selected: selected,
                 position: {x: this.position.x, y: this.position.y}
             });
-            console.log("Action", action.name, "visible:", visible);
             const actionElement = this.element.querySelector(`.action[data-action="${action.name}"]`);
 
             if (actionElement) {
