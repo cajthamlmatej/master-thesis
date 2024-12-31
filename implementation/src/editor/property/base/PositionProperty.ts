@@ -1,85 +1,108 @@
-import {Property} from "@/editor/property/Property";
+import {AggregatorProperty} from "@/editor/property/type/AggregatorProperty";
+import {NumberProperty} from "@/editor/property/type/NumberProperty";
 
-export class PositionProperty extends Property {
+export class PositionProperty extends AggregatorProperty {
+
+
+    constructor() {
+        super("Position", [
+            class XProperty extends NumberProperty {
+
+                constructor() {
+                    super("X", "base-position-x");
+                }
+
+                public override isVisible(): boolean {
+                    return true;
+                }
+
+                public override setup(): void {
+                    super.setup();
+
+                    this.editorProperty.getEditor().events.BLOCK_POSITION_CHANGED.on((data) => {
+                        this.processRecalculateValues();
+                    });
+                }
+
+                public override recalculateValues(change: (value: number) => void): void {
+                    let defaultX: string | number = this.blocks[0].position.x;
+
+                    if (!this.blocks.every(block => block.position.x === defaultX)) {
+                        defaultX = "";
+                    }
+
+                    change(defaultX as number);
+                }
+
+                public override applyValue(value: number, delta?: {
+                    changeX: number,
+                    changeY: number,
+                    distance: number
+                }): boolean {
+                    if (delta) {
+                        for (let block of this.blocks) {
+                            block.move(block.position.x + delta.changeX, block.position.y, false, true);
+                        }
+                    } else {
+                        for (let block of this.blocks) {
+                            block.move(value, block.position.y, false, true);
+                        }
+                    }
+
+                    return true;
+                }
+            },
+            class YProperty extends NumberProperty {
+
+                constructor() {
+                    super("Y", "base-position-y");
+                }
+
+                public override isVisible(): boolean {
+                    return true;
+                }
+
+                public override setup(): void {
+                    super.setup();
+
+                    this.editorProperty.getEditor().events.BLOCK_POSITION_CHANGED.on((data) => {
+                        this.processRecalculateValues();
+                    });
+                }
+
+                public override recalculateValues(change: (value: number) => void): void {
+                    let defaultY: string | number = this.blocks[0].position.y;
+
+                    if (!this.blocks.every(block => block.position.y === defaultY)) {
+                        defaultY = "";
+                    }
+
+                    change(defaultY as number);
+                }
+
+                public override applyValue(value: number, delta?: {
+                    changeX: number,
+                    changeY: number,
+                    distance: number
+                }): boolean {
+                    if (delta) {
+                        for (let block of this.blocks) {
+                            block.move(block.position.x, block.position.y + delta.changeX, false, true);
+                        }
+                    } else {
+                        for (let block of this.blocks) {
+                            block.move(block.position.x, value, false, true);
+                        }
+                    }
+
+                    return true;
+                }
+            },
+        ]);
+    }
 
     public override isVisible(): boolean {
         return this.blocks.length === 1;
     }
 
-    public override setup(): void {
-        this.element.innerHTML = `
-            <p class="label">Position</p>
-            <div class="property-content property-content--row">
-                <div class="property-data property-data--row">
-                    <label for="x">X</label>
-                    <input type="number" data-property="x" name="x">
-                </div>
-                <div class="property-data property-data--row">
-                    <label for="y">Y</label>
-                    <input type="number" data-property="y" name="y">
-                </div>
-            </div>
-        `;
-
-        const xInput = this.element.querySelector<HTMLInputElement>('[data-property="x"]');
-        const yInput = this.element.querySelector<HTMLInputElement>('[data-property="y"]');
-
-        // Default values
-        this.recalculateValues(xInput, yInput);
-
-        xInput?.addEventListener('input', () => {
-            for (let block of this.blocks) {
-                block.move(parseInt(xInput!.value), block.position.y, false, true);
-            }
-        });
-        yInput?.addEventListener('input', () => {
-            for (let block of this.blocks) {
-                block.move(block.position.x, parseInt(yInput!.value), false, true);
-            }
-        });
-
-        this.editorProperty.getEditor().events.BLOCK_POSITION_CHANGED.on((data) => {
-            this.recalculateValues(xInput, yInput);
-        });
-
-
-        const xLabel = this.element.querySelector<HTMLLabelElement>('label[for="x"]')!;
-        const yLabel = this.element.querySelector<HTMLLabelElement>('label[for="y"]')!;
-
-        this.editorProperty.lockOnElement(xLabel, (changeX, changeY) => {
-            for (let block of this.blocks) {
-                block.move(block.position.x + changeX, block.position.y, false, true);
-            }
-
-            this.recalculateValues(xInput, yInput);
-            return true;
-        });
-        this.editorProperty.lockOnElement(yLabel, (changeX, changeY) => {
-            for (let block of this.blocks) {
-                block.move(block.position.x, block.position.y + changeX, false, true);
-            }
-
-            this.recalculateValues(xInput, yInput);
-            return true;
-        });
-    }
-
-    public override destroy(): void {
-        this.element.innerHTML = "";
-    }
-
-    private recalculateValues(xInput: HTMLInputElement | null, yInput: HTMLInputElement | null) {
-        let defaultX: string | number = this.blocks[0].position.x;
-        let defaultY: string | number = this.blocks[0].position.y;
-
-        if (!this.blocks.every(block => block.position.x === defaultX)) {
-            defaultX = "";
-        }
-        if (!this.blocks.every(block => block.position.y === defaultY)) {
-            defaultY = "";
-        }
-
-        xInput!.value = defaultX.toString();
-        yInput!.value = defaultY.toString();
-    }
 }

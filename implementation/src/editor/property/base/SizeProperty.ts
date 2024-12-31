@@ -1,105 +1,131 @@
-import {Property} from "@/editor/property/Property";
+import {AggregatorProperty} from "@/editor/property/type/AggregatorProperty";
+import {NumberProperty} from "@/editor/property/type/NumberProperty";
 
-export class SizeProperty extends Property {
+export class SizeProperty extends AggregatorProperty {
+
+    constructor() {
+        super("Size", [
+            class WidthProperty extends NumberProperty {
+
+                constructor() {
+                    super("W", "base-size-width");
+                }
+
+                public override isVisible(): boolean {
+                    return true;
+                }
+
+                public override setup(): void {
+                    super.setup();
+
+                    this.editorProperty.getEditor().events.BLOCK_SIZE_CHANGED.on((data) => {
+                        this.processRecalculateValues();
+                    });
+                }
+
+                public override recalculateValues(change: (value: number) => void): void {
+                    let defaultWidth: string | number = this.blocks[0].size.width;
+
+                    if (!this.blocks.every(block => block.size.width === defaultWidth)) {
+                        defaultWidth = "";
+                    }
+
+                    change(defaultWidth as number);
+                }
+
+                public override applyValue(value: number, delta?: {
+                    changeX: number,
+                    changeY: number,
+                    distance: number
+                }): boolean {
+                    if (delta) {
+                        let resizeSuccess = true;
+                        for (let block of this.blocks) {
+                            const newWidth = block.size.width + delta.changeX;
+                            const newHeight = block.size.height + delta.changeX;
+
+                            // Check resize constraints
+                            if (newWidth < 1 || newHeight < 1) {
+                                resizeSuccess = false;
+                                break;
+                            }
+
+                            block.resize(newWidth, block.size.height, false, true);
+                        }
+
+                        return resizeSuccess;
+                    }
+
+                    for (let block of this.blocks) {
+                        block.resize(value, block.size.height, false, true);
+                    }
+
+                    return true;
+                }
+            },
+            class HeightProperty extends NumberProperty {
+
+                constructor() {
+                    super("H", "base-size-height");
+                }
+
+                public override isVisible(): boolean {
+                    return true;
+                }
+
+                public override setup(): void {
+                    super.setup();
+
+                    this.editorProperty.getEditor().events.BLOCK_SIZE_CHANGED.on((data) => {
+                        this.processRecalculateValues();
+                    });
+                }
+
+                public override recalculateValues(change: (value: number) => void): void {
+                    let defaultHeight: string | number = this.blocks[0].size.height;
+
+                    if (!this.blocks.every(block => block.size.height === defaultHeight)) {
+                        defaultHeight = "";
+                    }
+
+                    change(defaultHeight as number);
+                }
+
+                public override applyValue(value: number, delta?: {
+                    changeX: number,
+                    changeY: number,
+                    distance: number
+                }): boolean {
+                    if (delta) {
+                        let resizeSuccess = true;
+                        for (let block of this.blocks) {
+                            const newWidth = block.size.width + delta.changeX;
+                            const newHeight = block.size.height + delta.changeX;
+
+                            // Check resize constraints
+                            if (newWidth < 1 || newHeight < 1) {
+                                resizeSuccess = false;
+                                break;
+                            }
+
+                            block.resize(block.size.width, newHeight, false, true);
+                        }
+
+                        return resizeSuccess;
+                    }
+
+                    for (let block of this.blocks) {
+                        block.resize(value, block.size.height, false, true);
+                    }
+
+                    return true;
+                }
+            }
+        ]);
+    }
 
     public override isVisible(): boolean {
         return this.blocks.length === 1;
     }
 
-    public override setup(): void {
-        this.element.innerHTML = `
-            <p class="label">Size</p>
-            <div class="property-content property-content--row">
-                <div class="property-data property-data--row">
-                    <label for="width">W</label>
-                    <input type="number" data-property="width" name="width">
-                </div>
-                <div class="property-data property-data--row">
-                    <label for="height">H</label>
-                    <input type="number" data-property="height" name="height">
-                </div>
-            </div>
-        `;
-
-        const widthInput = this.element.querySelector<HTMLInputElement>('[data-property="width"]');
-        const heightInput = this.element.querySelector<HTMLInputElement>('[data-property="height"]');
-
-        this.recalculateValues(widthInput, heightInput);
-
-        widthInput?.addEventListener('input', () => {
-            for (let block of this.blocks) {
-                block.resize(parseInt(widthInput!.value), block.size.height, false, true);
-            }
-        });
-        heightInput?.addEventListener('input', () => {
-            for (let block of this.blocks) {
-                block.resize(block.size.width, parseInt(heightInput!.value), false, true);
-            }
-        });
-
-        this.editorProperty.getEditor().events.BLOCK_SIZE_CHANGED.on((data) => {
-            this.recalculateValues(widthInput, heightInput);
-        });
-
-        const widthLabel = this.element.querySelector<HTMLLabelElement>('label[for="width"]')!;
-        const heightLabel = this.element.querySelector<HTMLLabelElement>('label[for="height"]')!;
-
-        this.editorProperty.lockOnElement(widthLabel, (changeX, changeY) => {
-            let resizeSuccess = true;
-            for (let block of this.blocks) {
-                const newWidth = block.size.width + changeX;
-                const newHeight = block.size.height + changeX;
-
-                // Check resize constraints
-                if (newWidth < 1 || newHeight < 1) {
-                    resizeSuccess = false;
-                    break;
-                }
-
-                block.resize(newWidth, block.size.height, false, true);
-            }
-
-            this.recalculateValues(widthInput, heightInput);
-
-            return resizeSuccess;
-        });
-        this.editorProperty.lockOnElement(heightLabel, (changeX, changeY) => {
-            let resizeSuccess = true;
-            for (let block of this.blocks) {
-                const newWidth = block.size.width + changeX;
-                const newHeight = block.size.height + changeX;
-
-                // Check resize constraints
-                if (newWidth < 1 || newHeight < 1) {
-                    resizeSuccess = false;
-                    break;
-                }
-
-                block.resize(block.size.width, newHeight, false, true);
-            }
-
-            this.recalculateValues(widthInput, heightInput);
-
-            return resizeSuccess;
-        });
-    }
-
-    public override destroy(): void {
-        this.element.innerHTML = "";
-    }
-
-    private recalculateValues(widthInput: HTMLInputElement | null, heightInput: HTMLInputElement | null) {
-        let defaultWidth: string | number = this.blocks[0].size.width;
-        let defaultHeight: string | number = this.blocks[0].size.height;
-
-        if (!this.blocks.every(block => block.size.width === defaultWidth)) {
-            defaultWidth = "";
-        }
-        if (!this.blocks.every(block => block.size.height === defaultHeight)) {
-            defaultHeight = "";
-        }
-
-        widthInput!.value = defaultWidth.toString();
-        heightInput!.value = defaultHeight.toString();
-    }
 }

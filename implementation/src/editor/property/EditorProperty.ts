@@ -56,7 +56,7 @@ export class EditorProperty {
         for (const property of properties) {
             const element = document.createElement("div");
             element.classList.add("property");
-            element.classList.add("property--type-" + (typeof property).toLowerCase().replace("property", ""));
+            //element.classList.add("property--type-" + (typeof property).toLowerCase().replace("property", ""));
 
             property.initialize(element, this, blocks);
 

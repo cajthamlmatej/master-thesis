@@ -6,7 +6,7 @@ import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerializ
 
 export class RectangleEditorBlock extends EditorBlock {
     @BlockSerialize("color")
-    private color: string;
+    public color: string;
 
     constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number, color: string) {
         super(id, "rectangle", position, size, rotation, zIndex);
@@ -44,7 +44,13 @@ export class RectangleEditorBlock extends EditorBlock {
     override getProperties(): Property[] {
         return [
             ...super.getProperties(),
-            new ColorProperty("color")
+            new ColorProperty()
         ];
+    }
+
+    changeColor(value: string) {
+        this.color = value;
+
+        this.synchronize();
     }
 }

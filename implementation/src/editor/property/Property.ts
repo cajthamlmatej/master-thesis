@@ -1,12 +1,12 @@
 import type {EditorProperty} from "@/editor/property/EditorProperty";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 
-export abstract class Property {
+export abstract class Property<T extends EditorBlock = EditorBlock> {
     protected element!: HTMLElement;
     protected editorProperty!: EditorProperty;
-    protected blocks!: EditorBlock[];
+    protected blocks!: T[];
 
-    public initialize(element: HTMLElement, editorProperty: EditorProperty, blocks: EditorBlock[]) {
+    public initialize(element: HTMLElement, editorProperty: EditorProperty, blocks: T[]) {
         this.element = element;
         this.editorProperty = editorProperty;
         this.blocks = blocks;
