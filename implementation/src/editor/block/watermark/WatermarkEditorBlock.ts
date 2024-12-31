@@ -43,7 +43,9 @@ export class WatermarkEditorBlock extends EditorBlock {
     }
 
     override serialize(): Object {
-        return {}
+        return {
+            type: "watermark",
+        }
     }
 
 
