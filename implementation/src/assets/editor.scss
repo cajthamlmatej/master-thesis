@@ -502,11 +502,10 @@
         z-index: 2100;
 
         user-select: none;
-        top: calc(var(--y) - 1.5 * var(--action-size));
+        top: var(--y);
         left: var(--x);
-        transform: translateX(-50%);
 
-        gap: 0.25em;
+        gap: calc(var(--action-size) / 4);
 
         &--active {
             display: flex;

@@ -9,6 +9,8 @@ import {UnlockAction} from "@/editor/actions/selector/UnlockAction";
 import {BringBackAction} from "@/editor/actions/selector/BringBackAction";
 
 export class EditorSelectorContext {
+    private static SIZE = 40;
+
     public element!: HTMLElement;
     private selector: EditorSelector;
     private active: boolean = false;
@@ -70,11 +72,16 @@ export class EditorSelectorContext {
         const left = Math.min(...rotatedPoints.map(p => p.x));
         const right = Math.max(...rotatedPoints.map(p => p.x));
 
+        const activeActions = this.element.querySelectorAll(".action--visible").length;
+        const width = (EditorSelectorContext.SIZE * activeActions + (EditorSelectorContext.SIZE / 4 * (activeActions - 1)));
         this.position = {
-            x: (left + right) / 2,
-            y: top,
+            x: (left + right) / 2 - width / 2,
+            y: top - EditorSelectorContext.SIZE * 1.5
         };
-        this.position = this.selector.getEditor().capPositionToEditorBounds(this.position.x, this.position.y);
+
+        this.position = this.selector.getEditor()
+            .capPositionToEditorBounds(this.position.x, this.position.y,
+                width, EditorSelectorContext.SIZE);
 
         this.handleVisibility();
         this.element.style.setProperty("--x", this.position.x + "px");
@@ -89,6 +96,7 @@ export class EditorSelectorContext {
         const contextElement = document.createElement("div");
 
         contextElement.classList.add("editor-selector-context");
+        contextElement.style.setProperty("--action-size", EditorSelectorContext.SIZE + "px");
 
         for (const action of this.getActions()) {
             const actionElement = document.createElement("div");

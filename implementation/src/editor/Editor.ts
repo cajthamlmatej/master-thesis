@@ -79,12 +79,19 @@ export default class Editor {
         }
     }
 
-    public capPositionToEditorBounds(x: number, y: number) {
-        const size = this.getSize();
+    public capPositionToEditorBounds(x: number, y: number, width?: number, height?: number) {
+        if(!width || !height) {
+            const size = this.getSize();
+
+            return {
+                x: Math.max(0, Math.min(size.width, x)),
+                y: Math.max(0, Math.min(size.height, y))
+            }
+        }
 
         return {
-            x: Math.max(0, Math.min(size.width, x)),
-            y: Math.max(0, Math.min(size.height, y))
+            x: Math.max(0, Math.min(this.size.width - width, x)),
+            y: Math.max(0, Math.min(this.size.height - height, y))
         }
     }
 
