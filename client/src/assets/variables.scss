@@ -22,4 +22,28 @@ body, body.theme--light {
     --color-text: #000;
     --color-text-subtle: #80807f;
     --color-text-primary: var(--color-primary);
+
+
+
+    // BUTTONS
+    --color-button-primary-background: var(--color-primary);
+    --color-button-primary-background-hover: var(--color-primary-dark);
+    --color-button-primary-background-active: var(--color-primary-light);
+    --color-button-primary-background-disabled: #b39769;
+    --color-button-primary-foreground: #000;
+    --color-button-neutral-background: #ccc;
+    --color-button-neutral-background-hover: #b3b3b3;
+    --color-button-neutral-background-active: #999999;
+    --color-button-neutral-background-disabled: #8a8a8a;
+    --color-button-neutral-foreground: #000;
+    --color-button-disabled-background: #00000055;
+
+    // CARDS
+    --color-card-background: #fff;
+    --color-card-special-card-text: #fff;
+    --color-card-special-background: #e8d1bd;
+    --color-card-special-text: #a9a9a9;
+
+    // DIALOG
+    --color-dialog-background: rgba(0, 0, 0, 0.25);
 }
