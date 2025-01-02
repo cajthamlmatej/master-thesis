@@ -1,3 +1,73 @@
+:root {
+    font-family: "Funnel Sans", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
 html {
     overflow: hidden;
+}
+
+body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+}
+
+a {
+    color: var(--color-link);
+    text-decoration: dashed underline 1.5px var(--color-link-underline);
+
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        color: var(--color-link-hover);
+    }
+}
+
+b {
+    font-weight: 500;
+}
+
+.text--primary {
+    color: var(--color-text-primary);
+}
+
+.text--subtle {
+    color: var(--color-text-subtle);
+}
+
+small {
+    font-size: 0.8em;
+}
+
+ul {
+    list-style: circle inside;
+    padding: 0;
+    margin: 0;
+}
+
+i {
+    font-style: italic;
+}
+
+:focus {
+    outline: none;
+}
+
+::-webkit-scrollbar {
+    width: 0.5em;
+    height: 0.5em;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-scrollbar-background);
+    border-radius: 0.5em;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-scrollbar-thumb);
+    border-radius: 0.5em;
+    width: 0.3em;
 }

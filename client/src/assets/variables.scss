@@ -1,0 +1,25 @@
+body, body.theme--light {
+    --color-primary: #b5e048;
+    --color-primary-light: #bad3a3;
+    --color-primary-dark: #7c9a14;
+    --color-background: #f7f8fa;
+    --color-background-accent: #fff;
+    --color-help: #c7c7c7;
+
+    // SCROLLBAR
+    --color-scrollbar-background: rgba(117, 111, 111, 0.07);
+    --color-scrollbar-thumb: #96939b;
+
+    // SHADOWS
+    --shadow-primary: 0 0 0.5em rgba(87, 87, 87, 0.2);
+    --shadow-accent: 0 0 0.5em 0.005em rgba(0, 0, 0, 0.2);
+
+    // TEXT FORMATTING
+    --color-link: #6e4d0d;
+    --color-link-hover: var(--color-primary-dark);
+    --color-link-underline: var(--color-primary-light);
+
+    --color-text: #000;
+    --color-text-subtle: #80807f;
+    --color-text-primary: var(--color-primary);
+}
