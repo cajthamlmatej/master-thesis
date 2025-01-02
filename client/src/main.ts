@@ -7,16 +7,18 @@ import './assets/main.scss'
 import './assets/editor.scss'
 
 import {createApp, defineAsyncComponent} from 'vue'
-import { createPinia } from 'pinia'
 
+import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
+import FloatingVue from 'floating-vue'
 
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router);
 
+app.use(FloatingVue);
 
 (() => {
     app.component("Alert", defineAsyncComponent(() => import("@/components/design/alert/Alert.vue")));
