@@ -1,0 +1,55 @@
+<mjml>
+    <mj-body>
+        <mj-section background-color="#f0f0f0">
+            <mj-column>
+<!--                <mj-image src="" height="64px" width="192px"></mj-image>-->
+            </mj-column>
+        </mj-section>
+        <mj-section background-color="#fafafa">
+            <mj-column width="400px">
+                <mj-text>
+                    Hi {{name}},
+                </mj-text>
+                <mj-text>
+                    on {{date}} you requested to export personal data from the TODO web portal. We have
+                    processed the data and after logging into the system it is ready on the settings page or at the
+                    following address:
+                </mj-text>
+                <mj-button background-color="#E0A648" font-weight="800" font-size="18px" href="{{link}}">
+                    Settings
+                </mj-button>
+            </mj-column>
+        </mj-section>
+        <mj-section background-color="white">
+            <mj-column width="400px">
+                <mj-text>
+                    The archive is in ZIP format and contains files in CSV format (or files uploaded by you).
+                    It is possible that it does not contain all the information. If any are missing, this is indicated
+                    in the <code>README.txt</code> file.
+                    In this file you will also find a short description of the individual data.
+                </mj-text>
+                <mj-text>
+                    The exported data is valid for three days after sending this email. After this time, they will be
+                    removed from our system.
+                </mj-text>
+                <mj-text>
+                    You can reapply 30 days from the last export request.
+                </mj-text>
+            </mj-column>
+        </mj-section>
+        <mj-section background-color="#fbfbfb">
+            <mj-column>
+                <mj-text>
+                    If you have any problems, you can contact us at <a href="mailto:masterthesis@cajthaml.eu">masterthesis@cajthaml.eu</a>.
+                </mj-text>
+                <mj-text>
+                    This email was generated automatically, please do not reply to it. You cannot unsubscribe from this
+                    email.
+                </mj-text>
+                <mj-text>
+                    Cajthaml &copy; 2025, All rights reserved.
+                </mj-text>
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>
