@@ -5,7 +5,7 @@ import * as jwt from 'jsonwebtoken';
 import UserRepository from '../database/repository/UserRepository';
 import Container from "typedi";
 
-const tokenHeader = "x-auth";
+const tokenHeader = "Authorization";
 
 /**
  * Verifies the token in the request header. Invalid token always results in an error response.
@@ -18,7 +18,20 @@ export default (required: boolean = true) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         // Check if token is provided
         if (req.headers[tokenHeader]) {
-            const token = req.headers[tokenHeader].toString();
+            let tokenValue = req.headers[tokenHeader].toString();
+
+            if(!tokenValue.startsWith("Bearer ")) {
+                builder
+                    .error()
+                    .client()
+                    .setCode(401)
+                    .setError(Errors.AUTHENTICATION_INVALID_TOKEN)
+                    .send(res);
+
+                return;
+            }
+
+            const token = tokenValue.substring(7);
 
             if (!process.env.JWT_SECRET) throw new Error("JWT_SECRET is not set.");
 
