@@ -4,9 +4,7 @@
             <slot name="logo">
                 <router-link :to="{ name: 'Dashboard' }" class="logo cursor-clickable"></router-link>
 
-                <router-link :to="{ name: 'Dashboard' }">
-                    <img :src="props.icon" alt="" class="icon cursor-clickable"
-                         @click="router.push({ name: 'Dashboard' })"></router-link>
+                <router-link :to="{ name: 'Dashboard' }" class="icon cursor-clickable"></router-link>
             </slot>
         </div>
 
@@ -101,6 +99,8 @@ header {
 
     > .logo {
         .logo {
+            position: relative;
+
             display: block;
             height: 4em;
             width: 192px;
@@ -113,9 +113,27 @@ header {
             @media (max-width: 768px) {
                 display: none;
             }
+
+            &::before {
+                position: absolute;
+                top: 0;
+                left: 0;
+
+                height: 100%;
+                width: 100%;
+
+                display: flex;
+                align-items: center;
+
+                content: "Materials";
+                font-size: 2.5em;
+                font-weight: bold;
+                letter-spacing: -0.1em;
+            }
         }
 
         .icon {
+            position: relative;
             height: 4em;
             width: auto;
 
@@ -127,6 +145,23 @@ header {
 
             @media (max-width: 400px) {
                 display: none;
+            }
+
+            &::before {
+                position: absolute;
+                top: 0;
+                left: 0;
+
+                height: 100%;
+                width: 2em;
+
+                display: flex;
+                align-items: center;
+
+                content: "M";
+                font-size: 2.5em;
+                font-weight: bold;
+                letter-spacing: -0.1em;
             }
         }
     }
