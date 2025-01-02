@@ -14,7 +14,7 @@ export default async function initialize() {
 
         const usersToCreate = [
             {
-                name: "Testujicí uŽIVATEL",
+                name: "Testujicí Uživatel",
                 email: "test@cajthaml.eu",
                 password: bcrypt.hashSync("testtest", 15),
                 active: true,
