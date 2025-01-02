@@ -50,9 +50,9 @@ export class ProcessDataExportTask implements Task {
                 lastPasswordChange: moment(toProcess.user.lastPasswordChange).toISOString(),
             }, true));
 
-            outputs.push(`user.csv - informace o uživateli
-  - vynecháno:
-     - hash hesla`);
+            outputs.push(`user.csv - information about the user
+  - excluded:
+     - password hash`);
         })();
 
         await (async () => {
@@ -66,56 +66,54 @@ export class ProcessDataExportTask implements Task {
                     used: ar.used,
                 }) as any), true));
 
-                outputs.push(`authenticationRequest.csv - informace o žádostech o přihlášení`)
+                outputs.push(`authenticationRequest.csv - information about authentication requests`);
             } else {
-                globallyIgnored.push('přihlašovací žádosti');
+                globallyIgnored.push('authentication requests');
             }
         })();
 
-        jszip.file('README.txt', `EXPORT OSOBNÍCH DAT
-Uživatel: ${toProcess.user.name} (e-mail: ${toProcess.user.email}) (id: ${toProcess.user.id})
-Datum vytvoření žádosti: ${moment(toProcess.createdAt).format('DD. MM. YYYY HH:mm:ss')}
-Datum počátku zpracování: ${moment().format('DD. MM. YYYY HH:mm:ss')}
+        jszip.file('README.txt', `EXPORT OF PERSONAL DATA
+User: ${toProcess.user.name} (e-mail: ${toProcess.user.email}) (id: ${toProcess.user.id})
+Created at: ${moment(toProcess.createdAt).format('DD. MM. YYYY HH:mm:ss')}
+Processed at: ${moment().format('DD. MM. YYYY HH:mm:ss')}
 
-Poznámky k datům:
-   - pokud data obsahují středník (;), je nahrazen za text (semicolon)
-   - některé položky mohou používat formátování Markdown, HTML či JSON
-   - export neobsahuje data z hostingu (spouštěč kódu, hosting, databáze, ...) protože se jedná o data, která si uživatel může stáhnout sám (např. pomocí FTP, spojení s databází, ...)
-        - samotný portál k datům z hostingu neukládá žádná data, pouze je zprostředkovává
+Facts about this export:
+   - if data contains semicolon (;), it is replaced by text (semicolon)
+   - some items may use Markdown, HTML or JSON formatting
 
-Níže se nachází informace o jednotlivých souborech a jejich obsahu.
+See below for information about each file and its contents.
 
 ${outputs.join('\n\n')}
 
 ${globallyIgnored.length === 0 ? '' : `
-Z tohoto exportu byly vynechány následující položky (neobsahují žádná data):
+The following items have been omitted from this export (they do not contain any data):
    - ${globallyIgnored.join('\n   - ')} `}
 `);
 
-        const saveFile = async () => {
-            const zip = await jszip.generateAsync({type: 'nodebuffer'});
-            const zipPath = `storage/data-exports/${toProcess.user.id}-${toProcess.id}.zip`;
+            const saveFile = async () => {
+                const zip = await jszip.generateAsync({type: 'nodebuffer'});
+                const zipPath = `storage/data-exports/${toProcess.user.id}-${toProcess.id}.zip`;
 
-            fs.mkdirSync('storage/data-exports/', {recursive: true});
-            fs.writeFileSync(zipPath, zip);
+                fs.mkdirSync('storage/data-exports/', {recursive: true});
+                fs.writeFileSync(zipPath, zip);
 
-            // TODO: somehow save the file to the database
-        };
+                // TODO: somehow save the file to the database
+            };
 
-        const createdFile = await saveFile();
+            const createdFile = await saveFile();
 
-        await this.dataExportRepository.update(toProcess.id, {
-            status: 'FINISHED',
-            finishedAt: new Date()
-        });
+            await this.dataExportRepository.update(toProcess.id, {
+                status: 'FINISHED',
+                finishedAt: new Date()
+            });
 
 
-        await this.emailService.sendEmail(toProcess.user.email, EmailTemplates.DATA_EXPORT_FINISHED, {
-            name: toProcess.user.name,
-            link: `${process.env.FRONTEND_DOMAIN}/user/settings`,
-            date: moment(toProcess.createdAt).format('DD. MM. YYYY HH:mm:ss'),
-        });
+            await this.emailService.sendEmail(toProcess.user.email, EmailTemplates.DATA_EXPORT_FINISHED, {
+                name: toProcess.user.name,
+                link: `${process.env.FRONTEND_DOMAIN}/user/settings`,
+                date: moment(toProcess.createdAt).format('DD. MM. YYYY HH:mm:ss'),
+            });
 
-        console.log(`Data export ${toProcess.id} processed.`);
+            console.log(`Data export ${toProcess.id} processed.`);
+        }
     }
-}
