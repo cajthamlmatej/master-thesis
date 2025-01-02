@@ -15,7 +15,7 @@ body, body.theme--light {
     --shadow-accent: 0 0 0.5em 0.005em rgba(0, 0, 0, 0.2);
 
     // TEXT FORMATTING
-    --color-link: #6e4d0d;
+    --color-link: #485d0e;
     --color-link-hover: var(--color-primary-dark);
     --color-link-underline: var(--color-primary-light);
 
@@ -29,7 +29,7 @@ body, body.theme--light {
     --color-button-primary-background: var(--color-primary);
     --color-button-primary-background-hover: var(--color-primary-dark);
     --color-button-primary-background-active: var(--color-primary-light);
-    --color-button-primary-background-disabled: #b39769;
+    --color-button-primary-background-disabled: #2d4222;
     --color-button-primary-foreground: #000;
     --color-button-neutral-background: #ccc;
     --color-button-neutral-background-hover: #b3b3b3;
@@ -46,4 +46,8 @@ body, body.theme--light {
 
     // DIALOG
     --color-dialog-background: rgba(0, 0, 0, 0.25);
+
+    // DEBUG
+    --color-debug-background: #f7f8fa;
+    --color-debug-text: #000;
 }
