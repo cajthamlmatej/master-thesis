@@ -1,0 +1,402 @@
+@each $size in (0, 1, 2, 3, 4, 5) {
+    @each $side in (l, r, b, t, x, y, a) {
+        .m#{$side}-#{$size} {
+            @if $side == l {
+                margin-left: #{$size}em;
+            } @else if $side == r {
+                margin-right: #{$size}em;
+            } @else if $side == b {
+                margin-bottom: #{$size}em;
+            } @else if $side == t {
+                margin-top: #{$size}em;
+            } @else if $side == x {
+                margin-left: #{$size}em;
+                margin-right: #{$size}em;
+            } @else if $side == y {
+                margin-top: #{$size}em;
+                margin-bottom: #{$size}em;
+            } @else if $side == a {
+                margin: #{$size}em;
+            }
+        }
+        .m#{$side}-#{$size}-5 {
+            $size: $size + 0.5;
+            @if $side == l {
+                margin-left: #{$size}em;
+            } @else if $side == r {
+                margin-right: #{$size}em;
+            } @else if $side == b {
+                margin-bottom: #{$size}em;
+            } @else if $side == t {
+                margin-top: #{$size}em;
+            } @else if $side == x {
+                margin-left: #{$size}em;
+                margin-right: #{$size}em;
+            } @else if $side == y {
+                margin-top: #{$size}em;
+                margin-bottom: #{$size}em;
+            } @else if $side == a {
+                margin: #{$size}em;
+            }
+            $size: $size - 0.5;
+        }
+    }
+}
+
+@media (min-width: 576px) {
+    @each $size in (0, 1, 2, 3, 4, 5) {
+        @each $side in (l, r, b, t, x, y, a) {
+            .m#{$side}-sm-#{$size} {
+
+                @if $side == l {
+                    margin-left: #{$size}em;
+                } @else if $side == r {
+                    margin-right: #{$size}em;
+                } @else if $side == b {
+                    margin-bottom: #{$size}em;
+                } @else if $side == t {
+                    margin-top: #{$size}em;
+                } @else if $side == x {
+                    margin-left: #{$size}em;
+                    margin-right: #{$size}em;
+                } @else if $side == y {
+                    margin-top: #{$size}em;
+                    margin-bottom: #{$size}em;
+                } @else if $side == a {
+                    margin: #{$size}em;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    @each $size in (0, 1, 2, 3, 4, 5) {
+        @each $side in (l, r, b, t, x, y, a) {
+            .m#{$side}-md-#{$size} {
+
+                @if $side == l {
+                    margin-left: #{$size}em;
+                } @else if $side == r {
+                    margin-right: #{$size}em;
+                } @else if $side == b {
+                    margin-bottom: #{$size}em;
+                } @else if $side == t {
+                    margin-top: #{$size}em;
+                } @else if $side == x {
+                    margin-left: #{$size}em;
+                    margin-right: #{$size}em;
+                } @else if $side == y {
+                    margin-top: #{$size}em;
+                    margin-bottom: #{$size}em;
+                } @else if $side == a {
+                    margin: #{$size}em;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    @each $size in (0, 1, 2, 3, 4, 5) {
+        @each $side in (l, r, b, t, x, y, a) {
+
+            .m#{$side}-lg-#{$size} {
+                @if $side == l {
+                    margin-left: #{$size}em;
+                } @else if $side == r {
+                    margin-right: #{$size}em;
+                } @else if $side == b {
+                    margin-bottom: #{$size}em;
+                } @else if $side == t {
+                    margin-top: #{$size}em;
+                } @else if $side == x {
+                    margin-left: #{$size}em;
+                    margin-right: #{$size}em;
+                } @else if $side == y {
+                    margin-top: #{$size}em;
+                    margin-bottom: #{$size}em;
+                } @else if $side == a {
+                    margin: #{$size}em;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 1400px) {
+
+    @each $size in (0, 1, 2, 3, 4, 5) {
+        @each $side in (l, r, b, t, x, y, a) {
+
+            .m#{$side}-xl-#{$size} {
+                @if $side == l {
+                    margin-left: #{$size}em;
+                } @else if $side == r {
+                    margin-right: #{$size}em;
+                } @else if $side == b {
+                    margin-bottom: #{$size}em;
+                } @else if $side == t {
+                    margin-top: #{$size}em;
+                } @else if $side == x {
+                    margin-left: #{$size}em;
+                    margin-right: #{$size}em;
+                } @else if $side == y {
+                    margin-top: #{$size}em;
+                    margin-bottom: #{$size}em;
+                } @else if $side == a {
+                    margin: #{$size}em;
+                }
+            }
+        }
+    }
+}
+
+@each $size in (0, 1, 2, 3, 4, 5) {
+    @each $side in (l, r, b, t, x, y, a) {
+        .p#{$side}-#{$size} {
+            @if $side == l {
+                padding-left: #{$size}em;
+            } @else if $side == r {
+                padding-right: #{$size}em;
+            } @else if $side == b {
+                padding-bottom: #{$size}em;
+            } @else if $side == t {
+                padding-top: #{$size}em;
+            } @else if $side == x {
+                padding-left: #{$size}em;
+                padding-right: #{$size}em;
+            } @else if $side == y {
+                padding-top: #{$size}em;
+                padding-bottom: #{$size}em;
+            } @else if $side == a {
+                margin: #{$size}em;
+            }
+        }
+    }
+}
+
+@media (min-width: 576px) {
+    @each $size in (0, 1, 2, 3, 4, 5) {
+        @each $side in (l, r, b, t, x, y, a) {
+            .p#{$side}-sm-#{$size} {
+
+                @if $side == l {
+                    padding-left: #{$size}em;
+                } @else if $side == r {
+                    padding-right: #{$size}em;
+                } @else if $side == b {
+                    padding-bottom: #{$size}em;
+                } @else if $side == t {
+                    padding-top: #{$size}em;
+                } @else if $side == x {
+                    padding-left: #{$size}em;
+                    padding-right: #{$size}em;
+                } @else if $side == y {
+                    padding-top: #{$size}em;
+                    padding-bottom: #{$size}em;
+                } @else if $side == a {
+                    margin: #{$size}em;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    @each $size in (0, 1, 2, 3, 4, 5) {
+        @each $side in (l, r, b, t, x, y, a) {
+            .p#{$side}-md-#{$size} {
+
+                @if $side == l {
+                    padding-left: #{$size}em;
+                } @else if $side == r {
+                    padding-right: #{$size}em;
+                } @else if $side == b {
+                    padding-bottom: #{$size}em;
+                } @else if $side == t {
+                    padding-top: #{$size}em;
+                } @else if $side == x {
+                    padding-left: #{$size}em;
+                    padding-right: #{$size}em;
+                } @else if $side == y {
+                    padding-top: #{$size}em;
+                    padding-bottom: #{$size}em;
+                } @else if $side == a {
+                    margin: #{$size}em;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    @each $size in (0, 1, 2, 3, 4, 5) {
+        @each $side in (l, r, b, t, x, y, a) {
+
+            .p#{$side}-lg-#{$size} {
+                @if $side == l {
+                    padding-left: #{$size}em;
+                } @else if $side == r {
+                    padding-right: #{$size}em;
+                } @else if $side == b {
+                    padding-bottom: #{$size}em;
+                } @else if $side == t {
+                    padding-top: #{$size}em;
+                } @else if $side == x {
+                    padding-left: #{$size}em;
+                    padding-right: #{$size}em;
+                } @else if $side == y {
+                    padding-top: #{$size}em;
+                    padding-bottom: #{$size}em;
+                } @else if $side == a {
+                    margin: #{$size}em;
+                }
+            }
+        }
+    }
+}
+
+@each $align in (left, center, right, justify) {
+    .text-#{$align} {
+        text-align: #{$align};
+    }
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+@each $direction in (row, column, row-reverse, column-reverse) {
+    .flex-#{$direction} {
+        flex-direction: #{$direction};
+    }
+}
+
+@media (min-width: 576px) {
+    @each $direction in (row, column, row-reverse, column-reverse) {
+        .flex-sm-#{$direction} {
+            flex-direction: #{$direction};
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    @each $direction in (row, column, row-reverse, column-reverse) {
+        .flex-md-#{$direction} {
+            flex-direction: #{$direction};
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    @each $direction in (row, column, row-reverse, column-reverse) {
+        .flex-lg-#{$direction} {
+            flex-direction: #{$direction};
+        }
+    }
+}
+
+@each $wrap in (wrap, nowrap, wrap-reverse) {
+    .flex-#{$wrap} {
+        flex-wrap: #{$wrap};
+    }
+}
+
+@each $justify in (start, end, center, space-between, around) {
+    .flex-justify-#{$justify} {
+        justify-content: #{$justify};
+    }
+}
+
+@media (min-width: 576px) {
+    @each $justify in (start, end, center, space-between, around) {
+        .flex-justify-sm-#{$justify} {
+            justify-content: #{$justify};
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    @each $justify in (start, end, center, space-between, around) {
+        .flex-justify-md-#{$justify} {
+            justify-content: #{$justify};
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    @each $justify in (start, end, center, space-between, around) {
+        .flex-justify-lg-#{$justify} {
+            justify-content: #{$justify};
+        }
+    }
+}
+
+
+@each $align in (start, end, center, baseline, stretch) {
+    .flex-align-#{$align} {
+        align-items: #{$align};
+    }
+    .flex-align-self-#{$align} {
+        align-self: #{$align};
+    }
+}
+
+// Flex gap 0 - 5
+@each $size in (0, 1, 2, 3, 4, 5) {
+    .gap-#{$size} {
+        gap: #{$size}em;
+    }
+
+    .gap-#{$size}-5 {
+        gap: #{$size + '.5'}em;
+    }
+
+    .row-gap-#{$size} {
+        row-gap: #{$size}em;
+    }
+
+    .row-gap-#{$size}-5 {
+        row-gap: #{$size + '.5'}em;
+    }
+}
+
+.d-none {
+    display: none !important;
+}
+
+.d-block {
+    display: block !important;
+}
+
+@media (min-width: 576px) {
+    .d-sm-none {
+        display: none !important;
+    }
+    .d-sm-block {
+        display: block !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .d-md-none {
+        display: none !important;
+    }
+    .d-md-block {
+        display: block !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .d-lg-none {
+        display: none !important;
+    }
+    .d-lg-block {
+        display: block !important;
+    }
+}
