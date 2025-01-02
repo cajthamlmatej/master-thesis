@@ -1,5 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import {useAuthenticationStore} from "@/stores/authentication";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,6 +17,11 @@ const router = createRouter({
             ]
         },
         {
+            path: '/editor',
+            name: 'Editor',
+            component: () => import('../views/EditorView.vue'),
+        },
+        {
             path: '/player',
             name: 'Player',
             component: () => import('../views/PlayerView.vue'),
@@ -25,6 +30,9 @@ const router = createRouter({
         {
             path: "/authentication",
             component: () => import("../views/authentication/Layout.vue"),
+            meta: {
+                isAuthentication: true
+            },
 
             children: [
                 {
@@ -53,6 +61,22 @@ const router = createRouter({
         }
     ]
 })
+
+// Force user to log in before accessing the route
+router.beforeResolve((to, from, next) => {
+    if (to.meta.isAuthentication) {
+        return next();
+    }
+
+    // Is user authenticated?
+    const isAuthenticated = useAuthenticationStore().isLogged;
+
+    if (!isAuthenticated) {
+        return next({name: "Authentication"});
+    }
+
+    next();
+});
 
 // Scroll to top on route change
 router.afterEach(() => {
