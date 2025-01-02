@@ -5,7 +5,7 @@ import * as jwt from 'jsonwebtoken';
 import UserRepository from '../database/repository/UserRepository';
 import Container from "typedi";
 
-const tokenHeader = "Authorization";
+const tokenHeader = "authorization";
 
 /**
  * Verifies the token in the request header. Invalid token always results in an error response.
