@@ -6,13 +6,36 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            name: 'Home',
+            name: 'Dashboard',
             component: HomeView
         },
         {
             path: '/player',
             name: 'Player',
             component: () => import('../views/PlayerView.vue'),
+        },
+
+        {
+            path: "/authentication",
+            component: () => import("../views/authentication/Layout.vue"),
+
+            children: [
+                {
+                    path: "",
+                    name: "Authentication",
+                    component: () => import("../views/authentication/Authentication.vue"),
+                },
+                {
+                    path: "register",
+                    name: "Authentication/Register",
+                    component: () => import("../views/authentication/Register.vue"),
+                },
+                {
+                    path: "activate/:token",
+                    name: "Authentication/Activate",
+                    component: () => import("../views/authentication/Activate.vue"),
+                }
+            ]
         },
     ]
 })
