@@ -6,8 +6,15 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            name: 'Dashboard',
-            component: HomeView
+            component: () => import('../views/dashboard/Layout.vue'),
+
+            children: [
+                {
+                    path: 'dashboard',
+                    name: 'Dashboard',
+                    component: () => import('../views/dashboard/Dashboard.vue'),
+                }
+            ]
         },
         {
             path: '/player',

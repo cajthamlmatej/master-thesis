@@ -35,6 +35,7 @@ app.use(FloatingVue);
 
 
     app.component("Header", defineAsyncComponent(() => import("@/components/design/header/Header.vue")));
+    app.component("Navigation", defineAsyncComponent(() => import("@/components/design/navigation/Navigation.vue")));
     app.component("NavigationButton", defineAsyncComponent(() => import("@/components/design/navigation/NavigationButton.vue")));
 
     app.component("Form", defineAsyncComponent(() => import("@/components/design/form/Form.vue")));
