@@ -579,13 +579,13 @@
         .property {
             display: flex;
             flex-direction: column;
-            gap: 0.5em;
+            gap: 0.1em;
 
             > .label, label {
                 font-weight: bold;
                 text-transform: uppercase;
                 font-size: 0.75em;
-                letter-spacing: 0.1em;
+                letter-spacing: -0.2px;
             }
 
             > .property-content {
@@ -608,14 +608,23 @@
                         align-items: center;
                     }
 
-                    > label {
-                        font-size: 0.75em;
-                        text-transform: uppercase;
-                        letter-spacing: 0.1em;
-                    }
-
                     > input, > select {
                         width: 100%;
+                        border: 0px;
+                        padding: 0.2em 0.5em;
+
+                        &[type="color"] {
+                            padding: 0;
+                            background-color: transparent;
+                            cursor: pointer;
+
+                            &::-webkit-color-swatch-wrapper {
+                                padding: 0;
+                            }
+                            &::-webkit-color-swatch {
+                                border: 0;
+                            }
+                        }
                     }
                 }
 
@@ -625,6 +634,8 @@
                     .property {
                         flex-direction: row;
                         align-items: center;
+
+                        gap: 0.3em;
                     }
 
                 }

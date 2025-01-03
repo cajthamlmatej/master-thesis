@@ -384,4 +384,28 @@ export default class Editor {
     private setupEditorContent() {
         this.editorElement.innerHTML = `<div class="editor-content"></div>`
     }
+
+    /**
+     * Straight line from one point to another
+     * @param x
+     * @param y
+     * @param x2
+     * @param y2
+     * @param purple
+     */
+    debugLine(x: number, y: number, x2: number, y2: number, purple: string) {
+        const line = document.createElement("div");
+        const length = Math.sqrt((x2 - x) ** 2 + (y2 - y) ** 2);
+
+        const angle = Math.atan2(y2 - y, x2 - x) * (180 / Math.PI);
+
+        line.style.position = "absolute";
+        line.style.transformOrigin = "0 0";
+        line.style.transform = `translate(${x}px, ${y}px) rotate(${angle}deg)`;
+        line.style.width = `${length}px`;
+        line.style.height = "2px";
+        line.style.backgroundColor = purple;
+
+        this.editorElement.querySelector(".editor-content")!.appendChild(line);
+    }
 }

@@ -9,13 +9,14 @@ import {BlockEvent} from "@/editor/block/events/BlockEvent";
 export class EditorSelector {
     public readonly events = new EditorSelectorEvents();
     private readonly editor: Editor;
+    private readonly area: EditorSelectorArea;
     private selectedBlocks: EditorBlock[] = [];
 
     constructor(editor: Editor) {
         this.editor = editor;
 
         new EditorSelectorContext(this);
-        new EditorSelectorArea(this);
+        this.area = new EditorSelectorArea(this);
         this.editor.events.MODE_CHANGED.on((mode) => {
             if (mode !== "select") {
                 this.deselectAllBlocks();
@@ -25,6 +26,10 @@ export class EditorSelector {
 
     public getEditor() {
         return this.editor;
+    }
+
+    public getArea() {
+        return this.area;
     }
 
     /**

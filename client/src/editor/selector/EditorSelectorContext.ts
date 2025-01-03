@@ -63,6 +63,8 @@ export class EditorSelectorContext {
                 }
             }
         }
+
+        this.recalculatePosition(this.selector.getArea().getArea());
     }
 
     public recalculatePosition(data: { x: number; y: number; width: number; height: number; rotation: number }) {

@@ -1,8 +1,6 @@
 <template>
     <article class="editor-view">
         <nav class="main">
-            <div class="logo"></div>
-
             <button @mousedown="(e) => add(e, 'text')"><span class="mdi mdi-pencil-plus-outline"></span></button>
             <button @mousedown="(e) => add(e, 'image')"><span class="mdi mdi-image-plus-outline"></span></button>
             <button @mousedown="(e) => add(e, 'shape')"><span class="mdi mdi-shape-plus-outline"></span></button>
@@ -163,7 +161,7 @@ const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image' | 'shape') 
 <style scoped lang="scss">
 article.editor-view {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) 250px;
+    grid-template-columns: auto minmax(0, 1fr) 200px;
     grid-template-rows: minmax(0, 1fr);
     width: 100%;
     height: 100%;
@@ -180,8 +178,8 @@ article.editor-view {
         grid-column: 1 / 2;
 
         padding: 1rem;
-        background-color: #f5f5f5;
-        border-right: 2px solid #e9ecef;
+        background-color: #e7e8e6;
+        border-right: 2px solid #d0d3cc;
 
         display: flex;
         flex-direction: column;
@@ -218,8 +216,8 @@ article.editor-view {
     .editor-property-container {
         grid-row: 1 / 2;
         grid-column: 3 / 4;
-        background-color: #f5f5f5;
-        border-left: 2px solid #e9ecef;
+        background-color: #e7e8e6;
+        border-left: 2px solid #d0d3cc;
     }
 }
 
@@ -227,7 +225,7 @@ article.editor-view {
     user-select: none;
     width: 100%;
     height: 100%;
-    background-color: #f5f5f5;
+    background-color: #e7e8e6;
     grid-row: 1 / 2;
     grid-column: 2 / 3;
 
