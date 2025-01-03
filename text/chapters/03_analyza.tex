@@ -1,15 +1,51 @@
 \chapter{Analýza}
 
 \begin{chapterabstract}
-Tato kapitola...\todo{Dopsat}
-% představuje přehled a rozbor vybraných nástrojů a frameworků používaných při tvorbě prezentací a výukových materiálů. Zaměřuje se na tradiční i moderní webové nástroje, jejich přednosti, slabiny, možnosti rozšíření o interaktivní prvky a také na způsoby, jakým je možné do těchto nástrojů zapojit komunitní rozšíření, včetně otázek bezpečnosti a kompatibility.
+Tato kapitola analyzuje nástroje a frameworky pro tvorbu a správu výukových materiálů, včetně jejich předností, nedostatků a podpory interaktivity. Zaměřuje se na tradiční i moderní nástroje, otázky komunitního rozšíření a bezpečnosti. V závěru jsou definovány klíčové požadavky na uživatele aplikace a funkčnosti, které je třeba řešit při návrhu platformy.
 \end{chapterabstract}
 
 
 \section{Správa a tvorba materiálů pro výuku}
-\todo{Dopsat}
+
+
+Do vzdělávacího procesu mimo klasické metody patří tvorba a distribuce výukových materiálů.
+Mezi výukové materiály lze zahrnout například prezentace, skripta, plakáty, interaktivní hry, doplňovačky, testy, simulační modely nebo audiovizuální obsah.
+V posledních letech, díky rozvoji digitálních technologií, je stále důležitější sdílet materiály online, aby studenti mohli pracovat samostatně nebo v týmech a měli k materiálům přístup kdykoliv.
+
+Online sdílení materiálů umožňuje rychlou aktualizaci obsahu, což je zvláště důležité v případech, kdy se výukový obsah mění nebo vyvíjí v reakci na aktuální potřeby studentů nebo průběh výuky.
+Navíc umožňuje učitelům flexibilně přizpůsobovat obsah individuálním potřebám jednotlivých studentů nebo skupin.
+
+Dalším přínosem je možnost zpětné vazby v reálném čase, kdy studenti mohou přímo komentovat, odpovídat a reagovat na obsah materiálu.
+
+Mezi platformy vhodné pro distribuci~\cite{msmt_aplikace} výukových materiálů patří například Microsoft Teams, Bakaláři, Google Disk a Google Classroom, Škola Online nebo další obdobné služby.
+Tyto platformy často umožňují integraci s jinými nástroji, jako jsou kalendáře, nástroje pro komunikaci nebo aplikace na zadávání úkolů, což zjednodušuje organizaci výukového procesu.
+
+Každá z těchto platforem má své specifické funkce -- například Microsoft Teams podporuje synchronní i asynchronní komunikaci mezi učiteli a studenty~\cite{teams}, zatímco Google Disk poskytuje možnost snadného sdílení a spolupráce na dokumentech v reálném čase.
+V některých případech však tyto nástroje mohou být omezené, například z hlediska podpory různorodých formátů materiálů nebo absence pokročilých funkcí pro práci s interaktivními prvky.
+
+I když se tato práce primárně nezabývá distribucí materiálů, je nezbytné, aby navrhovaná aplikace umožňovala sdílení obsahu pomocí odkazů.
+
+Nástroje pro tvorbu výukových materiálů zahrnují Google Slides, PowerPoint, Microsoft Word, \LaTeX, Canva a mnoho dalších, což podrobněji rozebírám v následujících kapitolách.
+Učitelé často využívají širokou škálu nástrojů, protože žádný z existujících nástrojů není zcela dokonalý a není jednoduché vytvořit univerzální řešení.
+To způsobuje značnou míru zmatení u studentů a ztěžuje práci učitelům.
+
 \subsection{Vlastní zkušenosti}
-\todo{Dopsat}
+
+Žádná z klasických platforem na sdílení výukových materiálů a hodnocení mi plně nevyhovovala, což mě vedlo k tomu, abych si v rámci své bakalářské práce vytvořil vlastní portál~\cite{cajthaml_bp}.
+Tento portál umožňuje nejen sdílení materiálů, ale také zajišťuje automatickou interaktivitu, například tím, že studenti si mohou během hodiny zapisovat poznámky přímo do systému.
+Taktéž poskytuje další mnoho věcí, jako flexibilní hodnocení či motivační a gamifikační prvky.
+
+V minulosti jsem používal v podstatě všechny nástroje zmíněné dříve i později, ať už pro tvorbu materiálů, jejich sdílení nebo interaktivní výuku.
+
+Pro prezentace nyní často využívám RevealJS, který však má jistá omezení, jak podrobněji rozebírám v následujících kapitolách.
+Skripta vytvářím buď přímo ve svém systému, nebo za pomoci LaTeXu, a pro tvorbu herních a interaktivních aktivit používám nástroje jako Blooket, JeopardyLabs a mnoho dalších služeb.
+
+Rozdělení různých typů materiálů do více platforem mi však nevyhovuje, protože jejich správa je zbytečně složitá a časově náročná.
+Právě tato zkušenost vedla k záměru této diplomové práce, jejímž cílem je vytvořit jednotnou platformu, která spojí různé typy materiálů a umožní jejich snadné rozšíření a úpravy.
+
+Ze zpětných vazeb studentů, které pravidelně sbírám na konci školního roku, často zaznívá, že interaktivita materiálů je nedostatečná a že jejich používání je kvůli tomu složité a neintuitivní.
+Tato zpětná vazba dále zdůrazňuje potřebu vytvořit systém, který by byl přehledný, interaktivní a přizpůsobitelný jak pro učitele, tak pro studenty.
+
 \subsection{Dotazník}
 
 Prozatím si nejsem jistý, zda je to dobrý nápad.\todo{Provést?}
@@ -23,40 +59,40 @@ Následující podkapitoly popisují vybrané zástupce, které jsou pro mou bud
 
 \subsection{PowerPoint}
 
-PowerPoint, součást balíku Microsoft Office, je dlouhodobě vnímán jako standard v oblasti tvorby prezentací.\todo{Zdroj}
-Mnoho uživatelů jej zná díky intuitivnímu rozhraní a širokému spektru funkcí.\todo{Zdroj}
-Hlavní výhody PowerPointu spočívají v jeho univerzálnosti, snadné obsluze a perfektní provázanosti s dalšími nástroji Microsoft Office, jako jsou Word či Excel.\todo{Zdroj}
-Nabízí také velkou knihovnu šablon, grafů, přechodových efektů a základní možnosti vkládání multimédií.\todo{Zdroj}
+PowerPoint, součást balíku Microsoft Office, je dlouhodobě vnímán jako standard~\cite{pp_usage} v oblasti tvorby prezentací.
+Mnoho uživatelů jej zná díky intuitivnímu rozhraní a širokému spektru funkcí~\cite{pp_usage}.
+Hlavní výhody PowerPointu spočívají v jeho univerzálnosti, snadné obsluze a perfektní provázanosti s dalšími nástroji Microsoft Office, jako jsou Word či Excel~\cite{pp_excel, pp_word}.
+Nabízí také velkou knihovnu šablon, grafů, přechodových efektů a základní možnosti vkládání multimédií.
 
 Nevýhodou může být omezená kreativita u některých uživatelů vyplývající z lineárního uspořádání snímků a složitého nebo omezeného používání interaktivních prvků. 
 Častým problémem je i kompatibilita mezi staršími a novějšími verzemi formátů.
-Přestože PowerPoint existuje i ve webové verzi umožňující spolupráci v reálném čase, tato online varianta je funkcemi oproti desktopové verzi značně omezena.\todo{Zdroj}
+Přestože PowerPoint existuje i ve webové verzi umožňující spolupráci v reálném čase, tato online varianta je funkcemi oproti desktopové verzi značně omezena~\cite{pp_platforms}.
 Další nevýhodou je cena –- přístup k plné verzi aplikace je placený, a to často brzdí její širší využití zejména ve školách s omezenými rozpočty.
 
 \subsection{Google Slides}
 
 Google Slides je bezplatný webový nástroj pro tvorbu prezentací od společnosti Google. 
-Hlavní přednosti spočívají v možnostech snadné spolupráce více uživatelů v reálném čase, neboť dokument lze sdílet a společně editovat odkudkoli.\todo{Zdroj}
+Hlavní přednosti spočívají v možnostech snadné spolupráce více uživatelů v reálném čase~\cite{slides}, neboť dokument lze sdílet a společně editovat odkudkoli.
 Integrace s ostatními službami Google (Disk, Dokumenty, Tabulky) umožňuje jednoduchý import a export různých typů souborů, a díky tomu se výrazně usnadňuje týmová práce a přístup ke společným materiálům. 
-Ve výchozím stavu je služba zdarma, avšak pokročilé funkce a správa dat jsou často vázány na účet v rámci Google Workspace\todo{Zdroj}, který mohou organizace platit v rámci firemního nebo institucionálního předplatného. 
+Ve výchozím stavu je služba zdarma, avšak pokročilé funkce a správa dat jsou často vázány na účet v rámci Google Workspace~\cite{slides}, který mohou organizace platit v rámci firemního nebo institucionálního předplatného. 
 
-Výhodou je automatické ukládání na cloud, takže není nutné se obávat ztráty dat\todo{Zdroj}, a navíc je vše dostupné na více zařízeních, což usnadňuje vzdálený přístup k prezentacím. 
-Na druhou stranu je nezbytné mít stabilní připojení k internetu a být obezřetný vůči ukládání citlivých údajů do cloudu, protože Google Slides shromažďuje metadata o aktivitě uživatelů (například informace o tom, kdo a kdy dokument editoval)\todo{Zdroj}, což může s ohledem na soukromí a bezpečnost některým institucím či uživatelům vadit. 
+Výhodou je automatické ukládání na cloud, takže není nutné se obávat ztráty dat~\cite{slides}, a navíc je vše dostupné na více zařízeních, což usnadňuje vzdálený přístup k prezentacím. 
+Na druhou stranu je nezbytné mít stabilní připojení k internetu a být obezřetný vůči ukládání citlivých údajů do cloudu, protože Google Slides shromažďuje metadata o aktivitě uživatelů (například informace o tom, kdo a kdy dokument editoval)~\cite{google_terms}, což může s ohledem na soukromí a bezpečnost některým institucím či uživatelům vadit. 
 Dále je možné, že prezentace vytvořené v Google Slides nebudou stoprocentně kompatibilní s PowerPointem a jinými nástroji zejména ve svojí interaktivitě a pluginy, což může způsobit problémy při přenosu mezi různými platformami. 
-Nevýhodou jsou také omezenější pokročilé funkce\todo{Zdroj}, animace či grafické úpravy oproti PowerPointu nebo jiným specializovaným nástrojům. 
+Nevýhodou jsou také omezenější pokročilé funkce, animace či grafické úpravy oproti PowerPointu nebo jiným specializovaným nástrojům. 
 
-Google Slides nicméně celkově nabízí snadno použitelný a přístupný nástroj pro spolupráci a rychlou tvorbu prezentací, který uživatelům postačí pro většinu běžných scénářů, obzvláště tam, kde je důraz na flexibilitu, támopvou práci a okamžitý vzdálený přístup k materiálům.
+Google Slides nicméně celkově nabízí snadno použitelný a přístupný nástroj pro spolupráci a rychlou tvorbu prezentací, který uživatelům postačí pro většinu běžných scénářů, obzvláště tam, kde je důraz na flexibilitu, týmovou práci a okamžitý vzdálený přístup k materiálům.
 
 
 \subsection{RevealJS}
 
 RevealJS je knihovna a framework, která dovoluje tvořit prezentace pomocí zdrojového kódu v \texttt{HTML}. 
-Výsledné prezentace jsou k dispozici jako webová stránka\todo{Zdroj}, ve které se vykreslují jednotlivé snímky, mezi kterými lze plynule procházet. 
+Výsledné prezentace jsou k dispozici jako webová stránka~\cite{revealjs}, ve které se vykreslují jednotlivé snímky, mezi kterými lze plynule procházet. 
 Velkou výhodou RevealJS je široká komunita, řada open-source pluginů a neomezené možnosti integrace multimediálního obsahu, od videí přes animace až po spustitelný kód. 
 Nevýhodou může být různé zpracování, dokumentace a nastavení pluginů, které nemusí být vždy vzájemně kompatibilní, nutnost znalostí webových technologií a absence \texttt{WYSIWYG} editoru. 
 
 Vytvořené prezentace je často nutné hostovat v cloudu, zejména pokud používají pluginy vyžadující serverové prostředí.
-Společnost, která vytvořila RevealJS, taktéž vytvořila službu Slides.com\todo{Zdroj}, umožňující tvořit prezentace pomocí editoru s frameworkem RevealJS, s prémiovými pluginy a automatickým cloudovým uložením, avšak tento nástroj je kódově uzavřený a placený. 
+Společnost, která vytvořila RevealJS, taktéž vytvořila službu Slides.com~\cite{revealjs, slidescom}, umožňující tvořit prezentace pomocí editoru s frameworkem RevealJS, s prémiovými pluginy a automatickým cloudovým uložením, avšak tento nástroj je kódově uzavřený a placený. 
 
 Osobně jsem RevealJS knihovnu již řadu let používal pro tvorbu prezentací pro své studenty, kteří ocenili možnost vytvářet v prezentaci interaktivní prvky, jako je například kódový blok s okamžitým zobrazením výsledku. 
 Na obrázku \ref{fig:analyza:revealjs-ukazka} je vidět příklad takové prezentace, kde je vlevo kód a vpravo výsledek zobrazený v prohlížeči, což podporuje lepší pochopení učiva a aktivní zapojení studentů. 
@@ -77,7 +113,7 @@ Celkově si lidi chválí i možnost modularity těchto snímků a že je velmi 
 Beamer je třída v sázecím systému \LaTeX, která se zaměřuje na vytváření snímkových prezentací.
 Nejvíce je Beamer společně s \LaTeX~populární v akademickém prostředí zejména z důvodu jednoduchého sázení matematických formulí a zápisu pomocí kódového jazyka, který leccos dovoluje. 
 
-Zápis je ale zároveň to nejvíce nenáviděné na \LaTeX\todo{Zdroj}, a to zejména z důvodu kryptických kódových chyb a různých zastaralých zápisů\todo{Zdroj}.
+Zápis je ale zároveň to nejvíce nenáviděné na \LaTeX~\cite{latex_reddit}, a to zejména z důvodu kryptických kódových chyb a různých zastaralých zápisů.
 Vygenerované prezentace jsou taktéž statické a nedá se v nich dělat jakákoliv interaktivity. 
 Výhodou takovéto kódové generace je, že často z jednoho zdrojového kódu -- pro prezentaci -- se dají tvořit taktéž skripta a to tím, že přidáváme takové bloky kódu, které vykreslí právě v jednom nebo v obou módech.
 
@@ -86,6 +122,7 @@ Výhodou takovéto kódové generace je, že často z jednoho zdrojového kódu 
 Tato sekce se zaměřuje na nástroje, které umožňují snadno a rychle vytvářet vizuálně atraktivní materiály, ať už jde o grafiky, ilustrace, uživatelská rozhraní či jiné kreativní prvky doplňující prezentace a vzdělávací materiály.
 
 \subsection{Canva}\label{text:canva}
+
 Canva je webová platforma pro rychlou a snadnou tvorbu grafických materiálů, jako jsou plakáty, letáky, sociální příspěvky či prezentace, s bohatou nabídkou šablon, fontů a grafických prvků\todo{Zdroj}. 
 Hlavní výhody Canvy spočívají v intuitivním uživatelském rozhraní\todo{Zdroj}, obrovské knihovně předpřipravených šablon a prvků, možnosti drag-and-drop úprav a snadné integraci multimédií.
 
@@ -174,99 +211,99 @@ Prezi je taktéž placená aplikace a omezuje použití jakýchkoliv pokročilý
 
 \section{Sumarizace knihoven a nástrojů}
 
-Tabulka kde vse vyse uvedene nejak sumarizuji, co chybi
+% Tabulka kde vse vyse uvedene nejak sumarizuji, co chybi
 
-\begin{table}[h!]
-\centering
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{r|c|c|c|c|c|c|c|c|c|}
-Vlastnost / Služba/knihovna &
-  \cellcolor[HTML]{EFEFEF}Genially &
-  \cellcolor[HTML]{EFEFEF}Mentimeter &
-  \cellcolor[HTML]{EFEFEF}Prezi &
-  \cellcolor[HTML]{EFEFEF}Canva &
-  \cellcolor[HTML]{EFEFEF}Figma &
-  \cellcolor[HTML]{EFEFEF}PowerPoint &
-  \cellcolor[HTML]{EFEFEF}Google Slides &
-  \cellcolor[HTML]{EFEFEF}RevealJS &
-  \cellcolor[HTML]{EFEFEF}Beamer \\ \hline
-\multicolumn{1}{|r|}{\cellcolor[HTML]{EFEFEF}Tvorba prezentací} &
-  \cmark &
-  \xmark &
-  \xmark &
-  \cmark &
-  \cmark &
-  \cmark &
-  \cmark &
-  \cmark &
-  \cmark \\ \hline
-\multicolumn{1}{|r|}{\cellcolor[HTML]{EFEFEF}Tvorba materiálů} &
-  \cmark &
-  \xmark &
-  \xmark &
-  \xmark &
-  \cmark &
-  \xmark &
-  \xmark &
-  \xmark &
-  \xmark \\ \hline
-\multicolumn{1}{|r|}{\cellcolor[HTML]{EFEFEF}Tvorba grafiky} &
-  \cmark &
-  \xmark &
-  \xmark &
-  \xmark &
-  \cmark &
-  \xmark &
-  \xmark &
-  \xmark &
-  \xmark \\ \hline
-\multicolumn{1}{|r|}{\cellcolor[HTML]{EFEFEF}Spolupráce v reálném čase} &
-  \cmark &
-  \cmark &
-  \cmark &
-  \cmark &
-  \cmark &
-  \cmark (web. verze) &
-  \cmark &
-  \xmark &
-  \xmark \\ \hline
-\multicolumn{1}{|r|}{\cellcolor[HTML]{EFEFEF}Způsob zápisu} &
-  GUI &
-  GUI &
-  GUI &
-  GUI &
-  GUI &
-  GUI + XML &
-  GUI &
-  HTML &
-  LaTeX \\ \hline
-\multicolumn{1}{|r|}{\cellcolor[HTML]{EFEFEF}Open-source} &
-  \xmark &
-  \xmark &
-  \xmark &
-  \xmark &
-  \xmark &
-  \xmark &
-  \xmark &
-  \cmark &
-  \cmark \\ \hline
-\multicolumn{1}{|r|}{\cellcolor[HTML]{EFEFEF}Interaktivita} &
-  \cmark &
-  \cmark &
-  \cmark &
-  \xmark &
-  \xmark &
-  \xmark &
-  \xmark &
-  \cmark &
-  \xmark \\ \hline
-\end{tabular}%
-}
-\caption{aaa}
-\label{tab:my-table}
-\end{table}\todo{Dát asi do dvou/tří tabulek?}
+% \begin{table}[h!]
+% \centering
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{r|c|c|c|c|c|c|c|c|c|}
+% Vlastnost / Služba/knihovna &
+%   \cellcolor[HTML]{EFEFEF}Genially &
+%   \cellcolor[HTML]{EFEFEF}Mentimeter &
+%   \cellcolor[HTML]{EFEFEF}Prezi &
+%   \cellcolor[HTML]{EFEFEF}Canva &
+%   \cellcolor[HTML]{EFEFEF}Figma &
+%   \cellcolor[HTML]{EFEFEF}PowerPoint &
+%   \cellcolor[HTML]{EFEFEF}Google Slides &
+%   \cellcolor[HTML]{EFEFEF}RevealJS &
+%   \cellcolor[HTML]{EFEFEF}Beamer \\ \hline
+% \multicolumn{1}{|r|}{\cellcolor[HTML]{EFEFEF}Tvorba prezentací} &
+%   \cmark &
+%   \xmark &
+%   \xmark &
+%   \cmark &
+%   \cmark &
+%   \cmark &
+%   \cmark &
+%   \cmark &
+%   \cmark \\ \hline
+% \multicolumn{1}{|r|}{\cellcolor[HTML]{EFEFEF}Tvorba materiálů} &
+%   \cmark &
+%   \xmark &
+%   \xmark &
+%   \xmark &
+%   \cmark &
+%   \xmark &
+%   \xmark &
+%   \xmark &
+%   \xmark \\ \hline
+% \multicolumn{1}{|r|}{\cellcolor[HTML]{EFEFEF}Tvorba grafiky} &
+%   \cmark &
+%   \xmark &
+%   \xmark &
+%   \xmark &
+%   \cmark &
+%   \xmark &
+%   \xmark &
+%   \xmark &
+%   \xmark \\ \hline
+% \multicolumn{1}{|r|}{\cellcolor[HTML]{EFEFEF}Spolupráce v reálném čase} &
+%   \cmark &
+%   \cmark &
+%   \cmark &
+%   \cmark &
+%   \cmark &
+%   \cmark (web. verze) &
+%   \cmark &
+%   \xmark &
+%   \xmark \\ \hline
+% \multicolumn{1}{|r|}{\cellcolor[HTML]{EFEFEF}Způsob zápisu} &
+%   GUI &
+%   GUI &
+%   GUI &
+%   GUI &
+%   GUI &
+%   GUI + XML &
+%   GUI &
+%   HTML &
+%   LaTeX \\ \hline
+% \multicolumn{1}{|r|}{\cellcolor[HTML]{EFEFEF}Open-source} &
+%   \xmark &
+%   \xmark &
+%   \xmark &
+%   \xmark &
+%   \xmark &
+%   \xmark &
+%   \xmark &
+%   \cmark &
+%   \cmark \\ \hline
+% \multicolumn{1}{|r|}{\cellcolor[HTML]{EFEFEF}Interaktivita} &
+%   \cmark &
+%   \cmark &
+%   \cmark &
+%   \xmark &
+%   \xmark &
+%   \xmark &
+%   \xmark &
+%   \cmark &
+%   \xmark \\ \hline
+% \end{tabular}%
+% }
+% \caption{aaa}
+% \label{tab:my-table}
+% \end{table}\todo{Dát asi do dvou/tří tabulek?}
 
-Možná už ted více definovat co jsou nutné problém yk vyřešení
+Možná už teď více definovat co jsou nutné problémy k vyřešení
 
 \section{Interaktivní prvky}
 
