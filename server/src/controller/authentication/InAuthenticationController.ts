@@ -20,8 +20,6 @@ import EmailService from "../../email/EmailService";
 import EmailTemplates from "../../email/EmailTemplates";
 import {firstUppercase} from "../../utils/String";
 
-const {vokativ} = require('vokativ');
-
 const schema = Joi.object({
     type: Joi.string().allow('EMAIL', 'EMAIL_PASSWORD').required(),
 
@@ -157,12 +155,10 @@ export default class InAuthenticationController extends Controller {
                         .send(res);
                 }
 
-                const names = user.name.split(' ');
-
                 // Send email.
                 await this.emailService.sendEmail(user.email, EmailTemplates.AUTHENTICATION_REQUEST, {
                     code: code,
-                    name: firstUppercase(vokativ(names[1] ?? names[0], null, names[1] ? names[0] : null)),
+                    name: user.name,
                     link: process.env.FRONTEND_DOMAIN + process.env.FRONTEND_DOMAIN_AUTHENTICATION
                 })
 
