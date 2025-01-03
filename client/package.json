@@ -1,8 +1,10 @@
 {
-  "name": "masterthesis",
-  "version": "0.3.0",
+  "name": "masterthesis-client",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
+  "author": "Matěj Cajthaml",
+  "license": "ISC",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",

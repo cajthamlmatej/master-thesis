@@ -61,8 +61,6 @@ export class EditorClipboard {
             }
         });
 
-        this.editor.debugPoint(position.x, position.y, "purple");
-
         for (const {diffX, diffY, block} of distances) {
             this.editor.addBlock(block);
 
