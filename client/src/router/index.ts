@@ -6,20 +6,20 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            component: () => import('../views/dashboard/Layout.vue'),
+            component: () => import('../views/BaseLayout.vue'),
 
             children: [
                 {
                     path: 'dashboard',
                     name: 'Dashboard',
                     component: () => import('../views/dashboard/Dashboard.vue'),
+                },
+                {
+                    path: 'editor',
+                    name: 'Editor',
+                    component: () => import('../views/EditorView.vue'),
                 }
             ]
-        },
-        {
-            path: '/editor',
-            name: 'Editor',
-            component: () => import('../views/EditorView.vue'),
         },
         {
             path: '/player',

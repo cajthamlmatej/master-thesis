@@ -43,3 +43,12 @@ app.use(FloatingVue);
 })();
 
 app.mount('#app')
+
+
+const calculateHeight = () => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+calculateHeight();
+window.addEventListener('resize', calculateHeight);

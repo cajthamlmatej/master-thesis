@@ -62,5 +62,20 @@ const data = reactive({
 const authenticationStore = useAuthenticationStore();
 const userStore = useUserStore();
 
-const isProduction = import.meta.env.VITE_PRODUCTION !== 'false';
+const isProduction = import.meta.env.MODE !== 'development';
 </script>
+
+<style lang="scss" scoped>
+.alerts {
+    position: fixed;
+    bottom: 2em;
+    right: 0.75em;
+
+    z-index: 1000;
+    width: 40vw;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+</style>

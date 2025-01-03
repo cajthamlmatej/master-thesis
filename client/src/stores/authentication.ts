@@ -116,9 +116,7 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         token.value = undefined;
 
         // TODO: probably should be handled somewhere else
-        if (route.meta.requiresAuth) {
-            router.push({name: "Authentication"});
-        }
+        await router.push({name: "Authentication"});
     }
 
     // Returns the token.

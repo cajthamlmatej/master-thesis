@@ -170,8 +170,8 @@ const classes = computed(() => {
     }
 }
 
-.dialog-activator {
-    display: inline-block;
-    width: 100%;
-}
+//.dialog-activator {
+//    display: inline-block;
+//    width: 100%;
+//}
 </style>
