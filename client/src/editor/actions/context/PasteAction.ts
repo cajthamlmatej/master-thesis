@@ -1,4 +1,4 @@
-import type {ActionParameters} from "@/editor/actions/EditorAction";
+import type {ActionKeybind, ActionParameters} from "@/editor/actions/EditorAction";
 import {ContextAction} from "@/editor/actions/ContextAction";
 
 export class PasteAction extends ContextAction {
@@ -13,4 +13,16 @@ export class PasteAction extends ContextAction {
     override run(param: ActionParameters) {
         param.editor.getClipboard().paste(param.position);
     }
+
+    override getKeybinds(): ActionKeybind[] {
+        return [
+            {
+                key: 'v',
+                ctrlKey: 'ALWAYS',
+                shiftKey: 'NEVER',
+                altKey: 'NEVER',
+                mode: 'COULD_BE_VISIBLE'
+            },
+        ]
+    };
 }

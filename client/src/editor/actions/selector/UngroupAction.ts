@@ -1,5 +1,6 @@
 import {SelectorAction} from "@/editor/actions/SelectorAction";
 import type {ActionParameters} from "@/editor/actions/EditorAction";
+import type {ActionKeybind} from "@/editor/actions/EditorAction";
 
 export class UngroupAction extends SelectorAction {
     constructor() {
@@ -20,4 +21,16 @@ export class UngroupAction extends SelectorAction {
 
         param.editor.events.BLOCK_GROUP_CHANGED.emit(Array.from(param.selected));
     }
+
+    override getKeybinds(): ActionKeybind[] {
+        return [
+            {
+                key: 'g',
+                ctrlKey: 'ALWAYS',
+                shiftKey: 'ALWAYS',
+                altKey: 'NEVER',
+                mode: 'COULD_BE_VISIBLE'
+            },
+        ]
+    };
 }

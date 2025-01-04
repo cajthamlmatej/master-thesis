@@ -21,6 +21,7 @@ import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
 import {ShapeBlockDeserializer} from "@/editor/block/shape/ShapeBlockDeserializer";
 import {ShapePlayerBlock} from "@/editor/block/shape/ShapePlayerBlock";
+import EditorKeybinds from "@/editor/EditorKeybinds";
 
 export default class Editor {
     private static readonly DEFAULT_PADDING = 32;
@@ -39,6 +40,7 @@ export default class Editor {
     private readonly selector: EditorSelector;
     private readonly context: EditorContext;
     private readonly clipboard: EditorClipboard;
+    private readonly keybinds: EditorKeybinds;
 
     constructor(editorElement: HTMLElement, options?: EditorOptions, preferences?: EditorPreferences) {
         this.editorElement = editorElement;
@@ -62,6 +64,9 @@ export default class Editor {
 
         // TODO: this enabling is weirdly placed
         new EditorGroupAreaVisualiser(this);
+
+        this.keybinds = new EditorKeybinds(this);
+
         this.setMode(EditorMode.SELECT);
     }
 
@@ -212,9 +217,9 @@ export default class Editor {
         return this.clipboard;
     }
 
-    public setMode(mode: EditorMode) {
-        this.mode = mode;
-
+    public getKeybinds() {
+        return this.keybinds;
+    }
         for (let mode of Object.values(EditorMode)) {
             this.editorElement.classList.remove("editor--mode-" + mode);
         }

@@ -24,6 +24,8 @@
             </div>
         </div>
     </article>
+
+    <Keybinds :editor="editor" v-if="loaded"></Keybinds>
 </template>
 
 <script setup lang="ts">
@@ -31,7 +33,6 @@ import Editor from "@/editor/Editor";
 import {onMounted, ref} from "vue";
 import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
 import {encodeBase64, generateUUID} from "@/utils/Generators";
-import {WatermarkEditorBlock} from "@/editor/block/watermark/WatermarkEditorBlock";
 import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 import {EditorMode} from "@/editor/EditorMode";
@@ -40,11 +41,13 @@ import {EditorSerializer} from "@/editor/EditorSerializer";
 import {useRouter} from "vue-router";
 import {EditorProperty} from "@/editor/property/EditorProperty";
 import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
+import Keybinds from "@/components/editor/Keybinds.vue";
 
 const editorElement = ref<HTMLElement | null>(null);
 const editorPropertyElement = ref<HTMLElement | null>(null);
 
 let editor!: Editor;
+let loaded = ref(false);
 
 onMounted(() => {
     if (!editorElement.value) {
@@ -61,6 +64,8 @@ onMounted(() => {
     editor = deserializer.deserialize(data, editorElement.value);
 
     const editorProperty = new EditorProperty(editor, editorPropertyElement.value);
+
+    loaded.value = true;
 });
 
 const mode = ref<'select' | 'move'>('select');

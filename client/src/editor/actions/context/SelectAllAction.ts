@@ -2,27 +2,31 @@ import type {ActionParameters} from "@/editor/actions/EditorAction";
 import {ContextAction} from "@/editor/actions/ContextAction";
 import type {ActionKeybind} from "@/editor/actions/EditorAction";
 
-export class CopyAction extends ContextAction {
+export class SelectAllAction extends ContextAction {
     constructor() {
-        super("copy", "Copy");
+        super("selectAll", "Select All");
     }
 
     override isVisible(param: ActionParameters) {
-        return param.selected.every(b => b.editorSupport().selection) && param.selected.length >= 1;
+        return false;
     }
 
     override run(param: ActionParameters) {
-        param.editor.getClipboard().markForCopy(param.selected);
+        param.editor.getSelector().deselectAllBlocks();
+
+        for(let block of param.editor.getBlocks()) {
+            param.editor.getSelector().selectBlock(block, true);
+        }
     }
 
     override getKeybinds(): ActionKeybind[] {
         return [
             {
-                key: 'c',
+                key: 'a',
                 ctrlKey: 'ALWAYS',
                 shiftKey: 'NEVER',
                 altKey: 'NEVER',
-                mode: 'COULD_BE_VISIBLE'
+                mode: 'ALWAYS'
             },
         ]
     };

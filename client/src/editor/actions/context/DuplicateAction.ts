@@ -1,6 +1,7 @@
 import type {ActionParameters} from "@/editor/actions/EditorAction";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {ContextAction} from "@/editor/actions/ContextAction";
+import type {ActionKeybind} from "@/editor/actions/EditorAction";
 
 export class DuplicateAction extends ContextAction {
     constructor() {
@@ -30,4 +31,15 @@ export class DuplicateAction extends ContextAction {
             param.editor.getSelector().selectBlock(block, true);
         }
     }
+    override getKeybinds(): ActionKeybind[] {
+        return [
+            {
+                key: 'd',
+                ctrlKey: 'ALWAYS',
+                shiftKey: 'NEVER',
+                altKey: 'NEVER',
+                mode: 'COULD_BE_VISIBLE'
+            },
+        ]
+    };
 }

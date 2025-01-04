@@ -90,7 +90,11 @@ export class EditorSelectorContext {
         this.element.style.setProperty("--y", this.position.y + "px");
     }
 
-    private getActions() {
+    public isActive() {
+        return this.active;
+    }
+
+    public getActions() {
         return this.actions;
     }
 

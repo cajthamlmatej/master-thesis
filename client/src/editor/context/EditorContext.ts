@@ -8,6 +8,8 @@ import {ZIndexUpAction} from "@/editor/actions/context/ZIndexUpAction";
 import {ZIndexTopAction} from "@/editor/actions/context/ZIndexTopAction";
 import {ZIndexBottomAction} from "@/editor/actions/context/ZIndexBottomAction";
 import {ZIndexDownAction} from "@/editor/actions/context/ZIndexDownAction";
+import {MoveAction} from "@/editor/actions/context/MoveAction";
+import {SelectAllAction} from "@/editor/actions/context/SelectAllAction";
 
 export class EditorContext {
     public element!: HTMLElement;
@@ -26,6 +28,10 @@ export class EditorContext {
         this.actions.push(new ZIndexDownAction());
         this.actions.push(new ZIndexTopAction());
         this.actions.push(new ZIndexBottomAction());
+
+        this.actions.push(new MoveAction());
+
+        this.actions.push(new SelectAllAction());
 
         this.setupContext();
     }
@@ -63,7 +69,11 @@ export class EditorContext {
         }
     }
 
-    private getActions() {
+    public isActive() {
+        return this.active;
+    }
+
+    public getActions() {
         return this.actions;
     }
 

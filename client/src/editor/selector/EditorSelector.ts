@@ -10,12 +10,13 @@ export class EditorSelector {
     public readonly events = new EditorSelectorEvents();
     private readonly editor: Editor;
     private readonly area: EditorSelectorArea;
+    private readonly context: EditorSelectorContext;
     private selectedBlocks: EditorBlock[] = [];
 
     constructor(editor: Editor) {
         this.editor = editor;
 
-        new EditorSelectorContext(this);
+        this.context = new EditorSelectorContext(this);
         this.area = new EditorSelectorArea(this);
         this.editor.events.MODE_CHANGED.on((mode) => {
             if (mode !== "select") {
@@ -26,6 +27,10 @@ export class EditorSelector {
 
     public getEditor() {
         return this.editor;
+    }
+
+    public getContext() {
+        return this.context;
     }
 
     public getArea() {

@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import Editor from "@/components/Editor.vue";
+import Editor from "@/components/editor/Editor.vue";
 </script>
 
 <style lang="scss">

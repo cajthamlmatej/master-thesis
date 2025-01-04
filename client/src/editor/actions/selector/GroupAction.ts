@@ -2,6 +2,7 @@ import {SelectorAction} from "@/editor/actions/SelectorAction";
 import type {ActionParameters} from "@/editor/actions/EditorAction";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {generateUUID} from "@/utils/Generators";
+import type {ActionKeybind} from "@/editor/actions/EditorAction";
 
 export class GroupAction extends SelectorAction {
     constructor() {
@@ -43,4 +44,16 @@ export class GroupAction extends SelectorAction {
 
         param.editor.events.BLOCK_GROUP_CHANGED.emit(Array.from(modified));
     }
+
+    override getKeybinds(): ActionKeybind[] {
+        return [
+            {
+                key: 'g',
+                ctrlKey: 'ALWAYS',
+                shiftKey: 'NEVER',
+                altKey: 'NEVER',
+                mode: 'COULD_BE_VISIBLE'
+            },
+        ]
+    };
 }

@@ -14,6 +14,4 @@ export abstract class SelectorAction extends EditorAction {
         this.icon = icon;
     }
 
-    abstract isVisible(param: ActionParameters): boolean;
-
 }
