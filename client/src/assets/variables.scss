@@ -96,4 +96,20 @@ body, body.theme--light {
     // DIVIDER
     --color-divider: #E0E0E0;
     --divider-width: 2px;
+    
+    // LISTS
+    --color-list-background: var(--color-background-accent);
+    --color-list-background-hover: #e8e9eb;
+    --color-list-background-active: #e0a6481e;
+    --color-list-background-disabled: #f5f5f5;
+    --color-list-border: #ced3da;
+    --color-list-text: #000;
+    --color-list-mark: var(--color-primary);
+    --list-border-width: 1px;
+    --list-mark-width: 4px;
+
+    // TOOLTIP
+    --color-tooltip-background: var(--color-primary);
+    --color-tooltip-text: #181818;
+
 }

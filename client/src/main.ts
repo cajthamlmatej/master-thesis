@@ -31,12 +31,16 @@ app.use(FloatingVue);
     app.component("Dialog", defineAsyncComponent(() => import("@/components/design/dialog/Dialog.vue")));
     app.component("Card", defineAsyncComponent(() => import("@/components/design/card/Card.vue")));
 
+    app.component("List", defineAsyncComponent(() => import("@/components/design/list/List.vue")));
+    app.component("ListItem", defineAsyncComponent(() => import("@/components/design/list/ListItem.vue")));
     app.component("Tabs", defineAsyncComponent(() => import("@/components/design/tabs/Tabs.vue")));
 
+    app.component("Tooltip", defineAsyncComponent(() => import("@/components/design/tooltip/Tooltip.vue")));
 
     app.component("Header", defineAsyncComponent(() => import("@/components/design/header/Header.vue")));
     app.component("Navigation", defineAsyncComponent(() => import("@/components/design/navigation/Navigation.vue")));
     app.component("NavigationButton", defineAsyncComponent(() => import("@/components/design/navigation/NavigationButton.vue")));
+    app.component("NavigationItem", defineAsyncComponent(() => import("@/components/design/navigation/NavigationItem.vue")));
 
     app.component("Form", defineAsyncComponent(() => import("@/components/design/form/Form.vue")));
     app.component("Input", defineAsyncComponent(() => import("@/components/design/input/Input.vue")));
