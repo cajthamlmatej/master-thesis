@@ -69,9 +69,168 @@ export default class Editor {
 
         this.setMode(EditorMode.SELECT);
     }
+    private parseOptions(options?: EditorOptions) {
+        if (!options) return;
 
-    public getSize() {
-        return this.size;
+        if (options.size) {
+            this.size = options.size;
+        }
+    }
+
+    private parsePreferences(preferences: EditorPreferences | undefined) {
+        if (!preferences) {
+            this.preferences = new EditorPreferences();
+            return;
+        }
+
+        this.preferences = preferences;
+    }
+
+    private setupEditor() {
+        this.setupUsage();
+        this.setupEditorContent();
+        this.fitToParent();
+    }
+
+    private setupUsage() {
+        window.addEventListener("resize", this.usageResizeEvent.bind(this));
+        window.addEventListener("mousedown", this.usageMouseDownEvent.bind(this));
+        window.addEventListener("wheel", this.usageWheelEvent.bind(this));
+    }
+
+    private usageResizeEvent() {
+        if (this.preferences.KEEP_EDITOR_TO_FIT_PARENT) {
+            this.fitToParent();
+        }
+    }
+    private usageMouseDownEvent(event: MouseEvent) {
+        if (this.mode !== EditorMode.MOVE) return;
+
+        if (event.button !== 0) return;
+
+        // Is inside the editor?
+        if (!this.editorElement.parentElement!.contains(event.target as Node)) return;
+
+        const handleMove = (event: MouseEvent) => {
+            const offsetX = event.movementX;
+            const offsetY = event.movementY;
+
+            this.position = {
+                x: this.position.x + offsetX,
+                y: this.position.y + offsetY
+            };
+
+            this.updateElement();
+        };
+        const handleUp = (event: MouseEvent) => {
+            window.removeEventListener("mousemove", handleMove);
+            window.removeEventListener("mouseup", handleUp);
+        };
+
+        window.addEventListener("mousemove", handleMove);
+        window.addEventListener("mouseup", handleUp);
+    }
+
+    private usageWheelEvent(event: WheelEvent) {
+        if (this.mode !== EditorMode.MOVE) return;
+
+        if (!this.editorElement.parentElement!.contains(event.target as Node)) return;
+
+        const rect = this.editorElement.getBoundingClientRect();
+
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+
+        const newScale = this.scale - event.deltaY / 1000;
+        const scale = Math.max(0.1, Math.min(2, newScale));
+
+        const scaleChange = scale / this.scale;
+
+        this.position.x = mouseX - (mouseX - this.position.x) * scaleChange;
+        this.position.y = mouseY - (mouseY - this.position.y) * scaleChange;
+
+        this.scale = scale;
+
+        this.updateElement();
+    }
+
+    private setupEditorContent() {
+        this.editorElement.innerHTML = `<div class="editor-content"></div>`
+    }
+
+    /**
+     * Destroy the editor instance, cleanup events and the main element
+     */
+    public destroy() {
+        this.events.EDITOR_DESTROYED.emit();
+        this.editorElement.remove();
+
+        window.removeEventListener("resize", this.usageResizeEvent.bind(this));
+        window.removeEventListener("mousedown", this.usageMouseDownEvent.bind(this));
+        window.removeEventListener("wheel", this.usageWheelEvent.bind(this));
+    }
+
+    private updateElement() {
+        this.editorElement.style.left = this.position.x + "px";
+        this.editorElement.style.top = this.position.y + "px";
+        this.editorElement.style.transform = `scale(${this.scale})`;
+        this.editorElement.style.width = this.size.width + "px";
+        this.editorElement.style.height = this.size.height + "px";
+    }
+
+    public setMode(mode: EditorMode) {
+        this.mode = mode;
+
+        for (let mode of Object.values(EditorMode)) {
+            this.editorElement.classList.remove("editor--mode-" + mode);
+        }
+
+        this.editorElement.classList.add("editor--mode-" + mode);
+        this.events.MODE_CHANGED.emit(mode);
+    }
+
+    public fitToParent() {
+        const parent = this.editorElement.parentElement;
+
+        if (!parent) {
+            console.log("[Editor] Parent element not found");
+            return;
+        }
+
+        const parentWidth = parent.clientWidth - Editor.DEFAULT_PADDING;
+        const parentHeight = parent.clientHeight - Editor.DEFAULT_PADDING;
+
+        // Calculate the scale to fit the parent
+        const scaleX = parentWidth / this.size.width;
+        const scaleY = parentHeight / this.size.height;
+
+        const scale = Math.min(scaleX, scaleY);
+
+        this.scale = scale;
+
+        // Calculate the scaled dimensions
+        const scaledWidth = this.size.width * scale;
+        const scaledHeight = this.size.height * scale;
+
+        // Set the position to center
+        const offsetX = (parentWidth - scaledWidth) / 2 + Editor.DEFAULT_PADDING / 2;
+        const offsetY = (parentHeight - scaledHeight) / 2 + Editor.DEFAULT_PADDING / 2;
+
+        this.position = {
+            x: offsetX,
+            y: offsetY
+        }
+
+        this.updateElement();
+    }
+
+    /**
+     * Serialize the editor data, so it can be saved and loaded later
+     */
+    public serialize(): Object {
+        return {
+            size: this.size,
+        }
     }
 
     public screenToEditorCoordinates(screenX: number, screenY: number) {
@@ -106,30 +265,6 @@ export default class Editor {
             x: rect.left,
             y: rect.top
         }
-    }
-
-    public getScale() {
-        return this.scale;
-    }
-
-    public getMode() {
-        return this.mode;
-    }
-
-    public getEditorElement() {
-        return this.editorElement;
-    }
-
-    public getWrapperElement() {
-        return this.editorElement.parentElement!;
-    }
-
-    public getPreferences() {
-        return this.preferences;
-    }
-
-    public getBlocks() {
-        return this.blocks;
     }
 
     public addBlock(block: EditorBlock, newBlock: boolean = true) {
@@ -220,51 +355,38 @@ export default class Editor {
     public getKeybinds() {
         return this.keybinds;
     }
-        for (let mode of Object.values(EditorMode)) {
-            this.editorElement.classList.remove("editor--mode-" + mode);
-        }
 
-        this.editorElement.classList.add("editor--mode-" + mode);
-        this.events.MODE_CHANGED.emit(mode);
+    public getSize() {
+        return this.size;
     }
 
-    public fitToParent() {
-        const parent = this.editorElement.parentElement;
+    public getScale() {
+        return this.scale;
+    }
 
-        if (!parent) {
-            console.log("[Editor] Parent element not found");
-            return;
-        }
+    public getMode() {
+        return this.mode;
+    }
 
-        const parentWidth = parent.clientWidth - Editor.DEFAULT_PADDING;
-        const parentHeight = parent.clientHeight - Editor.DEFAULT_PADDING;
+    public getEditorElement() {
+        return this.editorElement;
+    }
 
-        // Calculate the scale to fit the parent
-        const scaleX = parentWidth / this.size.width;
-        const scaleY = parentHeight / this.size.height;
+    public getWrapperElement() {
+        return this.editorElement.parentElement!;
+    }
 
-        const scale = Math.min(scaleX, scaleY);
+    public getPreferences() {
+        return this.preferences;
+    }
 
-        this.scale = scale;
-
-        // Calculate the scaled dimensions
-        const scaledWidth = this.size.width * scale;
-        const scaledHeight = this.size.height * scale;
-
-        // Set the position to center
-        const offsetX = (parentWidth - scaledWidth) / 2 + Editor.DEFAULT_PADDING / 2;
-        const offsetY = (parentHeight - scaledHeight) / 2 + Editor.DEFAULT_PADDING / 2;
-
-        this.position = {
-            x: offsetX,
-            y: offsetY
-        }
-
-        this.updateElement();
+    public getBlocks() {
+        return this.blocks;
     }
 
     /**
-     * TODO: Remove this method
+     * This is a debug method to draw a point on the editor.
+     * Should not be used in production.
      * @param initialX
      * @param initialY
      * @param color
@@ -285,120 +407,15 @@ export default class Editor {
     }
 
     /**
-     * Serialize the editor data, so it can be saved and loaded later
-     */
-    public serialize(): Object {
-        return {
-            size: this.size,
-        }
-    }
-
-    private parseOptions(options?: EditorOptions) {
-        if (!options) return;
-
-        if (options.size) {
-            this.size = options.size;
-        }
-    }
-
-    private parsePreferences(preferences: EditorPreferences | undefined) {
-        if (!preferences) {
-            this.preferences = new EditorPreferences();
-            return;
-        }
-
-        this.preferences = preferences;
-    }
-
-    private setupEditor() {
-        this.setupUsage();
-        this.setupEditorContent();
-        this.fitToParent();
-    }
-
-    private setupUsage() {
-        window.addEventListener("resize", () => {
-            if (this.preferences.KEEP_EDITOR_TO_FIT_PARENT) {
-                this.fitToParent();
-            }
-        });
-        window.addEventListener("mousedown", (event) => {
-            if (this.mode !== EditorMode.MOVE) return;
-
-            if (event.button !== 0) return;
-
-            // Is inside the editor?
-            if (!this.editorElement.parentElement!.contains(event.target as Node)) return;
-
-            const handleMove = (event: MouseEvent) => {
-                const offsetX = event.movementX;
-                const offsetY = event.movementY;
-
-                this.position = {
-                    x: this.position.x + offsetX,
-                    y: this.position.y + offsetY
-                };
-
-                this.updateElement();
-            };
-            const handleUp = (event: MouseEvent) => {
-                window.removeEventListener("mousemove", handleMove);
-                window.removeEventListener("mouseup", handleUp);
-            };
-
-            window.addEventListener("mousemove", handleMove);
-            window.addEventListener("mouseup", handleUp);
-        });
-        window.addEventListener("wheel", (event) => {
-            if (this.mode !== EditorMode.MOVE) return;
-
-            if (!this.editorElement.parentElement!.contains(event.target as Node)) return;
-
-            const rect = this.editorElement.getBoundingClientRect();
-            // Get the mouse position relative to the editor element
-            const mouseX = event.clientX - rect.left;
-            const mouseY = event.clientY - rect.top;
-
-            // Calculate the new scale based on the wheel event
-            const newScale = this.scale - event.deltaY / 1000;
-            const scale = Math.max(0.1, Math.min(2, newScale));
-
-            // To keep the position under the cursor, calculate the offset difference
-            const scaleChange = scale / this.scale;
-
-            // Adjust the position to keep the same point under the cursor
-            this.position.x = mouseX - (mouseX - this.position.x) * scaleChange;
-            this.position.y = mouseY - (mouseY - this.position.y) * scaleChange;
-
-            // Apply the new scale
-            this.scale = scale;
-
-            // Update the element after scaling and adjusting its position
-            this.updateElement();
-        });
-    }
-
-    private updateElement() {
-        this.editorElement.style.left = this.position.x + "px";
-        this.editorElement.style.top = this.position.y + "px";
-        this.editorElement.style.transform = `scale(${this.scale})`;
-        this.editorElement.style.width = this.size.width + "px";
-        this.editorElement.style.height = this.size.height + "px";
-    }
-
-    private setupEditorContent() {
-        this.editorElement.innerHTML = `<div class="editor-content"></div>`
-    }
-
-    /**
-     * Straight line from one point to another
+     * This is a debug method to draw a line between two points on the editor.
+     * Should not be used in production.
      * @param x
      * @param y
      * @param x2
      * @param y2
-     * @param purple
+     * @param color
      */
-    debugLine(x: number, y: number, x2: number, y2: number, purple: string) {
+    debugLine(x: number, y: number, x2: number, y2: number, color: string) {
         const line = document.createElement("div");
         const length = Math.sqrt((x2 - x) ** 2 + (y2 - y) ** 2);
 
@@ -409,7 +426,7 @@ export default class Editor {
         line.style.transform = `translate(${x}px, ${y}px) rotate(${angle}deg)`;
         line.style.width = `${length}px`;
         line.style.height = "2px";
-        line.style.backgroundColor = purple;
+        line.style.backgroundColor = color;
 
         this.editorElement.querySelector(".editor-content")!.appendChild(line);
     }

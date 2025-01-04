@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import Editor from "@/editor/Editor";
-import {onMounted, ref} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
 import {encodeBase64, generateUUID} from "@/utils/Generators";
 import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
@@ -66,6 +66,11 @@ onMounted(() => {
     const editorProperty = new EditorProperty(editor, editorPropertyElement.value);
 
     loaded.value = true;
+});
+
+onUnmounted(() => {
+    editor.destroy();
+    loaded.value = false;
 });
 
 const mode = ref<'select' | 'move'>('select');
