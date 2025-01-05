@@ -47,7 +47,6 @@ const emits = defineEmits(["menuVisible"]);
 const menuVisible = ref(false);
 
 watch(() => props.menu, (value) => {
-    console.log(value, props.fullControl);
     const width = window.innerWidth;
 
     if (width <= 768 || props.fullControl) {
