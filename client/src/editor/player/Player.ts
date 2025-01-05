@@ -109,7 +109,7 @@ export default class Player {
     private setupUsage() {
         window.addEventListener("resize", () => {
             this.fitToParent(); // TODO: not always needed
-        });
+        }); // TODO: remove listener
     }
 
     private updateElement() {

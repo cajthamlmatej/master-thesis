@@ -18,14 +18,17 @@ export default class EditorKeybinds {
     constructor(editor: Editor) {
         this.editor = editor;
 
-        window.addEventListener("keydown", this.process.bind(this));
-        window.addEventListener("mousemove", this.trackMouse.bind(this));
+        const keyDownEvent = this.process.bind(this);
+        const mouseMoveEvent = this.trackMouse.bind(this);
+
+        window.addEventListener("keydown", keyDownEvent);
+        window.addEventListener("mousemove", mouseMoveEvent);
 
         this.initializeKeybinds();
 
         editor.events.EDITOR_DESTROYED.on(() => {
-            window.removeEventListener("keydown", this.process.bind(this));
-            window.removeEventListener("mousemove", this.trackMouse.bind(this));
+            window.removeEventListener("keydown", keyDownEvent);
+            window.removeEventListener("mousemove", mouseMoveEvent);
         });
     }
 

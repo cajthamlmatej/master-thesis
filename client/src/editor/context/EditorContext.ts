@@ -116,50 +116,61 @@ export class EditorContext {
 
     private setupEvents() {
         // Selecting blocks
-        window.addEventListener("contextmenu", (event) => {
-            // If the element is not in the editor, do not do anything
-            if (!this.editor.getEditorElement().contains(event.target as Node)) {
-                return;
-            }
+        const contextMenuEvent = this.handleContextMenuEvent.bind(this);
+        const clickEvent = this.handleClickEvent.bind(this);
 
-            // Disable classic context menu
-            event.preventDefault();
+        window.addEventListener("contextmenu", contextMenuEvent);
+        window.addEventListener("click", clickEvent);
 
-            // note(Matej): Not needed probably? We dont need to check what he clicked on
-            // const blockElement = (event.target as HTMLElement).closest(".block");
-            //
-            // // Is a block?
-            // if (blockElement) {
-            //     const block = this.editor.getBlockById(blockElement.getAttribute("data-block-id")!);
-            //
-            //     if (!block) {
-            //         console.error("[EditorSelector] Clicked block not found (by id).");
-            //         return;
-            //     }
-            //
-            //     if (this.editor.getSelector().isSelected(block)) {
-            //         this.position = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
-            //         this.active = true;
-            //         this.handleContext();
-            //         this.handleVisibility();
-            //     }
-            //     return;
-            // }
+        this.editor.events.EDITOR_DESTROYED.on(() => {
+            window.removeEventListener("contextmenu", contextMenuEvent);
+            window.removeEventListener("click", clickEvent);
+        })
+    }
 
-            // Probably clicked inside the editor and not in a block, try to show it, if actions are available
-            this.position = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
+    private handleClickEvent(event: MouseEvent) {
+        if (event.button !== 0) return;
 
-            this.active = true;
-            this.handleContext();
-            this.handleVisibility();
-        });
+        this.active = false;
+        this.handleVisibility();
+    }
 
-        window.addEventListener("click", (event) => {
-            if (event.button !== 0) return;
+    private handleContextMenuEvent(event: MouseEvent) {
+        // If the element is not in the editor, do not do anything
+        if (!this.editor.getEditorElement().contains(event.target as Node)) {
+            return;
+        }
 
-            this.active = false;
-            this.handleVisibility();
-        });
+        // Disable classic context menu
+        event.preventDefault();
+
+        // note(Matej): Not needed probably? We dont need to check what he clicked on
+        // const blockElement = (event.target as HTMLElement).closest(".block");
+        //
+        // // Is a block?
+        // if (blockElement) {
+        //     const block = this.editor.getBlockById(blockElement.getAttribute("data-block-id")!);
+        //
+        //     if (!block) {
+        //         console.error("[EditorSelector] Clicked block not found (by id).");
+        //         return;
+        //     }
+        //
+        //     if (this.editor.getSelector().isSelected(block)) {
+        //         this.position = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
+        //         this.active = true;
+        //         this.handleContext();
+        //         this.handleVisibility();
+        //     }
+        //     return;
+        // }
+
+        // Probably clicked inside the editor and not in a block, try to show it, if actions are available
+        this.position = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
+
+        this.active = true;
+        this.handleContext();
+        this.handleVisibility();
     }
 
     private handleVisibility() {

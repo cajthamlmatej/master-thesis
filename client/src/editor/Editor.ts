@@ -93,9 +93,19 @@ export default class Editor {
     }
 
     private setupUsage() {
-        window.addEventListener("resize", this.usageResizeEvent.bind(this));
-        window.addEventListener("mousedown", this.usageMouseDownEvent.bind(this));
-        window.addEventListener("wheel", this.usageWheelEvent.bind(this));
+        const resizeEvent = this.usageResizeEvent.bind(this);
+        const mouseDownEvent = this.usageMouseDownEvent.bind(this);
+        const wheelEvent = this.usageWheelEvent.bind(this);
+
+        window.addEventListener("resize", resizeEvent);
+        window.addEventListener("mousedown", mouseDownEvent);
+        window.addEventListener("wheel", wheelEvent);
+
+        this.events.EDITOR_DESTROYED.on(() => {
+            window.removeEventListener("resize", resizeEvent);
+            window.removeEventListener("mousedown", mouseDownEvent);
+            window.removeEventListener("wheel", wheelEvent);
+        });
     }
 
     private usageResizeEvent() {
@@ -163,11 +173,7 @@ export default class Editor {
      */
     public destroy() {
         this.events.EDITOR_DESTROYED.emit();
-        this.editorElement.remove();
-
-        window.removeEventListener("resize", this.usageResizeEvent.bind(this));
-        window.removeEventListener("mousedown", this.usageMouseDownEvent.bind(this));
-        window.removeEventListener("wheel", this.usageWheelEvent.bind(this));
+        this.editorElement.innerHTML = "";
     }
 
     private updateElement() {

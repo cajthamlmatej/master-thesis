@@ -24,6 +24,12 @@ export class EditorProperty {
         return this.editor;
     }
 
+    public destroy() {
+        this.cursorVisualElement.remove();
+        this.propertiesElement.remove();
+        this.element.innerHTML = "";
+    }
+
     private setup() {
         const cursorVisual = document.createElement('div');
         cursorVisual.classList.add('cursor-visual');

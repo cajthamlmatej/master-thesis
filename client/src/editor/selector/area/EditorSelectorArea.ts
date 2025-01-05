@@ -290,43 +290,51 @@ export default class EditorSelectorArea {
     }
 
     private setupEvents() {
+        const mouseDown = this.handleMouseDownEvent.bind(this);
+
         // Selecting blocks
-        window.addEventListener("mousedown", (event) => {
-            // If the element is not in the editor, do not do anything
-            if (!this.editor.getWrapperElement().contains(event.target as Node)) {
-                return;
-            }
+        window.addEventListener("mousedown", mouseDown);
 
-            const blockElement = (event.target as HTMLElement).closest(".block");
-
-            // Is a block?
-            if (blockElement) {
-                const block = this.editor.getBlockById(blockElement.getAttribute("data-block-id")!);
-
-                if (!block) {
-                    console.error("[EditorSelector] Clicked block not found (by id).");
-                    return;
-                }
-
-                if (event.button !== 0) {
-                    // If user clicked with any other button than main, select if not selected, because the other action may need the block to be selected
-                    if (!this.selector.isSelected(block)) {
-                        this.selector.selectBlock(block, event.shiftKey, event);
-                        this.handleVisibility();
-                    }
-                    return;
-                }
-
-                this.setupMovementOrSelect(event, block);
-                return;
-            }
-
-            // Probably clicked inside the editor and not in a block, deselect all blocks
-            this.selector.deselectAllBlocks();
-            this.handleVisibility();
-
-            this.setupSelectBox(event);
+        this.editor.events.EDITOR_DESTROYED.on(() => {
+            window.removeEventListener("mousedown", mouseDown);
         });
+    }
+
+    private handleMouseDownEvent(event: MouseEvent) {
+        // If the element is not in the editor, do not do anything
+        if (!this.editor.getWrapperElement().contains(event.target as Node)) {
+            return;
+        }
+
+        const blockElement = (event.target as HTMLElement).closest(".block");
+
+        // Is a block?
+        if (blockElement) {
+            const block = this.editor.getBlockById(blockElement.getAttribute("data-block-id")!);
+
+            if (!block) {
+                console.error("[EditorSelector] Clicked block not found (by id).");
+                return;
+            }
+
+            if (event.button !== 0) {
+                // If user clicked with any other button than main, select if not selected, because the other action may need the block to be selected
+                if (!this.selector.isSelected(block)) {
+                    this.selector.selectBlock(block, event.shiftKey, event);
+                    this.handleVisibility();
+                }
+                return;
+            }
+
+            this.setupMovementOrSelect(event, block);
+            return;
+        }
+
+        // Probably clicked inside the editor and not in a block, deselect all blocks
+        this.selector.deselectAllBlocks();
+        this.handleVisibility();
+
+        this.setupSelectBox(event);
     }
 
     private handleVisibility() {
