@@ -17,19 +17,19 @@
         </template>
     </Header>
 
-    <Navigation v-model:menu="data.menu">
+    <Navigation v-model:menu="data.menu" primary>
         <template #primary>
-            <NavigationItem :to="{name: 'Dashboard'}" icon="solar-panel" label="Dashboard" tooltip-text="Dashboard"></NavigationItem>
-            <NavigationItem :to="{name: 'Editor'}" icon="pencil-ruler" label="Editor" tooltip-text="Editor"></NavigationItem>
+            <NavigationButton :to="{name: 'Dashboard'}" icon="solar-panel" label="Dashboard" tooltip-text="Dashboard"></NavigationButton>
+            <NavigationButton :to="{name: 'Editor'}" icon="pencil-ruler" label="Editor" tooltip-text="Editor"></NavigationButton>
         </template>
 
         <template #secondary>
-            <NavigationItem :disabled="true" icon="cog-outline"
+            <NavigationButton :disabled="true" icon="cog-outline"
                             label="Settings">
-            </NavigationItem>
-            <NavigationItem icon="logout" label="Logout"
+            </NavigationButton>
+            <NavigationButton icon="logout" label="Logout"
                             tag="li"
-                            @click="authenticationStore.logout()"></NavigationItem>
+                            @click="authenticationStore.logout()"></NavigationButton>
         </template>
     </Navigation>
 

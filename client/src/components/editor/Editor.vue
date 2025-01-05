@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import Editor from "@/editor/Editor";
-import {onMounted, onUnmounted, ref} from "vue";
+import {onMounted, onUnmounted, ref, watch} from "vue";
 import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
 import {encodeBase64, generateUUID} from "@/utils/Generators";
 import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
@@ -42,11 +42,16 @@ import {useRouter} from "vue-router";
 import {EditorProperty} from "@/editor/property/EditorProperty";
 import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
 import Keybinds from "@/components/editor/Keybinds.vue";
+import Slides from "@/components/editor/Slides.vue";
+import {useMaterialStore} from "@/stores/material";
+import Slide from "@/models/Slide";
+
+const materialStore = useMaterialStore();
 
 const editorElement = ref<HTMLElement | null>(null);
 const editorPropertyElement = ref<HTMLElement | null>(null);
 
-let editor!: Editor;
+let editor: Editor;
 let loaded = ref(false);
 
 onMounted(() => {
@@ -54,23 +59,37 @@ onMounted(() => {
         console.error("Editor element not found");
         return;
     }
+    materialStore.setEditorElement(editorElement.value);
     if (!editorPropertyElement.value) {
         console.error("Editor property element not found");
         return;
     }
+    materialStore.setEditorPropertyElement(editorPropertyElement.value);
+    materialStore.requestEditor();
+});
 
-    const data = `{"editor":{"size":{"width":1200,"height":800}},"blocks":[{"id":"c0aefad7-f60d-4cdb-a5a8-074e1c2f3200","type":"text","position":{"x":300,"y":100},"size":{"width":300,"height":36},"rotation":0,"zIndex":1,"locked":false,"content":"<div>Test</div>","fontSize":24},{"id":"a49ae9fd-7217-42a0-8ed9-6afce28a759a","type":"text","position":{"x":420,"y":300},"size":{"width":390,"height":72},"rotation":0,"zIndex":2,"locked":false,"content":"<div>Ahoj</div><div>Světe</div>","fontSize":24},{"id":"a6b762b2-cbe8-48c9-ae81-4e6f9dd7121a","type":"watermark","position":{"x":30,"y":720},"size":{"width":200,"height":50},"rotation":0,"zIndex":3,"locked":false},{"id":"eb080762-2a7b-4499-8725-d453896483a2","type":"image","position":{"x":40,"y":500},"size":{"width":200,"height":200},"rotation":-30,"zIndex":5,"locked":false,"group":"group1","imageUrl":"https://ssps.cajthaml.eu/img/logo-main-for-light-main.png"},{"id":"eb080762-2a7b-4499-8725-e453896483a2","type":"shape","position":{"x":500,"y":200},"size":{"width":200,"height":200},"rotation":0,"zIndex":50,"locked":false,"color":"#fe0aaf","shape":"star"}]}`;
-    const deserializer = new EditorDeserializer();
-    editor = deserializer.deserialize(data, editorElement.value);
+watch(() => materialStore.getEditor(), (value) => {
+    if (!value) return;
+    if (!editorPropertyElement.value) return;
 
-    const editorProperty = new EditorProperty(editor, editorPropertyElement.value);
+    if(editor) {
+        destroy();
+    }
+
+    editor = value;
+    editor.setMode(EditorMode.SELECT);
 
     loaded.value = true;
 });
 
-onUnmounted(() => {
-    editor.destroy();
+const destroy = () => {
+    if(!editor) return;
+
     loaded.value = false;
+}
+
+onUnmounted(() => {
+    destroy();
 });
 
 const mode = ref<'select' | 'move'>('select');
@@ -94,7 +113,6 @@ const clear = () => {
         editor.removeBlock(block);
     }
 }
-
 const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image' | 'shape') => {
     const {x: startX, y: startY} = editor.screenToEditorCoordinates(event.clientX, event.clientY);
 

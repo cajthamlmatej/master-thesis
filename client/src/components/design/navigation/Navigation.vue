@@ -12,19 +12,34 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, onMounted, ref, watch} from "vue";
+import {computed, onMounted, onUnmounted, ref, watch} from "vue";
 
 const props = defineProps({
     menu: {
         type: Boolean,
         default: () => false
     },
+    fullControl: {
+        type: Boolean,
+        default: () => false
+    },
+    primary: {
+        type: Boolean,
+        default: () => false
+    },
+    shift: {
+        type: Boolean,
+        default: () => false
+    }
 });
 
 const classes = computed(() => {
     return {
         "navigation": true,
-        "navigation--active": props.menu
+        "navigation--active": props.menu,
+        "navigation--primary": props.primary,
+        "navigation--shift": props.shift,
+        "navigation--hidden": !menuVisible.value
     }
 });
 
@@ -32,33 +47,42 @@ const emits = defineEmits(["menuVisible"]);
 const menuVisible = ref(false);
 
 watch(() => props.menu, (value) => {
+    console.log(value, props.fullControl);
     const width = window.innerWidth;
 
-    if (width <= 768) {
+    if (width <= 768 || props.fullControl) {
         emits("menuVisible", value);
         menuVisible.value = value;
     }
 });
 
-onMounted(() => {
-    window.addEventListener("resize", () => {
-        const width = window.innerWidth;
+const resize = () => {
+    const width = window.innerWidth;
 
-        if (width > 768) {
-            emits("menuVisible", true);
-            menuVisible.value = true;
-        }
-    });
+    if (width > 768 && !props.fullControl) {
+        emits("menuVisible", true);
+        menuVisible.value = true;
+    }
+};
+
+onMounted(() => {
+    window.addEventListener("resize", resize);
+});
+
+onUnmounted(() => {
+    window.removeEventListener("resize", resize);
 });
 </script>
 
 <style lang="scss" scoped>
 aside.navigation {
     position: fixed;
-    left: 0;
+    top: 5em;
+    left: 4.5em;
     z-index: 1000;
 
     width: 12.5em;
+
     height: calc(100 * (var(--vh, 1vh)) - 5em);
 
     overflow-y: auto;
@@ -67,6 +91,26 @@ aside.navigation {
 
     background-color: var(--color-navigation-background);
     border-right: var(--nagivation-border-width) solid var(--color-navigation-border);
+
+    transition: left 0.3s ease-in-out;
+
+    &--hidden {
+        left: -20em;
+    }
+
+    &--primary {
+        left: 0;
+        width: 4.5em;
+        z-index: 1001;
+
+        &--hidden {
+            left: -4.5em;
+        }
+    }
+
+    &--shift {
+        padding: 0;
+    }
 
     > nav {
         width: 100%;

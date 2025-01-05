@@ -6,6 +6,7 @@ import {generateUUID} from "@/utils/Generators";
 import {EditorDeserializer} from "@/editor/EditorDeserializer";
 import {EditorSerializer} from "@/editor/EditorSerializer";
 import {EditorProperty} from "@/editor/property/EditorProperty";
+import html2canvas from "html2canvas";
 
 export const useMaterialStore = defineStore("material", () => {
     const editor = ref<Editor | undefined>(undefined);
@@ -58,7 +59,7 @@ export const useMaterialStore = defineStore("material", () => {
         slides.value.push(slide);
     }
 
-    const changeSlide = (slideOrId: Slide | string) => {
+    const changeSlide = async (slideOrId: Slide | string) => {
         if (!editorElement.value) return;
         const slide = typeof slideOrId === "string" ? getSlideById(slideOrId) : slideOrId;
 
@@ -73,14 +74,22 @@ export const useMaterialStore = defineStore("material", () => {
             if (activeSlide) {
                 const slide = slides.value.find(slide => slide.id === activeSlide.value);
 
-                if (slide)
+                if (slide) {
                     slide.content = data;
-            }
+                    editor.value.getSelector().deselectAllBlocks();
 
+                    const canvas = await html2canvas(editorElement.value.querySelector(".editor-content") as HTMLElement, {
+                        // allowTaint: true,
+                        useCORS: true
+                    });
+                    slide.thumbnail = canvas.toDataURL();
+                }
+
+            }
             editor.value.destroy();
         }
 
-        if(editorProperty.value) {
+        if (editorProperty.value) {
             editorProperty.value.destroy();
         }
 
@@ -103,7 +112,9 @@ export const useMaterialStore = defineStore("material", () => {
     const newSlide = () => {
         addSlide(new Slide(
             generateUUID(),
-            `{"editor":{"size":{"width":1200,"height":800}},"blocks":[]}`
+            `{"editor":{"size":{"width":1200,"height":800}},"blocks":[]}`,
+            undefined,
+            slides.value.length
         ))
     }
 

@@ -5,41 +5,19 @@
 
         <template #navigation>
             <NavigationButton :disabled="true"
-                              hide-mobile icon="cog-outline"
-                              label="Settings"
+                              hide-mobile icon="solar-panel"
+                              label="Dashboard"
                               tooltip-position="bottom"></NavigationButton>
-
-            <NavigationButton hide-mobile icon="logout"
-                              label="Logout"
-                              tag="li"
-                              tooltip-position="bottom"
-                              tooltip-text="Logout" @click="authenticationStore.logout()"></NavigationButton>
         </template>
     </Header>
 
     <Navigation v-model:menu="data.menu" primary>
         <template #primary>
-            <NavigationButton :to="{name: 'Dashboard'}" icon="solar-panel" label="Dashboard" tooltip-text="Dashboard"></NavigationButton>
-            <NavigationButton :to="{name: 'Editor'}" icon="pencil-ruler" label="Editor" tooltip-text="Editor"></NavigationButton>
-        </template>
-
-        <template #secondary>
-            <NavigationButton :disabled="true" icon="cog-outline"
-                            label="Settings">
-            </NavigationButton>
-            <NavigationButton icon="logout" label="Logout"
-                            tag="li"
-                            @click="authenticationStore.logout()"></NavigationButton>
+            <NavigationButton  icon="cards-variant" label="Slides" tooltip-text="Slides" @click="slidesMenu = !slidesMenu"></NavigationButton>
         </template>
     </Navigation>
 
-    <section class="alerts">
-        <Alert v-if="!isProduction" dismissible type="info">
-            This version of the page is in testing mode. Do not expect real information and data.
-        </Alert>
-
-<!-- TODO:        <AuthenticationObserver />-->
-    </section>
+    <Slides v-model:value="slidesMenu" ></Slides>
 
     <router-view v-slot="{ Component, route }">
         <transition mode="out-in" name="fade-ease">
@@ -51,18 +29,14 @@
 </template>
 
 <script lang="ts" setup>
-import {reactive} from "vue";
-import {useAuthenticationStore} from "@/stores/authentication";
-import {useUserStore} from "@/stores/user";
+import {reactive, ref} from "vue";
+import Slides from "@/components/editor/Slides.vue";
 
 const data = reactive({
     menu: false
 });
 
-const authenticationStore = useAuthenticationStore();
-const userStore = useUserStore();
-
-const isProduction = import.meta.env.MODE !== 'development';
+const slidesMenu = ref(false);
 </script>
 
 <style lang="scss" scoped>

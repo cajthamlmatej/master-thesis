@@ -24,6 +24,8 @@ export class ImageEditorBlock extends EditorBlock {
 
         const content = document.createElement("img");
 
+        content.crossOrigin = "anonymous";
+        content.setAttribute("crossorigin", "anonymous");
         content.src = this.imageUrl;
 
         element.appendChild(content);
@@ -54,15 +56,11 @@ export class ImageEditorBlock extends EditorBlock {
             this.imageUrl);
     }
 
-    @BlockEventListener(BlockEvent.SELECTED)
-    onSelected() {
-        console.log(this.serialize());
-    }
-
     @BlockEventListener(BlockEvent.MOUNTED)
     loadImage() {
         const image = new Image();
         image.src = this.imageUrl;
+        image.crossOrigin = "anonymous";
 
         image.addEventListener("load", () => {
             const ratio = image.width / image.height;

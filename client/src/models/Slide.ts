@@ -1,26 +1,14 @@
-export default class User {
-    /**
-     * The ID of the user.
-     */
+export default class Slide {
     id: string;
-    /**
-     * The name of the user.
-     */
-    name: string;
-    /**
-     * The email of the user.
-     */
-    email: string;
-    /**
-     * Is the user active?
-     */
-    active: boolean = true;
+    content: string;
+    thumbnail: string | undefined;
+    position: number;
 
-    constructor(id: string, name: string, email: string, active: boolean = true) {
+    constructor(id: string, content: string, thumbnail: string | undefined, position: number) {
         this.id = id;
-        this.name = name;
-        this.email = email;
-        this.active = active;
+        this.content = content;
+        this.thumbnail = thumbnail;
+        this.position = position;
     }
 
 }
