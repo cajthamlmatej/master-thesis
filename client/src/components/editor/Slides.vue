@@ -3,17 +3,24 @@
         <template #primary>
             <div class="menu" ref="menu">
                 <div class="actions">
-                    <Button icon="mdi-plus" @click="materialStore.newSlide">Add Slide</Button>
+                    <Button icon="plus" @click="materialStore.newSlide"/>
+                    <Button icon="minus" @click="removeActiveSlide" :disabled="canRemoveSlide"/>
                 </div>
 
                 <div class="slides">
                     <div class="slide" :class="{'slide--active': slide.id === materialStore.getActiveSlide()?.id}"
-                         v-for="slide in materialStore.getSlides()"
+                         v-for="(slide, i) in materialStore.getSlides().sort((a, b) => a.position - b.position)"
                          @click="changeSlide(slide.id)">
-                        <img class="image" :src="slide.thumbnail ? slide.thumbnail: undefined" alt="Slide Image">
+                        <div class="image" :style="`background-image: url('${slide.thumbnail}')`"></div>
 
                         <div class="slide-meta">
-                            {{ slide.position+1 }}. slide
+                            <div class="slide-title">
+                                {{ i+1 }}. slide
+                            </div>
+                            <div class="actions">
+                                <i class="mdi mdi-arrow-up" @click="materialStore.moveSlide(slide, -1)" :class="{disabled: i === 0}"/>
+                                <i class="mdi mdi-arrow-down" @click="materialStore.moveSlide(slide, 1)" :class="{disabled: i === materialStore.getSlides().length - 1}"/>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -24,7 +31,7 @@
 
 <script setup lang="ts">
 
-import {onMounted, onUnmounted, ref, watch} from "vue";
+import {computed, onMounted, onUnmounted, ref, watch} from "vue";
 import {useMaterialStore} from "@/stores/material";
 
 const slides = ref(true);
@@ -72,6 +79,10 @@ const handleDown = (event: MouseEvent) => {
     }
 }
 
+const canRemoveSlide = computed(() => {
+    return materialStore.getSlides().length <= 1;
+});
+
 onMounted(() => {
     window.addEventListener("click", handleClick);
     window.addEventListener("mousedown", handleDown);
@@ -81,6 +92,13 @@ onUnmounted(() => {
     window.removeEventListener("click", handleClick);
     window.removeEventListener("mousedown", handleDown);
 });
+
+const removeActiveSlide = () => {
+    const active = materialStore.getActiveSlide();
+    if (active) {
+        materialStore.removeSlide(active);
+    }
+}
 </script>
 
 <style scoped lang="scss">
@@ -89,20 +107,22 @@ onUnmounted(() => {
     display: flex;
     flex-direction: column;
     height: 100%;
+
+    > .actions {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        padding: 0.5rem;
+        border-bottom: var(--nagivation-border-width) solid var(--color-navigation-border);
+        background-color: var(--color-background);
+
+        display: flex;
+        justify-content: center;
+        gap: 0.25rem;
+        flex-shrink: 0;
+    }
 }
 
-.actions {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    padding: 0.5rem;
-    border-bottom: var(--nagivation-border-width) solid var(--color-navigation-border);
-    background-color: var(--color-background);
-
-    display: flex;
-    justify-content: center;
-    flex-shrink: 0;
-}
 
 .slides {
     display: flex;
@@ -126,21 +146,54 @@ onUnmounted(() => {
             outline: 2px solid var(--color-primary);
         }
 
-        > img {
+        > .image {
             width: 100%;
             height: 100%;
-            object-fit: contain;
             aspect-ratio: 16/9;
+            background-color: var(--color-background);
+
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
 
             &:not([src]) {
-                opacity: 0;
+                //opacity: 0;
             }
         }
 
         > .slide-meta {
             color: var(--color-text);
             font-size: 0.75rem;
-            padding: 0 0.25rem;
+            padding: 0.25rem 0.25rem 0;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            > .actions {
+                display: flex;
+                gap: 0.25rem;
+
+                .mdi {
+                    cursor: pointer;
+                    background: var(--color-background-accent);
+                    padding: 0.1rem;
+                    border-radius: 0.25rem;
+
+                    &:hover {
+                        background: var(--color-background);
+                    }
+
+                    &.disabled {
+                        cursor: not-allowed;
+                        background: var(--color-background-accent);
+
+                        &:hover {
+                            background: var(--color-background-accent);
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -57,6 +57,19 @@ export const useMaterialStore = defineStore("material", () => {
 
     const addSlide = (slide: Slide) => {
         slides.value.push(slide);
+
+        changeSlide(slide);
+    }
+
+    const moveSlide = (slide: Slide, direction: -1 | 1) => {
+        const index = slides.value.indexOf(slide);
+        let newIndex = index + direction;
+
+        while(slides.value.find(slide => slide.position === newIndex)) {
+            newIndex += direction;
+        }
+
+        slide.position = newIndex;
     }
 
     const changeSlide = async (slideOrId: Slide | string) => {
@@ -119,8 +132,16 @@ export const useMaterialStore = defineStore("material", () => {
     }
 
     const removeSlide = (slide: Slide) => {
+        if(slides.value.length === 1) {
+            return;
+        }
+
         const index = slides.value.indexOf(slide);
         slides.value.splice(index, 1);
+
+        if(activeSlide.value === slide.id) {
+            changeSlide(slides.value[0]);
+        }
     }
 
     const getSlides = () => {
@@ -137,6 +158,7 @@ export const useMaterialStore = defineStore("material", () => {
         setEditor,
         addSlide,
         newSlide,
+        moveSlide,
         removeSlide,
         getSlides,
         getSlideById,
