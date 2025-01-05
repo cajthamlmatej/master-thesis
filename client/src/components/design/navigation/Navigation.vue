@@ -30,6 +30,10 @@ const props = defineProps({
     shift: {
         type: Boolean,
         default: () => false
+    },
+    secondaryActive: {
+        type: Boolean,
+        default: () => false
     }
 });
 
@@ -39,7 +43,8 @@ const classes = computed(() => {
         "navigation--active": props.menu,
         "navigation--primary": props.primary,
         "navigation--shift": props.shift,
-        "navigation--hidden": !menuVisible.value
+        "navigation--hidden": !menuVisible.value,
+        "navigation--secondary-active": props.secondaryActive
     }
 });
 
@@ -156,6 +161,12 @@ aside.navigation {
                 display: flex;
                 justify-content: center;
             }
+        }
+    }
+
+    &.navigation--secondary-active {
+        > nav > ul.secondary {
+            display: flex;
         }
     }
 

@@ -62,36 +62,9 @@ const changeSlide = (id: string) => {
     materialStore.changeSlide(id);
 }
 
-const menu = ref<HTMLElement | null>(null);
-const handleClick = (event: MouseEvent) => {
-    if (event.target instanceof HTMLElement) {
-        if(!event.target.closest(".editor-view")) return;
-
-        slides.value = false;
-    }
-}
-const handleDown = (event: MouseEvent) => {
-    if(event.target instanceof HTMLElement) {
-        if(!event.target.closest(".editor-view")) return;
-
-        slides.value = false;
-    }
-}
-
 const canRemoveSlide = computed(() => {
     return materialStore.getSlides().length <= 1;
 });
-
-onMounted(() => {
-    window.addEventListener("click", handleClick);
-    window.addEventListener("mousedown", handleDown);
-});
-
-onUnmounted(() => {
-    window.removeEventListener("click", handleClick);
-    window.removeEventListener("mousedown", handleDown);
-});
-
 const removeActiveSlide = () => {
     const active = materialStore.getActiveSlide();
     if (active) {

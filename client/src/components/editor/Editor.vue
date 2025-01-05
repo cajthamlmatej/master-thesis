@@ -1,18 +1,14 @@
 <template>
     <article class="editor-view">
-        <nav class="main">
-            <button @mousedown="(e) => add(e, 'text')"><span class="mdi mdi-pencil-plus-outline"></span></button>
-            <button @mousedown="(e) => add(e, 'image')"><span class="mdi mdi-image-plus-outline"></span></button>
-            <button @mousedown="(e) => add(e, 'shape')"><span class="mdi mdi-shape-plus-outline"></span></button>
+<!--        <nav class="main">-->
+<!--            <button @mousedown="(e) => add(e, 'text')"><span class="mdi mdi-pencil-plus-outline"></span></button>-->
+<!--            <button @mousedown="(e) => add(e, 'image')"><span class="mdi mdi-image-plus-outline"></span></button>-->
+<!--            <button @mousedown="(e) => add(e, 'shape')"><span class="mdi mdi-shape-plus-outline"></span></button>-->
 
-            <div class="spacer"></div>
+<!--            <div class="spacer"></div>-->
 
-            <button @click="clear"><span class="mdi mdi-delete-variant"></span></button>
-            <button @click="open"><span class="mdi mdi-open-in-new"></span></button>
-            <button @click="fit"><span class="mdi mdi-fit-to-screen-outline"></span></button>
-            <button @click="changeMode"><span class="mdi mdi-cursor-move" v-if="mode === 'select'"></span><span
-                class="mdi mdi-cursor-default" v-else></span></button>
-        </nav>
+<!--            <button @click="open"><span class="mdi mdi-open-in-new"></span></button>-->
+<!--        </nav>-->
 
         <div class="editor-container">
             <div class="editor" ref="editorElement" v-once v-html="''" :key="'editor'">
@@ -91,14 +87,6 @@ const destroy = () => {
 onUnmounted(() => {
     destroy();
 });
-
-const mode = ref<'select' | 'move'>('select');
-
-const changeMode = () => {
-    mode.value = mode.value === 'select' ? 'move' : 'select';
-    editor.setMode(mode.value === 'select' ? EditorMode.SELECT : EditorMode.MOVE);
-};
-const fit = () => editor.fitToParent();
 const router = useRouter();
 const open = () => {
     const serializer = new EditorSerializer(editor);
