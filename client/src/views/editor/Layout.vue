@@ -30,6 +30,8 @@
     <Blocks v-model:value="blockMenu" ></Blocks>
     <Properties v-model:value="propertiesMenu" ></Properties>
 
+    <Keybinds :editor="editor" v-if="editor"></Keybinds>
+
     <router-view v-slot="{ Component, route }">
         <transition mode="out-in" name="fade-ease">
             <main :key="route.name?.toString()">
@@ -47,9 +49,18 @@ import {useMaterialStore} from "@/stores/material";
 import {EditorMode} from "@/editor/EditorMode";
 import {Plugin} from "@/editor/plugin/Plugin";
 import Properties from "@/components/editor/panels/Properties.vue";
+import Keybinds from "@/components/editor/dialogs/Keybinds.vue";
+import type Editor from "@/editor/Editor";
 
 const data = reactive({
     menu: false
+});
+
+const materialStore = useMaterialStore();
+const editor = ref<Editor | null>(null);
+
+watch(() => materialStore.getEditor(), (value) => {
+    editor.value = value as Editor;
 });
 
 const slidesMenu = ref(false);
@@ -93,7 +104,6 @@ onUnmounted(() => {
 });
 
 
-const materialStore = useMaterialStore();
 const mode = ref('select');
 
 watch(() => materialStore.getEditor(), (value) => {
@@ -175,5 +185,9 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+}
+
+main {
+    padding: 0 0 0 4.5em;
 }
 </style>

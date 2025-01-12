@@ -5,6 +5,8 @@ import './assets/variables.scss'
 import './assets/helpers.scss'
 import './assets/main.scss'
 import './assets/editor.scss'
+import './assets/player.scss'
+import './assets/editor-ui.scss'
 
 import {createApp, defineAsyncComponent} from 'vue'
 

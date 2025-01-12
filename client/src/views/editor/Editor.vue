@@ -15,7 +15,7 @@ article.editor-view {
     width: 100%;
     min-height: 0;
     min-width: 0;
-    height: calc(100vh - 5em - 2em - 5px);
+    height: calc(100 * var(--vh, 1vh) - 5em);
 
     .wrapper {
         width: 100%;
