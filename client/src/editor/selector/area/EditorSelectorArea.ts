@@ -7,6 +7,7 @@ import type {SelectorCommand} from "@/editor/selector/area/SelectorCommand";
 import {RotatingSelectorCommand} from "@/editor/selector/area/command/RotatingSelectorCommand";
 import {ResizingSelectorCommand} from "@/editor/selector/area/command/ResizingSelectorCommand";
 import {MovingSelectorCommand} from "@/editor/selector/area/command/MovingSelectorCommand";
+import {EditorMode} from "@/editor/EditorMode";
 
 export default class EditorSelectorArea {
     private readonly selector: EditorSelector;
@@ -401,6 +402,10 @@ export default class EditorSelectorArea {
     }
 
     private setupSelectBox(event: MouseEvent) {
+        if(this.editor.getMode() != EditorMode.SELECT) {
+            return;
+        }
+
         let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(event.clientX, event.clientY);
 
         let box = {
