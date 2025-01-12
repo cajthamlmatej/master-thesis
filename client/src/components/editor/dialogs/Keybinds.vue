@@ -1,3 +1,25 @@
+
+<template>
+
+    <Dialog v-model:value="keybindsDialog">
+        <template #default>
+            <Card dialog>
+                <p class="title">Key bindings</p>
+
+                <List>
+                    <ListItem v-for="keybind in keybindings" :key="keybind.action">
+                        <span class="keybind"><span v-for="key in keybind.key" :key="key" class="key"
+                                                    v-tooltip="key.endsWith('?') && key.length > 1 ? 'This key is optional and pressing it may occur different outcome.' : ''">{{
+                                key
+                            }}</span></span>
+                        <span class="action">{{ keybind.action }}</span>
+                    </ListItem>
+                </List>
+            </Card>
+        </template>
+    </Dialog>
+</template>
+
 <script setup lang="ts">
 import type Editor from "@/editor/Editor";
 import {onMounted, onUnmounted, ref, watch} from "vue";
@@ -99,27 +121,6 @@ const recalculate = () => {
     keybindings.value = keybinds;
 };
 </script>
-
-<template>
-
-    <Dialog v-model:value="keybindsDialog">
-        <template #default>
-            <Card dialog>
-                <p class="title">Key bindings</p>
-
-                <List>
-                    <ListItem v-for="keybind in keybindings" :key="keybind.action">
-                        <span class="keybind"><span v-for="key in keybind.key" :key="key" class="key"
-                                                    v-tooltip="key.endsWith('?') && key.length > 1 ? 'This key is optional and pressing it may occur different outcome.' : ''">{{
-                                key
-                            }}</span></span>
-                        <span class="action">{{ keybind.action }}</span>
-                    </ListItem>
-                </List>
-            </Card>
-        </template>
-    </Dialog>
-</template>
 
 <style scoped lang="scss">
 .keybind {

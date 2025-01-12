@@ -35,7 +35,7 @@ import {EditorMode} from "@/editor/EditorMode";
 import {EditorSerializer} from "@/editor/EditorSerializer";
 import {useRouter} from "vue-router";
 import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
-import Keybinds from "@/components/editor/Keybinds.vue";
+import Keybinds from "@/components/editor/dialogs/Keybinds.vue";
 import {useMaterialStore} from "@/stores/material";
 
 const materialStore = useMaterialStore();

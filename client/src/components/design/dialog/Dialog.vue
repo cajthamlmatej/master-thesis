@@ -125,7 +125,7 @@ const classes = computed(() => {
     justify-content: center;
     align-items: center;
 
-    z-index: 1000;
+    z-index: 3000;
 
     //padding: 5rem 0;
 

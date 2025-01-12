@@ -41,12 +41,12 @@
 
 <script lang="ts" setup>
 import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
-import Slides from "@/components/editor/Slides.vue";
-import Blocks from "@/components/editor/Blocks.vue";
+import Slides from "@/components/editor/panels/Slides.vue";
+import Blocks from "@/components/editor/panels/Blocks.vue";
 import {useMaterialStore} from "@/stores/material";
 import {EditorMode} from "@/editor/EditorMode";
 import {Plugin} from "@/editor/plugin/Plugin";
-import Properties from "@/components/editor/Properties.vue";
+import Properties from "@/components/editor/panels/Properties.vue";
 
 const data = reactive({
     menu: false
