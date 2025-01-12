@@ -1,24 +1,24 @@
 <template>
     <article class="editor-view">
-        <!--        <nav class="main">-->
-        <!--            <button @mousedown="(e) => add(e, 'text')"><span class="mdi mdi-pencil-plus-outline"></span></button>-->
-        <!--            <button @mousedown="(e) => add(e, 'image')"><span class="mdi mdi-image-plus-outline"></span></button>-->
-        <!--            <button @mousedown="(e) => add(e, 'shape')"><span class="mdi mdi-shape-plus-outline"></span></button>-->
+                <nav class="main">
+                    <button @mousedown="(e) => add(e, 'text')"><span class="mdi mdi-pencil-plus-outline"></span></button>
+                    <button @mousedown="(e) => add(e, 'image')"><span class="mdi mdi-image-plus-outline"></span></button>
+                    <button @mousedown="(e) => add(e, 'shape')"><span class="mdi mdi-shape-plus-outline"></span></button>
 
         <!--            <div class="spacer"></div>-->
 
         <!--            <button @click="open"><span class="mdi mdi-open-in-new"></span></button>-->
-        <!--        </nav>-->
+                </nav>
 
         <div class="editor-container">
             <div class="editor" ref="editorElement" v-once v-html="''" :key="'editor'">
             </div>
         </div>
 
-        <div class="editor-property-container">
-            <div class="editor-property" ref="editorPropertyElement" v-once v-html="''" :key="'editor-property'">
-            </div>
-        </div>
+<!--        <div class="editor-property-container">-->
+<!--            <div class="editor-property" ref="editorPropertyElement" v-once v-html="''" :key="'editor-property'">-->
+<!--            </div>-->
+<!--        </div>-->
     </article>
 
     <Keybinds :editor="editor" v-if="loaded"></Keybinds>
@@ -37,12 +37,10 @@ import {useRouter} from "vue-router";
 import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
 import Keybinds from "@/components/editor/Keybinds.vue";
 import {useMaterialStore} from "@/stores/material";
-import { Plugin } from "@/editor/plugin/Plugin";
 
 const materialStore = useMaterialStore();
 
 const editorElement = ref<HTMLElement | null>(null);
-const editorPropertyElement = ref<HTMLElement | null>(null);
 
 let editor: Editor;
 let loaded = ref(false);
@@ -53,18 +51,11 @@ onMounted(async () => {
         return;
     }
     materialStore.setEditorElement(editorElement.value);
-    if (!editorPropertyElement.value) {
-        console.error("Editor property element not found");
-        return;
-    }
-    materialStore.setEditorPropertyElement(editorPropertyElement.value);
     materialStore.requestEditor();
-
 });
 
 watch(() => materialStore.getEditor(), (value) => {
     if (!value) return;
-    if (!editorPropertyElement.value) return;
 
     if (editor) {
         destroy();
@@ -86,20 +77,8 @@ onUnmounted(() => {
     destroy();
 });
 const router = useRouter();
-const open = () => {
-    const serializer = new EditorSerializer(editor);
-    const data = serializer.serialize();
-
-    router.push({name: "Player", query: {data: encodeBase64(data)}});
-};
-const clear = () => {
-    for (let block of [...editor.getBlocks()]) {
-        if (!block.editorSupport().selection) continue;
-
-        editor.removeBlock(block);
-    }
-}
 const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image' | 'shape') => {
+    console.log(editor, materialStore.getEditor())
     const {x: startX, y: startY} = editor.screenToEditorCoordinates(event.clientX, event.clientY);
 
     if (!editor) {
@@ -175,7 +154,7 @@ const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image' | 'shape') 
 <style scoped lang="scss">
 article.editor-view {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) 200px;
+    grid-template-columns: auto minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr);
     width: 100%;
     height: 100%;

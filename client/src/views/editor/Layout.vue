@@ -28,6 +28,7 @@
 
     <Slides v-model:value="slidesMenu" ></Slides>
     <Blocks v-model:value="blockMenu" ></Blocks>
+    <Properties v-model:value="propertiesMenu" ></Properties>
 
     <router-view v-slot="{ Component, route }">
         <transition mode="out-in" name="fade-ease">
@@ -45,6 +46,7 @@ import Blocks from "@/components/editor/Blocks.vue";
 import {useMaterialStore} from "@/stores/material";
 import {EditorMode} from "@/editor/EditorMode";
 import {Plugin} from "@/editor/plugin/Plugin";
+import Properties from "@/components/editor/Properties.vue";
 
 const data = reactive({
     menu: false
@@ -52,17 +54,26 @@ const data = reactive({
 
 const slidesMenu = ref(false);
 const blockMenu = ref(false);
+const propertiesMenu = ref(false);
 
 watch(() => slidesMenu.value, (value) => {
     if(slidesMenu.value) {
         blockMenu.value = false;
+        // propertiesMenu.value = false;
     }
 });
 watch(() => blockMenu.value, (value) => {
     if(blockMenu.value) {
         slidesMenu.value = false;
+        // propertiesMenu.value = false;
     }
 });
+// watch(() => propertiesMenu.value, (value) => {
+//     if(propertiesMenu.value) {
+//         slidesMenu.value = false;
+//         blockMenu.value = false;
+//     }
+// });
 
 const handleClick = (event: MouseEvent) => {
     if (event.target instanceof HTMLElement) {

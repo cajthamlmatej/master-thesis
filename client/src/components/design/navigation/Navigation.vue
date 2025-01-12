@@ -34,6 +34,10 @@ const props = defineProps({
     secondaryActive: {
         type: Boolean,
         default: () => false
+    },
+    side: {
+        type: String,
+        default: () => "left"
     }
 });
 
@@ -44,7 +48,8 @@ const classes = computed(() => {
         "navigation--primary": props.primary,
         "navigation--shift": props.shift,
         "navigation--hidden": !menuVisible.value,
-        "navigation--secondary-active": props.secondaryActive
+        "navigation--secondary-active": props.secondaryActive,
+        [`navigation--${props.side}`]: true
     }
 });
 
@@ -96,7 +101,7 @@ aside.navigation {
     background-color: var(--color-navigation-background);
     border-right: var(--nagivation-border-width) solid var(--color-navigation-border);
 
-    transition: left 0.3s ease-in-out;
+    transition: left 0.3s ease-in-out, right 0.3s ease-in-out;
 
     &--hidden {
         left: -20em;
@@ -109,6 +114,17 @@ aside.navigation {
 
         &--hidden {
             left: -4.5em;
+        }
+    }
+
+    &--right {
+        right: 0;
+        left: unset;
+        border-right: unset;
+        border-left: var(--nagivation-border-width) solid var(--color-navigation-border);
+
+        &.navigation--hidden {
+            right: -20em;
         }
     }
 

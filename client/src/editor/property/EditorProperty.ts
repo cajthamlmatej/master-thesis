@@ -18,6 +18,8 @@ export class EditorProperty {
         this.setup();
 
         this.editor.getSelector().events.SELECTED_BLOCK_CHANGED.on((blocks: EditorBlock[]) => this.update(blocks));
+
+        this.update(this.editor.getSelector().getSelectedBlocks());
     }
 
     public getEditor() {

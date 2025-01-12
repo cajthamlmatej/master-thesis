@@ -46,6 +46,10 @@ export const useMaterialStore = defineStore("material", () => {
     }
     const setEditorPropertyElement = (element: HTMLElement) => {
         editorPropertyElement.value = element;
+
+        if(editorProperty.value) return;
+
+        editorProperty.value = new EditorProperty(editor.value as Editor, element);
     }
     const getEditorProperty = (): EditorProperty | undefined => {
         if (!editorProperty.value) {
