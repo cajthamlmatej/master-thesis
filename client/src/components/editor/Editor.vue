@@ -67,9 +67,15 @@ article.editor-view {
     user-select: none;
     width: 100%;
     height: 100%;
-    background-color: #e7e8e6;
 
     overflow: hidden;
     position: relative;
+
+    --background-primary: #f6f6f6;
+    --background-secondary: #e8e8e8;
+    background-color: var(--background-primary);
+    background-image: linear-gradient(var(--background-secondary) 2px, transparent 2px), linear-gradient(90deg, var(--background-secondary) 2px, transparent 2px), linear-gradient(var(--background-secondary) 1px, transparent 1px), linear-gradient(90deg, var(--background-secondary) 1px, var(--background-primary) 1px);
+    background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
+    background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
 }
 </style>
