@@ -19,17 +19,19 @@
 
     <Navigation v-model:menu="data.menu" primary>
         <template #primary>
-            <NavigationButton :to="{name: 'Dashboard'}" icon="solar-panel" label="Dashboard" tooltip-text="Dashboard"></NavigationButton>
-            <NavigationButton :to="{name: 'Editor'}" icon="pencil-ruler" label="Editor" tooltip-text="Editor"></NavigationButton>
+            <NavigationButton :to="{name: 'Dashboard'}" icon="solar-panel" label="Dashboard"
+                              tooltip-text="Dashboard"></NavigationButton>
+            <NavigationButton :to="{name: 'Editor'}" icon="pencil-ruler" label="Editor"
+                              tooltip-text="Editor"></NavigationButton>
         </template>
 
         <template #secondary>
             <NavigationButton :disabled="true" icon="cog-outline"
-                            label="Settings">
+                              label="Settings">
             </NavigationButton>
             <NavigationButton icon="logout" label="Logout"
-                            tag="li"
-                            @click="authenticationStore.logout()"></NavigationButton>
+                              tag="li"
+                              @click="authenticationStore.logout()"></NavigationButton>
         </template>
     </Navigation>
 
@@ -38,7 +40,7 @@
             This version of the page is in testing mode. Do not expect real information and data.
         </Alert>
 
-<!-- TODO:        <AuthenticationObserver />-->
+        <!-- TODO:        <AuthenticationObserver />-->
     </section>
 
     <router-view v-slot="{ Component, route }">
@@ -51,9 +53,10 @@
 </template>
 
 <script lang="ts" setup>
-import {reactive} from "vue";
+import {onMounted, reactive} from "vue";
 import {useAuthenticationStore} from "@/stores/authentication";
 import {useUserStore} from "@/stores/user";
+import {Plugin} from "@/editor/plugin/Plugin";
 
 const data = reactive({
     menu: false

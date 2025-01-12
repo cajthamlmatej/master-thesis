@@ -20,6 +20,7 @@
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.30.1",
     "pinia": "^2.2.4",
+    "quickjs-emscripten": "^0.31.0",
     "reflect-metadata": "^0.2.2",
     "sass": "^1.80.5",
     "unhead": "^1.11.14",

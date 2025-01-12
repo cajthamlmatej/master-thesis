@@ -1,14 +1,14 @@
 <template>
     <article class="editor-view">
-<!--        <nav class="main">-->
-<!--            <button @mousedown="(e) => add(e, 'text')"><span class="mdi mdi-pencil-plus-outline"></span></button>-->
-<!--            <button @mousedown="(e) => add(e, 'image')"><span class="mdi mdi-image-plus-outline"></span></button>-->
-<!--            <button @mousedown="(e) => add(e, 'shape')"><span class="mdi mdi-shape-plus-outline"></span></button>-->
+        <!--        <nav class="main">-->
+        <!--            <button @mousedown="(e) => add(e, 'text')"><span class="mdi mdi-pencil-plus-outline"></span></button>-->
+        <!--            <button @mousedown="(e) => add(e, 'image')"><span class="mdi mdi-image-plus-outline"></span></button>-->
+        <!--            <button @mousedown="(e) => add(e, 'shape')"><span class="mdi mdi-shape-plus-outline"></span></button>-->
 
-<!--            <div class="spacer"></div>-->
+        <!--            <div class="spacer"></div>-->
 
-<!--            <button @click="open"><span class="mdi mdi-open-in-new"></span></button>-->
-<!--        </nav>-->
+        <!--            <button @click="open"><span class="mdi mdi-open-in-new"></span></button>-->
+        <!--        </nav>-->
 
         <div class="editor-container">
             <div class="editor" ref="editorElement" v-once v-html="''" :key="'editor'">
@@ -32,15 +32,12 @@ import {encodeBase64, generateUUID} from "@/utils/Generators";
 import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 import {EditorMode} from "@/editor/EditorMode";
-import {EditorDeserializer} from "@/editor/EditorDeserializer";
 import {EditorSerializer} from "@/editor/EditorSerializer";
 import {useRouter} from "vue-router";
-import {EditorProperty} from "@/editor/property/EditorProperty";
 import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
 import Keybinds from "@/components/editor/Keybinds.vue";
-import Slides from "@/components/editor/Slides.vue";
 import {useMaterialStore} from "@/stores/material";
-import Slide from "@/models/Slide";
+import { Plugin } from "@/editor/plugin/Plugin";
 
 const materialStore = useMaterialStore();
 
@@ -50,7 +47,7 @@ const editorPropertyElement = ref<HTMLElement | null>(null);
 let editor: Editor;
 let loaded = ref(false);
 
-onMounted(() => {
+onMounted(async () => {
     if (!editorElement.value) {
         console.error("Editor element not found");
         return;
@@ -62,13 +59,14 @@ onMounted(() => {
     }
     materialStore.setEditorPropertyElement(editorPropertyElement.value);
     materialStore.requestEditor();
+
 });
 
 watch(() => materialStore.getEditor(), (value) => {
     if (!value) return;
     if (!editorPropertyElement.value) return;
 
-    if(editor) {
+    if (editor) {
         destroy();
     }
 
@@ -79,7 +77,7 @@ watch(() => materialStore.getEditor(), (value) => {
 });
 
 const destroy = () => {
-    if(!editor) return;
+    if (!editor) return;
 
     loaded.value = false;
 }
@@ -95,8 +93,8 @@ const open = () => {
     router.push({name: "Player", query: {data: encodeBase64(data)}});
 };
 const clear = () => {
-    for(let block of [...editor.getBlocks()]) {
-        if(!block.editorSupport().selection) continue;
+    for (let block of [...editor.getBlocks()]) {
+        if (!block.editorSupport().selection) continue;
 
         editor.removeBlock(block);
     }

@@ -93,6 +93,7 @@ export const useMaterialStore = defineStore("material", () => {
 
                     const canvas = await html2canvas(editorElement.value.querySelector(".editor-content") as HTMLElement, {
                         // allowTaint: true,
+                        logging: false,
                         useCORS: true
                     });
                     slide.thumbnail = canvas.toDataURL();
@@ -106,12 +107,11 @@ export const useMaterialStore = defineStore("material", () => {
             editorProperty.value.destroy();
         }
 
-        activeSlide.value = slide.id;
-
         const deserializer = new EditorDeserializer();
         const newEditor = deserializer.deserialize(slide.content, editorElement.value);
 
         setEditor(newEditor);
+        activeSlide.value = slide.id;
 
         if (!editorPropertyElement.value) return;
 
