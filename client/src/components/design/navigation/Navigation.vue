@@ -214,6 +214,18 @@ aside.navigation {
             right: 0;
             transition: right 0.3s ease-in-out;
         }
+
+
+        &--right {
+            left: 0;
+            right: unset;
+            border-left: unset;
+            border-right: var(--nagivation-border-width) solid var(--color-navigation-border);
+
+            &.navigation--hidden {
+                left: -20em;
+            }
+        }
     }
 }
 
