@@ -3,10 +3,14 @@ import {generateUUID} from "@/utils/Generators";
 import {BlockEventListener} from "@/editor/block/events/BlockListener";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
+import {Property} from "@/editor/property/Property";
+import {ColorProperty} from "@/editor/block/shape/property/ColorProperty";
+import {ShapeProperty} from "@/editor/block/shape/property/ShapeProperty";
+import {TextProperty} from "@/editor/block/text/property/TextProperty";
 
 export class TextEditorBlock extends EditorBlock {
     @BlockSerialize("content")
-    private content: string;
+    content: string;
     @BlockSerialize("fontSize")
     private fontSize: number;
 
@@ -81,10 +85,25 @@ export class TextEditorBlock extends EditorBlock {
         }
 
         // TODO: sync content?
+
+        content.innerHTML = this.content;
     }
 
     override clone(): EditorBlock {
         return new TextEditorBlock(generateUUID(), {...this.position}, {...this.size}, this.rotation, this.zIndex, this.content, this.fontSize);
+    }
+
+    override getProperties(): Property<this>[] {
+        return [
+            ...super.getProperties(),
+            new TextProperty(),
+        ];
+    }
+
+    changeContent(value: string) {
+        this.content = value;
+
+        this.synchronize();
     }
 
     @BlockEventListener(BlockEvent.MOUNTED)
