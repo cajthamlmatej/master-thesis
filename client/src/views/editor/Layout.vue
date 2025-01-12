@@ -5,8 +5,23 @@
 
         <template #navigation>
             <NavigationButton :disabled="true"
+                              hide-mobile icon="cog-outline"
+                              label="Settings"
+                              tooltip-position="bottom"></NavigationButton>
+            <NavigationButton :disabled="true"
+                              hide-mobile icon="share-variant-outline"
+                              label="Share & Export"
+                              tooltip-position="bottom"></NavigationButton>
+
+            <NavigationButton :disabled="true"
+                              hide-mobile icon="presentation"
+                              label="Preview"
+                              tooltip-position="bottom"></NavigationButton>
+
+            <NavigationButton
                               hide-mobile icon="solar-panel"
                               label="Dashboard"
+                              :to="{name: 'Dashboard'}"
                               tooltip-position="bottom"></NavigationButton>
         </template>
     </Header>
