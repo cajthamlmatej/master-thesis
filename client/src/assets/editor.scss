@@ -126,6 +126,7 @@
                         &.grow-2 {
                             svg:nth-child(2) {
                                 flex-grow: 2;
+                                transform: scale(1.02);
                             }
                         }
                     }
