@@ -49,35 +49,45 @@ watch(() => materialStore.getEditor(), (value) => {
 });
 
 const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image' | 'shape') => {
-    const {x: startX, y: startY} = editor.value!.screenToEditorCoordinates(event.clientX, event.clientY);
+    const editorValue = editor.value;
 
-    if (!editor.value) {
+    if (!editorValue) {
         console.error("Editor not initialized");
         return;
     }
 
+    const {x: startX, y: startY} = editor.value!.screenToEditorCoordinates(event.clientX, event.clientY);
+
     let block!: EditorBlock;
+
+    const width = editorValue.getSize().width;
+    const height = editorValue.getSize().height;
+
+    const smaller = width < height ? width : height;
 
     switch (type) {
         case 'text':
+            const fontSize = smaller / 20;
+            const lineHeight = fontSize * 1.5;
+
             block = new TextEditorBlock(
                 generateUUID(),
                 {x: -100, y: -100},
-                {width: 300, height: 36},
+                {width: Math.max(width / 4, 300), height: lineHeight},
                 0,
                 0,
-                "<div>Test</div>",
-                24
+                "Your text here",
+                fontSize,
             );
             break;
         case 'shape':
             block = new ShapeEditorBlock(
                 generateUUID(),
                 {x: -100, y: -100},
-                {width: 40, height: 40},
+                {width: smaller / 4, height: smaller / 4},
                 0,
                 0,
-                "#beff3c",
+                "#1a1a19",
                 "arrow-1"
             );
             break;
@@ -85,7 +95,7 @@ const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image' | 'shape') 
             block = new ImageEditorBlock(
                 generateUUID(),
                 {x: -100, y: -100},
-                {width: 200, height: 200},
+                {width: smaller / 4, height: smaller / 4},
                 0,
                 0,
                 "https://robohash.org/" + generateUUID() + "?set=set4"
@@ -93,7 +103,7 @@ const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image' | 'shape') 
             break;
     }
 
-    editor.value.addBlock(block);
+    editorValue.addBlock(block);
     block.move(startX, startY);
 
     const move = (event: MouseEvent) => {
