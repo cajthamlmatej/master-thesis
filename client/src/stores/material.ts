@@ -1,12 +1,13 @@
 import {defineStore} from "pinia";
-import {ref} from "vue";
+import {ref, toRaw} from "vue";
 import Editor from "@/editor/Editor";
 import Slide from "@/models/Slide";
 import {generateUUID} from "@/utils/Generators";
 import {EditorDeserializer} from "@/editor/EditorDeserializer";
 import {EditorSerializer} from "@/editor/EditorSerializer";
 import {EditorProperty} from "@/editor/property/EditorProperty";
-import html2canvas from "html2canvas";
+import { toPng } from 'html-to-image';
+
 
 export const useMaterialStore = defineStore("material", () => {
     const editor = ref<Editor | undefined>(undefined);
@@ -49,7 +50,7 @@ export const useMaterialStore = defineStore("material", () => {
 
         if(editorProperty.value) return;
 
-        editorProperty.value = new EditorProperty(editor.value as Editor, element);
+        editorProperty.value = new EditorProperty(toRaw(editor.value) as Editor, element);
     }
     const getEditorProperty = (): EditorProperty | undefined => {
         if (!editorProperty.value) {
@@ -95,12 +96,9 @@ export const useMaterialStore = defineStore("material", () => {
                     slide.content = data;
                     editor.value.getSelector().deselectAllBlocks();
 
-                    const canvas = await html2canvas(editorElement.value.querySelector(".editor-content") as HTMLElement, {
-                        // allowTaint: true,
-                        logging: false,
-                        useCORS: true
+                    slide.thumbnail = await toPng(editorElement.value.querySelector(".editor-content") as HTMLElement).then((dataUrl) => {
+                        return dataUrl;
                     });
-                    slide.thumbnail = canvas.toDataURL();
                 }
 
             }
