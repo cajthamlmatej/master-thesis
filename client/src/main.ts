@@ -46,6 +46,7 @@ app.use(FloatingVue);
 
     app.component("Form", defineAsyncComponent(() => import("@/components/design/form/Form.vue")));
     app.component("Input", defineAsyncComponent(() => import("@/components/design/input/Input.vue")));
+    app.component("Checkbox", defineAsyncComponent(() => import("@/components/design/checkbox/Checkbox.vue")));
 })();
 
 app.mount('#app')
