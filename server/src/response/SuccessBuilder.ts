@@ -27,7 +27,7 @@ export class SuccessResponseBuilder {
      * @param data Data object to set.
      * @returns This builder.
      */
-    public setData(data: Object) {
+    public setData(data: any) {
         this.data = data;
         return this;
     }

@@ -14,6 +14,7 @@ import {ProcessDataExportTask} from "./task/dataExport/ProcessDataExportTask";
 import MigrationManager from "./database/migration/MigrationManager";
 import {MarkDataExportAsArchivedTask} from "./task/dataExport/MarkDataExportAsArchivedTask";
 import {RemoveDataExportTask} from "./task/dataExport/RemoveDataExportTask";
+import MaterialRoute from "./routes/route/MaterialRoute";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ dotenv.config();
         Container.get(AuthenticationRoute),
         Container.get(UserRoute),
         Container.get(DataExportRoute),
+        Container.get(MaterialRoute)
     );
 
     await server.run();
