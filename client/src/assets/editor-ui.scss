@@ -36,6 +36,10 @@
                         flex-direction: row;
                         align-items: center;
                     }
+                    &--wrap {
+                        flex-wrap: wrap;
+                        justify-content: space-between;
+                    }
 
                     > input, > select {
                         width: 100%;
@@ -54,6 +58,20 @@
                             &::-webkit-color-swatch {
                                 border: 0;
                             }
+                        }
+                    }
+                    > button {
+                        background-color: var(--color-primary);
+                        color: var(--color-text);
+                        border: 0px;
+                        border-radius: 0.5rem;
+                        font-size: 1.08em;
+                        padding: 0.25em;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+
+                        &:hover {
+                            background-color: var(--color-primary-dark);
                         }
                     }
                 }

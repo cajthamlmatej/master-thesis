@@ -18,6 +18,14 @@ export class TextProperty<T extends TextEditorBlock = TextEditorBlock> extends B
         this.element.innerHTML = "";
     }
 
+    public override setup(): void {
+        super.setup();
+
+        this.editorProperty.getEditor().events.BLOCK_CONTENT_CHANGED.on((block) => {
+            this.processRecalculateValues();
+        });
+    }
+
     applyValue(value: string): boolean {
         for (let block of this.blocks) {
             block.changeContent(value);

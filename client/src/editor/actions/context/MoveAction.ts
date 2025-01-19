@@ -24,7 +24,7 @@ export class MoveAction extends ContextAction {
         const directionY = direction.y * (param.keybind?.ctrlKey ? 10 : 1);
 
         for (const block of param.selected) {
-            if (block.editorSupport().selection && block.editorSupport().movement) {
+            if (block.editorSupport().selection && block.editorSupport().movement && block.canCurrentlyDo("move")) {
                 block.move(block.position.x + directionX, block.position.y + directionY, false, true);
             }
         }
@@ -39,7 +39,8 @@ export class MoveAction extends ContextAction {
                 ctrlKey: 'OPTIONAL',
                 shiftKey: 'NEVER',
                 altKey: 'NEVER',
-                mode: 'ALWAYS'
+                mode: 'ALWAYS',
+                capture: false,
             });
         }
 

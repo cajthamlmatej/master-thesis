@@ -101,6 +101,7 @@ export default class EditorSelectorArea {
         this.element.classList.remove("editor-selector--non-proportional-resizing-y");
         this.element.classList.remove("editor-selector--move");
         this.element.classList.remove("editor-selector--rotation");
+        this.element.classList.remove("editor-selector--solo");
 
         if (this.selector.getSelectedBlocks().length > 1) {
             this.element.style.left = this.x + "px";
@@ -155,6 +156,7 @@ export default class EditorSelectorArea {
             if (editorSupport.rotation && block.canCurrentlyDo("rotate")) {
                 this.element.classList.add("editor-selector--rotation");
             }
+            this.element.classList.add("editor-selector--solo");
         }
     }
 

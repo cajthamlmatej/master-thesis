@@ -15,6 +15,16 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@tiptap/core": "^2.11.2",
+    "@tiptap/extension-color": "^2.11.2",
+    "@tiptap/extension-font-family": "^2.11.2",
+    "@tiptap/extension-subscript": "^2.11.2",
+    "@tiptap/extension-superscript": "^2.11.2",
+    "@tiptap/extension-text-align": "^2.11.2",
+    "@tiptap/extension-text-style": "^2.11.2",
+    "@tiptap/extension-underline": "^2.11.2",
+    "@tiptap/pm": "^2.11.2",
+    "@tiptap/starter-kit": "^2.11.2",
     "floating-vue": "^5.2.2",
     "html-to-image": "^1.11.11",
     "jsonwebtoken": "^9.0.2",

@@ -4,9 +4,17 @@ import {BlockEventListener} from "@/editor/block/events/BlockListener";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 import {Property} from "@/editor/property/Property";
-import {ColorProperty} from "@/editor/block/shape/property/ColorProperty";
-import {ShapeProperty} from "@/editor/block/shape/property/ShapeProperty";
-import {TextProperty} from "@/editor/block/text/property/TextProperty";
+import { Editor } from '@tiptap/core'
+import StarterKit from '@tiptap/starter-kit'
+import {Underline} from "@tiptap/extension-underline";
+import {Subscript} from '@tiptap/extension-subscript'
+import {Superscript} from '@tiptap/extension-superscript'
+import {TextStyle} from '@tiptap/extension-text-style'
+import {Color } from '@tiptap/extension-color'
+import {FontFamily} from '@tiptap/extension-font-family'
+import {TextFormattingProperty} from "@/editor/block/text/property/TextFormattingProperty";
+import {TextAlign} from "@tiptap/extension-text-align";
+import {FontSize} from "@/utils/font-size";
 
 export class TextEditorBlock extends EditorBlock {
     @BlockSerialize("content")
@@ -17,6 +25,7 @@ export class TextEditorBlock extends EditorBlock {
     private editable: boolean = false;
     private lastClick: number = 0;
     private removed = false;
+    private textEditor: Editor | null = null;
 
     constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number, content: string, fontSize: number) {
         super(id, "text", position, size, rotation, zIndex);
@@ -33,12 +42,29 @@ export class TextEditorBlock extends EditorBlock {
         const content = document.createElement("div");
 
         content.classList.add("block-content");
-        // content.setAttribute("contenteditable", "true");
-
-        // TODO: sanitize content?
-        content.innerHTML = this.content;
-
         element.appendChild(content);
+
+        this.textEditor = new Editor({
+            element: content,
+            extensions: [
+                StarterKit,
+                Underline,
+                Superscript,
+                Subscript,
+                TextStyle,
+                Color,
+                FontFamily,
+                TextAlign.configure({
+                    types: ['heading', 'paragraph'],
+                }),
+                FontSize
+            ],
+            content: this.content,
+            onUpdate: ({editor}) => {
+                this.changeContent(editor.getHTML());
+                this.matchRenderedHeight();
+            },
+        });
 
         return element;
     }
@@ -78,15 +104,14 @@ export class TextEditorBlock extends EditorBlock {
         const content = this.getContent();
         content.style.fontSize = this.fontSize + "px";
 
-        // TODO: could be better?
         // While scaling (the scaling was not completed yet), we don't want to set the width
         if (!content.style.transform.includes("scale")) {
             content.style.width = this.size.width + "px";
         }
 
-        // TODO: sync content?
-
-        content.innerHTML = this.content;
+        if(this.content !== this.textEditor?.getHTML()) {
+            this.textEditor?.commands.setContent(this.content);
+        }
     }
 
     override clone(): EditorBlock {
@@ -96,7 +121,8 @@ export class TextEditorBlock extends EditorBlock {
     override getProperties(): Property<this>[] {
         return [
             ...super.getProperties(),
-            new TextProperty(),
+            // new TextProperty(),
+            new TextFormattingProperty(),
         ];
     }
 
@@ -104,50 +130,36 @@ export class TextEditorBlock extends EditorBlock {
         this.content = value;
 
         this.synchronize();
-    }
 
-    @BlockEventListener(BlockEvent.MOUNTED)
-    private onMounted() {
-        const content = this.getContent();
-        content.addEventListener("input", (e) => this.handleInput(e));
-        content.addEventListener("mouseup", (e) => this.handleInputClick(e));
-    }
-
-    private handleInputClick(e: MouseEvent) {
-        if (!this.editable) {
-            e.preventDefault();
-            return;
-        }
-    }
-
-    private handleInput(e: Event) {
-        if (!this.editable) {
-            e.stopImmediatePropagation();
-            e.preventDefault();
-            return;
-        }
-
-        const content = this.getContent();
-        this.content = content.innerHTML;
-
-        this.matchRenderedHeight();
-
-        // The size could have changed, so we need to update the selector area
         this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
     }
 
-    @BlockEventListener(BlockEvent.CLICKED)
-    private onClicked(event: MouseEvent) {
-        const now = Date.now();
-        const diff = now - this.lastClick;
+    @BlockEventListener(BlockEvent.SELECTED)
+    private onSelected() {
+        this.element.addEventListener("keydown", this.onKeyDown.bind(this));
+    }
 
-        this.lastClick = now;
-        if (diff > 600 || this.locked) {
-            return;
+    private onKeyDown(event: KeyboardEvent) {
+        if (event.key === "Escape" && this.editable) {
+            event.preventDefault();
+            event.stopPropagation();
+            this.editable = false;
+            this.textEditor!.setOptions({
+                editable: false,
+            });
+
+            this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
+            this.synchronize();
         }
+    }
 
-        this.getContent().setAttribute("contenteditable", "true");
+    @BlockEventListener(BlockEvent.CLICKED)
+    private onBlockClicked() {
+        this.textEditor!.setOptions({
+            editable: true,
+        });
         this.editable = true;
+        this.synchronize();
     }
 
     @BlockEventListener(BlockEvent.DESELECTED)
@@ -158,21 +170,13 @@ export class TextEditorBlock extends EditorBlock {
             return;
         }
 
-        this.getContent().removeAttribute("contenteditable");
-
-        // User was editing and stopped editing, remove block if the content is empty
-        if (this.editable) {
-            const content = this.content.replace(/<br>/g, "")
-                .replace(/\n?\r?/g, "")
-                .replace(/&nbsp;/g, "").trim();
-
-            if (content.length === 0) {
-                this.editor.removeBlock(this);
-                this.removed = true;
-            }
-        }
-
+        this.textEditor?.setOptions({
+            editable: false,
+        });
         this.editable = false;
+        this.synchronize();
+
+        this.element.removeEventListener("keydown", this.onKeyDown.bind(this));
     }
 
     @BlockEventListener(BlockEvent.ROTATION_STARTED)
@@ -194,5 +198,16 @@ export class TextEditorBlock extends EditorBlock {
         content.style.transform = "";
 
         this.synchronize();
+    }
+
+    /**
+     * Get the text editor instance if it exists.
+     */
+    public getTextEditor() {
+        return this.textEditor;
+    }
+
+    public canBeEdited() {
+        return this.editable;
     }
 }

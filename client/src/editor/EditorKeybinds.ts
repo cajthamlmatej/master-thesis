@@ -73,7 +73,6 @@ export default class EditorKeybinds {
 
                 if(!process) continue;
 
-                event.preventDefault();
                 keybind.action.run({
                     editor: this.editor,
                     position: positionInEditor,
@@ -85,6 +84,9 @@ export default class EditorKeybinds {
                         altKey: event.altKey
                     }
                 });
+
+                if(keybind.keybind.capture === undefined || keybind.keybind.capture)
+                    event.preventDefault();
                 return;
             }
         }

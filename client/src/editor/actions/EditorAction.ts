@@ -19,6 +19,8 @@ export interface ActionKeybind {
     shiftKey: 'ALWAYS' | 'NEVER' | 'OPTIONAL';
     altKey: 'ALWAYS' | 'NEVER' | 'OPTIONAL';
 
+    capture?: boolean;
+
     /**
      * The mode in which the keybind is active and will call the action's run method.
      */

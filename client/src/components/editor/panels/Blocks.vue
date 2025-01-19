@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 
-import {onMounted, ref, watch} from "vue";
+import {onMounted, ref, toRaw, watch} from "vue";
 import {useMaterialStore} from "@/stores/material";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
@@ -49,14 +49,14 @@ watch(() => materialStore.getEditor(), (value) => {
 });
 
 const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image' | 'shape') => {
-    const editorValue = editor.value;
+    const editorValue = toRaw(editor.value);
 
     if (!editorValue) {
         console.error("Editor not initialized");
         return;
     }
 
-    const {x: startX, y: startY} = editor.value!.screenToEditorCoordinates(event.clientX, event.clientY);
+    const {x: startX, y: startY} = editorValue.screenToEditorCoordinates(event.clientX, event.clientY);
 
     let block!: EditorBlock;
 
@@ -107,7 +107,7 @@ const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image' | 'shape') 
     block.move(startX, startY);
 
     const move = (event: MouseEvent) => {
-        const {x, y} = editor.value!.screenToEditorCoordinates(event.clientX, event.clientY);
+        const {x, y} = editorValue.screenToEditorCoordinates(event.clientX, event.clientY);
 
         block.move(x, y);
 
@@ -122,12 +122,12 @@ const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image' | 'shape') 
         const diffY = block.position.y - startY;
 
         if (Math.abs(diffX) < 10 && Math.abs(diffY) < 10) {
-            const canvasSize = editor.value!.getSize();
+            const canvasSize = editorValue.getSize();
             const blockSize = block.size;
             block.move(canvasSize.width / 2 - blockSize.width / 2, canvasSize.height / 2 - blockSize.height / 2);
         }
 
-        editor.value!.getSelector().selectBlock(block);
+        editorValue.getSelector().selectBlock(block);
         blocksMenu.value = false;
     };
 

@@ -16,6 +16,8 @@ export class MovingSelectorCommand extends SelectorCommand {
     }
 
     public execute(event: MouseEvent, element: HTMLElement, selectorArea: EditorSelectorArea): void {
+        event.preventDefault();
+        event.stopPropagation();
         let {x: initialX, y: initialY} = selectorArea.getEditor().screenToEditorCoordinates(event.clientX, event.clientY);
 
         const initialPositions = selectorArea.getEditor().getSelector().getSelectedBlocks().map(block => {
@@ -56,7 +58,6 @@ export class MovingSelectorCommand extends SelectorCommand {
 
         window.addEventListener("mousemove", mouseMoveHandler);
         window.addEventListener("mouseup", mouseUpHandler);
-
     }
 
 }

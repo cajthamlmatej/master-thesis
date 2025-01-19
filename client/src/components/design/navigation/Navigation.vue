@@ -90,7 +90,7 @@ aside.navigation {
     left: 4.5em;
     z-index: 1000;
 
-    width: 12.5em;
+    width: 14.5em;
 
     height: calc(100 * (var(--vh, 1vh)) - 5em);
 

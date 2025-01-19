@@ -276,7 +276,7 @@ export abstract class EditorBlock {
         if (support.selection) {
             this.element.classList.add("block--selectable");
         }
-        if (support.movement) {
+        if (support.movement && this.canCurrentlyDo("move")) {
             this.element.classList.add("block--movable");
         }
         if (support.proportionalResizing || support.nonProportionalResizingX || support.nonProportionalResizingY) {
@@ -301,6 +301,11 @@ export abstract class EditorBlock {
         if (this.getContent()) {
             this.size.height = this.getContent()!.clientHeight;
         }
+
+        this.editor.events.BLOCK_SIZE_CHANGED.emit({
+            block: this,
+            manual: true
+        });
 
         this.synchronize();
     }
