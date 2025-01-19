@@ -22,7 +22,7 @@ const router = createRouter({
 
             children: [
                 {
-                    path: '',
+                    path: ':material',
                     name: 'Editor',
                     component: () => import('../views/editor/Editor.vue'),
                 }

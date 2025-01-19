@@ -11,9 +11,9 @@
 import Editor from "@/editor/Editor";
 import {onMounted, onUnmounted, ref, watch} from "vue";
 import {EditorMode} from "@/editor/EditorMode";
-import {useMaterialStore} from "@/stores/material";
+import {useEditorStore} from "@/stores/editor";
 
-const materialStore = useMaterialStore();
+const materialStore = useEditorStore();
 
 const editorElement = ref<HTMLElement | null>(null);
 
@@ -26,7 +26,6 @@ onMounted(async () => {
         return;
     }
     materialStore.setEditorElement(editorElement.value);
-    materialStore.requestEditor();
 });
 
 watch(() => materialStore.getEditor(), (value) => {

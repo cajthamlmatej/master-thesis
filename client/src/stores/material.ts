@@ -1,174 +1,77 @@
 import {defineStore} from "pinia";
-import {ref, toRaw} from "vue";
-import Editor from "@/editor/Editor";
-import Slide from "@/models/Slide";
-import {generateUUID} from "@/utils/Generators";
-import {EditorDeserializer} from "@/editor/EditorDeserializer";
-import {EditorSerializer} from "@/editor/EditorSerializer";
-import {EditorProperty} from "@/editor/property/EditorProperty";
-import { toPng } from 'html-to-image';
-
+import {computed, ref, watch} from "vue";
+import {useAuthenticationStore} from "@/stores/authentication";
+import type User from "@/models/User";
+import {api} from "@/api/api";
+import UserMapper from "@/models/mappers/UserMapper";
+import type Material from "@/models/Material";
+import MaterialMapper from "@/models/mappers/MaterialMapper";
+import {useEditorStore} from "@/stores/editor";
 
 export const useMaterialStore = defineStore("material", () => {
-    const editor = ref<Editor | undefined>(undefined);
-    const editorElement = ref<HTMLElement | undefined>(undefined);
+    const materials = ref<Material[]>([]);
+    const currentMaterial = ref<Material | undefined>(undefined);
 
-    const editorProperty = ref<EditorProperty | undefined>(undefined);
-    const editorPropertyElement = ref<HTMLElement | undefined>(undefined);
+    const load = async () => {
+        const response = await api.material.all();
 
-    const slides = ref<Slide[]>([]);
-    const activeSlide = ref<string | undefined>(undefined);
-
-    const requestEditor = () => {
-        // TODO: Does user request to load specific material with slides?
-
-        newSlide();
-        changeSlide(getSlides()[0]);
-    }
-
-    const getEditor = (): Editor | undefined => {
-        if (!editor.value) {
-            return undefined;
-        }
-
-        return editor.value as Editor;
-    }
-
-    const setEditor = (editorInstance: Editor) => {
-        editor.value = editorInstance;
-    }
-
-    const setEditorElement = (element: HTMLElement) => {
-        editorElement.value = element;
-    }
-
-    const setEditorProperty = (property: EditorProperty) => {
-        editorProperty.value = property;
-    }
-    const setEditorPropertyElement = (element: HTMLElement) => {
-        editorPropertyElement.value = element;
-
-        if(editorProperty.value) return;
-
-        editorProperty.value = new EditorProperty(toRaw(editor.value) as Editor, element);
-    }
-    const getEditorProperty = (): EditorProperty | undefined => {
-        if (!editorProperty.value) {
-            return undefined;
-        }
-
-        return editorProperty.value as EditorProperty;
-    }
-
-    const addSlide = (slide: Slide) => {
-        slides.value.push(slide);
-
-        changeSlide(slide);
-    }
-
-    const moveSlide = (slide: Slide, direction: -1 | 1) => {
-        const index = slides.value.indexOf(slide);
-        let newIndex = index + direction;
-
-        while(slides.value.find(slide => slide.position === newIndex)) {
-            newIndex += direction;
-        }
-
-        slide.position = newIndex;
-    }
-
-    const changeSlide = async (slideOrId: Slide | string) => {
-        if (!editorElement.value) return;
-        const slide = typeof slideOrId === "string" ? getSlideById(slideOrId) : slideOrId;
-
-        if (!slide) return;
-
-        if (editor.value) {
-            // Deserialize the slide content
-            const serializer = new EditorSerializer(editor.value as Editor);
-
-            const data = serializer.serialize();
-
-            if (activeSlide) {
-                const slide = slides.value.find(slide => slide.id === activeSlide.value);
-
-                if (slide) {
-                    slide.content = data;
-                    editor.value.getSelector().deselectAllBlocks();
-
-                    slide.thumbnail = await toPng(editorElement.value.querySelector(".editor-content") as HTMLElement).then((dataUrl) => {
-                        return dataUrl;
-                    });
-                }
-
-            }
-            editor.value.destroy();
-        }
-
-        if (editorProperty.value) {
-            editorProperty.value.destroy();
-        }
-
-        const deserializer = new EditorDeserializer();
-        const newEditor = deserializer.deserialize(slide.content, editorElement.value);
-
-        setEditor(newEditor);
-        activeSlide.value = slide.id;
-
-        if (!editorPropertyElement.value) return;
-
-        editorProperty.value = new EditorProperty(newEditor, editorPropertyElement.value);
-    }
-
-    const getActiveSlide = () => {
-        return getSlideById(activeSlide.value as string);
-    }
-
-    const newSlide = () => {
-        addSlide(new Slide(
-            generateUUID(),
-            `{"editor":{"size":{"width":1200,"height":800}},"blocks":[]}`,
-            undefined,
-            slides.value.length
-        ))
-    }
-
-    const removeSlide = (slide: Slide) => {
-        if(slides.value.length === 1) {
+        if(!response) {
             return;
         }
 
-        const index = slides.value.indexOf(slide);
-        slides.value.splice(index, 1);
+        materials.value = response.entities.map((material) => MaterialMapper.fromMaterialDTO(material));
+    }
 
-        if(activeSlide.value === slide.id) {
-            changeSlide(slides.value[0]);
+    const loadMaterial = async (id: string) => {
+        const material = materials.value.find((material) => material.id === id);
+
+        if(!material) {
+            throw new Error("Material not found");
+        }
+
+        currentMaterial.value = material;
+    }
+
+    const createMaterial = async () => {
+        const response = await api.material.create({
+            name: "New material",
+            slides: []
+        });
+
+        if(!response) {
+            throw new Error("Failed to create material");
+        }
+
+        const material = MaterialMapper.fromMaterialDTO(response.entity);
+        materials.value.push(material);
+
+        return material;
+    }
+
+    const editorStore = useEditorStore();
+    const save = async () => {
+        if(!currentMaterial.value) {
+            throw new Error("No material loaded");
+        }
+
+        await editorStore.saveCurrentSlide();
+
+        const response = await api.material.update(currentMaterial.value.id, {
+            name: currentMaterial.value.name,
+            slides: editorStore.getSlides()
+        });
+
+        if(!response) {
+            throw new Error("Failed to save material");
         }
     }
 
-    const getSlides = () => {
-        return slides.value;
-    }
-
-    const getSlideById = (id: string) => {
-        return slides.value.find(slide => slide.id === id);
-    }
-
     return {
-        getEditor,
-        setEditorElement,
-        setEditor,
-        addSlide,
-        newSlide,
-        moveSlide,
-        removeSlide,
-        getSlides,
-        getSlideById,
-        requestEditor,
-        changeSlide,
-        getActiveSlide,
-        setEditorProperty,
-        getEditorProperty,
-        setEditorPropertyElement
+        materials,
+        currentMaterial,
+        load,
+        loadMaterial,
+        createMaterial,
+        save
     }
 });
