@@ -4,7 +4,8 @@
             <NavigationButton @click="toggle"
                               hide-mobile icon="cog-outline"
                               label="Preferences"
-                              tooltip-position="bottom"></NavigationButton>
+                              tooltip-position="bottom"
+                              tooltip-text="Preferences"></NavigationButton>
         </template>
 
         <template #default>
@@ -21,10 +22,11 @@
 
                             <div class="value">
                                 <template v-if="property.type === 'boolean'">
-                                    <Checkbox v-model:value="values[property.key]" label="Enabled" />
+                                    <Checkbox v-model:value="values[property.key]" label="Enabled"/>
                                 </template>
                                 <template v-else-if="property.type === 'number'">
-                                    <Input v-model:value="values[property.key]" type="number" :validators="property.validator"/>
+                                    <Input v-model:value="values[property.key]" type="number"
+                                           :validators="property.validator"/>
                                 </template>
                             </div>
                         </div>
@@ -49,11 +51,11 @@ import ListItem from "@/components/design/list/ListItem.vue";
 import Checkbox from "@/components/design/checkbox/Checkbox.vue";
 
 const props = defineProps<{
-    editor: Editor;
+    editor: Editor | undefined
 }>();
 
 const preferences = computed(() => {
-    return props.editor.getPreferences();
+    return props.editor?.getPreferences();
 });
 
 const properties = [
@@ -72,11 +74,11 @@ const properties = [
         description: 'The count of the snapping while rotating the object (using SHIFT while rotating).',
         type: 'number',
         validator: [(value: any) => {
-            if(!value || value === '') return 'The value should be filled';
+            if (!value || value === '') return 'The value should be filled';
 
             const parsed = parseInt(value);
 
-            if(isNaN(parsed)) return 'The value should be a number';
+            if (isNaN(parsed)) return 'The value should be a number';
 
             return (parsed && parsed >= 2 && parsed <= 180) || 'The value should be between 2 and 180';
         }]
@@ -103,6 +105,8 @@ const values = ref({} as any);
 watch(preferences, (value) => {
     const preferences = value as any;
 
+    if(!preferences) return;
+
     for (const property in preferences) {
         values.value[property] = preferences[property];
     }
@@ -117,7 +121,7 @@ const save = () => {
         newPreferences[property] = values.value[property];
     }
 
-    props.editor.setPreferences(newPreferences);
+    props.editor!.setPreferences(newPreferences);
 
     dialog.value = false;
 };

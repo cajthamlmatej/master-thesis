@@ -4,23 +4,37 @@
         </template>
 
         <template #navigation>
+            <NavigationButton :disabled="true"
+                              hide-mobile icon="undo"
+                              label="Undo"
+                              tooltip-position="bottom"
+                              tooltip-text="Undo"></NavigationButton>
+            <NavigationButton :disabled="true"
+                              hide-mobile icon="redo"
+                              label="Redo"
+                              tooltip-position="bottom"
+                              tooltip-text="Redo"></NavigationButton>
+
             <Preferences :editor="editor" />
 
             <NavigationButton :disabled="true"
                               hide-mobile icon="share-variant-outline"
                               label="Share & Export"
-                              tooltip-position="bottom"></NavigationButton>
+                              tooltip-position="bottom"
+                              tooltip-text="Share & Export"></NavigationButton>
 
             <NavigationButton :disabled="true"
                               hide-mobile icon="presentation"
                               label="Preview"
-                              tooltip-position="bottom"></NavigationButton>
+                              tooltip-position="bottom"
+                              tooltip-text="Preview"></NavigationButton>
 
             <NavigationButton
                               hide-mobile icon="solar-panel"
                               label="Dashboard"
                               :to="{name: 'Dashboard'}"
-                              tooltip-position="bottom"></NavigationButton>
+                              tooltip-position="bottom"
+                              tooltip-text="Dashboard"></NavigationButton>
         </template>
     </Header>
 

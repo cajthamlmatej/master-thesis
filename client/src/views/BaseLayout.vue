@@ -21,8 +21,8 @@
         <template #primary>
             <NavigationButton :to="{name: 'Dashboard'}" icon="solar-panel" label="Dashboard"
                               tooltip-text="Dashboard"></NavigationButton>
-            <NavigationButton :to="{name: 'Editor'}" icon="pencil-ruler" label="Editor"
-                              tooltip-text="Editor"></NavigationButton>
+<!--            <NavigationButton :to="{name: 'Editor'}" icon="pencil-ruler" label="Editor"-->
+<!--                              tooltip-text="Editor"></NavigationButton>-->
         </template>
 
         <template #secondary>
