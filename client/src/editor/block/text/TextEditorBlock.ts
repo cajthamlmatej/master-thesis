@@ -92,9 +92,10 @@ export class TextEditorBlock extends EditorBlock {
             return false;
         }
 
-        if (action === "move") {
+        if (action === "move" || action === "resize" || action === "rotate") {
             return !this.editable;
         }
+
         return true;
     }
 
