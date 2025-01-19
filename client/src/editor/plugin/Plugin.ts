@@ -1,7 +1,7 @@
 import {load} from "@/editor/plugin/quickjs/QuickJSRunner";
 import type {QuickJSContext, QuickJSHandle} from "quickjs-emscripten";
-import type Slide from "@/models/Slide";
-import {useMaterialStore} from "@/stores/material";
+import type Material from "@/models/Material";
+import {useEditorStore} from "@/stores/editor";
 import {watch} from "vue";
 import {ImageBlockDeserializer} from "@/editor/block/image/ImageBlockDeserializer";
 import {parse} from "uuid";
@@ -12,7 +12,7 @@ export class Plugin {
     private readonly name: string;
     private readonly pluginCode: string;
 
-    private readonly materialStore = useMaterialStore();
+    private readonly materialStore = useEditorStore();
 
     private context!: QuickJSContext;
     private baseEval!: QuickJSHandle;

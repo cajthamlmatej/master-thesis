@@ -13,7 +13,7 @@
 <script setup lang="ts">
 
 import {onMounted, ref, toRaw, watch} from "vue";
-import {useMaterialStore} from "@/stores/material";
+import {useEditorStore} from "@/stores/editor";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
 import {generateUUID} from "@/utils/Generators";
@@ -41,7 +41,7 @@ watch(() => props.value, (value) => {
     blocksMenu.value = value;
 });
 
-const materialStore = useMaterialStore();
+const materialStore = useEditorStore();
 const editor = ref<Editor | null>(null);
 
 watch(() => materialStore.getEditor(), (value) => {

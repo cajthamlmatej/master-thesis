@@ -11,7 +11,7 @@
 <script setup lang="ts">
 
 import {nextTick, onMounted, ref, watch} from "vue";
-import {useMaterialStore} from "@/stores/material";
+import {useEditorStore} from "@/stores/editor";
 
 const properties = ref(true);
 
@@ -52,7 +52,7 @@ watch(() => props.value, (value) => {
     properties.value = value;
 });
 
-const materialStore = useMaterialStore();
+const materialStore = useEditorStore();
 
 watch(() => materialStore.getEditor(), (value) => {
     if (!value) return;

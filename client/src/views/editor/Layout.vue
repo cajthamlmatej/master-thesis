@@ -58,22 +58,26 @@
 import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import Slides from "@/components/editor/panels/Slides.vue";
 import Blocks from "@/components/editor/panels/Blocks.vue";
-import {useMaterialStore} from "@/stores/material";
+import {useEditorStore} from "@/stores/editor";
 import {EditorMode} from "@/editor/EditorMode";
 import {Plugin} from "@/editor/plugin/Plugin";
 import Properties from "@/components/editor/panels/Properties.vue";
 import Keybinds from "@/components/editor/dialogs/Keybinds.vue";
 import type Editor from "@/editor/Editor";
 import Preferences from "@/components/editor/dialogs/Preferences.vue";
+import {api} from "@/api/api";
+import {useRoute, useRouter} from "vue-router";
+import {useMaterialStore} from "@/stores/material";
 
 const data = reactive({
     menu: false
 });
 
+const editorStore = useEditorStore();
 const materialStore = useMaterialStore();
 const editor = ref<Editor | null>(null);
 
-watch(() => materialStore.getEditor(), (value) => {
+watch(() => editorStore.getEditor(), (value) => {
     editor.value = value as Editor;
 });
 
@@ -109,8 +113,28 @@ const handleClick = (event: MouseEvent) => {
     }
 }
 
-onMounted(() => {
+const route = useRoute();
+const router = useRouter();
+
+onMounted(async() => {
     window.addEventListener("click", handleClick);
+
+    await materialStore.load();
+
+    let materialId = route.params.material as string;
+
+    if(materialId === 'new') {
+        const material = await materialStore.createMaterial();
+        materialId = material.id;
+
+        await router.replace({name: 'Editor', params: {material: material.id}});
+    }
+
+    if(materialId) {
+        await materialStore.loadMaterial(materialId);
+    }
+
+    await editorStore.requestEditor();
 });
 
 onUnmounted(() => {
@@ -120,7 +144,7 @@ onUnmounted(() => {
 
 const mode = ref('select');
 
-watch(() => materialStore.getEditor(), (value) => {
+watch(() => editorStore.getEditor(), (value) => {
     if (!value) return;
 
     value.setMode(EditorMode.SELECT);
@@ -128,7 +152,7 @@ watch(() => materialStore.getEditor(), (value) => {
 });
 
 const changeMode = () => {
-    const editor = materialStore.getEditor();
+    const editor = editorStore.getEditor();
 
     if(!editor) return;
 
@@ -138,19 +162,19 @@ const changeMode = () => {
     mode.value = editor.getMode();
 };
 const fitToScreen = () => {
-    const editor = materialStore.getEditor();
+    const editor = editorStore.getEditor();
 
     if(!editor) return;
 
     editor.fitToParent();
 };
 
-onMounted(() => {
+onMounted(async() => {
     // PLUGIN TEST
     let started = false;
 
-    watch(() => materialStore.getEditor(), () => {
-        if(!materialStore.getEditor()) return;
+    watch(() => editorStore.getEditor(), () => {
+        if(!editorStore.getEditor()) return;
 
         if(started) return;
 

@@ -34,8 +34,8 @@
 <script setup lang="ts">
 
 import {computed, onMounted, onUnmounted, ref, watch} from "vue";
-import {useMaterialStore} from "@/stores/material";
-import type Slide from "@/models/Slide";
+import {useEditorStore} from "@/stores/editor";
+import type Material from "@/models/Material";
 
 const slides = ref(true);
 
@@ -57,7 +57,7 @@ watch(() => props.value, (value) => {
     slides.value = value;
 });
 
-const materialStore = useMaterialStore();
+const materialStore = useEditorStore();
 
 const changeSlide = (id: string) => {
     if (materialStore.getActiveSlide()?.id === id) return;
@@ -74,7 +74,7 @@ const removeActiveSlide = () => {
         materialStore.removeSlide(active);
     }
 }
-const removeSlide = (slide: Slide) => {
+const removeSlide = (slide: Material) => {
     materialStore.removeSlide(slide);
 }
 </script>
