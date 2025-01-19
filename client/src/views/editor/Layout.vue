@@ -4,10 +4,8 @@
         </template>
 
         <template #navigation>
-            <NavigationButton :disabled="true"
-                              hide-mobile icon="cog-outline"
-                              label="Settings"
-                              tooltip-position="bottom"></NavigationButton>
+            <Preferences :editor="editor" />
+
             <NavigationButton :disabled="true"
                               hide-mobile icon="share-variant-outline"
                               label="Share & Export"
@@ -66,6 +64,7 @@ import {Plugin} from "@/editor/plugin/Plugin";
 import Properties from "@/components/editor/panels/Properties.vue";
 import Keybinds from "@/components/editor/dialogs/Keybinds.vue";
 import type Editor from "@/editor/Editor";
+import Preferences from "@/components/editor/dialogs/Preferences.vue";
 
 const data = reactive({
     menu: false

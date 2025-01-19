@@ -51,7 +51,7 @@ export class RotatingSelectorCommand extends SelectorCommand {
             currentAngle += diff;
 
             if (event.shiftKey) {
-                snappedAngle = currentAngle - (currentAngle % (Math.PI / SNAPPING_COUNT));
+                snappedAngle = currentAngle - (currentAngle % (2 * Math.PI / SNAPPING_COUNT));
             } else {
                 snappedAngle = currentAngle;
             }

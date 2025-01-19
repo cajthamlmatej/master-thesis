@@ -319,6 +319,12 @@ export default class Editor {
         // }
     }
 
+    public setPreferences(newPreferences: EditorPreferences) {
+        this.preferences = newPreferences;
+
+        this.events.PREFERENCES_CHANGED.emit();
+    }
+
     public removeBlock(block: EditorBlock | string) {
         const blockId = typeof block === "string" ? block : block.id;
         const blockIndex = this.blocks.findIndex(block => block.id === blockId);

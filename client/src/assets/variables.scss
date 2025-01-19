@@ -112,4 +112,9 @@ body, body.theme--light {
     --color-tooltip-background: var(--color-primary);
     --color-tooltip-text: #181818;
 
+    // CHECKBOX
+    --color-checkbox-background: #fff;
+    --color-checkbox-background-checked: var(--color-primary);
+    --color-checkbox-border: #e7e4e4;
+    --checkbox-border-width: 1px;
 }
