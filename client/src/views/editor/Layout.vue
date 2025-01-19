@@ -15,6 +15,8 @@
                               tooltip-position="bottom"
                               tooltip-text="Redo"></NavigationButton>
 
+            <Save />
+
             <Preferences :editor="editor" />
 
             <NavigationButton :disabled="true"
@@ -82,6 +84,7 @@ import Preferences from "@/components/editor/dialogs/Preferences.vue";
 import {api} from "@/api/api";
 import {useRoute, useRouter} from "vue-router";
 import {useMaterialStore} from "@/stores/material";
+import Save from "@/components/editor/Save.vue";
 
 const data = reactive({
     menu: false
