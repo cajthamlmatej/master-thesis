@@ -173,7 +173,7 @@ export const useEditorStore = defineStore("editor", () => {
     }
 
     const getSlides = () => {
-        return slides.value;
+        return slides.value.sort((a, b) => a.position - b.position);
     }
 
     const getSlideById = (id: string) => {
