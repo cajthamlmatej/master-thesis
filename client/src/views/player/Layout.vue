@@ -1,7 +1,9 @@
 <template>
     <div class="underlay">
-
         <Header :active="active" fixed>
+            <template #logo>
+                {{materialStore.currentMaterial?.name ?? "Presentation"}}
+            </template>
             <template #navigation>
                 <NavigationButton
                         tooltip-text="Previous slide"
