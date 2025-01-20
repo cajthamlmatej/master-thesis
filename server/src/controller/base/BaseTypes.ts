@@ -17,3 +17,7 @@ export interface UpdateRepository<T> {
     update(id: string, data: any): Promise<T>;
     exists(id: string): Promise<boolean>;
 }
+
+export interface OneRepository<T> {
+    getOneById(id: string): Promise<T | null>;
+}

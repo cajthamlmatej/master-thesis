@@ -6,6 +6,7 @@ import ValidateObjectIdParameter from "../../middleware/ValidateObjectIdParamete
 import {CreateMaterialController} from "../../controller/material/CreateMaterialController";
 import {AllMaterialController} from "../../controller/material/AllMaterialController";
 import {UpdateMaterialController} from "../../controller/material/UpdateMaterialController";
+import {OneMaterialController} from "../../controller/material/OneMaterialController";
 
 @Service()
 export default class MaterialRoute extends Route {
@@ -13,7 +14,8 @@ export default class MaterialRoute extends Route {
     constructor(
         @Inject(() => AllMaterialController) private allMaterialController: AllMaterialController,
         @Inject(() => CreateMaterialController) private createMaterialController: CreateMaterialController,
-        @Inject(() => UpdateMaterialController) private updateMaterialController: UpdateMaterialController
+        @Inject(() => UpdateMaterialController) private updateMaterialController: UpdateMaterialController,
+        @Inject(() => OneMaterialController) private oneMaterialController: OneMaterialController
     ) {
         super();
     }
@@ -29,6 +31,8 @@ export default class MaterialRoute extends Route {
             (req, res) => this.createMaterialController.handle(req, res));
         router.patch('/material/:material', VerifyToken(true),
             (req, res) => this.updateMaterialController.handle(req, res));
+        router.get('/material/:material', VerifyToken(true),
+            (req, res) => this.oneMaterialController.handle(req, res));
 
         return router;
     }
