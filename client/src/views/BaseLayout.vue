@@ -5,7 +5,7 @@
 
         <template #navigation>
             <NavigationButton :disabled="true"
-                              hide-mobile icon="cog-outline"
+                              hide-mobile icon="account-cog"
                               label="Settings"
                               tooltip-position="bottom"></NavigationButton>
 
@@ -21,8 +21,18 @@
         <template #primary>
             <NavigationButton :to="{name: 'Dashboard'}" icon="solar-panel" label="Dashboard"
                               tooltip-text="Dashboard"></NavigationButton>
-<!--            <NavigationButton :to="{name: 'Editor'}" icon="pencil-ruler" label="Editor"-->
-<!--                              tooltip-text="Editor"></NavigationButton>-->
+
+            <NavigationButton icon="book-open-outline"
+                              disabled
+                              label="Browse materials"
+                              tooltip-text="Browse materials"
+            ></NavigationButton>
+
+            <NavigationButton icon="border-radius"
+                              disabled
+                              label="Browse templates"
+                              tooltip-text="Browse templates"
+            ></NavigationButton>
         </template>
 
         <template #secondary>
@@ -53,10 +63,9 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, reactive} from "vue";
+import {reactive} from "vue";
 import {useAuthenticationStore} from "@/stores/authentication";
 import {useUserStore} from "@/stores/user";
-import {Plugin} from "@/editor/plugin/Plugin";
 
 const data = reactive({
     menu: false
