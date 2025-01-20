@@ -10,7 +10,7 @@
 import Player from "@/components/Player.vue";
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 article.view {
     width: 100%;
     height: 100vh;

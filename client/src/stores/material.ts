@@ -23,7 +23,18 @@ export const useMaterialStore = defineStore("material", () => {
     }
 
     const loadMaterial = async (id: string) => {
-        const material = materials.value.find((material) => material.id === id);
+        let material = materials.value.find((material) => material.id === id);
+
+        if(!material) {
+            const response = await api.material.one(id);
+
+            if(!response) {
+                throw new Error("Failed to load material");
+            }
+
+            material = MaterialMapper.fromMaterialDTO(response.entity);
+            materials.value.push(material);
+        }
 
         if(!material) {
             throw new Error("Material not found");

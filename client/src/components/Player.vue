@@ -6,17 +6,16 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {onMounted, onUnmounted, ref, watch} from "vue";
 import Player from "@/editor/player/Player";
-import {PlayerDeserializer} from "@/editor/player/PlayerDeserializer";
-import {useRoute} from "vue-router";
-import {decodeBase64} from "@/utils/Generators";
+import {usePlayerStore} from "@/stores/player";
+
+const playerStore = usePlayerStore();
 
 const playerElement = ref<HTMLElement | null>(null);
 
-let player!: Player;
-
-const route = useRoute();
+let player: Player;
+let loaded = ref(false);
 
 onMounted(() => {
     if (!playerElement.value) {
@@ -24,14 +23,28 @@ onMounted(() => {
         return;
     }
 
-    let data = ``;
+    playerStore.setPlayerElement(playerElement.value);
+});
+watch(() => playerStore.getPlayer(), (value) => {
+    if (!value) return;
 
-    if(route.query.data) {
-        data = decodeBase64(route.query.data as string);
+    if (player) {
+        destroy();
     }
 
-    const deserializer = new PlayerDeserializer();
-    player = deserializer.deserialize(data, playerElement.value);
+    player = value;
+
+    loaded.value = true;
+});
+
+const destroy = () => {
+    if (!player) return;
+
+    loaded.value = false;
+}
+
+onUnmounted(() => {
+    destroy();
 });
 
 </script>
@@ -41,7 +54,7 @@ onMounted(() => {
     user-select: none;
     width: 100%;
     height: 100%;
-    background-color: #f5f5f5;
+    background-color: black;
 
     overflow: hidden;
     position: relative;

@@ -1,5 +1,5 @@
 <template>
-    <header>
+    <header :class="classes">
         <div class="logo">
             <slot name="logo">
                 <router-link :to="{ name: 'Dashboard' }" class="logo cursor-clickable"></router-link>
@@ -38,6 +38,16 @@ const props = defineProps({
 
     icon: {
         type: String,
+    },
+
+    active: {
+        type: Boolean,
+        default: true
+    },
+
+    fixed: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -77,12 +87,19 @@ onMounted(() => {
 onUnmounted(() => {
     document.removeEventListener("click", closeMenu);
 })
+
+const classes = computed(() => {
+    return {
+        "header--active": props.active,
+        "header--fixed": props.fixed
+    }
+});
 </script>
 
 <style lang="scss" scoped>
 header {
     position: sticky;
-    top: 0;
+    top: -5em;
     z-index: 1000;
 
     height: 5em;
@@ -96,6 +113,14 @@ header {
 
     padding: 0 1em;
 
+    transition: top 0.3s ease-in-out;
+
+    &.header--active {
+        top: 0;
+    }
+    &.header--fixed {
+        position: fixed;
+    }
 
     > .logo {
         .logo {

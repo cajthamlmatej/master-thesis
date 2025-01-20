@@ -25,7 +25,7 @@
                               tooltip-position="bottom"
                               tooltip-text="Share & Export"></NavigationButton>
 
-            <NavigationButton :disabled="true"
+            <NavigationButton :to="{ name: 'Player', params: { material: $route.params.material } }"
                               hide-mobile icon="presentation"
                               label="Preview"
                               tooltip-position="bottom"

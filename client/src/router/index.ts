@@ -30,8 +30,15 @@ const router = createRouter({
         },
         {
             path: '/player',
-            name: 'Player',
-            component: () => import('../views/PlayerView.vue'),
+            component: () => import('../views/player/Layout.vue'),
+
+            children: [
+                {
+                    path: ':material',
+                    name: 'Player',
+                    component: () => import('../views/player/Player.vue'),
+                }
+            ]
         },
 
         {
