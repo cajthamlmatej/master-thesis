@@ -5,6 +5,7 @@ import type {CreateMaterialSuccessDTO} from "../../../lib/dto/response/material/
 import type {AllMaterialSuccessDTO} from "../../../lib/dto/response/material/AllMaterialSuccessDTO";
 import type {CreateMaterialDTO} from "../../../lib/dto/request/material/CreateMaterialDTO";
 import type {UpdateMaterialDTO} from "../../../lib/dto/request/material/UpdateMaterialDTO";
+import type {OneMaterialSuccessDTO} from "../../../lib/dto/response/material/OneMaterialSuccessDTO";
 
 export class MaterialRepository extends Repository {
     public async all() {
@@ -27,6 +28,13 @@ export class MaterialRepository extends Repository {
             `material/${id}`,
             "PATCH",
             data
+        );
+    }
+
+    async one(id: string) {
+        return await this.makeRequest<OneMaterialSuccessDTO>(
+            `material/${id}`,
+            "GET"
         );
     }
 }
