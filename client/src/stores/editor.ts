@@ -110,7 +110,27 @@ export const useEditorStore = defineStore("editor", () => {
                     slide.data = data;
                     editor.value.getSelector().deselectAllBlocks();
 
-                    slide.thumbnail = await toPng(editorElement.value.querySelector(".editor-content") as HTMLElement).then((dataUrl) => {
+                    const slideSize = slide.getSize();
+                    const ratio = slideSize.width / slideSize.height;
+
+                    let canvasHeight;
+                    let canvasWidth;
+
+                    if (ratio > 1) {
+                        canvasHeight = Math.min(slideSize.width, 300);
+                        canvasWidth = canvasHeight * ratio;
+                    } else {
+                        canvasWidth = Math.min(slideSize.height, 300);
+                        canvasHeight = canvasWidth / ratio;
+                    }
+
+                    slide.thumbnail = await toPng(editorElement.value.querySelector(".editor-content") as HTMLElement, {
+                        backgroundColor: 'white',
+                        width: slideSize.width,
+                        height: slideSize.height,
+                        canvasHeight: canvasHeight,
+                        canvasWidth: canvasWidth
+                    }).then((dataUrl) => {
                         return dataUrl;
                     });
                 }
@@ -159,7 +179,7 @@ export const useEditorStore = defineStore("editor", () => {
         ))
     }
 
-    const removeSlide = (slide: Slide) => {
+    const removeSlide = async(slide: Slide) => {
         if(slides.value.length === 1) {
             return;
         }
@@ -168,7 +188,7 @@ export const useEditorStore = defineStore("editor", () => {
         slides.value.splice(index, 1);
 
         if(activeSlide.value === slide.id) {
-            changeSlide(slides.value[0]);
+            await changeSlide(slides.value[0] as Slide);
         }
     }
 

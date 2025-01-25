@@ -12,7 +12,9 @@
                     <div class="slide" :class="{'slide--active': slide.id === materialStore.getActiveSlide()?.id}"
                          v-for="(slide, i) in materialStore.getSlides().sort((a, b) => a.position - b.position)"
                          @click="changeSlide(slide.id)">
-                        <div class="image" :style="`background-image: url('${slide.thumbnail}')`"></div>
+                        <div class="image-container">
+                            <div class="image" :style="`background-image: url('${slide.thumbnail}')`"></div>
+                        </div>
 
                         <div class="slide-meta">
                             <div class="slide-title">

@@ -12,6 +12,14 @@ export class Slide {
         this.thumbnail = thumbnail;
         this.position = position;
     }
+
+    parseData() {
+        return JSON.parse(this.data);
+    }
+
+    getSize() {
+        return this.parseData().editor.size;
+    }
 }
 
 export default class Material {
@@ -20,11 +28,16 @@ export default class Material {
     name: string;
     slides: Slide[];
 
-    constructor(id: string, createdAt: Date, name: string, slides: Slide[]) {
+    constructor(id: string, createdAt: Date, name: string, slides: {
+        id: string;
+        data: string;
+        thumbnail: string | undefined;
+        position: number;
+    }[]) {
         this.id = id;
         this.createdAt = moment(createdAt);
         this.name = name;
-        this.slides = slides;
+        this.slides = slides.map(slide => new Slide(slide.id, slide.data, slide.thumbnail, slide.position));
     }
 
 }

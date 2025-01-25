@@ -182,6 +182,7 @@ export default class Editor {
         this.editorElement.style.transform = `scale(${this.scale})`;
         this.editorElement.style.width = this.size.width + "px";
         this.editorElement.style.height = this.size.height + "px";
+        this.editorElement.style.setProperty("--scale", this.scale.toString());
     }
 
     public setMode(mode: EditorMode) {
@@ -342,6 +343,50 @@ export default class Editor {
         if (this.selector.isSelected(blockInstance)) {
             this.selector.deselectBlock(blockInstance);
         }
+    }
+    public resizeSlide(width: number, height: number, resizeToFit: boolean) {
+        const originalWidth = this.size.width;
+        const originalHeight = this.size.height;
+
+        const originalAspectRatio = originalWidth / originalHeight;
+        const newAspectRatio = width / height;
+
+        this.size.width = width;
+        this.size.height = height;
+
+        if (resizeToFit) {
+            const scaleX = width / originalWidth;
+            const scaleY = height / originalHeight;
+
+            let scale;
+            let offsetX = 0;
+            let offsetY = 0;
+
+            if (originalAspectRatio === newAspectRatio) {
+                // Uniform scaling
+                scale = scaleX;
+            } else if (newAspectRatio > originalAspectRatio) {
+                // Height remains full, scale by height
+                scale = scaleY;
+                offsetX = (width - originalWidth * scale) / 2;
+            } else {
+                // Width remains full, scale by width
+                scale = scaleX;
+                offsetY = (height - originalHeight * scale) / 2;
+            }
+
+            for (let block of this.blocks) {
+                const newX = block.position.x * scale + offsetX;
+                const newY = block.position.y * scale + offsetY;
+                block.move(newX, newY);
+
+                const newWidth = block.size.width * scale;
+                const newHeight = block.size.height * scale;
+                block.resize(newWidth, newHeight);
+            }
+        }
+
+        this.fitToParent();
     }
 
     public getBlockById(blockId: string) {
