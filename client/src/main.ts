@@ -2,11 +2,11 @@ import 'reflect-metadata';
 
 import './assets/reset.css'
 import './assets/variables.scss'
-import './assets/helpers.scss'
 import './assets/main.scss'
 import './assets/editor.scss'
 import './assets/player.scss'
 import './assets/editor-ui.scss'
+import './assets/helpers.scss'
 
 import {createApp, defineAsyncComponent} from 'vue'
 

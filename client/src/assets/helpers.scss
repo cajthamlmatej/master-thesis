@@ -170,7 +170,7 @@
                 padding-top: #{$size}em;
                 padding-bottom: #{$size}em;
             } @else if $side == a {
-                margin: #{$size}em;
+                padding: #{$size}em;
             }
         }
     }
@@ -196,7 +196,7 @@
                     padding-top: #{$size}em;
                     padding-bottom: #{$size}em;
                 } @else if $side == a {
-                    margin: #{$size}em;
+                    padding: #{$size}em;
                 }
             }
         }
@@ -223,7 +223,7 @@
                     padding-top: #{$size}em;
                     padding-bottom: #{$size}em;
                 } @else if $side == a {
-                    margin: #{$size}em;
+                    padding: #{$size}em;
                 }
             }
         }
@@ -250,7 +250,7 @@
                     padding-top: #{$size}em;
                     padding-bottom: #{$size}em;
                 } @else if $side == a {
-                    margin: #{$size}em;
+                    padding: #{$size}em;
                 }
             }
         }

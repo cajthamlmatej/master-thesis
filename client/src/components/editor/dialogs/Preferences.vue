@@ -13,9 +13,9 @@
                 <p class="title">Preferences</p>
 
                 <List>
-                    <ListItem v-for="property in properties" :key="property.key">
+                    <ListItem v-for="property in properties" :key="property.key" class="property-holder">
                         <div class="property">
-                            <div>
+                            <div class="meta">
                                 <p class="title">{{ property.label }}</p>
                                 <p class="subtitle">{{ property.description }}</p>
                             </div>
@@ -91,6 +91,12 @@ const properties = [
         validator: [(value: any) => {
             return typeof value === 'boolean';
         }]
+    },
+    {
+        key: 'AUTOMATIC_SAVING',
+        label: 'Automatic saving',
+        description: 'When enabled, the editor will automatically save the project regularly.',
+        type: 'boolean'
     }
 ] as {
     key: keyof EditorPreferences;
@@ -128,24 +134,34 @@ const save = () => {
 </script>
 
 <style scoped lang="scss">
+.property-holder {
+    padding: 0.5em ;
+}
 .property {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1em;
 
-    .title {
-        font-weight: bold;
-        margin-bottom: 0.25em
-    }
+    > div.meta {
+        flex-grow: 1;
 
-    .subtitle {
-        line-height: 1.15em;
-        color: var(--color-text-subtle)
+        > .title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 0.25em
+        }
+        .subtitle {
+            line-height: 1.15em;
+            font-size: 0.9em;
+            color: var(--color-text-subtle)
+        }
     }
 
     .value {
         width: 30%;
+        flex-grow: 0;
         flex-shrink: 0;
     }
 }
