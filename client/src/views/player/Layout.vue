@@ -11,6 +11,7 @@
                         label="Previous"
                         hide-mobile
                         tooltip-position="bottom"
+                        :disabled="!hasPreviousSlide"
                         @click.stop="previousSlide"
                 />
                 <NavigationButton
@@ -19,6 +20,7 @@
                         label="Next"
                         hide-mobile
                         tooltip-position="bottom"
+                        :disabled="!hasNextSlide"
                         @click.stop="nextSlide"
                 />
 
@@ -77,6 +79,8 @@ onMounted(async() => {
     }
 
     await playerStore.requestPlayer();
+    hasNextSlide.value = !!playerStore.getSlides().find(s => s.position > playerStore.getActiveSlide()!.position);
+    hasPreviousSlide.value = !!playerStore.getSlides().reverse().find(s => s.position < playerStore.getActiveSlide()!.position);
 
     window.addEventListener("click", click);
     window.addEventListener("keydown", keydown);
@@ -103,6 +107,9 @@ const click = (e: MouseEvent) => {
     }
 };
 
+const hasNextSlide = ref<boolean>(false);
+const hasPreviousSlide = ref<boolean>(false);
+
 const nextSlide = () => {
     const current = playerStore.getActiveSlide();
     const next = playerStore.getSlides().find(s => s.position > current!.position);
@@ -110,6 +117,9 @@ const nextSlide = () => {
     if(!next) return;
 
     playerStore.changeSlide(next);
+
+    hasNextSlide.value = !!playerStore.getSlides().find(s => s.position > next!.position);
+    hasPreviousSlide.value = true;
 };
 const previousSlide = () => {
     const current = playerStore.getActiveSlide();
@@ -118,6 +128,9 @@ const previousSlide = () => {
     if(!prev) return;
 
     playerStore.changeSlide(prev);
+
+    hasPreviousSlide.value = !!playerStore.getSlides().reverse().find(s => s.position < prev!.position);
+    hasNextSlide.value = true;
 };
 
 const keydown = (e: KeyboardEvent) => {
