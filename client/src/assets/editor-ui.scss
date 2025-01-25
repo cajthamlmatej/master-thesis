@@ -182,20 +182,30 @@
                 outline: 2px solid var(--color-primary);
             }
 
-            > .image {
+            > .image-container {
                 width: 100%;
                 height: 100%;
+                padding: 0.5em;
+
                 aspect-ratio: 16/9;
-                background-color: var(--color-background);
+                background-color: var(--color-slide-background);
+                box-shadow: inset var(--shadow-accent);
 
-                background-size: contain;
-                background-position: center;
-                background-repeat: no-repeat;
+                display: flex;
+                justify-content: center;
+                align-content: center;
 
-                box-shadow: inset  var(--shadow-accent);
+                .image {
+                    width: 100%;
+                    height: 100%;
+                    background-size: contain;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    aspect-ratio: 16/9;
 
-                &:not([src]) {
-                    //opacity: 0;
+                    &:not([src]) {
+                        //opacity: 0;
+                    }
                 }
             }
 
@@ -212,7 +222,7 @@
                     display: flex;
                     gap: 0.25rem;
 
-                    .mdi {
+                    .mdi, .dialog-activator {
                         cursor: pointer;
                         background: var(--color-background-accent);
                         padding: 0.1rem;

@@ -27,6 +27,7 @@
         > .block {
             position: absolute;
             display: block;
+            --selector-size: calc(0.1 * var(--vh, 1vh) / var(--scale));
 
             > .block-content {
                 transform-origin: top left;
@@ -40,7 +41,7 @@
                 cursor: pointer;
 
                 &:not(&.block--selected):hover:not(&.block--locked) {
-                    outline: 4px dashed rgba(0, 0, 0, 0.24);
+                    outline: var(--selector-size) ridge rgba(0, 0, 0, 0.24);
                 }
             }
             &--resizable {
@@ -53,13 +54,13 @@
                 }
             }
             &--hover.block--selectable:not(&.block--locked) {
-                outline: 4px dashed rgba(0, 0, 0, 0.24);
+                outline: var(--selector-size) ridge rgba(0, 0, 0, 0.24);
             }
 
             // --- STATES ---
             &--selected {
                 //outline: 4px solid rgba(101, 194, 183, 1);
-                outline: 4px dashed rgba(0, 0, 0, 0.24);
+                outline: var(--selector-size) ridge rgba(0, 0, 0, 0.24);
                 box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.24);
             }
 
@@ -154,7 +155,8 @@
         }
 
         > .move {
-            --selector-size: 8px;
+            --selector-size: calc(0.75 * var(--vh, 1vh) / var(--scale));
+            //--selector-size: 8px;
             display: none;
             position: absolute;
             pointer-events: auto;
@@ -242,7 +244,7 @@
         }
 
         > .resize {
-            --selector-size: 4px;
+            --selector-size: calc(0.5 * var(--vh, 1vh) / var(--scale));
             display: none;
             position: absolute;
             width: calc(4*var(--selector-size));
@@ -343,7 +345,7 @@
         }
 
         > .rotate {
-            --selector-size: 4px;
+            --selector-size: calc(0.5 * var(--vh, 1vh) / var(--scale));
             display: none;
             position: absolute;
             bottom: calc(-1 * 2 * 6 * var(--selector-size));
@@ -376,7 +378,7 @@
     > .editor-select-box {
         display: none;
         background: #6c29ff1a;
-        border: 2px dashed #6c29ff;
+        border: 0.25vh dashed #6c29ff;
 
         position: absolute;
         z-index: 2000;
@@ -388,7 +390,7 @@
     }
 
     > .editor-context {
-        --selector-size: 4px;
+        --selector-size: calc(0.5 * var(--vh, 1vh) / var(--scale));
 
         position: absolute;
         z-index: 2100;

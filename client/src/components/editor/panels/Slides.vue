@@ -10,7 +10,7 @@
 
                 <div class="slides">
                     <div class="slide" :class="{'slide--active': slide.id === materialStore.getActiveSlide()?.id}"
-                         v-for="(slide, i) in materialStore.getSlides().sort((a, b) => a.position - b.position)"
+                         v-for="(slide, i) in materialStore.getSlides()"
                          @click="changeSlide(slide.id)">
                         <div class="image-container">
                             <div class="image" :style="`background-image: url('${slide.thumbnail}')`"></div>
@@ -21,6 +21,8 @@
                                 {{ i+1 }}. slide
                             </div>
                             <div class="actions">
+                                <SlideResizeAction :slide="slide"/>
+
                                 <i class="mdi mdi-arrow-up" @click="materialStore.moveSlide(slide, -1)" :class="{disabled: i === 0}"/>
                                 <i class="mdi mdi-arrow-down" @click="materialStore.moveSlide(slide, 1)" :class="{disabled: i === materialStore.getSlides().length - 1}"/>
                                 <i class="mdi mdi-trash-can-outline" @click="removeSlide(slide)" :class="{disabled: canRemoveSlide}"/>
@@ -38,6 +40,8 @@
 import {computed, onMounted, onUnmounted, ref, watch} from "vue";
 import {useEditorStore} from "@/stores/editor";
 import type Material from "@/models/Material";
+import {Slide} from "@/models/Material";
+import SlideResizeAction from "@/components/editor/panels/SlideResizeAction.vue";
 
 const slides = ref(true);
 
@@ -76,7 +80,7 @@ const removeActiveSlide = () => {
         materialStore.removeSlide(active);
     }
 }
-const removeSlide = (slide: Material) => {
+const removeSlide = (slide: Slide) => {
     materialStore.removeSlide(slide);
 }
 </script>
