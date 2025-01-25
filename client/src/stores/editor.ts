@@ -19,7 +19,7 @@ export const useEditorStore = defineStore("editor", () => {
     const editorProperty = ref<EditorProperty | undefined>(undefined);
     const editorPropertyElement = ref<HTMLElement | undefined>(undefined);
 
-    const slides = ref<Slide[]>([]);
+    const slides = ref<Slide[]>([] as Slide[]);
 
     watch(() => materialStore.currentMaterial, (material) => {
         if (!material) return;
@@ -38,7 +38,7 @@ export const useEditorStore = defineStore("editor", () => {
             newSlide();
         }
 
-        await changeSlide(getSlides()[0]);
+        await changeSlide(getSlides()[0] as Slide);
 
         return getEditor();
     }
@@ -170,10 +170,25 @@ export const useEditorStore = defineStore("editor", () => {
         return getSlideById(activeSlide.value as string);
     }
 
+    /**
+     * Create a new slide and add it to the list of slides.
+     * The size of the slide will be determined by currently selected slide.
+     * If no slide is selected, the default size of 1200x800 will be used.
+     */
     const newSlide = () => {
+        let width = 1200;
+        let height = 800;
+        const activeSlide = getActiveSlide();
+
+        if(activeSlide) {
+            const size = activeSlide.getSize();
+            width = size.width;
+            height = size.height;
+        }
+
         addSlide(new Slide(
             generateUUID(),
-            `{"editor":{"size":{"width":1200,"height":800}},"blocks":[]}`,
+            `{"editor":{"size":{"width":${width},"height":${height}}},"blocks":[]}`,
             undefined,
             slides.value.length
         ))
