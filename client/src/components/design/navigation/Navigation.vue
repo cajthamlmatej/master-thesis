@@ -188,7 +188,7 @@ aside.navigation {
 
     @media (max-width: 768px) {
         top: 5em;
-        right: -12.5em;
+        right: -16.5em;
         left: unset;
 
         height: calc(100 * (var(--vh, 1vh)) - 5em);
