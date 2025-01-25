@@ -244,5 +244,9 @@ onMounted(async() => {
 
 main {
     padding: 0 0 0 4.5em;
+
+    @media (max-width: 768px) {
+        padding: 0;
+    }
 }
 </style>
