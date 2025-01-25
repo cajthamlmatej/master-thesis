@@ -65,7 +65,7 @@ export const useMaterialStore = defineStore("material", () => {
             throw new Error("No material loaded");
         }
 
-        await editorStore.saveCurrentSlide();
+        await editorStore.saveCurrentSlide(true);
 
         const response = await api.material.update(currentMaterial.value.id, {
             name: currentMaterial.value.name,

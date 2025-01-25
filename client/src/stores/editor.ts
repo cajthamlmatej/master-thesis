@@ -94,7 +94,7 @@ export const useEditorStore = defineStore("editor", () => {
         slide.position = newIndex;
     }
 
-    const saveCurrentSlide = async () => {
+    const saveCurrentSlide = async (skipThumbnail = false) => {
         if (!editorElement.value) return;
 
         if (editor.value) {
@@ -108,31 +108,34 @@ export const useEditorStore = defineStore("editor", () => {
 
                 if (slide) {
                     slide.data = data;
-                    editor.value.getSelector().deselectAllBlocks();
 
-                    const slideSize = slide.getSize();
-                    const ratio = slideSize.width / slideSize.height;
+                    if(!skipThumbnail) {
+                        editor.value.getSelector().deselectAllBlocks();
 
-                    let canvasHeight;
-                    let canvasWidth;
+                        const slideSize = slide.getSize();
+                        const ratio = slideSize.width / slideSize.height;
 
-                    if (ratio > 1) {
-                        canvasHeight = Math.min(slideSize.width, 300);
-                        canvasWidth = canvasHeight * ratio;
-                    } else {
-                        canvasWidth = Math.min(slideSize.height, 300);
-                        canvasHeight = canvasWidth / ratio;
+                        let canvasHeight;
+                        let canvasWidth;
+
+                        if (ratio > 1) {
+                            canvasHeight = Math.min(slideSize.width, 300);
+                            canvasWidth = canvasHeight * ratio;
+                        } else {
+                            canvasWidth = Math.min(slideSize.height, 300);
+                            canvasHeight = canvasWidth / ratio;
+                        }
+
+                        slide.thumbnail = await toPng(editorElement.value.querySelector(".editor-content") as HTMLElement, {
+                            backgroundColor: 'white',
+                            width: slideSize.width,
+                            height: slideSize.height,
+                            canvasHeight: canvasHeight,
+                            canvasWidth: canvasWidth
+                        }).then((dataUrl) => {
+                            return dataUrl;
+                        });
                     }
-
-                    slide.thumbnail = await toPng(editorElement.value.querySelector(".editor-content") as HTMLElement, {
-                        backgroundColor: 'white',
-                        width: slideSize.width,
-                        height: slideSize.height,
-                        canvasHeight: canvasHeight,
-                        canvasWidth: canvasWidth
-                    }).then((dataUrl) => {
-                        return dataUrl;
-                    });
                 }
 
             }
