@@ -35,6 +35,14 @@ export default class EditorKeybinds {
     private process(event: KeyboardEvent) {
         const positionInEditor = this.editor.screenToEditorCoordinates(this.mouse.x, this.mouse.y);
 
+        const eventTarget = event.target as HTMLElement | null;
+
+        if(eventTarget) {
+            if(eventTarget !== document.body) {
+                return;
+            }
+        }
+
         for(let keybind of this.keybinds) {
             if (keybind.keybind.key === event.key) {
                 let process = true;
