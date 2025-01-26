@@ -4,16 +4,7 @@
         </template>
 
         <template #navigation>
-            <NavigationButton :disabled="true"
-                              hide-mobile icon="undo"
-                              label="Undo"
-                              tooltip-position="bottom"
-                              tooltip-text="Undo"></NavigationButton>
-            <NavigationButton :disabled="true"
-                              hide-mobile icon="redo"
-                              label="Redo"
-                              tooltip-position="bottom"
-                              tooltip-text="Redo"></NavigationButton>
+            <History />
 
             <Save />
 
@@ -85,6 +76,7 @@ import {api} from "@/api/api";
 import {useRoute, useRouter} from "vue-router";
 import {useMaterialStore} from "@/stores/material";
 import Save from "@/components/editor/Save.vue";
+import History from "@/components/editor/History.vue";
 
 const data = reactive({
     menu: false

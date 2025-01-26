@@ -17,6 +17,7 @@ export class EditorDeserializer {
                 editor.addBlock(block, false);
             }
         }
+        editor.events.HISTORY.emit();
 
         return editor;
 

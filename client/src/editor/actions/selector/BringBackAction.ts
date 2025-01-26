@@ -22,5 +22,6 @@ export class BringBackAction extends SelectorAction {
 
             block.move(newX, newY, false, true);
         }
+        param.editor.events.HISTORY.emit();
     }
 }

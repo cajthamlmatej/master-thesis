@@ -20,6 +20,7 @@ export class UngroupAction extends SelectorAction {
         }
 
         param.editor.events.BLOCK_GROUP_CHANGED.emit(Array.from(param.selected));
+        param.editor.events.HISTORY.emit();
     }
 
     override getKeybinds(): ActionKeybind[] {

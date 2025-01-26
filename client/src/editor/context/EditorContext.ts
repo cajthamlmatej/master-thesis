@@ -10,6 +10,8 @@ import {ZIndexBottomAction} from "@/editor/actions/context/ZIndexBottomAction";
 import {ZIndexDownAction} from "@/editor/actions/context/ZIndexDownAction";
 import {MoveAction} from "@/editor/actions/context/MoveAction";
 import {SelectAllAction} from "@/editor/actions/context/SelectAllAction";
+import {UndoAction} from "@/editor/actions/context/UndoAction";
+import {RedoAction} from "@/editor/actions/context/RedoAction";
 
 export class EditorContext {
     public element!: HTMLElement;
@@ -32,6 +34,8 @@ export class EditorContext {
         this.actions.push(new MoveAction());
 
         this.actions.push(new SelectAllAction());
+        this.actions.push(new UndoAction());
+        this.actions.push(new RedoAction());
 
         this.setupContext();
     }

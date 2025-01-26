@@ -12,5 +12,6 @@ export class ZIndexBottomAction extends ContextAction {
 
     override run(param: ActionParameters) {
         param.selected.forEach(b => b.zIndexMaxDown());
+        param.editor.events.HISTORY.emit();
     }
 }

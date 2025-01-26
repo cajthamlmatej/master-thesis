@@ -80,7 +80,7 @@ export abstract class EditorBlock {
      * Serializes the block properties to an object, so it can be saved.
      */
     public serialize(): Object {
-        const serialized: any = {};
+        let serialized: any = {};
 
         const instance = this as any;
         const keys = Reflect.getMetadataKeys(this);
@@ -108,6 +108,9 @@ export abstract class EditorBlock {
                 serialized[serializer.key] = instance[serializer.propertyKey];
             }
         }
+
+        // TODO: hotfix
+        serialized = JSON.parse(JSON.stringify(serialized));
 
         return serialized;
     }
@@ -405,6 +408,7 @@ export abstract class EditorBlock {
     @BlockEventListener(BlockEvent.RESIZING_ENDED)
     private _onResizeCompleted(type: 'PROPORTIONAL' | 'NON_PROPORTIONAL', start: { width: number; height: number; }) {
         this.resizing = false;
+        this.editor.events.HISTORY.emit();
     }
 
     @BlockEventListener(BlockEvent.MOVEMENT_STARTED)
@@ -415,6 +419,7 @@ export abstract class EditorBlock {
     @BlockEventListener(BlockEvent.MOVEMENT_ENDED)
     private _onMovementCompleted(start: { x: number; y: number; }) {
         this.moving = false;
+        this.editor.events.HISTORY.emit();
     }
 
     @BlockEventListener(BlockEvent.ROTATION_STARTED)
@@ -425,5 +430,6 @@ export abstract class EditorBlock {
     @BlockEventListener(BlockEvent.ROTATION_ENDED)
     private _onRotationCompleted(start: number) {
         this.rotating = false;
+        this.editor.events.HISTORY.emit();
     }
 }

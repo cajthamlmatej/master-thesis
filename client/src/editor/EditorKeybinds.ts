@@ -9,7 +9,7 @@ interface KeybindMapping {
     isVisible: () => boolean;
 }
 
-export default class EditorKeybinds {
+export class EditorKeybinds {
     private readonly editor: Editor;
     private keybinds: KeybindMapping[] = [];
 

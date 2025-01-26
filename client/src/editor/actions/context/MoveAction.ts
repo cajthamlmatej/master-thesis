@@ -28,6 +28,7 @@ export class MoveAction extends ContextAction {
                 block.move(block.position.x + directionX, block.position.y + directionY, false, true);
             }
         }
+        param.editor.events.HISTORY.emit();
     }
 
     override getKeybinds(): ActionKeybind[] {

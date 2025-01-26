@@ -43,6 +43,7 @@ export class GroupAction extends SelectorAction {
         }
 
         param.editor.events.BLOCK_GROUP_CHANGED.emit(Array.from(modified));
+        param.editor.events.HISTORY.emit();
     }
 
     override getKeybinds(): ActionKeybind[] {

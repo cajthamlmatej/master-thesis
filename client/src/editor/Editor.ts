@@ -21,7 +21,8 @@ import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
 import {ShapeBlockDeserializer} from "@/editor/block/shape/ShapeBlockDeserializer";
 import {ShapePlayerBlock} from "@/editor/block/shape/ShapePlayerBlock";
-import EditorKeybinds from "@/editor/EditorKeybinds";
+import {EditorKeybinds} from "@/editor/EditorKeybinds";
+import {EditorHistory} from "@/editor/history/EditorHistory";
 
 export default class Editor {
     private static readonly DEFAULT_PADDING = 32;
@@ -41,6 +42,7 @@ export default class Editor {
     private readonly context: EditorContext;
     private readonly clipboard: EditorClipboard;
     private readonly keybinds: EditorKeybinds;
+    private readonly history: EditorHistory;
 
     constructor(editorElement: HTMLElement, options?: EditorOptions, preferences?: EditorPreferences) {
         this.editorElement = editorElement;
@@ -61,6 +63,7 @@ export default class Editor {
         this.context = new EditorContext(this);
         this.selector = new EditorSelector(this);
         this.clipboard = new EditorClipboard(this);
+        this.history = new EditorHistory(this);
 
         // TODO: this enabling is weirdly placed
         new EditorGroupAreaVisualiser(this);
@@ -301,6 +304,12 @@ export default class Editor {
 
         block.processEvent(BlockEvent.MOUNTED);
         block.synchronize();
+
+        if (newBlock) {
+            this.events.BLOCK_ADDED.emit(block);
+            this.events.HISTORY.emit();
+        }
+
         // console.log("[Editor] Block added", block);
         //
         // for (let block of this.blocks) {
@@ -343,8 +352,11 @@ export default class Editor {
         if (this.selector.isSelected(blockInstance)) {
             this.selector.deselectBlock(blockInstance);
         }
+        this.events.BLOCK_REMOVED.emit(blockInstance);
+        this.events.HISTORY.emit();
     }
-    public resizeSlide(width: number, height: number, resizeToFit: boolean) {
+
+    public resize(width: number, height: number, resizeToFit: boolean) {
         const originalWidth = this.size.width;
         const originalHeight = this.size.height;
 
@@ -411,6 +423,10 @@ export default class Editor {
 
     public getKeybinds() {
         return this.keybinds;
+    }
+
+    public getHistory() {
+        return this.history;
     }
 
     public getSize() {
@@ -486,5 +502,15 @@ export default class Editor {
         line.style.backgroundColor = color;
 
         this.editorElement.querySelector(".editor-content")!.appendChild(line);
+    }
+
+    clearBlocks() {
+        for (let block of this.blocks) {
+            block.element.remove();
+            block.processEvent(BlockEvent.UNMOUNTED);
+        }
+
+        this.blocks = [];
+        this.selector.deselectAllBlocks();
     }
 }

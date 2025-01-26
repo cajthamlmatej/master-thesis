@@ -12,5 +12,6 @@ export class ZIndexDownAction extends ContextAction {
 
     override run(param: ActionParameters) {
         param.selected.forEach(b => b.zIndexDown());
+        param.editor.events.HISTORY.emit();
     }
 }

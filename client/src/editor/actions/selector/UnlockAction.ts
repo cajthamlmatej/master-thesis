@@ -19,5 +19,6 @@ export class UnlockAction extends SelectorAction {
             blocks: param.selected,
             locked: false
         });
+        param.editor.events.HISTORY.emit();
     }
 }

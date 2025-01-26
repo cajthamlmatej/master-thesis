@@ -178,6 +178,7 @@ export class TextEditorBlock extends EditorBlock {
         this.synchronize();
 
         this.element.removeEventListener("keydown", this.onKeyDown.bind(this));
+        this.editor.events.HISTORY.emit();
     }
 
     @BlockEventListener(BlockEvent.ROTATION_STARTED)
