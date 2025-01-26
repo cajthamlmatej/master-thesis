@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import {useMaterialStore} from "@/stores/material";
-import {onMounted, onUnmounted, ref} from "vue";
+import {onMounted, onUnmounted, ref, watch} from "vue";
 import {useEditorStore} from "@/stores/editor";
 
 const materialStore = useMaterialStore();
@@ -26,17 +26,49 @@ const save = async() => {
 let saveInterval = null as null | number;
 
 onMounted(() => {
+    setupSave();
+});
+
+const setupSave = () => {
+    if(saveInterval) {
+        clearInterval(saveInterval);
+    }
+
+    const editor = editorStore.getEditor();
+
+    if(!editor) {
+        return;
+    }
+
     saveInterval = setInterval(() => {
-        if(editorStore.getEditor() && editorStore.getEditor()?.getPreferences().AUTOMATIC_SAVING) {
+        if(editor.getPreferences().AUTOMATIC_SAVING) {
             save();
         }
-    }, 1000 * 60) as unknown as number;
-})
+    }, editor.getPreferences().AUTOMATIC_SAVING_INTERVAL) as unknown as number;
+}
+
+watch(() => editorStore.getEditor(), () => {
+    const editor = editorStore.getEditor();
+
+    if(!editor) {
+        return;
+    }
+
+    editor.events.PREFERENCES_CHANGED.on(setupSave);
+});
 
 onUnmounted(() => {
     if(saveInterval) {
         clearInterval(saveInterval);
     }
+
+    const editor = editorStore.getEditor();
+
+    if(!editor) {
+        return;
+    }
+
+    editor.events.PREFERENCES_CHANGED.off(setupSave);
 });
 </script>
 

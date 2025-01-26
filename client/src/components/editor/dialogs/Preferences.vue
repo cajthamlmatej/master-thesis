@@ -28,6 +28,10 @@
                                     <Input v-model:value="values[property.key]" type="number"
                                            :validators="property.validator"/>
                                 </template>
+                                <template v-else-if="property.type === 'select'">
+                                    <Select v-model:value="values[property.key]" :choices="property.options"
+                                            :validators="property.validator"/>
+                                </template>
                             </div>
                         </div>
                     </ListItem>
@@ -102,6 +106,34 @@ const properties = [
         }]
     },
     {
+        key: 'AUTOMATIC_SAVING_INTERVAL',
+        label: 'Automatic saving interval',
+        description: 'The interval of the automatic saving. Is only available when the automatic saving is enabled.',
+        type: 'select',
+        options: [
+            {
+                name: '30 seconds',
+                value: 30 * 1000
+            },
+            {
+                name: '1 minute',
+                value: 60 * 1000
+            },
+            {
+                name: '2 minutes',
+                value: 2 * 60 * 1000
+            },
+            {
+                name: '5 minutes',
+                value: 5 * 60 * 1000
+            },
+            {
+                name: '10 minutes',
+                value: 10 * 60 * 1000
+            }
+        ]
+    },
+    {
         key: 'HISTORY_LIMIT',
         label: 'History stack limit',
         description: 'The limit of the history stack. The editor will remove the oldest history if the limit is reached. May affect the performance.',
@@ -120,7 +152,8 @@ const properties = [
     key: keyof EditorPreferences;
     label: string;
     description: string;
-    type: 'boolean' | 'number';
+    type: 'boolean' | 'number' | 'select';
+    options?: { name: string, value: any }[];
     validator: ((value: any) => boolean | 'string')[]
 }[];
 
@@ -129,7 +162,7 @@ const values = ref({} as any);
 watch(preferences, (value) => {
     const preferences = value as any;
 
-    if(!preferences) return;
+    if (!preferences) return;
 
     for (const property in preferences) {
         values.value[property] = preferences[property];
@@ -153,8 +186,9 @@ const save = () => {
 
 <style scoped lang="scss">
 .property-holder {
-    padding: 0.5em ;
+    padding: 0.5em;
 }
+
 .property {
     width: 100%;
     display: flex;
@@ -170,6 +204,7 @@ const save = () => {
             font-weight: bold;
             margin-bottom: 0.25em
         }
+
         .subtitle {
             line-height: 1.15em;
             font-size: 0.9em;
