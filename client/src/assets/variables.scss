@@ -119,6 +119,16 @@ body, body.theme--light {
     --checkbox-border-width: 1px;
 
 
+    // SELECT
+    --color-select-wrapper-background: #f6f6f6;
+    --color-select-text: #646872;
+    --color-select-dropdown-background: #F7F8FA;
+    --color-select-dropdown-background-hover: #ffffff;
+    --color-select-dropdown-background-active: rgb(238, 233, 224);
+    --color-select-dropdown-border: #eef0f3;
+    --color-select-background-disabled: #F7F8FA;
+    --select-dropdown-border-width: 2px;
 
+    // EDITOR UI
     --color-slide-background: #f3f3f3;
 }
