@@ -45,6 +45,7 @@ watch(() => editorStore.getEditor(), (editor) => {
     if(editor) {
         editor.events.HISTORY.on(recalculate);
         editor.events.HISTORY_JUMP.on(recalculate);
+        recalculate();
     }
 });
 
