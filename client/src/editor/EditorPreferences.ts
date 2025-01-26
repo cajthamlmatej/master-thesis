@@ -4,5 +4,6 @@ export default class EditorPreferences {
     public PER_OBJECT_TRANSFORMATION = true;
     public ROTATION_SNAPPING_COUNT = 24;
     public AUTOMATIC_SAVING = true;
+    public HISTORY_LIMIT = 100;
 
 }

@@ -31,7 +31,7 @@ export class EditorHistory {
 
         this.forwardStack.push(state);
 
-        if(this.forwardStack.length > 100) { // TODO make this configurable
+        if(this.forwardStack.length > this.editor.getPreferences().HISTORY_LIMIT) {
             this.forwardStack.shift();
         }
 

@@ -96,7 +96,25 @@ const properties = [
         key: 'AUTOMATIC_SAVING',
         label: 'Automatic saving',
         description: 'When enabled, the editor will automatically save the project regularly.',
-        type: 'boolean'
+        type: 'boolean',
+        validator: [(value: any) => {
+            return typeof value === 'boolean';
+        }]
+    },
+    {
+        key: 'HISTORY_LIMIT',
+        label: 'History stack limit',
+        description: 'The limit of the history stack. The editor will remove the oldest history if the limit is reached. May affect the performance.',
+        type: 'number',
+        validator: [(value: any) => {
+            if (!value || value === '') return 'The value should be filled';
+
+            const parsed = parseInt(value);
+
+            if (isNaN(parsed)) return 'The value should be a number';
+
+            return (parsed && parsed >= 5 && parsed <= 1000) || 'The value should be between 5 and 1000';
+        }]
     }
 ] as {
     key: keyof EditorPreferences;
