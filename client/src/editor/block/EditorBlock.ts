@@ -9,6 +9,7 @@ import type {SerializeEntry} from "@/editor/block/serialization/BlockPropertySer
 import {BlockSerialize, SERIALIZER_METADATA_KEY} from "@/editor/block/serialization/BlockPropertySerialize";
 import {RotationProperty} from "@/editor/property/base/RotationProperty";
 import {SizeProperty} from "@/editor/property/base/SizeProperty";
+import {BlockInteractivity} from "@/editor/interactivity/BlockInteractivity";
 
 export abstract class EditorBlock {
     @BlockSerialize("id")
@@ -33,6 +34,8 @@ export abstract class EditorBlock {
     public locked: boolean = false;
     @BlockSerialize("group")
     public group: string | undefined = undefined;
+    @BlockSerialize("interactivity")
+    public interactivity: BlockInteractivity[] = [];
 
     public element!: HTMLElement;
     protected editor!: Editor;

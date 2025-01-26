@@ -6,6 +6,7 @@ import {ColorProperty} from "@/editor/block/shape/property/ColorProperty";
 import {shapes} from "@/editor/block/shape/Shapes";
 import {ShapeProperty} from "@/editor/block/shape/property/ShapeProperty";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
+import {InteractivityProperty} from "@/editor/interactivity/InteractivityProperty";
 
 export class ShapeEditorBlock extends EditorBlock {
     @BlockSerialize("color")
@@ -87,7 +88,8 @@ export class ShapeEditorBlock extends EditorBlock {
         return [
             ...super.getProperties(),
             new ColorProperty(),
-            new ShapeProperty()
+            new ShapeProperty(),
+            new InteractivityProperty(),
         ];
     }
 

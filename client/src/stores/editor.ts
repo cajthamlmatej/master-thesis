@@ -126,7 +126,11 @@ export const useEditorStore = defineStore("editor", () => {
                             canvasHeight = canvasWidth / ratio;
                         }
 
-                        slide.thumbnail = await toPng(editorElement.value.querySelector(".editor-content") as HTMLElement, {
+                        const element = editorElement.value.querySelector(".editor-content");
+
+                        if (!element) return;
+
+                        slide.thumbnail = await toPng(element as HTMLElement, {
                             backgroundColor: 'white',
                             width: slideSize.width,
                             height: slideSize.height,
