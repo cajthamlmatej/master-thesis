@@ -36,6 +36,7 @@ app.use(FloatingVue);
     app.component("List", defineAsyncComponent(() => import("@/components/design/list/List.vue")));
     app.component("ListItem", defineAsyncComponent(() => import("@/components/design/list/ListItem.vue")));
     app.component("Tabs", defineAsyncComponent(() => import("@/components/design/tabs/Tabs.vue")));
+    app.component("Pagination", defineAsyncComponent(() => import("@/components/design/pagination/Pagination.vue")));
 
     app.component("Tooltip", defineAsyncComponent(() => import("@/components/design/tooltip/Tooltip.vue")));
 
