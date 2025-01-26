@@ -70,7 +70,7 @@ const save = () => {
     }
 
     editorStore.changeSlide(props.slide.id);
-    editor.resizeSlide(size.value.width, size.value.height, resizeToFit.value);
+    editor.resize(size.value.width, size.value.height, resizeToFit.value);
 
     editorStore.changeSlide(props.slide.id);
 };
