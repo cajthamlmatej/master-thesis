@@ -84,7 +84,7 @@ Nevýhodou jsou také omezenější pokročilé funkce, animace či grafické ú
 Google Slides nicméně celkově nabízí snadno použitelný a přístupný nástroj pro spolupráci a rychlou tvorbu prezentací, který uživatelům postačí pro většinu běžných scénářů, obzvláště tam, kde je důraz na flexibilitu, týmovou práci a okamžitý vzdálený přístup k materiálům.
 
 
-\subsection{RevealJS}
+\subsection{RevealJS}\label{text:revealjs}
 
 RevealJS je knihovna a framework, která dovoluje tvořit prezentace pomocí zdrojového kódu v \texttt{HTML}. 
 Výsledné prezentace jsou k dispozici jako webová stránka~\cite{revealjs}, ve které se vykreslují jednotlivé snímky, mezi kterými lze plynule procházet. 
@@ -284,16 +284,16 @@ NÁZOR OSTATNÍCH\todo{najít}
 % Vhodná kombinace interaktivních prvků a tradičních výukových metod umožňuje vytvořit efektivní vzdělávací prostředí, které respektuje individuální potřeby studentů a podporuje aktivní učení.
 
 
-\section{Způsoby vykreslování na webových stránkách}
+\section{Způsoby vykreslování na webových stránkách}\label{text:vykreslovani}
 
 Většina grafických aplikací potřebuje nějakým způsobem vykreslovat obsah programu.
 Na webových stránkách jsme vykreslováním velmi omezeni.
 Existují však různé alternativy zápisu a tvorby za pomocí různých prvků v HTML standardu.
 Tyto způsoby v této kapitole rozeberu i s jejich plusy a mínusy.
 
-\subsection{HTML prvky}
+\subsection{HTML prvky}\label{text:vykreslovani/html}
 
-HTML  je základní značkovací jazyk pro tvorbu webových stránek. 
+HTML\todo{citace v celém tomhle} je základní značkovací jazyk pro tvorbu webových stránek. 
 V rámci vykreslování obsahu na webu jsou k dispozici různé HTML prvky, které umožňují zobrazení statických i dynamických dat.
 S pomocí CSS je možné tyto prvky skoro nelimitovaně stylovat a pozicovat.
 
@@ -307,6 +307,8 @@ HTML, CSS, JS a (virtuální) DOM je poté možným způsobem, jak vykreslovat s
 Problémem bývá omezenost box-modelu a způsob pozicování, což může v některých případech limitovat flexibilitu při vytváření složitějších layoutů nebo interaktivních prvků. Box-model vychází z pevně dané šířky, výšky, okrajů, paddingu a okrajů okna pro prohlížeč, což může být komplikováno v případě, kdy je potřeba pracovat s dynamickým a variabilním obsahem. 
 I když CSS nabízí pokročilé metody jako flexbox nebo grid, které značně zlepšují flexibilitu layoutu, stále existují případy, kdy HTML prvky samy o sobě nestačí k dosažení požadovaného chování bez použití komplexního skriptování a dalších technologií.
 Vykreslování je často pomalé s velkým počtem prvků díky (ne)optimalizacím prohlížečů.
+
+Tento způsob používá velmi mnoho služeb a knihoven, jako ukázku uvádím například zmíněnou knihovnu RevealJS (viz kapitola \ref{text:revealjs}).
 
 \subsection{Canvas}
 
@@ -323,8 +325,14 @@ Navíc takto komplexní výpočty potřebují silnější zařízení, na který
 
 I když je canvas sémanticky popsán, veškerý vykreslený obsah nikoliv a je tedy velmi těžké sémanticky určit, co se vlastně vykresluje.
 
+Kvůli náročnosti tento způsob používá méně služeb, o zmíněných uvádím ukázku například Figma (viz kapitola \label{text:figma_popis}).
+Jejich způsob vykreslování je velmi kvalitní a je vidět, že do aplikace investovali velmi mnoho zdrojů.
+Jejím cílem je ale být grafický nástroj a přesnost všeho je pro jejich uživatele důležitá.
+
 \subsection{SVG}
 
+
+Toto vykreslování používá ze zmíněných služeb například Google služby, resp. Google Slides (viz kapitola \label{text:figma_popis}).
 
 \section{Komunitní rozšíření}\label{text:community_plugins}
 

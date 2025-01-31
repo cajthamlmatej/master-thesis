@@ -1,12 +1,17 @@
 \chapter{Návrh}
 
+\begin{chapterabstract}
+Tato kapitola ...
+\end{chapterabstract}
+
+
 % \section{Požadavky a funkcionality}
 
 \section{Architektura}
 
 Celá aplikace bude rozdělena do několika částí, které v této kapitole vysvětlím a popíšu svá rozhodnutí.
 
-\subsection{Klient}
+\subsection{Klient}\label{text:navrh/klient}
 
 Klientem celé aplikace bude webová stránka, ve které budou uživatelé vytvářet, přehrávat a procházet materiály. 
 Obecně na této části budou uživatelé ovládat celou aplikaci.
@@ -22,14 +27,119 @@ Tento způsob dovoluje tvořit tzv. \enquote{thick klienty}, které vysvětlím 
 Klient tedy poběží ve webovém prohlížeči uživatele.
 Díky tomu tedy musí být klient definován a stylován za pomocí HTML a CSS.
 Kontrola samotné stránky musí být ve skriptovacím jazyce JavaScript.
-Pro bezpečnější a udržitelnější kód však v této aplikaci použiji nástavbu TypeScript, která se kompiluje do čistého JavaScriptu.
-Klient bude tvořen v myšlence \enquote{thick klienta}, tedy většina funkcionality by měl
+Pro bezpečnější a udržitelnější kód však v této aplikaci použiji typovanou nástavbu TypeScript, která se kompiluje do čistého JavaScriptu.
+Klient bude tvořen v myšlence \enquote{thick klienta}, tedy většinu funkcionalit by měl implementovat klient za pomocí dat a služeb, které dostane (má k dispozici) od serveru.
+Toto dovoluje odlehčit server náročnými požadavky (překreslením HTML na serveru při každé akci a podobně) a soustředit se pouze na to důležité.
+Klient taktéž bude moci být používán s menší závislostí na serveru a při správném nastavení například i dále dovolovat čtení, i když uživatel nebude připojen k internetové síti.
+Nevýhodou je zátěž a dostupné funkcionality na zařízení, ve kterém webová stránka poběží, ale to by na dnešních zařízeních neměl být žádný problém.
 
+V kapitole \ref{text:vykreslovani} zmiňuji různé způsoby vykreslování obsahu na webových stránkách.
+I když je analýza směřována zejména na obsah, tak podobné myšlenky, zejména z kapitoly \ref{text:vykreslovani/html} lze aplikovat i na zbytek webových stránek.
+Zjednodušeně, tvoření komplexních webových aplikací s mnohými funkcionalitami (což v tomto návrhu pro aplikaci plánuji) nelze dělat udržitelně pouze s \enquote{čistými} funkcionalitami HTML, CSS a JS.
+Pro komplexní \enquote{thick klient} webovou aplikaci je nutné v moderním světě webového vývoje použít framework, který za nás bude řešit nejen uvedené:
+
+\begin{itemize}
+    \item Správu stavů aplikace a synchronizaci dat mezi komponentami.
+    \item Efektivní aktualizaci a vykreslování uživatelského rozhraní.
+    \item Modularizaci kódu pro lepší přehlednost a údržbu.
+    \item Optimalizaci výkonu při práci s DOM (například virtualizaci seznamů).
+    \item Zajištění kompatibility s různými zařízeními a prohlížeči.
+    \item Možnost snadného rozšíření o další funkcionality pomocí dostupných knihoven a ekosystému.
+    \item Automatizaci testování a zajištění stability kódu.
+    % \item Podporu pro server-side rendering (SSR) nebo static site generation (SSG), pokud je to potřeba.
+\end{itemize}
+
+Jako webový framework pro klient použiji knihovnu Vue, která je známá\todo{zdroj} pro svoji jednoduchost, stabilitu a komunitou.
+Dobrou alternativou by byl například React, avšak s ním nemám tak velké zkušenosti a z výběru z těchto dvou nedostanu žádné benefity na více.
+Vue podporuje programování za pomocí TypeScript.
+
+\subsubsection{Vrstvy a zodpovědnosti}
+
+Klientská (a i serverová) část bude dále rozdělena na další části (tzv. vrstvy –- layers) pro zjednodušení celého systému zodpovědností v aplikaci.
+To povede k přehlednějšímu kódu a jednodušším změnám v celé aplikaci.
+V realizované aplikaci budou vrstvy pak dále děleny a bude vytvořena další abstrakce.
+Níže jsou naplánované veškeré vrstvy pro klientskou část.
+
+\begin{description}
+    \item[Komponenty] které zajišťuji unifikované chování pro často opakující se prvky na stránce tak, aby jejich tvorba byla co nejrychlejší a dovolovala přehlednější kód. Komunikují se stránkami pomocí dvoucestných vazeb či událostí.
+    \item[Stránky] které seskupují komponenty a vlastní funkcionality do jednotlivých stránek aplikace. Předávají komponentám data a určují jim, jak se mají chovat či zobrazovat.
+    \item[Perzistence] často nazývané ve webovém inženýrství jako obchody (stores), které globálně ukládají data pro celou aplikace, aby bylo jedno místo (či místa), kde je lze najít. Slouží k tomu, aby se o data nežádalo více, než je nutné (caching). Mohou dovolovat ukládat data zcela perzistentně i mezi načtením stránky pro rychlejší prvotní načtení. Komunikují se serverem pomocí další vrstvy.
+    \item[Komunikace] se serverem pomocí Restful API serveru. Určují a kontrolují jaká data od serveru přijdou, určují lokální rozhraní pro CRUD operace s danými zdroji a mapují je na lokální objekty.
+\end{description}
+
+\subsubsection{Editor a přehrávač}
+
+Nejklíčovější částí klienta je editor a přehrávač materiálů, které budou uživatelé tvořit.
+Editor i přehrávač jsou příliš komplexní a vzhledem k cíli práce vytvořit jednoduše rozšiřitelnou aplikaci (a to i díky komunitnímu rozšíření) a proto není vhodné pro tyto části webové aplikace použít zmíněný framework.
+Rozšiřování frameworku by bylo velmi zvláštní a nebylo by to příliš intuitivní.
+Hlavním problémem, je však ztracení jakékoliv kontroly, jak a kdy se vykresluje daný obsah, co framework spravuje.
+Z tohoto důvodu musí být takto komplexní komponenta, tedy editor a přehrávač, manuálně spravována.
+Naštěstí framework Vue dovoluje označit část kódu jako spravovanou někým jiným a tento prvek nebude překreslovat, pokud se nezmění jeho rodič (a jeho rodič a tak dále). 
+
+V pozdější kapitole \ref{text:navrh/obsah} rozepíši, jak hodlám řešit to, jak se bude obsah zobrazovat v editoru a přehrávači, jak se bude upravovat, definovat a podobně.
 
 \subsection{Server}
-\subsection{Databáze}
 
-web? proc?
-backend, databaze
+Cílem serverové části je poskytovat data klientské části a to kvůli \enquote{thick klienta}. 
+Tyto data bude server získávat z dalších služeb a zejména databáze, ve které budou data perzistentně uložena.
+O databázi budu rozepisovat v kapitole \ref{text:navrh/databaze}.
+Mezi další služby bude patřit e-mailový server či různá další externí API třetích služeb (například na získávání obrázků a tak dále).
 
-\section{Návrh uživatelského prostředí}
+Poskytované API, což jsem zmínil v kapitole \ref{text:navrh/klient}, bude Restful a tedy bude pracovat jako se zdroji. 
+Alternativní způsob designu API je například Simple Object Access Protocol (SOAP), který dovoluje volání akcí na serveru.
+REST API je standard mezi moderními komunikacemi a vzhledem k cíli vytvořit rozšiřitelnou aplikaci je REST nejvhodnější možnost.
+
+Server bude získávat data z URL adresy, těla a hlavičky požadavku.
+Požadavky i odpovědi na a ze serveru budou komunikovat zejména v JavaScript Object Notation (JSON).
+JSON je jednoduchý formát, který se jednoduše implementuje skoro v každém jazyce a je postaven na bázi seznamu klíčů a příslušných hodnot.
+Hodnoty mají mnoho podporovaných datových typů.
+Server by měl být však připraven na jakýkoliv formát dat.
+Mělo by být možné velmi jednoduše změnit například na formát Extensible Markup Language (XML).
+
+Serverová a klientská část by měly spolu sdílet rozhraní definující vstupní a výstupní data aplikace.
+Těmto objektům se říká Data Transfer Object (DTO).
+Tyto objekty dovolují jednoduše typovat data, které vstupují a vystupují do a respektive z REST API.
+
+Některé endpointy a zdroje API musí být zabezpečené pomocí autorizace a autentizace. 
+O zabezpečení budu mluvit v pozdější kapitole \ref{text:navrh/auth}.
+Některé endpointy musí být limitované i rate-limitery, tedy že, omezí počet volání daného endpointu pro konkrétního uživatele či globálně.
+Jedná se např. o stránku s registrací.
+
+Samotná serverová část bude tvořena v jazyce TS.
+Volba TS je stejná jako v klientské části (viz kapitola \ref{text:navrh/klient}) a to tedy, že nutí programátora psát udržitelný kód, který je staticky typově kontrolován.
+
+Implementace komunikačního uzlu je možná přes řadu způsobů a knihoven.
+V JS, resp. TS ekosystému patří mezi nejoblíbenější back-endový rámec knihovna Express.js (často taktéž Express).
+Alternativní jako nejoblíbenější bývá\todo{zdroj} zmiňován framework Koa či Fastify.
+Právě Express jsem se rozhodl použít díky své malé velikosti, komunitě a jeho velké stopě v ekosystému.
+Express má řadu předpřipravených funkcionalit jako jsou routery, middleware a mnoho dalšího.
+
+Server nejspíše bude používat i řadu dalších knihoven.
+Taktéž bude muset být obecně zabezpečen, například kvůli Cross-origin Resource Sharing (CORS) a dalším podobným mechanizmům.
+
+\subsubsection{Vrstvy a zodpovědnosti}
+
+I serverová část bude rozdělena do vrstev. 
+V realizované aplikaci budou vrstvy pak dále děleny a bude vytvořena další abstrakce.
+Níže jsou naplánované veškeré vrstvy pro serverovou část.
+
+% \begin{description}
+%     \item[Routery]
+%     \item[Middlewares]
+%     \item[Kontrolery]
+%     \item[Služby]
+%     \item[Repozitáře]
+%     \item[Modely]
+% \end{description}
+
+
+\subsection{Databáze}\label{text:navrh/databaze}
+
+\section{Obsah}\label{text:navrh/obsah}
+
+\section{Autentizace a autorizace}\label{text:navrh/auth}
+
+\section{Uživatelské prostředí}
+
+\subsection{Komponenty}
+
