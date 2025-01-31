@@ -1,7 +1,35 @@
 \chapter{Návrh}
 
-\section{Požadavky a funkcionality}
+% \section{Požadavky a funkcionality}
 
 \section{Architektura}
+
+Celá aplikace bude rozdělena do několika částí, které v této kapitole vysvětlím a popíšu svá rozhodnutí.
+
+\subsection{Klient}
+
+Klientem celé aplikace bude webová stránka, ve které budou uživatelé vytvářet, přehrávat a procházet materiály. 
+Obecně na této části budou uživatelé ovládat celou aplikaci.
+Webová stránka je vhodná, protože to dovolí rychlejší přístup ke všem funkcionalitám bez nutnosti cokoliv instalovat.
+Instalace taktéž není vhodná kvůli velkému počtu používání materiálů studenty, kterým by toto stahování mohlo přijít nevhodné.
+Později by šlo z aplikace vytvořit nativní aplikaci na desktop či telefony pomocí enkapsulace webové stránky.
+
+Tato část bude pomocí REST API komunikovat se serverovou částí za pomocí protokolu HTTP, ze které bude získávat veškerá potřebná data.
+Restful API je ve zkratce takové API, které pracuje se zdroji jako takovými a dovoluje nad nimi volat klasické akce jako čtení, přidání, smazání a změnu (CRUD).
+Mimo jiné definuje další standardizované chování, které by toto API mělo mít.
+Tento způsob dovoluje tvořit tzv. \enquote{thick klienty}, které vysvětlím a zdůvodním později.
+
+Klient tedy poběží ve webovém prohlížeči uživatele.
+Díky tomu tedy musí být klient definován a stylován za pomocí HTML a CSS.
+Kontrola samotné stránky musí být ve skriptovacím jazyce JavaScript.
+Pro bezpečnější a udržitelnější kód však v této aplikaci použiji nástavbu TypeScript, která se kompiluje do čistého JavaScriptu.
+Klient bude tvořen v myšlence \enquote{thick klienta}, tedy většina funkcionality by měl
+
+
+\subsection{Server}
+\subsection{Databáze}
+
+web? proc?
+backend, databaze
 
 \section{Návrh uživatelského prostředí}
