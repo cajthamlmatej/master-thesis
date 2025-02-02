@@ -84,14 +84,27 @@ export const useEditorStore = defineStore("editor", () => {
     }
 
     const moveSlide = (slide: Slide, direction: -1 | 1) => {
-        const index = slides.value.indexOf(slide);
-        let newIndex = index + direction;
+        slide.position += direction;
 
-        while(slides.value.find(slide => slide.position === newIndex)) {
-            newIndex += direction;
+        const slidePositions = slides.value.map(s => ({
+            slide: s,
+            position: s.position
+        })).sort((a, b) => {
+            if (a.position === b.position) {
+                if (a.slide.id === slide.id) {
+                    return direction;
+                }
+                if (b.slide.id === slide.id) {
+                    return -direction;
+                }
+                return 0;
+            }
+            return a.position - b.position;
+        });
+
+        for(let slide of slidePositions) {
+            slide.slide.position = slidePositions.indexOf(slide);
         }
-
-        slide.position = newIndex;
     }
 
     const saveCurrentSlide = async (skipThumbnail = false) => {
@@ -255,6 +268,7 @@ export const useEditorStore = defineStore("editor", () => {
         setEditorProperty,
         getEditorProperty,
         setEditorPropertyElement,
-        saveCurrentSlide
+        saveCurrentSlide,
+        copySlide
     }
 });
