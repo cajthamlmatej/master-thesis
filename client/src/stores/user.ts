@@ -58,32 +58,32 @@ export const useUserStore = defineStore("user", () => {
     };
 
 
-    const changePassword = async (newPassword: string) => {
-        if (!authenticationStore.isLogged) return;
-
-        const response = await api.user.changePassword(authenticationStore.parsed?.id ?? "", newPassword);
-
-        if (response === undefined) return;
-
-        return response;
-    }
-
-    const deleteAccount = async (password: string) => {
-        if (!authenticationStore.isLogged) return false;
-
-        const response = await api.user.delete(authenticationStore.parsed?.id ?? "", {password: password});
-
-        if (response === undefined) return false;
-
-        return response;
-    }
+    // const changePassword = async (newPassword: string) => {
+    //     if (!authenticationStore.isLogged) return;
+    //
+    //     const response = await api.user.changePassword(authenticationStore.parsed?.id ?? "", newPassword);
+    //
+    //     if (response === undefined) return;
+    //
+    //     return response;
+    // }
+    //
+    // const deleteAccount = async (password: string) => {
+    //     if (!authenticationStore.isLogged) return false;
+    //
+    //     const response = await api.user.delete(authenticationStore.parsed?.id ?? "", {password: password});
+    //
+    //     if (response === undefined) return false;
+    //
+    //     return response;
+    // }
 
     return {
         user,
         loaded,
         load,
-        changePassword,
-        deleteAccount,
+        // changePassword,
+        // deleteAccount,
         userLoaded
     }
 });

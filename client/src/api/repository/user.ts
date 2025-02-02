@@ -12,20 +12,20 @@ export class UserRepository extends Repository {
             "GET"
         );
     }
-
-    async delete(user: string, data?: DeleteUserDTO) {
-        return await this.makeRequest(
-            `user/${user}`,
-            "DELETE",
-            data
-        );
-    }
-
-    async changePassword(user: string, newPassword: string) {
-        return await this.makeRequest(
-            `user/${user}`,
-            "PATCH",
-            {password: newPassword}
-        );
-    }
+    //
+    // async delete(user: string, data?: DeleteUserDTO) {
+    //     return await this.makeRequest(
+    //         `user/${user}`,
+    //         "DELETE",
+    //         data
+    //     );
+    // }
+    //
+    // async changePassword(user: string, newPassword: string) {
+    //     return await this.makeRequest(
+    //         `user/${user}`,
+    //         "PATCH",
+    //         {password: newPassword}
+    //     );
+    // }
 }

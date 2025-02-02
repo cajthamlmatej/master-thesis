@@ -1,7 +1,6 @@
 import {useAuthenticationStore} from "@/stores/authentication";
 import {AuthenticationRepository} from "./repository/authentication"
 import {UserRepository} from "@/api/repository/user";
-import {DataExportRepository} from "@/api/repository/dataExport";
 import {MaterialRepository} from "@/api/repository/material";
 
 
@@ -13,7 +12,6 @@ class Api {
 
     public auth: AuthenticationRepository;
     public user: UserRepository;
-    public dataExport: DataExportRepository;
     public material: MaterialRepository;
 
     constructor() {
@@ -21,7 +19,6 @@ class Api {
 
         this.auth = new AuthenticationRepository();
         this.user = new UserRepository();
-        this.dataExport = new DataExportRepository();
         this.material = new MaterialRepository();
     }
 

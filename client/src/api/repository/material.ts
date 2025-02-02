@@ -8,9 +8,9 @@ import type {UpdateMaterialDTO} from "../../../lib/dto/request/material/UpdateMa
 import type {OneMaterialSuccessDTO} from "../../../lib/dto/response/material/OneMaterialSuccessDTO";
 
 export class MaterialRepository extends Repository {
-    public async all() {
+    public async forUser(user: string) {
         return await this.makeRequest<AllMaterialSuccessDTO>(
-            `material`,
+            `user/${user}/material`,
             "GET"
         );
     }

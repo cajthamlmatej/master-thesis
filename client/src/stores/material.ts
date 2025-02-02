@@ -12,14 +12,16 @@ export const useMaterialStore = defineStore("material", () => {
     const materials = ref<Material[]>([]);
     const currentMaterial = ref<Material | undefined>(undefined);
 
+    const authenticationStore = useAuthenticationStore();
+
     const load = async () => {
-        const response = await api.material.all();
+        const response = await api.material.forUser(authenticationStore.parsed?.id || "");
 
         if(!response) {
             return;
         }
 
-        materials.value = response.entities.map((material) => MaterialMapper.fromMaterialDTO(material));
+        materials.value = response.materials.map((material) => MaterialMapper.fromMaterialDTO(material));
     }
 
     const loadMaterial = async (id: string) => {
@@ -32,7 +34,7 @@ export const useMaterialStore = defineStore("material", () => {
                 throw new Error("Failed to load material");
             }
 
-            material = MaterialMapper.fromMaterialDTO(response.entity);
+            material = MaterialMapper.fromMaterialDTO(response.material);
             materials.value.push(material);
         }
 
@@ -53,7 +55,7 @@ export const useMaterialStore = defineStore("material", () => {
             throw new Error("Failed to create material");
         }
 
-        const material = MaterialMapper.fromMaterialDTO(response.entity);
+        const material = MaterialMapper.fromMaterialDTO(response.material);
         materials.value.push(material);
 
         return material;

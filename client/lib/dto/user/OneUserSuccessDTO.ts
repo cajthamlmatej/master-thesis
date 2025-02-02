@@ -5,6 +5,4 @@ export default interface OneUserSuccessDTO {
      * User
      */
     user: UserDTO;
-
-    activeStudent: boolean;
 }
