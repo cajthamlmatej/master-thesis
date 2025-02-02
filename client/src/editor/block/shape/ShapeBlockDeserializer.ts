@@ -12,11 +12,16 @@ export class ShapeBlockDeserializer implements BlockDeserializer {
             block.lock();
 
         block.group = data.group;
+        block.interactivity = data.interactivity;
 
         return block;
     }
 
     deserializePlayer(data: any): PlayerBlock {
-        return new ShapePlayerBlock(data.id, data.position, data.size, data.rotation, data.zIndex, data.color, data.shape);
+        const block = new ShapePlayerBlock(data.id, data.position, data.size, data.rotation, data.zIndex, data.color, data.shape);
+
+        block.interactivity = data.interactivity;
+
+        return block;
     }
 }

@@ -29,7 +29,6 @@ export class ShapePlayerBlock extends PlayerBlock {
         super.synchronize();
 
         const content = this.element.querySelector(".block-content")! as HTMLElement;
-
         content.style.setProperty("--color", this.color);
 
         const shape = shapes.find(s => s.name === this.shape);
@@ -41,11 +40,12 @@ export class ShapePlayerBlock extends PlayerBlock {
   <rect x="0" y="0" width="100" height="100" fill="red" />
   <text x="50" y="50" fill="white" font-size="10" text-anchor="middle" dominant-baseline="middle" id="error-text">${this.shape}</text>
 </svg>`;
-        } else {
-            content.innerHTML = shape.html;
-            for(const c of shape.class || [])
-                content.classList.add(c);
+            return;
         }
-    }
 
+        content.innerHTML = shape.html;
+        content.className = "block-content";
+        for(const c of shape.class || [])
+            content.classList.add(c);
+    }
 }

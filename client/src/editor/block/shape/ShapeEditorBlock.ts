@@ -89,7 +89,6 @@ export class ShapeEditorBlock extends EditorBlock {
             ...super.getProperties(),
             new ColorProperty(),
             new ShapeProperty(),
-            new InteractivityProperty(),
         ];
     }
 

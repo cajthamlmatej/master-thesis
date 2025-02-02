@@ -69,13 +69,36 @@
                     display: block;
                     height: 100%;
                     width: 100%;
-                    object-fit: contain;
                 }
 
                 > .block-content {
                     height: 100%;
                     width: 100%;
+
+                    &.one-line {
+                        display: flex;
+                        align-items: center;
+                        height: 100%;
+                        width: 100%;
+
+                        svg {
+                            height: 100%;
+                            width: auto;
+                            pointer-events:none;
+                        }
+
+                        &.grow-2 {
+                            svg:nth-child(2) {
+                                flex-grow: 2;
+                                transform: scale(1.02);
+                            }
+                        }
+                    }
                 }
+            }
+
+            &--interactive {
+                cursor: pointer;
             }
         }
     }

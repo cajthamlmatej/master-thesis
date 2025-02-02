@@ -59,6 +59,8 @@ export default class Player {
 
         // block.onMounted(); // TODO: call this?
         block.synchronize();
+
+        block.afterRender();
     }
 
     public fitToParent() {
@@ -122,5 +124,12 @@ export default class Player {
 
     private setupPlayer() {
         this.element.innerHTML = `<div class="player-content"></div>`
+    }
+
+    /**
+     * Returns the blocks in the player.
+     */
+    public getBlocks() {
+        return this.blocks;
     }
 }

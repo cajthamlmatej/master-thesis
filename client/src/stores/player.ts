@@ -12,6 +12,9 @@ export const usePlayerStore = defineStore("player", () => {
     const player = ref<Player | undefined>(undefined);
     const playerElement = ref<HTMLElement | undefined>(undefined);
 
+    const playerTime = ref<number>(0);
+    const slideTime = ref<number>(0);
+
     const slides = ref<Slide[]>([]);
 
     watch(() => materialStore.currentMaterial, (material) => {
@@ -28,6 +31,8 @@ export const usePlayerStore = defineStore("player", () => {
         }
 
         await changeSlide(getSlides()[0]);
+
+        playerTime.value = Date.now();
 
         return getPlayer();
     }
@@ -63,6 +68,7 @@ export const usePlayerStore = defineStore("player", () => {
 
         setPlayer(newPlayer);
         activeSlide.value = slide.id;
+        slideTime.value = Date.now();
     }
 
     const getActiveSlide = () => {
@@ -85,6 +91,8 @@ export const usePlayerStore = defineStore("player", () => {
         changeSlide,
         getActiveSlide,
         getSlides,
-        getSlideById
+        getSlideById,
+        playerTime,
+        slideTime,
     }
 });

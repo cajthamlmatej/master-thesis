@@ -6,6 +6,10 @@ export abstract class Property<T extends EditorBlock = EditorBlock> {
     protected editorProperty!: EditorProperty;
     protected blocks!: T[];
 
+    public getPriority(): number {
+        return 0;
+    }
+
     public initialize(element: HTMLElement, editorProperty: EditorProperty, blocks: T[]) {
         this.element = element;
         this.editorProperty = editorProperty;

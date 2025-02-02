@@ -2,7 +2,11 @@
     <div class="underlay">
         <Header :active="active" fixed>
             <template #logo>
-                {{materialStore.currentMaterial?.name ?? "Presentation"}}
+                <div class="meta">
+                    <span class="name">{{materialStore.currentMaterial?.name ?? "Presentation"}}</span>
+
+                    <span class="time">{{timeFromStart}} (on slide: {{timeFromSlide}})</span>
+                </div>
             </template>
             <template #navigation>
                 <NavigationButton
@@ -34,6 +38,15 @@
                 />
 
                 <NavigationButton
+                    tooltip-text="Edit material"
+                    icon="square-edit-outline"
+                    label="Edit"
+                    hide-mobile
+                    tooltip-position="bottom"
+                    :to="{name: 'Editor', params: {material: route.params.material}}"
+                />
+
+                <NavigationButton
                         tooltip-text="Leave presentation"
                         icon="exit-to-app"
                         :to="{name: 'Dashboard'}"
@@ -56,7 +69,6 @@ import {usePlayerStore} from "@/stores/player";
 import type Player from "@/editor/player/Player";
 import Header from "@/components/design/header/Header.vue";
 import NavigationButton from "@/components/design/navigation/NavigationButton.vue";
-
 
 const materialStore = useMaterialStore();
 const playerStore = usePlayerStore();
@@ -88,6 +100,7 @@ onMounted(async() => {
 });
 
 onUnmounted(() => {
+    if(cursorTimeout) clearTimeout(cursorTimeout);
     window.removeEventListener("click", click);
     window.removeEventListener("keydown", keydown);
     window.removeEventListener("mousemove", mousemove);
@@ -170,6 +183,49 @@ const fullscreen = () => {
         element.requestFullscreen();
     }
 };
+const timeFromStart = ref<string>("00:00");
+const timeFromSlide = ref<string>("00:00");
+let timeInterval = undefined as undefined | number;
+onMounted(() => {
+    timeInterval = setInterval(() => {
+        {
+            const time = playerStore.playerTime;
+
+            const diff = Date.now() - time;
+
+            const hours = Math.floor(diff / 3600000);
+            const minutes = Math.floor(diff / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+
+            if(hours > 0) {
+                timeFromStart.value = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            } else {
+                timeFromStart.value = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+
+        {
+            const time = playerStore.slideTime;
+
+            const diff = Date.now() - time;
+
+            const hours = Math.floor(diff / 3600000);
+            const minutes = Math.floor(diff / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+
+            if(hours > 0) {
+                timeFromSlide.value = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            } else {
+                timeFromSlide.value = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+
+    }, 1000) as unknown as number;
+});
+
+onUnmounted(() => {
+    if(timeInterval) clearInterval(timeInterval);
+});
 </script>
 
 <style lang="scss" scoped>
@@ -177,5 +233,20 @@ const fullscreen = () => {
     width: 100%;
     height: 100%;
     background-color: black;
+}
+
+.meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1em;
+
+    .name {
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+
+    .time {
+        font-size: 1em;
+    }
 }
 </style>

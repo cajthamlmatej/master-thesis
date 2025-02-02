@@ -57,7 +57,8 @@ export class EditorProperty {
         const properties = blocks
             .map(block => block.getProperties())
             .flat()
-            .reduce((acc: Property[], property) => acc.some(p => p.getID() === property.getID()) ? acc : [...acc, property], []);
+            .reduce((acc: Property[], property) => acc.some(p => p.getID() === property.getID()) ? acc : [...acc, property], [])
+            .sort((a, b) => a.getPriority() - b.getPriority());
 
         this.activeProperties = properties;
 

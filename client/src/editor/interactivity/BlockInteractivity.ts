@@ -1,5 +1,5 @@
 interface BlockInteractivityEvents {
-    event: 'CLICKED' | 'HOVERING' | 'DRAG_START' | 'DRAG_END';
+    event: 'CLICKED' | 'HOVER_START' | 'HOVER_END' | 'DRAG_START' | 'DRAG_END';
 }
 
 interface BlockInteractivityConditionsBase {
@@ -8,6 +8,7 @@ interface BlockInteractivityConditionsBase {
 
 interface BlockInteractivityConditionsTimePassed {
     condition: 'TIME_PASSED';
+    timeFrom: 'OPEN' | 'SLIDE';
     time: number;
 }
 
@@ -30,12 +31,12 @@ interface BlockInteractivityActionResetProperty {
 
 interface BlockInteractivityActionChangeSlideRelative {
     action: 'CHANGE_SLIDE';
-    slideType: 'NEXT' | 'PREVIOUS' | 'FIRST' | 'LAST';
+    slideType: 'NEXT' | 'PREVIOUS' | 'FIRST' | 'LAST' | 'RANDOM';
 }
 
 interface BlockInteractivityActionChangeSlideAbsolute {
     action: 'CHANGE_SLIDE';
-    slideType: 'ABSOLUTE';
+    slideType: 'SLIDE';
     slideIndex: number;
 }
 
@@ -46,3 +47,9 @@ type BlockInteractivityAction =
     | BlockInteractivityActionChangeSlideAbsolute;
 
 export type BlockInteractivity = BlockInteractivityEvents & BlockInteractivityConditions & BlockInteractivityAction;
+
+export interface BlockInteractiveProperty {
+    label: string,
+    change: (value: string) => boolean;
+    reset: () => boolean;
+}

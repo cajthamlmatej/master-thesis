@@ -9,7 +9,8 @@ import type {SerializeEntry} from "@/editor/block/serialization/BlockPropertySer
 import {BlockSerialize, SERIALIZER_METADATA_KEY} from "@/editor/block/serialization/BlockPropertySerialize";
 import {RotationProperty} from "@/editor/property/base/RotationProperty";
 import {SizeProperty} from "@/editor/property/base/SizeProperty";
-import {BlockInteractivity} from "@/editor/interactivity/BlockInteractivity";
+import {BlockInteractiveProperty, BlockInteractivity} from "@/editor/interactivity/BlockInteractivity";
+import {InteractivityProperty} from "@/editor/interactivity/InteractivityProperty";
 
 export abstract class EditorBlock {
     @BlockSerialize("id")
@@ -149,7 +150,31 @@ export abstract class EditorBlock {
         return [
             new PositionProperty(),
             new RotationProperty(),
-            new SizeProperty()
+            new SizeProperty(),
+            new InteractivityProperty(),
+        ]
+    }
+
+    public getInteractivityProperties(): Omit<BlockInteractiveProperty, "change" | "reset">[] {
+        return [
+            {
+                label: "Position X",
+            },
+            {
+                label: "Position Y",
+            },
+            {
+                label: "Width",
+            },
+            {
+                label: "Height",
+            },
+            {
+                label: "Rotation",
+            },
+            {
+                label: "Z-Index",
+            }
         ]
     }
 

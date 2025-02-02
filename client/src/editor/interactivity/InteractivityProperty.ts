@@ -2,13 +2,17 @@ import {AggregatorProperty} from "@/editor/property/type/AggregatorProperty";
 import {NumberProperty} from "@/editor/property/type/NumberProperty";
 import {Property} from "@/editor/property/Property";
 import {EditorBlock} from "@/editor/block/EditorBlock";
-import {BlockInteractivity} from "@/editor/interactivity/BlockInteractivity";
+import {BlockInteractiveProperty, BlockInteractivity} from "@/editor/interactivity/BlockInteractivity";
 
 export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends Property<T> {
 
 
     constructor() {
         super();
+    }
+
+    getPriority(): number {
+        return 1000;
     }
 
     isVisible(): boolean {
@@ -33,8 +37,15 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                 event: "CLICKED",
                 action: "CHANGE_SLIDE",
                 slideType: "NEXT",
-                condition: "ALWAYS"
-            });
+                condition: "ALWAYS",
+                on: "SELF",
+                property: "Position X",
+                blocks: [],
+                time: 0,
+                slideIndex: 0,
+                value: "",
+                timeFrom: "OPEN"
+            } as any);
             this.render();
         });
 
@@ -60,9 +71,10 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                         <div class="value">
                             <select data-property="event">
                                 <option value="CLICKED">Clicked</option>
-                                <option value="HOVERING">Hovering</option>
-                                <option value="DRAG_START">Drag start</option>
-                                <option value="DRAG_END">Drag end</option>
+                                <option value="HOVER_START">Hover start</option>
+                                <option value="HOVER_END">Hover end</option>
+                                <option disabled value="DRAG_START">Drag start</option>
+                                <option disabled value="DRAG_END">Drag end</option>
                             </select>
                         </div>
                     </div>`;
@@ -133,14 +145,10 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                 selectedBlocks.push(...editor.getBlocks().filter(block => (interactivity.blocks ?? []).includes(block.id)));
             }
 
-            const properties = [] as Property[];
+            const properties = [] as Omit<BlockInteractiveProperty, "change" | "reset">[];
 
             for(let block of selectedBlocks) {
-                for(let property of block.getProperties()) {
-                    if(property instanceof InteractivityProperty) {
-                        continue;
-                    }
-
+                for(let property of block.getInteractivityProperties()) {
                     properties.push(property);
                 }
             }
@@ -148,14 +156,14 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             const propertiesPairs = [] as {id: string, name: string}[];
 
             for(let property of properties) {
-                if(propertiesPairs.some(p => p.id == property.getID())) {
+                if(propertiesPairs.some(p => p.id == property.label)) {
                     continue;
                 }
 
                 let pass = true;
                 for(let block of selectedBlocks) {
                     // All properties must be present on all blocks
-                    if(!block.getProperties().some(p => p.getID() == property.getID())) {
+                    if(!block.getInteractivityProperties().some(p => p.label == property.label)) {
                         pass = false;
                         break;
                     }
@@ -166,8 +174,8 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                 }
 
                 propertiesPairs.push({
-                    id: property.getID(),
-                    name: (property as any).label ?? property.constructor.name
+                    id: property.label,
+                    name: property.label
                 });
             }
 
@@ -175,7 +183,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                     <div class="field field--sub">
                         <span class="label">Property</span>
                         <div class="value">
-                            <select data-property="property"> <!-- TODO: Add options based by selected block -->
+                            <select data-property="property">
                                 ${propertiesPairs.map(property => `<option value="${property.id}">${property.name}</option>`).join("")}
                                 ${interactivity.action == 'RESET_PROPERTY' ? '<option value="ALL">All properties</option>' : ''}
                             </select>
@@ -201,15 +209,16 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                             <option value="PREVIOUS">Previous</option>
                             <option value="FIRST">First</option>
                             <option value="LAST">Last</option>
-                            <option value="ABSOLUTE">Absolute</option>
+                            <option value="RANDOM">Random</option>
+                            <option value="SLIDE">Slide</option>
                         </select>
                     </div>
                 </div>`;
 
-            if(interactivity.slideType == 'ABSOLUTE') {
+            if(interactivity.slideType == 'SLIDE') {
                 element.innerHTML += `
                     <div class="field field--sub">
-                        <span class="label">Index</span>
+                        <span class="label">Slide number</span>
                         <div class="value">
                             <input type="number" data-property="slideIndex">
                         </div>
@@ -230,10 +239,20 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
         if(interactivity.condition == 'TIME_PASSED') {
             element.innerHTML += `
+                    <div class="field">
+                        <span class="label">Count from</span>
+                        <div class="value">
+                            <select data-property="condition">
+                                <option value="OPEN">Of material</option>
+                                <option value="SLIDE">Of slide</option>
+                            </select>
+                        </div>
+                    </div>`;
+            element.innerHTML += `
                     <div class="field field--sub">
                         <span class="label">Time</span>
                         <div class="value">
-                            <input type="number" value="${interactivity.time}" data-property="time">
+                            <input type="number" value="${interactivity.time ?? ''}" data-property="time">
                             <span class="unit">s</span>
                         </div>
                     </div>`;
@@ -246,7 +265,13 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
         for(const field of element.querySelectorAll("[data-property]") as unknown as HTMLElement[]) {
             if(field instanceof HTMLInputElement) {
-                field.value = interactivity[field.getAttribute("data-property") as keyof BlockInteractivity] as any;
+                let value = interactivity[field.getAttribute("data-property") as keyof BlockInteractivity] as any;
+
+                if(!value) {
+                    value = "";
+                }
+
+                field.value = value;
             } else if(field instanceof HTMLSelectElement) {
                 if(field.multiple) {
                     for(const option of field.querySelectorAll("option")) {
