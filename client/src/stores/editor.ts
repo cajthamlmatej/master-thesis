@@ -214,6 +214,23 @@ export const useEditorStore = defineStore("editor", () => {
         }
     }
 
+    const copySlide = async(slide: Slide) => {
+        if(activeSlide.value === slide.id) {
+            await saveCurrentSlide();
+        }
+
+        const newSlide = new Slide(
+            generateUUID(),
+            slide.data,
+            slide.thumbnail,
+            slide.position-1
+        );
+
+        slides.value.push(newSlide);
+
+        moveSlide(newSlide, 1);
+    }
+
     const getSlides = () => {
         return slides.value.sort((a, b) => a.position - b.position);
     }

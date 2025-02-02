@@ -25,6 +25,7 @@
 
                                 <i class="mdi mdi-arrow-up" @click="materialStore.moveSlide(slide, -1)" :class="{disabled: i === 0}"/>
                                 <i class="mdi mdi-arrow-down" @click="materialStore.moveSlide(slide, 1)" :class="{disabled: i === materialStore.getSlides().length - 1}"/>
+                                <i class="mdi mdi-content-copy" @click="copySlide(slide)"/>
                                 <i class="mdi mdi-trash-can-outline" @click="removeSlide(slide)" :class="{disabled: canRemoveSlide}"/>
                             </div>
                         </div>
@@ -74,13 +75,10 @@ const changeSlide = (id: string) => {
 const canRemoveSlide = computed(() => {
     return materialStore.getSlides().length <= 1;
 });
-const removeActiveSlide = () => {
-    const active = materialStore.getActiveSlide();
-    if (active) {
-        materialStore.removeSlide(active);
-    }
-}
 const removeSlide = (slide: Slide) => {
     materialStore.removeSlide(slide);
+}
+const copySlide = (slide: Slide) => {
+    materialStore.copySlide(slide);
 }
 </script>
