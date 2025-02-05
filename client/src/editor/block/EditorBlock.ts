@@ -195,6 +195,11 @@ export abstract class EditorBlock {
                 label: "Z-Index",
                 relative: true,
                 animate: false,
+            },
+            {
+                label: "Opacity",
+                relative: true,
+                animate: true,
             }
         ]
     }

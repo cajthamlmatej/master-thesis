@@ -270,6 +270,36 @@ export abstract class PlayerBlock {
                     this.synchronize();
                     return true;
                 }
+            },
+            {
+                label: "Opacity",
+                getBaseValue: () => this.baseValues.opacity,
+                change: (value: any, relative: boolean, {animate, duration, easing}) => {
+                    let target = parseFloat(value);
+
+                    if (relative) {
+                        target += this.opacity;
+                    }
+
+                    target = Math.min(1, Math.max(0, target));
+
+                    if (animate) {
+                        this.element.animate([
+                            {opacity: this.opacity},
+                            {opacity: target}
+                        ], {
+                            duration: duration,
+                            easing: BlockInteractivityEasings[easing as keyof typeof BlockInteractivityEasings]
+                        }).addEventListener("finish", () => {
+                            this.opacity = target;
+                            this.synchronize();
+                        });
+                    } else {
+                        this.opacity = target;
+                        this.synchronize();
+                    }
+                    return true;
+                }
             }
         ]
     }
