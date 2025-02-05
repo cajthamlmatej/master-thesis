@@ -6,6 +6,7 @@ import {shapes} from "@/editor/block/shape/Shapes";
 import {ShapeProperty} from "@/editor/block/shape/property/ShapeProperty";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 import {EditorBlock} from "@/editor/block/EditorBlock";
+import {BlockInteractiveProperty} from "@/editor/interactivity/BlockInteractivity";
 
 export class ShapeEditorBlock extends EditorBlock {
     @BlockSerialize("color")
@@ -95,6 +96,22 @@ export class ShapeEditorBlock extends EditorBlock {
             ...super.getProperties(),
             new ColorProperty(),
             new ShapeProperty(),
+        ];
+    }
+
+    override getInteractivityProperties(): Omit<BlockInteractiveProperty & { relative: boolean; animate: boolean }, "change" | "reset" | "getBaseValue">[] {
+        return [
+            ...super.getInteractivityProperties(),
+            {
+                label: "Color",
+                animate: true,
+                relative: false
+            },
+            {
+                label: "Shape",
+                animate: false,
+                relative: false
+            }
         ];
     }
 

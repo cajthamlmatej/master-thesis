@@ -38,6 +38,7 @@ interface BlockInteractivityConditionsVariable {
 
 type BlockInteractivityConditions = BlockInteractivityConditionsBase | BlockInteractivityConditionsTimePassed | BlockInteractivityConditionsVariable;
 
+// note(Matej): When changing this, dont forget that some blocks implement these easings in their code (for example Shape)
 export const BlockInteractivityEasings = {
     LINEAR: 'linear',
     EASE: 'ease',

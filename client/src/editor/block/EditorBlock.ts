@@ -107,7 +107,6 @@ export abstract class EditorBlock {
             const serializers = metadata as Set<SerializeEntry>;
 
             for (const serializer of serializers) {
-                console.log(serializer, serialized, instance, instance[serializer.propertyKey]);
                 if (!(serializer.propertyKey in instance)) {
                     console.error(`Property ${serializer.propertyKey} does not exist on block ${this.id} (${this.type}).`);
                     continue;

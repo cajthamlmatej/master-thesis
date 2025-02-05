@@ -216,7 +216,6 @@ const updateLineVisualiser = (start: boolean = false) => {
     const tabLeft = tab.offsetLeft;
 
     if (start && props.hideLineVisualiserAnimationOnStart) {
-        console.log('start');
         lineVisualiserElement.value.style.transition = 'none';
     } else {
         lineVisualiserElement.value.style.transition = '';
