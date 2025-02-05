@@ -146,9 +146,9 @@ const click = (e: MouseEvent) => {
     const position = {x: e.clientX, y: e.clientY};
     const width = window.innerWidth;
 
-    if(position.x > width / 2) {
+    if(position.x > width / 4 * 3) {
         nextSlide();
-    } else {
+    } else if(position.x < width / 4) {
         previousSlide();
     }
 };
