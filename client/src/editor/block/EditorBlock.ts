@@ -12,6 +12,7 @@ import {SizeProperty} from "@/editor/property/base/SizeProperty";
 import {BlockInteractiveProperty, BlockInteractivity} from "@/editor/interactivity/BlockInteractivity";
 import {InteractivityProperty} from "@/editor/interactivity/InteractivityProperty";
 import {BlockConstructor} from "@/editor/block/BlockConstructor";
+import {OpacityProperty} from "@/editor/property/base/OpacityProperty";
 
 export abstract class EditorBlock {
     @BlockSerialize("id")
@@ -32,6 +33,8 @@ export abstract class EditorBlock {
     public rotation: number = 0;
     @BlockSerialize("zIndex")
     public zIndex: number = 0;
+    @BlockSerialize("opacity")
+    public opacity: number = 1;
     @BlockSerialize("locked")
     public locked: boolean = false;
     @BlockSerialize("group")
@@ -49,6 +52,7 @@ export abstract class EditorBlock {
         this.locked = base.locked || false;
         this.group = base.group || undefined;
         this.interactivity = base.interactivity || [];
+        this.opacity = base.opacity === undefined ? 1 : base.opacity;
     }
 
     public element!: HTMLElement;
@@ -103,6 +107,7 @@ export abstract class EditorBlock {
             const serializers = metadata as Set<SerializeEntry>;
 
             for (const serializer of serializers) {
+                console.log(serializer, serialized, instance, instance[serializer.propertyKey]);
                 if (!(serializer.propertyKey in instance)) {
                     console.error(`Property ${serializer.propertyKey} does not exist on block ${this.id} (${this.type}).`);
                     continue;
@@ -153,8 +158,9 @@ export abstract class EditorBlock {
     public getProperties(): Property<this>[] {
         return [
             new PositionProperty(),
-            new RotationProperty(),
             new SizeProperty(),
+            new RotationProperty(),
+            new OpacityProperty(),
             new InteractivityProperty(),
         ]
     }
@@ -287,6 +293,15 @@ export abstract class EditorBlock {
         this.synchronize();
     }
 
+    public changeOpacity(value: number, manual: boolean = false) {
+        this.opacity = value;
+        this.editor.events.BLOCK_OPACITY_CHANGED.emit({
+            block: this,
+            manual: manual
+        });
+        this.synchronize();
+    }
+
     /**
      * Sets the editor for the block.
      *
@@ -314,6 +329,7 @@ export abstract class EditorBlock {
         this.element.style.height = this.size.height + "px";
 
         this.element.style.transform = `rotate(${this.rotation}deg)`;
+        this.element.style.opacity = this.opacity.toString();
         this.element.style.zIndex = this.zIndex.toString();
 
         this.element.classList.remove("block--selectable", "block--movable", "block--resizable", "block--rotatable");

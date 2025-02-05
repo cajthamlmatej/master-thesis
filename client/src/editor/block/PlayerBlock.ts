@@ -17,8 +17,10 @@ export abstract class PlayerBlock {
         width: number;
         height: number;
     }
+    public opacity: number = 1;
     public rotation: number = 0;
     public zIndex: number = 0;
+    public group?: string;
 
     protected constructor(base: BlockConstructor) {
         this.id = base.id;
@@ -27,6 +29,9 @@ export abstract class PlayerBlock {
         this.size = base.size;
         this.rotation = base.rotation;
         this.zIndex = base.zIndex;
+        this.group = base.group;
+        this.interactivity = base.interactivity || [];
+        this.opacity = base.opacity === undefined ? 1 : base.opacity;
 
         this.baseValues = {
             position: {
@@ -38,7 +43,9 @@ export abstract class PlayerBlock {
                 height: this.size.height
             },
             rotation: this.rotation,
-            zIndex: this.zIndex
+            zIndex: this.zIndex,
+            opacity: this.opacity,
+            group: this.group
         };
 
         this.loadPlayerStore();
@@ -61,6 +68,8 @@ export abstract class PlayerBlock {
         }
         rotation: number;
         zIndex: number;
+        opacity: number;
+        group?: string;
     }
 
     public playerStore: any; // TODO: add type
@@ -88,6 +97,7 @@ export abstract class PlayerBlock {
         this.element.style.height = this.size.height + "px";
 
         this.element.style.transform = `rotate(${this.rotation}deg)`;
+        this.element.style.opacity = this.opacity.toString();
         this.element.style.zIndex = this.zIndex.toString();
 
         if (this.interactivity && this.interactivity.filter(a => a.event == "CLICKED").length > 0) {

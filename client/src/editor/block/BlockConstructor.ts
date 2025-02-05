@@ -7,6 +7,7 @@ export interface BlockConstructor {
     size: { width: number, height: number };
     rotation: number;
     zIndex: number;
+    opacity?: number;
     locked?: boolean;
     group?: string;
     interactivity?: BlockInteractivity[];

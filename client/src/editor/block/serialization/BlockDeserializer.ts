@@ -15,6 +15,7 @@ export abstract class BlockDeserializer {
             size: data.size,
             rotation: data.rotation,
             zIndex: data.zIndex,
+            opacity: data.opacity,
             locked: data.locked,
             type: data.type,
             interactivity: data.interactivity,
