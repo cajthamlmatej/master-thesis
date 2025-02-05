@@ -1,5 +1,3 @@
-import {AggregatorProperty} from "@/editor/property/type/AggregatorProperty";
-import {NumberProperty} from "@/editor/property/type/NumberProperty";
 import {Property} from "@/editor/property/Property";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {BlockInteractiveProperty, BlockInteractivity} from "@/editor/interactivity/BlockInteractivity";
@@ -33,8 +31,18 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         const button = this.element.querySelector("button") as HTMLButtonElement;
 
         button.addEventListener("click", () => {
+            let uniqueId: string;
+
+            do {
+                uniqueId = Math.random().toString(36).substring(7);
+            } while (this.blocks[0].interactivity.some(i => i.id == uniqueId));
+
             this.blocks[0].interactivity.push({
+                id: uniqueId,
                 event: "CLICKED",
+                timerType: "TIMEOUT",
+                // timerFrom: "OPEN",
+                timerTime: 0,
                 action: "CHANGE_SLIDE",
                 slideType: "NEXT",
                 condition: "ALWAYS",
@@ -44,7 +52,16 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                 time: 0,
                 slideIndex: 0,
                 value: "",
-                timeFrom: "OPEN"
+                timeFrom: "OPEN",
+                ifVariable: "",
+                ifVariableValue: "",
+                ifVariableOperator: "EQUALS",
+                relative: false,
+                animate: false,
+                duration: 0,
+                easing: "LINEAR",
+                changeVariable: "",
+                changeVariableValue: ""
             } as any);
             this.render();
         });
@@ -56,7 +73,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         const container = this.element.querySelector(".interactivity-container") as HTMLElement;
         container.innerHTML = "";
 
-        for(let interactivity of this.blocks[0].interactivity) {
+        for (let interactivity of this.blocks[0].interactivity) {
             container.appendChild(this.renderInteractivity(interactivity));
         }
     }
@@ -73,11 +90,34 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                                 <option value="CLICKED">Clicked</option>
                                 <option value="HOVER_START">Hover start</option>
                                 <option value="HOVER_END">Hover end</option>
-                                <option disabled value="DRAG_START">Drag start</option>
-                                <option disabled value="DRAG_END">Drag end</option>
+                                <option value="TIMER">Timer</option>
+<!--                                <option disabled value="DRAG_START">Drag start</option>--> <!-- TODO: blocks dont yet have drag support -->
+<!--                                <option disabled value="DRAG_END">Drag end</option>-->
                             </select>
                         </div>
                     </div>`;
+
+        if (interactivity.event == 'TIMER') {
+            element.innerHTML += `<div class="field field--sub">
+                <span class="label">When</span>
+                <div class="value">
+                    <select data-property="timerType">
+                        <option value="TIMEOUT">Timeout</option>
+                        <option value="REPEAT">Repeat</option>
+                    </select>
+                </div>
+            </div>`;
+
+            element.innerHTML += `<div class="field field--sub">
+                <span class="label">${interactivity.timerType == 'TIMEOUT' ? 'After' : 'Every'}</span>
+                <div class="value">
+                    <input type="number" data-property="timerTime">
+                    <span class="unit">ms</span>
+                </div>
+            </div>`;
+        }
+
+
         element.innerHTML += `
                     <div class="field">
                         <span class="label">Do</span>
@@ -86,11 +126,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                                 <option value="CHANGE_PROPERTY">Change property</option>
                                 <option value="RESET_PROPERTY">Reset property</option>
                                 <option value="CHANGE_SLIDE">Change slide</option>
+                                <option value="CHANGE_VARIABLE">Change variable</option>
                             </select>
                         </div>
                     </div>`;
 
-        if(interactivity.action == 'CHANGE_PROPERTY' || interactivity.action == 'RESET_PROPERTY') {
+        if (interactivity.action == 'CHANGE_PROPERTY' || interactivity.action == 'RESET_PROPERTY') {
             element.innerHTML += `
                     <div class="field field--sub">
                         <span class="label">On</span>
@@ -103,16 +144,16 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                         </div>
                     </div>`;
 
-            if(interactivity.on == 'SELECTED') {
+            if (interactivity.on == 'SELECTED') {
                 const blocks = editor.getBlocks();
 
                 const blocksPairs = [];
                 const seenTypes = new Map<string, number>();
 
-                for(let block of blocks) {
+                for (let block of blocks) {
                     const type = block.type;
 
-                    if(!seenTypes.has(type)) {
+                    if (!seenTypes.has(type)) {
                         seenTypes.set(type, 0);
                     }
 
@@ -137,39 +178,42 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
             const selectedBlocks = [];
 
-            if(interactivity.on == 'SELF') {
+            if (interactivity.on == 'SELF') {
                 selectedBlocks.push(this.blocks[0]);
-            } else if(interactivity.on == 'ALL') {
+            } else if (interactivity.on == 'ALL') {
                 selectedBlocks.push(...editor.getBlocks());
-            } else if(interactivity.on == 'SELECTED') {
+            } else if (interactivity.on == 'SELECTED') {
                 selectedBlocks.push(...editor.getBlocks().filter(block => (interactivity.blocks ?? []).includes(block.id)));
             }
 
-            const properties = [] as Omit<BlockInteractiveProperty, "change" | "reset">[];
+            const properties = [] as Omit<BlockInteractiveProperty & {
+                relative: boolean,
+                animate: boolean
+            }, "change" | "getBaseValue">[];
 
-            for(let block of selectedBlocks) {
-                for(let property of block.getInteractivityProperties()) {
+            for (let block of selectedBlocks) {
+                for (let property of block.getInteractivityProperties()) {
                     properties.push(property);
                 }
             }
 
-            const propertiesPairs = [] as {id: string, name: string}[];
+            const propertiesPairs = [] as { id: string, name: string }[];
 
-            for(let property of properties) {
-                if(propertiesPairs.some(p => p.id == property.label)) {
+            for (let property of properties) {
+                if (propertiesPairs.some(p => p.id == property.label)) {
                     continue;
                 }
 
                 let pass = true;
-                for(let block of selectedBlocks) {
+                for (let block of selectedBlocks) {
                     // All properties must be present on all blocks
-                    if(!block.getInteractivityProperties().some(p => p.label == property.label)) {
+                    if (!block.getInteractivityProperties().some(p => p.label == property.label)) {
                         pass = false;
                         break;
                     }
                 }
 
-                if(!pass) {
+                if (!pass) {
                     continue;
                 }
 
@@ -190,16 +234,66 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                         </div>
                     </div>`;
 
-            if(interactivity.action == 'CHANGE_PROPERTY') {
+            let property = properties.find(p => p.label == interactivity.property);
+
+            if (interactivity.action == 'CHANGE_PROPERTY') {
                 element.innerHTML += `<div class="field field--sub">
                         <span class="label">Value</span>
                         <div class="value">
                             <input type="text" data-property="value">
                         </div>
                     </div>`;
+
+                if (property && property.relative) {
+                    element.innerHTML += `<div class="field field--sub">
+                        <span class="label">Relative</span>
+                        <div class="value">
+                            <input type="checkbox" data-property="relative" id="relative-${interactivity.id}">
+                            <label class="checkbox-label ${interactivity.relative ? 'checked' : ''}" for="relative-${interactivity.id}"></label>
+                        </div>
+                    </div>`;
+                }
             }
+
+            if ((property && property.animate) || interactivity.property == "ALL") {
+                element.innerHTML += `<div class="field field--sub">
+                            <span class="label">Animate</span>
+                            <div class="value">
+                                <input type="checkbox" data-property="animate" id="animate-${interactivity.id}">
+                                <label class="checkbox-label ${interactivity.animate ? 'checked' : ''}" for="animate-${interactivity.id}"></label>
+                            </div>
+                        </div>`;
+
+                if (interactivity.animate) {
+                    element.innerHTML += `<div class="field field--sub">
+                                <span class="label">Duration</span>
+                                <div class="value">
+                                    <input type="number" data-property="duration">
+                                    <span class="unit">ms</span>
+                                </div>
+                            </div>`;
+                    element.innerHTML += `<div class="field field--sub">
+                            <span class="label">Easing</span>
+                            <div class="value">
+                                <select data-property="easing">
+                                    <option value="LINEAR">Linear</option>
+                                    <option value="EASE">Ease</option>
+                                    <option value="EASE_IN">Ease in</option>
+                                    <option value="EASE_OUT">Ease out</option>
+                                    <option value="EASE_IN_OUT">Ease in out</option>
+                                    <option value="STEPS_4">Steps 4</option>
+                                    <option value="STEPS_6">Steps 6</option>
+                                    <option value="STEPS_8">Steps 8</option>
+                                    <option value="STEPS_10">Steps 10</option>
+                                </select>
+                            </div>
+                        </div>`;
+                }
+            }
+
             // TODO: up based on property type (number, color, text, etc)
-        } else if(interactivity.action == 'CHANGE_SLIDE') {
+        }
+        else if (interactivity.action == 'CHANGE_SLIDE') {
             element.innerHTML += `
                 <div class="field field--sub">
                     <span class="label">Slide</span>
@@ -215,7 +309,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                     </div>
                 </div>`;
 
-            if(interactivity.slideType == 'SLIDE') {
+            if (interactivity.slideType == 'SLIDE') {
                 element.innerHTML += `
                     <div class="field field--sub">
                         <span class="label">Slide number</span>
@@ -225,6 +319,22 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                     </div>`;
             }
         }
+        else if (interactivity.action == 'CHANGE_VARIABLE') {
+            element.innerHTML += `
+                <div class="field field--sub">
+                    <span class="label">Variable name</span>
+                    <div class="value">
+                        <input type="text" data-property="changeVariable">
+                    </div>
+                </div>`;
+            element.innerHTML += `
+                <div class="field field--sub">
+                    <span class="label">Value</span>
+                    <div class="value">
+                        <input type="text" data-property="changeVariableValue">
+                    </div>
+                </div>`;
+        }
 
         element.innerHTML += `
                     <div class="field">
@@ -233,18 +343,19 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                             <select data-property="condition">
                                 <option value="ALWAYS">Always</option>
                                 <option value="TIME_PASSED">Time passed</option>
+                                <option value="VARIABLE">Variable</option>
                             </select>
                         </div>
                     </div>`;
 
-        if(interactivity.condition == 'TIME_PASSED') {
+        if (interactivity.condition == 'TIME_PASSED') {
             element.innerHTML += `
-                    <div class="field">
+                    <div class="field field--sub">
                         <span class="label">Count from</span>
                         <div class="value">
                             <select data-property="condition">
-                                <option value="OPEN">Of material</option>
-                                <option value="SLIDE">Of slide</option>
+                                <option value="OPEN">Opening of material</option>
+                                <option value="SLIDE">Opening of slide</option>
                             </select>
                         </div>
                     </div>`;
@@ -253,35 +364,68 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                         <span class="label">Time</span>
                         <div class="value">
                             <input type="number" value="${interactivity.time ?? ''}" data-property="time">
-                            <span class="unit">s</span>
+                            <span class="unit">ms</span>
+                        </div>
+                    </div>`;
+        }
+        if (interactivity.condition == 'VARIABLE') {
+            element.innerHTML += `
+                    <div class="field field--sub">
+                        <span class="label">Variable name</span>
+                        <div class="value">
+                            <input type="text" data-property="ifVariable">
+                        </div>
+                    </div>`;
+            element.innerHTML += `
+                    <div class="field field--sub">
+                        <span class="label">Operator</span>
+                        <div class="value">
+                            <select data-property="ifVariableOperator">
+                                <option value="EQUALS">Equals</option>
+                                <option value="NOT_EQUALS">Not equals</option>
+                            </select>
+                        </div>
+                    </div>`;
+            element.innerHTML += `
+                    <div class="field field--sub">
+                        <span class="label">Value</span>
+                        <div class="value">
+                            <input type="text" data-property="ifVariableValue">
                         </div>
                     </div>`;
         }
 
         element.innerHTML += `<div class="footer">
+            <button class="move-up"><span class="mdi mdi-arrow-up"></span></button>
+            <button class="move-down"><span class="mdi mdi-arrow-down"></span></button>
+
             <button class="delete"><span class="mdi mdi-delete"></span></button>
             <button class="duplicate"><span class="mdi mdi-checkbox-multiple-blank"></span></button>
         </div>`;
 
-        for(const field of element.querySelectorAll("[data-property]") as unknown as HTMLElement[]) {
-            if(field instanceof HTMLInputElement) {
+        for (const field of element.querySelectorAll("[data-property]") as unknown as HTMLElement[]) {
+            if (field instanceof HTMLInputElement) {
                 let value = interactivity[field.getAttribute("data-property") as keyof BlockInteractivity] as any;
 
-                if(!value) {
+                if (!value) {
                     value = "";
                 }
 
-                field.value = value;
-            } else if(field instanceof HTMLSelectElement) {
-                if(field.multiple) {
-                    for(const option of field.querySelectorAll("option")) {
+                if (field.type == "checkbox") {
+                    field.checked = value;
+                } else {
+                    field.value = value;
+                }
+            } else if (field instanceof HTMLSelectElement) {
+                if (field.multiple) {
+                    for (const option of field.querySelectorAll("option")) {
                         if ((interactivity[field.getAttribute("data-property") as keyof BlockInteractivity] as unknown as string[] ?? []).includes(option.value)) {
                             option.selected = true;
                         }
                     }
                 } else {
-                    for(const option of field.querySelectorAll("option")) {
-                        if(option.value == interactivity[field.getAttribute("data-property") as keyof BlockInteractivity]) {
+                    for (const option of field.querySelectorAll("option")) {
+                        if (option.value == interactivity[field.getAttribute("data-property") as keyof BlockInteractivity]) {
                             option.selected = true;
                         }
                     }
@@ -290,14 +434,18 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
             field.addEventListener("change", () => {
                 let value: any;
-                if(field instanceof HTMLInputElement) {
-                    value = field.value;
-                } else if(field instanceof HTMLSelectElement) {
+                if (field instanceof HTMLInputElement) {
+                    if (field.type == "checkbox") {
+                        value = field.checked;
+                    } else {
+                        value = field.value;
+                    }
+                } else if (field instanceof HTMLSelectElement) {
                     // If multiple, get all selected values
-                    if(field.multiple) {
+                    if (field.multiple) {
                         value = [];
-                        for(const option of field.options) {
-                            if(option.selected) {
+                        for (const option of field.options) {
+                            if (option.selected) {
                                 value.push(option.value);
                             }
                         }
@@ -312,7 +460,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                 interactivity[field.getAttribute("data-property") as keyof BlockInteractivity] = value;
 
                 // if(field instanceof HTMLInputElement || (field instanceof HTMLSelectElement && !field.multiple)) {
-                    this.render();
+                this.render();
                 // }
             });
         }

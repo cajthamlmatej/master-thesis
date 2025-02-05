@@ -155,25 +155,37 @@ export abstract class EditorBlock {
         ]
     }
 
-    public getInteractivityProperties(): Omit<BlockInteractiveProperty, "change" | "reset">[] {
+    public getInteractivityProperties(): Omit<BlockInteractiveProperty & {relative: boolean, animate: boolean}, "change" | "reset">[] {
         return [
             {
                 label: "Position X",
+                relative: true,
+                animate: true,
             },
             {
                 label: "Position Y",
+                relative: true,
+                animate: true,
             },
             {
                 label: "Width",
+                relative: true,
+                animate: true,
             },
             {
                 label: "Height",
+                relative: true,
+                animate: true,
             },
             {
                 label: "Rotation",
+                relative: true,
+                animate: true,
             },
             {
                 label: "Z-Index",
+                relative: true,
+                animate: false,
             }
         ]
     }

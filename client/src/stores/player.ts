@@ -15,6 +15,8 @@ export const usePlayerStore = defineStore("player", () => {
     const playerTime = ref<number>(0);
     const slideTime = ref<number>(0);
 
+    const variables = ref<{[key: string]: string}>({});
+
     const slides = ref<Slide[]>([]);
 
     watch(() => materialStore.currentMaterial, (material) => {
@@ -33,6 +35,7 @@ export const usePlayerStore = defineStore("player", () => {
         await changeSlide(getSlides()[0]);
 
         playerTime.value = Date.now();
+        variables.value = {};
 
         return getPlayer();
     }
@@ -94,5 +97,6 @@ export const usePlayerStore = defineStore("player", () => {
         getSlideById,
         playerTime,
         slideTime,
+        variables,
     }
 });

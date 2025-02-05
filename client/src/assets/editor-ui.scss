@@ -132,15 +132,15 @@
 
                 > .interactivity {
                     background-color: #e0e0e0;
-                    padding: 0.3em;
+                    //padding: 0.3em;
 
                     display: flex;
                     flex-direction: column;
-                    gap: 0.5em;
 
                     > .field {
                         display: flex;
                         align-items: center;
+                        padding: 0.25em 0.3em;
 
                         > .label {
                             width: 40%;
@@ -155,14 +155,39 @@
                             display: flex;
                             gap: 0.5em;
 
-                            > input, select {
+                            > input, > select {
                                 width: 100%;
+                                border: 0px;
+                                padding: 0.2em 0.5em;
+
+                            }
+
+                            > input[type="checkbox"] {
+                                display: none;
+                            }
+
+                            label.checkbox-label {
+                                display: block;
+                                width: 1.5em;
+                                height: 1.5em;
+                                border: 2px solid #000;
+                                border-radius: 0.25em;
+                                cursor: pointer;
+                                background-color: #fff;
+
+                                &.checked {
+                                    background-color: var(--color-primary)
+                                }
                             }
                         }
 
                         &--sub {
+                            background-color: #bebebe;
+                            padding: 0.25em 0.5em;
+
                             > .label {
-                                padding-left: 0.75em;
+                                padding-left: 0.05em;
+                                color: #1a1a1a;
                             }
                         }
                     }
@@ -171,6 +196,7 @@
                     > .footer {
                         display: flex;
 
+                        padding: 0.25em 0.5em;
                         gap: 0.5em;
                         justify-content: end;
                         align-items: center;

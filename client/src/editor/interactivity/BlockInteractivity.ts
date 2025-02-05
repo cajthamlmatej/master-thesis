@@ -1,6 +1,23 @@
-interface BlockInteractivityEvents {
+interface BlockInteractivityEventsBase {
     event: 'CLICKED' | 'HOVER_START' | 'HOVER_END' | 'DRAG_START' | 'DRAG_END';
 }
+
+interface BlockInteractivityEventsTimerBase {
+    event: 'TIMER';
+    timerTime: number;
+}
+
+interface BlockInteractivityEventsTimerTimeout {
+    timerType: 'TIMEOUT';
+}
+
+interface BlockInteractivityEventsTimerRepeat {
+    timerType: 'REPEAT';
+}
+
+type BlockInteractivityEventsTimer = BlockInteractivityEventsTimerBase & (BlockInteractivityEventsTimerTimeout | BlockInteractivityEventsTimerRepeat);
+
+type BlockInteractivityEvents = BlockInteractivityEventsBase | BlockInteractivityEventsTimer;
 
 interface BlockInteractivityConditionsBase {
     condition: 'ALWAYS';
@@ -12,21 +29,48 @@ interface BlockInteractivityConditionsTimePassed {
     time: number;
 }
 
-type BlockInteractivityConditions = BlockInteractivityConditionsBase | BlockInteractivityConditionsTimePassed;
+interface BlockInteractivityConditionsVariable {
+    condition: 'VARIABLE';
+    ifVariable: string;
+    ifVariableValue: string;
+    ifVariableOperator: 'EQUALS' | 'NOT_EQUALS';
+}
+
+type BlockInteractivityConditions = BlockInteractivityConditionsBase | BlockInteractivityConditionsTimePassed | BlockInteractivityConditionsVariable;
+
+export const BlockInteractivityEasings = {
+    LINEAR: 'linear',
+    EASE: 'ease',
+    EASE_IN: 'ease-in',
+    EASE_OUT: 'ease-out',
+    EASE_IN_OUT: 'ease-in-out',
+    STEPS_4: 'steps(4, jump-both)',
+    STEPS_6: 'steps(6, jump-both)',
+    STEPS_8: 'steps(8, jump-both)',
+    STEPS_10: 'steps(10, jump-both)'
+}
+
+type Easing = keyof typeof BlockInteractivityEasings;
 
 interface BlockInteractivityActionChangeProperty {
     action: 'CHANGE_PROPERTY';
     property: string;
     value: string;
+    relative: boolean;
     on: 'SELF' | 'ALL' | 'SELECTED';
     blocks?: string[];
+    animate: boolean;
+    duration: number;
+    easing: Easing;
 }
-
 interface BlockInteractivityActionResetProperty {
     action: 'RESET_PROPERTY';
     property: string | 'ALL';
     on: 'SELF' | 'ALL' | 'SELECTED';
     blocks?: string[];
+    animate: boolean;
+    duration: number;
+    easing: Easing;
 }
 
 interface BlockInteractivityActionChangeSlideRelative {
@@ -40,16 +84,27 @@ interface BlockInteractivityActionChangeSlideAbsolute {
     slideIndex: number;
 }
 
+interface BlockInteractivityActionChangeVariable {
+    action: 'CHANGE_VARIABLE';
+    changeVariable: string;
+    changeVariableValue: string;
+}
+
 type BlockInteractivityAction =
     BlockInteractivityActionChangeProperty
     | BlockInteractivityActionResetProperty
     | BlockInteractivityActionChangeSlideRelative
-    | BlockInteractivityActionChangeSlideAbsolute;
+    | BlockInteractivityActionChangeSlideAbsolute
+    | BlockInteractivityActionChangeVariable;
 
-export type BlockInteractivity = BlockInteractivityEvents & BlockInteractivityConditions & BlockInteractivityAction;
+interface BlockInteractivityBase {
+    id: string;
+}
+
+export type BlockInteractivity = BlockInteractivityBase & BlockInteractivityEvents & BlockInteractivityConditions & BlockInteractivityAction;
 
 export interface BlockInteractiveProperty {
     label: string,
-    change: (value: string) => boolean;
-    reset: () => boolean;
+    getBaseValue: () => any,
+    change: (value: any, relative: boolean, { animate, duration, easing }: { animate: boolean, duration: number, easing: string }) => void;
 }

@@ -1,5 +1,9 @@
 import type Player from "@/editor/player/Player";
-import {BlockInteractiveProperty, BlockInteractivity} from "@/editor/interactivity/BlockInteractivity";
+import {
+    BlockInteractiveProperty,
+    BlockInteractivity,
+    BlockInteractivityEasings
+} from "@/editor/interactivity/BlockInteractivity";
 
 export abstract class PlayerBlock {
     public id: string;
@@ -18,6 +22,7 @@ export abstract class PlayerBlock {
     public element!: HTMLElement;
     public player!: Player;
     public interactivity: BlockInteractivity[] = [];
+    private repeats: { timeouts: NodeJS.Timeout[], intervals: NodeJS.Timeout[] } = {timeouts: [], intervals: []};
 
     public readonly baseValues: {
         position: {
@@ -32,7 +37,14 @@ export abstract class PlayerBlock {
         zIndex: number;
     }
 
-    protected constructor(id: string, type: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number) {
+    public playerStore: any; // TODO: add type
+    private resolveLoaded: () => void;
+    public loaded: Promise<void>;
+
+    protected constructor(id: string, type: string, position: { x: number, y: number }, size: {
+        width: number,
+        height: number
+    }, rotation: number, zIndex: number) {
         this.id = id;
         this.type = type;
         this.position = position;
@@ -52,6 +64,15 @@ export abstract class PlayerBlock {
             rotation: rotation,
             zIndex: zIndex
         }
+
+        this.loadPlayerStore();
+        this.loaded = new Promise((res) => this.resolveLoaded = res);
+    }
+
+    private async loadPlayerStore() {
+        const {usePlayerStore} = await import("@/stores/player");
+        this.playerStore = usePlayerStore();
+        this.resolveLoaded();
     }
 
     /**
@@ -71,7 +92,8 @@ export abstract class PlayerBlock {
         this.element.style.transform = `rotate(${this.rotation}deg)`;
         this.element.style.zIndex = this.zIndex.toString();
 
-        if(this.interactivity && this.interactivity.length > 0) {
+        if (this.interactivity && this.interactivity.filter(a => a.event == "CLICKED").length > 0) {
+            // TODO: add other ways to indicate interactivity
             this.element.classList.add("block--interactive");
         }
     }
@@ -88,78 +110,155 @@ export abstract class PlayerBlock {
         return [
             {
                 label: "Position X",
-                change: (value: string): boolean => {
-                    this.position.x = parseInt(value);
-                    this.synchronize();
-                    return true;
-                },
-                reset: () => {
-                    this.position.x = this.baseValues.position.x;
-                    this.synchronize();
+                getBaseValue: () => this.baseValues.position.x,
+                change: (value: any, relative: boolean, {animate, duration, easing}) => {
+                    let target = parseInt(value);
+
+                    if (relative) {
+                        target += this.position.x;
+                    }
+
+                    if (animate) {
+                        this.element.animate([
+                            {left: this.position.x + "px"},
+                            {left: target + "px"}
+                        ], {
+                            duration: duration,
+                            easing: BlockInteractivityEasings[easing as keyof typeof BlockInteractivityEasings]
+                        }).addEventListener("finish", () => {
+                            this.position.x = target;
+                            this.synchronize();
+                        });
+                    } else {
+                        this.position.x = target;
+                        this.synchronize();
+                    }
                     return true;
                 }
             },
             {
                 label: "Position Y",
-                change: (value: string): boolean => {
-                    this.position.y = parseInt(value);
-                    this.synchronize();
-                    return true;
-                },
-                reset: () => {
-                    this.position.y = this.baseValues.position.y;
-                    this.synchronize();
+                getBaseValue: () => this.baseValues.position.y,
+                change: (value: any, relative: boolean, {animate, duration, easing}) => {
+                    let target = parseInt(value);
+
+                    if (relative) {
+                        target += this.position.y;
+                    }
+
+                    if (animate) {
+                        this.element.animate([
+                            {top: this.position.y + "px"},
+                            {top: target + "px"}
+                        ], {
+                            duration: duration,
+                            easing: BlockInteractivityEasings[easing as keyof typeof BlockInteractivityEasings]
+                        }).addEventListener("finish", () => {
+                            this.position.y = target;
+                            this.synchronize();
+                        });
+                    } else {
+                        this.position.y = target;
+                        this.synchronize();
+                    }
                     return true;
                 }
             },
             {
                 label: "Width",
-                change: (value: string): boolean => {
-                    this.size.width = parseInt(value);
-                    this.synchronize();
-                    return true;
-                },
-                reset: () => {
-                    this.size.width = this.baseValues.size.width;
-                    this.synchronize();
+                getBaseValue: () => this.baseValues.size.width,
+                change: (value: any, relative: boolean, {animate, duration, easing}) => {
+                    let target = parseInt(value);
+
+                    if (relative) {
+                        target += this.size.width;
+                    }
+
+                    if (animate) {
+                        this.element.animate([
+                            {width: this.size.width + "px"},
+                            {width: target + "px"}
+                        ], {
+                            duration: duration,
+                            easing: BlockInteractivityEasings[easing as keyof typeof BlockInteractivityEasings]
+                        }).addEventListener("finish", () => {
+                            this.size.width = target;
+                            this.synchronize();
+                        });
+                    } else {
+                        this.size.width = target;
+                        this.synchronize();
+                    }
                     return true;
                 }
             },
             {
                 label: "Height",
-                change: (value: string): boolean => {
-                    this.size.height = parseInt(value);
-                    this.synchronize();
-                    return true;
-                },
-                reset: () => {
-                    this.size.height = this.baseValues.size.height;
-                    this.synchronize();
+                getBaseValue: () => this.baseValues.size.height,
+                change: (value: any, relative: boolean, {animate, duration, easing}) => {
+                    let target = parseInt(value);
+
+                    if (relative) {
+                        target += this.size.height;
+                    }
+
+                    if (animate) {
+                        this.element.animate([
+                            {height: this.size.height + "px"},
+                            {height: target + "px"}
+                        ], {
+                            duration: duration,
+                            easing: BlockInteractivityEasings[easing as keyof typeof BlockInteractivityEasings]
+                        }).addEventListener("finish", () => {
+                            this.size.height = target;
+                            this.synchronize();
+                        });
+                    } else {
+                        this.size.height = target;
+                        this.synchronize();
+                    }
                     return true;
                 }
             },
             {
                 label: "Rotation",
-                change: (value: string): boolean => {
-                    this.rotation = parseInt(value);
-                    this.synchronize();
-                    return true;
-                },
-                reset: () => {
-                    this.rotation = this.baseValues.rotation;
-                    this.synchronize();
+                getBaseValue: () => this.baseValues.rotation,
+                change: (value: any, relative: boolean, {animate, duration, easing}) => {
+                    let target = parseInt(value);
+
+                    if (relative) {
+                        target += this.rotation;
+                    }
+
+                    if (animate) {
+                        this.element.animate([
+                            {transform: `rotate(${this.rotation}deg)`},
+                            {transform: `rotate(${target}deg)`}
+                        ], {
+                            duration: duration,
+                            easing: BlockInteractivityEasings[easing as keyof typeof BlockInteractivityEasings]
+                        }).addEventListener("finish", () => {
+                            this.rotation = target;
+                            this.synchronize();
+                        });
+                    } else {
+                        this.rotation = target;
+                        this.synchronize();
+                    }
                     return true;
                 }
             },
             {
                 label: "Z-Index",
-                change: (value: string): boolean => {
-                    this.zIndex = parseInt(value);
-                    this.synchronize();
-                    return true;
-                },
-                reset: () => {
-                    this.zIndex = this.baseValues.zIndex;
+                getBaseValue: () => this.baseValues.zIndex,
+                change: (value: any, relative: boolean) => {
+                    let target = parseInt(value);
+
+                    if (relative) {
+                        target += this.zIndex;
+                    }
+
+                    this.zIndex = target;
                     this.synchronize();
                     return true;
                 }
@@ -174,49 +273,58 @@ export abstract class PlayerBlock {
         this.element.addEventListener("click", this.handleClick.bind(this));
         this.element.addEventListener("mouseenter", this.handleMouseEnter.bind(this));
         this.element.addEventListener("mouseleave", this.handleMouseLeave.bind(this));
+
+        for (let interactivity of this.interactivity.filter(i => i.event === "TIMER")) {
+            if (interactivity.timerType === "REPEAT") {
+                this.repeats.intervals.push(setInterval(async() => {
+                    await this.loaded;
+
+                    const canContinue = this.checkInteractivityConditions(interactivity);
+
+                    if (!canContinue) return;
+
+                    this.processInteractivity(interactivity);
+                }, interactivity.timerTime));
+            } else if (interactivity.timerType === "TIMEOUT") {
+                this.repeats.timeouts.push(setTimeout(async() => {
+                    await this.loaded;
+
+                    const canContinue = this.checkInteractivityConditions(interactivity);
+
+                    if (!canContinue) return;
+
+                    this.processInteractivity(interactivity);
+                }, interactivity.timerTime));
+            }
+        }
     }
 
+    // TODO: destroy method for cleanup (interactivity timeouts, intervals, etc.)
+
     private async handleClick(event: MouseEvent) {
-        this.tryProcessInteractivity("CLICKED", event);
-        event.stopPropagation();
+        const result = this.tryProcessInteractivity("CLICKED", event);
+        if (result) event.stopPropagation();
     }
 
     private async handleMouseEnter(event: MouseEvent) {
-        this.tryProcessInteractivity("HOVER_START", event);
-        event.stopPropagation();
+        const result = this.tryProcessInteractivity("HOVER_START", event);
+        if (result) event.stopPropagation();
     }
 
     private async handleMouseLeave(event: MouseEvent) {
-        this.tryProcessInteractivity("HOVER_END", event);
-        event.stopPropagation();
+        const result = this.tryProcessInteractivity("HOVER_END", event);
+        if (result) event.stopPropagation();
     }
 
-    private async tryProcessInteractivity(event: "CLICKED" | "HOVER_START" | "HOVER_END" | "DRAG_START" | "DRAG_END", eventObject: Event) {
+    private tryProcessInteractivity(event: "CLICKED" | "HOVER_START" | "HOVER_END" | "DRAG_START" | "DRAG_END", eventObject: Event) {
         let anyCompleted = false;
-        for(const interactivity of this.interactivity) {
-            if(interactivity.event === event) {
-                let canContinue = false;
+        for (const interactivity of this.interactivity) {
+            if (interactivity.event === event) {
+                const canContinue = this.checkInteractivityConditions(interactivity);
 
-                switch (interactivity.condition) {
-                    case "ALWAYS":
-                        canContinue = true;
-                        break;
-                    case "TIME_PASSED":
-                        const { usePlayerStore } = await import("@/stores/player");
-                        const playerStore = usePlayerStore();
+                if (!canContinue) continue;
 
-                        const timeFrom = interactivity.timeFrom === "OPEN" ? playerStore.playerTime : playerStore.slideTime;
-                        const time = Number(interactivity.time.toString()) * 1000;
-
-                        if(Date.now() - timeFrom >= time) {
-                            canContinue = true;
-                        }
-                        break;
-                }
-
-                if(!canContinue) continue;
-
-                await this.processInteractivity(interactivity);
+                this.processInteractivity(interactivity);
                 anyCompleted = true;
             }
         }
@@ -224,11 +332,46 @@ export abstract class PlayerBlock {
         return anyCompleted;
     }
 
-    private async processInteractivity(interactivity: BlockInteractivity) {
+    private checkInteractivityConditions(interactivity: BlockInteractivity) {
+        let canContinue = false;
+
+        switch (interactivity.condition) {
+            case "ALWAYS":
+                canContinue = true;
+                break;
+            case "TIME_PASSED": {
+                const timeFrom = interactivity.timeFrom === "OPEN" ? this.playerStore.playerTime : this.playerStore.slideTime;
+                const time = Number(interactivity.time.toString());
+
+                if (Date.now() - timeFrom >= time) {
+                    canContinue = true;
+                }
+                break;
+            }
+            case "VARIABLE": {
+                const variable = this.playerStore.variables[interactivity.ifVariable];
+
+                const type = interactivity.ifVariableOperator;
+
+                if (type === "EQUALS") {
+                    if (variable === interactivity.ifVariableValue) {
+                        canContinue = true;
+                    }
+                } else if (type === "NOT_EQUALS") {
+                    if (variable !== interactivity.ifVariableValue) {
+                        canContinue = true;
+                    }
+                }
+                break;
+            }
+        }
+
+        return canContinue;
+    }
+
+    private processInteractivity(interactivity: BlockInteractivity) {
         switch (interactivity.action) {
             case "CHANGE_PROPERTY": {
-                const { usePlayerStore } = await import("@/stores/player");
-
                 let blocks = [] as PlayerBlock[];
 
                 switch (interactivity.on) {
@@ -243,18 +386,20 @@ export abstract class PlayerBlock {
                         break;
                 }
 
-                for(const block of blocks) {
+                for (const block of blocks) {
                     const property = block.getInteractivityProperties().find(p => p.label === interactivity.property);
 
-                    if(!property) continue;
+                    if (!property) continue;
 
-                    property.change(interactivity.value);
+                    property.change(interactivity.value, interactivity.relative, {
+                        animate: interactivity.animate,
+                        duration: Number(interactivity.duration),
+                        easing: interactivity.easing
+                    });
                 }
                 break;
             }
             case "RESET_PROPERTY": {
-                const { usePlayerStore } = await import("@/stores/player");
-
                 let blocks = [] as PlayerBlock[];
 
                 switch (interactivity.on) {
@@ -270,65 +415,80 @@ export abstract class PlayerBlock {
                 }
 
 
-                for(const block of blocks) {
-                    if(interactivity.property === "ALL") {
-                        for(const property of block.getInteractivityProperties()) {
-                            property.reset();
+                for (const block of blocks) {
+                    if (interactivity.property === "ALL") {
+                        for (const property of block.getInteractivityProperties()) {
+                            property.change(property.getBaseValue(), false, {
+                                animate: interactivity.animate,
+                                duration: Number(interactivity.duration),
+                                easing: interactivity.easing
+                            });
                         }
                         continue;
                     }
 
                     const property = block.getInteractivityProperties().find(p => p.label === interactivity.property);
 
-                    if(!property) continue;
+                    if (!property) continue;
 
-                    property.reset();
+                    property.change(property.getBaseValue(), false, {
+                        animate: interactivity.animate,
+                        duration: Number(interactivity.duration),
+                        easing: interactivity.easing
+                    });
                 }
                 break;
             }
             case "CHANGE_SLIDE": {
-                // note(Matej): Lazy import to prevent circular dependencies
-                const { usePlayerStore } = await import("@/stores/player");
-                const playerStore = usePlayerStore();
                 let slide: string | undefined = undefined;
 
-                const current = playerStore.getActiveSlide();
+                const current = this.playerStore.getActiveSlide();
                 switch (interactivity.slideType) {
                     case "NEXT":
-                        const next = playerStore.getSlides().find(s => s.position > current!.position);
+                        const next = this.playerStore.getSlides().find((s: any) => s.position > current!.position);
 
-                        if(!next) break;
+                        if (!next) break;
 
                         slide = next.id;
                         break;
                     case "PREVIOUS":
-                        const prev = playerStore.getSlides().reverse().find(s => s.position < current!.position);
+                        const prev = this.playerStore.getSlides().reverse().find((s: any) => s.position < current!.position);
 
-                        if(!prev) return;
+                        if (!prev) return;
 
                         slide = prev.id;
                         break;
                     case "FIRST":
-                        slide = playerStore.getSlides()[0].id;
+                        slide = this.playerStore.getSlides()[0].id;
                         break;
                     case "LAST":
-                        slide = playerStore.getSlides()[playerStore.getSlides().length - 1].id;
+                        slide = this.playerStore.getSlides()[this.playerStore.getSlides().length - 1].id;
                         break;
                     case "SLIDE":
                         const slideIndex = Number(interactivity.slideIndex);
 
-                        if(isNaN(slideIndex)) break;
+                        if (isNaN(slideIndex)) break;
 
-                        slide = playerStore.getSlides().sort((a, b) => a.position - b.position)[slideIndex].id;
+                        slide = this.playerStore.getSlides().sort((a:any, b:any) => a.position - b.position)[slideIndex].id;
                         break;
                     case "RANDOM":
-                        slide = playerStore.getSlides()[Math.floor(Math.random() * playerStore.getSlides().length)].id;
+                        slide = this.playerStore.getSlides()[Math.floor(Math.random() * this.playerStore.getSlides().length)].id;
                         break;
                 }
 
-                if(!slide) break;
+                if (!slide) break;
 
-                await playerStore.changeSlide(slide);
+                this.playerStore.changeSlide(slide);
+                break;
+            }
+            case "CHANGE_VARIABLE": {
+                const variableBefore = this.playerStore.variables[interactivity.changeVariable];
+
+                if (!!variableBefore) {
+                    console.log("[Player] Changing variable", interactivity.changeVariable, "from", variableBefore, "to", interactivity.changeVariableValue);
+                }
+
+                this.playerStore.variables[interactivity.changeVariable] = interactivity.changeVariableValue;
                 break;
             }
         }

@@ -9,6 +9,38 @@
                 </div>
             </template>
             <template #navigation>
+                <Dialog>
+                    <template #default>
+                        <Card dialog>
+                            <p class="title">Material variables</p>
+
+                            <List>
+                                <ListItem v-for="variable in Object.keys(playerStore.variables) ?? []" :key="variable">
+                                    <span>
+                                        {{variable}}
+                                    </span>
+                                    <pre><code>{{playerStore.variables[variable]}}</code></pre>
+                                </ListItem>
+                                <ListItem v-if="Object.keys(playerStore.variables).length === 0">
+                                    <span>
+                                        No variables
+                                    </span>
+                                </ListItem>
+                            </List>
+                        </Card>
+                    </template>
+                    <template #activator="{toggle}">
+                        <NavigationButton
+                                tooltip-text="Debug"
+                                icon="bug"
+                                label="Debug"
+                                hide-mobile
+                                tooltip-position="bottom"
+                                @click.stop="toggle"
+                        />
+                    </template>
+                </Dialog>
+
                 <NavigationButton
                         tooltip-text="Previous slide"
                         icon="arrow-left"
@@ -69,6 +101,7 @@ import {usePlayerStore} from "@/stores/player";
 import type Player from "@/editor/player/Player";
 import Header from "@/components/design/header/Header.vue";
 import NavigationButton from "@/components/design/navigation/NavigationButton.vue";
+import ListItem from "@/components/design/list/ListItem.vue";
 
 const materialStore = useMaterialStore();
 const playerStore = usePlayerStore();
