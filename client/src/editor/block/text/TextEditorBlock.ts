@@ -15,6 +15,7 @@ import {FontFamily} from '@tiptap/extension-font-family'
 import {TextFormattingProperty} from "@/editor/block/text/property/TextFormattingProperty";
 import {TextAlign} from "@tiptap/extension-text-align";
 import {FontSize} from "@/utils/font-size";
+import {BlockConstructor, BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 
 export class TextEditorBlock extends EditorBlock {
     @BlockSerialize("content")
@@ -22,16 +23,18 @@ export class TextEditorBlock extends EditorBlock {
     @BlockSerialize("fontSize")
     private fontSize: number;
 
-    private editable: boolean = false;
-    private lastClick: number = 0;
-    private removed = false;
-    private textEditor: Editor | null = null;
-
-    constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number, content: string, fontSize: number) {
-        super(id, "text", position, size, rotation, zIndex);
+    constructor(base: BlockConstructorWithoutType, content: string, fontSize: number) {
+        super({
+            ...base,
+            type: "text"
+        });
         this.content = content;
         this.fontSize = fontSize;
     }
+
+    private editable: boolean = false;
+    private removed = false;
+    private textEditor: Editor | null = null;
 
     override render(): HTMLElement {
         const element = document.createElement("div");
@@ -116,7 +119,15 @@ export class TextEditorBlock extends EditorBlock {
     }
 
     override clone(): EditorBlock {
-        return new TextEditorBlock(generateUUID(), {...this.position}, {...this.size}, this.rotation, this.zIndex, this.content, this.fontSize);
+        return new TextEditorBlock({
+            id: generateUUID(),
+            position: {x: this.position.x, y: this.position.y},
+            size: {width: this.size.width, height: this.size.height},
+            rotation: this.rotation,
+            zIndex: this.zIndex,
+            locked: this.locked,
+            group: this.group
+        }, this.content, this.fontSize);
     }
 
     override getProperties(): Property<this>[] {

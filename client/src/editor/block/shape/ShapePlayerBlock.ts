@@ -1,12 +1,16 @@
 import {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {shapes} from "@/editor/block/shape/Shapes";
+import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 
 export class ShapePlayerBlock extends PlayerBlock {
     private color: string;
     private shape: string;
 
-    constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number, color: string, shape: string) {
-        super(id, "shape", position, size, rotation, zIndex);
+    constructor(base: BlockConstructorWithoutType, color: string, shape: string) {
+        super({
+            ...base,
+            type: "shape"
+        });
         this.color = color;
         this.shape = shape;
     }

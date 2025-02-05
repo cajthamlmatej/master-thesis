@@ -2,7 +2,14 @@ import {PlayerBlock} from "@/editor/block/PlayerBlock";
 
 export class WatermarkPlayerBlock extends PlayerBlock {
     constructor(id: string) {
-        super(id, "watermark", {x: 0, y: 0}, {width: 200, height: 50}, 0, 1001);
+        super({
+            id,
+            type: "watermark",
+            position: {x: 0, y: 0},
+            size: {width: 200, height: 50},
+            rotation: 0,
+            zIndex: 1001,
+        });
     }
 
     render(): HTMLElement {

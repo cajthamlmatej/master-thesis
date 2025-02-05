@@ -1,12 +1,11 @@
-import {EditorBlock} from "@/editor/block/EditorBlock";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 import {generateUUID} from "@/utils/Generators";
 import {Property} from "@/editor/property/Property";
 import {ColorProperty} from "@/editor/block/shape/property/ColorProperty";
 import {shapes} from "@/editor/block/shape/Shapes";
 import {ShapeProperty} from "@/editor/block/shape/property/ShapeProperty";
-import {BlockEvent} from "@/editor/block/events/BlockEvent";
-import {InteractivityProperty} from "@/editor/interactivity/InteractivityProperty";
+import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
+import {EditorBlock} from "@/editor/block/EditorBlock";
 
 export class ShapeEditorBlock extends EditorBlock {
     @BlockSerialize("color")
@@ -14,8 +13,11 @@ export class ShapeEditorBlock extends EditorBlock {
     @BlockSerialize("shape")
     public shape: string;
 
-    constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number, color: string, shape: string) {
-        super(id, "shape", position, size, rotation, zIndex);
+    constructor(base: BlockConstructorWithoutType, color: string, shape: string) {
+        super({
+            ...base,
+            type: "shape"
+        });
         this.color = color;
         this.shape = shape;
     }
@@ -42,7 +44,7 @@ export class ShapeEditorBlock extends EditorBlock {
 
         const shape = shapes.find(s => s.name === this.shape);
 
-        if(!shape) {
+        if (!shape) {
             console.error("[ShapeEditorBlock] Shape not found: " + this.shape);
             // Render red error box with red text
             content.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -54,14 +56,14 @@ export class ShapeEditorBlock extends EditorBlock {
 
         content.innerHTML = shape.html;
         content.className = "block-content";
-        for(const c of shape.class || [])
+        for (const c of shape.class || [])
             content.classList.add(c);
     }
 
     editorSupport(): { group: boolean; selection: boolean; movement: boolean; proportionalResizing: boolean; nonProportionalResizingX: boolean; nonProportionalResizingY: boolean; rotation: boolean; zIndex: boolean; lock: boolean } {
         const shape = shapes.find(s => s.name === this.shape);
 
-        if(!shape || shape.nonProportionalResizing) {
+        if (!shape || shape.nonProportionalResizing) {
             return super.editorSupport();
         }
 
@@ -74,13 +76,17 @@ export class ShapeEditorBlock extends EditorBlock {
 
     override clone(): EditorBlock {
         return new ShapeEditorBlock(
-            generateUUID(), // note(Matej): TODO: Is this ok? And it is in multiple places.
-            {x: this.position.x, y: this.position.y},
-            {width: this.size.width, height: this.size.height},
-            this.rotation,
-            this.zIndex,
+            {
+                id: generateUUID(),
+                position: {x: this.position.x, y: this.position.y},
+                size: {width: this.size.width, height: this.size.height},
+                rotation: this.rotation,
+                zIndex: this.zIndex,
+                locked: this.locked,
+            },
             this.color,
-            this.shape);
+            this.shape
+        );
     }
 
 
@@ -106,7 +112,7 @@ export class ShapeEditorBlock extends EditorBlock {
 
         const shape = shapes.find(s => s.name === this.shape);
 
-        if(shape && !shape.nonProportionalResizing) {
+        if (shape && !shape.nonProportionalResizing) {
             this.size.width = this.size.height;
         }
 

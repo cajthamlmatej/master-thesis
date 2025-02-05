@@ -4,6 +4,7 @@ import {
     BlockInteractivity,
     BlockInteractivityEasings
 } from "@/editor/interactivity/BlockInteractivity";
+import {BlockConstructor} from "@/editor/block/BlockConstructor";
 
 export abstract class PlayerBlock {
     public id: string;
@@ -18,6 +19,31 @@ export abstract class PlayerBlock {
     }
     public rotation: number = 0;
     public zIndex: number = 0;
+
+    protected constructor(base: BlockConstructor) {
+        this.id = base.id;
+        this.type = base.type;
+        this.position = base.position;
+        this.size = base.size;
+        this.rotation = base.rotation;
+        this.zIndex = base.zIndex;
+
+        this.baseValues = {
+            position: {
+                x: this.position.x,
+                y: this.position.y
+            },
+            size: {
+                width: this.size.width,
+                height: this.size.height
+            },
+            rotation: this.rotation,
+            zIndex: this.zIndex
+        };
+
+        this.loadPlayerStore();
+        this.loaded = new Promise((res) => this.resolveLoaded = res);
+    }
 
     public element!: HTMLElement;
     public player!: Player;
@@ -40,34 +66,6 @@ export abstract class PlayerBlock {
     public playerStore: any; // TODO: add type
     private resolveLoaded: () => void;
     public loaded: Promise<void>;
-
-    protected constructor(id: string, type: string, position: { x: number, y: number }, size: {
-        width: number,
-        height: number
-    }, rotation: number, zIndex: number) {
-        this.id = id;
-        this.type = type;
-        this.position = position;
-        this.size = size;
-        this.rotation = rotation;
-        this.zIndex = zIndex;
-
-        this.baseValues = {
-            position: {
-                x: position.x,
-                y: position.y
-            },
-            size: {
-                width: size.width,
-                height: size.height
-            },
-            rotation: rotation,
-            zIndex: zIndex
-        }
-
-        this.loadPlayerStore();
-        this.loaded = new Promise((res) => this.resolveLoaded = res);
-    }
 
     private async loadPlayerStore() {
         const {usePlayerStore} = await import("@/stores/player");

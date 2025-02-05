@@ -1,22 +1,17 @@
-import type {BlockDeserializer} from "@/editor/block/serialization/BlockDeserializer";
+import {BlockDeserializer} from "@/editor/block/serialization/BlockDeserializer";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
 import type {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {ImagePlayerBlock} from "@/editor/block/image/ImagePlayerBlock";
 
-export class ImageBlockDeserializer implements BlockDeserializer {
+export class ImageBlockDeserializer extends BlockDeserializer {
     deserializeEditor(data: any): EditorBlock {
-        const block = new ImageEditorBlock(data.id, data.position, data.size, data.rotation, data.zIndex, data.imageUrl);
-
-        if (data.locked)
-            block.lock();
-
-        block.group = data.group;
-
-        return block;
+        const base = this.getBaseBlockData(data);
+        return new ImageEditorBlock(base, data.imageUrl);
     }
 
     deserializePlayer(data: any): PlayerBlock {
-        return new ImagePlayerBlock(data.id, data.position, data.size, data.rotation, data.zIndex, data.imageUrl);
+        const base = this.getBaseBlockData(data);
+        return new ImagePlayerBlock(base, data.imageUrl);
     }
 }

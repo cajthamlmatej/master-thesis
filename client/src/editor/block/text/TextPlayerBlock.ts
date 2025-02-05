@@ -1,11 +1,15 @@
 import {PlayerBlock} from "@/editor/block/PlayerBlock";
+import {BlockConstructor, BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 
 export class TextPlayerBlock extends PlayerBlock {
     private content: string;
     private fontSize: number;
 
-    constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number, content: string, fontSize: number) {
-        super(id, "text", position, size, rotation, zIndex);
+    constructor(base: BlockConstructorWithoutType, content: string, fontSize: number) {
+        super({
+            ...base,
+            type: "text"
+        });
         this.content = content;
         this.fontSize = fontSize;
     }

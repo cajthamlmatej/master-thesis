@@ -11,6 +11,7 @@ import {RotationProperty} from "@/editor/property/base/RotationProperty";
 import {SizeProperty} from "@/editor/property/base/SizeProperty";
 import {BlockInteractiveProperty, BlockInteractivity} from "@/editor/interactivity/BlockInteractivity";
 import {InteractivityProperty} from "@/editor/interactivity/InteractivityProperty";
+import {BlockConstructor} from "@/editor/block/BlockConstructor";
 
 export abstract class EditorBlock {
     @BlockSerialize("id")
@@ -38,6 +39,18 @@ export abstract class EditorBlock {
     @BlockSerialize("interactivity")
     public interactivity: BlockInteractivity[] = [];
 
+    protected constructor(base: BlockConstructor) {
+        this.id = base.id;
+        this.type = base.type;
+        this.position = base.position;
+        this.size = base.size;
+        this.rotation = base.rotation;
+        this.zIndex = base.zIndex;
+        this.locked = base.locked || false;
+        this.group = base.group || undefined;
+        this.interactivity = base.interactivity || [];
+    }
+
     public element!: HTMLElement;
     protected editor!: Editor;
     /**
@@ -60,15 +73,6 @@ export abstract class EditorBlock {
      * Determines if the block is currently hovering.
      */
     public hovering: boolean = false;
-
-    protected constructor(id: string, type: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number, zIndex: number) {
-        this.id = id;
-        this.type = type;
-        this.position = position;
-        this.size = size;
-        this.rotation = rotation;
-        this.zIndex = zIndex;
-    }
 
     /**
      * Renders the block element for the first time for the editor in the DOM.
@@ -155,7 +159,7 @@ export abstract class EditorBlock {
         ]
     }
 
-    public getInteractivityProperties(): Omit<BlockInteractiveProperty & {relative: boolean, animate: boolean}, "change" | "reset">[] {
+    public getInteractivityProperties(): Omit<BlockInteractiveProperty & {relative: boolean, animate: boolean}, "change" | "reset" | "getBaseValue">[] {
         return [
             {
                 label: "Position X",

@@ -1,8 +1,23 @@
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 import type {PlayerBlock} from "@/editor/block/PlayerBlock";
 
-export interface BlockDeserializer {
-    deserializeEditor(data: any): EditorBlock;
+import {BlockConstructor} from "@/editor/block/BlockConstructor";
 
-    deserializePlayer(data: any): PlayerBlock;
+export abstract class BlockDeserializer {
+    abstract deserializeEditor(data: any): EditorBlock;
+
+    abstract deserializePlayer(data: any): PlayerBlock;
+
+    public getBaseBlockData(data: any): BlockConstructor {
+        return {
+            id: data.id,
+            position: data.position,
+            size: data.size,
+            rotation: data.rotation,
+            zIndex: data.zIndex,
+            locked: data.locked,
+            type: data.type,
+            interactivity: data.interactivity,
+        }
+    }
 }

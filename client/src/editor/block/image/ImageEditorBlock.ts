@@ -3,6 +3,7 @@ import {generateUUID} from "@/utils/Generators";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {BlockEventListener} from "@/editor/block/events/BlockListener";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
+import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 
 export class ImageEditorBlock extends EditorBlock {
     @BlockSerialize("imageUrl")
@@ -10,8 +11,11 @@ export class ImageEditorBlock extends EditorBlock {
 
     private imageElement!: HTMLImageElement;
 
-    constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number = 0, zIndex: number = 0, imageUrl: string) {
-        super(id, "image", position, size, rotation, zIndex);
+    constructor(base: BlockConstructorWithoutType, imageUrl: string) {
+        super({
+            ...base,
+            type: "image"
+        });
         this.imageUrl = imageUrl;
     }
 
@@ -48,12 +52,15 @@ export class ImageEditorBlock extends EditorBlock {
 
     override clone(): EditorBlock {
         return new ImageEditorBlock(
-            generateUUID(),
-            {x: this.position.x, y: this.position.y},
-            {width: this.size.width, height: this.size.height},
-            this.rotation,
-            this.zIndex,
-            this.imageUrl);
+            {
+                id: generateUUID(),
+                position: {x: this.position.x, y: this.position.y},
+                size: {width: this.size.width, height: this.size.height},
+                rotation: this.rotation,
+                zIndex: this.zIndex,
+                locked: this.locked,
+                group: this.group
+            }, this.imageUrl);
     }
 
     @BlockEventListener(BlockEvent.MOUNTED)

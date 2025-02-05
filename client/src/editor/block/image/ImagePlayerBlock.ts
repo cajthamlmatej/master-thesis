@@ -1,12 +1,16 @@
 import {PlayerBlock} from "@/editor/block/PlayerBlock";
+import {BlockConstructor, BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 
 export class ImagePlayerBlock extends PlayerBlock {
     private imageUrl: string;
 
     private imageElement!: HTMLImageElement;
 
-    constructor(id: string, position: { x: number, y: number }, size: { width: number, height: number }, rotation: number = 0, zIndex: number = 0, imageUrl: string) {
-        super(id, "image", position, size, rotation, zIndex);
+    constructor(base: BlockConstructorWithoutType, imageUrl: string) {
+        super({
+            ...base,
+            type: "image"
+        });
         this.imageUrl = imageUrl;
     }
 
