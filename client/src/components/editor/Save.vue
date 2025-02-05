@@ -54,6 +54,7 @@ watch(() => editorStore.getEditor(), () => {
         return;
     }
 
+    setupSave();
     editor.events.PREFERENCES_CHANGED.on(setupSave);
 });
 
