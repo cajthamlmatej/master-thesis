@@ -5,6 +5,7 @@
                 <button @mousedown="(e) => add(e, 'text')"><span class="mdi mdi-pencil-plus-outline"></span></button>
                 <button @mousedown="(e) => add(e, 'image')"><span class="mdi mdi-image-plus-outline"></span></button>
                 <button @mousedown="(e) => add(e, 'shape')"><span class="mdi mdi-shape-plus-outline"></span></button>
+                <button @mousedown="(e) => add(e, 'interactiveArea')"><span class="mdi mdi-cursor-default-click-outline"></span></button>
             </div>
         </template>
     </Navigation>
@@ -20,6 +21,7 @@ import {generateUUID} from "@/utils/Generators";
 import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
 import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
 import Editor from "@/editor/Editor";
+import {InteractiveAreaEditorBlock} from "@/editor/block/interactiveArea/InteractiveAreaEditorBlock";
 
 const blocksMenu = ref(true);
 
@@ -48,7 +50,7 @@ watch(() => materialStore.getEditor(), (value) => {
     editor.value = value as Editor;
 });
 
-const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image' | 'shape') => {
+const add = (event: MouseEvent, type: 'text' | 'image' | 'shape' | 'interactiveArea') => {
     const editorValue = toRaw(editor.value);
 
     if (!editorValue) {
@@ -71,34 +73,51 @@ const add = (event: MouseEvent, type: 'text' | 'rectangle' | 'image' | 'shape') 
             const lineHeight = fontSize * 1.5;
 
             block = new TextEditorBlock(
-                generateUUID(),
-                {x: -100, y: -100},
-                {width: Math.max(width / 4, 300), height: lineHeight},
-                0,
-                0,
+                {
+                    id: generateUUID(),
+                    position: {x: -100, y: -100},
+                    size: {width: Math.max(width / 4, 300), height: lineHeight},
+                    rotation: 0,
+                    zIndex: 0,
+                },
                 "Your text here",
                 fontSize,
             );
             break;
         case 'shape':
             block = new ShapeEditorBlock(
-                generateUUID(),
-                {x: -100, y: -100},
-                {width: smaller / 4, height: smaller / 4},
-                0,
-                0,
+                {
+                    id: generateUUID(),
+                    position: {x: -100, y: -100},
+                    size: {width: smaller / 4, height: smaller / 4},
+                    rotation: 0,
+                    zIndex: 0,
+                },
                 "#1a1a19",
                 "arrow-1"
             );
             break;
         case 'image':
             block = new ImageEditorBlock(
-                generateUUID(),
-                {x: -100, y: -100},
-                {width: smaller / 4, height: smaller / 4},
-                0,
-                0,
+                {
+                    id: generateUUID(),
+                    position: {x: -100, y: -100},
+                    size: {width: smaller / 4, height: smaller / 4},
+                    rotation: 0,
+                    zIndex: 0,
+                },
                 "https://robohash.org/" + generateUUID() + "?set=set4"
+            );
+            break;
+        case 'interactiveArea':
+            block = new InteractiveAreaEditorBlock(
+                {
+                    id: generateUUID(),
+                    position: {x: -100, y: -100},
+                    size: {width: smaller / 4, height: smaller / 4},
+                    rotation: 0,
+                    zIndex: 0,
+                },
             );
             break;
     }
