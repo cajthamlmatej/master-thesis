@@ -44,10 +44,10 @@ export const BlockInteractivityEasings = {
     EASE_IN: 'ease-in',
     EASE_OUT: 'ease-out',
     EASE_IN_OUT: 'ease-in-out',
-    STEPS_4: 'steps(4, jump-both)',
-    STEPS_6: 'steps(6, jump-both)',
-    STEPS_8: 'steps(8, jump-both)',
-    STEPS_10: 'steps(10, jump-both)'
+    STEPS_4: 'steps(4, jump-end)',
+    STEPS_6: 'steps(6, jump-end)',
+    STEPS_8: 'steps(8, jump-end)',
+    STEPS_10: 'steps(10, jump-end)'
 }
 
 type Easing = keyof typeof BlockInteractivityEasings;
