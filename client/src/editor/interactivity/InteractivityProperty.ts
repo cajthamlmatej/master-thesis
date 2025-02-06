@@ -5,10 +5,6 @@ import {BlockInteractiveProperty, BlockInteractivity} from "@/editor/interactivi
 export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends Property<T> {
 
 
-    constructor() {
-        super();
-    }
-
     getPriority(): number {
         return 1000;
     }

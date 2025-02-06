@@ -44,7 +44,7 @@ export abstract class PlayerBlock {
             },
             rotation: this.rotation,
             zIndex: this.zIndex,
-            opacity: this.opacity,
+            opacity: this.opacity * 100,
             group: this.group
         };
 
