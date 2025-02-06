@@ -6,6 +6,7 @@
                 <button @mousedown="(e) => add(e, 'image')"><span class="mdi mdi-image-plus-outline"></span></button>
                 <button @mousedown="(e) => add(e, 'shape')"><span class="mdi mdi-shape-plus-outline"></span></button>
                 <button @mousedown="(e) => add(e, 'interactiveArea')"><span class="mdi mdi-cursor-default-click-outline"></span></button>
+                <button @mousedown="(e) => add(e, 'mermaid')"><span class="mdi mdi-chart-timeline"></span></button>
             </div>
         </template>
     </Navigation>
@@ -22,6 +23,7 @@ import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
 import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
 import Editor from "@/editor/Editor";
 import {InteractiveAreaEditorBlock} from "@/editor/block/interactiveArea/InteractiveAreaEditorBlock";
+import {MermaidEditorBlock} from "@/editor/block/mermaid/MermaidEditorBlock";
 
 const blocksMenu = ref(true);
 
@@ -50,7 +52,7 @@ watch(() => materialStore.getEditor(), (value) => {
     editor.value = value as Editor;
 });
 
-const add = (event: MouseEvent, type: 'text' | 'image' | 'shape' | 'interactiveArea') => {
+const add = (event: MouseEvent, type: 'text' | 'image' | 'shape' | 'interactiveArea' | 'mermaid') => {
     const editorValue = toRaw(editor.value);
 
     if (!editorValue) {
@@ -119,6 +121,17 @@ const add = (event: MouseEvent, type: 'text' | 'image' | 'shape' | 'interactiveA
                     zIndex: 0,
                 },
             );
+            break;
+        case 'mermaid':
+            block = new MermaidEditorBlock(
+                {
+                    id: generateUUID(),
+                    position: {x: -100, y: -100},
+                    size: {width: smaller / 4, height: smaller / 4},
+                    rotation: 0,
+                    zIndex: 0,
+                },
+                "graph TB\na-->b");
             break;
     }
 

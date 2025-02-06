@@ -179,6 +179,42 @@
                     transform: translate(-50%, -50%);
                 }
             }
+            &--type-mermaid {
+                &:not(&--editable) {
+                    > .block-content {
+                        height: 100%;
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        > svg, iframe {
+                            height: 100%;
+                            width: 100%;
+                            flex-grow: 1;
+                            object-fit: contain;
+                            max-width: 100% !important;
+
+                            border: 0;
+                            pointer-events: none;
+                        }
+                    }
+                }
+
+                &--editable {
+                    background-color: white;
+                    box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.24);
+
+                    > .block-content {
+                        height: 100%;
+                        width: 100%;
+
+                        padding: 0.5em;
+
+                        overflow: auto;
+                    }
+                }
+            }
         }
     }
 
