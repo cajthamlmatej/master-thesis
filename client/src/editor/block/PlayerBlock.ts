@@ -275,7 +275,7 @@ export abstract class PlayerBlock {
                 label: "Opacity",
                 getBaseValue: () => this.baseValues.opacity,
                 change: (value: any, relative: boolean, {animate, duration, easing}) => {
-                    let target = parseFloat(value);
+                    let target = parseFloat(value) / 100; // 0-100 to 0-1
 
                     if (relative) {
                         target += this.opacity;
