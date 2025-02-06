@@ -43,15 +43,7 @@ export class InteractiveAreaEditorBlock extends EditorBlock {
     }
 
     override clone(): EditorBlock {
-        return new InteractiveAreaEditorBlock({
-            id: generateUUID(),
-            position: {x: this.position.x, y: this.position.y},
-            size: {width: this.size.width, height: this.size.height},
-            rotation: this.rotation,
-            zIndex: this.zIndex,
-            locked: this.locked,
-            group: this.group
-        });
+        return new InteractiveAreaEditorBlock(this.getCloneBase());
     }
 
     override getInteractivityProperties(): Omit<BlockInteractiveProperty & { relative: boolean; animate: boolean }, "change" | "reset" | "getBaseValue">[] {

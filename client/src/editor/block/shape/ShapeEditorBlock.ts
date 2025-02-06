@@ -76,15 +76,7 @@ export class ShapeEditorBlock extends EditorBlock {
     }
 
     override clone(): EditorBlock {
-        return new ShapeEditorBlock(
-            {
-                id: generateUUID(),
-                position: {x: this.position.x, y: this.position.y},
-                size: {width: this.size.width, height: this.size.height},
-                rotation: this.rotation,
-                zIndex: this.zIndex,
-                locked: this.locked,
-            },
+        return new ShapeEditorBlock(this.getCloneBase(),
             this.color,
             this.shape
         );

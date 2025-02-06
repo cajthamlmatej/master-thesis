@@ -119,15 +119,7 @@ export class TextEditorBlock extends EditorBlock {
     }
 
     override clone(): EditorBlock {
-        return new TextEditorBlock({
-            id: generateUUID(),
-            position: {x: this.position.x, y: this.position.y},
-            size: {width: this.size.width, height: this.size.height},
-            rotation: this.rotation,
-            zIndex: this.zIndex,
-            locked: this.locked,
-            group: this.group
-        }, this.content, this.fontSize);
+        return new TextEditorBlock(this.getCloneBase(), this.content, this.fontSize);
     }
 
     override getProperties(): Property<this>[] {

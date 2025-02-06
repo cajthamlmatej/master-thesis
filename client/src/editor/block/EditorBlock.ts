@@ -13,6 +13,7 @@ import {BlockInteractiveProperty, BlockInteractivity} from "@/editor/interactivi
 import {InteractivityProperty} from "@/editor/interactivity/InteractivityProperty";
 import {BlockConstructor} from "@/editor/block/BlockConstructor";
 import {OpacityProperty} from "@/editor/property/base/OpacityProperty";
+import {generateUUID} from "@/utils/Generators";
 
 export abstract class EditorBlock {
     @BlockSerialize("id")
@@ -87,6 +88,21 @@ export abstract class EditorBlock {
      * Returns a new instance of the block with the same properties.
      */
     public abstract clone(): EditorBlock;
+
+    protected getCloneBase(): BlockConstructor {
+        return {
+            id: generateUUID(),
+            type: this.type,
+            position: {x: this.position.x, y: this.position.y},
+            size: {width: this.size.width, height: this.size.height},
+            rotation: this.rotation,
+            zIndex: this.zIndex,
+            locked: this.locked,
+            group: this.group,
+            interactivity: this.interactivity,
+            opacity: this.opacity
+        }
+    }
 
     /**
      * Serializes the block properties to an object, so it can be saved.

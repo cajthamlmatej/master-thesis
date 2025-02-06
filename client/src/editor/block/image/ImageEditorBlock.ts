@@ -51,16 +51,7 @@ export class ImageEditorBlock extends EditorBlock {
     }
 
     override clone(): EditorBlock {
-        return new ImageEditorBlock(
-            {
-                id: generateUUID(),
-                position: {x: this.position.x, y: this.position.y},
-                size: {width: this.size.width, height: this.size.height},
-                rotation: this.rotation,
-                zIndex: this.zIndex,
-                locked: this.locked,
-                group: this.group
-            }, this.imageUrl);
+        return new ImageEditorBlock(this.getCloneBase(), this.imageUrl);
     }
 
     @BlockEventListener(BlockEvent.MOUNTED)
