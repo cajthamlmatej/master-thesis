@@ -290,8 +290,6 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                         </div>`;
                 }
             }
-
-            // TODO: up based on property type (number, color, text, etc)
         }
         else if (interactivity.action == 'CHANGE_SLIDE') {
             element.innerHTML += `
@@ -395,9 +393,11 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                     </div>`;
         }
 
+        const index = this.blocks[0].interactivity.indexOf(interactivity);
+
         element.innerHTML += `<div class="footer">
-            <button class="move-up"><span class="mdi mdi-arrow-up"></span></button>
-            <button class="move-down"><span class="mdi mdi-arrow-down"></span></button>
+            <button class="move-up ${index == 0 ? 'disabled' : ''}"><span class="mdi mdi-arrow-up"></span></button>
+            <button class="move-down ${index == this.blocks[0].interactivity.length - 1 ? 'disabled' : ''}"><span class="mdi mdi-arrow-down"></span></button>
 
             <button class="delete"><span class="mdi mdi-delete"></span></button>
             <button class="duplicate"><span class="mdi mdi-checkbox-multiple-blank"></span></button>
@@ -471,6 +471,22 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         });
         element.querySelector(".duplicate")?.addEventListener("click", () => {
             this.blocks[0].interactivity.push(JSON.parse(JSON.stringify(interactivity)));
+            this.render();
+        });
+        element.querySelector(".move-up")?.addEventListener("click", () => {
+            if(index == 0) return;
+
+            this.blocks[0].interactivity = this.blocks[0].interactivity.filter(i => i !== interactivity);
+            this.blocks[0].interactivity.splice(index - 1, 0, interactivity);
+
+            this.render();
+        });
+        element.querySelector(".move-down")?.addEventListener("click", () => {
+            if(index == this.blocks[0].interactivity.length - 1) return;
+
+            this.blocks[0].interactivity = this.blocks[0].interactivity.filter(i => i !== interactivity);
+            this.blocks[0].interactivity.splice(index + 1, 0, interactivity);
+
             this.render();
         });
 
