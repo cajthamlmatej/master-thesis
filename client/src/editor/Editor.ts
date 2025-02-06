@@ -49,16 +49,7 @@ export default class Editor {
 
     constructor(editorElement: HTMLElement, options?: EditorOptions, preferences?: EditorPreferences) {
         this.editorElement = editorElement;
-        this.blockRegistry = new BlockRegistry(); // TODO: pass from params?
-
-        // Setup basic blocks
-        // TODO: this should be handled somewhere else
-        this.blockRegistry.register("text", TextEditorBlock, TextPlayerBlock, TextBlockDeserializer);
-        this.blockRegistry.register("image", ImageEditorBlock, ImagePlayerBlock, ImageBlockDeserializer);
-        this.blockRegistry.register("watermark", WatermarkEditorBlock, WatermarkPlayerBlock, WatermarkBlockDeserializer);
-        this.blockRegistry.register("shape", ShapeEditorBlock, ShapePlayerBlock, ShapeBlockDeserializer);
-        this.blockRegistry.register("interactiveArea", InteractiveAreaEditorBlock, InteractiveAreaPlayerBlock, InteractiveAreaBlockDeserializer);
-
+        this.blockRegistry = new BlockRegistry();
 
         this.parseOptions(options);
         this.parsePreferences(preferences);

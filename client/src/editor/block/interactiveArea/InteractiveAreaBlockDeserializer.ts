@@ -1,8 +1,6 @@
 import {BlockDeserializer} from "@/editor/block/serialization/BlockDeserializer";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
-import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
 import type {PlayerBlock} from "@/editor/block/PlayerBlock";
-import {TextPlayerBlock} from "@/editor/block/text/TextPlayerBlock";
 import {InteractiveAreaPlayerBlock} from "@/editor/block/interactiveArea/InteractiveAreaPlayerBlock";
 import {InteractiveAreaEditorBlock} from "@/editor/block/interactiveArea/InteractiveAreaEditorBlock";
 

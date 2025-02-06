@@ -2,6 +2,24 @@ import {EditorBlock} from "@/editor/block/EditorBlock";
 import type {BlockDeserializer} from "@/editor/block/serialization/BlockDeserializer";
 import type {Type} from "@/utils/TypeScriptTypes";
 import type {PlayerBlock} from "@/editor/block/PlayerBlock";
+import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
+import {TextPlayerBlock} from "@/editor/block/text/TextPlayerBlock";
+import {TextBlockDeserializer} from "@/editor/block/text/TextBlockDeserializer";
+import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
+import {ImagePlayerBlock} from "@/editor/block/image/ImagePlayerBlock";
+import {ImageBlockDeserializer} from "@/editor/block/image/ImageBlockDeserializer";
+import {WatermarkEditorBlock} from "@/editor/block/watermark/WatermarkEditorBlock";
+import {WatermarkPlayerBlock} from "@/editor/block/watermark/WatermarkPlayerBlock";
+import {WatermarkBlockDeserializer} from "@/editor/block/watermark/WatermarkBlockDeserializer";
+import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
+import {ShapePlayerBlock} from "@/editor/block/shape/ShapePlayerBlock";
+import {ShapeBlockDeserializer} from "@/editor/block/shape/ShapeBlockDeserializer";
+import {InteractiveAreaEditorBlock} from "@/editor/block/interactiveArea/InteractiveAreaEditorBlock";
+import {InteractiveAreaPlayerBlock} from "@/editor/block/interactiveArea/InteractiveAreaPlayerBlock";
+import {InteractiveAreaBlockDeserializer} from "@/editor/block/interactiveArea/InteractiveAreaBlockDeserializer";
+// $ADD_BLOCK_REGISTRY_IMPORT
+
+// note(Matej): dont remove $ADD_BLOCK_REGISTRY_* comments, it is used by the generator
 
 interface BlockRegistryEntry {
     name: string;
@@ -12,6 +30,15 @@ interface BlockRegistryEntry {
 
 export class BlockRegistry {
     private entries: BlockRegistryEntry[] = [];
+
+    public constructor() {
+        this.register("text", TextEditorBlock, TextPlayerBlock, TextBlockDeserializer);
+        this.register("image", ImageEditorBlock, ImagePlayerBlock, ImageBlockDeserializer);
+        this.register("watermark", WatermarkEditorBlock, WatermarkPlayerBlock, WatermarkBlockDeserializer);
+        this.register("shape", ShapeEditorBlock, ShapePlayerBlock, ShapeBlockDeserializer);
+        this.register("interactiveArea", InteractiveAreaEditorBlock, InteractiveAreaPlayerBlock, InteractiveAreaBlockDeserializer);
+        // $ADD_BLOCK_REGISTRY_ENTRY
+    }
 
     public register(name: string, editor: Type<EditorBlock>, player: Type<PlayerBlock>, deserializer: Type<BlockDeserializer>) {
         if (this.entries.find(entry => entry.name === name)) {

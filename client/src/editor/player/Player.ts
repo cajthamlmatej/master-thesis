@@ -29,16 +29,7 @@ export default class Player {
     private position = {x: 0, y: 0};
 
     constructor(element: HTMLElement, size: { width: number, height: number }, blocks: PlayerBlock[]) {
-        this.blockRegistry = new BlockRegistry(); // TODO: pass from params?
-
-        // Setup basic blocks
-        // TODO: this should be handled somewhere else
-        this.blockRegistry.register("text", TextEditorBlock, TextPlayerBlock, TextBlockDeserializer);
-        this.blockRegistry.register("image", ImageEditorBlock, ImagePlayerBlock, ImageBlockDeserializer);
-        this.blockRegistry.register("watermark", WatermarkEditorBlock, WatermarkPlayerBlock, WatermarkBlockDeserializer);
-        this.blockRegistry.register("shape", ShapeEditorBlock, ShapePlayerBlock, ShapeBlockDeserializer);
-        this.blockRegistry.register("interactiveArea", InteractiveAreaEditorBlock, InteractiveAreaPlayerBlock, InteractiveAreaBlockDeserializer);
-
+        this.blockRegistry = new BlockRegistry();
         this.element = element;
         this._size = size;
 
