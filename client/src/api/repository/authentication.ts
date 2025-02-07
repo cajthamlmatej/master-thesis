@@ -1,7 +1,7 @@
 import {Repository} from "../repository";
-import type AuthenticationSuccessDTO from "../../../lib/dto/response/authentication/AuthenticationSuccessDTO";
-import type RegisterAuthenticationDTO from "../../../lib/dto/request/authentication/RegisterAuthenticationDTO";
-import type ActivateAuthenticationDTO from "../../../lib/dto/request/authentication/ActivateAuthenticationDTO";
+import AuthenticationSuccessDTO from "../../../lib/dto/authentication/AuthenticationSuccessDTO";
+import RegisterAuthenticationDTO from "../../../lib/dto/authentication/RegisterAuthenticationDTO";
+import ActivateAuthenticationDTO from "../../../lib/dto/authentication/ActivateAuthenticationDTO";
 
 export class AuthenticationRepository extends Repository {
 

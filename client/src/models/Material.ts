@@ -25,10 +25,11 @@ export class Slide {
 export default class Material {
     id: string;
     createdAt: moment.Moment;
+    updatedAt: moment.Moment;
     name: string;
     slides: Slide[];
 
-    constructor(id: string, createdAt: Date, name: string, slides: {
+    constructor(id: string, createdAt: Date, updatedAt: Date, name: string, slides: {
         id: string;
         data: string;
         thumbnail: string | undefined;
@@ -36,6 +37,7 @@ export default class Material {
     }[]) {
         this.id = id;
         this.createdAt = moment(createdAt);
+        this.updatedAt = moment(updatedAt);
         this.name = name;
         this.slides = slides.map(slide => new Slide(slide.id, slide.data, slide.thumbnail, slide.position));
     }

@@ -1,11 +1,9 @@
 import {Repository} from "../repository";
-import type OneUserSuccessDTO from "../../../lib/dto/response/user/OneUserSuccessDTO";
-import type DeleteUserDTO from "../../../lib/dto/request/user/DeleteUserDTO";
-import type {CreateMaterialSuccessDTO} from "../../../lib/dto/response/material/CreateMaterialSuccessDTO";
-import type {AllMaterialSuccessDTO} from "../../../lib/dto/response/material/AllMaterialSuccessDTO";
-import type {CreateMaterialDTO} from "../../../lib/dto/request/material/CreateMaterialDTO";
-import type {UpdateMaterialDTO} from "../../../lib/dto/request/material/UpdateMaterialDTO";
-import type {OneMaterialSuccessDTO} from "../../../lib/dto/response/material/OneMaterialSuccessDTO";
+import {AllMaterialSuccessDTO} from "../../../lib/dto/material/AllMaterialSuccessDTO";
+import {CreateMaterialDTO} from "../../../lib/dto/material/CreateMaterialDTO";
+import {CreateMaterialSuccessDTO} from "../../../lib/dto/material/CreateMaterialSuccessDTO";
+import {UpdateMaterialDTO} from "../../../lib/dto/material/UpdateMaterialDTO";
+import {OneMaterialSuccessDTO} from "../../../lib/dto/material/OneMaterialSuccessDTO";
 
 export class MaterialRepository extends Repository {
     public async forUser(user: string) {
@@ -35,6 +33,13 @@ export class MaterialRepository extends Repository {
         return await this.makeRequest<OneMaterialSuccessDTO>(
             `material/${id}`,
             "GET"
+        );
+    }
+
+    async delete(id: string) {
+        return await this.makeRequest(
+            `material/${id}`,
+            "DELETE"
         );
     }
 }

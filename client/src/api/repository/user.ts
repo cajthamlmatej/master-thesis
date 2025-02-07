@@ -1,6 +1,5 @@
 import {Repository} from "../repository";
-import type OneUserSuccessDTO from "../../../lib/dto/response/user/OneUserSuccessDTO";
-import type DeleteUserDTO from "../../../lib/dto/request/user/DeleteUserDTO";
+import OneUserSuccessDTO from "../../../lib/dto/user/OneUserSuccessDTO";
 
 export class UserRepository extends Repository {
     /**

@@ -1,5 +1,5 @@
 import User from "@/models/User";
-import type UserDTO from "../../../lib/dto/response/user/UserDTO";
+import UserDTO from "../../../lib/dto/user/UserDTO";
 
 export default class UserMapper {
 

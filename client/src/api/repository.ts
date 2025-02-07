@@ -34,7 +34,9 @@ export class Repository {
 
             // Add the content type if it's not ignored
             if (!ignoreContentType && !formatedHeaders["Content-Type"]) {
-                formatedHeaders["Content-Type"] = "application/json";
+                if(!!data) {
+                    formatedHeaders["Content-Type"] = "application/json";
+                }
             }
 
             const finishedRequest = await fetch(api.base + endpoint, {
@@ -51,7 +53,7 @@ export class Repository {
             }
 
             if (finishedRequest.status === 204) {
-                return 1;
+                return 1 as unknown as response;
             }
 
             const json = await finishedRequest.json();

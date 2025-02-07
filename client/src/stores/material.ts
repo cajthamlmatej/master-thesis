@@ -79,12 +79,55 @@ export const useMaterialStore = defineStore("material", () => {
         }
     }
 
+    const deleteMaterial = async (id: string) => {
+        const response = await api.material.delete(id);
+
+        if(!response) {
+            throw new Error("Failed to delete material");
+        }
+
+        const materialIndex = materials.value.findIndex((material) => material.id === id);
+
+        if(materialIndex !== -1) {
+            materials.value.splice(materialIndex, 1);
+        }
+    }
+
+    const copyMaterial = async (id: string) => {
+        const original = materials.value.find((material) => material.id === id);
+
+        if(!original) {
+            throw new Error("Material not found");
+        }
+
+        const response = await api.material.create({
+            name: original.name,
+            slides: original.slides.map((slide) => ({
+                id: slide.id,
+                data: slide.data,
+                thumbnail: slide.thumbnail,
+                position: slide.position
+            }))
+        });
+
+        if(!response) {
+            throw new Error("Failed to copy material");
+        }
+
+        const material = MaterialMapper.fromMaterialDTO(response.material);
+        materials.value.push(material);
+
+        return material;
+    }
+
     return {
         materials,
         currentMaterial,
         load,
         loadMaterial,
         createMaterial,
-        save
+        save,
+        deleteMaterial,
+        copyMaterial
     }
 });

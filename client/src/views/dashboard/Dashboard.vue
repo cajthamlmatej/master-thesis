@@ -1,17 +1,18 @@
 <template>
-    <div class="flex flex-justify-space-between flex-align-center">
-        <span class="title">Welcome, {{ userStore.user?.name }}</span>
+    <Card fluid>
+        <div class="flex flex-justify-space-between flex-align-center">
+            <span class="main-title">Welcome, {{ userStore.user?.name }}</span>
 
-        <div class="flex flex-align-center gap-1">
-            <Button color="primary" icon="mdi mdi-plus" :to="{name: 'Editor', params: {material: 'new'}}"/>
+            <div class="flex flex-align-center gap-1">
+                <Button color="primary" icon="mdi mdi-plus" :to="{name: 'Editor', params: {material: 'new'}}"/>
 
-            <Input label="Search" type="text" hide-error dense hide-label v-model:value="search"/>
+                <Input label="Search" type="text" hide-error hide-label placeholder="Search..." dense v-model:value="search"/>
+            </div>
         </div>
-    </div>
+    </Card>
 
-
-    <div class="flex flex-justify-center mt-1">
-        <Pagination v-model:page="page" :page-size="8" :total="Math.ceil(materials.length/8)"/>
+    <div class="flex flex-justify-center mt-2">
+        <Pagination v-model:page="page" :page-size="8" :total="Math.max(Math.ceil(materials.length/8), 1)"/>
     </div>
 
     <div v-if="materials.length === 0" class="mt-1">
@@ -20,17 +21,50 @@
         </Alert>
     </div>
 
-    <Row class="mt-2" wrap align="stretch">
+    <Row class="mt-1" wrap align="stretch">
         <Col cols="12" sm="4" md="3" lg="3" v-for="material in materialsOnPage" :key="material.id">
-            <RouterLink class="material" :to="{name: 'Editor', params: {material: material.id}}">
-                <article class="material">
-                    <p class="title">{{ material.name }}</p>
-
+            <article class="material" @click="router.push({name: 'Editor', params: {material: material.id}})">
+                <div class="image-holder">
                     <img v-if="material.slides.length > 0 && material.slides[0]?.thumbnail"
                          :src="material.slides[0]?.thumbnail" alt="thumbnail" class="thumbnail">
                     <div class="placeholder" v-else></div>
-                </article>
-            </RouterLink>
+                </div>
+
+                <div class="meta">
+                    <div class="state">
+                        <p class="title">{{ material.name }}</p>
+
+                        <p class="time">
+                            modified {{ material.updatedAt.fromNow() }}</p>
+                        <p class="time">
+                            created {{ material.createdAt.fromNow() }}
+                        </p>
+                    </div>
+
+                    <div class="actions">
+                        <Dialog>
+                            <template #activator="{toggle}">
+                                <Button icon="mdi mdi-delete" :loading="processing" @click.stop.capture="toggle"/>
+                            </template>
+                            <template #default="{toggle}">
+                                <Card dialog class="delete-dialog">
+                                    <p class="title">Confirm deletion</p>
+
+                                    <p>Are you really sure you want to delete this material? This action cannot be undone.</p>
+
+                                    <p>After clicking button <q>I am sure</q> the material will be deleted, including all of its slides, filled forms and other data.</p>
+
+                                    <div class="flex flex-justify-end gap-1 mt-1">
+                                        <Button color="neutral" :loading="processing" @click="deleteMaterial(material.id, toggle)">I am sure</Button>
+                                        <Button @click="toggle">Cancel</Button>
+                                    </div>
+                                </Card>
+                            </template>
+                        </Dialog>
+                        <Button icon="mdi mdi-content-copy" :loading="processing" @click.stop.capture="copyMaterial(material.id)" color="primary"/>
+                    </div>
+                </div>
+            </article>
         </Col>
     </Row>
 </template>
@@ -40,6 +74,10 @@ import {useUserStore} from "@/stores/user";
 import {computed, onMounted, ref, watch} from "vue";
 import {useMaterialStore} from "@/stores/material";
 import Pagination from "@/components/design/pagination/Pagination.vue";
+import {useRouter} from "vue-router";
+import moment from "moment";
+
+const router = useRouter();
 
 const userStore = useUserStore();
 const materialStore = useMaterialStore();
@@ -66,11 +104,26 @@ const materials = computed(() => {
 const materialsOnPage = computed(() => {
     return materials.value.slice((page.value - 1) * 8, page.value * 8);
 });
+
+const processing = ref(false);
+
+const deleteMaterial = async (materialId: string, toggle: () => void) => {
+    processing.value = true;
+    await materialStore.deleteMaterial(materialId);
+    processing.value = false;
+    toggle();
+};
+
+const copyMaterial = async (materialId: string) => {
+    processing.value = true;
+    await materialStore.copyMaterial(materialId);
+    processing.value = false;
+};
 </script>
 
 <style scoped lang="scss">
-.title {
-    font-size: 1.5em;
+.main-title {
+    font-size: 1.75em;
     font-weight: bold;
     line-height: 1.05em;
 }
@@ -81,46 +134,117 @@ a.material {
 
 article.material {
     border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
+    border-radius: 0.25em;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s ease;
     color: var(--color-text);
     text-decoration: none;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background: white;
 
-    p {
-        text-decoration: none;
+    position: relative;
+
+    &:before {
+        position: absolute;
+        content: '';
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        box-shadow: inset var(--shadow-accent);
+        background-color: rgba(221, 250, 209, 0.04);
+        z-index: 3;
+        opacity: 0;
+        pointer-events: none;
     }
 
     &:hover {
         background-color: #f0f0f0;
+
+        &:before {
+            opacity: 1;
+        }
+    }
+    &:hover:has(.button:hover), &:hover:has(.actions:hover) {
+        background: white;
+        &:before {
+            opacity: 0;
+        }
     }
 
-    .title {
-        font-size: 1.2em;
-        font-weight: bold;
-        line-height: 1.05em;
-    }
-
-    .thumbnail, .placeholder {
+    .meta {
         width: 100%;
-        height: 100px;
-        object-fit: cover;
-        margin-top: 10px;
-        box-shadow: inset var(--shadow-accent);
-        background-color: #ffffff;
-        opacity: 0.8;
+        justify-content: space-between;
+        align-items: end;
+        padding: 0.5em;
+        gap: 0.5em;
+
+        display: flex;
+
+        .title {
+            font-size: 1.5em;
+            font-weight: bold;
+            line-height: 1.05em;
+
+            margin-bottom: 0.4em;
+        }
+
+        .time {
+            font-size: 0.75em;
+            color: #666;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5em;
+
+            :deep(.button) {
+                font-size: 0.85em;
+                padding: 0.4em 1em;
+            }
+        }
     }
 
-    .placeholder {
-        background-image: linear-gradient(135deg, #f4f4f4 25%, transparent 25%), linear-gradient(225deg, #f4f4f4 25%, transparent 25%), linear-gradient(45deg, #f4f4f4 25%, transparent 25%), linear-gradient(315deg, #f4f4f4 25%, #ffffff 25%);
-        background-position: 10px 0, 10px 0, 0 0, 0 0;
-        background-size: 10px 10px;
-        background-repeat: repeat;
+    .image-holder {
+        position: relative;
+        border-radius: 0.25em;
+        width: 100%;
+        height: 8em;
+        flex-grow: 1;
+
+        background-color: #ffffff;
+        overflow: hidden;
+
+        &:before {
+            position: absolute;
+            content: '';
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            box-shadow: inset var(--shadow-accent);
+        }
+
+        .thumbnail, .placeholder {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .placeholder {
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(135deg, #f4f4f4 25%, transparent 25%), linear-gradient(225deg, #f4f4f4 25%, transparent 25%), linear-gradient(45deg, #f4f4f4 25%, transparent 25%), linear-gradient(315deg, #f4f4f4 25%, #ffffff 25%);
+            background-position: 10px 0, 10px 0, 0 0, 0 0;
+            background-size: 10px 10px;
+            background-repeat: repeat;
+        }
     }
 }
 
@@ -141,6 +265,12 @@ article.material {
 
     &:hover {
         background: var(--color-primary-dark);
+    }
+}
+
+.delete-dialog {
+    p:not(:last-child) {
+        margin-bottom: 0.5em;
     }
 }
 </style>

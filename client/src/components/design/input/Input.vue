@@ -3,7 +3,7 @@
         <label v-if="!hideLabel" :for="id">{{ label }}</label>
 
         <section class="content">
-            <input v-if="props.type !== 'textarea'" :id="id" v-model="proxy" :readonly="readonly" :type="props.type"/>
+            <input v-if="props.type !== 'textarea'" :id="id" v-model="proxy" :readonly="readonly" :type="props.type" :placeholder="placeholder"/>
 
             <textarea v-if="props.type === 'textarea'" :id="id" v-model="proxy" :readonly="readonly"/>
 
@@ -32,6 +32,10 @@ const props = defineProps({
     },
     value: {
         type: [String, Number, Date, moment] as PropType<string | number | Date | moment.Moment | undefined>,
+        default: '',
+    },
+    placeholder: {
+        type: String,
         default: '',
     },
     validators: {
