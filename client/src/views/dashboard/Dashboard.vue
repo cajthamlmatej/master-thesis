@@ -25,8 +25,8 @@
         <Col cols="12" sm="4" md="3" lg="3" v-for="material in materialsOnPage" :key="material.id">
             <article class="material" @click="router.push({name: 'Editor', params: {material: material.id}})">
                 <div class="image-holder">
-                    <img v-if="material.slides.length > 0 && material.slides[0]?.thumbnail"
-                         :src="material.slides[0]?.thumbnail" alt="thumbnail" class="thumbnail">
+                    <img v-if="material.thumbnail"
+                         :src="material.thumbnail" alt="thumbnail" class="thumbnail">
                     <div class="placeholder" v-else></div>
                 </div>
 
