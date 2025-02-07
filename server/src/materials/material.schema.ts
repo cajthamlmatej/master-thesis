@@ -28,6 +28,9 @@ export class Material {
     @Prop({ default: () => new Date() })
     createdAt: Date;
 
+    @Prop({ default: () => new Date() })
+    updatedAt: Date;
+
     @Prop([Slide])
     slides: Slide[];
 }

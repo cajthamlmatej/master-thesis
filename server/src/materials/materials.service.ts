@@ -19,7 +19,10 @@ export class MaterialsService {
     }
 
     async update(material: HydratedDocument<Material>, updateMaterialDto: UpdateMaterialDTO) {
-        await this.materialModel.findByIdAndUpdate(material._id, updateMaterialDto).exec();
+        await this.materialModel.findByIdAndUpdate(material._id, {
+            updateMaterialDto,
+            updatedAt: new Date()
+        }).exec();
     }
 
     async create(param: {
@@ -29,5 +32,9 @@ export class MaterialsService {
     }) {
         const material = new this.materialModel(param);
         return material.save();
+    }
+
+    async remove(material: HydratedDocument<Material>) {
+        await this.materialModel.deleteOne({_id: material._id}).exec();
     }
 }

@@ -62,6 +62,7 @@ export class MaterialsController {
                 id: material.id,
                 name: material.name,
                 createdAt: material.createdAt,
+                updatedAt: material.updatedAt,
                 slides: material.slides.map((slide) => ({
                     id: slide.id,
                     thumbnail: slide.thumbnail,
@@ -98,6 +99,7 @@ export class MaterialsController {
                 id: material.id,
                 name: material.name,
                 createdAt: material.createdAt,
+                updatedAt: material.updatedAt,
                 slides: material.slides.map((slide) => ({
                     id: slide.id,
                     thumbnail: slide.thumbnail,
@@ -106,5 +108,17 @@ export class MaterialsController {
                 }))
             }
         } as CreateMaterialSuccessDTO;
+    }
+
+    @Delete('/material/:id')
+    @UseGuards(RequiresAuthenticationGuard)
+    @HttpCode(204)
+    async remove(@Param('id') id: string, @Req() req: RequestWithUser) {
+        const material = await this.materialsService.findById(id);
+
+        if (!material) throw new Error("Material not found");
+        if (material.user.toString() !== req.user.id) throw new UnauthorizedException('You are not allowed to access this resource');
+
+        await this.materialsService.remove(material);
     }
 }
