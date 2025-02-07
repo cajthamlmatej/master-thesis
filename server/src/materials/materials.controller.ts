@@ -39,12 +39,8 @@ export class MaterialsController {
                 id: m.id,
                 name: m.name,
                 createdAt: m.createdAt,
-                slides: m.slides.map((slide) => ({
-                    id: slide.id,
-                    thumbnail: slide.thumbnail,
-                    position: slide.position,
-                    data: slide.data
-                }))
+                updatedAt: m.updatedAt,
+                thumbnail: m.slides[0]?.thumbnail
             }))
         } as AllMaterialSuccessDTO;
     }
