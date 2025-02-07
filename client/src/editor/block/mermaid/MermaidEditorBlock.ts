@@ -4,6 +4,7 @@ import {BlockEventListener} from "@/editor/block/events/BlockListener";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import mermaid from "mermaid";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
+import {generateUUID} from "@/utils/Generators";
 
 export class MermaidEditorBlock extends EditorBlock {
     @BlockSerialize("content")
@@ -128,6 +129,9 @@ export class MermaidEditorBlock extends EditorBlock {
             const {svg} = await mermaid.render('graphDiv', this.content);
 
             iframe.contentDocument!.body.innerHTML = svg;
+
+            iframe.setAttribute("data-id", generateUUID());
+
             iframe.contentDocument!.close();
 
             content.removeAttribute("data-processed");

@@ -5,9 +5,10 @@ import {generateUUID} from "@/utils/Generators";
 import {EditorDeserializer} from "@/editor/EditorDeserializer";
 import {EditorSerializer} from "@/editor/EditorSerializer";
 import {EditorProperty} from "@/editor/property/EditorProperty";
-import { toPng } from 'html-to-image';
+import {toJpeg, toPng} from 'html-to-image';
 import {useMaterialStore} from "@/stores/material";
 import {Slide} from "@/models/Material";
+import {synchronizeCssStyles} from "@/utils/SynchronizeCssStyles";
 
 
 export const useEditorStore = defineStore("editor", () => {
@@ -107,6 +108,76 @@ export const useEditorStore = defineStore("editor", () => {
         }
     }
 
+    const saveCurrentSlideThumbnail = async () => {
+        if(!editorElement.value) return;
+        if(!editor.value) return;
+
+        const slide = getActiveSlide();
+
+        if(!slide) return;
+
+        editor.value.getSelector().deselectAllBlocks();
+
+        const slideSize = slide.getSize();
+        const ratio = slideSize.width / slideSize.height;
+
+        let canvasHeight;
+        let canvasWidth;
+
+        if (ratio > 1) {
+            canvasHeight = Math.min(slideSize.width, 300);
+            canvasWidth = canvasHeight * ratio;
+        } else {
+            canvasWidth = Math.min(slideSize.height, 300);
+            canvasHeight = canvasWidth / ratio;
+        }
+
+        let content = editorElement.value.querySelector(".editor-content") as HTMLElement | undefined;
+        let element = content?.cloneNode(true) as HTMLElement | undefined;
+
+        if (!element || !content) return;
+
+        synchronizeCssStyles(content, element, true);
+
+        // Fix iframes
+        {
+            const iframes = element.querySelectorAll("iframe");
+
+            for(let iframe of iframes) {
+                const newIframe = document.createElement("iframe");
+                const contentIframe = content.querySelector(`iframe[data-id="${iframe.getAttribute("data-id")}"]`) as HTMLIFrameElement | null;
+
+                if(!contentIframe) continue;
+
+                iframe.replaceWith(newIframe);
+
+                synchronizeCssStyles(contentIframe, newIframe, false);
+
+                newIframe.addEventListener("load", () => {
+                    newIframe.contentDocument!.head.innerHTML = contentIframe.contentDocument!.head.innerHTML;
+                    newIframe.contentDocument!.body.innerHTML = contentIframe.contentDocument!.body.innerHTML;
+                });
+            }
+        }
+
+        document.body.appendChild(element);
+        document.body.style.overflow = "hidden";
+
+        slide.thumbnail = await toJpeg(element as HTMLElement, {
+            backgroundColor: 'white',
+            width: slideSize.width,
+            height: slideSize.height,
+            canvasHeight: canvasHeight,
+            canvasWidth: canvasWidth,
+            quality: 0.5
+        }).then((dataUrl) => {
+            return dataUrl;
+        });
+
+        document.body.removeChild(element);
+        document.body.style.overflow = "auto";
+    }
+
     const saveCurrentSlide = async (skipThumbnail = false) => {
         if (!editorElement.value) return;
 
@@ -121,40 +192,12 @@ export const useEditorStore = defineStore("editor", () => {
 
                 if (slide) {
                     slide.data = data;
-
-                    if(!skipThumbnail) {
-                        editor.value.getSelector().deselectAllBlocks();
-
-                        const slideSize = slide.getSize();
-                        const ratio = slideSize.width / slideSize.height;
-
-                        let canvasHeight;
-                        let canvasWidth;
-
-                        if (ratio > 1) {
-                            canvasHeight = Math.min(slideSize.width, 300);
-                            canvasWidth = canvasHeight * ratio;
-                        } else {
-                            canvasWidth = Math.min(slideSize.height, 300);
-                            canvasHeight = canvasWidth / ratio;
-                        }
-
-                        const element = editorElement.value.querySelector(".editor-content");
-
-                        if (!element) return;
-
-                        slide.thumbnail = await toPng(element as HTMLElement, {
-                            backgroundColor: 'white',
-                            width: slideSize.width,
-                            height: slideSize.height,
-                            canvasHeight: canvasHeight,
-                            canvasWidth: canvasWidth
-                        }).then((dataUrl) => {
-                            return dataUrl;
-                        });
-                    }
                 }
 
+                if (!skipThumbnail) {
+                    // note(Matej): we need to skip the asynchronous thumbnail generation
+                    saveCurrentSlideThumbnail();
+                }
             }
         }
     }
@@ -165,7 +208,7 @@ export const useEditorStore = defineStore("editor", () => {
 
         if (!slide) return;
 
-        await saveCurrentSlide();
+        await saveCurrentSlide(false);
 
         if (editor.value) {
             editor.value.destroy();
@@ -229,7 +272,7 @@ export const useEditorStore = defineStore("editor", () => {
 
     const copySlide = async(slide: Slide) => {
         if(activeSlide.value === slide.id) {
-            await saveCurrentSlide();
+            await saveCurrentSlide(false);
         }
 
         const newSlide = new Slide(

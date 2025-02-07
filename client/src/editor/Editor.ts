@@ -60,13 +60,13 @@ export default class Editor {
         this.clipboard = new EditorClipboard(this);
         this.history = new EditorHistory(this);
 
-        // TODO: this enabling is weirdly placed
         new EditorGroupAreaVisualiser(this);
 
         this.keybinds = new EditorKeybinds(this);
 
         this.setMode(EditorMode.SELECT);
     }
+
     private parseOptions(options?: EditorOptions) {
         if (!options) return;
 
