@@ -12,6 +12,7 @@ import {MoveAction} from "@/editor/actions/context/MoveAction";
 import {SelectAllAction} from "@/editor/actions/context/SelectAllAction";
 import {UndoAction} from "@/editor/actions/context/UndoAction";
 import {RedoAction} from "@/editor/actions/context/RedoAction";
+import {$t} from "@/translation/Translation";
 
 export class EditorContext {
     public element!: HTMLElement;
@@ -90,7 +91,7 @@ export class EditorContext {
             const actionElement = document.createElement("div");
             actionElement.classList.add("action");
             actionElement.setAttribute("data-action", action.name);
-            actionElement.innerText = action.label;
+            actionElement.innerText = $t('editor.action.' + action.name + '.label');
 
             actionElement.addEventListener("mousedown", (e) => {
                 console.debug("Action", action.name, "executed for", this.editor.getSelector().getSelectedBlocks().length, "blocks");
