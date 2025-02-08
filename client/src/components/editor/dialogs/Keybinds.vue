@@ -1,17 +1,20 @@
-
 <template>
 
     <Dialog v-model:value="keybindsDialog">
         <template #default>
             <Card dialog>
-                <p class="title">Key bindings</p>
+                <p class="title" v-t>editor.keybinds.title</p>
 
                 <List>
                     <ListItem v-for="keybind in keybindings" :key="keybind.action">
-                        <span class="keybind"><span v-for="key in keybind.key" :key="key" class="key"
-                                                    v-tooltip="key.endsWith('?') && key.length > 1 ? 'This key is optional and pressing it may occur different outcome.' : ''">{{
-                                key
-                            }}</span></span>
+                        <span class="keybind">
+                            <span v-for="key in keybind.key"
+                                  :key="key"
+                                  class="key"
+                                  v-tooltip="key.endsWith('?') && key.length > 1 ? $t('editor.keybinds.optional-key') : ''">
+                                {{ key }}
+                            </span>
+                        </span>
                         <span class="action">{{ keybind.action }}</span>
                     </ListItem>
                 </List>
@@ -24,6 +27,7 @@
 import type Editor from "@/editor/Editor";
 import {onMounted, onUnmounted, ref, watch} from "vue";
 import ListItem from "@/components/design/list/ListItem.vue";
+import {$t, translation} from "@/translation/Translation";
 
 const props = defineProps<{
     editor: Editor;
@@ -68,7 +72,7 @@ const humanizeKeybind = (keybind: {
     let press = [];
 
     if (keybind.ctrlKey === 'ALWAYS' || keybind.ctrlKey === 'OPTIONAL') {
-        let key = 'Ctrl';
+        let key = $t('editor.keybinds.modifier.ctrl');
 
         if (keybind.ctrlKey === 'OPTIONAL') {
             key += '?';
@@ -78,7 +82,7 @@ const humanizeKeybind = (keybind: {
     }
 
     if (keybind.shiftKey === 'ALWAYS' || keybind.shiftKey === 'OPTIONAL') {
-        press.push('Shift');
+        press.push($t('editor.keybinds.modifier.shift'));
 
         if (keybind.shiftKey === 'OPTIONAL') {
             press.push('?');
@@ -86,25 +90,28 @@ const humanizeKeybind = (keybind: {
     }
 
     if (keybind.altKey === 'ALWAYS' || keybind.altKey === 'OPTIONAL') {
-        press.push('Alt');
+        press.push($t('editor.keybinds.modifier.alt'));
 
         if (keybind.altKey === 'OPTIONAL') {
             press.push('?');
         }
     }
 
-    // Split by uppercase letters
-    const splitted = keybind.key.split(/(?=[A-Z])/);
-    const humanized = splitted.map((p, i) => {
-        if (i === 0) {
-            return p;
-        }
+    if (translation.doesKeyExist('editor.keybinds.key.' + keybind.key)) {
+        press.push($t('editor.keybinds.key.' + keybind.key));
+    } else {
+        // Split by uppercase letters
+        const splitted = keybind.key.split(/(?=[A-Z])/);
+        const humanized = splitted.map((p, i) => {
+            if (i === 0) {
+                return p;
+            }
 
-        return p.toLowerCase();
-    }).join(' ');
+            return p.toLowerCase();
+        }).join(' ');
 
-    press.push(humanized);
-
+        press.push(humanized);
+    }
     return press;
 }
 
@@ -114,7 +121,7 @@ const recalculate = () => {
     for (let keybind of props.editor.getKeybinds().getKeybinds()) {
         keybinds.push({
             key: humanizeKeybind(keybind.keybind),
-            action: keybind.action.label
+            action: $t('editor.action.' + keybind.action.name + '.label')
         });
     }
 

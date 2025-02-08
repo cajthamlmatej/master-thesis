@@ -1,29 +1,33 @@
 <template>
     <Dialog>
         <template #activator="{toggle}">
-            <i class="mdi mdi-resize" @click="toggle"/>
+            <i class="mdi mdi-resize" @click="toggle"  v-tooltip="$t('editor.panel.slides.action.resize')"></i>
         </template>
         <template #default>
             <Card dialog>
-                <p class="title">Slide size</p>
+                <p class="title" v-t>editor.panel.slides.size.title</p>
 
                 <div class="flex flex-justify-space-between flex-align-center">
-                    <Input v-model:value="size.width" label="Width" type="number"
-                           :validators="[v => v > 0 || 'Width must be greater than 0']"/>
+                    <Input v-model:value="size.width"
+                           :label="$t('editor.panel.slides.size.width')"
+                           type="number"
+                           :validators="[v => v > 0 || $t('editor.panel.slides.size.width-invalid')]"/>
                     <div class="flex-grow flex flex-justify-center flex-align-center">
-                        <span>x</span>
+                        <span v-t>editor.panel.slides.size.times</span>
                     </div>
-                    <Input v-model:value="size.height" label="Height" type="number"
-                           :validators="[v => v > 0 || 'Height must be greater than 0']"/>
+                    <Input v-model:value="size.height"
+                           :label="$t('editor.panel.slides.size.height')"
+                           type="number"
+                           :validators="[v => v > 0 || $t('editor.panel.slides.size.height-invalid')]"/>
                 </div>
 
                 <Checkbox
                     v-model:value="resizeToFit"
-                    label="Resize content to fit"
+                    :label="$t('editor.panel.slides.size.to-fit')"
                 />
 
                 <div class="flex flex-justify-end mt-1">
-                    <Button @click="save">Resize</Button>
+                    <Button @click="save"><span v-t>editor.panel.slides.size.resize</span></Button>
                 </div>
             </Card>
         </template>
@@ -37,6 +41,7 @@ import type {Slide} from "@/models/Material";
 import Input from "@/components/design/input/Input.vue";
 import Checkbox from "@/components/design/checkbox/Checkbox.vue";
 import {useEditorStore} from "@/stores/editor";
+import {$t} from "@/translation/Translation";
 
 const props = defineProps<{
     slide: Slide;

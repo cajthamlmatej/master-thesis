@@ -1,9 +1,9 @@
 <template>
     <NavigationButton hide-mobile icon="content-save-outline"
-                      label="Save to cloud"
+                      :label="$t('editor.ui.save')"
+                      :tooltip-text="$t('editor.ui.save')"
                       tooltip-position="bottom"
                       :disabled="saving"
-                      tooltip-text="Save to cloud"
     @click="save"></NavigationButton>
 </template>
 
@@ -11,6 +11,7 @@
 import {useMaterialStore} from "@/stores/material";
 import {onMounted, onUnmounted, ref, watch} from "vue";
 import {useEditorStore} from "@/stores/editor";
+import {$t} from "@/translation/Translation";
 
 const materialStore = useMaterialStore();
 const editorStore = useEditorStore();

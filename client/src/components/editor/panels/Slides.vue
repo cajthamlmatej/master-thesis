@@ -4,7 +4,7 @@
             <div class="menu editor-slides" ref="menu">
                 <div class="actions">
                     <Button icon="plus" fluid @click="materialStore.newSlide">
-                        Add slide
+                        <span v-t>editor.panel.slides.add</span>
                     </Button>
                 </div>
 
@@ -18,15 +18,15 @@
 
                         <div class="slide-meta">
                             <div class="slide-title">
-                                {{ i+1 }}. slide
+                                {{$t('editor.panel.slides.slide-number', {number: (i+1).toString()})}}
                             </div>
                             <div class="actions">
                                 <SlideResizeAction :slide="slide"/>
 
-                                <i class="mdi mdi-arrow-up" @click="materialStore.moveSlide(slide, -1)" :class="{disabled: i === 0}"/>
-                                <i class="mdi mdi-arrow-down" @click="materialStore.moveSlide(slide, 1)" :class="{disabled: i === materialStore.getSlides().length - 1}"/>
-                                <i class="mdi mdi-content-copy" @click="copySlide(slide)"/>
-                                <i class="mdi mdi-trash-can-outline" @click="removeSlide(slide)" :class="{disabled: canRemoveSlide}"/>
+                                <i class="mdi mdi-arrow-up" v-tooltip="$t('editor.panel.slides.action.up')" @click="materialStore.moveSlide(slide, -1)" :class="{disabled: i === 0}"/>
+                                <i class="mdi mdi-arrow-down" v-tooltip="$t('editor.panel.slides.action.down')" @click="materialStore.moveSlide(slide, 1)" :class="{disabled: i === materialStore.getSlides().length - 1}"/>
+                                <i class="mdi mdi-content-copy" v-tooltip="$t('editor.panel.slides.action.copy')" @click="copySlide(slide)"/>
+                                <i class="mdi mdi-trash-can-outline" v-tooltip="$t('editor.panel.slides.action.delete')" @click="removeSlide(slide)" :class="{disabled: canRemoveSlide}"/>
                             </div>
                         </div>
                     </div>
@@ -43,6 +43,7 @@ import {useEditorStore} from "@/stores/editor";
 import type Material from "@/models/Material";
 import {Slide} from "@/models/Material";
 import SlideResizeAction from "@/components/editor/panels/SlideResizeAction.vue";
+import {$t} from "../../../translation/Translation";
 
 const slides = ref(true);
 

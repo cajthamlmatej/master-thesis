@@ -2,24 +2,25 @@
 
     <NavigationButton
                       hide-mobile icon="undo"
-                      label="Undo"
+                      :label="$t('editor.ui.history.undo')"
+                      :tooltip-text="$t('editor.ui.history.undo')"
                       :disabled="!backward"
                       @click="undo"
-                      tooltip-position="bottom"
-                      tooltip-text="Undo"></NavigationButton>
+                      tooltip-position="bottom"></NavigationButton>
     <NavigationButton
                       hide-mobile icon="redo"
-                      label="Redo"
+                      :label="$t('editor.ui.history.redo')"
+                      :tooltip-text="$t('editor.ui.history.redo')"
                       :disabled="!forward"
                       @click="redo"
-                      tooltip-position="bottom"
-                      tooltip-text="Redo"></NavigationButton>
+                      tooltip-position="bottom"></NavigationButton>
 </template>
 
 <script setup lang="ts">
 import {useMaterialStore} from "@/stores/material";
 import {useEditorStore} from "@/stores/editor";
 import {computed, onMounted, onUnmounted, ref, watch} from "vue";
+import {$t} from "@/translation/Translation";
 
 const materialStore = useMaterialStore();
 const editorStore = useEditorStore();
