@@ -230,7 +230,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                         <div class="value">
                             <select data-property="property">
                                 ${propertiesPairs.map(property => `<option value="${property.id}">${property.name}</option>`).join("")}
-                                ${interactivity.action == 'RESET_PROPERTY' ? '<option value="ALL">${$t("property.interactivity.property.ALL")}</option>' : ''}
+                                ${interactivity.action == 'RESET_PROPERTY' ? `<option value="ALL">${$t("property.interactivity.property.ALL")}</option>` : ''}
                             </select>
                         </div>
                     </div>`;
