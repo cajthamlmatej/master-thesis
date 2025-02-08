@@ -1,5 +1,9 @@
 import {App} from "vue";
 import {translation} from "@/translation/Translation";
+import moment from "moment";
+
+
+import "moment/dist/locale/cs";
 
 export const setupTranslations = (Vue: App<Element>) => {
     Vue.directive("t", {
@@ -42,6 +46,10 @@ export const setupTranslations = (Vue: App<Element>) => {
         window.location.href = url.replace(urlParts[3], "en");
         return;
     }
+
+    translation.LANGUAGE_CHANGED.on((language) => {
+        moment.locale(language);
+    });
 
     translation.changeLanguage(language);
 };
