@@ -9,14 +9,20 @@
                         <TransitionGroup class="authentication-holder" name="authentication-fade" tag="div" :duration="40000">
                             <Form v-if="data.tab === 'EMAIL_PASSWORD'" class="form" :onSubmit="() => handle('EMAIL_PASSWORD')">
                                 <template #default="{ validationChange }">
-                                    <Input v-model:value="data.email" :validators="[
-                                    (v: string) => !!v || 'E-mail is required',
-                                    (v: string) => /.+@.+\..+/.test(v) || 'E-mail has to be in correct format.'
-                                ]" label="E-mail" required type="email" @validationChange="validationChange"/>
+                                    <Input v-model:value="data.email"
+                                           :validators="[
+                                                (v: string) => !!v || $t('page.authentication.fields.email.required'),
+                                                (v: string) => /.+@.+\..+/.test(v) || $t('page.authentication.fields.email.invalid')
+                                           ]"
+                                           :label="$t('page.authentication.fields.email.label')"
+                                           required
+                                           type="email"
+                                           @validationChange="validationChange"/>
 
                                     <Input v-model:value="data.password"
-                                           :validators="[(v: string) => v.length > 3 || 'Password has to be at least 4 characters.']"
-                                           label="Password" required
+                                           :validators="[(v: string) => v.length > 3 || $t('page.authentication.fields.password.invalid')]"
+                                           :label="$t('page.authentication.fields.password.label')"
+                                           required
                                            type="password"
                                            @validationChange="validationChange"/>
                                 </template>
@@ -25,7 +31,7 @@
                                     <Button :align="'center'" :disabled="!isValid" :loading="data.sending" fluid
                                             type="submit"
                                             @click="onSubmit">
-                                        Login
+                                        <span v-t>page.authentication.login</span>
                                     </Button>
                                 </template>
                             </Form>
@@ -33,18 +39,20 @@
                             <Form v-if="data.tab === 'EMAIL'" class="form" :onSubmit="() => handle('EMAIL')">
                                 <template #default="{ validationChange }">
                                     <Input v-model:value="data.email" :disabled="data.emailStage === 1" :validators="[
-                                    (v: string) => !!v || 'E-mail is required',
-                                    (v: string) => /.+@.+\..+/.test(v) || 'E-mail has to be in correct format.'
-                                ]" label="E-mail" required type="email" @validationChange="validationChange"/>
+                                        (v: string) => !!v || $t('page.authentication.fields.email.required'),
+                                        (v: string) => /.+@.+\..+/.test(v) || $t('page.authentication.fields.email.invalid')
+                                    ]"
+                                           :label="$t('page.authentication.fields.email.label')"
+                                           required type="email" @validationChange="validationChange"/>
 
                                     <Input v-if="data.emailStage === 1" v-model:value="data.code"
-                                           :validators="[(v: string) => v.length == 6 || 'Code has to be 6 characters.']"
-                                           label="Kód"
+                                           :validators="[(v: string) => v.length == 6 || $t('page.authentication.fields.code.invalid')]"
+                                           :label="$t('page.authentication.fields.code.label')"
                                            required type="text" @validationChange="validationChange"/>
 
                                     <p>
-                                        <a v-if="data.emailStage == 0" @click="data.emailStage = 1">I already have a code.</a>
-                                        <a v-if="data.emailStage == 1" @click="data.emailStage = 0">I need code again.</a>
+                                        <a v-if="data.emailStage == 0" @click="data.emailStage = 1" v-t>page.authentication.already-code</a>
+                                        <a v-if="data.emailStage == 1" @click="data.emailStage = 0" v-t>page.authentication.no-code</a>
                                     </p>
                                 </template>
 
@@ -52,7 +60,7 @@
                                     <Button :align="'center'" :disabled="!isValid" :loading="data.sending" fluid
                                             type="submit"
                                             @click="onSubmit">
-                                        Login
+                                        <span v-t>page.authentication.login</span>
                                     </Button>
                                 </template>
                             </Form>
@@ -64,22 +72,22 @@
 
                         <div class="flex flex-column flex-justify-space-between">
                             <div>
-                                <h2>Materials</h2>
+                                <h2 v-t>web.name</h2>
 
                                 <p class="mb-1">
-                                    This app...
+                                    ...
                                 </p>
                                 <p class="mb-1">
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aspernatur aut culpa dolore doloremque earum eos eveniet, ex impedit maxime modi officiis pariatur praesentium quas recusandae sint temporibus tenetur vel?
                                 </p>
                                 <p>
-                                    Learn more about this app <a href="#">here</a>.<!-- TODO: Add link -->
+                                    TODO: <a href="#">here</a>.<!-- TODO: Add link -->
                                 </p>
                             </div>
 
                             <Button :icon-size="1.4" :to="{ name: 'Authentication/Register'}" class="mt-1"
                                     fluid icon="account-plus-outline">
-                                Create an account
+                                <span v-t>page.authentication.create-account</span>
                             </Button>
                         </div>
                     </Col>
@@ -95,9 +103,10 @@ import {useAuthenticationStore} from "@/stores/authentication";
 import {reactive} from "vue";
 import Button from "@/components/design/button/Button.vue";
 import {useHead} from "unhead";
+import {$t} from "@/translation/Translation";
 
 useHead({
-    title: 'Login'
+    title: $t("page.authentication.title")
 });
 
 const data = reactive({
@@ -105,11 +114,11 @@ const data = reactive({
     tabs: [
         {
             value: "EMAIL_PASSWORD",
-            text: "E-mail and Password"
+            text: $t("page.authentication.type.email-password")
         },
         {
             value: "EMAIL",
-            text: "E-mail Login"
+            text: $t("page.authentication.type.email")
         }
     ],
     email: "",
@@ -134,7 +143,7 @@ const handle = async (type: 'EMAIL_PASSWORD' | 'EMAIL') => {
         if (result) {
             await router.push({name: "Dashboard"});
         } else {
-            error = "Login failed. Make sure you entered correct account details.";
+            error = $t("page.authentication.fail.failed");
         }
     } else if (type === 'EMAIL') {
         if (data.emailStage === 0) {
@@ -143,7 +152,7 @@ const handle = async (type: 'EMAIL_PASSWORD' | 'EMAIL') => {
             if (result) {
                 data.emailStage = 1;
             } else {
-                error = "You entered wrong e-mail or there is already a request for login. Check your e-mail and try again.";
+                error = $t("page.authentication.fail.wrong-email");
             }
         } else if (data.emailStage === 1) {
             const result = await authenticationStore.loginEmail(data.email, data.code);
@@ -151,7 +160,7 @@ const handle = async (type: 'EMAIL_PASSWORD' | 'EMAIL') => {
             if (result) {
                 await router.push({name: "Dashboard"});
             } else {
-                error = "You entered wrong code. Check your e-mail and try again.";
+                error = $t("page.authentication.fail.wrong-code");
             }
         }
     }

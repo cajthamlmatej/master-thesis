@@ -2,15 +2,15 @@
     <Row justify="center">
         <Col :cols="12" :lg="8" :md="10" :sm="11" :xl="6">
             <Card fluid>
-                <p class="title">Activation of your account</p>
+                <p class="title" v-t>page.activate.activation</p>
 
-                <p v-if="success">Account has been successfully activated. Now you can log in.</p>
-                <p v-else-if="loading">Activating account, please wait...</p>
-                <p v-else-if="!success">Account activation failed. Please try again later.</p>
+                <p v-if="success" v-t>page.activation.success</p>
+                <p v-else-if="loading" v-t>page.activation.loading</p>
+                <p v-else-if="!success" v-t>page.activation.fail</p>
 
                 <Button :disabled="loading ? false : !success" :loading="loading" :to="{name: 'Authentication'}"
                         align="center" class="mt-1" fluid>
-                    Log in
+                    <span v-t>page.activation.sign-in</span>
                 </Button>
             </Card>
         </Col>
@@ -22,9 +22,10 @@ import {onMounted, ref} from "vue";
 import {useAuthenticationStore} from "@/stores/authentication";
 import {useRoute, useRouter} from "vue-router";
 import {useHead} from "unhead";
+import {$t} from "@/translation/Translation";
 
 useHead({
-    title: 'Account activation',
+    title: $t("page.activate.title")
 });
 
 const authenticationStore = useAuthenticationStore();

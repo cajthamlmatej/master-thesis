@@ -7,31 +7,37 @@
                         <Form :onSubmit="handle">
                             <template #default="{ validationChange }">
                                 <Input v-model:value="data.name" :validators="[
-                                        (v: string) => !!v || 'Name is required',
-                                        (v: string) => v.length > 3 || 'Name has to be at least 4 characters',
-                                        (v: string) => v.length < 255 || 'Name has to be shorter than 255 characters'
-                                    ]" label="Name you want us to call you"
+                                        (v: string) => !!v || $t('page.register.fields.name.required'),
+                                        (v: string) => v.length > 3 || $t('page.register.fields.name.short'),
+                                        (v: string) => v.length < 255 || $t('page.register.fields.name.long')
+                                    ]"
+                                       :label="$t('page.register.fields.name.label')"
                                        required type="text"
                                        @validationChange="validationChange"/>
 
                                 <Input v-model:value="data.email" :validators="[
-                                        (v: string) => !!v || 'E-mail is required',
-                                        (v: string) => /.+@.+\..+/.test(v) || 'E-mail has to be in correct format',
-                                        (v: string) => v.length < 255 || 'E-mail has to be shorter than 255 characters'
-                                    ]" label="E-mail" required type="email" @validationChange="validationChange"/>
+                                        (v: string) => !!v || $t('page.register.fields.email.required'),
+                                        (v: string) => /.+@.+\..+/.test(v) || $t('page.register.fields.email.invalid'),
+                                        (v: string) => v.length < 255 || $t('page.register.fields.email.long')
+                                    ]"
+                                       :label="$t('page.register.fields.email.label')" required type="email"
+                                       @validationChange="validationChange"/>
 
                                 <Input v-model:value="data.password"
                                        :validators="[
-                                           (v: string) => v.length >= 8 || 'Password has to be at least 8 characters',
-                                           (v: string) => v.length < 255 || 'Password has to be shorter than 255 characters'
+                                           (v: string) => v.length >= 8 || $t('page.register.fields.password.short'),
+                                           (v: string) => v.length < 255 || $t('page.register.fields.password.long')
                                        ]"
-                                       label="Password" required
+                                       :label="$t('page.register.fields.password.label')"
+                                       required
                                        type="password"
                                        @validationChange="validationChange"/>
 
                                 <Input v-model:value="data.passwordRepeat" :validators="[
-                                (v: string) => v === data.password || 'Passwords have to match'
-                                ]" label="Repeat password" required
+                                        (v: string) => v === data.password || $t('page.register.fields.password-repeat.not-match')
+                                    ]"
+                                       :label="$t('page.register.fields.password-repeat.label')"
+                                       required
                                        type="password"
                                        @validationChange="validationChange"/>
                             </template>
@@ -46,33 +52,34 @@
                                 <Button :align="'center'" :disabled="!isValid" :loading="data.sending" fluid
                                         type="submit"
                                         @click="onSubmit">
-                                    Register
+                                    <span v-t>page.register.register</span>
                                 </Button>
                             </template>
                         </Form>
 
                         <div class="mt-2">
-                            <p class="text-center">After registration, you will be asked to confirm your registration
-                                using the link in the
-                                entered e-mail.</p>
+                            <p class="text-center" v-t>page.register.after-register</p>
+
+                            <p class="text-center mt-1" v-t>page.register.by-registering</p>
+                            <!-- TODO: Add links to conditions of use and privacy policy -->
 
                             <p class="text-center mt-1">
-                                By registering you agree to <a>conditions of use</a> and <a>privacy policy</a>.
-                            </p><!-- TODO: Add links to conditions of use and privacy policy -->
-
-                            <p class="text-center mt-1">
-                                Already have an account?
-                                <router-link :to="{ name: 'Authentication' }">Sign in here.</router-link>
+                                <span v-t>page.register.already-account</span>
+                                &nbsp;
+                                <router-link :to="{ name: 'Authentication' }">
+                                    <span v-t>page.register.sign-in</span>
+                                </router-link>
                             </p>
                         </div>
                     </div>
                     <div v-else>
-                        <p class="title">Registrace byla úspěšná</p>
+                        <p class="title" v-t>page.register.success.title</p>
 
-                        <p>Na e-mail by Vám měl dorazit odkaz pro potvrzení registrace. Po potvrzení se můžete
-                            přihlásit.</p>
+                        <p v-t>page.register.success.message</p>
 
-                        <Button :to="{ name: 'Authentication' }" class="mt-1" fluid>Přihlásit se</Button>
+                        <Button :to="{ name: 'Authentication' }" class="mt-1" fluid>
+                            <span v-t>page.register.success.sign-in</span>
+                        </Button>
                     </div>
                 </TransitionGroup>
             </Card>
@@ -85,9 +92,10 @@ import {reactive} from "vue";
 import {useAuthenticationStore} from "@/stores/authentication";
 import Card from "@/components/design/card/Card.vue";
 import {useHead} from "unhead";
+import {$t} from "@/translation/Translation";
 
 useHead({
-    title: 'Account registration'
+    title: $t("page.register.title")
 });
 
 const data = reactive({
@@ -110,7 +118,7 @@ const handle = async () => {
 
     if (!response) {
         data.sending = false;
-        data.error = 'Registration failed. An account with this e-mail probably already exists. Try different e-mail.';
+        data.error = $t('page.register.fail.failed');
         return;
     } else {
         data.error = '';
