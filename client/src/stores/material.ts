@@ -122,6 +122,32 @@ export const useMaterialStore = defineStore("material", () => {
         return material;
     }
 
+    const savePreferences = async (preferences: any) => {
+        if(!authenticationStore.parsed) {
+            throw new Error("No user logged in");
+        }
+
+        const response = await api.preferences.update(authenticationStore.parsed.id, preferences);
+
+        if (!response) {
+            throw new Error("Failed to save preferences");
+        }
+    }
+
+    const getPreferences = async () => {
+        if(!authenticationStore.parsed) {
+            throw new Error("No user logged in");
+        }
+
+        const response = await api.preferences.forUser(authenticationStore.parsed.id);
+
+        if (!response) {
+            throw new Error("Failed to get preferences");
+        }
+
+        return response.preferences;
+    }
+
     return {
         materials,
         currentMaterial,
@@ -130,6 +156,8 @@ export const useMaterialStore = defineStore("material", () => {
         createMaterial,
         save,
         deleteMaterial,
-        copyMaterial
+        copyMaterial,
+        savePreferences,
+        getPreferences
     }
 });

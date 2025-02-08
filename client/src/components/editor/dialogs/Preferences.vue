@@ -50,11 +50,13 @@
 
 import NavigationButton from "@/components/design/navigation/NavigationButton.vue";
 import Editor from "@/editor/Editor";
-import {computed, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import EditorPreferences from "@/editor/EditorPreferences";
 import ListItem from "@/components/design/list/ListItem.vue";
 import Checkbox from "@/components/design/checkbox/Checkbox.vue";
 import {$t} from "@/translation/Translation";
+import {useEditorStore} from "@/stores/editor";
+import {useMaterialStore} from "@/stores/material";
 
 const props = defineProps<{
     editor: Editor | undefined
@@ -159,17 +161,48 @@ watch(preferences, (value) => {
 
 const dialog = ref(false);
 
-const save = () => {
+const materialStore = useMaterialStore();
+const save = async() => {
     const newPreferences = {} as any;
 
-    for (const property in values.value) {
-        newPreferences[property] = values.value[property];
+    for (const key in values.value) {
+        let property = properties.find(p => p.key === key);
+
+        if (!property) continue;
+
+        if ((property.validator ?? []).some(v => v(values.value[key]) !== true)) {
+            return;
+        }
+
+        let value = values.value[key];
+
+        if (properties.find(p => p.key === key)?.type === 'number') {
+            value = parseInt(value);
+        }
+
+        newPreferences[key] = value;
     }
 
     props.editor!.setPreferences(newPreferences);
 
+    // Save to server
+    await materialStore.savePreferences(props.editor!.getPreferences());
+
     dialog.value = false;
 };
+
+const editorStore = useEditorStore();
+watch(() => editorStore.getEditor(), async(editor) => {
+    const preferences = await materialStore.getPreferences();
+
+    if (!preferences) return;
+
+    for (const property in preferences) {
+        values.value[property] = preferences[property as keyof EditorPreferences];
+    }
+
+    await save();
+});
 </script>
 
 <style lang="scss" scoped>

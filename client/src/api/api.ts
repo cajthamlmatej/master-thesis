@@ -2,6 +2,7 @@ import {useAuthenticationStore} from "@/stores/authentication";
 import {AuthenticationRepository} from "./repository/authentication"
 import {UserRepository} from "@/api/repository/user";
 import {MaterialRepository} from "@/api/repository/material";
+import {PreferencesRepository} from "@/api/repository/preferences";
 
 
 /**
@@ -13,6 +14,7 @@ class Api {
     public auth: AuthenticationRepository;
     public user: UserRepository;
     public material: MaterialRepository;
+    public preferences: PreferencesRepository;
 
     constructor() {
         this.base = import.meta.env.VITE_API_BASE || 'http://localhost:3000/';
@@ -20,6 +22,7 @@ class Api {
         this.auth = new AuthenticationRepository();
         this.user = new UserRepository();
         this.material = new MaterialRepository();
+        this.preferences = new PreferencesRepository();
     }
 
     /**
