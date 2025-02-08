@@ -2,6 +2,9 @@
     "web": {
         "name": "Mattelight"
     },
+    "unit": {
+        "ms": "ms"
+    },
     "components": {
         "pagination": {
             "previous": "Previous",
@@ -297,6 +300,140 @@
             "unlock": {
                 "label": "Unlock"
             }
+        }
+    },
+    "blocks": {
+        "interactiveArea": {
+            "warning": "This will not be visible in the player."
+        },
+        "shape": {
+            "ladder": "Ladder",
+            "crescent": "Crescent",
+            "hexagon": "Hexagon",
+            "pentagon": "Pentagon",
+            "heart": "Heart",
+            "star": "Star",
+            "egg": "Egg",
+            "arrow-1": "Arrow 1",
+            "triangle": "Triangle",
+            "rectangle": "Rectangle",
+            "ellipse": "Ellipse",
+
+            "property": {
+                "color": {
+                    "label": "Color"
+                },
+                "shape": {
+                    "label": "Shape"
+                }
+            }
+        },
+        "text": {
+            "property": {
+                "formatting": {
+                    "label": "Formatting"
+                }
+            }
+        }
+    },
+    "property": {
+        "interactivity": {
+            "label": "Interactivity",
+            "event": {
+                "label": "Event",
+                "CLICKED": "Clicked",
+                "HOVER_START": "Hover start",
+                "HOVER_END": "Hover end",
+                "TIMER": "Timer"
+            },
+            "timer": {
+                "label": "When",
+                "TIMEOUT": "Timeout",
+                "REPEAT": "Repeat",
+                "TIMEOUT-selected": "After",
+                "REPEAT-selected": "Every"
+            },
+            "action": {
+                "label": "Do",
+                "CHANGE_PROPERTY": "Change property",
+                "RESET_PROPERTY": "Reset property",
+                "CHANGE_SLIDE": "Change slide",
+                "CHANGE_VARIABLE": "Change variable"
+            },
+            "on": {
+                "label": "On",
+                "SELF": "Self",
+                "ALL": "All on slide",
+                "SELECTED": "Selected",
+                "blocks": "Blocks"
+            },
+            "property": {
+                "label": "Property",
+                "ALL": "All properties",
+                "value": "Value",
+                "relative": "Relative"
+            },
+            "animate": {
+                "label": "Animate",
+                "duration": "Duration",
+                "easing": "Easing",
+                "easings": {
+                    "LINEAR": "Linear",
+                    "EASE_IN": "Ease in",
+                    "EASE_OUT": "Ease out",
+                    "EASE_IN_OUT": "Ease in out",
+                    "EASE": "Ease",
+                    "STEPS_4": "Steps 4",
+                    "STEPS_6": "Steps 6",
+                    "STEPS_8": "Steps 8",
+                    "STEPS_10": "Steps 10"
+                }
+            },
+            "slide": {
+                "label": "Slide",
+                "NEXT": "Next",
+                "PREVIOUS": "Previous",
+                "FIRST": "First",
+                "LAST": "Last",
+                "RANDOM": "Random",
+                "SLIDE": "Slide",
+                "index": "Slide index"
+            },
+            "variable": {
+                "name": "Variable name",
+                "operator": "Operator",
+                "EQUALS": "Equals",
+                "NOT_EQUALS": "Not equals",
+                "value": "Value"
+            },
+            "condition": {
+                "label": "Only if",
+                "ALWAYS": "Always",
+                "TIME_PASSED": "Time passed",
+                "VARIABLE": "Variable"
+            },
+            "time-passed": {
+                "label": "Time from",
+                "OPEN": "From the material",
+                "SLIDE": "From the slide",
+                "time": "Time"
+            }
+        },
+        "opacity": {
+            "label": "Opacity"
+        },
+        "position": {
+            "label": "Position",
+            "x": "X",
+            "y": "Y"
+        },
+        "rotation": {
+            "label": "Rotation"
+        },
+        "size": {
+            "label": "Size",
+            "width": "W",
+            "height": "H"
         }
     }
 }

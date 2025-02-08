@@ -2,6 +2,9 @@
     "web": {
         "name": "Mattelight"
     },
+    "unit": {
+        "ms": "ms"
+    },
     "components": {
         "pagination": {
             "previous": "Předchozí",
@@ -300,6 +303,139 @@
             "unlock": {
                 "label": "Odemknout"
             }
+        }
+    },
+    "blocks": {
+        "interactiveArea": {
+            "warning": "Toto nebude viditelné v přehrávači."
+        },
+        "shape": {
+            "ladder": "Žebřík",
+            "crescent": "Půlměsíc",
+            "hexagon": "Šestiúhelník",
+            "pentagon": "Pětiúhelník",
+            "heart": "Srdce",
+            "star": "Hvězda",
+            "egg": "Vejce",
+            "arrow-1": "Šipka 1",
+            "triangle": "Trojúhelník",
+            "rectangle": "Obdélník",
+            "ellipse": "Elipsa",
+            "property": {
+                "color": {
+                    "label": "Barva"
+                },
+                "shape": {
+                    "label": "Tvar"
+                }
+            }
+        },
+        "text": {
+            "property": {
+                "formatting": {
+                    "label": "Formátování"
+                }
+            }
+        }
+    },
+    "property": {
+        "interactivity": {
+            "label": "Interaktivita",
+            "event": {
+                "label": "Událost",
+                "CLICKED": "Kliknuto",
+                "HOVER_START": "Začátek najetí",
+                "HOVER_END": "Konec najetí",
+                "TIMER": "Časovač"
+            },
+            "timer": {
+                "label": "Kdy",
+                "TIMEOUT": "Po uplynutí",
+                "REPEAT": "Opakování",
+                "TIMEOUT-selected": "Po",
+                "REPEAT-selected": "Každých"
+            },
+            "action": {
+                "label": "Akce",
+                "CHANGE_PROPERTY": "Změnit vlastnost",
+                "RESET_PROPERTY": "Resetovat vlastnost",
+                "CHANGE_SLIDE": "Změnit snímek",
+                "CHANGE_VARIABLE": "Změnit proměnnou"
+            },
+            "on": {
+                "label": "Na",
+                "SELF": "Sebe",
+                "ALL": "Všechny na snímku",
+                "SELECTED": "Vybrané",
+                "blocks": "Bloky"
+            },
+            "property": {
+                "label": "Vlastnost",
+                "ALL": "Všechny vlastnosti",
+                "value": "Hodnota",
+                "relative": "Relativní"
+            },
+            "animate": {
+                "label": "Animace",
+                "duration": "Doba trvání",
+                "easing": "Změkčení",
+                "easings": {
+                    "LINEAR": "Lineární",
+                    "EASE_IN": "Zrychlení",
+                    "EASE_OUT": "Zpomalení",
+                    "EASE_IN_OUT": "Zrychlení a zpomalení",
+                    "EASE": "Změkčení",
+                    "STEPS_4": "4 kroky",
+                    "STEPS_6": "6 kroků",
+                    "STEPS_8": "8 kroků",
+                    "STEPS_10": "10 kroků"
+                }
+            },
+            "slide": {
+                "label": "Snímek",
+                "NEXT": "Další",
+                "PREVIOUS": "Předchozí",
+                "FIRST": "První",
+                "LAST": "Poslední",
+                "RANDOM": "Náhodný",
+                "SLIDE": "Snímek",
+                "index": "Index snímku"
+            },
+            "variable": {
+                "name": "Název proměnné",
+                "operator": "Operátor",
+                "EQUALS": "Rovná se",
+                "NOT_EQUALS": "Nerovná se",
+                "value": "Hodnota"
+            },
+            "condition": {
+                "label": "Pouze pokud",
+                "ALWAYS": "Vždy",
+                "TIME_PASSED": "Uplynulý čas",
+                "VARIABLE": "Proměnná"
+            },
+            "time-passed": {
+                "label": "Čas od otevření",
+                "OPEN": "Materiálu",
+                "SLIDE": "Snímku",
+                "time": "Čas"
+            }
+        },
+        "opacity": {
+            "label": "Průhlednost"
+        },
+        "position": {
+            "label": "Pozice",
+            "x": "X",
+            "y": "Y"
+        },
+        "rotation": {
+            "label": "Rotace"
+        },
+        "size": {
+            "label": "Velikost",
+            "width": "Š",
+            "height": "V"
         }
     }
 }
