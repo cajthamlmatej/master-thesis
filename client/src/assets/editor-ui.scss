@@ -71,6 +71,7 @@
                         flex-direction: row;
                         align-items: center;
                     }
+
                     &--wrap {
                         flex-wrap: wrap;
                         justify-content: space-between;
@@ -95,6 +96,7 @@
                             }
                         }
                     }
+
                     > button {
                         background-color: var(--color-primary);
                         color: var(--color-text);
@@ -147,6 +149,7 @@
                             flex-shrink: 0;
                             flex-grow: 0;
                         }
+
                         > .value {
                             width: 60%;
                             flex-shrink: 1;
@@ -393,6 +396,7 @@
                             }
 
                             position: relative;
+
                             &:after {
                                 position: absolute;
                                 content: "";

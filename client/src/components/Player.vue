@@ -1,11 +1,11 @@
 <template>
     <div class="player-container">
-        <div class="player" ref="playerElement" v-once v-html="''" :key="'player'">
+        <div v-once :key="'player'" ref="playerElement" class="player" v-html="''">
         </div>
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import {onMounted, onUnmounted, ref, watch} from "vue";
 import Player from "@/editor/player/Player";
 import {usePlayerStore} from "@/stores/player";
@@ -49,7 +49,7 @@ onUnmounted(() => {
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .player-container {
     user-select: none;
     width: 100%;

@@ -19,11 +19,11 @@ export function synchronizeCssStyles(src: HTMLElement, destination: HTMLElement,
 function cloneComputed(src: HTMLElement, destination: HTMLElement) {
     const baseStyle = document.defaultView?.getComputedStyle(src, null);
 
-    if(!baseStyle) return;
+    if (!baseStyle) return;
 
     const keys = Object.keys(baseStyle);
 
-    for(let key of keys) {
+    for (let key of keys) {
         const value = baseStyle.getPropertyValue(key);
         destination.style.setProperty(key, value);
     }

@@ -25,14 +25,14 @@ export abstract class AggregatorProperty<T extends EditorBlock = EditorBlock> ex
 
         const aggregator = this.element.querySelector<HTMLDivElement>('[data-property="aggregator"]')!;
 
-        for(let clazz of this.properties) {
+        for (let clazz of this.properties) {
             const property = new clazz();
 
             const element = document.createElement("div");
             element.classList.add("property");
             property.initialize(element, this.editorProperty, this.blocks);
 
-            if(!property.isVisible()) {
+            if (!property.isVisible()) {
                 continue;
             }
             aggregator.appendChild(element);

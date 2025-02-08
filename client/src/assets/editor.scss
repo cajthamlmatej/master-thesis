@@ -44,15 +44,19 @@
                     outline: var(--selector-size) ridge rgba(0, 0, 0, 0.24);
                 }
             }
+
             &--resizable {
             }
+
             &--rotatable {
             }
+
             &--movable {
                 &.block--selected {
                     cursor: move;
                 }
             }
+
             &--hover.block--selectable:not(&.block--locked) {
                 outline: var(--selector-size) ridge rgba(0, 0, 0, 0.24);
             }
@@ -73,6 +77,7 @@
                 font-size: 24px;
                 font-family: sans-serif;
             }
+
             &--type-text {
                 font-variant: normal;
                 font-family: Helvetica, sans-serif !important;
@@ -84,10 +89,12 @@
                         display: inline;
                     }
                 }
+
                 ul {
                     list-style-type: disc;
                 }
             }
+
             &--type-image {
                 img {
                     display: block;
@@ -104,6 +111,7 @@
                     -ms-user-select: none;
                 }
             }
+
             &--type-shape {
                 svg {
                     display: block;
@@ -135,6 +143,7 @@
                     }
                 }
             }
+
             &--type-interactiveArea {
                 position: relative;
                 cursor: pointer;
@@ -179,6 +188,7 @@
                     transform: translate(-50%, -50%);
                 }
             }
+
             &--type-mermaid {
                 &:not(&--editable) {
                     > .block-content {
@@ -267,6 +277,7 @@
                     border-bottom: 0;
                 }
             }
+
             &--bottom {
                 height: calc(2 * var(--selector-size));
                 width: 100%;
@@ -285,6 +296,7 @@
                     border-top: 0;
                 }
             }
+
             &--left {
                 width: calc(2 * var(--selector-size));
                 height: 100%;
@@ -303,6 +315,7 @@
                     border-right: 0;
                 }
             }
+
             &--right {
                 width: calc(2 * var(--selector-size));
                 height: 100%;
@@ -327,8 +340,8 @@
             --selector-size: calc(0.5 * var(--vh, 1vh) / var(--scale));
             display: none;
             position: absolute;
-            width: calc(4*var(--selector-size));
-            height: calc(4*var(--selector-size));
+            width: calc(4 * var(--selector-size));
+            height: calc(4 * var(--selector-size));
             border-radius: 50%;
             background-color: rgba(0, 0, 0, 1);
             pointer-events: auto;
@@ -338,39 +351,46 @@
                 right: calc(-1 * 2 * var(--selector-size));
                 cursor: ne-resize;
             }
+
             &--top-left {
                 top: calc(-1 * 2 * var(--selector-size));
                 left: calc(-1 * 2 * var(--selector-size));
                 cursor: nw-resize;
             }
+
             &--bottom-right {
                 bottom: calc(-1 * 2 * var(--selector-size));
                 right: calc(-1 * 2 * var(--selector-size));
                 cursor: se-resize;
             }
+
             &--bottom-left {
                 bottom: calc(-1 * 2 * var(--selector-size));
                 left: calc(-1 * 2 * var(--selector-size));
                 cursor: sw-resize;
             }
+
             &--middle-right {
                 top: 50%;
                 right: calc(-1 * 2 * var(--selector-size));
                 transform: translateY(-50%);
                 cursor: e-resize;
             }
+
             &--middle-left {
                 top: 50%;
                 left: calc(-1 * 2 * var(--selector-size));
                 transform: translateY(-50%);
                 cursor: w-resize;
             }
+
             &--top-middle {
                 top: calc(-1 * 2 * var(--selector-size));
                 left: 50%;
                 transform: translateX(-50%);
                 cursor: n-resize;
             }
+
             &--bottom-middle {
                 bottom: calc(-1 * 2 * var(--selector-size));
                 left: 50%;
@@ -404,6 +424,7 @@
                 display: block;
             }
         }
+
         //&:not(&--move) {
         //    border: 4px dashed rgba(0, 0, 0, 0.2);;
         //}
@@ -413,11 +434,13 @@
                 display: block;
             }
         }
+
         &--non-proportional-resizing-x {
             > .resize--middle-left, > .resize--middle-right {
                 display: block;
             }
         }
+
         &--non-proportional-resizing-y {
             > .resize--top-middle, > .resize--bottom-middle {
                 display: block;

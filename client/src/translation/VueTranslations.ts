@@ -1,6 +1,5 @@
 import {App} from "vue";
 import {translation} from "@/translation/Translation";
-import {Router} from "vue-router";
 
 export const setupTranslations = (Vue: App<Element>) => {
     Vue.directive("t", {
@@ -12,7 +11,7 @@ export const setupTranslations = (Vue: App<Element>) => {
 
             let variables = {} as Record<string, string | (() => string)>;
 
-            for(const key in binding.value) {
+            for (const key in binding.value) {
                 variables[key] = binding.value[key];
             }
 
@@ -23,7 +22,7 @@ export const setupTranslations = (Vue: App<Element>) => {
 
             let variables = {} as Record<string, string | (() => string)>;
 
-            for(const key in binding.value) {
+            for (const key in binding.value) {
                 variables[key] = binding.value[key];
             }
 
@@ -35,9 +34,9 @@ export const setupTranslations = (Vue: App<Element>) => {
     const urlParts = url.split("/");
     const language = urlParts[3];
 
-    if(!language) return;
+    if (!language) return;
 
-    if(!translation.doesLanguageExist(language)) {
+    if (!translation.doesLanguageExist(language)) {
         console.error("[Translation] Language not found: " + language + ". Redirecting to default language.");
 
         window.location.href = url.replace(urlParts[3], "en");

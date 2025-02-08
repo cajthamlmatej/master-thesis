@@ -9,6 +9,8 @@ import {generateUUID} from "@/utils/Generators";
 export class MermaidEditorBlock extends EditorBlock {
     @BlockSerialize("content")
     private content: string = "";
+    private editable: boolean = true;
+    private removed = false;
 
     constructor(base: BlockConstructorWithoutType, content: string) {
         super({
@@ -17,9 +19,6 @@ export class MermaidEditorBlock extends EditorBlock {
         });
         this.content = content;
     }
-
-    private editable: boolean = true;
-    private removed = false;
 
     override render(): HTMLElement {
         const element = document.createElement("div");

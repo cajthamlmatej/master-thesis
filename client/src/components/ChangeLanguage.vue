@@ -1,7 +1,7 @@
 <template>
     <Dialog>
         <template #activator="{ toggle }">
-            <NavigationButton icon="translate-variant" @click="toggle" :label="language"></NavigationButton>
+            <NavigationButton :label="language" icon="translate-variant" @click="toggle"></NavigationButton>
         </template>
         <template #default>
             <Card dialog>
@@ -9,8 +9,8 @@
 
                 <List>
                     <ListItem v-for="language in translation.getLanguages()"
-                              hover
                               :active="translation.getLanguage() == language.code"
+                              hover
                               @click="changeLanguage(language.code)">
                         {{ language.label }}
                     </ListItem>
@@ -20,7 +20,7 @@
     </Dialog>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import NavigationButton from "@/components/design/navigation/NavigationButton.vue";
 import {ref} from "vue";
 import {translation} from "@/translation/Translation";
@@ -47,6 +47,6 @@ const changeLanguage = (code: string) => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 
 </style>

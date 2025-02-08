@@ -47,7 +47,7 @@ export class ShapePlayerBlock extends PlayerBlock {
 
         const shape = shapes.find(s => s.name === this.shape);
 
-        if(!shape) {
+        if (!shape) {
             console.error("[ShapeEditorBlock] Shape not found: " + this.shape);
             // Render red error box with red text
             content.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -59,30 +59,9 @@ export class ShapePlayerBlock extends PlayerBlock {
 
         content.innerHTML = shape.html;
         content.className = "block-content";
-        for(const c of shape.class || [])
+        for (const c of shape.class || [])
             content.classList.add(c);
     }
-
-    private stepsEasing = (steps: number, jumpType = "end") => (t: number) => {
-        const stepSize = 1 / steps;
-        if (jumpType === "start") {
-            return Math.ceil(t / stepSize) * stepSize;
-        } else {
-            return Math.floor(t / stepSize) * stepSize;
-        }
-    };
-
-    private animations = {
-        LINEAR: (t) => t,
-        EASE_IN: (t) => t * t,
-        EASE_OUT: (t) => t * (2 - t),
-        EASE_IN_OUT: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
-        EASE: (t) => 3 * t * t - 2 * t * t * t,
-        STEPS_4: this.stepsEasing(4, "end"),
-        STEPS_6: this.stepsEasing(6, "end"),
-        STEPS_8: this.stepsEasing(8, "end"),
-        STEPS_10: this.stepsEasing(10, "end"),
-    } as Record<keyof typeof BlockInteractivityEasings, (t: number) => number>;
 
     override getInteractivityProperties(): BlockInteractiveProperty[] {
         return [
@@ -98,7 +77,7 @@ export class ShapePlayerBlock extends PlayerBlock {
                         const content = this.element.querySelector(".block-content")! as HTMLElement;
                         const fnc = this.animations[easing as keyof typeof BlockInteractivityEasings];
                         let start: number | null = null;
-                        const step = (timestamp: number)=> {
+                        const step = (timestamp: number) => {
                             if (!start) start = timestamp;
                             let progress = (timestamp - start) / duration;
                             if (progress > 1) progress = 1;
@@ -138,6 +117,26 @@ export class ShapePlayerBlock extends PlayerBlock {
         ]
     }
 
+    private stepsEasing = (steps: number, jumpType = "end") => (t: number) => {
+        const stepSize = 1 / steps;
+        if (jumpType === "start") {
+            return Math.ceil(t / stepSize) * stepSize;
+        } else {
+            return Math.floor(t / stepSize) * stepSize;
+        }
+    };
+
+    private animations = {
+        LINEAR: (t) => t,
+        EASE_IN: (t) => t * t,
+        EASE_OUT: (t) => t * (2 - t),
+        EASE_IN_OUT: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
+        EASE: (t) => 3 * t * t - 2 * t * t * t,
+        STEPS_4: this.stepsEasing(4, "end"),
+        STEPS_6: this.stepsEasing(6, "end"),
+        STEPS_8: this.stepsEasing(8, "end"),
+        STEPS_10: this.stepsEasing(10, "end"),
+    } as Record<keyof typeof BlockInteractivityEasings, (t: number) => number>;
 
     private interpolateColor(color1: string, color2: string, factor: number) {
         const c1 = this.hexToRgb(color1);

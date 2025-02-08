@@ -4,11 +4,11 @@
         </template>
 
         <template #navigation>
-            <History />
+            <History/>
 
-            <Save />
+            <Save/>
 
-            <Preferences :editor="editor" />
+            <Preferences :editor="editor"/>
 
             <NavigationButton :disabled="true"
                               hide-mobile icon="share-variant-outline"
@@ -16,38 +16,38 @@
                               tooltip-position="bottom"
                               tooltip-text="Share & Export"></NavigationButton>
 
-            <NavigationButton :to="{ name: 'Player', params: { material: $route.params.material } }"
-                              hide-mobile icon="presentation"
-                              :label="$t('editor.navigation.preview')"
-                              :tooltip-text="$t('editor.navigation.preview')"
+            <NavigationButton :label="$t('editor.navigation.preview')"
+                              :to="{ name: 'Player', params: { material: $route.params.material } }" :tooltip-text="$t('editor.navigation.preview')"
+                              hide-mobile
+                              icon="presentation"
                               tooltip-position="bottom"></NavigationButton>
 
-            <ChangeLanguage />
+            <ChangeLanguage/>
 
             <NavigationButton
-                              hide-mobile icon="solar-panel"
-                              :label="$t('editor.navigation.dashboard')"
-                              :tooltip-text="$t('editor.navigation.dashboard')"
-                              :to="{name: 'Dashboard'}"
-                              tooltip-position="bottom"></NavigationButton>
+                :label="$t('editor.navigation.dashboard')" :to="{name: 'Dashboard'}"
+                :tooltip-text="$t('editor.navigation.dashboard')"
+                hide-mobile
+                icon="solar-panel"
+                tooltip-position="bottom"></NavigationButton>
         </template>
     </Header>
 
     <Navigation v-model:menu="data.menu" primary secondary-active>
         <template #primary>
-            <NavigationButton icon="cards-variant"
-                              :label="$t('editor.panel.slides.title')"
+            <NavigationButton :label="$t('editor.panel.slides.title')"
                               :tooltip-text="$t('editor.panel.slides.title')"
+                              icon="cards-variant"
                               @click="slidesMenu = !slidesMenu"></NavigationButton>
-            <NavigationButton icon="plus-box-outline"
-                              :label="$t('editor.panel.blocks.title')"
+            <NavigationButton :label="$t('editor.panel.blocks.title')"
                               :tooltip-text="$t('editor.panel.blocks.title')"
+                              icon="plus-box-outline"
                               @click="blockMenu = !blockMenu"></NavigationButton>
         </template>
         <template #secondary>
-            <NavigationButton icon="fit-to-screen-outline"
-                              :label="$t('editor.ui.fit-to-screen')"
+            <NavigationButton :label="$t('editor.ui.fit-to-screen')"
                               :tooltip-text="$t('editor.ui.fit-to-screen')"
+                              icon="fit-to-screen-outline"
                               @click="fitToScreen"></NavigationButton>
             <NavigationButton
                 :icon="`mdi ${mode === EditorMode.SELECT ? 'mdi mdi-cursor-move' : 'mdi mdi-cursor-default'}`"
@@ -57,11 +57,11 @@
         </template>
     </Navigation>
 
-    <Slides v-model:value="slidesMenu" ></Slides>
-    <Blocks v-model:value="blockMenu" ></Blocks>
-    <Properties v-model:value="propertiesMenu" ></Properties>
+    <Slides v-model:value="slidesMenu"></Slides>
+    <Blocks v-model:value="blockMenu"></Blocks>
+    <Properties v-model:value="propertiesMenu"></Properties>
 
-    <Keybinds :editor="editor" v-if="editor"></Keybinds>
+    <Keybinds v-if="editor" :editor="editor"></Keybinds>
 
     <router-view v-slot="{ Component, route }">
         <transition mode="out-in" name="fade-ease">
@@ -78,12 +78,10 @@ import Slides from "@/components/editor/panels/Slides.vue";
 import Blocks from "@/components/editor/panels/Blocks.vue";
 import {useEditorStore} from "@/stores/editor";
 import {EditorMode} from "@/editor/EditorMode";
-import {Plugin} from "@/editor/plugin/Plugin";
 import Properties from "@/components/editor/panels/Properties.vue";
 import Keybinds from "@/components/editor/dialogs/Keybinds.vue";
 import type Editor from "@/editor/Editor";
 import Preferences from "@/components/editor/dialogs/Preferences.vue";
-import {api} from "@/api/api";
 import {useRoute, useRouter} from "vue-router";
 import {useMaterialStore} from "@/stores/material";
 import Save from "@/components/editor/Save.vue";
@@ -108,13 +106,13 @@ const blockMenu = ref(false);
 const propertiesMenu = ref(false);
 
 watch(() => slidesMenu.value, (value) => {
-    if(slidesMenu.value) {
+    if (slidesMenu.value) {
         blockMenu.value = false;
         // propertiesMenu.value = false;
     }
 });
 watch(() => blockMenu.value, (value) => {
-    if(blockMenu.value) {
+    if (blockMenu.value) {
         slidesMenu.value = false;
         // propertiesMenu.value = false;
     }
@@ -128,7 +126,7 @@ watch(() => blockMenu.value, (value) => {
 
 const handleClick = (event: MouseEvent) => {
     if (event.target instanceof HTMLElement) {
-        if(!event.target.closest(".editor-view")) return;
+        if (!event.target.closest(".editor-view")) return;
 
         slidesMenu.value = false;
         blockMenu.value = false;
@@ -138,21 +136,21 @@ const handleClick = (event: MouseEvent) => {
 const route = useRoute();
 const router = useRouter();
 
-onMounted(async() => {
+onMounted(async () => {
     window.addEventListener("click", handleClick);
 
     await materialStore.load();
 
     let materialId = route.params.material as string;
 
-    if(materialId === 'new') {
+    if (materialId === 'new') {
         const material = await materialStore.createMaterial();
         materialId = material.id;
 
         await router.replace({name: 'Editor', params: {material: material.id}});
     }
 
-    if(materialId) {
+    if (materialId) {
         await materialStore.loadMaterial(materialId);
     }
 
@@ -176,7 +174,7 @@ watch(() => editorStore.getEditor(), (value) => {
 const changeMode = () => {
     const editor = editorStore.getEditor();
 
-    if(!editor) return;
+    if (!editor) return;
 
     const m = editor.getMode();
 
@@ -186,19 +184,19 @@ const changeMode = () => {
 const fitToScreen = () => {
     const editor = editorStore.getEditor();
 
-    if(!editor) return;
+    if (!editor) return;
 
     editor.fitToParent();
 };
 
-onMounted(async() => {
+onMounted(async () => {
     // PLUGIN TEST
     let started = false;
 
     watch(() => editorStore.getEditor(), () => {
-        if(!editorStore.getEditor()) return;
+        if (!editorStore.getEditor()) return;
 
-        if(started) return;
+        if (started) return;
 
         started = true;
 

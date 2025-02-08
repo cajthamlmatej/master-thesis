@@ -118,6 +118,7 @@ header {
     &.header--active {
         top: 0;
     }
+
     &.header--fixed {
         position: fixed;
     }

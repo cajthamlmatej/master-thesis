@@ -1,4 +1,3 @@
-import {Property} from "@/editor/property/Property";
 import {NumberProperty} from "@/editor/property/type/NumberProperty";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 import {$t} from "@/translation/Translation";
@@ -17,7 +16,7 @@ export class RotationProperty<T extends EditorBlock = EditorBlock> extends Numbe
         super.setup();
 
         this.editorProperty.getEditor().events.BLOCK_ROTATION_CHANGED.on((data) => {
-            if(data.manual)
+            if (data.manual)
                 return;
 
             this.processRecalculateValues();

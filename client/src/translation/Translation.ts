@@ -6,6 +6,7 @@ import en from "@/translation/data/en.json";
 import cs from "@/translation/data/cs.json";
 
 export class Translation {
+    public LANGUAGE_CHANGED: Event<string> = new Event();
     private languages: TranslationLanguage[] = [
         {
             label: 'English',
@@ -18,11 +19,8 @@ export class Translation {
             data: cs
         }
     ];
-
     private records: TranslationRecord[] = [];
     private language: string;
-
-    public LANGUAGE_CHANGED: Event<string> = new Event();
 
     constructor(language: string) {
         this.language = language;
@@ -30,42 +28,8 @@ export class Translation {
         this.load();
     }
 
-    private load(): void {
-        this.records = [];
-
-        const language = this.languages.find(language => language.code === this.language);
-
-        if(!language) {
-            console.error("Language not found: " + this.language);
-            return;
-        }
-
-        const recursive = (data: any, prefix: string) => {
-            for(const key in data) {
-                if(typeof data[key] === 'object') {
-                    recursive(data[key], prefix + key + '.');
-                } else {
-                    this.records.push({
-                        key: prefix + key,
-                        value: data[key]
-                    });
-                }
-            }
-        }
-
-        recursive(language.data, '');
-
-        console.log("[Translation] Loaded " + this.records.length + " records for language " + this.language);
-
-        console.groupCollapsed("Translation Records");
-        for(const record of this.records) {
-            console.log(record.key + ": " + record.value);
-        }
-        console.groupEnd();
-    }
-
     public changeLanguage(language: string): void {
-        if(this.language === language) {
+        if (this.language === language) {
             return;
         }
 
@@ -77,20 +41,20 @@ export class Translation {
     public get(key: string, variables?: Record<string, string | (() => string)>): string {
         const record = this.records.find(record => record.key === key);
 
-        if(!record) {
+        if (!record) {
             console.error("[Translation] Key not found: " + key + " in language " + this.language);
             return "$t_{" + key + "}";
         }
 
-        if(variables) {
+        if (variables) {
             let text = record.value;
 
-            for(const variable in variables) {
+            for (const variable in variables) {
                 const key = "%" + variable + "%";
 
-                let value= variables[variable];
+                let value = variables[variable];
 
-                if(typeof value === 'function') {
+                if (typeof value === 'function') {
                     value = value();
                 }
 
@@ -117,6 +81,40 @@ export class Translation {
 
     doesKeyExist(key: string) {
         return this.records.some(record => record.key === key);
+    }
+
+    private load(): void {
+        this.records = [];
+
+        const language = this.languages.find(language => language.code === this.language);
+
+        if (!language) {
+            console.error("Language not found: " + this.language);
+            return;
+        }
+
+        const recursive = (data: any, prefix: string) => {
+            for (const key in data) {
+                if (typeof data[key] === 'object') {
+                    recursive(data[key], prefix + key + '.');
+                } else {
+                    this.records.push({
+                        key: prefix + key,
+                        value: data[key]
+                    });
+                }
+            }
+        }
+
+        recursive(language.data, '');
+
+        console.log("[Translation] Loaded " + this.records.length + " records for language " + this.language);
+
+        console.groupCollapsed("Translation Records");
+        for (const record of this.records) {
+            console.log(record.key + ": " + record.value);
+        }
+        console.groupEnd();
     }
 }
 

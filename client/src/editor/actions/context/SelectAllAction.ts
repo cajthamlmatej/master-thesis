@@ -1,6 +1,5 @@
-import type {ActionParameters} from "@/editor/actions/EditorAction";
+import type {ActionKeybind, ActionParameters} from "@/editor/actions/EditorAction";
 import {ContextAction} from "@/editor/actions/ContextAction";
-import type {ActionKeybind} from "@/editor/actions/EditorAction";
 
 export class SelectAllAction extends ContextAction {
     constructor() {
@@ -14,7 +13,7 @@ export class SelectAllAction extends ContextAction {
     override run(param: ActionParameters) {
         param.editor.getSelector().deselectAllBlocks();
 
-        for(let block of param.editor.getBlocks()) {
+        for (let block of param.editor.getBlocks()) {
             param.editor.getSelector().selectBlock(block, true);
         }
     }

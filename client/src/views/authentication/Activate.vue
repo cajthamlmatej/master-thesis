@@ -2,7 +2,7 @@
     <Row justify="center">
         <Col :cols="12" :lg="8" :md="10" :sm="11" :xl="6">
             <Card fluid>
-                <p class="title" v-t>page.activate.activation</p>
+                <p v-t class="title">page.activate.activation</p>
 
                 <p v-if="success" v-t>page.activation.success</p>
                 <p v-else-if="loading" v-t>page.activation.loading</p>

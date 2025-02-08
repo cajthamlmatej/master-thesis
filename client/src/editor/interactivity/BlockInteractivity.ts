@@ -15,7 +15,9 @@ interface BlockInteractivityEventsTimerRepeat {
     timerType: 'REPEAT';
 }
 
-type BlockInteractivityEventsTimer = BlockInteractivityEventsTimerBase & (BlockInteractivityEventsTimerTimeout | BlockInteractivityEventsTimerRepeat);
+type BlockInteractivityEventsTimer =
+    BlockInteractivityEventsTimerBase
+    & (BlockInteractivityEventsTimerTimeout | BlockInteractivityEventsTimerRepeat);
 
 type BlockInteractivityEvents = BlockInteractivityEventsBase | BlockInteractivityEventsTimer;
 
@@ -36,7 +38,10 @@ interface BlockInteractivityConditionsVariable {
     ifVariableOperator: 'EQUALS' | 'NOT_EQUALS';
 }
 
-type BlockInteractivityConditions = BlockInteractivityConditionsBase | BlockInteractivityConditionsTimePassed | BlockInteractivityConditionsVariable;
+type BlockInteractivityConditions =
+    BlockInteractivityConditionsBase
+    | BlockInteractivityConditionsTimePassed
+    | BlockInteractivityConditionsVariable;
 
 // note(Matej): When changing this, dont forget that some blocks implement these easings in their code (for example Shape)
 export const BlockInteractivityEasings = {
@@ -64,6 +69,7 @@ interface BlockInteractivityActionChangeProperty {
     duration: number;
     easing: Easing;
 }
+
 interface BlockInteractivityActionResetProperty {
     action: 'RESET_PROPERTY';
     property: string | 'ALL';
@@ -102,10 +108,14 @@ interface BlockInteractivityBase {
     id: string;
 }
 
-export type BlockInteractivity = BlockInteractivityBase & BlockInteractivityEvents & BlockInteractivityConditions & BlockInteractivityAction;
+export type BlockInteractivity =
+    BlockInteractivityBase
+    & BlockInteractivityEvents
+    & BlockInteractivityConditions
+    & BlockInteractivityAction;
 
 export interface BlockInteractiveProperty {
     label: string,
     getBaseValue: () => any,
-    change: (value: any, relative: boolean, { animate, duration, easing }: { animate: boolean, duration: number, easing: string }) => void;
+    change: (value: any, relative: boolean, {animate, duration, easing}: { animate: boolean, duration: number, easing: string }) => void;
 }

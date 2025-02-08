@@ -1,5 +1,4 @@
 import {EditorBlock} from "@/editor/block/EditorBlock";
-import {generateUUID} from "@/utils/Generators";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 import {BlockInteractiveProperty} from "@/editor/interactivity/BlockInteractivity";
 import {Property} from "@/editor/property/Property";

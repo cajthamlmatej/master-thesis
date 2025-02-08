@@ -11,6 +11,7 @@ export class UserRepository extends Repository {
             "GET"
         );
     }
+
     //
     // async delete(user: string, data?: DeleteUserDTO) {
     //     return await this.makeRequest(

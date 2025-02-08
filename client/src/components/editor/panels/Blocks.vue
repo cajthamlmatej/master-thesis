@@ -1,18 +1,19 @@
 <template>
-    <Navigation v-model:menu="blocksMenu" shift full-control>
+    <Navigation v-model:menu="blocksMenu" full-control shift>
         <template #primary>
-            <div class="menu editor-blocks" ref="menu" v-show="blocksMenu">
+            <div v-show="blocksMenu" ref="menu" class="menu editor-blocks">
                 <button @mousedown="(e) => add(e, 'text')"><span class="mdi mdi-pencil-plus-outline"></span></button>
                 <button @mousedown="(e) => add(e, 'image')"><span class="mdi mdi-image-plus-outline"></span></button>
                 <button @mousedown="(e) => add(e, 'shape')"><span class="mdi mdi-shape-plus-outline"></span></button>
-                <button @mousedown="(e) => add(e, 'interactiveArea')"><span class="mdi mdi-cursor-default-click-outline"></span></button>
+                <button @mousedown="(e) => add(e, 'interactiveArea')"><span
+                    class="mdi mdi-cursor-default-click-outline"></span></button>
                 <button @mousedown="(e) => add(e, 'mermaid')"><span class="mdi mdi-chart-timeline"></span></button>
             </div>
         </template>
     </Navigation>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import {onMounted, ref, toRaw, watch} from "vue";
 import {useEditorStore} from "@/stores/editor";
@@ -168,6 +169,6 @@ const add = (event: MouseEvent, type: 'text' | 'image' | 'shape' | 'interactiveA
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 
 </style>

@@ -202,7 +202,6 @@
             "validation": {
                 "filled": "The value has to be filled",
                 "number": "The value has to be a number"
-
             },
             "KEEP_EDITOR_TO_FIT_PARENT": {
                 "label": "Keep editor to fit parent",
@@ -245,7 +244,6 @@
                 "alt": "Alt"
             },
             "key": {
-
             }
         },
         "action": {
@@ -318,7 +316,6 @@
             "triangle": "Triangle",
             "rectangle": "Rectangle",
             "ellipse": "Ellipse",
-
             "property": {
                 "color": {
                     "label": "Color"

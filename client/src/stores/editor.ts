@@ -1,11 +1,11 @@
 import {defineStore} from "pinia";
-import {computed, ref, toRaw, watch} from "vue";
+import {ref, toRaw, watch} from "vue";
 import Editor from "@/editor/Editor";
 import {generateUUID} from "@/utils/Generators";
 import {EditorDeserializer} from "@/editor/EditorDeserializer";
 import {EditorSerializer} from "@/editor/EditorSerializer";
 import {EditorProperty} from "@/editor/property/EditorProperty";
-import {toJpeg, toPng} from 'html-to-image';
+import {toJpeg} from 'html-to-image';
 import {useMaterialStore} from "@/stores/material";
 import {Slide} from "@/models/Material";
 import {synchronizeCssStyles} from "@/utils/SynchronizeCssStyles";
@@ -30,12 +30,12 @@ export const useEditorStore = defineStore("editor", () => {
 
     const activeSlide = ref<string | undefined>(undefined);
 
-    const requestEditor = async() => {
-        if(!materialStore.currentMaterial) {
+    const requestEditor = async () => {
+        if (!materialStore.currentMaterial) {
             throw new Error("No material loaded, cannot request editor");
         }
 
-        if(!slides.value.length) {
+        if (!slides.value.length) {
             newSlide();
         }
 
@@ -66,7 +66,7 @@ export const useEditorStore = defineStore("editor", () => {
     const setEditorPropertyElement = (element: HTMLElement) => {
         editorPropertyElement.value = element;
 
-        if(editorProperty.value) return;
+        if (editorProperty.value) return;
 
         editorProperty.value = new EditorProperty(toRaw(editor.value) as Editor, element);
     }
@@ -103,18 +103,18 @@ export const useEditorStore = defineStore("editor", () => {
             return a.position - b.position;
         });
 
-        for(let slide of slidePositions) {
+        for (let slide of slidePositions) {
             slide.slide.position = slidePositions.indexOf(slide);
         }
     }
 
     const saveCurrentSlideThumbnail = async () => {
-        if(!editorElement.value) return;
-        if(!editor.value) return;
+        if (!editorElement.value) return;
+        if (!editor.value) return;
 
         const slide = getActiveSlide();
 
-        if(!slide) return;
+        if (!slide) return;
 
         editor.value.getSelector().deselectAllBlocks();
 
@@ -143,11 +143,11 @@ export const useEditorStore = defineStore("editor", () => {
         {
             const iframes = element.querySelectorAll("iframe");
 
-            for(let iframe of iframes) {
+            for (let iframe of iframes) {
                 const newIframe = document.createElement("iframe");
                 const contentIframe = content.querySelector(`iframe[data-id="${iframe.getAttribute("data-id")}"]`) as HTMLIFrameElement | null;
 
-                if(!contentIframe) continue;
+                if (!contentIframe) continue;
 
                 iframe.replaceWith(newIframe);
 
@@ -243,7 +243,7 @@ export const useEditorStore = defineStore("editor", () => {
         let height = 800;
         const activeSlide = getActiveSlide();
 
-        if(activeSlide) {
+        if (activeSlide) {
             const size = activeSlide.getSize();
             width = size.width;
             height = size.height;
@@ -257,21 +257,21 @@ export const useEditorStore = defineStore("editor", () => {
         ))
     }
 
-    const removeSlide = async(slide: Slide) => {
-        if(slides.value.length === 1) {
+    const removeSlide = async (slide: Slide) => {
+        if (slides.value.length === 1) {
             return;
         }
 
         const index = slides.value.indexOf(slide);
         slides.value.splice(index, 1);
 
-        if(activeSlide.value === slide.id) {
+        if (activeSlide.value === slide.id) {
             await changeSlide(slides.value[0] as Slide);
         }
     }
 
-    const copySlide = async(slide: Slide) => {
-        if(activeSlide.value === slide.id) {
+    const copySlide = async (slide: Slide) => {
+        if (activeSlide.value === slide.id) {
             await saveCurrentSlide(false);
         }
 
@@ -279,7 +279,7 @@ export const useEditorStore = defineStore("editor", () => {
             generateUUID(),
             slide.data,
             slide.thumbnail,
-            slide.position-1
+            slide.position - 1
         );
 
         slides.value.push(newSlide);

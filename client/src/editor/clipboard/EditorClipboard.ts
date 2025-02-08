@@ -17,16 +17,52 @@ export class EditorClipboard {
         window.addEventListener("storage", this.storageEvent.bind(this));
     }
 
+    public markForCopy(blocks: EditorBlock[]) {
+        this.clipboard = this.serializeBlocks(blocks);
+
+        localStorage.setItem(this.key, JSON.stringify(this.clipboard));
+    }
+
+    public hasContent() {
+        return this.clipboard.length > 0;
+    }
+
+    public paste(position: { x: number, y: number } | undefined = undefined) {
+        if (!this.hasContent()) return;
+
+        let blocks = this.deserializeBlocks(this.clipboard);
+
+        if (!position) {
+            position = this.getTargetPosition(blocks);
+        }
+
+        const distances = this.getPastePositionWithRelativeOffset(blocks);
+
+        this.editor.getSelector().deselectAllBlocks();
+
+        for (const {diffX, diffY, block} of distances) {
+            this.editor.addBlock(block);
+
+            block.move(position.x + diffX, position.y + diffY);
+
+            this.editor.getSelector().selectBlock(block, true);
+        }
+    }
+
+    public clear() {
+        this.clipboard = [];
+    }
+
     private storageEvent(event: StorageEvent) {
-        if(event.storageArea !== localStorage) {
+        if (event.storageArea !== localStorage) {
             return;
         }
 
-        if(event.key !== this.key) {
+        if (event.key !== this.key) {
             return;
         }
 
-        if(!event.newValue) {
+        if (!event.newValue) {
             return;
         }
 
@@ -40,16 +76,6 @@ export class EditorClipboard {
     private deserializeBlocks(blocks: any[]) {
         const deserializer = new BlockRegistry(); // TODO: unify with others which use BlockRegistry
         return blocks.map(b => deserializer.deserializeEditor(b)).filter(b => b !== undefined);
-    }
-
-    public markForCopy(blocks: EditorBlock[]) {
-        this.clipboard = this.serializeBlocks(blocks);
-
-        localStorage.setItem(this.key, JSON.stringify(this.clipboard));
-    }
-
-    public hasContent() {
-        return this.clipboard.length > 0;
     }
 
     private getTargetPosition(blocks: EditorBlock[]) {
@@ -94,31 +120,5 @@ export class EditorClipboard {
                 block: b,
             }
         });
-    }
-
-    public paste(position: { x: number, y: number } | undefined = undefined) {
-        if(!this.hasContent()) return;
-
-        let blocks = this.deserializeBlocks(this.clipboard);
-
-        if (!position) {
-            position = this.getTargetPosition(blocks);
-        }
-
-        const distances = this.getPastePositionWithRelativeOffset(blocks);
-
-        this.editor.getSelector().deselectAllBlocks();
-
-        for (const {diffX, diffY, block} of distances) {
-            this.editor.addBlock(block);
-
-            block.move(position.x + diffX, position.y + diffY);
-
-            this.editor.getSelector().selectBlock(block, true);
-        }
-    }
-
-    public clear() {
-        this.clipboard = [];
     }
 }

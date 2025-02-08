@@ -1,4 +1,3 @@
-import {Property} from "@/editor/property/Property";
 import {NumberProperty} from "@/editor/property/type/NumberProperty";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 import {$t} from "@/translation/Translation";
@@ -17,7 +16,7 @@ export class OpacityProperty<T extends EditorBlock = EditorBlock> extends Number
         super.setup();
 
         this.editorProperty.getEditor().events.BLOCK_OPACITY_CHANGED.on((data) => {
-            if(data.manual)
+            if (data.manual)
                 return;
 
             this.processRecalculateValues();
@@ -41,7 +40,7 @@ export class OpacityProperty<T extends EditorBlock = EditorBlock> extends Number
             for (let block of this.blocks) {
                 let target = Math.floor((block.opacity + changeAmount) * 1000) / 1000;
 
-                if(target <= 0 || target >= 1) {
+                if (target <= 0 || target >= 1) {
                     anyHitCapacity = true;
                     target = Math.min(1, Math.max(0, target));
                 }
@@ -49,7 +48,7 @@ export class OpacityProperty<T extends EditorBlock = EditorBlock> extends Number
                 block.changeOpacity(target, true);
             }
 
-            if(anyHitCapacity) {
+            if (anyHitCapacity) {
                 return false;
             }
         } else {

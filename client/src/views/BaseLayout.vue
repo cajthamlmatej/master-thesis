@@ -13,30 +13,30 @@
 
             <ChangeLanguage></ChangeLanguage>
 
-            <NavigationButton hide-mobile icon="logout"
+            <NavigationButton :label="$t('layout.base.logout')" :tooltip-text="$t('layout.base.logout')"
+                              hide-mobile
+                              icon="logout"
                               tag="li"
                               tooltip-position="bottom"
-                              :label="$t('layout.base.logout')"
-                              :tooltip-text="$t('layout.base.logout')"
                               @click="authenticationStore.logout()"></NavigationButton>
         </template>
     </Header>
 
     <Navigation v-model:menu="data.menu" primary>
         <template #primary>
-            <NavigationButton :to="{name: 'Dashboard'}"
-                              icon="solar-panel"
-                              :label="$t('layout.base.dashboard')"
-                              :tooltip-text="$t('layout.base.dashboard')"></NavigationButton>
+            <NavigationButton :label="$t('layout.base.dashboard')"
+                              :to="{name: 'Dashboard'}"
+                              :tooltip-text="$t('layout.base.dashboard')"
+                              icon="solar-panel"></NavigationButton>
 
-            <NavigationButton icon="book-open-outline"
-                              disabled
+            <NavigationButton disabled
+                              icon="book-open-outline"
                               label="Browse materials"
                               tooltip-text="Browse materials"
             ></NavigationButton>
 
-            <NavigationButton icon="border-radius"
-                              disabled
+            <NavigationButton disabled
+                              icon="border-radius"
                               label="Browse templates"
                               tooltip-text="Browse templates"
             ></NavigationButton>
@@ -46,9 +46,9 @@
             <NavigationButton :disabled="true" icon="cog-outline"
                               label="Settings">
             </NavigationButton>
-            <NavigationButton icon="logout"
+            <NavigationButton :label="$t('layout.base.logout')"
+                              icon="logout"
                               tag="li"
-                              :label="$t('layout.base.logout')"
                               @click="authenticationStore.logout()"></NavigationButton>
         </template>
     </Navigation>

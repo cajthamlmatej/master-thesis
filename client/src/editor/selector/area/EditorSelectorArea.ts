@@ -256,7 +256,6 @@ export default class EditorSelectorArea {
     }
 
 
-
     private setupSelector() {
         const selectorElement = document.createElement("div");
         selectorElement.classList.add("editor-selector");
@@ -404,7 +403,7 @@ export default class EditorSelectorArea {
     }
 
     private setupSelectBox(event: MouseEvent) {
-        if(this.editor.getMode() != EditorMode.SELECT) {
+        if (this.editor.getMode() != EditorMode.SELECT) {
             return;
         }
 

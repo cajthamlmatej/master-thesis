@@ -66,6 +66,10 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         this.render();
     }
 
+    destroy(): void {
+        this.element.innerHTML = "";
+    }
+
     private render() {
         const container = this.element.querySelector(".interactivity-container") as HTMLElement;
         container.innerHTML = "";
@@ -287,8 +291,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                         </div>`;
                 }
             }
-        }
-        else if (interactivity.action == 'CHANGE_SLIDE') {
+        } else if (interactivity.action == 'CHANGE_SLIDE') {
             element.innerHTML += `
                 <div class="field field--sub">
                     <span class="label">${$t("property.interactivity.slide.label")}</span>
@@ -313,8 +316,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                         </div>
                     </div>`;
             }
-        }
-        else if (interactivity.action == 'CHANGE_VARIABLE') {
+        } else if (interactivity.action == 'CHANGE_VARIABLE') {
             element.innerHTML += `
                 <div class="field field--sub">
                     <span class="label">${$t("property.interactivity.variable.name")}</span>
@@ -471,7 +473,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             this.render();
         });
         element.querySelector(".move-up")?.addEventListener("click", () => {
-            if(index == 0) return;
+            if (index == 0) return;
 
             this.blocks[0].interactivity = this.blocks[0].interactivity.filter(i => i !== interactivity);
             this.blocks[0].interactivity.splice(index - 1, 0, interactivity);
@@ -479,7 +481,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             this.render();
         });
         element.querySelector(".move-down")?.addEventListener("click", () => {
-            if(index == this.blocks[0].interactivity.length - 1) return;
+            if (index == this.blocks[0].interactivity.length - 1) return;
 
             this.blocks[0].interactivity = this.blocks[0].interactivity.filter(i => i !== interactivity);
             this.blocks[0].interactivity.splice(index + 1, 0, interactivity);
@@ -488,11 +490,6 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         });
 
         return element;
-    }
-
-
-    destroy(): void {
-        this.element.innerHTML = "";
     }
 
 }

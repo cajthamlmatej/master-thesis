@@ -1,25 +1,25 @@
 <template>
 
     <NavigationButton
-                      hide-mobile icon="undo"
-                      :label="$t('editor.ui.history.undo')"
-                      :tooltip-text="$t('editor.ui.history.undo')"
-                      :disabled="!backward"
-                      @click="undo"
-                      tooltip-position="bottom"></NavigationButton>
+        :disabled="!backward" :label="$t('editor.ui.history.undo')"
+        :tooltip-text="$t('editor.ui.history.undo')"
+        hide-mobile
+        icon="undo"
+        tooltip-position="bottom"
+        @click="undo"></NavigationButton>
     <NavigationButton
-                      hide-mobile icon="redo"
-                      :label="$t('editor.ui.history.redo')"
-                      :tooltip-text="$t('editor.ui.history.redo')"
-                      :disabled="!forward"
-                      @click="redo"
-                      tooltip-position="bottom"></NavigationButton>
+        :disabled="!forward" :label="$t('editor.ui.history.redo')"
+        :tooltip-text="$t('editor.ui.history.redo')"
+        hide-mobile
+        icon="redo"
+        tooltip-position="bottom"
+        @click="redo"></NavigationButton>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import {useMaterialStore} from "@/stores/material";
 import {useEditorStore} from "@/stores/editor";
-import {computed, onMounted, onUnmounted, ref, watch} from "vue";
+import {onMounted, onUnmounted, ref, watch} from "vue";
 import {$t} from "@/translation/Translation";
 
 const materialStore = useMaterialStore();
@@ -28,7 +28,7 @@ const editorStore = useEditorStore();
 onMounted(() => {
     const editor = editorStore.getEditor();
 
-    if(!editor) return;
+    if (!editor) return;
 
     editor.events.HISTORY.on(recalculate)
     editor.events.HISTORY_JUMP.on(recalculate);
@@ -37,13 +37,13 @@ onMounted(() => {
 onUnmounted(() => {
     const editor = editorStore.getEditor();
 
-    if(!editor) return;
+    if (!editor) return;
 
     editor.events.HISTORY.off(recalculate);
     editor.events.HISTORY_JUMP.off(recalculate);
 })
 watch(() => editorStore.getEditor(), (editor) => {
-    if(editor) {
+    if (editor) {
         editor.events.HISTORY.on(recalculate);
         editor.events.HISTORY_JUMP.on(recalculate);
         recalculate();
@@ -56,7 +56,7 @@ const backward = ref<boolean>(false);
 const recalculate = () => {
     const editor = editorStore.getEditor();
 
-    if(!editor) return;
+    if (!editor) return;
 
     forward.value = editor.getHistory().canRedo();
     backward.value = editor.getHistory().canUndo();
@@ -65,7 +65,7 @@ const recalculate = () => {
 const undo = () => {
     const editor = editorStore.getEditor();
 
-    if(!editor) return;
+    if (!editor) return;
 
     editor.getHistory().undo();
     recalculate();
@@ -73,7 +73,7 @@ const undo = () => {
 const redo = () => {
     const editor = editorStore.getEditor();
 
-    if(!editor) return;
+    if (!editor) return;
 
     editor.getHistory().redo();
     recalculate();
@@ -81,6 +81,6 @@ const redo = () => {
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 
 </style>

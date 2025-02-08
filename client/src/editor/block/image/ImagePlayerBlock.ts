@@ -1,5 +1,5 @@
 import {PlayerBlock} from "@/editor/block/PlayerBlock";
-import {BlockConstructor, BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
+import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 
 export class ImagePlayerBlock extends PlayerBlock {
     private imageUrl: string;

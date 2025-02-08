@@ -1,5 +1,4 @@
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
-import {generateUUID} from "@/utils/Generators";
 import {Property} from "@/editor/property/Property";
 import {ColorProperty} from "@/editor/block/shape/property/ColorProperty";
 import {shapes} from "@/editor/block/shape/Shapes";

@@ -1,32 +1,33 @@
 <template>
     <Dialog v-model:value="dialog">
         <template #activator="{toggle}">
-            <NavigationButton @click="toggle"
-                              hide-mobile icon="cog-outline"
-                              :label="$t('editor.preferences.open')"
-                              :tooltip-text="$t('editor.preferences.open')"
-                              tooltip-position="bottom"></NavigationButton>
+            <NavigationButton :label="$t('editor.preferences.open')"
+                              :tooltip-text="$t('editor.preferences.open')" hide-mobile
+                              icon="cog-outline"
+                              tooltip-position="bottom"
+                              @click="toggle"></NavigationButton>
         </template>
 
         <template #default>
             <Card dialog>
-                <p class="title" v-t>editor.preferences.title</p>
+                <p v-t class="title">editor.preferences.title</p>
 
                 <List>
                     <ListItem v-for="property in properties" :key="property.key" class="property-holder">
                         <div class="property">
                             <div class="meta">
-                                <p class="title" v-t>editor.preferences.{{property.key}}.label</p>
-                                <p class="subtitle" v-t>editor.preferences.{{property.key}}.description</p>
+                                <p v-t class="title">editor.preferences.{{ property.key }}.label</p>
+                                <p v-t class="subtitle">editor.preferences.{{ property.key }}.description</p>
                             </div>
 
                             <div class="value">
                                 <template v-if="property.type === 'boolean'">
-                                    <Checkbox v-model:value="values[property.key]" :label="$t('editor.preferences.enabled')"/>
+                                    <Checkbox v-model:value="values[property.key]"
+                                              :label="$t('editor.preferences.enabled')"/>
                                 </template>
                                 <template v-else-if="property.type === 'number'">
-                                    <Input v-model:value="values[property.key]" type="number"
-                                           :validators="property.validator"/>
+                                    <Input v-model:value="values[property.key]" :validators="property.validator"
+                                           type="number"/>
                                 </template>
                                 <template v-else-if="property.type === 'select'">
                                     <Select v-model:value="values[property.key]" :choices="property.options"
@@ -45,7 +46,7 @@
     </Dialog>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import NavigationButton from "@/components/design/navigation/NavigationButton.vue";
 import Editor from "@/editor/Editor";
@@ -171,7 +172,7 @@ const save = () => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .property-holder {
     padding: 0.5em;
 }

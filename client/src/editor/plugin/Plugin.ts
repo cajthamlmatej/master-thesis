@@ -1,10 +1,7 @@
 import {load} from "@/editor/plugin/quickjs/QuickJSRunner";
 import type {QuickJSContext, QuickJSHandle} from "quickjs-emscripten";
-import type Material from "@/models/Material";
 import {useEditorStore} from "@/stores/editor";
 import {watch} from "vue";
-import {ImageBlockDeserializer} from "@/editor/block/image/ImageBlockDeserializer";
-import {parse} from "uuid";
 import {generateUUID} from "@/utils/Generators";
 
 export class Plugin {
@@ -22,7 +19,7 @@ export class Plugin {
         this.pluginCode = pluginCode;
 
         watch(() => this.materialStore.getActiveSlide(), (value) => {
-            if(!value) return;
+            if (!value) return;
 
             const slideId = this.context.newString(value.id);
 
@@ -60,17 +57,17 @@ export class Plugin {
         this.context.setProp(editor, "addBlock", this.context.newFunction("addBlock", (data) => {
             const editor = this.materialStore.getEditor();
 
-            if(!editor) return;
+            if (!editor) return;
 
             const parsedData = this.context.dump(data)
 
-            if(!parsedData.id) {
+            if (!parsedData.id) {
                 parsedData.id = generateUUID();
             }
 
             const block = editor.blockRegistry.deserializeEditor(parsedData);
 
-            if(!block) {
+            if (!block) {
                 console.error(`[Plugin API: ${this.name}] Could not deserialize block`);
                 return
             }

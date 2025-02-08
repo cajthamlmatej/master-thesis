@@ -4,7 +4,7 @@
             <Row>
                 <Col cols="12">
                     <Card fluid>
-                        <p class="title" v-t>page.not-found.title</p>
+                        <p v-t class="title">page.not-found.title</p>
 
                         <p v-t>page.not-found.message</p>
 

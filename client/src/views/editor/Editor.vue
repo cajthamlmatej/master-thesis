@@ -1,12 +1,12 @@
 <template>
     <article class="editor-view">
         <div class="wrapper">
-            <Editor />
+            <Editor/>
         </div>
     </article>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import Editor from "@/components/editor/Editor.vue";
 </script>
 

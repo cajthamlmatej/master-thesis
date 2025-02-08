@@ -6,22 +6,24 @@
                     <Col :cols="12" :md="7">
                         <Tabs v-model:selected="data.tab" :items="data.tabs" fluid></Tabs>
 
-                        <TransitionGroup class="authentication-holder" name="authentication-fade" tag="div" :duration="40000">
-                            <Form v-if="data.tab === 'EMAIL_PASSWORD'" class="form" :onSubmit="() => handle('EMAIL_PASSWORD')">
+                        <TransitionGroup :duration="40000" class="authentication-holder" name="authentication-fade"
+                                         tag="div">
+                            <Form v-if="data.tab === 'EMAIL_PASSWORD'" :onSubmit="() => handle('EMAIL_PASSWORD')"
+                                  class="form">
                                 <template #default="{ validationChange }">
                                     <Input v-model:value="data.email"
+                                           :label="$t('page.authentication.fields.email.label')"
                                            :validators="[
                                                 (v: string) => !!v || $t('page.authentication.fields.email.required'),
                                                 (v: string) => /.+@.+\..+/.test(v) || $t('page.authentication.fields.email.invalid')
                                            ]"
-                                           :label="$t('page.authentication.fields.email.label')"
                                            required
                                            type="email"
                                            @validationChange="validationChange"/>
 
                                     <Input v-model:value="data.password"
-                                           :validators="[(v: string) => v.length > 3 || $t('page.authentication.fields.password.invalid')]"
                                            :label="$t('page.authentication.fields.password.label')"
+                                           :validators="[(v: string) => v.length > 3 || $t('page.authentication.fields.password.invalid')]"
                                            required
                                            type="password"
                                            @validationChange="validationChange"/>
@@ -36,23 +38,23 @@
                                 </template>
                             </Form>
 
-                            <Form v-if="data.tab === 'EMAIL'" class="form" :onSubmit="() => handle('EMAIL')">
+                            <Form v-if="data.tab === 'EMAIL'" :onSubmit="() => handle('EMAIL')" class="form">
                                 <template #default="{ validationChange }">
-                                    <Input v-model:value="data.email" :disabled="data.emailStage === 1" :validators="[
+                                    <Input v-model:value="data.email" :disabled="data.emailStage === 1" :label="$t('page.authentication.fields.email.label')"
+                                           :validators="[
                                         (v: string) => !!v || $t('page.authentication.fields.email.required'),
                                         (v: string) => /.+@.+\..+/.test(v) || $t('page.authentication.fields.email.invalid')
                                     ]"
-                                           :label="$t('page.authentication.fields.email.label')"
                                            required type="email" @validationChange="validationChange"/>
 
                                     <Input v-if="data.emailStage === 1" v-model:value="data.code"
-                                           :validators="[(v: string) => v.length == 6 || $t('page.authentication.fields.code.invalid')]"
                                            :label="$t('page.authentication.fields.code.label')"
+                                           :validators="[(v: string) => v.length == 6 || $t('page.authentication.fields.code.invalid')]"
                                            required type="text" @validationChange="validationChange"/>
 
                                     <p>
-                                        <a v-if="data.emailStage == 0" @click="data.emailStage = 1" v-t>page.authentication.already-code</a>
-                                        <a v-if="data.emailStage == 1" @click="data.emailStage = 0" v-t>page.authentication.no-code</a>
+                                        <a v-if="data.emailStage == 0" v-t @click="data.emailStage = 1">page.authentication.already-code</a>
+                                        <a v-if="data.emailStage == 1" v-t @click="data.emailStage = 0">page.authentication.no-code</a>
                                     </p>
                                 </template>
 
@@ -78,7 +80,9 @@
                                     ...
                                 </p>
                                 <p class="mb-1">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aspernatur aut culpa dolore doloremque earum eos eveniet, ex impedit maxime modi officiis pariatur praesentium quas recusandae sint temporibus tenetur vel?
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aspernatur aut
+                                    culpa dolore doloremque earum eos eveniet, ex impedit maxime modi officiis pariatur
+                                    praesentium quas recusandae sint temporibus tenetur vel?
                                 </p>
                                 <p>
                                     TODO: <a href="#">here</a>.<!-- TODO: Add link -->
@@ -191,6 +195,7 @@ const handle = async (type: 'EMAIL_PASSWORD' | 'EMAIL') => {
 .authentication-fade-leave-active {
     transition: all 0.4s ease;
 }
+
 .authentication-fade-enter-active {
     transition: all 0.6s ease;
 }

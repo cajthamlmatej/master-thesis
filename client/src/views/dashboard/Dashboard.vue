@@ -1,12 +1,14 @@
 <template>
     <Card fluid>
         <div class="flex flex-justify-space-between flex-align-center">
-            <span class="main-title" v-t="{ name: userStore.user?.name ?? '' }">page.dashboard.title-welcome</span>
+            <span v-t="{ name: userStore.user?.name ?? '' }" class="main-title">page.dashboard.title-welcome</span>
 
             <div class="flex flex-align-center gap-1">
-                <Button color="primary" icon="mdi mdi-plus" :to="{name: 'Editor', params: {material: 'new'}}" v-tooltip="$t('page.dashboard.add-tooltip')" />
+                <Button v-tooltip="$t('page.dashboard.add-tooltip')" :to="{name: 'Editor', params: {material: 'new'}}" color="primary"
+                        icon="mdi mdi-plus"/>
 
-                <Input :label="$t('page.dashboard.search')" type="text" hide-error hide-label :placeholder="$t('page.dashboard.search')" dense v-model:value="search"/>
+                <Input v-model:value="search" :label="$t('page.dashboard.search')" :placeholder="$t('page.dashboard.search')" dense
+                       hide-error hide-label type="text"/>
             </div>
         </div>
     </Card>
@@ -21,13 +23,13 @@
         </Alert>
     </div>
 
-    <Row class="mt-1" wrap align="stretch">
-        <Col cols="12" sm="4" md="3" lg="3" v-for="material in materialsOnPage" :key="material.id">
+    <Row align="stretch" class="mt-1" wrap>
+        <Col v-for="material in materialsOnPage" :key="material.id" cols="12" lg="3" md="3" sm="4">
             <article class="material" @click="router.push({name: 'Editor', params: {material: material.id}})">
                 <div class="image-holder">
                     <img v-if="material.thumbnail"
                          :src="material.thumbnail" alt="thumbnail" class="thumbnail">
-                    <div class="placeholder" v-else></div>
+                    <div v-else class="placeholder"></div>
                 </div>
 
                 <div class="meta">
@@ -44,24 +46,29 @@
                     <div class="actions">
                         <Dialog>
                             <template #activator="{toggle}">
-                                <Button icon="mdi mdi-delete" v-tooltip="$t('page.dashboard.materials.delete-tooltip')" :loading="processing" @click.stop.capture="toggle"/>
+                                <Button v-tooltip="$t('page.dashboard.materials.delete-tooltip')" :loading="processing"
+                                        icon="mdi mdi-delete" @click.stop.capture="toggle"/>
                             </template>
                             <template #default="{toggle}">
-                                <Card dialog class="delete-dialog">
-                                    <p class="title" v-t>page.dashboard.materials.deletion.title</p>
+                                <Card class="delete-dialog" dialog>
+                                    <p v-t class="title">page.dashboard.materials.deletion.title</p>
 
                                     <p v-t>page.dashboard.materials.deletion.deletion</p>
 
                                     <p v-t>page.dashboard.materials.deletion.after</p>
 
                                     <div class="flex flex-justify-end gap-1 mt-1">
-                                        <Button color="neutral" :loading="processing" @click="deleteMaterial(material.id, toggle)"><span v-t>page.dashboard.materials.deletion.sure</span></Button>
-                                        <Button @click="toggle"><span v-t>page.dashboard.materials.deletion.cancel</span></Button>
+                                        <Button :loading="processing" color="neutral"
+                                                @click="deleteMaterial(material.id, toggle)"><span v-t>page.dashboard.materials.deletion.sure</span>
+                                        </Button>
+                                        <Button @click="toggle"><span
+                                            v-t>page.dashboard.materials.deletion.cancel</span></Button>
                                     </div>
                                 </Card>
                             </template>
                         </Dialog>
-                        <Button icon="mdi mdi-content-copy" v-tooltip="$t('page.dashboard.materials.copy-tooltip')" :loading="processing" @click.stop.capture="copyMaterial(material.id)" color="primary"/>
+                        <Button v-tooltip="$t('page.dashboard.materials.copy-tooltip')" :loading="processing"
+                                color="primary" icon="mdi mdi-content-copy" @click.stop.capture="copyMaterial(material.id)"/>
                     </div>
                 </div>
             </article>
@@ -69,13 +76,12 @@
     </Row>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import {useUserStore} from "@/stores/user";
 import {computed, onMounted, ref, watch} from "vue";
 import {useMaterialStore} from "@/stores/material";
 import Pagination from "@/components/design/pagination/Pagination.vue";
 import {useRouter} from "vue-router";
-import moment from "moment";
 import {$t} from "@/translation/Translation";
 
 const router = useRouter();
@@ -122,7 +128,7 @@ const copyMaterial = async (materialId: string) => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .main-title {
     font-size: 1.75em;
     font-weight: bold;
@@ -169,8 +175,10 @@ article.material {
             opacity: 1;
         }
     }
+
     &:hover:has(.button:hover), &:hover:has(.actions:hover) {
         background: white;
+
         &:before {
             opacity: 0;
         }

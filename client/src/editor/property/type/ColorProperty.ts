@@ -44,6 +44,7 @@ export abstract class ColorProperty<T extends EditorBlock = EditorBlock> extends
     }
 
     abstract recalculateValues(change: (value: string) => void): void;
+
     abstract applyValue(value: string): boolean;
 
 }

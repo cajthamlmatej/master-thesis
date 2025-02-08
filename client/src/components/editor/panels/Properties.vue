@@ -1,14 +1,14 @@
 <template>
-    <Navigation v-model:menu="properties" shift full-control side="right">
+    <Navigation v-model:menu="properties" full-control shift side="right">
         <template #primary>
-            <div class="editor-property" ref="menu">
+            <div ref="menu" class="editor-property">
 
             </div>
         </template>
     </Navigation>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import {nextTick, onMounted, ref, watch} from "vue";
 import {useEditorStore} from "@/stores/editor";
@@ -24,7 +24,7 @@ const menu = ref<HTMLElement | null>(null);
 onMounted(() => {
     properties.value = props.value;
 
-    if(!properties.value) {
+    if (!properties.value) {
         return;
     }
 
@@ -36,10 +36,10 @@ onMounted(() => {
 
 const emits = defineEmits(['update:value']);
 
-watch(() => properties.value, async(value) => {
+watch(() => properties.value, async (value) => {
     emits('update:value', value);
 
-    if(!properties.value) {
+    if (!properties.value) {
         return;
     }
 
@@ -65,6 +65,6 @@ watch(() => materialStore.getEditor(), (value) => {
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 
 </style>

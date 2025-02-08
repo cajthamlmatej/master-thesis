@@ -42,22 +42,7 @@ export abstract class EditorBlock {
     public group: string | undefined = undefined;
     @BlockSerialize("interactivity")
     public interactivity: BlockInteractivity[] = [];
-
-    protected constructor(base: BlockConstructor) {
-        this.id = base.id;
-        this.type = base.type;
-        this.position = base.position;
-        this.size = base.size;
-        this.rotation = base.rotation;
-        this.zIndex = base.zIndex;
-        this.locked = base.locked || false;
-        this.group = base.group || undefined;
-        this.interactivity = base.interactivity || [];
-        this.opacity = base.opacity === undefined ? 1 : base.opacity;
-    }
-
     public element!: HTMLElement;
-    protected editor!: Editor;
     /**
      * Determines if the block is currently selected.
      */
@@ -78,6 +63,20 @@ export abstract class EditorBlock {
      * Determines if the block is currently hovering.
      */
     public hovering: boolean = false;
+    protected editor!: Editor;
+
+    protected constructor(base: BlockConstructor) {
+        this.id = base.id;
+        this.type = base.type;
+        this.position = base.position;
+        this.size = base.size;
+        this.rotation = base.rotation;
+        this.zIndex = base.zIndex;
+        this.locked = base.locked || false;
+        this.group = base.group || undefined;
+        this.interactivity = base.interactivity || [];
+        this.opacity = base.opacity === undefined ? 1 : base.opacity;
+    }
 
     /**
      * Renders the block element for the first time for the editor in the DOM.
@@ -88,21 +87,6 @@ export abstract class EditorBlock {
      * Returns a new instance of the block with the same properties.
      */
     public abstract clone(): EditorBlock;
-
-    protected getCloneBase(): BlockConstructor {
-        return {
-            id: generateUUID(),
-            type: this.type,
-            position: {x: this.position.x, y: this.position.y},
-            size: {width: this.size.width, height: this.size.height},
-            rotation: this.rotation,
-            zIndex: this.zIndex,
-            locked: this.locked,
-            group: this.group,
-            interactivity: this.interactivity,
-            opacity: this.opacity
-        }
-    }
 
     /**
      * Serializes the block properties to an object, so it can be saved.
@@ -180,7 +164,7 @@ export abstract class EditorBlock {
         ]
     }
 
-    public getInteractivityProperties(): Omit<BlockInteractiveProperty & {relative: boolean, animate: boolean}, "change" | "reset" | "getBaseValue">[] {
+    public getInteractivityProperties(): Omit<BlockInteractiveProperty & { relative: boolean, animate: boolean }, "change" | "reset" | "getBaseValue">[] {
         return [
             {
                 label: "Position X",
@@ -259,8 +243,8 @@ export abstract class EditorBlock {
     }
 
     public resize(width: number, height: number, skipSynchronization: boolean = false, manual: boolean = false) {
-        if(width < 1) width = 1;
-        if(height < 1) height = 1;
+        if (width < 1) width = 1;
+        if (height < 1) height = 1;
 
         this.size.width = width;
         this.size.height = height;
@@ -453,6 +437,21 @@ export abstract class EditorBlock {
 
                 instance[listener](...args);
             }
+        }
+    }
+
+    protected getCloneBase(): BlockConstructor {
+        return {
+            id: generateUUID(),
+            type: this.type,
+            position: {x: this.position.x, y: this.position.y},
+            size: {width: this.size.width, height: this.size.height},
+            rotation: this.rotation,
+            zIndex: this.zIndex,
+            locked: this.locked,
+            group: this.group,
+            interactivity: this.interactivity,
+            opacity: this.opacity
         }
     }
 

@@ -17,7 +17,7 @@ export const twoPolygonsIntersect = (a: { x: number, y: number }[], b: { x: numb
             let p1 = polygon[i1];
             let p2 = polygon[i2];
 
-            let normal = { x: p2.y - p1.y, y: p1.x - p2.x };
+            let normal = {x: p2.y - p1.y, y: p1.x - p2.x};
 
             minA = maxA = undefined;
             for (j = 0; j < a.length; j++) {

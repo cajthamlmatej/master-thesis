@@ -1,20 +1,5 @@
 import {BlockRegistry} from "@/editor/block/BlockRegistry";
-import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
-import {TextBlockDeserializer} from "@/editor/block/text/TextBlockDeserializer";
-import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
-import {ImageBlockDeserializer} from "@/editor/block/image/ImageBlockDeserializer";
-import {WatermarkEditorBlock} from "@/editor/block/watermark/WatermarkEditorBlock";
-import {WatermarkBlockDeserializer} from "@/editor/block/watermark/WatermarkBlockDeserializer";
-import {ImagePlayerBlock} from "@/editor/block/image/ImagePlayerBlock";
-import {TextPlayerBlock} from "@/editor/block/text/TextPlayerBlock";
-import {WatermarkPlayerBlock} from "@/editor/block/watermark/WatermarkPlayerBlock";
 import {PlayerBlock} from "@/editor/block/PlayerBlock";
-import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
-import {ShapePlayerBlock} from "@/editor/block/shape/ShapePlayerBlock";
-import {ShapeBlockDeserializer} from "@/editor/block/shape/ShapeBlockDeserializer";
-import {InteractiveAreaEditorBlock} from "@/editor/block/interactiveArea/InteractiveAreaEditorBlock";
-import {InteractiveAreaPlayerBlock} from "@/editor/block/interactiveArea/InteractiveAreaPlayerBlock";
-import {InteractiveAreaBlockDeserializer} from "@/editor/block/interactiveArea/InteractiveAreaBlockDeserializer";
 
 export default class Player {
     private static readonly DEFAULT_PADDING = 32;
@@ -97,6 +82,13 @@ export default class Player {
         return this._size;
     }
 
+    /**
+     * Returns the blocks in the player.
+     */
+    public getBlocks() {
+        return this.blocks;
+    }
+
     private setBlocks(blocks: PlayerBlock[]) {
         for (const block of blocks) {
             this.addBlock(block);
@@ -119,12 +111,5 @@ export default class Player {
 
     private setupPlayer() {
         this.element.innerHTML = `<div class="player-content"></div>`
-    }
-
-    /**
-     * Returns the blocks in the player.
-     */
-    public getBlocks() {
-        return this.blocks;
     }
 }

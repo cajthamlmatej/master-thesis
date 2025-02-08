@@ -1,13 +1,13 @@
 <template>
-    <p class="debug">{{version}}</p>
+    <p class="debug">{{ version }}</p>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 const version = `v${import.meta.env.VITE_APP_VERSION}`;
 </script>
 
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .debug {
     position: fixed;
     bottom: 0;

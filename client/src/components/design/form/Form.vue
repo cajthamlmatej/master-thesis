@@ -1,5 +1,5 @@
 <template>
-    <article class="form" @keydown.enter="onSubmit" :class="props.class">
+    <article :class="props.class" class="form" @keydown.enter="onSubmit">
         <slot :validationChange="validationChange"></slot>
 
         <slot :isValid="isValid" :onSubmit="onSubmit" name="submit">

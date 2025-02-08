@@ -1,7 +1,6 @@
 import type {ActionKeybind} from "@/editor/actions/EditorAction";
-import type {ActionParameters} from "@/editor/actions/EditorAction";
-import type Editor from "@/editor/Editor";
 import {EditorAction} from "@/editor/actions/EditorAction";
+import type Editor from "@/editor/Editor";
 
 interface KeybindMapping {
     keybind: ActionKeybind;
@@ -32,33 +31,63 @@ export class EditorKeybinds {
         });
     }
 
+    /**
+     * This method initializes the keybinds for the editor.
+     * This method can be called multiple times to reinitialize the keybinds (for example when actions are added or removed).
+     */
+    public initializeKeybinds() {
+        for (let action of this.editor.getContext().getActions()) {
+            for (let keybind of action.getKeybinds()) {
+                this.keybinds.push({
+                    keybind: keybind,
+                    action: action,
+                    isVisible: () => this.editor.getContext().isActive()
+                })
+            }
+        }
+
+        for (let action of this.editor.getSelector().getContext().getActions()) {
+            for (let keybind of action.getKeybinds()) {
+                this.keybinds.push({
+                    keybind: keybind,
+                    action: action,
+                    isVisible: () => this.editor.getSelector().getContext().isActive()
+                })
+            }
+        }
+    }
+
+    public getKeybinds(): KeybindMapping[] {
+        return this.keybinds;
+    }
+
     private process(event: KeyboardEvent) {
         const positionInEditor = this.editor.screenToEditorCoordinates(this.mouse.x, this.mouse.y);
 
         const eventTarget = event.target as HTMLElement | null;
 
-        if(eventTarget) {
-            if(eventTarget !== document.body) {
+        if (eventTarget) {
+            if (eventTarget !== document.body) {
                 return;
             }
         }
 
-        for(let keybind of this.keybinds) {
+        for (let keybind of this.keybinds) {
             if (keybind.keybind.key === event.key) {
                 let process = true;
 
-                if(keybind.keybind.ctrlKey === 'ALWAYS' && !event.ctrlKey) process = false;
-                if(keybind.keybind.ctrlKey === 'NEVER' && event.ctrlKey) process = false;
+                if (keybind.keybind.ctrlKey === 'ALWAYS' && !event.ctrlKey) process = false;
+                if (keybind.keybind.ctrlKey === 'NEVER' && event.ctrlKey) process = false;
 
-                if(keybind.keybind.shiftKey === 'ALWAYS' && !event.shiftKey) process = false;
-                if(keybind.keybind.shiftKey === 'NEVER' && event.shiftKey) process = false;
+                if (keybind.keybind.shiftKey === 'ALWAYS' && !event.shiftKey) process = false;
+                if (keybind.keybind.shiftKey === 'NEVER' && event.shiftKey) process = false;
 
-                if(keybind.keybind.altKey === 'ALWAYS' && !event.altKey) process = false;
-                if(keybind.keybind.altKey === 'NEVER' && event.altKey) process = false;
+                if (keybind.keybind.altKey === 'ALWAYS' && !event.altKey) process = false;
+                if (keybind.keybind.altKey === 'NEVER' && event.altKey) process = false;
 
-                if(!process) continue;
+                if (!process) continue;
 
-                switch(keybind.keybind.mode) {
+                switch (keybind.keybind.mode) {
                     case 'ALWAYS':
                         break;
                     case 'COULD_BE_VISIBLE':
@@ -79,7 +108,7 @@ export class EditorKeybinds {
                         break;
                 }
 
-                if(!process) continue;
+                if (!process) continue;
 
                 keybind.action.run({
                     editor: this.editor,
@@ -93,7 +122,7 @@ export class EditorKeybinds {
                     }
                 });
 
-                if(keybind.keybind.capture === undefined || keybind.keybind.capture)
+                if (keybind.keybind.capture === undefined || keybind.keybind.capture)
                     event.preventDefault();
                 return;
             }
@@ -103,36 +132,6 @@ export class EditorKeybinds {
     private trackMouse(event: MouseEvent) {
         this.mouse.x = event.clientX;
         this.mouse.y = event.clientY;
-    }
-
-    /**
-     * This method initializes the keybinds for the editor.
-     * This method can be called multiple times to reinitialize the keybinds (for example when actions are added or removed).
-     */
-    public initializeKeybinds() {
-        for(let action of this.editor.getContext().getActions()) {
-            for(let keybind of action.getKeybinds()) {
-                this.keybinds.push({
-                    keybind: keybind,
-                    action: action,
-                    isVisible: () => this.editor.getContext().isActive()
-                })
-            }
-        }
-
-        for(let action of this.editor.getSelector().getContext().getActions()) {
-            for(let keybind of action.getKeybinds()) {
-                this.keybinds.push({
-                    keybind: keybind,
-                    action: action,
-                    isVisible: () => this.editor.getSelector().getContext().isActive()
-                })
-            }
-        }
-    }
-
-    public getKeybinds(): KeybindMapping[] {
-        return this.keybinds;
     }
 
 }

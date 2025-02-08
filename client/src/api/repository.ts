@@ -34,7 +34,7 @@ export class Repository {
 
             // Add the content type if it's not ignored
             if (!ignoreContentType && !formatedHeaders["Content-Type"]) {
-                if(!!data) {
+                if (!!data) {
                     formatedHeaders["Content-Type"] = "application/json";
                 }
             }

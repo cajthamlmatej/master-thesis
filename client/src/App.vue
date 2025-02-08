@@ -1,12 +1,12 @@
 <template>
-    <RouterView :key="language" />
+    <RouterView :key="language"/>
 
-    <Cookies :key="language" />
+    <Cookies :key="language"/>
 
-    <Debug :key="language" />
+    <Debug :key="language"/>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import Debug from "@/components/Debug.vue";
 import Cookies from "@/components/Cookies.vue";
 import {useHead} from "unhead";
@@ -25,7 +25,7 @@ const router = useRouter();
 const userStore = useUserStore();
 
 router.beforeEach((to, from, next) => {
-    if(!to.meta.isAuthentication) {
+    if (!to.meta.isAuthentication) {
         userStore.load();
     }
 

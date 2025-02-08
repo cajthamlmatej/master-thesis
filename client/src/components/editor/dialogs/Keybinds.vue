@@ -3,15 +3,15 @@
     <Dialog v-model:value="keybindsDialog">
         <template #default>
             <Card dialog>
-                <p class="title" v-t>editor.keybinds.title</p>
+                <p v-t class="title">editor.keybinds.title</p>
 
                 <List>
                     <ListItem v-for="keybind in keybindings" :key="keybind.action">
                         <span class="keybind">
                             <span v-for="key in keybind.key"
                                   :key="key"
-                                  class="key"
-                                  v-tooltip="key.endsWith('?') && key.length > 1 ? $t('editor.keybinds.optional-key') : ''">
+                                  v-tooltip="key.endsWith('?') && key.length > 1 ? $t('editor.keybinds.optional-key') : ''"
+                                  class="key">
                                 {{ key }}
                             </span>
                         </span>
@@ -23,7 +23,7 @@
     </Dialog>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import type Editor from "@/editor/Editor";
 import {onMounted, onUnmounted, ref, watch} from "vue";
 import ListItem from "@/components/design/list/ListItem.vue";
@@ -129,7 +129,7 @@ const recalculate = () => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .keybind {
     display: flex;
     align-items: center;

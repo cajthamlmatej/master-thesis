@@ -22,9 +22,9 @@ export const shapes = [
     },
     {
         name: "arrow-1",
-        class: ["one-line","grow-2"],
+        class: ["one-line", "grow-2"],
         html:
-`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 100" preserveAspectRatio="none">
+            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 100" preserveAspectRatio="none">
   <polygon points="0,50 50,0 50,100" fill="var(--color)" />
 </svg>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">

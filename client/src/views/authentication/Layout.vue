@@ -4,7 +4,7 @@
             <ChangeLanguage/>
 
             <!-- TODO: Link to mainpage on diff domain -->
-            <NavigationButton icon="home-outline" :label="$t('layout.auth.home')"/>
+            <NavigationButton :label="$t('layout.auth.home')" icon="home-outline"/>
         </template>
     </Header>
 

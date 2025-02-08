@@ -3,12 +3,12 @@
         <template #default>
             <Card dialog>
                 <div class="flex flex-justify-space-between header">
-                    <p class="title" v-t>cookies.title</p>
+                    <p v-t class="title">cookies.title</p>
 
                     <ChangeLanguage></ChangeLanguage>
                 </div>
 
-                <p class="mb-1" v-t>cookies.message</p>
+                <p v-t class="mb-1">cookies.message</p>
 
                 <ul class="mb-1">
                     <li v-t>cookies.items.login</li>
@@ -16,7 +16,7 @@
                     <li v-t>cookies.items.more</li>
                 </ul>
 
-                <p class="mb-1" v-t>cookies.not-accept</p>
+                <p v-t class="mb-1">cookies.not-accept</p>
 
                 <div class="flex flex-justify-end">
                     <Button @click="accept"><span v-t>cookies.accept</span></Button>
@@ -42,7 +42,7 @@ function accept() {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .header {
     :deep(li) {
         list-style-type: none;

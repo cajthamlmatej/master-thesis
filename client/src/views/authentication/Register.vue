@@ -6,37 +6,37 @@
                     <div v-if="!data.success">
                         <Form :onSubmit="handle">
                             <template #default="{ validationChange }">
-                                <Input v-model:value="data.name" :validators="[
+                                <Input v-model:value="data.name" :label="$t('page.register.fields.name.label')"
+                                       :validators="[
                                         (v: string) => !!v || $t('page.register.fields.name.required'),
                                         (v: string) => v.length > 3 || $t('page.register.fields.name.short'),
                                         (v: string) => v.length < 255 || $t('page.register.fields.name.long')
                                     ]"
-                                       :label="$t('page.register.fields.name.label')"
                                        required type="text"
                                        @validationChange="validationChange"/>
 
-                                <Input v-model:value="data.email" :validators="[
+                                <Input v-model:value="data.email" :label="$t('page.register.fields.email.label')"
+                                       :validators="[
                                         (v: string) => !!v || $t('page.register.fields.email.required'),
                                         (v: string) => /.+@.+\..+/.test(v) || $t('page.register.fields.email.invalid'),
                                         (v: string) => v.length < 255 || $t('page.register.fields.email.long')
-                                    ]"
-                                       :label="$t('page.register.fields.email.label')" required type="email"
+                                    ]" required type="email"
                                        @validationChange="validationChange"/>
 
                                 <Input v-model:value="data.password"
+                                       :label="$t('page.register.fields.password.label')"
                                        :validators="[
                                            (v: string) => v.length >= 8 || $t('page.register.fields.password.short'),
                                            (v: string) => v.length < 255 || $t('page.register.fields.password.long')
                                        ]"
-                                       :label="$t('page.register.fields.password.label')"
                                        required
                                        type="password"
                                        @validationChange="validationChange"/>
 
-                                <Input v-model:value="data.passwordRepeat" :validators="[
+                                <Input v-model:value="data.passwordRepeat" :label="$t('page.register.fields.password-repeat.label')"
+                                       :validators="[
                                         (v: string) => v === data.password || $t('page.register.fields.password-repeat.not-match')
                                     ]"
-                                       :label="$t('page.register.fields.password-repeat.label')"
                                        required
                                        type="password"
                                        @validationChange="validationChange"/>
@@ -58,9 +58,9 @@
                         </Form>
 
                         <div class="mt-2">
-                            <p class="text-center" v-t>page.register.after-register</p>
+                            <p v-t class="text-center">page.register.after-register</p>
 
-                            <p class="text-center mt-1" v-t>page.register.by-registering</p>
+                            <p v-t class="text-center mt-1">page.register.by-registering</p>
                             <!-- TODO: Add links to conditions of use and privacy policy -->
 
                             <p class="text-center mt-1">
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div v-else>
-                        <p class="title" v-t>page.register.success.title</p>
+                        <p v-t class="title">page.register.success.title</p>
 
                         <p v-t>page.register.success.message</p>
 

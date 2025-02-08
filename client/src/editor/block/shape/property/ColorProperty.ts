@@ -1,4 +1,3 @@
-import {Property} from "@/editor/property/Property";
 import {ColorProperty as BaseColorProperty} from "@/editor/property/type/ColorProperty";
 
 import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";

@@ -10,13 +10,13 @@ export const getRotatedRectanglePoints = (x: number, y: number, width: number, h
     const angleInRadians = angle * (Math.PI / 180);
 
     const corners = [
-        { x: x, y: y },
-        { x: x, y: y+height },
-        { x: x + width, y: y + height },
-        { x: x + width, y: y },
+        {x: x, y: y},
+        {x: x, y: y + height},
+        {x: x + width, y: y + height},
+        {x: x + width, y: y},
     ];
 
-    const pivot = { x: x + width/2, y: y + height/2 };
+    const pivot = {x: x + width / 2, y: y + height / 2};
 
     return corners.map(corner => {
         const relativeX = corner.x - pivot.x;

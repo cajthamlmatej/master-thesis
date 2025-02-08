@@ -15,7 +15,7 @@ export default class EditorEvents {
     public BLOCK_CONTENT_CHANGED = new Event<EditorBlock>();
     public BLOCK_GROUP_CHANGED = new Event<EditorBlock[]>();
     public BLOCK_LOCK_CHANGED = new Event<{ blocks: EditorBlock[], locked: boolean }>();
-    public BLOCK_POSITION_CHANGED= new Event<{ block: EditorBlock, manual: boolean }>();
+    public BLOCK_POSITION_CHANGED = new Event<{ block: EditorBlock, manual: boolean }>();
     public BLOCK_ROTATION_CHANGED = new Event<{ block: EditorBlock, manual: boolean }>();
     public BLOCK_SIZE_CHANGED = new Event<{ block: EditorBlock, manual: boolean }>();
     public BLOCK_OPACITY_CHANGED = new Event<{ block: EditorBlock, manual: boolean }>();

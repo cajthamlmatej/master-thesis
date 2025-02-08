@@ -4,6 +4,7 @@ import mermaid from "mermaid";
 
 export class MermaidPlayerBlock extends PlayerBlock {
     private content: string = "";
+
     constructor(base: BlockConstructorWithoutType, content: string) {
         super({
             ...base,

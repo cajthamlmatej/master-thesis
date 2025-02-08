@@ -46,11 +46,11 @@ export class TextFormattingProperty<T extends TextEditorBlock = TextEditorBlock>
             const block = this.blocks[0] as TextEditorBlock;
             const editor = block.getTextEditor();
 
-            if(!editor || !block) {
+            if (!editor || !block) {
                 return;
             }
 
-            if(!block.canBeEdited() || editor.$doc.size === 0) {
+            if (!block.canBeEdited() || editor.$doc.size === 0) {
                 return;
             }
 
@@ -66,11 +66,11 @@ export class TextFormattingProperty<T extends TextEditorBlock = TextEditorBlock>
             const block = this.blocks[0] as TextEditorBlock;
             const editor = block.getTextEditor();
 
-            if(!editor || !block) {
+            if (!editor || !block) {
                 return;
             }
 
-            if(!block.canBeEdited() || editor.$doc.size === 0) {
+            if (!block.canBeEdited() || editor.$doc.size === 0) {
                 return;
             }
 
@@ -103,20 +103,20 @@ export class TextFormattingProperty<T extends TextEditorBlock = TextEditorBlock>
                 let selection = editor.view.state.selection
 
                 editor.view.state.doc.nodesBetween(selection.from, selection.to, node => {
-                    if(node.marks.length > 0) {
+                    if (node.marks.length > 0) {
                         let size = Infinity;
 
-                        for(let mark of node.marks) {
-                            if(mark.attrs.fontSize) {
+                        for (let mark of node.marks) {
+                            if (mark.attrs.fontSize) {
                                 size = Math.min(size, Number(mark.attrs.fontSize.replace("em", "")));
                             }
                         }
 
-                        if(!isFinite(size)) {
+                        if (!isFinite(size)) {
                             size = 1;
                         }
 
-                        if(size <= 0.5) {
+                        if (size <= 0.5) {
                             size = 0.5;
                         }
 
@@ -125,7 +125,7 @@ export class TextFormattingProperty<T extends TextEditorBlock = TextEditorBlock>
                     }
                 })
 
-                if(!setted) {
+                if (!setted) {
                     editor.chain().focus().setFontSize("0.75em").run();
                 }
 
@@ -135,16 +135,16 @@ export class TextFormattingProperty<T extends TextEditorBlock = TextEditorBlock>
                 let selection = editor.view.state.selection
 
                 editor.view.state.doc.nodesBetween(selection.from, selection.to, node => {
-                    if(node.marks.length > 0) {
+                    if (node.marks.length > 0) {
                         let size = Infinity;
 
-                        for(let mark of node.marks) {
-                            if(mark.attrs.fontSize) {
+                        for (let mark of node.marks) {
+                            if (mark.attrs.fontSize) {
                                 size = Math.min(size, Number(mark.attrs.fontSize.replace("em", "")));
                             }
                         }
 
-                        if(!isFinite(size)) {
+                        if (!isFinite(size)) {
                             size = 1;
                         }
 
@@ -153,24 +153,24 @@ export class TextFormattingProperty<T extends TextEditorBlock = TextEditorBlock>
                     }
                 })
 
-                if(!setted) {
+                if (!setted) {
                     editor.chain().focus().setFontSize("1.25em").run();
                 }
             }
         }
 
-        for(let mapping in mappings) {
+        for (let mapping in mappings) {
             const button = this.element.querySelector<HTMLButtonElement>("[data-property='" + mapping + "']")!;
 
             button.addEventListener("click", (event) => {
                 const block = this.blocks[0] as TextEditorBlock;
                 const editor = block.getTextEditor();
 
-                if(!editor || !block) {
+                if (!editor || !block) {
                     return;
                 }
 
-                if(!block.canBeEdited() || editor.$doc.size === 0) {
+                if (!block.canBeEdited() || editor.$doc.size === 0) {
                     return;
                 }
 

@@ -10,7 +10,7 @@ import './assets/helpers.scss'
 
 import {createApp, defineAsyncComponent} from 'vue'
 
-import { createPinia } from 'pinia'
+import {createPinia} from 'pinia'
 import App from './App.vue'
 import router from './router'
 import FloatingVue from 'floating-vue'

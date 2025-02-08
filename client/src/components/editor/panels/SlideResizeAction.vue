@@ -1,24 +1,24 @@
 <template>
     <Dialog>
         <template #activator="{toggle}">
-            <i class="mdi mdi-resize" @click="toggle"  v-tooltip="$t('editor.panel.slides.action.resize')"></i>
+            <i v-tooltip="$t('editor.panel.slides.action.resize')" class="mdi mdi-resize" @click="toggle"></i>
         </template>
         <template #default>
             <Card dialog>
-                <p class="title" v-t>editor.panel.slides.size.title</p>
+                <p v-t class="title">editor.panel.slides.size.title</p>
 
                 <div class="flex flex-justify-space-between flex-align-center">
                     <Input v-model:value="size.width"
                            :label="$t('editor.panel.slides.size.width')"
-                           type="number"
-                           :validators="[v => v > 0 || $t('editor.panel.slides.size.width-invalid')]"/>
+                           :validators="[v => v > 0 || $t('editor.panel.slides.size.width-invalid')]"
+                           type="number"/>
                     <div class="flex-grow flex flex-justify-center flex-align-center">
                         <span v-t>editor.panel.slides.size.times</span>
                     </div>
                     <Input v-model:value="size.height"
                            :label="$t('editor.panel.slides.size.height')"
-                           type="number"
-                           :validators="[v => v > 0 || $t('editor.panel.slides.size.height-invalid')]"/>
+                           :validators="[v => v > 0 || $t('editor.panel.slides.size.height-invalid')]"
+                           type="number"/>
                 </div>
 
                 <Checkbox
@@ -34,7 +34,7 @@
     </Dialog>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import {onMounted, ref, watch} from "vue";
 import type {Slide} from "@/models/Material";
@@ -70,7 +70,7 @@ const editorStore = useEditorStore();
 const save = () => {
     const editor = editorStore.getEditor();
 
-    if(!editor || !props.slide || size.value.width <= 0 || size.value.height <= 0) {
+    if (!editor || !props.slide || size.value.width <= 0 || size.value.height <= 0) {
         return;
     }
 
@@ -81,6 +81,6 @@ const save = () => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 
 </style>

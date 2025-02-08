@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {computed, ref, toRaw, watch} from "vue";
+import {ref, watch} from "vue";
 import {useMaterialStore} from "@/stores/material";
 import {Slide} from "@/models/Material";
 import type Player from "@/editor/player/Player";
@@ -15,7 +15,7 @@ export const usePlayerStore = defineStore("player", () => {
     const playerTime = ref<number>(0);
     const slideTime = ref<number>(0);
 
-    const variables = ref<{[key: string]: string}>({});
+    const variables = ref<{ [key: string]: string }>({});
 
     const slides = ref<Slide[]>([]);
 
@@ -27,8 +27,8 @@ export const usePlayerStore = defineStore("player", () => {
 
     const activeSlide = ref<string | undefined>(undefined);
 
-    const requestPlayer = async() => {
-        if(!materialStore.currentMaterial) {
+    const requestPlayer = async () => {
+        if (!materialStore.currentMaterial) {
             throw new Error("No material loaded, cannot request player");
         }
 

@@ -1,13 +1,13 @@
 <template>
     <article class="editor-view">
         <div class="editor-container">
-            <div class="editor" ref="editorElement" v-once v-html="''" :key="'editor'">
+            <div v-once :key="'editor'" ref="editorElement" class="editor" v-html="''">
             </div>
         </div>
     </article>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import Editor from "@/editor/Editor";
 import {onMounted, onUnmounted, ref, watch} from "vue";
 import {EditorMode} from "@/editor/EditorMode";
@@ -52,7 +52,7 @@ onUnmounted(() => {
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 article.editor-view {
     width: 100%;
     height: 100%;

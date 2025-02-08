@@ -2,10 +2,10 @@
     <div class="underlay">
         <Header :active="active" fixed>
             <template #logo>
-                <div class="meta" v-if="materialStore.currentMaterial">
-                    <span class="name">{{materialStore.currentMaterial.name}}</span>
+                <div v-if="materialStore.currentMaterial" class="meta">
+                    <span class="name">{{ materialStore.currentMaterial.name }}</span>
 
-                    <span class="time" v-t="{start: timeFromStart, slide: timeFromSlide}">player.timer</span>
+                    <span v-t="{start: timeFromStart, slide: timeFromSlide}" class="time">player.timer</span>
                 </div>
             </template>
             <template #navigation>
@@ -14,12 +14,12 @@
                 <Dialog>
                     <template #default>
                         <Card dialog>
-                            <p class="title" v-t>player.variables.title</p>
+                            <p v-t class="title">player.variables.title</p>
 
                             <List>
                                 <ListItem v-for="variable in Object.keys(playerStore.variables) ?? []" :key="variable">
-                                    <span>{{variable}}</span>
-                                    <pre><code>{{playerStore.variables[variable]}}</code></pre>
+                                    <span>{{ variable }}</span>
+                                    <pre><code>{{ playerStore.variables[variable] }}</code></pre>
                                 </ListItem>
                                 <ListItem v-if="Object.keys(playerStore.variables).length === 0">
                                     <span v-t>player.variables.not-found</span>
@@ -29,60 +29,60 @@
                     </template>
                     <template #activator="{toggle}">
                         <NavigationButton
-                                :tooltip-text="$t('player.debug')"
-                                icon="bug"
-                                :label="$t('player.debug')"
-                                hide-mobile
-                                tooltip-position="bottom"
-                                @click.stop="toggle"
+                            :label="$t('player.debug')"
+                            :tooltip-text="$t('player.debug')"
+                            hide-mobile
+                            icon="bug"
+                            tooltip-position="bottom"
+                            @click.stop="toggle"
                         />
                     </template>
                 </Dialog>
 
                 <NavigationButton
-                        :tooltip-text="$t('player.control.previous-slide')"
-                        :label="$t('player.control.previous-slide')"
-                        icon="arrow-left"
-                        hide-mobile
-                        tooltip-position="bottom"
-                        :disabled="!hasPreviousSlide"
-                        @click.stop="previousSlide"
-                />
-                <NavigationButton
-                        :tooltip-text="$t('player.control.next-slide')"
-                        :label="$t('player.control.next-slide')"
-                        icon="arrow-right"
-                        hide-mobile
-                        tooltip-position="bottom"
-                        :disabled="!hasNextSlide"
-                        @click.stop="nextSlide"
-                />
-
-                <NavigationButton
-                        :tooltip-text="$t('player.control.fullscreen')"
-                        :label="$t('player.control.fullscreen')"
-                        icon="fullscreen"
-                        hide-mobile
-                        tooltip-position="bottom"
-                        @click.stop="fullscreen"
-                />
-
-                <NavigationButton
-                    :tooltip-text="$t('player.control.edit')"
-                    :label="$t('player.control.edit')"
-                    icon="square-edit-outline"
+                    :disabled="!hasPreviousSlide"
+                    :label="$t('player.control.previous-slide')"
+                    :tooltip-text="$t('player.control.previous-slide')"
                     hide-mobile
+                    icon="arrow-left"
                     tooltip-position="bottom"
-                    :to="{name: 'Editor', params: {material: route.params.material}}"
+                    @click.stop="previousSlide"
+                />
+                <NavigationButton
+                    :disabled="!hasNextSlide"
+                    :label="$t('player.control.next-slide')"
+                    :tooltip-text="$t('player.control.next-slide')"
+                    hide-mobile
+                    icon="arrow-right"
+                    tooltip-position="bottom"
+                    @click.stop="nextSlide"
                 />
 
                 <NavigationButton
-                        :tooltip-text="$t('player.control.leave')"
-                        :label="$t('player.control.leave')"
-                        icon="exit-to-app"
-                        :to="{name: 'Dashboard'}"
-                        hide-mobile
-                        tooltip-position="bottom"
+                    :label="$t('player.control.fullscreen')"
+                    :tooltip-text="$t('player.control.fullscreen')"
+                    hide-mobile
+                    icon="fullscreen"
+                    tooltip-position="bottom"
+                    @click.stop="fullscreen"
+                />
+
+                <NavigationButton
+                    :label="$t('player.control.edit')"
+                    :to="{name: 'Editor', params: {material: route.params.material}}"
+                    :tooltip-text="$t('player.control.edit')"
+                    hide-mobile
+                    icon="square-edit-outline"
+                    tooltip-position="bottom"
+                />
+
+                <NavigationButton
+                    :label="$t('player.control.leave')"
+                    :to="{name: 'Dashboard'}"
+                    :tooltip-text="$t('player.control.leave')"
+                    hide-mobile
+                    icon="exit-to-app"
+                    tooltip-position="bottom"
                 />
             </template>
         </Header>
@@ -93,14 +93,13 @@
 
 <script lang="ts" setup>
 import {onMounted, onUnmounted, ref, watch} from "vue";
-import {useRoute, useRouter} from "vue-router";
+import {useRoute} from "vue-router";
 import {useMaterialStore} from "@/stores/material";
 import {usePlayerStore} from "@/stores/player";
 import type Player from "@/editor/player/Player";
 import Header from "@/components/design/header/Header.vue";
 import NavigationButton from "@/components/design/navigation/NavigationButton.vue";
 import ListItem from "@/components/design/list/ListItem.vue";
-import Material from "@/models/Material";
 import {$t} from "@/translation/Translation";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
 
@@ -115,12 +114,12 @@ watch(() => playerStore.getPlayer(), (value) => {
 const route = useRoute();
 
 
-onMounted(async() => {
+onMounted(async () => {
     await materialStore.load();
 
     let materialId = route.params.material as string;
 
-    if(materialId) {
+    if (materialId) {
         await materialStore.loadMaterial(materialId);
     }
 
@@ -134,7 +133,7 @@ onMounted(async() => {
 });
 
 onUnmounted(() => {
-    if(cursorTimeout) clearTimeout(cursorTimeout);
+    if (cursorTimeout) clearTimeout(cursorTimeout);
     window.removeEventListener("click", click);
     window.removeEventListener("keydown", keydown);
     window.removeEventListener("mousemove", mousemove);
@@ -147,9 +146,9 @@ const click = (e: MouseEvent) => {
     const position = {x: e.clientX, y: e.clientY};
     const width = window.innerWidth;
 
-    if(position.x > width / 4 * 3) {
+    if (position.x > width / 4 * 3) {
         nextSlide();
-    } else if(position.x < width / 4) {
+    } else if (position.x < width / 4) {
         previousSlide();
     }
 };
@@ -161,7 +160,7 @@ const nextSlide = () => {
     const current = playerStore.getActiveSlide();
     const next = playerStore.getSlides().find(s => s.position > current!.position);
 
-    if(!next) return;
+    if (!next) return;
 
     playerStore.changeSlide(next);
 
@@ -172,7 +171,7 @@ const previousSlide = () => {
     const current = playerStore.getActiveSlide();
     const prev = playerStore.getSlides().reverse().find(s => s.position < current!.position);
 
-    if(!prev) return;
+    if (!prev) return;
 
     playerStore.changeSlide(prev);
 
@@ -183,15 +182,15 @@ const previousSlide = () => {
 const keydown = (e: KeyboardEvent) => {
     const current = playerStore.getActiveSlide();
 
-    if(!current) return;
+    if (!current) return;
 
-    if(["ArrowRight", "Enter", "Space", " ", "PageUp"].includes(e.key)) {
+    if (["ArrowRight", "Enter", "Space", " ", "PageUp"].includes(e.key)) {
         nextSlide();
-    } else if(["ArrowLeft", "PageDown", "Backspace"].includes(e.key)) {
+    } else if (["ArrowLeft", "PageDown", "Backspace"].includes(e.key)) {
         previousSlide();
-    } else if(["Home"].includes(e.key)) {
+    } else if (["Home"].includes(e.key)) {
         playerStore.changeSlide(playerStore.getSlides()[0]);
-    } else if(["End"].includes(e.key)) {
+    } else if (["End"].includes(e.key)) {
         playerStore.changeSlide(playerStore.getSlides()[playerStore.getSlides().length - 1]);
     }
 };
@@ -211,7 +210,7 @@ const mousemove = (e: MouseEvent) => {
 const fullscreen = () => {
     const element = document.documentElement;
 
-    if(document.fullscreenElement) {
+    if (document.fullscreenElement) {
         document.exitFullscreen();
     } else {
         element.requestFullscreen();
@@ -231,7 +230,7 @@ onMounted(() => {
             const minutes = Math.floor(diff / 60000);
             const seconds = Math.floor((diff % 60000) / 1000);
 
-            if(hours > 0) {
+            if (hours > 0) {
                 timeFromStart.value = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             } else {
                 timeFromStart.value = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
@@ -247,7 +246,7 @@ onMounted(() => {
             const minutes = Math.floor(diff / 60000);
             const seconds = Math.floor((diff % 60000) / 1000);
 
-            if(hours > 0) {
+            if (hours > 0) {
                 timeFromSlide.value = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             } else {
                 timeFromSlide.value = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
@@ -258,7 +257,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-    if(timeInterval) clearInterval(timeInterval);
+    if (timeInterval) clearInterval(timeInterval);
 });
 </script>
 

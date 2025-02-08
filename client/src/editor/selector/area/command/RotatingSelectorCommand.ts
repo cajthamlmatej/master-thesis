@@ -81,7 +81,7 @@ export class RotatingSelectorCommand extends SelectorCommand {
             // Update selection area rotation
             selectorArea.rotateSelectionArea((snappedAngle * 180) / Math.PI);
 
-            if(PER_OBJECT) {
+            if (PER_OBJECT) {
                 selectorArea.recalculateSelectionArea();
             }
 

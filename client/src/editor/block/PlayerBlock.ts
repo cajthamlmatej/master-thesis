@@ -21,6 +21,27 @@ export abstract class PlayerBlock {
     public rotation: number = 0;
     public zIndex: number = 0;
     public group?: string;
+    public element!: HTMLElement;
+    public player!: Player;
+    public interactivity: BlockInteractivity[] = [];
+    public readonly baseValues: {
+        position: {
+            x: number;
+            y: number;
+        }
+        size: {
+            width: number;
+            height: number;
+        }
+        rotation: number;
+        zIndex: number;
+        opacity: number;
+        group?: string;
+    }
+    public playerStore: any; // TODO: add type
+    public loaded: Promise<void>;
+    private repeats: { timeouts: NodeJS.Timeout[], intervals: NodeJS.Timeout[] } = {timeouts: [], intervals: []};
+    private resolveLoaded: () => void;
 
     protected constructor(base: BlockConstructor) {
         this.id = base.id;
@@ -50,36 +71,6 @@ export abstract class PlayerBlock {
 
         this.loadPlayerStore();
         this.loaded = new Promise((res) => this.resolveLoaded = res);
-    }
-
-    public element!: HTMLElement;
-    public player!: Player;
-    public interactivity: BlockInteractivity[] = [];
-    private repeats: { timeouts: NodeJS.Timeout[], intervals: NodeJS.Timeout[] } = {timeouts: [], intervals: []};
-
-    public readonly baseValues: {
-        position: {
-            x: number;
-            y: number;
-        }
-        size: {
-            width: number;
-            height: number;
-        }
-        rotation: number;
-        zIndex: number;
-        opacity: number;
-        group?: string;
-    }
-
-    public playerStore: any; // TODO: add type
-    private resolveLoaded: () => void;
-    public loaded: Promise<void>;
-
-    private async loadPlayerStore() {
-        const {usePlayerStore} = await import("@/stores/player");
-        this.playerStore = usePlayerStore();
-        this.resolveLoaded();
     }
 
     /**
@@ -314,7 +305,7 @@ export abstract class PlayerBlock {
 
         for (let interactivity of this.interactivity.filter(i => i.event === "TIMER")) {
             if (interactivity.timerType === "REPEAT") {
-                this.repeats.intervals.push(setInterval(async() => {
+                this.repeats.intervals.push(setInterval(async () => {
                     await this.loaded;
 
                     const canContinue = this.checkInteractivityConditions(interactivity);
@@ -324,7 +315,7 @@ export abstract class PlayerBlock {
                     this.processInteractivity(interactivity);
                 }, interactivity.timerTime));
             } else if (interactivity.timerType === "TIMEOUT") {
-                this.repeats.timeouts.push(setTimeout(async() => {
+                this.repeats.timeouts.push(setTimeout(async () => {
                     await this.loaded;
 
                     const canContinue = this.checkInteractivityConditions(interactivity);
@@ -335,6 +326,12 @@ export abstract class PlayerBlock {
                 }, interactivity.timerTime));
             }
         }
+    }
+
+    private async loadPlayerStore() {
+        const {usePlayerStore} = await import("@/stores/player");
+        this.playerStore = usePlayerStore();
+        this.resolveLoaded();
     }
 
     // TODO: destroy method for cleanup (interactivity timeouts, intervals, etc.)
@@ -507,7 +504,7 @@ export abstract class PlayerBlock {
 
                         if (isNaN(slideIndex)) break;
 
-                        slide = this.playerStore.getSlides().sort((a:any, b:any) => a.position - b.position)[slideIndex].id;
+                        slide = this.playerStore.getSlides().sort((a: any, b: any) => a.position - b.position)[slideIndex].id;
                         break;
                     case "RANDOM":
                         slide = this.playerStore.getSlides()[Math.floor(Math.random() * this.playerStore.getSlides().length)].id;

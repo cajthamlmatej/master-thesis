@@ -54,6 +54,7 @@ export abstract class SelectProperty<T extends EditorBlock = EditorBlock> extend
     }
 
     abstract recalculateValues(change: (value: string) => void): void;
+
     abstract applyValue(value: string): boolean;
 
 }

@@ -6,7 +6,7 @@
     </article>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import Player from "@/components/Player.vue";
 </script>
 

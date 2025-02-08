@@ -1,6 +1,5 @@
 import {SelectorAction} from "@/editor/actions/SelectorAction";
-import type {ActionParameters} from "@/editor/actions/EditorAction";
-import type {ActionKeybind} from "@/editor/actions/EditorAction";
+import type {ActionKeybind, ActionParameters} from "@/editor/actions/EditorAction";
 
 export class UngroupAction extends SelectorAction {
     constructor() {

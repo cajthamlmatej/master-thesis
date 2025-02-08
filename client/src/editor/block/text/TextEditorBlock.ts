@@ -1,27 +1,29 @@
 import {EditorBlock} from "@/editor/block/EditorBlock";
-import {generateUUID} from "@/utils/Generators";
 import {BlockEventListener} from "@/editor/block/events/BlockListener";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 import {Property} from "@/editor/property/Property";
-import { Editor } from '@tiptap/core'
+import {Editor} from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 import {Underline} from "@tiptap/extension-underline";
 import {Subscript} from '@tiptap/extension-subscript'
 import {Superscript} from '@tiptap/extension-superscript'
 import {TextStyle} from '@tiptap/extension-text-style'
-import {Color } from '@tiptap/extension-color'
+import {Color} from '@tiptap/extension-color'
 import {FontFamily} from '@tiptap/extension-font-family'
 import {TextFormattingProperty} from "@/editor/block/text/property/TextFormattingProperty";
 import {TextAlign} from "@tiptap/extension-text-align";
 import {FontSize} from "@/utils/font-size";
-import {BlockConstructor, BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
+import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 
 export class TextEditorBlock extends EditorBlock {
     @BlockSerialize("content")
     content: string;
     @BlockSerialize("fontSize")
     private fontSize: number;
+    private editable: boolean = false;
+    private removed = false;
+    private textEditor: Editor | null = null;
 
     constructor(base: BlockConstructorWithoutType, content: string, fontSize: number) {
         super({
@@ -31,10 +33,6 @@ export class TextEditorBlock extends EditorBlock {
         this.content = content;
         this.fontSize = fontSize;
     }
-
-    private editable: boolean = false;
-    private removed = false;
-    private textEditor: Editor | null = null;
 
     override render(): HTMLElement {
         const element = document.createElement("div");
@@ -113,7 +111,7 @@ export class TextEditorBlock extends EditorBlock {
             content.style.width = this.size.width + "px";
         }
 
-        if(this.content !== this.textEditor?.getHTML()) {
+        if (this.content !== this.textEditor?.getHTML()) {
             this.textEditor?.commands.setContent(this.content);
         }
     }
@@ -136,6 +134,17 @@ export class TextEditorBlock extends EditorBlock {
         this.synchronize();
 
         this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
+    }
+
+    /**
+     * Get the text editor instance if it exists.
+     */
+    public getTextEditor() {
+        return this.textEditor;
+    }
+
+    public canBeEdited() {
+        return this.editable;
     }
 
     @BlockEventListener(BlockEvent.SELECTED)
@@ -203,16 +212,5 @@ export class TextEditorBlock extends EditorBlock {
         content.style.transform = "";
 
         this.synchronize();
-    }
-
-    /**
-     * Get the text editor instance if it exists.
-     */
-    public getTextEditor() {
-        return this.textEditor;
-    }
-
-    public canBeEdited() {
-        return this.editable;
     }
 }

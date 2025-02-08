@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {computed, ref, watch} from "vue";
+import {ref, watch} from "vue";
 import {useAuthenticationStore} from "@/stores/authentication";
 import type User from "@/models/User";
 import {api} from "@/api/api";

@@ -8,24 +8,9 @@ import EditorPreferences from "@/editor/EditorPreferences";
 import {EditorMode} from "@/editor/EditorMode";
 import type {EditorOptions} from "@/editor/EditorOptions";
 import {BlockRegistry} from "@/editor/block/BlockRegistry";
-import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
-import {TextBlockDeserializer} from "@/editor/block/text/TextBlockDeserializer";
-import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
-import {ImageBlockDeserializer} from "@/editor/block/image/ImageBlockDeserializer";
-import {WatermarkEditorBlock} from "@/editor/block/watermark/WatermarkEditorBlock";
-import {WatermarkBlockDeserializer} from "@/editor/block/watermark/WatermarkBlockDeserializer";
-import {ImagePlayerBlock} from "@/editor/block/image/ImagePlayerBlock";
-import {TextPlayerBlock} from "@/editor/block/text/TextPlayerBlock";
-import {WatermarkPlayerBlock} from "@/editor/block/watermark/WatermarkPlayerBlock";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
-import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
-import {ShapeBlockDeserializer} from "@/editor/block/shape/ShapeBlockDeserializer";
-import {ShapePlayerBlock} from "@/editor/block/shape/ShapePlayerBlock";
 import {EditorKeybinds} from "@/editor/EditorKeybinds";
 import {EditorHistory} from "@/editor/history/EditorHistory";
-import {InteractiveAreaEditorBlock} from "@/editor/block/interactiveArea/InteractiveAreaEditorBlock";
-import {InteractiveAreaPlayerBlock} from "@/editor/block/interactiveArea/InteractiveAreaPlayerBlock";
-import {InteractiveAreaBlockDeserializer} from "@/editor/block/interactiveArea/InteractiveAreaBlockDeserializer";
 
 export default class Editor {
     private static readonly DEFAULT_PADDING = 32;
@@ -67,120 +52,12 @@ export default class Editor {
         this.setMode(EditorMode.SELECT);
     }
 
-    private parseOptions(options?: EditorOptions) {
-        if (!options) return;
-
-        if (options.size) {
-            this.size = options.size;
-        }
-    }
-
-    private parsePreferences(preferences: EditorPreferences | undefined) {
-        if (!preferences) {
-            this.preferences = new EditorPreferences();
-            return;
-        }
-
-        this.preferences = preferences;
-    }
-
-    private setupEditor() {
-        this.setupUsage();
-        this.setupEditorContent();
-        this.fitToParent();
-    }
-
-    private setupUsage() {
-        const resizeEvent = this.usageResizeEvent.bind(this);
-        const mouseDownEvent = this.usageMouseDownEvent.bind(this);
-        const wheelEvent = this.usageWheelEvent.bind(this);
-
-        window.addEventListener("resize", resizeEvent);
-        window.addEventListener("mousedown", mouseDownEvent);
-        window.addEventListener("wheel", wheelEvent);
-
-        this.events.EDITOR_DESTROYED.on(() => {
-            window.removeEventListener("resize", resizeEvent);
-            window.removeEventListener("mousedown", mouseDownEvent);
-            window.removeEventListener("wheel", wheelEvent);
-        });
-    }
-
-    private usageResizeEvent() {
-        if (this.preferences.KEEP_EDITOR_TO_FIT_PARENT) {
-            this.fitToParent();
-        }
-    }
-    private usageMouseDownEvent(event: MouseEvent) {
-        if (this.mode !== EditorMode.MOVE) return;
-
-        if (event.button !== 0) return;
-
-        // Is inside the editor?
-        if (!this.editorElement.parentElement!.contains(event.target as Node)) return;
-
-        const handleMove = (event: MouseEvent) => {
-            const offsetX = event.movementX;
-            const offsetY = event.movementY;
-
-            this.position = {
-                x: this.position.x + offsetX,
-                y: this.position.y + offsetY
-            };
-
-            this.updateElement();
-        };
-        const handleUp = (event: MouseEvent) => {
-            window.removeEventListener("mousemove", handleMove);
-            window.removeEventListener("mouseup", handleUp);
-        };
-
-        window.addEventListener("mousemove", handleMove);
-        window.addEventListener("mouseup", handleUp);
-    }
-
-    private usageWheelEvent(event: WheelEvent) {
-        if (this.mode !== EditorMode.MOVE) return;
-
-        if (!this.editorElement.parentElement!.contains(event.target as Node)) return;
-
-        const rect = this.editorElement.getBoundingClientRect();
-
-        const mouseX = event.clientX - rect.left;
-        const mouseY = event.clientY - rect.top;
-
-        const newScale = this.scale - event.deltaY / 1000;
-        const scale = Math.max(0.1, Math.min(2, newScale));
-
-        const scaleChange = scale / this.scale;
-
-        this.position.x = mouseX - (mouseX - this.position.x) * scaleChange;
-        this.position.y = mouseY - (mouseY - this.position.y) * scaleChange;
-
-        this.scale = scale;
-
-        this.updateElement();
-    }
-
-    private setupEditorContent() {
-        this.editorElement.innerHTML = `<div class="editor-content"></div>`
-    }
-
     /**
      * Destroy the editor instance, cleanup events and the main element
      */
     public destroy() {
         this.events.EDITOR_DESTROYED.emit();
         this.editorElement.innerHTML = "";
-    }
-
-    private updateElement() {
-        this.editorElement.style.left = this.position.x + "px";
-        this.editorElement.style.top = this.position.y + "px";
-        this.editorElement.style.transform = `scale(${this.scale})`;
-        this.editorElement.style.width = this.size.width + "px";
-        this.editorElement.style.height = this.size.height + "px";
-        this.editorElement.style.setProperty("--scale", this.scale.toString());
     }
 
     public setMode(mode: EditorMode) {
@@ -249,7 +126,7 @@ export default class Editor {
     }
 
     public capPositionToEditorBounds(x: number, y: number, width?: number, height?: number) {
-        if(!width || !height) {
+        if (!width || !height) {
             const size = this.getSize();
 
             return {
@@ -507,5 +384,114 @@ export default class Editor {
 
         this.blocks = [];
         this.selector.deselectAllBlocks();
+    }
+
+    private parseOptions(options?: EditorOptions) {
+        if (!options) return;
+
+        if (options.size) {
+            this.size = options.size;
+        }
+    }
+
+    private parsePreferences(preferences: EditorPreferences | undefined) {
+        if (!preferences) {
+            this.preferences = new EditorPreferences();
+            return;
+        }
+
+        this.preferences = preferences;
+    }
+
+    private setupEditor() {
+        this.setupUsage();
+        this.setupEditorContent();
+        this.fitToParent();
+    }
+
+    private setupUsage() {
+        const resizeEvent = this.usageResizeEvent.bind(this);
+        const mouseDownEvent = this.usageMouseDownEvent.bind(this);
+        const wheelEvent = this.usageWheelEvent.bind(this);
+
+        window.addEventListener("resize", resizeEvent);
+        window.addEventListener("mousedown", mouseDownEvent);
+        window.addEventListener("wheel", wheelEvent);
+
+        this.events.EDITOR_DESTROYED.on(() => {
+            window.removeEventListener("resize", resizeEvent);
+            window.removeEventListener("mousedown", mouseDownEvent);
+            window.removeEventListener("wheel", wheelEvent);
+        });
+    }
+
+    private usageResizeEvent() {
+        if (this.preferences.KEEP_EDITOR_TO_FIT_PARENT) {
+            this.fitToParent();
+        }
+    }
+
+    private usageMouseDownEvent(event: MouseEvent) {
+        if (this.mode !== EditorMode.MOVE) return;
+
+        if (event.button !== 0) return;
+
+        // Is inside the editor?
+        if (!this.editorElement.parentElement!.contains(event.target as Node)) return;
+
+        const handleMove = (event: MouseEvent) => {
+            const offsetX = event.movementX;
+            const offsetY = event.movementY;
+
+            this.position = {
+                x: this.position.x + offsetX,
+                y: this.position.y + offsetY
+            };
+
+            this.updateElement();
+        };
+        const handleUp = (event: MouseEvent) => {
+            window.removeEventListener("mousemove", handleMove);
+            window.removeEventListener("mouseup", handleUp);
+        };
+
+        window.addEventListener("mousemove", handleMove);
+        window.addEventListener("mouseup", handleUp);
+    }
+
+    private usageWheelEvent(event: WheelEvent) {
+        if (this.mode !== EditorMode.MOVE) return;
+
+        if (!this.editorElement.parentElement!.contains(event.target as Node)) return;
+
+        const rect = this.editorElement.getBoundingClientRect();
+
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+
+        const newScale = this.scale - event.deltaY / 1000;
+        const scale = Math.max(0.1, Math.min(2, newScale));
+
+        const scaleChange = scale / this.scale;
+
+        this.position.x = mouseX - (mouseX - this.position.x) * scaleChange;
+        this.position.y = mouseY - (mouseY - this.position.y) * scaleChange;
+
+        this.scale = scale;
+
+        this.updateElement();
+    }
+
+    private setupEditorContent() {
+        this.editorElement.innerHTML = `<div class="editor-content"></div>`
+    }
+
+    private updateElement() {
+        this.editorElement.style.left = this.position.x + "px";
+        this.editorElement.style.top = this.position.y + "px";
+        this.editorElement.style.transform = `scale(${this.scale})`;
+        this.editorElement.style.width = this.size.width + "px";
+        this.editorElement.style.height = this.size.height + "px";
+        this.editorElement.style.setProperty("--scale", this.scale.toString());
     }
 }

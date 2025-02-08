@@ -1,5 +1,4 @@
 import {EditorBlock} from "@/editor/block/EditorBlock";
-import {generateUUID} from "@/utils/Generators";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {BlockEventListener} from "@/editor/block/events/BlockListener";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
