@@ -174,4 +174,16 @@ const classes = computed(() => {
 //    display: inline-block;
 //    width: 100%;
 //}
+
+
+
+.fade-ease-enter-active,
+.fade-ease-leave-active {
+    transition: opacity 0.2s ease-in-out;
+}
+
+.fade-ease-enter-from,
+.fade-ease-leave-to {
+    opacity: 0;
+}
 </style>
