@@ -1,0 +1,305 @@
+{
+    "web": {
+        "name": "Mattelight"
+    },
+    "components": {
+        "pagination": {
+            "previous": "Předchozí",
+            "next": "Další"
+        }
+    },
+    "layout": {
+        "base": {
+            "logout": "Odhlásit se",
+            "dashboard": "Ovládací panel"
+        },
+        "auth": {
+            "home": "Home"
+        }
+    },
+    "cookies": {
+        "title": "Informace o místních souborech a cookies",
+        "message": "Při návštěvě této stránky se pro její účely ukládají místní soubory a cookies. Tyto soubory jsou nezbytné pro provoz stránek. Patří mezi ně:",
+        "items": {
+            "login": "přihlašovací tokeny",
+            "logged": "informace o přihlášeném uživateli",
+            "more": "a další"
+        },
+        "not-accept": "Pokud nesouhlasíte se zpracováním souborů cookie, okamžitě opusťte stránky.",
+        "accept": "Souhlasím"
+    },
+    "page": {
+        "not-found": {
+            "title": "Nenalezeno",
+            "message": "Hledaná stránka neexistuje. Zkontrolujte prosím adresu URL a zkuste to znovu.\nNa ovládací panel se můžete vrátit také pomocí níže uvedeného tlačítka.",
+            "dashboard": "Jít na ovládací panel"
+        },
+        "dashboard": {
+            "title-welcome": "Vítej, %name%",
+            "search": "Hledat...",
+            "materials": {
+                "not-found-by-criteria": "Žádné materiály nebyly nalezeny podle zadaných kritérií.",
+                "modified": "upraveno",
+                "created": "vytvořeno",
+                "deletion": {
+                    "title": "Potvrzení smazání",
+                    "deletion": "Opravdu chcete tento materiál odstranit? Tuto akci nelze vzít zpět.",
+                    "after": "Po kliknutí na tlačítko „Jsem si jistý“ se materiál vymaže, včetně všech jeho snímků, vyplněných formulářů a dalších údajů.",
+                    "sure": "Jsem si jistý",
+                    "cancel": "Zrušit"
+                },
+                "delete-tooltip": "Smazat materiál",
+                "copy-tooltip": "Kopírovat materiál"
+            },
+            "add-tooltip": "Přidat materiál"
+        },
+        "authentication": {
+            "title": "Přihlášení",
+            "type": {
+                "email-password": "E-mail a heslo",
+                "email": "E-mail"
+            },
+            "fields": {
+                "email": {
+                    "required": "E-mail je povinný",
+                    "invalid": "E-mail musí být ve správném formátu",
+                    "label": "E-mail"
+                },
+                "password": {
+                    "invalid": "Heslo musí mít alespoň 4 znaky",
+                    "label": "Heslo"
+                },
+                "code": {
+                    "invalid": "Kód musí mít alespoň 6 znaky",
+                    "label": "Kód"
+                }
+            },
+            "login": "Přihlásit se",
+            "already-code": "Mám kód",
+            "no-code": "Potřebuji kód",
+            "create-account": "Vytvořit účet",
+            "fail": {
+                "failed": "Přihlášení se nezdařilo. Zkontrolujte, zda jste zadali správné údaje o účtu.",
+                "wrong-email": "Zadali jste špatný e-mail nebo již existuje žádost o přihlášení. Zkontrolujte svůj e-mail a zkuste to znovu.",
+                "wrong-code": "Zadali jste špatný kód. Zkontrolujte svůj e-mail a zkuste to znovu."
+            }
+        },
+        "register": {
+            "title": "Registrace",
+            "fields": {
+                "name": {
+                    "required": "Jméno je povinné",
+                    "short": "Jméno musí mít alespoň 4 znaky",
+                    "long": "Jméno musí mít nejvýše 255 znaků",
+                    "label": "Jak chceš být osloven"
+                },
+                "email": {
+                    "required": "E-mail je povinný",
+                    "invalid": "E-mail musí být ve správném formátu",
+                    "long": "E-mail musí mít nejvýše 255 znaků",
+                    "label": "E-mail"
+                },
+                "password": {
+                    "short": "Heslo musí mít alespoň 8 znaků",
+                    "long": "Heslo musí mít nejvýše 255 znaků",
+                    "label": "Heslo"
+                },
+                "password-repeat": {
+                    "not-match": "Hesla se neshodují",
+                    "label": "Heslo znovu"
+                }
+            },
+            "register": "Registrovat se",
+            "after-register": "Po registraci budete vyzváni k potvrzení registrace pomocí odkazu v zadaném e-mailu.",
+            "by-registering": "Registrací souhlasíte s podmínkami používání a zásadami ochrany osobních údajů.",
+            "already-account": "Už máte účet?",
+            "sign-in": "Přihlaste se zde",
+            "success": {
+                "title": "Úspěšná registrace",
+                "message": "Registrace proběhla úspěšně. Podívejte se do e-mailu na odkaz pro potvrzení registrace. Poté se můžete přihlásit.",
+                "sign-in": "Přihlásit se"
+            },
+            "fail": {
+                "failed": "Registrace se nezdařila. Účet s tímto e-mailem již pravděpodobně existuje. Zkuste jiný e-mail."
+            }
+        },
+        "activate": {
+            "title": "Aktivace účtu",
+            "activation": "Aktivace vašeho účtu",
+            "success": "Váš účet byl úspěšně aktivován. Nyní se můžete přihlásit.",
+            "loading": "Aktivace účtu, prosím čekejte...",
+            "fail": "Aktivace účtu se nezdařila. Odkaz je neplatný nebo již byl použit, zkuste to znovu.",
+            "sign-in": "Přihlásit se"
+        }
+    },
+    "player": {
+        "variables": {
+            "title": "Proměnné v materiálu",
+            "not-found": "Žádné proměnné nebyly nalezeny."
+        },
+        "timer": "%start% (čas na snímku: %slide%)",
+        "debug": "Debug",
+        "control": {
+            "previous-slide": "Předchozí snímek",
+            "next-slide": "Další snímek",
+            "fullscreen": "Celá obrazovka",
+            "edit": "Upravit materiál",
+            "leave": "Opustit materiál"
+        }
+    },
+
+    "editor": {
+        "navigation": {
+            "preview": "Náhled",
+            "dashboard": "Ovládací panel"
+        },
+        "panel": {
+            "slides": {
+                "title": "Snímky",
+                "add": "Přidat snímek",
+                "slide-number": "%number%. snímek",
+                "action": {
+                    "up": "Posunout snímek nahoru",
+                    "down": "Posunout snímek dolů",
+                    "copy": "Kopírovat snímek",
+                    "delete": "Smazat snímek",
+                    "resize": "Změnit velikost snímku"
+                },
+                "size": {
+                    "title": "Velikost snímku",
+                    "resize": "Změnit velikost",
+                    "to-fit": "Přizpůsobit obsah velikosti",
+                    "width": "Šířka",
+                    "width-invalid": "Šířka musí být číslo větší než 0",
+                    "height": "Výška",
+                    "height-invalid": "Výška musí být číslo větší než 0",
+                    "times": "x"
+                }
+            },
+            "blocks": {
+                "title": "Přidat blok"
+            }
+        },
+        "ui": {
+            "fit-to-screen": "Přizpůsobit obrazovce",
+            "change-mode": {
+                "to-move": "Zapnout režim přesunu",
+                "to-select": "Zapnout režim výběru"
+            },
+            "history": {
+                "undo": "Zpět",
+                "redo": "Opakovat"
+            },
+            "save": "Uložit do cloudu"
+        },
+        "preferences": {
+            "open": "Předvolby",
+            "title": "Předvolby",
+            "save": "Uložit",
+            "enabled": "Povoleno",
+            "validation": {
+                "filled": "Hodnota musí být vyplněna",
+                "number": "Hodnota musí být číslo"
+            },
+            "KEEP_EDITOR_TO_FIT_PARENT": {
+                "label": "Udržet editor přizpůsobený rodiči",
+                "description": "Pokud je povoleno, editor se při změně velikosti vždy přizpůsobí rodičovskému prvku."
+            },
+            "ROTATION_SNAPPING_COUNT": {
+                "label": "Počet přichytávání při otáčení",
+                "description": "Počet přichytávacích bodů při otáčení objektu (pomocí SHIFT při otáčení).",
+                "range": "Hodnota by měla být mezi 2 a 180"
+            },
+            "PER_OBJECT_TRANSFORMATION": {
+                "label": "Transformace pro každý objekt",
+                "description": "Pokud je povoleno, transformace (otáčení a změna měřítka) bude aplikována na jednotlivé objekty místo na vybranou skupinu."
+            },
+            "AUTOMATIC_SAVING": {
+                "label": "Automatické ukládání",
+                "description": "Pokud je povoleno, editor bude automaticky ukládat projekt v pravidelných intervalech."
+            },
+            "AUTOMATIC_SAVING_INTERVAL": {
+                "label": "Interval automatického ukládání",
+                "description": "Interval automatického ukládání. K dispozici pouze pokud je automatické ukládání povoleno.",
+                "30-seconds": "30 sekund",
+                "1-minute": "1 minuta",
+                "2-minutes": "2 minuty",
+                "5-minutes": "5 minut",
+                "10-minutes": "10 minut"
+            },
+            "HISTORY_LIMIT": {
+                "label": "Limit historie",
+                "description": "Limit zásobníku historie. Pokud je dosažen limit, editor odstraní nejstarší záznamy. Může ovlivnit výkon.",
+                "range": "Hodnota by měla být mezi 5 a 1000"
+            }
+        },
+        "keybinds": {
+            "title": "Klávesové zkratky",
+            "optional-key": "Tato klávesa je volitelná a její stisknutí může mít různý výsledek.",
+            "modifier": {
+                "shift": "Shift",
+                "ctrl": "Ctrl",
+                "alt": "Alt"
+            },
+            "key": {
+                "ArrowUp": "Šipka nahoru",
+                "ArrowDown": "Šipka dolů",
+                "ArrowLeft": "Šipka doleva",
+                "ArrowRight": "Šipka doprava"
+            }
+        },
+        "action": {
+            "copy": {
+                "label": "Kopírovat"
+            },
+            "delete": {
+                "label": "Smazat"
+            },
+            "duplicate": {
+                "label": "Duplikovat"
+            },
+            "move": {
+                "label": "Přesunout"
+            },
+            "paste": {
+                "label": "Vložit"
+            },
+            "redo": {
+                "label": "Znovu"
+            },
+            "select-all": {
+                "label": "Vybrat vše"
+            },
+            "undo": {
+                "label": "Opakovat"
+            },
+            "z-index-bottom": {
+                "label": "Posunout zcela dozadu"
+            },
+            "z-index-top": {
+                "label": "Posunout zcela dopředu"
+            },
+            "z-index-down": {
+                "label": "Posunout vzad"
+            },
+            "z-index-up": {
+                "label": "Posunout vpřed"
+            },
+            "bring-back": {
+                "label": "Přenést zpět do plátna"
+            },
+            "group": {
+                "label": "Seskupit"
+            },
+            "lock": {
+                "label": "Zamknout"
+            },
+            "ungroup": {
+                "label": "Rozdělit"
+            },
+            "unlock": {
+                "label": "Odemknout"
+            }
+        }
+    }
+}

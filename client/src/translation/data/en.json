@@ -1,0 +1,302 @@
+{
+    "web": {
+        "name": "Mattelight"
+    },
+    "components": {
+        "pagination": {
+            "previous": "Previous",
+            "next": "Next"
+        }
+    },
+    "layout": {
+        "base": {
+            "logout": "Logout",
+            "dashboard": "Dashboard"
+        },
+        "auth": {
+            "home": "Home"
+        }
+    },
+    "cookies": {
+        "title": "Information about local files and cookies",
+        "message": "When you visit this site, local files and cookies are stored for the purposes of the site. The files are necessary for the operation of the site. These include:",
+        "items": {
+            "login": "login tokens",
+            "logged": "information about the logged-in user",
+            "more": "and more"
+        },
+        "not-accept": "If you do not agree to the processing of cookies, please leave the site immediately.",
+        "accept": "I agree"
+    },
+    "page": {
+        "not-found": {
+            "title": "Not Found",
+            "message": "The page you are looking for does not exist. Please check the URL and try again.\nYou can also go back to the dashboard using the button below.",
+            "dashboard": "Go to dashboard"
+        },
+        "dashboard": {
+            "title-welcome": "Welcome, %name%",
+            "search": "Search...",
+            "materials": {
+                "not-found-by-criteria": "No materials found with the given search criteria.",
+                "modified": "modified",
+                "created": "created",
+                "deletion": {
+                    "title": "Confirm deletion",
+                    "deletion": "Are you really sure you want to delete this material? This action cannot be undone.",
+                    "after": "After clicking button \"I am sure\" the material will be deleted, including all of its slides, filled forms and other data.",
+                    "sure": "I am sure",
+                    "cancel": "Cancel"
+                },
+                "delete-tooltip": "Delete material",
+                "copy-tooltip": "Copy material"
+            },
+            "add-tooltip": "Add material"
+        },
+        "authentication": {
+            "title": "Login",
+            "type": {
+                "email-password": "E-mail and password",
+                "email": "E-mail"
+            },
+            "fields": {
+                "email": {
+                    "required": "E-mail is required",
+                    "invalid": "E-mail has to be in the correct format",
+                    "label": "E-mail"
+                },
+                "password": {
+                    "invalid": "Password has to be at least 4 characters long",
+                    "label": "Password"
+                },
+                "code": {
+                    "invalid": "Code has to be 6 characters",
+                    "label": "Code"
+                }
+            },
+            "login": "Login",
+            "already-code": "I already have a code",
+            "no-code": "I need a code",
+            "create-account": "Create an account",
+            "fail": {
+                "failed": "Login failed. Make sure you entered correct account details.",
+                "wrong-email": "You entered wrong e-mail or there is already a request for login. Check your e-mail and try again.",
+                "wrong-code": "You entered wrong code. Check your e-mail and try again."
+            }
+        },
+        "register": {
+            "title": "Registration",
+            "fields": {
+                "name": {
+                    "required": "Name is required",
+                    "short": "Name has to be at least 4 characters long",
+                    "long": "Name has to be at most 255 characters long",
+                    "label": "Name you want us to call you"
+                },
+                "email": {
+                    "required": "E-mail is required",
+                    "invalid": "E-mail has to be in the correct format",
+                    "long": "E-mail has to be at most 255 characters long",
+                    "label": "E-mail"
+                },
+                "password": {
+                    "short": "Password has to be at least 8 characters long",
+                    "long": "Password has to be at most 255 characters long",
+                    "label": "Password"
+                },
+                "password-repeat": {
+                    "not-match": "Passwords do not match",
+                    "label": "Repeat password"
+                }
+            },
+            "register": "Register",
+            "after-register": "After registration, you will be asked to confirm your registration using the link in the entered e-mail.",
+            "by-registering": "By registering you agree to conditions of use and privacy policy.",
+            "already-account": "Already have an account?",
+            "sign-in": "Sign in here",
+            "success": {
+                "title": "Registration successful",
+                "message": "Registration was successful. Check your e-mail for a link to confirm your registration. Then you can log in.",
+                "sign-in": "Sign in"
+            },
+            "fail": {
+                "failed": "Registration failed. An account with this e-mail probably already exists. Try different e-mail."
+            }
+        },
+        "activate": {
+            "title": "Account activation",
+            "activation": "Activation of your account",
+            "success": "Account has been successfully activated. Now you can log in.",
+            "loading": "Activating account, please wait...",
+            "fail": "Account activation failed. Please try again later.",
+            "sign-in": "Sign in"
+        }
+    },
+    "player": {
+        "variables": {
+            "title": "Material variables",
+            "not-found": "No variables found in this material."
+        },
+        "timer": "%start% (time on slide: %slide%)",
+        "debug": "Debug",
+        "control": {
+            "previous-slide": "Previous slide",
+            "next-slide": "Next slide",
+            "fullscreen": "Fullscreen",
+            "edit": "Edit this material",
+            "leave": "Leave material"
+        }
+    },
+    "editor": {
+        "navigation": {
+            "preview": "Preview",
+            "dashboard": "Dashboard"
+        },
+        "panel": {
+            "slides": {
+                "title": "Slides",
+                "add": "Add slide",
+                "slide-number": "Slide %number%",
+                "action": {
+                    "up": "Move slide up",
+                    "down": "Move slide down",
+                    "copy": "Copy slide",
+                    "delete": "Delete slide",
+                    "resize": "Resize slide"
+                },
+                "size": {
+                    "title": "Slide size",
+                    "resize": "Resize",
+                    "to-fit": "Resize content to fit",
+                    "width": "Width",
+                    "width-invalid": "Width has to be a number greater than 0",
+                    "height": "Height",
+                    "height-invalid": "Height has to be a number greater than 0",
+                    "times": "x"
+                }
+            },
+            "blocks": {
+                "title": "Add block"
+            }
+        },
+        "ui": {
+            "fit-to-screen": "Fit to the screen",
+            "change-mode": {
+                "to-move": "Turn on move mode",
+                "to-select": "Turn on select mode"
+            },
+            "history": {
+                "undo": "Undo",
+                "redo": "Redo"
+            },
+            "save": "Save to cloud"
+        },
+        "preferences": {
+            "open": "Preferences",
+            "title": "Preferences",
+            "save": "Save",
+            "enabled": "Enabled",
+            "validation": {
+                "filled": "The value has to be filled",
+                "number": "The value has to be a number"
+
+            },
+            "KEEP_EDITOR_TO_FIT_PARENT": {
+                "label": "Keep editor to fit parent",
+                "description": "When enabled, the editor will always fit the parent element while resizing."
+            },
+            "ROTATION_SNAPPING_COUNT": {
+                "label": "Rotation snapping count",
+                "description": "The count of the snapping while rotating the object (using SHIFT while rotating).",
+                "range": "The value should be between 2 and 180"
+            },
+            "PER_OBJECT_TRANSFORMATION": {
+                "label": "Per object transformation",
+                "description": "When enabled, the transformation (rotate and scale) will be applied per object instead of the selected objects (group)."
+            },
+            "AUTOMATIC_SAVING": {
+                "label": "Automatic saving",
+                "description": "When enabled, the editor will automatically save the project regularly."
+            },
+            "AUTOMATIC_SAVING_INTERVAL": {
+                "label": "Automatic saving interval",
+                "description": "The interval of the automatic saving. Is only available when the automatic saving is enabled.",
+                "30-seconds": "30 seconds",
+                "1-minute": "1 minute",
+                "2-minutes": "2 minutes",
+                "5-minutes": "5 minutes",
+                "10-minutes": "10 minutes"
+            },
+            "HISTORY_LIMIT": {
+                "label": "History stack limit",
+                "description": "The limit of the history stack. The editor will remove the oldest history if the limit is reached. May affect the performance.",
+                "range": "The value should be between 5 and 1000"
+            }
+        },
+        "keybinds": {
+            "title": "Key bindings",
+            "optional-key": "This key is optional and pressing it may occur different outcome.",
+            "modifier": {
+                "shift": "Shift",
+                "ctrl": "Ctrl",
+                "alt": "Alt"
+            },
+            "key": {
+
+            }
+        },
+        "action": {
+            "copy": {
+                "label": "Copy"
+            },
+            "delete": {
+                "label": "Delete"
+            },
+            "duplicate": {
+                "label": "Duplicate"
+            },
+            "move": {
+                "label": "Move"
+            },
+            "paste": {
+                "label": "Paste"
+            },
+            "redo": {
+                "label": "Redo"
+            },
+            "select-all": {
+                "label": "Select all"
+            },
+            "undo": {
+                "label": "Undo"
+            },
+            "z-index-bottom": {
+                "label": "Push to back"
+            },
+            "z-index-top": {
+                "label": "Push to top"
+            },
+            "z-index-down": {
+                "label": "Push backward"
+            },
+            "z-index-up": {
+                "label": "Push forward"
+            },
+            "bring-back": {
+                "label": "Bring Back"
+            },
+            "group": {
+                "label": "Group"
+            },
+            "lock": {
+                "label": "Lock"
+            },
+            "ungroup": {
+                "label": "Ungroup"
+            },
+            "unlock": {
+                "label": "Unlock"
+            }
+        }
+    }
+}
