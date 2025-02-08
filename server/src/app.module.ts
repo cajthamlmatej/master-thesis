@@ -6,6 +6,8 @@ import {UsersModule} from './users/users.module';
 import {EmailService} from './email/email.service';
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import { EmailModule } from './email/email.module';
+import { PreferencesController } from './preferences/preferences.controller';
+import { PreferencesModule } from './preferences/preferences.module';
 
 @Module({
     imports: [
@@ -17,7 +19,7 @@ import { EmailModule } from './email/email.module';
             }),
             inject: [ConfigService],
         }),
-        MaterialsModule, AuthModule, UsersModule, EmailModule],
+        MaterialsModule, AuthModule, UsersModule, EmailModule, PreferencesModule],
     providers: [EmailService],
 })
 export class AppModule {
