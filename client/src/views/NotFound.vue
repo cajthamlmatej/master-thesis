@@ -4,12 +4,15 @@
             <Row>
                 <Col cols="12">
                     <Card fluid>
-                        <p class="title">Not Found</p>
+                        <p class="title" v-t>page.not-found.title</p>
 
-                        <p>
-                            The page you are looking for does not exist. Please check the URL and try again.
-                            You can also go back to the <router-link :to="{ name: 'Dashboard' }">dashboard</router-link>.
-                        </p>
+                        <p v-t>page.not-found.message</p>
+
+                        <div class="flex flex-justify-start mt-1">
+                            <Button :to="{ name: 'Dashboard' }" color="primary">
+                                <span v-t>page.not-found.dashboard</span>
+                            </Button>
+                        </div>
                     </Card>
                 </Col>
             </Row>

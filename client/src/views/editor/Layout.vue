@@ -18,30 +18,41 @@
 
             <NavigationButton :to="{ name: 'Player', params: { material: $route.params.material } }"
                               hide-mobile icon="presentation"
-                              label="Preview"
-                              tooltip-position="bottom"
-                              tooltip-text="Preview"></NavigationButton>
+                              :label="$t('editor.navigation.preview')"
+                              :tooltip-text="$t('editor.navigation.preview')"
+                              tooltip-position="bottom"></NavigationButton>
+
+            <ChangeLanguage />
 
             <NavigationButton
                               hide-mobile icon="solar-panel"
-                              label="Dashboard"
+                              :label="$t('editor.navigation.dashboard')"
+                              :tooltip-text="$t('editor.navigation.dashboard')"
                               :to="{name: 'Dashboard'}"
-                              tooltip-position="bottom"
-                              tooltip-text="Dashboard"></NavigationButton>
+                              tooltip-position="bottom"></NavigationButton>
         </template>
     </Header>
 
     <Navigation v-model:menu="data.menu" primary secondary-active>
         <template #primary>
-            <NavigationButton icon="cards-variant" label="Slides" tooltip-text="Slides" @click="slidesMenu = !slidesMenu"></NavigationButton>
-            <NavigationButton icon="plus-box-outline" label="Add block" tooltip-text="Add block" @click="blockMenu = !blockMenu"></NavigationButton>
+            <NavigationButton icon="cards-variant"
+                              :label="$t('editor.panel.slides.title')"
+                              :tooltip-text="$t('editor.panel.slides.title')"
+                              @click="slidesMenu = !slidesMenu"></NavigationButton>
+            <NavigationButton icon="plus-box-outline"
+                              :label="$t('editor.panel.blocks.title')"
+                              :tooltip-text="$t('editor.panel.blocks.title')"
+                              @click="blockMenu = !blockMenu"></NavigationButton>
         </template>
         <template #secondary>
-            <NavigationButton icon="fit-to-screen-outline" label="Fit to the screen" tooltip-text="Fit to the screen" @click="fitToScreen"></NavigationButton>
+            <NavigationButton icon="fit-to-screen-outline"
+                              :label="$t('editor.ui.fit-to-screen')"
+                              :tooltip-text="$t('editor.ui.fit-to-screen')"
+                              @click="fitToScreen"></NavigationButton>
             <NavigationButton
                 :icon="`mdi ${mode === EditorMode.SELECT ? 'mdi mdi-cursor-move' : 'mdi mdi-cursor-default'}`"
-                :label="`${mode === EditorMode.SELECT ? 'Turn on move mode' : 'Turn on select mode'}`"
-                :tooltip-text="`${mode === EditorMode.SELECT ? 'Turn on move mode' : 'Turn on select mode'}`"
+                :label="`${mode === EditorMode.SELECT ? $t('editor.ui.change-mode.to-move') : $t('editor.ui.change-mode.to-select')}`"
+                :tooltip-text="`${mode === EditorMode.SELECT ? $t('editor.ui.change-mode.to-move') : $t('editor.ui.change-mode.to-select')}`"
                 @click="changeMode"></NavigationButton>
         </template>
     </Navigation>
@@ -77,6 +88,8 @@ import {useRoute, useRouter} from "vue-router";
 import {useMaterialStore} from "@/stores/material";
 import Save from "@/components/editor/Save.vue";
 import History from "@/components/editor/History.vue";
+import {$t} from "@/translation/Translation";
+import ChangeLanguage from "@/components/ChangeLanguage.vue";
 
 const data = reactive({
     menu: false

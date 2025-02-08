@@ -1,8 +1,10 @@
 <template>
     <Header :hasMenu="false">
         <template #navigation>
-            <!-- Link to mainpage on diff domain -->
-            <NavigationButton icon="home-outline" label="Home"/>
+            <ChangeLanguage/>
+
+            <!-- TODO: Link to mainpage on diff domain -->
+            <NavigationButton icon="home-outline" :label="$t('layout.auth.home')"/>
         </template>
     </Header>
 
@@ -15,6 +17,8 @@
 import {useAuthenticationStore} from "@/stores/authentication";
 import {onMounted} from "vue";
 import {useRouter} from "vue-router";
+import {$t} from "@/translation/Translation";
+import ChangeLanguage from "@/components/ChangeLanguage.vue";
 
 const authenticationStore = useAuthenticationStore();
 const router = useRouter();

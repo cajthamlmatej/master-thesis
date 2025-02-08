@@ -2,38 +2,36 @@
     <div class="underlay">
         <Header :active="active" fixed>
             <template #logo>
-                <div class="meta">
-                    <span class="name">{{materialStore.currentMaterial?.name ?? "Presentation"}}</span>
+                <div class="meta" v-if="materialStore.currentMaterial">
+                    <span class="name">{{materialStore.currentMaterial.name}}</span>
 
-                    <span class="time">{{timeFromStart}} (on slide: {{timeFromSlide}})</span>
+                    <span class="time" v-t="{start: timeFromStart, slide: timeFromSlide}">player.timer</span>
                 </div>
             </template>
             <template #navigation>
+                <ChangeLanguage/>
+
                 <Dialog>
                     <template #default>
                         <Card dialog>
-                            <p class="title">Material variables</p>
+                            <p class="title" v-t>player.variables.title</p>
 
                             <List>
                                 <ListItem v-for="variable in Object.keys(playerStore.variables) ?? []" :key="variable">
-                                    <span>
-                                        {{variable}}
-                                    </span>
+                                    <span>{{variable}}</span>
                                     <pre><code>{{playerStore.variables[variable]}}</code></pre>
                                 </ListItem>
                                 <ListItem v-if="Object.keys(playerStore.variables).length === 0">
-                                    <span>
-                                        No variables
-                                    </span>
+                                    <span v-t>player.variables.not-found</span>
                                 </ListItem>
                             </List>
                         </Card>
                     </template>
                     <template #activator="{toggle}">
                         <NavigationButton
-                                tooltip-text="Debug"
+                                :tooltip-text="$t('player.debug')"
                                 icon="bug"
-                                label="Debug"
+                                :label="$t('player.debug')"
                                 hide-mobile
                                 tooltip-position="bottom"
                                 @click.stop="toggle"
@@ -42,18 +40,18 @@
                 </Dialog>
 
                 <NavigationButton
-                        tooltip-text="Previous slide"
+                        :tooltip-text="$t('player.control.previous-slide')"
+                        :label="$t('player.control.previous-slide')"
                         icon="arrow-left"
-                        label="Previous"
                         hide-mobile
                         tooltip-position="bottom"
                         :disabled="!hasPreviousSlide"
                         @click.stop="previousSlide"
                 />
                 <NavigationButton
-                        tooltip-text="Next slide"
+                        :tooltip-text="$t('player.control.next-slide')"
+                        :label="$t('player.control.next-slide')"
                         icon="arrow-right"
-                        label="Next"
                         hide-mobile
                         tooltip-position="bottom"
                         :disabled="!hasNextSlide"
@@ -61,28 +59,28 @@
                 />
 
                 <NavigationButton
-                        tooltip-text="Fullscreen"
+                        :tooltip-text="$t('player.control.fullscreen')"
+                        :label="$t('player.control.fullscreen')"
                         icon="fullscreen"
-                        label="Fullscreen"
                         hide-mobile
                         tooltip-position="bottom"
                         @click.stop="fullscreen"
                 />
 
                 <NavigationButton
-                    tooltip-text="Edit material"
+                    :tooltip-text="$t('player.control.edit')"
+                    :label="$t('player.control.edit')"
                     icon="square-edit-outline"
-                    label="Edit"
                     hide-mobile
                     tooltip-position="bottom"
                     :to="{name: 'Editor', params: {material: route.params.material}}"
                 />
 
                 <NavigationButton
-                        tooltip-text="Leave presentation"
+                        :tooltip-text="$t('player.control.leave')"
+                        :label="$t('player.control.leave')"
                         icon="exit-to-app"
                         :to="{name: 'Dashboard'}"
-                        label="Leave"
                         hide-mobile
                         tooltip-position="bottom"
                 />
@@ -102,6 +100,9 @@ import type Player from "@/editor/player/Player";
 import Header from "@/components/design/header/Header.vue";
 import NavigationButton from "@/components/design/navigation/NavigationButton.vue";
 import ListItem from "@/components/design/list/ListItem.vue";
+import Material from "@/models/Material";
+import {$t} from "@/translation/Translation";
+import ChangeLanguage from "@/components/ChangeLanguage.vue";
 
 const materialStore = useMaterialStore();
 const playerStore = usePlayerStore();
