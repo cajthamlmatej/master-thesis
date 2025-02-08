@@ -66,7 +66,9 @@ export const useEditorStore = defineStore("editor", () => {
     const setEditorPropertyElement = (element: HTMLElement) => {
         editorPropertyElement.value = element;
 
-        if (editorProperty.value) return;
+        if (editorProperty.value) {
+            editorProperty.value.destroy();
+        }
 
         editorProperty.value = new EditorProperty(toRaw(editor.value) as Editor, element);
     }

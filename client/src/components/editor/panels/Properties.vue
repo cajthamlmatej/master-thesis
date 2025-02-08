@@ -43,6 +43,11 @@ watch(() => properties.value, async (value) => {
         return;
     }
 
+    if(!menu.value) {
+        console.error("Editor property element not found");
+        return;
+    }
+
     await nextTick();
 
     materialStore.setEditorPropertyElement(menu.value);
