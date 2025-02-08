@@ -45,6 +45,11 @@ export default class Material {
         if (thumbnail) {
             this.thumbnail = thumbnail;
         } else {
+            if(this.slides.length === 0) {
+                this.thumbnail = undefined;
+                return;
+            }
+
             this.thumbnail = this.slides[0].thumbnail;
         }
     }
