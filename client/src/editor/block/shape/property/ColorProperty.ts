@@ -2,11 +2,12 @@ import {Property} from "@/editor/property/Property";
 import {ColorProperty as BaseColorProperty} from "@/editor/property/type/ColorProperty";
 
 import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
+import {$t} from "@/translation/Translation";
 
 export class ColorProperty<T extends ShapeEditorBlock = ShapeEditorBlock> extends BaseColorProperty<T> {
 
     constructor() {
-        super("Color", "color");
+        super($t("blocks.shape.property.color.label"), "color");
     }
 
     public override isVisible(): boolean {

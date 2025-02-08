@@ -1,14 +1,15 @@
 import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
 import {SelectProperty} from "@/editor/property/type/SelectProperty";
 import {shapes} from "@/editor/block/shape/Shapes";
+import {$t} from "@/translation/Translation";
 
 export class ShapeProperty<T extends ShapeEditorBlock = ShapeEditorBlock> extends SelectProperty<T> {
 
     constructor() {
-        super("Shape", "shape", [
+        super($t("blocks.shape.property.shape.label"), "shape", [
             ...shapes.map(shape => ({
                 value: shape.name,
-                label: shape.label
+                label: $t('blocks.shape.' + shape.name)
             }))]);
     }
 

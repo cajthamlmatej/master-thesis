@@ -3,6 +3,7 @@ import {generateUUID} from "@/utils/Generators";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 import {BlockInteractiveProperty} from "@/editor/interactivity/BlockInteractivity";
 import {Property} from "@/editor/property/Property";
+import {$t} from "@/translation/Translation";
 
 export class InteractiveAreaEditorBlock extends EditorBlock {
     constructor(base: BlockConstructorWithoutType) {
@@ -25,7 +26,7 @@ export class InteractiveAreaEditorBlock extends EditorBlock {
         super.synchronize();
 
         this.element.style.zIndex = "1001";
-        this.element.style.setProperty("--text", "'This will not be visible in the player.'");
+        this.element.style.setProperty("--text", "'" + $t("blocks.interactiveArea.warning") + "'");
     }
 
     override editorSupport() {

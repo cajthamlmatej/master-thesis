@@ -1,5 +1,6 @@
 import {Property} from "@/editor/property/Property";
 import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
+import {$t} from "@/translation/Translation";
 
 export class TextFormattingProperty<T extends TextEditorBlock = TextEditorBlock> extends Property<T> {
 
@@ -11,7 +12,7 @@ export class TextFormattingProperty<T extends TextEditorBlock = TextEditorBlock>
         const fonts = ["Arial", "Courier New", "Georgia", "Times New Roman", "Verdana"];
 
         this.element.innerHTML = `
-            <label>Formatting</label>
+            <label>${$t("blocks.text.property.formatting.label")}</label>
             <div class="property-content">
                 <div class="property-data property-data--row property-data--wrap">
                     <button data-property="bold" name="bold"><i class="mdi mdi-format-bold"></i></button>

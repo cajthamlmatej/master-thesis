@@ -62,7 +62,6 @@ export class BlockRegistry {
             return undefined;
         }
 
-        // TODO: this is weird
         const deserializer = new entry.deserializer();
 
         return deserializer.deserializeEditor(data);

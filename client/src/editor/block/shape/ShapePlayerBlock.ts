@@ -128,8 +128,6 @@ export class ShapePlayerBlock extends PlayerBlock {
                 change: (value: string, relative: boolean, {animate, duration, easing}) => {
                     let shape = shapes.find(s =>
                         s.name.toLowerCase() === value.toLowerCase() ||
-                        s.label.toLowerCase() === value.toLowerCase() ||
-                        s.label.toLowerCase().replace(" ", "") === value.toLowerCase() ||
                         s.name.toLowerCase().replace(" ", "") === value.toLowerCase());
 
                     this.shape = shape ? shape.name : value;
