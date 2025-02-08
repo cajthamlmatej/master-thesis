@@ -3,7 +3,7 @@ import {ContextAction} from "@/editor/actions/ContextAction";
 
 export class ZIndexBottomAction extends ContextAction {
     constructor() {
-        super("zIndexBottom", "Push to back");
+        super("z-index-bottom");
     }
 
     override isVisible(param: ActionParameters) {

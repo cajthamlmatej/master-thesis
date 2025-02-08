@@ -3,7 +3,7 @@ import {ContextAction} from "@/editor/actions/ContextAction";
 
 export class ZIndexUpAction extends ContextAction {
     constructor() {
-        super("zIndexUp", "Push forward");
+        super("z-index-up");
     }
 
     override isVisible(param: ActionParameters) {

@@ -4,7 +4,7 @@ import type {ActionKeybind} from "@/editor/actions/EditorAction";
 
 export class CopyAction extends ContextAction {
     constructor() {
-        super("copy", "Copy");
+        super("copy");
     }
 
     override isVisible(param: ActionParameters) {

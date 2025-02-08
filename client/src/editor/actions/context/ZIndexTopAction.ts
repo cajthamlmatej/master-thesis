@@ -3,7 +3,7 @@ import {ContextAction} from "@/editor/actions/ContextAction";
 
 export class ZIndexTopAction extends ContextAction {
     constructor() {
-        super("zIndexTop", "Push to top");
+        super("z-index-top");
     }
 
     override isVisible(param: ActionParameters) {

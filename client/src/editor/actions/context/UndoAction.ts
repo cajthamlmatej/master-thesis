@@ -4,7 +4,7 @@ import type {ActionKeybind} from "@/editor/actions/EditorAction";
 
 export class UndoAction extends ContextAction {
     constructor() {
-        super("undo", "Undo");
+        super("undo");
     }
 
     override isVisible(param: ActionParameters) {

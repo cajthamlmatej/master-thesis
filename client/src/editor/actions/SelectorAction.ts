@@ -3,14 +3,10 @@ import {EditorAction} from "@/editor/actions/EditorAction";
 
 export abstract class SelectorAction extends EditorAction {
 
-    public readonly name: string;
-    public readonly label: string;
     public readonly icon: string;
 
-    constructor(name: string, label: string, icon: string) {
-        super();
-        this.name = name;
-        this.label = label;
+    constructor(name: string, icon: string) {
+        super(name);
         this.icon = icon;
     }
 

@@ -3,7 +3,7 @@ import type {ActionParameters} from "@/editor/actions/EditorAction";
 
 export class BringBackAction extends SelectorAction {
     constructor() {
-        super("bring-back", "Bring Back", "mdi mdi-adjust");
+        super("bring-back", "mdi mdi-adjust");
     }
 
     override isVisible(param: ActionParameters) {

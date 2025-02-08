@@ -10,7 +10,7 @@ export class MoveAction extends ContextAction {
     };
 
     constructor() {
-        super("move", "Move");
+        super("move");
     }
 
     override isVisible(param: ActionParameters) {

@@ -3,7 +3,7 @@ import type {ActionParameters} from "@/editor/actions/EditorAction";
 
 export class UnlockAction extends SelectorAction {
     constructor() {
-        super("unlock", "Unlock", "mdi mdi-lock-open");
+        super("unlock", "mdi mdi-lock-open");
     }
 
     override isVisible(param: ActionParameters) {

@@ -4,7 +4,7 @@ import type {ActionKeybind} from "@/editor/actions/EditorAction";
 
 export class UngroupAction extends SelectorAction {
     constructor() {
-        super("ungroup", "Ungroup", "mdi mdi-ungroup");
+        super("ungroup", "mdi mdi-ungroup");
     }
 
     override isVisible(param: ActionParameters) {

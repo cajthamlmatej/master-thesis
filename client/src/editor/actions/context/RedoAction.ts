@@ -4,7 +4,7 @@ import type {ActionKeybind} from "@/editor/actions/EditorAction";
 
 export class RedoAction extends ContextAction {
     constructor() {
-        super("redo", "Redo");
+        super("redo");
     }
 
     override isVisible(param: ActionParameters) {

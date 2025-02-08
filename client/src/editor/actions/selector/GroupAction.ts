@@ -6,7 +6,7 @@ import type {ActionKeybind} from "@/editor/actions/EditorAction";
 
 export class GroupAction extends SelectorAction {
     constructor() {
-        super("group", "Group", "mdi mdi-group");
+        super("group", "mdi mdi-group");
     }
 
     override isVisible(param: ActionParameters) {

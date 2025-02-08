@@ -3,7 +3,7 @@ import {ContextAction} from "@/editor/actions/ContextAction";
 
 export class PasteAction extends ContextAction {
     constructor() {
-        super("paste", "Paste");
+        super("paste");
     }
 
     override isVisible(param: ActionParameters) {

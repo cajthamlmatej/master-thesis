@@ -4,7 +4,7 @@ import type {ActionKeybind} from "@/editor/actions/EditorAction";
 
 export class DeleteAction extends ContextAction {
     constructor() {
-        super("delete", "Delete");
+        super("delete");
     }
 
     override isVisible(param: ActionParameters) {

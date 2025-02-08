@@ -30,11 +30,9 @@ export interface ActionKeybind {
 export abstract class EditorAction {
 
     public readonly name: string;
-    public readonly label: string;
 
-    constructor(name: string, label: string) {
+    constructor(name: string) {
         this.name = name;
-        this.label = label;
     }
 
     /**

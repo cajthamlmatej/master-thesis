@@ -3,7 +3,7 @@ import type {ActionParameters} from "@/editor/actions/EditorAction";
 
 export class LockAction extends SelectorAction {
     constructor() {
-        super("lock", "Lock", "mdi mdi-lock");
+        super("lock", "mdi mdi-lock");
     }
 
     override isVisible(param: ActionParameters) {

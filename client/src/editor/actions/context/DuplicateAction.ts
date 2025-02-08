@@ -5,7 +5,7 @@ import type {ActionKeybind} from "@/editor/actions/EditorAction";
 
 export class DuplicateAction extends ContextAction {
     constructor() {
-        super("duplicate", "Duplicate");
+        super("duplicate");
     }
 
     override isVisible(param: ActionParameters) {

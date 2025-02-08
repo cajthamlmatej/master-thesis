@@ -4,7 +4,7 @@ import type {ActionKeybind} from "@/editor/actions/EditorAction";
 
 export class SelectAllAction extends ContextAction {
     constructor() {
-        super("selectAll", "Select All");
+        super("select-all");
     }
 
     override isVisible(param: ActionParameters) {
