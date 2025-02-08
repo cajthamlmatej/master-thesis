@@ -7,14 +7,6 @@ import {UngroupAction} from "@/editor/actions/selector/UngroupAction";
 import {LockAction} from "@/editor/actions/selector/LockAction";
 import {UnlockAction} from "@/editor/actions/selector/UnlockAction";
 import {BringBackAction} from "@/editor/actions/selector/BringBackAction";
-import {TextBoldAction} from "@/editor/actions/selector/text/TextBoldAction";
-import {TextItalicsAction} from "@/editor/actions/selector/text/TextItalicsAction";
-import {TextUnderlineAction} from "@/editor/actions/selector/text/TextUnderlineAction";
-import {TextBulletedListAction} from "@/editor/actions/selector/text/TextBulletedListAction";
-import {TextOrderedListAction} from "@/editor/actions/selector/text/TextOrderedListAction";
-import {TextStrikethroughAction} from "@/editor/actions/selector/text/TextStrikethroughAction";
-import {TextSuperscriptAction} from "@/editor/actions/selector/text/TextSuperscriptAction";
-import {TextSubscriptAction} from "@/editor/actions/selector/text/TextSubscriptAction";
 
 export class EditorSelectorContext {
     private static SIZE = 40;
@@ -34,9 +26,9 @@ export class EditorSelectorContext {
         this.actions.push(new UnlockAction());
         this.actions.push(new BringBackAction());
 
-        this.actions.push(new TextBoldAction());
-        this.actions.push(new TextItalicsAction());
-        this.actions.push(new TextUnderlineAction());
+        // this.actions.push(new TextBoldAction());
+        // this.actions.push(new TextItalicsAction());
+        // this.actions.push(new TextUnderlineAction());
         // this.actions.push(new TextStrikethroughAction());
         // this.actions.push(new TextSuperscriptAction());
         // this.actions.push(new TextSubscriptAction());
