@@ -28,18 +28,25 @@ export default class Material {
     updatedAt: moment.Moment;
     name: string;
     slides: Slide[];
+    thumbnail?: string;
 
     constructor(id: string, createdAt: Date, updatedAt: Date, name: string, slides: {
         id: string;
         data: string;
         thumbnail: string | undefined;
         position: number;
-    }[]) {
+    }[], thumbnail?: string) {
         this.id = id;
         this.createdAt = moment(createdAt);
         this.updatedAt = moment(updatedAt);
         this.name = name;
         this.slides = slides.map(slide => new Slide(slide.id, slide.data, slide.thumbnail, slide.position));
+
+        if (thumbnail) {
+            this.thumbnail = thumbnail;
+        } else {
+            this.thumbnail = this.slides[0].thumbnail;
+        }
     }
 
 }
