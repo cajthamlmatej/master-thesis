@@ -1,9 +1,7 @@
 import {defineStore} from "pinia";
-import {computed, ref, watch} from "vue";
+import {ref} from "vue";
 import {useAuthenticationStore} from "@/stores/authentication";
-import type User from "@/models/User";
 import {api} from "@/api/api";
-import UserMapper from "@/models/mappers/UserMapper";
 import type Material from "@/models/Material";
 import MaterialMapper from "@/models/mappers/MaterialMapper";
 import {useEditorStore} from "@/stores/editor";
@@ -17,7 +15,7 @@ export const useMaterialStore = defineStore("material", () => {
     const load = async () => {
         const response = await api.material.forUser(authenticationStore.parsed?.id || "");
 
-        if(!response) {
+        if (!response) {
             return;
         }
 
@@ -25,20 +23,24 @@ export const useMaterialStore = defineStore("material", () => {
     }
 
     const loadMaterial = async (id: string) => {
-        let material = materials.value.find((material) => material.id === id);
+        const response = await api.material.one(id);
 
-        if(!material) {
-            const response = await api.material.one(id);
+        if (!response) {
+            throw new Error("Failed to load material");
+        }
 
-            if(!response) {
-                throw new Error("Failed to load material");
-            }
+        const material = MaterialMapper.fromMaterialDTO(response.material);
 
-            material = MaterialMapper.fromMaterialDTO(response.material);
+        // If already exists, replace it
+        const existingMaterialIndex = materials.value.findIndex((m) => m.id === material.id);
+
+        if (existingMaterialIndex !== -1) {
+            materials.value.splice(existingMaterialIndex, 1, material);
+        } else {
             materials.value.push(material);
         }
 
-        if(!material) {
+        if (!material) {
             throw new Error("Material not found");
         }
 
@@ -51,7 +53,7 @@ export const useMaterialStore = defineStore("material", () => {
             slides: []
         });
 
-        if(!response) {
+        if (!response) {
             throw new Error("Failed to create material");
         }
 
@@ -63,7 +65,7 @@ export const useMaterialStore = defineStore("material", () => {
 
     const editorStore = useEditorStore();
     const save = async () => {
-        if(!currentMaterial.value) {
+        if (!currentMaterial.value) {
             throw new Error("No material loaded");
         }
 
@@ -74,7 +76,7 @@ export const useMaterialStore = defineStore("material", () => {
             slides: editorStore.getSlides()
         });
 
-        if(!response) {
+        if (!response) {
             throw new Error("Failed to save material");
         }
     }
@@ -82,13 +84,13 @@ export const useMaterialStore = defineStore("material", () => {
     const deleteMaterial = async (id: string) => {
         const response = await api.material.delete(id);
 
-        if(!response) {
+        if (!response) {
             throw new Error("Failed to delete material");
         }
 
         const materialIndex = materials.value.findIndex((material) => material.id === id);
 
-        if(materialIndex !== -1) {
+        if (materialIndex !== -1) {
             materials.value.splice(materialIndex, 1);
         }
     }
@@ -96,7 +98,7 @@ export const useMaterialStore = defineStore("material", () => {
     const copyMaterial = async (id: string) => {
         const original = materials.value.find((material) => material.id === id);
 
-        if(!original) {
+        if (!original) {
             throw new Error("Material not found");
         }
 
@@ -110,7 +112,7 @@ export const useMaterialStore = defineStore("material", () => {
             }))
         });
 
-        if(!response) {
+        if (!response) {
             throw new Error("Failed to copy material");
         }
 
