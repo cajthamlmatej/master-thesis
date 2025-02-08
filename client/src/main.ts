@@ -14,11 +14,14 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 import FloatingVue from 'floating-vue'
+import {setupTranslations} from "@/translation/VueTranslations";
 
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router);
+
+setupTranslations(app);
 
 app.use(FloatingVue);
 

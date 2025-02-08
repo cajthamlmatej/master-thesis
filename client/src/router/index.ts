@@ -6,6 +6,16 @@ const router = createRouter({
     routes: [
         {
             path: '/',
+            redirect: {
+                name: 'Dashboard',
+                params: {
+                    lang: 'en'
+                }
+            }
+        },
+
+        {
+            path: '/:lang/',
             component: () => import('../views/BaseLayout.vue'),
 
             children: [
@@ -17,7 +27,7 @@ const router = createRouter({
             ]
         },
         {
-            path: '/editor',
+            path: '/:lang/editor',
             component: () => import('../views/editor/Layout.vue'),
 
             children: [
@@ -29,7 +39,7 @@ const router = createRouter({
             ]
         },
         {
-            path: '/player',
+            path: '/:lang/player',
             component: () => import('../views/player/Layout.vue'),
 
             children: [
@@ -42,7 +52,7 @@ const router = createRouter({
         },
 
         {
-            path: "/authentication",
+            path: "/:lang/authentication",
             component: () => import("../views/authentication/Layout.vue"),
             meta: {
                 isAuthentication: true
@@ -86,7 +96,12 @@ router.beforeResolve((to, from, next) => {
     const isAuthenticated = useAuthenticationStore().isLogged;
 
     if (!isAuthenticated) {
-        return next({name: "Authentication"});
+        return next({
+            name: "Authentication",
+            params: {
+                lang: to.params.lang ?? "en"
+            }
+        });
     }
 
     next();
