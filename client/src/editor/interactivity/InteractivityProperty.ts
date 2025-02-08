@@ -1,6 +1,7 @@
 import {Property} from "@/editor/property/Property";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {BlockInteractiveProperty, BlockInteractivity} from "@/editor/interactivity/BlockInteractivity";
+import {$t} from "@/translation/Translation";
 
 export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends Property<T> {
 
@@ -16,7 +17,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
     setup(): void {
         this.element.innerHTML = `
             <div class="header">
-                <label>Interactivity</label>
+                <label>${$t("property.interactivity.label")}</label>
 
                 <button><span class="mdi mdi-plus"></span></button>
             </div>
@@ -80,13 +81,13 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         const editor = this.blocks[0].getEditor();
 
         element.innerHTML += `<div class="field">
-                        <span class="label">Event</span>
+                        <span class="label">${$t("property.interactivity.event.label")}</span>
                         <div class="value">
                             <select data-property="event">
-                                <option value="CLICKED">Clicked</option>
-                                <option value="HOVER_START">Hover start</option>
-                                <option value="HOVER_END">Hover end</option>
-                                <option value="TIMER">Timer</option>
+                                <option value="CLICKED">${$t("property.interactivity.event.CLICKED")}</option>
+                                <option value="HOVER_START">${$t("property.interactivity.event.HOVER_START")}</option>
+                                <option value="HOVER_END">${$t("property.interactivity.event.HOVER_END")}</option>
+                                <option value="TIMER">${$t("property.interactivity.event.TIMER")}</option>
 <!--                                <option disabled value="DRAG_START">Drag start</option>--> <!-- TODO: blocks dont yet have drag support -->
 <!--                                <option disabled value="DRAG_END">Drag end</option>-->
                             </select>
@@ -95,20 +96,20 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
         if (interactivity.event == 'TIMER') {
             element.innerHTML += `<div class="field field--sub">
-                <span class="label">When</span>
+                <span class="label">${$t("property.interactivity.timer.label")}</span>
                 <div class="value">
                     <select data-property="timerType">
-                        <option value="TIMEOUT">Timeout</option>
-                        <option value="REPEAT">Repeat</option>
+                        <option value="TIMEOUT">${$t("property.interactivity.timer.TIMEOUT")}</option>
+                        <option value="REPEAT">${$t("property.interactivity.timer.REPEAT")}</option>
                     </select>
                 </div>
             </div>`;
 
             element.innerHTML += `<div class="field field--sub">
-                <span class="label">${interactivity.timerType == 'TIMEOUT' ? 'After' : 'Every'}</span>
+                <span class="label">${interactivity.timerType == 'TIMEOUT' ? $t("property.interactivity.timer.TIMEOUT-selected") : $t("property.interactivity.timer.REPEAT-selected")}</span>
                 <div class="value">
                     <input type="number" data-property="timerTime">
-                    <span class="unit">ms</span>
+                    <span class="unit">${$t("unit.ms")}</span>
                 </div>
             </div>`;
         }
@@ -116,13 +117,13 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
         element.innerHTML += `
                     <div class="field">
-                        <span class="label">Do</span>
+                        <span class="label">${$t("property.interactivity.action.label")}</span>
                         <div class="value">
                             <select data-property="action">
-                                <option value="CHANGE_PROPERTY">Change property</option>
-                                <option value="RESET_PROPERTY">Reset property</option>
-                                <option value="CHANGE_SLIDE">Change slide</option>
-                                <option value="CHANGE_VARIABLE">Change variable</option>
+                                <option value="CHANGE_PROPERTY">${$t("property.interactivity.action.CHANGE_PROPERTY")}</option>
+                                <option value="RESET_PROPERTY">${$t("property.interactivity.action.RESET_PROPERTY")}</option>
+                                <option value="CHANGE_SLIDE">${$t("property.interactivity.action.CHANGE_SLIDE")}</option>
+                                <option value="CHANGE_VARIABLE">${$t("property.interactivity.action.CHANGE_VARIABLE")}</option>
                             </select>
                         </div>
                     </div>`;
@@ -130,12 +131,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         if (interactivity.action == 'CHANGE_PROPERTY' || interactivity.action == 'RESET_PROPERTY') {
             element.innerHTML += `
                     <div class="field field--sub">
-                        <span class="label">On</span>
+                        <span class="label">${$t("property.interactivity.on.label")}</span>
                         <div class="value">
                             <select data-property="on">
-                                <option value="SELF">Self</option>
-                                <option value="ALL">All on slide</option>
-                                <option value="SELECTED">Selected blocks</option>
+                                <option value="SELF">${$t("property.interactivity.on.SELF")}</option>
+                                <option value="ALL">${$t("property.interactivity.on.ALL")}</option>
+                                <option value="SELECTED">${$t("property.interactivity.on.SELECTED")}</option>
                             </select>
                         </div>
                     </div>`;
@@ -157,13 +158,13 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
                     blocksPairs.push({
                         id: block.id,
-                        name: block.type + " " + seenTypes.get(type)
+                        name: block.type + " " + seenTypes.get(type), // TODO: this needs overhaul
                     });
                 }
 
                 element.innerHTML += `
                     <div class="field field--sub">
-                        <span class="label">Blocks</span>
+                        <span class="label">${$t("property.interactivity.on.blocks")}</span>
                         <div class="value">
                             <select data-property="blocks" multiple>
                                 ${blocksPairs.map(block => `<option value="${block.id}">${block.name}</option>`).join("")}
@@ -221,11 +222,11 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
             element.innerHTML += `
                     <div class="field field--sub">
-                        <span class="label">Property</span>
+                        <span class="label">${$t("property.interactivity.property.label")}</span>
                         <div class="value">
                             <select data-property="property">
                                 ${propertiesPairs.map(property => `<option value="${property.id}">${property.name}</option>`).join("")}
-                                ${interactivity.action == 'RESET_PROPERTY' ? '<option value="ALL">All properties</option>' : ''}
+                                ${interactivity.action == 'RESET_PROPERTY' ? '<option value="ALL">${$t("property.interactivity.property.ALL")}</option>' : ''}
                             </select>
                         </div>
                     </div>`;
@@ -234,7 +235,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
             if (interactivity.action == 'CHANGE_PROPERTY') {
                 element.innerHTML += `<div class="field field--sub">
-                        <span class="label">Value</span>
+                        <span class="label">${$t("property.interactivity.property.value")}</span>
                         <div class="value">
                             <input type="text" data-property="value">
                         </div>
@@ -242,7 +243,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
                 if (property && property.relative) {
                     element.innerHTML += `<div class="field field--sub">
-                        <span class="label">Relative</span>
+                        <span class="label">${$t("property.interactivity.property.relative")}</span>
                         <div class="value">
                             <input type="checkbox" data-property="relative" id="relative-${interactivity.id}">
                             <label class="checkbox-label ${interactivity.relative ? 'checked' : ''}" for="relative-${interactivity.id}"></label>
@@ -253,7 +254,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
             if ((property && property.animate) || interactivity.property == "ALL") {
                 element.innerHTML += `<div class="field field--sub">
-                            <span class="label">Animate</span>
+                            <span class="label">${$t("property.interactivity.animate.label")}</span>
                             <div class="value">
                                 <input type="checkbox" data-property="animate" id="animate-${interactivity.id}">
                                 <label class="checkbox-label ${interactivity.animate ? 'checked' : ''}" for="animate-${interactivity.id}"></label>
@@ -262,25 +263,25 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
                 if (interactivity.animate) {
                     element.innerHTML += `<div class="field field--sub">
-                                <span class="label">Duration</span>
+                                <span class="label">${$t("property.interactivity.animate.duration")}</span>
                                 <div class="value">
                                     <input type="number" data-property="duration">
-                                    <span class="unit">ms</span>
+                                    <span class="unit">${$t("unit.ms")}</span>
                                 </div>
                             </div>`;
                     element.innerHTML += `<div class="field field--sub">
-                            <span class="label">Easing</span>
+                            <span class="label">${$t("property.interactivity.animate.easing")}</span>
                             <div class="value">
                                 <select data-property="easing">
-                                    <option value="LINEAR">Linear</option>
-                                    <option value="EASE">Ease</option>
-                                    <option value="EASE_IN">Ease in</option>
-                                    <option value="EASE_OUT">Ease out</option>
-                                    <option value="EASE_IN_OUT">Ease in out</option>
-                                    <option value="STEPS_4">Steps 4</option>
-                                    <option value="STEPS_6">Steps 6</option>
-                                    <option value="STEPS_8">Steps 8</option>
-                                    <option value="STEPS_10">Steps 10</option>
+                                    <option value="LINEAR">${$t("property.interactivity.animate.easings.LINEAR")}</option>
+                                    <option value="EASE">${$t("property.interactivity.animate.easings.EASE")}</option>
+                                    <option value="EASE_IN">${$t("property.interactivity.animate.easings.EASE_IN")}</option>
+                                    <option value="EASE_OUT">${$t("property.interactivity.animate.easings.EASE_OUT")}</option>
+                                    <option value="EASE_IN_OUT">${$t("property.interactivity.animate.easings.EASE_IN_OUT")}</option>
+                                    <option value="STEPS_4">${$t("property.interactivity.animate.easings.STEPS_4")}</option>
+                                    <option value="STEPS_6">${$t("property.interactivity.animate.easings.STEPS_6")}</option>
+                                    <option value="STEPS_8">${$t("property.interactivity.animate.easings.STEPS_8")}</option>
+                                    <option value="STEPS_10">${$t("property.interactivity.animate.easings.STEPS_10")}</option>
                                 </select>
                             </div>
                         </div>`;
@@ -290,15 +291,15 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         else if (interactivity.action == 'CHANGE_SLIDE') {
             element.innerHTML += `
                 <div class="field field--sub">
-                    <span class="label">Slide</span>
+                    <span class="label">${$t("property.interactivity.slide.label")}</span>
                     <div class="value">
                         <select data-property="slideType">
-                            <option value="NEXT">Next</option>
-                            <option value="PREVIOUS">Previous</option>
-                            <option value="FIRST">First</option>
-                            <option value="LAST">Last</option>
-                            <option value="RANDOM">Random</option>
-                            <option value="SLIDE">Slide</option>
+                            <option value="NEXT">${$t("property.interactivity.slide.NEXT")}</option>
+                            <option value="PREVIOUS">${$t("property.interactivity.slide.PREVIOUS")}</option>
+                            <option value="FIRST">${$t("property.interactivity.slide.FIRST")}</option>
+                            <option value="LAST">${$t("property.interactivity.slide.LAST")}</option>
+                            <option value="RANDOM">${$t("property.interactivity.slide.RANDOM")}</option>
+                            <option value="SLIDE">${$t("property.interactivity.slide.SLIDE")}</option>
                         </select>
                     </div>
                 </div>`;
@@ -306,7 +307,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             if (interactivity.slideType == 'SLIDE') {
                 element.innerHTML += `
                     <div class="field field--sub">
-                        <span class="label">Slide number</span>
+                        <span class="label">${$t("property.interactivity.slide.index")}</span>
                         <div class="value">
                             <input type="number" data-property="slideIndex">
                         </div>
@@ -316,14 +317,14 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         else if (interactivity.action == 'CHANGE_VARIABLE') {
             element.innerHTML += `
                 <div class="field field--sub">
-                    <span class="label">Variable name</span>
+                    <span class="label">${$t("property.interactivity.variable.name")}</span>
                     <div class="value">
                         <input type="text" data-property="changeVariable">
                     </div>
                 </div>`;
             element.innerHTML += `
                 <div class="field field--sub">
-                    <span class="label">Value</span>
+                    <span class="label">${$t("property.interactivity.slide.value")}</span>
                     <div class="value">
                         <input type="text" data-property="changeVariableValue">
                     </div>
@@ -332,12 +333,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
         element.innerHTML += `
                     <div class="field">
-                        <span class="label">Only if</span>
+                        <span class="label">${$t("property.interactivity.condition.label")}</span>
                         <div class="value">
                             <select data-property="condition">
-                                <option value="ALWAYS">Always</option>
-                                <option value="TIME_PASSED">Time passed</option>
-                                <option value="VARIABLE">Variable</option>
+                                <option value="ALWAYS">${$t("property.interactivity.condition.ALWAYS")}</option>
+                                <option value="TIME_PASSED">${$t("property.interactivity.condition.TIME_PASSED")}</option>
+                                <option value="VARIABLE">${$t("property.interactivity.condition.VARIABLE")}</option>
                             </select>
                         </div>
                     </div>`;
@@ -345,44 +346,44 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         if (interactivity.condition == 'TIME_PASSED') {
             element.innerHTML += `
                     <div class="field field--sub">
-                        <span class="label">Count from</span>
+                        <span class="label">${$t("property.interactivity.time-passed.label")}</span>
                         <div class="value">
                             <select data-property="condition">
-                                <option value="OPEN">Opening of material</option>
-                                <option value="SLIDE">Opening of slide</option>
+                                <option value="OPEN">${$t("property.interactivity.time-passed.OPEN")}</option>
+                                <option value="SLIDE">${$t("property.interactivity.time-passed.SLIDE")}</option>
                             </select>
                         </div>
                     </div>`;
             element.innerHTML += `
                     <div class="field field--sub">
-                        <span class="label">Time</span>
+                        <span class="label">${$t("property.interactivity.time-passed.time")}</span>
                         <div class="value">
                             <input type="number" value="${interactivity.time ?? ''}" data-property="time">
-                            <span class="unit">ms</span>
+                            <span class="unit">${$t("unit.ms")}</span>
                         </div>
                     </div>`;
         }
         if (interactivity.condition == 'VARIABLE') {
             element.innerHTML += `
                     <div class="field field--sub">
-                        <span class="label">Variable name</span>
+                        <span class="label">${$t('property.interactivity.variable.name')}</span>
                         <div class="value">
                             <input type="text" data-property="ifVariable">
                         </div>
                     </div>`;
             element.innerHTML += `
                     <div class="field field--sub">
-                        <span class="label">Operator</span>
+                        <span class="label">${$t('property.interactivity.variable.operator')}</span>
                         <div class="value">
                             <select data-property="ifVariableOperator">
-                                <option value="EQUALS">Equals</option>
-                                <option value="NOT_EQUALS">Not equals</option>
+                                <option value="EQUALS">${$t('property.interactivity.variable.EQUALS')}</option>
+                                <option value="NOT_EQUALS">${$t('property.interactivity.variable.NOT_EQUALS')}</option>
                             </select>
                         </div>
                     </div>`;
             element.innerHTML += `
                     <div class="field field--sub">
-                        <span class="label">Value</span>
+                        <span class="label">${$t('property.interactivity.variable.value')}</span>
                         <div class="value">
                             <input type="text" data-property="ifVariableValue">
                         </div>

@@ -1,15 +1,16 @@
 import {AggregatorProperty} from "@/editor/property/type/AggregatorProperty";
 import {NumberProperty} from "@/editor/property/type/NumberProperty";
 import {EditorBlock} from "@/editor/block/EditorBlock";
+import {$t} from "@/translation/Translation";
 
 export class SizeProperty<T extends EditorBlock = EditorBlock> extends AggregatorProperty<T> {
 
     constructor() {
-        super("Size", [
+        super($t("property.size.label"), [
             class WidthProperty<T extends EditorBlock = EditorBlock> extends NumberProperty<T> {
 
                 constructor() {
-                    super("W", "base-size-width");
+                    super($t("property.size.width"), "base-size-width");
                 }
 
                 public override isVisible(): boolean {
@@ -67,7 +68,7 @@ export class SizeProperty<T extends EditorBlock = EditorBlock> extends Aggregato
             class HeightProperty<T extends EditorBlock = EditorBlock> extends NumberProperty<T> {
 
                 constructor() {
-                    super("H", "base-size-height");
+                    super($t("property.size.height"), "base-size-height");
                 }
 
                 public override isVisible(): boolean {

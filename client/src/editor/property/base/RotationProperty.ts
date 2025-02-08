@@ -1,11 +1,12 @@
 import {Property} from "@/editor/property/Property";
 import {NumberProperty} from "@/editor/property/type/NumberProperty";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
+import {$t} from "@/translation/Translation";
 
 export class RotationProperty<T extends EditorBlock = EditorBlock> extends NumberProperty<T> {
 
     constructor() {
-        super("Rotation", "base-rotation");
+        super($t("property.rotation.label"), "base-rotation");
     }
 
     public override isVisible(): boolean {

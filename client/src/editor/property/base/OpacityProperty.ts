@@ -1,11 +1,12 @@
 import {Property} from "@/editor/property/Property";
 import {NumberProperty} from "@/editor/property/type/NumberProperty";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
+import {$t} from "@/translation/Translation";
 
 export class OpacityProperty<T extends EditorBlock = EditorBlock> extends NumberProperty<T> {
 
     constructor() {
-        super("Opacity", "base-opacity");
+        super($t("property.opacity.label"), "base-opacity");
     }
 
     public override isVisible(): boolean {
