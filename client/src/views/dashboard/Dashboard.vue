@@ -1,12 +1,12 @@
 <template>
     <Card fluid>
         <div class="flex flex-justify-space-between flex-align-center">
-            <span class="main-title">Welcome, {{ userStore.user?.name }}</span>
+            <span class="main-title" v-t="{ name: userStore.user?.name ?? '' }">page.dashboard.title-welcome</span>
 
             <div class="flex flex-align-center gap-1">
-                <Button color="primary" icon="mdi mdi-plus" :to="{name: 'Editor', params: {material: 'new'}}"/>
+                <Button color="primary" icon="mdi mdi-plus" :to="{name: 'Editor', params: {material: 'new'}}" v-tooltip="$t('page.dashboard.add-tooltip')" />
 
-                <Input label="Search" type="text" hide-error hide-label placeholder="Search..." dense v-model:value="search"/>
+                <Input :label="$t('page.dashboard.search')" type="text" hide-error hide-label :placeholder="$t('page.dashboard.search')" dense v-model:value="search"/>
             </div>
         </div>
     </Card>
@@ -17,7 +17,7 @@
 
     <div v-if="materials.length === 0" class="mt-1">
         <Alert type="warning">
-            No materials found with the given search criteria.
+            <span v-t>page.dashboard.materials.not-found-by-criteria</span>
         </Alert>
     </div>
 
@@ -35,33 +35,33 @@
                         <p class="title">{{ material.name }}</p>
 
                         <p class="time">
-                            modified {{ material.updatedAt.fromNow() }}</p>
+                            <span v-t>page.dashboard.materials.modified</span> {{ material.updatedAt.fromNow() }}</p>
                         <p class="time">
-                            created {{ material.createdAt.fromNow() }}
+                            <span v-t>page.dashboard.materials.created</span> {{ material.createdAt.fromNow() }}
                         </p>
                     </div>
 
                     <div class="actions">
                         <Dialog>
                             <template #activator="{toggle}">
-                                <Button icon="mdi mdi-delete" :loading="processing" @click.stop.capture="toggle"/>
+                                <Button icon="mdi mdi-delete" v-tooltip="$t('page.dashboard.materials.delete-tooltip')" :loading="processing" @click.stop.capture="toggle"/>
                             </template>
                             <template #default="{toggle}">
                                 <Card dialog class="delete-dialog">
-                                    <p class="title">Confirm deletion</p>
+                                    <p class="title" v-t>page.dashboard.materials.deletion.title</p>
 
-                                    <p>Are you really sure you want to delete this material? This action cannot be undone.</p>
+                                    <p v-t>page.dashboard.materials.deletion.deletion</p>
 
-                                    <p>After clicking button <q>I am sure</q> the material will be deleted, including all of its slides, filled forms and other data.</p>
+                                    <p v-t>page.dashboard.materials.deletion.after</p>
 
                                     <div class="flex flex-justify-end gap-1 mt-1">
-                                        <Button color="neutral" :loading="processing" @click="deleteMaterial(material.id, toggle)">I am sure</Button>
-                                        <Button @click="toggle">Cancel</Button>
+                                        <Button color="neutral" :loading="processing" @click="deleteMaterial(material.id, toggle)"><span v-t>page.dashboard.materials.deletion.sure</span></Button>
+                                        <Button @click="toggle"><span v-t>page.dashboard.materials.deletion.cancel</span></Button>
                                     </div>
                                 </Card>
                             </template>
                         </Dialog>
-                        <Button icon="mdi mdi-content-copy" :loading="processing" @click.stop.capture="copyMaterial(material.id)" color="primary"/>
+                        <Button icon="mdi mdi-content-copy" v-tooltip="$t('page.dashboard.materials.copy-tooltip')" :loading="processing" @click.stop.capture="copyMaterial(material.id)" color="primary"/>
                     </div>
                 </div>
             </article>
@@ -76,6 +76,7 @@ import {useMaterialStore} from "@/stores/material";
 import Pagination from "@/components/design/pagination/Pagination.vue";
 import {useRouter} from "vue-router";
 import moment from "moment";
+import {$t} from "@/translation/Translation";
 
 const router = useRouter();
 
