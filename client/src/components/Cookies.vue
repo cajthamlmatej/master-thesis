@@ -2,20 +2,24 @@
     <Dialog v-model:value="visible" persistent>
         <template #default>
             <Card dialog>
-                <p class="title">Information about local files and cookies</p>
+                <div class="flex flex-justify-space-between header">
+                    <p class="title" v-t>cookies.title</p>
 
-                <p class="mb-1">When you visit this site, local files and cookies are stored for the purposes of the site. <b>The files are necessary for the operation of the site</b>. These include:</p>
+                    <ChangeLanguage></ChangeLanguage>
+                </div>
+
+                <p class="mb-1" v-t>cookies.message</p>
 
                 <ul class="mb-1">
-                    <li>login tokens</li>
-                    <li>information about the logged-in user</li>
-                    <li>and more</li>
+                    <li v-t>cookies.items.login</li>
+                    <li v-t>cookies.items.logged</li>
+                    <li v-t>cookies.items.more</li>
                 </ul>
 
-                <p class="mb-1">If you do not agree to the processing of cookies, please leave the site <u>immediately</u>.</p>
+                <p class="mb-1" v-t>cookies.not-accept</p>
 
                 <div class="flex flex-justify-end">
-                    <Button @click="accept">I agree</Button>
+                    <Button @click="accept"><span v-t>cookies.accept</span></Button>
                 </div>
             </Card>
         </template>
@@ -24,6 +28,7 @@
 
 <script lang="ts" setup>
 import {onMounted, ref} from "vue";
+import ChangeLanguage from "@/components/ChangeLanguage.vue";
 
 const visible = ref(false);
 
@@ -36,3 +41,20 @@ function accept() {
     visible.value = false;
 }
 </script>
+
+<style scoped lang="scss">
+.header {
+    :deep(li) {
+        list-style-type: none;
+
+        .button {
+            background-color: #ececec;
+            box-shadow: var(--shadow-primary), inset var(--shadow-accent);
+
+            &:hover {
+                background-color: #dcdcdc;
+            }
+        }
+    }
+}
+</style>
