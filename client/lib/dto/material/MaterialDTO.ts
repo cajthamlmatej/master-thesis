@@ -3,6 +3,10 @@ export interface MaterialDTO {
     createdAt: Date;
     updatedAt: Date;
     name: string;
+    visibility: string;
+    method: string;
+    automaticTime: number;
+    sizing: string;
     slides: {
         id: string;
         data: string;

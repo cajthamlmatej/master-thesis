@@ -3,7 +3,8 @@
         "name": "Mattelight"
     },
     "unit": {
-        "ms": "ms"
+        "ms": "ms",
+        "s": "s"
     },
     "components": {
         "pagination": {
@@ -59,7 +60,8 @@
                 "delete-tooltip": "Delete material",
                 "copy-tooltip": "Copy material"
             },
-            "add-tooltip": "Add material"
+            "add-tooltip": "Add material",
+            "new-material": "New material"
         },
         "authentication": {
             "title": "Login",
@@ -186,6 +188,31 @@
             "blocks": {
                 "title": "Add block"
             }
+        },
+        "share": {
+            "open": "Sharing material",
+            "title": "Sharing material",
+            "name": "Material name",
+            "visibility": {
+                "PUBLIC": "Public for everyone",
+                "PRIVATE": "Private",
+                "label": "Visibility"
+            },
+            "method": {
+                "AUTOMATIC": "Automatic playback",
+                "MANUAL": "Manual playback",
+                "INTERACTIVITY": "Only via interactivity",
+                "label": "Playback method"
+            },
+            "automatic": {
+                "time": "Time per slide"
+            },
+            "sizing": {
+                "FIT_TO_SCREEN": "Fit to screen",
+                "MOVEMENT": "Stretch and move",
+                "label": "Display mode"
+            },
+            "save": "Save"
         },
         "ui": {
             "fit-to-screen": "Fit to the screen",

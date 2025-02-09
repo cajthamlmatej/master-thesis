@@ -8,13 +8,9 @@
 
             <Save/>
 
-            <Preferences :editor="editor"/>
+            <Preferences />
 
-            <NavigationButton :disabled="true"
-                              hide-mobile icon="share-variant-outline"
-                              label="Share & Export"
-                              tooltip-position="bottom"
-                              tooltip-text="Share & Export"></NavigationButton>
+            <Sharing />
 
             <NavigationButton :label="$t('editor.navigation.preview')"
                               :to="{ name: 'Player', params: { material: $route.params.material } }" :tooltip-text="$t('editor.navigation.preview')"
@@ -61,7 +57,7 @@
     <Blocks v-model:value="blockMenu"></Blocks>
     <Properties v-model:value="propertiesMenu"></Properties>
 
-    <Keybinds v-if="editor" :editor="editor"></Keybinds>
+    <Keybinds v-if="editor" ></Keybinds>
 
     <router-view v-slot="{ Component, route }">
         <transition mode="out-in" name="fade-ease">
@@ -88,6 +84,7 @@ import Save from "@/components/editor/Save.vue";
 import History from "@/components/editor/History.vue";
 import {$t} from "@/translation/Translation";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
+import Sharing from "@/components/editor/dialogs/Sharing.vue";
 
 const data = reactive({
     menu: false

@@ -3,7 +3,8 @@
         "name": "Mattelight"
     },
     "unit": {
-        "ms": "ms"
+        "ms": "ms",
+        "s": "s"
     },
     "components": {
         "pagination": {
@@ -59,7 +60,8 @@
                 "delete-tooltip": "Smazat materiál",
                 "copy-tooltip": "Kopírovat materiál"
             },
-            "add-tooltip": "Přidat materiál"
+            "add-tooltip": "Přidat materiál",
+            "new-material": "Nový materiál"
         },
         "authentication": {
             "title": "Přihlášení",
@@ -186,6 +188,31 @@
             "blocks": {
                 "title": "Přidat blok"
             }
+        },
+        "share": {
+            "open": "Sdílení materiálu",
+            "title": "Sdílení materiálu",
+            "name": "Název materiálu",
+            "visibility": {
+                "PUBLIC": "Veřejný pro všechny",
+                "PRIVATE": "Soukromý",
+                "label": "Viditelnost"
+            },
+            "method": {
+                "AUTOMATIC": "Automatické přehrávání",
+                "MANUAL": "Manuální přehrávání",
+                "INTERACTIVITY": "Pouze pomocí interaktivity",
+                "label": "Způsob přehrávání"
+            },
+            "automatic": {
+                "time": "Čas na snímek"
+            },
+            "sizing": {
+                "FIT_TO_SCREEN": "Přizpůsobit obrazovce",
+                "MOVEMENT": "Roztáhnout a pohyb",
+                "label": "Způsob zobrazení"
+            },
+            "save": "Uložit"
         },
         "ui": {
             "fit-to-screen": "Přizpůsobit obrazovce",

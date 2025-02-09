@@ -5,6 +5,7 @@ import {api} from "@/api/api";
 import type Material from "@/models/Material";
 import MaterialMapper from "@/models/mappers/MaterialMapper";
 import {useEditorStore} from "@/stores/editor";
+import {$t} from "@/translation/Translation";
 
 export const useMaterialStore = defineStore("material", () => {
     const materials = ref<Material[]>([]);
@@ -49,7 +50,11 @@ export const useMaterialStore = defineStore("material", () => {
 
     const createMaterial = async () => {
         const response = await api.material.create({
-            name: "New material",
+            name: $t("page.dashboard.new-material"),
+            visibility: "PRIVATE",
+            method: "MANUAL",
+            automaticTime: 60,
+            sizing: "FIT_TO_SCREEN",
             slides: []
         });
 
@@ -73,6 +78,10 @@ export const useMaterialStore = defineStore("material", () => {
 
         const response = await api.material.update(currentMaterial.value.id, {
             name: currentMaterial.value.name,
+            visibility: currentMaterial.value.visibility,
+            method: currentMaterial.value.method,
+            automaticTime: currentMaterial.value.automaticTime,
+            sizing: currentMaterial.value.sizing,
             slides: editorStore.getSlides()
         });
 
@@ -104,6 +113,10 @@ export const useMaterialStore = defineStore("material", () => {
 
         const response = await api.material.create({
             name: original.name,
+            visibility: original.visibility,
+            method: original.method,
+            automaticTime: original.automaticTime,
+            sizing: original.sizing,
             slides: original.slides.map((slide) => ({
                 id: slide.id,
                 data: slide.data,
