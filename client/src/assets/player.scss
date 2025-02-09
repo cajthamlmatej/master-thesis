@@ -120,6 +120,8 @@
                         max-width: 100% !important;
 
                         border: 0;
+
+                        pointer-events: none;
                     }
                 }
             }
@@ -127,6 +129,12 @@
             &--interactive {
                 cursor: pointer;
             }
+        }
+    }
+
+    &--mode-move {
+        > .player-content {
+            //pointer-events: none;
         }
     }
 }

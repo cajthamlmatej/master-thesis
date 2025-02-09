@@ -156,7 +156,8 @@
             "edit": "Upravit materiál",
             "leave": "Opustit materiál",
             "automatic-stop": "Zastavit automatické procházení",
-            "automatic-play": "Zapnout automatické procházení"
+            "automatic-play": "Zapnout automatické procházení",
+            "focus": "Zvětšit do obrazovky"
         },
         "loading": "Načítání materiálu...",
         "not-found": {

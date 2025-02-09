@@ -156,7 +156,8 @@
             "edit": "Edit this material",
             "leave": "Leave material",
             "automatic-stop": "Stop automatic playback",
-            "automatic-play": "Start automatic playback"
+            "automatic-play": "Start automatic playback",
+            "focus": "Fit to screen"
         },
         "loading": "Loading...",
         "not-found": {

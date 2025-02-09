@@ -49,6 +49,10 @@ export const usePlayerStore = defineStore("player", () => {
     }
 
     const setPlayer = (playerInstance: Player) => {
+        if(player.value) {
+            player.value.destroy();
+        }
+
         player.value = playerInstance;
     }
 
@@ -63,7 +67,7 @@ export const usePlayerStore = defineStore("player", () => {
         if (!slide) return;
 
         if (player.value) {
-            // player.value.destroy(); TODO: Implement destroy method
+            player.value.destroy();
         }
 
         const deserializer = new PlayerDeserializer();

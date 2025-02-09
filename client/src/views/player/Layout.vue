@@ -70,6 +70,16 @@
                 />
 
                 <NavigationButton
+                    :label="$t('player.control.focus')"
+                    :tooltip-text="$t('player.control.focus')"
+                    v-if="material.sizing === 'MOVEMENT'"
+                    hide-mobile
+                    icon="image-filter-center-focus"
+                    tooltip-position="bottom"
+                    @click.stop="focus"
+                />
+
+                <NavigationButton
                     :label="$t('player.control.fullscreen')"
                     :tooltip-text="$t('player.control.fullscreen')"
                     hide-mobile
@@ -116,6 +126,8 @@ import {$t} from "@/translation/Translation";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
 import {useUserStore} from "@/stores/user";
 
+import {PlayerMode} from "@/editor/player/PlayerMode";
+
 const materialStore = useMaterialStore();
 const playerStore = usePlayerStore();
 const userStore = useUserStore();
@@ -123,6 +135,8 @@ const player = ref<Player | null>(null);
 
 watch(() => playerStore.getPlayer(), (value) => {
     player.value = value as Player;
+
+    player.value.changeMode(PlayerMode.MOVE);
 });
 
 const route = useRoute();
@@ -158,7 +172,7 @@ let cursorTimeout = undefined as undefined | number;
 let active = ref<boolean>(false);
 
 const click = (e: MouseEvent) => {
-    if (material.value.method === 'MANUAL') return;
+    if (material.value.method !== 'MANUAL') return;
 
     const position = {x: e.clientX, y: e.clientY};
     const width = window.innerWidth;
@@ -200,7 +214,7 @@ const keydown = (e: KeyboardEvent) => {
     const current = playerStore.getActiveSlide();
 
     if (!current) return;
-    if (material.value.method === 'MANUAL') return;
+    if (material.value.method !== 'MANUAL') return;
 
     if (["ArrowRight", "Enter", "Space", " ", "PageUp"].includes(e.key)) {
         nextSlide();
@@ -234,6 +248,11 @@ const fullscreen = () => {
         element.requestFullscreen();
     }
 };
+
+const focus = () => {
+    player.value?.fitToParent();
+};
+
 const timeFromStart = ref<string>("00:00");
 const timeFromSlide = ref<string>("00:00");
 let timeInterval = undefined as undefined | number;
