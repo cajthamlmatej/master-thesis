@@ -212,7 +212,8 @@
                 "MOVEMENT": "Roztáhnout a pohyb",
                 "label": "Způsob zobrazení"
             },
-            "save": "Uložit"
+            "save": "Uložit",
+            "link": "Odkaz"
         },
         "ui": {
             "fit-to-screen": "Přizpůsobit obrazovce",

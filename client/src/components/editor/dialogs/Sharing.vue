@@ -11,7 +11,40 @@
 
         <template #default>
             <Card dialog>
-                <p v-t class="title">editor.share.title</p>
+                <div class="flex flex-justify-space-between">
+                    <p v-t class="title">editor.share.title</p>
+
+                    <div>
+                        <Dialog>
+                            <template #activator="{toggle}">
+                                <Button
+                                    icon="link-variant"
+                                    color="primary"
+                                    @click="toggle"
+                                >
+                                    <span v-t>editor.share.link</span>
+                                </Button>
+                            </template>
+                            <template #default>
+                                <Card dialog>
+                                    <div class="flex flex-justify-space-between flex-align-center gap-2">
+                                        <div class="flex-grow">
+                                            <Input :readonly="true" hide-error hide-label v-model:value="link"></Input>
+                                        </div>
+
+                                        <div>
+                                            <Button
+                                                icon="content-copy"
+                                                @click="copyLink"
+                                                color="primary"
+                                            ></Button>
+                                        </div>
+                                    </div>
+                                </Card>
+                            </template>
+                        </Dialog>
+                    </div>
+                </div>
 
                 <Input :label="$t('editor.share.name')" v-model:value="data.name"></Input>
 
@@ -95,6 +128,7 @@ import {useEditorStore} from "@/stores/editor";
 import {useMaterialStore} from "@/stores/material";
 import Select from "@/components/design/select/Select.vue";
 import {MaterialMethod, MaterialSizing, MaterialVisibility} from "../../../../lib/dto/material/MaterialEnums";
+import router from "@/router";
 
 const editorStore = useEditorStore();
 const materialStore = useMaterialStore();
@@ -109,10 +143,11 @@ let data = ref({
     sizing: "FIT_TO_SCREEN"
 });
 
+const link = ref("");
+
 const load = () => {
     const material = materialStore.currentMaterial;
 
-    console.log(material);
     if (!material) {
         return;
     }
@@ -122,6 +157,15 @@ const load = () => {
     data.value.method = material.method ?? "MANUAL";
     data.value.automaticTime = material.automaticTime ?? 0;
     data.value.sizing = material.sizing ?? "FIT_TO_SCREEN";
+
+    const domain = window.location.origin;
+    const player = router.resolve({ name: 'Player', params: {material: material.id }}).href;
+
+    link.value = `${domain}${player}`;
+};
+
+const copyLink = () => {
+    navigator.clipboard.writeText(link.value);
 };
 
 onMounted(() => {

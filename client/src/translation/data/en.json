@@ -212,7 +212,8 @@
                 "MOVEMENT": "Stretch and move",
                 "label": "Display mode"
             },
-            "save": "Save"
+            "save": "Save",
+            "link": "Odkaz"
         },
         "ui": {
             "fit-to-screen": "Fit to the screen",
