@@ -23,10 +23,13 @@ export const useMaterialStore = defineStore("material", () => {
         materials.value = response.materials.map((material) => MaterialMapper.fromMaterialDTO(material));
     }
 
+    let resolve = (val?: any) => {};
+    const loaded = new Promise((r) => resolve = r);
     const loadMaterial = async (id: string) => {
         const response = await api.material.one(id);
 
         if (!response) {
+            resolve();
             throw new Error("Failed to load material");
         }
 
@@ -46,6 +49,7 @@ export const useMaterialStore = defineStore("material", () => {
         }
 
         currentMaterial.value = material;
+        resolve();
     }
 
     const createMaterial = async () => {
@@ -165,6 +169,7 @@ export const useMaterialStore = defineStore("material", () => {
         materials,
         currentMaterial,
         load,
+        loaded,
         loadMaterial,
         createMaterial,
         save,

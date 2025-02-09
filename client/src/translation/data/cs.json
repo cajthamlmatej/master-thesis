@@ -155,6 +155,12 @@
             "fullscreen": "Celá obrazovka",
             "edit": "Upravit materiál",
             "leave": "Opustit materiál"
+        },
+        "loading": "Načítání materiálu...",
+        "not-found": {
+            "title": "Materiál nenalezen",
+            "message": "Materiál, který se snažíte otevřít, nebyl nalezen. Zkontrolujte prosím odkaz či kontaktujte autora materiálu.",
+            "dashboard": "Zpět na ovládací panel"
         }
     },
     "editor": {

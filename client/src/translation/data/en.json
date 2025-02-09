@@ -155,6 +155,12 @@
             "fullscreen": "Fullscreen",
             "edit": "Edit this material",
             "leave": "Leave material"
+        },
+        "loading": "Loading...",
+        "not-found": {
+            "title": "Not found",
+            "message": "This material does not exist or you don't have access to it. Ask the owner to share it with you or check the URL.",
+            "dashboard": "Go to dashboard"
         }
     },
     "editor": {

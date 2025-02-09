@@ -14,6 +14,7 @@ import {useRoute, useRouter} from "vue-router";
 import {useUserStore} from "@/stores/user";
 import {translation} from "@/translation/Translation";
 import {ref, watch} from "vue";
+import {useAuthenticationStore} from "@/stores/authentication";
 
 useHead({
     titleTemplate: (title?: string) => {
@@ -23,9 +24,10 @@ useHead({
 
 const router = useRouter();
 const userStore = useUserStore();
+const authenticationStore = useAuthenticationStore();
 
 router.beforeEach((to, from, next) => {
-    if (!to.meta.isAuthentication) {
+    if (!to.meta.withoutAuthentication || authenticationStore.isLogged) {
         userStore.load();
     }
 

@@ -47,6 +47,9 @@ const router = createRouter({
         {
             path: '/:lang/player',
             component: () => import('../views/player/Layout.vue'),
+            meta: {
+                withoutAuthentication: true
+            },
 
             children: [
                 {
@@ -61,7 +64,7 @@ const router = createRouter({
             path: "/:lang/authentication",
             component: () => import("../views/authentication/Layout.vue"),
             meta: {
-                isAuthentication: true
+                withoutAuthentication: true
             },
 
             children: [
@@ -94,7 +97,7 @@ const router = createRouter({
 
 // Force user to log in before accessing the route
 router.beforeResolve((to, from, next) => {
-    if (to.meta.isAuthentication) {
+    if (to.meta.withoutAuthentication) {
         return next();
     }
 
