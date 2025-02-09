@@ -57,6 +57,10 @@ export class MaterialsController {
             material: {
                 id: material.id,
                 name: material.name,
+                visibility: material.visibility,
+                method: material.method,
+                automaticTime: material.automaticTime,
+                sizing: material.sizing,
                 createdAt: material.createdAt,
                 updatedAt: material.updatedAt,
                 slides: material.slides.map((slide) => ({
@@ -85,15 +89,16 @@ export class MaterialsController {
     @Post('/material')
     @UseGuards(RequiresAuthenticationGuard)
     async create(@Body() createMaterialDto: CreateMaterialDTO, @Req() req: RequestWithUser) {
-        const material = await this.materialsService.create({
-            user: req.user,
-            ...createMaterialDto
-        });
+        const material = await this.materialsService.create(createMaterialDto, req.user);
 
         return {
             material: {
                 id: material.id,
                 name: material.name,
+                visibility: material.visibility,
+                method: material.method,
+                automaticTime: material.automaticTime,
+                sizing: material.sizing,
                 createdAt: material.createdAt,
                 updatedAt: material.updatedAt,
                 slides: material.slides.map((slide) => ({

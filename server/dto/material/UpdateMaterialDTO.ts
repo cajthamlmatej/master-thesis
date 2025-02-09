@@ -1,4 +1,14 @@
-import {IsArray, IsNumber, IsOptional, IsString, MaxLength, Min, MinLength, ValidateNested} from "class-validator";
+import {
+    IsArray,
+    IsIn,
+    IsNumber,
+    IsOptional,
+    IsString,
+    MaxLength,
+    Min,
+    MinLength,
+    ValidateNested
+} from "class-validator";
 import {Type} from "class-transformer";
 
 
@@ -22,6 +32,26 @@ export class UpdateMaterialDTO {
     @MaxLength(255)
     @IsOptional()
     name?: string;
+    @IsString()
+    @IsIn(["PUBLIC", "PRIVATE"])
+    @IsOptional()
+    visibility?: string;
+
+    @IsString()
+    @IsIn(["AUTOMATIC", "MANUAL", "INTERACTIVITY"])
+    @IsOptional()
+    method?: string;
+
+    @IsNumber()
+    @Min(0)
+    @IsOptional()
+    automaticTime?: number;
+
+    @IsString()
+    @IsIn(["FIT_TO_SCREEN", "MOVEMENT"])
+    @IsOptional()
+    sizing?: string;
+
     @IsArray()
     @IsOptional()
     @ValidateNested()

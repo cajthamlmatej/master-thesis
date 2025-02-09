@@ -4,6 +4,7 @@ import {HydratedDocument, Model} from "mongoose";
 import {InjectModel} from "@nestjs/mongoose";
 import {User} from "../users/user.schema";
 import {UpdateMaterialDTO} from "../../dto/material/UpdateMaterialDTO";
+import {CreateMaterialDTO} from "../../dto/material/CreateMaterialDTO";
 
 @Injectable()
 export class MaterialsService {
@@ -25,12 +26,11 @@ export class MaterialsService {
         }).exec();
     }
 
-    async create(param: {
-        slides?: { id: string; data: string; thumbnail?: string; position: number }[];
-        name?: string;
-        user: HydratedDocument<User>
-    }) {
-        const material = new this.materialModel(param);
+    async create(param: CreateMaterialDTO, user: HydratedDocument<User>) {
+        const material = new this.materialModel({
+            ...param,
+            user: user._id
+        });
         return material.save();
     }
 
