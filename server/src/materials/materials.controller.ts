@@ -70,6 +70,7 @@ export class MaterialsController {
                 sizing: material.sizing,
                 createdAt: material.createdAt,
                 updatedAt: material.updatedAt,
+                user: material.user.toString(),
                 slides: material.slides.map((slide) => ({
                     id: slide.id,
                     thumbnail: slide.thumbnail,
