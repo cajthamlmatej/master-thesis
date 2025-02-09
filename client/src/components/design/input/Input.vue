@@ -242,6 +242,7 @@ const classes = computed(() => ({
             > input, > textarea {
                 border: var(--input-invalid-border-width) solid transparent;
                 background-color: var(--color-input-background);
+                opacity: 0.7;
             }
         }
     }

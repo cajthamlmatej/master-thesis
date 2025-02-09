@@ -4,6 +4,7 @@
 
         <VDropdown
             ref="dropdown"
+            :disabled="props.disabled"
             v-model:shown="isPicking"
             :distance="-1"
             class="dropdown"
@@ -404,7 +405,7 @@ article.select {
         }
     }
 
-    > button > :not(.choices) {
+    button > :not(.choices) {
         position: relative;
         z-index: 102;
     }
@@ -424,7 +425,7 @@ article.select {
             }
         }
 
-        > button > section.dropdown {
+        button > section.dropdown {
             border-top: var(--select-dropdown-border-width) solid var(--select-dropdown-border-color);
 
             opacity: 1;
@@ -434,7 +435,7 @@ article.select {
     }
 
     &.select--disabled {
-        > button {
+        button {
             opacity: 0.5;
             cursor: not-allowed;
             background-color: var(--color-select-background-disabled);
@@ -442,11 +443,15 @@ article.select {
             &:hover {
                 background-color: var(--color-select-background-disabled);
             }
+
+            > .wrapper {
+                box-shadow: none;
+            }
         }
     }
 
     &.select--fluid {
-        > button {
+        button {
             width: 100%;
         }
     }
