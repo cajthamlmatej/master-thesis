@@ -52,9 +52,9 @@ export class OptionalAuthenticationGuard implements CanActivate {
     constructor(readonly usersService: UsersService,
                 readonly configService: ConfigService) { }
 
-    canActivate(
+    async canActivate(
         context: ExecutionContext,
-    ): boolean | Promise<boolean> | Observable<boolean> {
+    ) {
         const request = context.switchToHttp().getRequest();
 
         const authorizationHeader = request.headers.authorization;
@@ -70,13 +70,13 @@ export class OptionalAuthenticationGuard implements CanActivate {
         try {
             const decoded = jwt.verify(token, this.configService.get<string>("JWT_SECRET")!.toString()) as any;
 
-            if(!decoded) throw new UnauthorizedException('Invalid token');
+            if (!decoded) throw new UnauthorizedException('Invalid token');
 
-            if(!('id' in decoded)) throw new UnauthorizedException('Invalid token');
+            if (!('id' in decoded)) throw new UnauthorizedException('Invalid token');
 
-            const user = this.usersService.getById(decoded.id);
+            const user = await this.usersService.getById(decoded.id);
 
-            if(!user) throw new UnauthorizedException('Invalid token');
+            if (!user) throw new UnauthorizedException('Invalid token');
 
             request.user = user;
         } catch (e) {

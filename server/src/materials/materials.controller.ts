@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import {MaterialsService} from './materials.service';
 import {RequestWithUser} from "../types";
-import {RequiresAuthenticationGuard} from "../auth/auth.guard";
+import {OptionalAuthenticationGuard, RequiresAuthenticationGuard} from "../auth/auth.guard";
 import {AllMaterialSuccessDTO} from "../../dto/material/AllMaterialSuccessDTO";
 import {OneMaterialSuccessDTO} from "../../dto/material/OneMaterialSuccessDTO";
 import {UpdateMaterialDTO} from "../../dto/material/UpdateMaterialDTO";
@@ -46,12 +46,19 @@ export class MaterialsController {
     }
 
     @Get('/material/:id')
-    async findOne(@Param('id') id: string) {
+    @UseGuards(OptionalAuthenticationGuard)
+    async findOne(@Param('id') id: string, @Req() req: RequestWithUser) {
         const material = await this.materialsService.findById(id);
 
         if(!material) throw new Error("Material not found");
 
-        // TODO: can he access this material?
+        if(material.visibility === 'PRIVATE') {
+            const user = req.user || { id: null };
+
+            console.log(material.user.toString(), req.user);
+
+            if(material.user.toString() !== user.id) throw new UnauthorizedException('You are not allowed to access this resource');
+        }
 
         return {
             material: {
