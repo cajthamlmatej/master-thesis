@@ -21,8 +21,10 @@ export class MaterialsService {
 
     async update(material: HydratedDocument<Material>, updateMaterialDto: UpdateMaterialDTO) {
         await this.materialModel.findByIdAndUpdate(material._id, {
-            updateMaterialDto,
-            updatedAt: new Date()
+            $set: {
+                ...updateMaterialDto,
+                updatedAt: new Date()
+            }
         }).exec();
     }
 

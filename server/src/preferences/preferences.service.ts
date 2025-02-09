@@ -30,7 +30,9 @@ export class PreferencesService {
 
     async update(preferences: HydratedDocument<Preferences>, changes: UpdatePreferencesDTO) {
         await this.preferencesModel.findByIdAndUpdate(preferences._id, {
-            ...changes,
+            $set: {
+                ...changes,
+            }
         });
     }
 }
