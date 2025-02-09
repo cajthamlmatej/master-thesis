@@ -37,8 +37,6 @@ export class MermaidPlayerBlock extends PlayerBlock {
         content.innerHTML = "";
         const iframe = document.createElement("iframe");
 
-        content.appendChild(iframe);
-
         const css = document.createElement("style");
         css.innerHTML = `
             body {
@@ -56,13 +54,18 @@ export class MermaidPlayerBlock extends PlayerBlock {
                 overflow: hidden;
             }`;
 
-        iframe.contentDocument!.head.appendChild(css);
+        iframe.addEventListener("load", async() => {
+            iframe.contentDocument!.head.appendChild(css);
 
-        const {svg} = await mermaid.render('graphDiv', this.content);
+            const {svg} = await mermaid.render('graphDiv', this.content);
 
-        iframe.contentDocument!.body.innerHTML = svg;
-        iframe.contentDocument!.close();
+            iframe.contentDocument!.body.innerHTML = svg;
+            iframe.contentDocument!.close();
 
-        content.removeAttribute("data-processed");
+            content.removeAttribute("data-processed");
+        });
+
+
+        content.appendChild(iframe);
     }
 }
