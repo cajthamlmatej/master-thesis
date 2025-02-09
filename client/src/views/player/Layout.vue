@@ -1,9 +1,9 @@
 <template>
     <div class="underlay">
-        <Header :active="active" fixed>
+        <Header :active="active" fixed v-if="material">
             <template #logo>
-                <div v-if="materialStore.currentMaterial" class="meta">
-                    <span class="name">{{ materialStore.currentMaterial.name }}</span>
+                <div class="meta">
+                    <span class="name">{{ material.name }}</span>
 
                     <span v-t="{start: timeFromStart, slide: timeFromSlide}" class="time">player.timer</span>
                 </div>
@@ -43,6 +43,7 @@
                     :disabled="!hasPreviousSlide"
                     :label="$t('player.control.previous-slide')"
                     :tooltip-text="$t('player.control.previous-slide')"
+                    v-if="material.method === 'MANUAL'"
                     hide-mobile
                     icon="arrow-left"
                     tooltip-position="bottom"
@@ -52,10 +53,20 @@
                     :disabled="!hasNextSlide"
                     :label="$t('player.control.next-slide')"
                     :tooltip-text="$t('player.control.next-slide')"
+                    v-if="material.method === 'MANUAL'"
                     hide-mobile
                     icon="arrow-right"
                     tooltip-position="bottom"
                     @click.stop="nextSlide"
+                />
+                <NavigationButton
+                    :label="automaticMovement ? $t('player.control.automatic-stop') : $t('player.control.automatic-play')"
+                    :tooltip-text="automaticMovement ? $t('player.control.automatic-stop') : $t('player.control.automatic-play')"
+                    v-if="material.method === 'AUTOMATIC'"
+                    hide-mobile
+                    :icon="automaticMovement ? 'stop-circle-outline' : 'play-circle-outline'"
+                    tooltip-position="bottom"
+                    @click.stop="toggleAutomaticMovement"
                 />
 
                 <NavigationButton
@@ -71,6 +82,7 @@
                     :label="$t('player.control.edit')"
                     :to="{name: 'Editor', params: {material: route.params.material}}"
                     :tooltip-text="$t('player.control.edit')"
+                    v-if="material.user === userStore.user?.id"
                     hide-mobile
                     icon="square-edit-outline"
                     tooltip-position="bottom"
@@ -92,7 +104,7 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, onUnmounted, ref, watch} from "vue";
+import {computed, onMounted, onUnmounted, ref, watch} from "vue";
 import {useRoute} from "vue-router";
 import {useMaterialStore} from "@/stores/material";
 import {usePlayerStore} from "@/stores/player";
@@ -102,9 +114,11 @@ import NavigationButton from "@/components/design/navigation/NavigationButton.vu
 import ListItem from "@/components/design/list/ListItem.vue";
 import {$t} from "@/translation/Translation";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
+import {useUserStore} from "@/stores/user";
 
 const materialStore = useMaterialStore();
 const playerStore = usePlayerStore();
+const userStore = useUserStore();
 const player = ref<Player | null>(null);
 
 watch(() => playerStore.getPlayer(), (value) => {
@@ -113,6 +127,7 @@ watch(() => playerStore.getPlayer(), (value) => {
 
 const route = useRoute();
 
+const material = computed(() => materialStore.currentMaterial!);
 
 onMounted(async () => {
     await materialStore.load();
@@ -143,6 +158,8 @@ let cursorTimeout = undefined as undefined | number;
 let active = ref<boolean>(false);
 
 const click = (e: MouseEvent) => {
+    if (material.value.method === 'MANUAL') return;
+
     const position = {x: e.clientX, y: e.clientY};
     const width = window.innerWidth;
 
@@ -183,6 +200,7 @@ const keydown = (e: KeyboardEvent) => {
     const current = playerStore.getActiveSlide();
 
     if (!current) return;
+    if (material.value.method === 'MANUAL') return;
 
     if (["ArrowRight", "Enter", "Space", " ", "PageUp"].includes(e.key)) {
         nextSlide();
@@ -259,6 +277,38 @@ onMounted(() => {
 onUnmounted(() => {
     if (timeInterval) clearInterval(timeInterval);
 });
+
+const automaticMovement = ref(true);
+let automaticMovementInterval = undefined as undefined | number;
+let lastTime = Date.now();
+
+const toggleAutomaticMovement = () => {
+    automaticMovement.value = !automaticMovement.value;
+};
+
+onMounted(() => {
+    automaticMovementInterval = setInterval(() => {
+        if (material.value.method === 'MANUAL') {
+            return;
+        }
+
+        if (!automaticMovement.value) {
+            return;
+        }
+
+        const diff = Date.now() - lastTime;
+
+        if (diff > material.value.automaticTime * 1000) {
+            nextSlide();
+            lastTime = Date.now();
+        }
+    }, 1000) as unknown as number;
+});
+
+onUnmounted(() => {
+    if (automaticMovementInterval) clearInterval(automaticMovementInterval);
+});
+
 </script>
 
 <style lang="scss" scoped>

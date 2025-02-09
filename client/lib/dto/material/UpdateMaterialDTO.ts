@@ -10,7 +10,6 @@ import {
     ValidateNested
 } from "class-validator";
 import {Type} from "class-transformer";
-import {MaterialMethod, MaterialSizing, MaterialVisibility} from "../../src/materials/material.schema";
 
 
 export class UpdateSlideMaterialDTO {

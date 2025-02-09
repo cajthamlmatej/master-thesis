@@ -33,6 +33,7 @@ export default class Material {
     automaticTime: number;
     sizing: MaterialSizing;
     slides: Slide[];
+    user: string;
     thumbnail?: string;
 
     constructor(id: string, createdAt: Date, updatedAt: Date, name: string, slides: {
@@ -42,6 +43,7 @@ export default class Material {
                     position: number;
                 }[],
                 visibility: MaterialVisibility, method: MaterialMethod, automaticTime: number, sizing: MaterialSizing,
+                user?: string,
                 thumbnail?: string) {
         this.id = id;
         this.createdAt = moment(createdAt);
@@ -51,6 +53,7 @@ export default class Material {
         this.method = method;
         this.automaticTime = automaticTime;
         this.sizing = sizing;
+        this.user = user || "";
         this.slides = slides.map(slide => new Slide(slide.id, slide.data, slide.thumbnail, slide.position));
 
         if (thumbnail) {

@@ -154,7 +154,9 @@
             "next-slide": "Next slide",
             "fullscreen": "Fullscreen",
             "edit": "Edit this material",
-            "leave": "Leave material"
+            "leave": "Leave material",
+            "automatic-stop": "Stop automatic playback",
+            "automatic-play": "Start automatic playback"
         },
         "loading": "Loading...",
         "not-found": {

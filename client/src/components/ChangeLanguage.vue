@@ -1,7 +1,7 @@
 <template>
     <Dialog>
         <template #activator="{ toggle }">
-            <NavigationButton :label="language" icon="translate-variant" @click="toggle"></NavigationButton>
+            <NavigationButton tooltip-text="Language" tooltip-position="bottom" :label="language" icon="translate-variant" @click="toggle"></NavigationButton>
         </template>
         <template #default>
             <Card dialog>

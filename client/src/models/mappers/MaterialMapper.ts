@@ -8,6 +8,7 @@ export default class MaterialMapper {
         return new Material(dto.id, dto.createdAt, dto.updatedAt, dto.name,
             'slides' in dto ? dto.slides : [],
             dto.visibility as MaterialVisibility, dto.method as MaterialMethod, dto.automaticTime, dto.sizing as MaterialSizing,
+            dto.user,
             'thumbnail' in dto ? dto.thumbnail : undefined);
     }
 

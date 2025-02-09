@@ -154,7 +154,9 @@
             "next-slide": "Další snímek",
             "fullscreen": "Celá obrazovka",
             "edit": "Upravit materiál",
-            "leave": "Opustit materiál"
+            "leave": "Opustit materiál",
+            "automatic-stop": "Zastavit automatické procházení",
+            "automatic-play": "Zapnout automatické procházení"
         },
         "loading": "Načítání materiálu...",
         "not-found": {

@@ -1,7 +1,5 @@
 import {IsArray, IsDefined, IsIn, IsNumber, IsString, MaxLength, Min, MinLength, ValidateNested} from "class-validator";
 import {Type} from "class-transformer";
-import {Prop} from "@nestjs/mongoose";
-import {MaterialMethod, MaterialSizing, MaterialVisibility} from "../../src/materials/material.schema";
 
 export class CreateSlideMaterialDTO {
     @IsString()

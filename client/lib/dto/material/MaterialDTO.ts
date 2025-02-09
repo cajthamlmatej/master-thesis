@@ -7,6 +7,7 @@ export interface MaterialDTO {
     method: string;
     automaticTime: number;
     sizing: string;
+    user: string;
     slides: {
         id: string;
         data: string;
