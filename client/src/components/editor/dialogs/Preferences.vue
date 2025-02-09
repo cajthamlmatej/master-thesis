@@ -39,7 +39,7 @@
                 </List>
 
                 <div class="flex flex-justify-end mt-1">
-                    <Button @click="save"><span v-t>editor.preferences.save</span></Button>
+                    <Button @click="save" :loading="saving"><span v-t>editor.preferences.save</span></Button>
                 </div>
             </Card>
         </template>
@@ -58,12 +58,9 @@ import {$t} from "@/translation/Translation";
 import {useEditorStore} from "@/stores/editor";
 import {useMaterialStore} from "@/stores/material";
 
-const props = defineProps<{
-    editor: Editor | undefined
-}>();
-
+const editorStore = useEditorStore();
 const preferences = computed(() => {
-    return props.editor?.getPreferences();
+    return editorStore.getEditor()?.getPreferences() ?? {};
 });
 
 const properties = [
@@ -162,8 +159,10 @@ watch(preferences, (value) => {
 const dialog = ref(false);
 
 const materialStore = useMaterialStore();
+const saving = ref(false);
 const save = async() => {
     const newPreferences = {} as any;
+    saving.value = true;
 
     for (const key in values.value) {
         let property = properties.find(p => p.key === key);
@@ -183,15 +182,15 @@ const save = async() => {
         newPreferences[key] = value;
     }
 
-    props.editor!.setPreferences(newPreferences);
+    editorStore.getEditor()!.setPreferences(newPreferences);
 
     // Save to server
-    await materialStore.savePreferences(props.editor!.getPreferences());
+    await materialStore.savePreferences(editorStore.getEditor()!.getPreferences());
 
     dialog.value = false;
+    saving.value = false;
 };
 
-const editorStore = useEditorStore();
 watch(() => editorStore.getEditor(), async(editor) => {
     const preferences = await materialStore.getPreferences();
 

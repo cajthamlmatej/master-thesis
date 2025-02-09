@@ -28,10 +28,8 @@ import type Editor from "@/editor/Editor";
 import {onMounted, onUnmounted, ref, watch} from "vue";
 import ListItem from "@/components/design/list/ListItem.vue";
 import {$t, translation} from "@/translation/Translation";
+import {useEditorStore} from "@/stores/editor";
 
-const props = defineProps<{
-    editor: Editor;
-}>();
 
 const keybindsDialog = ref(false);
 
@@ -115,10 +113,11 @@ const humanizeKeybind = (keybind: {
     return press;
 }
 
+const editorStore = useEditorStore();
 const recalculate = () => {
     let keybinds = [];
 
-    for (let keybind of props.editor.getKeybinds().getKeybinds()) {
+    for (let keybind of editorStore.getEditor()!.getKeybinds().getKeybinds()) {
         keybinds.push({
             key: humanizeKeybind(keybind.keybind),
             action: $t('editor.action.' + keybind.action.name + '.label')
