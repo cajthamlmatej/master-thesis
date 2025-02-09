@@ -9,6 +9,11 @@
         "pagination": {
             "previous": "Předchozí",
             "next": "Další"
+        },
+        "select": {
+            "search": "Hledat...",
+            "no-results": "Žádné výsledky",
+            "hint": "Vyberte možnost"
         }
     },
     "layout": {

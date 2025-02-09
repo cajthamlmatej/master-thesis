@@ -9,6 +9,11 @@
         "pagination": {
             "previous": "Previous",
             "next": "Next"
+        },
+        "select": {
+            "search": "Search...",
+            "no-results": "No results found",
+            "hint": "Select an option"
         }
     },
     "layout": {

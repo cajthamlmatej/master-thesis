@@ -24,7 +24,7 @@
                         <input
                             ref="searchElement"
                             v-model="searchProxy"
-                            placeholder="Search..."
+                            :placeholder="$t('components.select.search')"
                             tabindex="-1"
                             type="text"
                         />
@@ -53,7 +53,7 @@
                         </button>
 
                         <button v-if="choicesBehindSearch.length === 0" class="choice not-found" disabled>
-                            <span class="name">No results found</span>
+                            <span class="name" v-t>components.select.no-results</span>
                         </button>
                     </section>
                 </section>
@@ -64,6 +64,7 @@
 
 <script lang="ts" setup>
 import {computed, nextTick, onMounted, onUnmounted, type PropType, ref, watch} from "vue";
+import {$t} from "@/translation/Translation";
 
 const props = defineProps({
     choices: {
@@ -119,7 +120,7 @@ const props = defineProps({
     noSelectionText: {
         type: String,
         required: false,
-        default: "Select an option",
+        default: $t("components.select.hint"),
     },
 
     fluid: {
