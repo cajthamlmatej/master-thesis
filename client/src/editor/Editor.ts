@@ -436,16 +436,18 @@ export default class Editor {
 
         if (event.button !== 0) return;
 
-        // Is inside the editor?
         if (!this.editorElement.parentElement!.contains(event.target as Node)) return;
 
+        const start = this.screenToEditorCoordinates(event.clientX, event.clientY);
+
         const handleMove = (event: MouseEvent) => {
-            const offsetX = event.movementX;
-            const offsetY = event.movementY;
+            const end = this.screenToEditorCoordinates(event.clientX, event.clientY);
+            const offsetX = end.x - start.x;
+            const offsetY = end.y - start.y;
 
             this.position = {
-                x: this.position.x + offsetX,
-                y: this.position.y + offsetY
+                x: this.position.x + offsetX * this.scale,
+                y: this.position.y + offsetY * this.scale
             };
 
             this.updateElement();
@@ -464,20 +466,23 @@ export default class Editor {
 
         if (!this.editorElement.parentElement!.contains(event.target as Node)) return;
 
+        const zoomIntensity = 0.2;
+        const scaleFactor = 1 - event.deltaY * zoomIntensity * 0.01;
+        const newScale = Math.max(0.05, Math.min(6, this.scale * scaleFactor));
+
+        if (newScale === this.scale) return;
+
         const rect = this.editorElement.getBoundingClientRect();
 
         const mouseX = event.clientX - rect.left;
         const mouseY = event.clientY - rect.top;
 
-        const newScale = this.scale - event.deltaY / 1000;
-        const scale = Math.max(0.1, Math.min(2, newScale));
+        const scaleChange = newScale / this.scale;
 
-        const scaleChange = scale / this.scale;
+        this.position.x -= (mouseX * (scaleChange - 1));
+        this.position.y -= (mouseY * (scaleChange - 1));
 
-        this.position.x = mouseX - (mouseX - this.position.x) * scaleChange;
-        this.position.y = mouseY - (mouseY - this.position.y) * scaleChange;
-
-        this.scale = scale;
+        this.scale = newScale;
 
         this.updateElement();
     }
@@ -490,6 +495,7 @@ export default class Editor {
         this.editorElement.style.left = this.position.x + "px";
         this.editorElement.style.top = this.position.y + "px";
         this.editorElement.style.transform = `scale(${this.scale})`;
+        this.editorElement.style.transformOrigin = `0 0`;
         this.editorElement.style.width = this.size.width + "px";
         this.editorElement.style.height = this.size.height + "px";
         this.editorElement.style.setProperty("--scale", this.scale.toString());

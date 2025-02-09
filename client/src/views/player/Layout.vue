@@ -74,7 +74,7 @@
                     :tooltip-text="$t('player.control.focus')"
                     v-if="material.sizing === 'MOVEMENT'"
                     hide-mobile
-                    icon="image-filter-center-focus"
+                    icon="fit-to-screen-outline"
                     tooltip-position="bottom"
                     @click.stop="focus"
                 />
