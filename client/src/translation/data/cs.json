@@ -15,6 +15,12 @@
             "search": "Hledat...",
             "no-results": "Žádné výsledky",
             "hint": "Vyberte možnost"
+        },
+        "file-input": {
+            "choose": "Vybrat soubor",
+            "no-selected": "Žádný soubor nebyl vybrán",
+            "selected": "Soubor vybrán",
+            "and-more": "a %count% další(ch)"
         }
     },
     "layout": {

@@ -15,6 +15,12 @@
             "search": "Search...",
             "no-results": "No results found",
             "hint": "Select an option"
+        },
+        "file-input": {
+            "choose": "Choose file",
+            "no-selected": "No file selected",
+            "selected": "File selected",
+            "and-more": "and %count% more"
         }
     },
     "layout": {
