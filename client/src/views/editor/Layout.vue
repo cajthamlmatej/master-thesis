@@ -39,6 +39,10 @@
                               :tooltip-text="$t('editor.panel.blocks.title')"
                               icon="plus-box-outline"
                               @click="blockMenu = !blockMenu"></NavigationButton>
+            <NavigationButton :label="$t('editor.panel.media.title')"
+                              :tooltip-text="$t('editor.panel.media.title')"
+                              icon="multimedia"
+                              @click="mediaMenu = !mediaMenu"></NavigationButton>
         </template>
         <template #secondary>
             <NavigationButton :label="$t('editor.ui.fit-to-screen')"
@@ -56,6 +60,7 @@
     <Slides v-model:value="slidesMenu"></Slides>
     <Blocks v-model:value="blockMenu"></Blocks>
     <Properties v-model:value="propertiesMenu"></Properties>
+    <Content v-model:value="mediaMenu"></Content>
 
     <Keybinds v-if="editor" ></Keybinds>
 
@@ -85,6 +90,7 @@ import History from "@/components/editor/History.vue";
 import {$t} from "@/translation/Translation";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
 import Sharing from "@/components/editor/dialogs/Sharing.vue";
+import Content from "@/components/editor/panels/Media.vue";
 
 const data = reactive({
     menu: false
@@ -101,25 +107,26 @@ watch(() => editorStore.getEditor(), (value) => {
 const slidesMenu = ref(false);
 const blockMenu = ref(false);
 const propertiesMenu = ref(false);
+const mediaMenu = ref(false);
 
 watch(() => slidesMenu.value, (value) => {
     if (slidesMenu.value) {
         blockMenu.value = false;
-        // propertiesMenu.value = false;
+        mediaMenu.value = false;
     }
 });
 watch(() => blockMenu.value, (value) => {
     if (blockMenu.value) {
         slidesMenu.value = false;
-        // propertiesMenu.value = false;
+        mediaMenu.value = false;
     }
 });
-// watch(() => propertiesMenu.value, (value) => {
-//     if(propertiesMenu.value) {
-//         slidesMenu.value = false;
-//         blockMenu.value = false;
-//     }
-// });
+watch(() => mediaMenu.value, (value) => {
+    if (mediaMenu.value) {
+        slidesMenu.value = false;
+        blockMenu.value = false;
+    }
+});
 
 const handleClick = (event: MouseEvent) => {
     if (event.target instanceof HTMLElement) {
@@ -127,6 +134,7 @@ const handleClick = (event: MouseEvent) => {
 
         slidesMenu.value = false;
         blockMenu.value = false;
+        propertiesMenu.value = false;
     }
 }
 

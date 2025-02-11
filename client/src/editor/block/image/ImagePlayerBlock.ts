@@ -1,17 +1,29 @@
 import {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
+import {useMediaStore} from "@/stores/media";
 
+const mediaStore = useMediaStore();
 export class ImagePlayerBlock extends PlayerBlock {
-    private imageUrl: string;
+    private imageUrl?: string;
+    private mediaId?: string;
 
     private imageElement!: HTMLImageElement;
 
-    constructor(base: BlockConstructorWithoutType, imageUrl: string) {
+    constructor(base: BlockConstructorWithoutType, imageUrl?: string, mediaId?: string) {
         super({
             ...base,
             type: "image"
         });
         this.imageUrl = imageUrl;
+        this.mediaId = mediaId;
+    }
+
+    public getUrl() {
+        if(this.mediaId) {
+            return mediaStore.linkToMedia(this.mediaId);
+        }
+
+        return this.imageUrl ?? "";
     }
 
     render(): HTMLElement {
@@ -22,7 +34,7 @@ export class ImagePlayerBlock extends PlayerBlock {
 
         const content = document.createElement("img");
 
-        content.src = this.imageUrl;
+        content.src = this.getUrl();
 
         element.appendChild(content);
 
@@ -38,8 +50,9 @@ export class ImagePlayerBlock extends PlayerBlock {
             return;
         }
 
-        if (this.imageElement.src !== this.imageUrl)
-            this.imageElement.src = this.imageUrl;
+        let url = this.getUrl();
+        if (this.imageElement.src !== url)
+            this.imageElement.src = url;
     }
 
 }

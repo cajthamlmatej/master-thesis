@@ -3,6 +3,7 @@ import {AuthenticationRepository} from "./repository/authentication"
 import {UserRepository} from "@/api/repository/user";
 import {MaterialRepository} from "@/api/repository/material";
 import {PreferencesRepository} from "@/api/repository/preferences";
+import {MediaRepository} from "@/api/repository/media";
 
 
 /**
@@ -15,6 +16,7 @@ class Api {
     public user: UserRepository;
     public material: MaterialRepository;
     public preferences: PreferencesRepository;
+    public media: MediaRepository;
 
     constructor() {
         this.base = import.meta.env.VITE_API_BASE || 'http://localhost:3000/';
@@ -23,6 +25,7 @@ class Api {
         this.user = new UserRepository();
         this.material = new MaterialRepository();
         this.preferences = new PreferencesRepository();
+        this.media = new MediaRepository();
     }
 
     /**

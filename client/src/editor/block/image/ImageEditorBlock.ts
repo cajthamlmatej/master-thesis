@@ -3,19 +3,33 @@ import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {BlockEventListener} from "@/editor/block/events/BlockListener";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
+import {useMediaStore} from "@/stores/media";
+
+const mediaStore = useMediaStore();
 
 export class ImageEditorBlock extends EditorBlock {
     @BlockSerialize("imageUrl")
-    private readonly imageUrl: string;
+    private readonly imageUrl?: string;
+    @BlockSerialize("mediaId")
+    private readonly mediaId?: string;
 
     private imageElement!: HTMLImageElement;
 
-    constructor(base: BlockConstructorWithoutType, imageUrl: string) {
+    constructor(base: BlockConstructorWithoutType, imageUrl?: string, mediaId?: string) {
         super({
             ...base,
             type: "image"
         });
         this.imageUrl = imageUrl;
+        this.mediaId = mediaId;
+    }
+
+    public getUrl() {
+        if(this.mediaId) {
+            return mediaStore.linkToMedia(this.mediaId);
+        }
+
+        return this.imageUrl ?? "";
     }
 
     // noinspection DuplicatedCode
@@ -28,8 +42,9 @@ export class ImageEditorBlock extends EditorBlock {
         const content = document.createElement("img");
 
         content.crossOrigin = "anonymous";
-        content.setAttribute("crossorigin", "anonymous");
-        content.src = this.imageUrl;
+        content.setAttribute("crossorigin", "anonymous")
+        content.setAttribute("draggable", "false");
+        content.src = this.getUrl();
 
         element.appendChild(content);
 
@@ -45,26 +60,27 @@ export class ImageEditorBlock extends EditorBlock {
             return;
         }
 
-        if (this.imageElement.src !== this.imageUrl)
-            this.imageElement.src = this.imageUrl;
+        let url = this.getUrl();
+        if (this.imageElement.src !== url)
+            this.imageElement.src = url;
     }
 
     override clone(): EditorBlock {
-        return new ImageEditorBlock(this.getCloneBase(), this.imageUrl);
+        return new ImageEditorBlock(this.getCloneBase(), this.imageUrl, this.mediaId);
     }
 
-    @BlockEventListener(BlockEvent.MOUNTED)
-    loadImage() {
-        const image = new Image();
-        image.src = this.imageUrl;
-        image.crossOrigin = "anonymous";
-
-        image.addEventListener("load", () => {
-            const ratio = image.width / image.height;
-
-            this.size.height = this.size.width / ratio;
-
-            this.synchronize();
-        });
-    }
+    // @BlockEventListener(BlockEvent.MOUNTED)
+    // loadImage() {
+    //     const image = new Image();
+    //     image.src = this.getUrl();
+    //     image.crossOrigin = "anonymous";
+    //
+    //     image.addEventListener("load", () => {
+    //         const ratio = image.width / image.height;
+    //
+    //         this.size.height = this.size.width / ratio;
+    //
+    //         this.synchronize();
+    //     });
+    // }
 }
