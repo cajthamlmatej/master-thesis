@@ -141,9 +141,11 @@ aside.navigation {
         justify-content: space-between;
 
         gap: 2em;
+        height: 100%;
 
         > ul {
             width: 100%;
+            height: 100%;
 
             display: flex;
             flex-direction: column;
