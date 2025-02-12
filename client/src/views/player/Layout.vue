@@ -136,7 +136,12 @@ const player = ref<Player | null>(null);
 watch(() => playerStore.getPlayer(), (value) => {
     player.value = value as Player;
 
-    player.value.changeMode(PlayerMode.MOVE);
+    if(!material) return;
+
+    if(material.value.sizing === 'MOVEMENT')
+        player.value.changeMode(PlayerMode.MOVE);
+    else
+        player.value.changeMode(PlayerMode.PLAY);
 });
 
 const route = useRoute();
@@ -307,7 +312,7 @@ const toggleAutomaticMovement = () => {
 
 onMounted(() => {
     automaticMovementInterval = setInterval(() => {
-        if (material.value.method === 'MANUAL') {
+        if (material.value.method !== 'AUTOMATIC') {
             return;
         }
 
