@@ -28,7 +28,6 @@ export abstract class TextProperty<T extends EditorBlock = EditorBlock> extends 
         this.processRecalculateValues();
 
         input?.addEventListener('input', () => {
-            console.log("Input event", input.value);
             this.applyValue(input.value);
         });
     }
