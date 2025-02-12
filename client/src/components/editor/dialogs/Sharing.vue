@@ -79,7 +79,6 @@
                     ]"
                     :label="$t('editor.share.method.label')"
                     v-model:value="data.method"
-                    :disabled="data.visibility !== 'PUBLIC'"
                 />
 
                 <div v-if="data.method === 'AUTOMATIC'">
@@ -106,7 +105,6 @@
                     ]"
                     :label="$t('editor.share.sizing.label')"
                     v-model:value="data.sizing"
-                    :disabled="data.visibility !== 'PUBLIC'"
                 />
 
                 <div class="flex flex-justify-end">
