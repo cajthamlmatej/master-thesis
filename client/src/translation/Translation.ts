@@ -11,11 +11,13 @@ export class Translation {
         {
             label: 'English',
             code: 'en',
+            fullIdentifier: 'en-US',
             data: en
         },
         {
             label: 'Česky',
             code: 'cs',
+            fullIdentifier: 'cs-CZ',
             data: cs
         }
     ];
@@ -69,6 +71,10 @@ export class Translation {
 
     getLanguage() {
         return this.language;
+    }
+
+    getLanguageIdentifier() {
+        return this.languages.find(language => language.code === this.language)?.fullIdentifier ?? 'unknown';
     }
 
     getLanguages() {

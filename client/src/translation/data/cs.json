@@ -206,6 +206,18 @@
             "media": {
                 "title": "Média",
                 "add": "Nahrát obsah"
+            },
+            "content": {
+                "title": "Obsah",
+                "back": "Zpět",
+                "gifs": {
+                    "title": "Gify",
+                    "search": "Hledat mezi gify"
+                },
+                "images": {
+                    "title": "Obrázky",
+                    "search": "Hledat mezi obrázky"
+                }
             }
         },
         "share": {
@@ -378,6 +390,14 @@
                 },
                 "shape": {
                     "label": "Tvar"
+                }
+            }
+        },
+        "image": {
+            "failed": "Načtení obrázku se nezdařilo.",
+            "property": {
+                "imageUrl": {
+                    "label": "Odkaz na obrázek"
                 }
             }
         },

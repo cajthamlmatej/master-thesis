@@ -206,6 +206,18 @@
             "media": {
                 "title": "Media",
                 "add": "Add media"
+            },
+            "content": {
+                "title": "Content",
+                "back": "Back",
+                "gifs": {
+                    "title": "Gifs",
+                    "search": "Search among gifs"
+                },
+                "images": {
+                    "title": "Images",
+                    "search": "Search among images"
+                }
             }
         },
         "share": {
@@ -374,6 +386,14 @@
                 },
                 "shape": {
                     "label": "Shape"
+                }
+            }
+        },
+        "image": {
+            "failed": "Failed to load image.",
+            "property": {
+                "imageUrl": {
+                    "label": "Image URL"
                 }
             }
         },

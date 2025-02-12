@@ -43,6 +43,10 @@
                               :tooltip-text="$t('editor.panel.media.title')"
                               icon="multimedia"
                               @click="mediaMenu = !mediaMenu"></NavigationButton>
+            <NavigationButton :label="$t('editor.panel.content.title')"
+                              :tooltip-text="$t('editor.panel.content.title')"
+                              icon="web-plus"
+                              @click="contentMenu = !contentMenu"></NavigationButton>
         </template>
         <template #secondary>
             <NavigationButton :label="$t('editor.ui.fit-to-screen')"
@@ -59,10 +63,11 @@
 
     <Slides v-model:value="slidesMenu"></Slides>
     <Blocks v-model:value="blockMenu"></Blocks>
-    <Properties v-model:value="propertiesMenu"></Properties>
-    <Content v-model:value="mediaMenu"></Content>
+    <Media v-model:value="mediaMenu"></Media>
+    <Content v-model:value="contentMenu"></Content>
 
     <Keybinds v-if="editor" ></Keybinds>
+    <Properties v-model:value="propertiesMenu"></Properties>
 
     <router-view v-slot="{ Component, route }">
         <transition mode="out-in" name="fade-ease">
@@ -90,7 +95,8 @@ import History from "@/components/editor/History.vue";
 import {$t} from "@/translation/Translation";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
 import Sharing from "@/components/editor/dialogs/Sharing.vue";
-import Content from "@/components/editor/panels/Media.vue";
+import Media from "@/components/editor/panels/Media.vue";
+import Content from "@/components/editor/panels/Content.vue";
 
 const data = reactive({
     menu: false
@@ -108,23 +114,34 @@ const slidesMenu = ref(false);
 const blockMenu = ref(false);
 const propertiesMenu = ref(false);
 const mediaMenu = ref(false);
+const contentMenu = ref(false);
 
 watch(() => slidesMenu.value, (value) => {
     if (slidesMenu.value) {
         blockMenu.value = false;
         mediaMenu.value = false;
+        contentMenu.value = false;
     }
 });
 watch(() => blockMenu.value, (value) => {
     if (blockMenu.value) {
         slidesMenu.value = false;
         mediaMenu.value = false;
+        contentMenu.value = false;
     }
 });
 watch(() => mediaMenu.value, (value) => {
     if (mediaMenu.value) {
         slidesMenu.value = false;
         blockMenu.value = false;
+        contentMenu.value = false;
+    }
+});
+watch(() => contentMenu.value, (value) => {
+    if (contentMenu.value) {
+        slidesMenu.value = false;
+        blockMenu.value = false;
+        mediaMenu.value = false;
     }
 });
 
@@ -134,7 +151,8 @@ const handleClick = (event: MouseEvent) => {
 
         slidesMenu.value = false;
         blockMenu.value = false;
-        propertiesMenu.value = false;
+        mediaMenu.value = false;
+        contentMenu.value = false;
     }
 }
 

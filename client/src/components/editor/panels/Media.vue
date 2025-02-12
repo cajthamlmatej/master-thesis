@@ -1,7 +1,7 @@
 <template>
     <Navigation v-model:menu="contentMenu" full-control shift>
         <template #primary>
-            <div v-show="contentMenu" ref="menu" class="menu editor-content">
+            <div v-show="contentMenu" ref="menu" class="menu editor-media">
                 <div class="actions">
                     <Dialog v-model:value="addMenu">
                         <template #activator="{ toggle }">
@@ -12,7 +12,7 @@
 
                         <template #default>
                             <Card dialog>
-                                <p class="title">asd</p>
+                                <p class="title" v-t>editor.panel.media.add</p>
 
                                 <FileInput fluid v-model:value="file"></FileInput>
 
@@ -33,7 +33,7 @@
 
                 <div class="content" ref="content">
                     <div v-for="media in mediaStore.media" class="media" @mousedown="(e) => add(e, media.id)" :key="media.id">
-                        <img src="" :data-src="mediaStore.linkToMedia(media)" :alt="media.name" loading="lazy">
+                        <img src="" :data-src="mediaStore.linkToMedia(media)" :alt="media.name" loading="lazy" draggable="false"/>
                     </div>
                 </div>
             </div>
