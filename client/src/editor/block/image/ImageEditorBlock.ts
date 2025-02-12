@@ -89,13 +89,13 @@ export class ImageEditorBlock extends EditorBlock {
         this.loadImage();
     }
 
-    //         const ratio = image.width / image.height;
-    //
-    //         this.size.height = this.size.width / ratio;
-    //
-    //         this.synchronize();
-    //     });
-    // }
+    public override getProperties(): Property<this>[] {
+        return [
+            ...super.getProperties(),
+            new ImageUrlProperty()
+        ];
+    }
+
     @BlockEventListener(BlockEvent.MOUNTED)
     loadImage() {
         const image = new Image();
