@@ -93,6 +93,10 @@
                 ul {
                     list-style-type: disc;
                 }
+
+                &.block--movable.block--selected {
+                    cursor: pointer;
+                }
             }
 
             &--type-image {
