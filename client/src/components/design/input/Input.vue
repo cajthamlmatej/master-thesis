@@ -4,7 +4,7 @@
 
         <section class="content">
             <input v-if="props.type !== 'textarea'" :id="id" v-model="proxy" :placeholder="placeholder" :readonly="readonly"
-                   :type="props.type"/>
+                   :type="props.type" ref="input"/>
 
             <textarea v-if="props.type === 'textarea'" :id="id" v-model="proxy" :readonly="readonly"/>
 
@@ -192,6 +192,18 @@ const classes = computed(() => ({
     'input--readonly': props.readonly,
     [props.class]: true,
 }));
+
+const input = ref<HTMLInputElement | null>(null);
+
+
+defineExpose({
+    focus: () => {
+        input.value?.focus();
+    },
+    blur: () => {
+        input.value?.blur();
+    },
+});
 </script>
 
 <style lang="scss" scoped>

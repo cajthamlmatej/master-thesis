@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-justify-space-between flex-align-center">
-        <Input v-model:value="search" hide-label hide-error :placeholder="$t('editor.panel.content.images.search')"/>
+        <Input v-model:value="search" hide-label hide-error :placeholder="$t('editor.panel.content.images.search')" ref="searchInput"></Input>
         <Button icon="close" @click="search = ''"></Button>
     </div>
 
@@ -55,6 +55,20 @@ watch(() => search.value, () => {
         searchTerm();
     }, 500) as unknown as number;
 });
+
+
+const searchInput = ref<{
+    focus: () => void;
+    blur: () => void;
+}>({
+    focus: () => {},
+    blur: () => {}
+});
+onMounted(() => {
+    nextTick(() => {
+        searchInput.value.focus();
+    });
+})
 
 const loadCurated = async () => {
     const url = new URL('https://api.pexels.com/v1/curated');

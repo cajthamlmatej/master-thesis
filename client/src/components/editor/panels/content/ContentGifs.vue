@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-justify-space-between flex-align-center">
-        <Input v-model:value="search" hide-label hide-error :placeholder="$t('editor.panel.content.gifs.search')"/>
+        <Input v-model:value="search" hide-label hide-error :placeholder="$t('editor.panel.content.gifs.search')" ref="searchInput"></Input>
         <Button icon="close" @click="search = ''"></Button>
     </div>
 
@@ -61,8 +61,20 @@ const search = ref('');
 const selectCategory = (category: Category) => {
     search.value = category.searchterm;
 }
+
+const searchInput = ref<{
+    focus: () => void;
+    blur: () => void;
+}>({
+    focus: () => {},
+    blur: () => {}
+});
 onMounted(() => {
     loadCategories();
+
+    nextTick(() => {
+        searchInput.value.focus();
+    });
 })
 
 const loadCategories = async () => {
@@ -76,9 +88,15 @@ const loadCategories = async () => {
     categories.value = data.tags;
 }
 
-
+let debounce: number | null = null;
 watch(() => search.value, () => {
-    searchTerm()
+    if (debounce) {
+        clearTimeout(debounce);
+    }
+
+    debounce = setTimeout(() => {
+        searchTerm();
+    }, 500) as unknown as number;
 });
 
 const searchTerm = async () => {
