@@ -7,7 +7,7 @@ import {ImagePlayerBlock} from "@/editor/block/image/ImagePlayerBlock";
 export class ImageBlockDeserializer extends BlockDeserializer {
     deserializeEditor(data: any): EditorBlock {
         const base = this.getBaseBlockData(data);
-        return new ImageEditorBlock(base, data.imageUrl, data.mediaId);
+        return new ImageEditorBlock(base, data.aspectRatio, data.imageUrl, data.mediaId);
     }
 
     deserializePlayer(data: any): PlayerBlock {

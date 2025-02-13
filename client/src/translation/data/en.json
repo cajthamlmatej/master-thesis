@@ -394,6 +394,9 @@
             "property": {
                 "imageUrl": {
                     "label": "Image URL"
+                },
+                "aspectRatio": {
+                    "label": "Keep aspect ratio"
                 }
             }
         },

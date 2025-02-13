@@ -7,6 +7,7 @@ import {ImageUrlProperty} from "@/editor/block/image/property/ImageUrlProperty";
 import {BlockEventListener} from "@/editor/block/events/BlockListener";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {$t} from "@/translation/Translation";
+import {AspectRatioProperty} from "@/editor/block/image/property/AspectRatioProperty";
 
 const mediaStore = useMediaStore();
 
@@ -15,17 +16,27 @@ export class ImageEditorBlock extends EditorBlock {
     public imageUrl?: string;
     @BlockSerialize("mediaId")
     public mediaId?: string;
+    @BlockSerialize("aspectRatio")
+    public aspectRatio: boolean;
 
     private imageElement!: HTMLImageElement;
     private failedToLoad = false;
 
-    constructor(base: BlockConstructorWithoutType, imageUrl?: string, mediaId?: string) {
+    constructor(base: BlockConstructorWithoutType, aspectRatio: boolean, imageUrl?: string, mediaId?: string) {
         super({
             ...base,
             type: "image"
         });
+        this.aspectRatio = aspectRatio ?? false;
         this.imageUrl = imageUrl;
         this.mediaId = mediaId;
+    }
+    override editorSupport() {
+        return {
+            ...super.editorSupport(),
+            nonProportionalResizingX: !this.aspectRatio,
+            nonProportionalResizingY: !this.aspectRatio
+        };
     }
 
     public getUrl() {
@@ -79,7 +90,7 @@ export class ImageEditorBlock extends EditorBlock {
     }
 
     override clone(): EditorBlock {
-        return new ImageEditorBlock(this.getCloneBase(), this.imageUrl, this.mediaId);
+        return new ImageEditorBlock(this.getCloneBase(), this.aspectRatio, this.imageUrl, this.mediaId);
     }
 
     public changeImageUrl(url: string) {
@@ -87,15 +98,34 @@ export class ImageEditorBlock extends EditorBlock {
         this.mediaId = undefined;
         this.synchronize();
         this.loadImage();
+
+        this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
+    }
+
+    public changeAspectRatio(aspectRatio: boolean) {
+        this.aspectRatio = aspectRatio;
+        this.synchronize();
+
+        this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
+
+        if(this.aspectRatio && this.imageElement) {
+            let newHeight = this.size.width / this.imageElement.naturalWidth * this.imageElement.naturalHeight;
+
+            this.resize(this.size.width, newHeight);
+
+            this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
+        }
     }
 
     public override getProperties(): Property<this>[] {
         return [
             ...super.getProperties(),
-            new ImageUrlProperty()
+            new ImageUrlProperty(),
+            new AspectRatioProperty()
         ];
     }
 
+    private loadedImage: HTMLImageElement | undefined = undefined;
     @BlockEventListener(BlockEvent.MOUNTED)
     loadImage() {
         const image = new Image();
@@ -112,10 +142,12 @@ export class ImageEditorBlock extends EditorBlock {
             }
 
             this.synchronize();
+            this.loadedImage = image;
         });
         image.addEventListener("error", () => {
             this.failedToLoad = true;
             this.synchronize();
+            this.loadedImage = undefined;
         });
     }
 }

@@ -398,6 +398,9 @@
             "property": {
                 "imageUrl": {
                     "label": "Odkaz na obrázek"
+                },
+                "aspectRatio": {
+                    "label": "Udržet poměr stran"
                 }
             }
         },

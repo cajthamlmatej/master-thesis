@@ -104,6 +104,26 @@
                         min-height: 2em;
                     }
 
+                    > input[type="checkbox"] {
+                        display: none;
+                    }
+
+                    > label.checkbox-label {
+                        display: block;
+                        width: 1.5em;
+                        height: 1.5em;
+                        border: 2px solid #000;
+                        border-radius: 0.25em;
+                        cursor: pointer;
+                        background-color: #fff;
+
+                        transition: all 0.2s ease;
+                    }
+
+                    > input[type="checkbox"]:checked + label.checkbox-label {
+                        background-color: var(--color-primary);
+                    }
+
                     > button {
                         background-color: var(--color-primary);
                         color: var(--color-text);
