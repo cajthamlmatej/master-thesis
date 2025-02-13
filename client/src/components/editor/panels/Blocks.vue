@@ -109,6 +109,7 @@ const add = (event: MouseEvent, type: 'text' | 'image' | 'shape' | 'interactiveA
                     rotation: 0,
                     zIndex: 0,
                 },
+                true,
                 "https://robohash.org/" + generateUUID() + "?set=set4"
             );
             break;

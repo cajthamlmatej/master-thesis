@@ -22,10 +22,10 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router);
 
-mermaid.initialize({
-    startOnLoad: false,
-    securityLevel: 'sandbox'
-})
+// mermaid.initialize({
+//     startOnLoad: false,
+//     securityLevel: 'sandbox'
+// })
 
 setupTranslations(app);
 

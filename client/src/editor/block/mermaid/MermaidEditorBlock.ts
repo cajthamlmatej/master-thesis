@@ -157,7 +157,7 @@ export class MermaidEditorBlock extends EditorBlock {
                 console.error(e);
                 this.failedToLoad = true;
                 // note(Matej): temporary fix because mermaid doesnt not remove the svg when it fails to render
-                document.body.querySelector(`#igraphDiv`)?.remove();
+                document.body.querySelector(`#dgraphDiv`)?.remove();
             }
         } else {
             this.element.classList.add("block--type-mermaid--editable");

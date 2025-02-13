@@ -184,6 +184,7 @@ const add = (event: MouseEvent, media: string) => {
             rotation: 0,
             zIndex: 0,
         },
+        false,
         media
     );
 
