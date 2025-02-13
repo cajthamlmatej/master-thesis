@@ -32,7 +32,7 @@ To způsobuje značnou míru zmatení u studentů a ztěžuje práci učitelům.
 \subsection{Vlastní zkušenosti}
 
 Žádná z klasických platforem na sdílení výukových materiálů a hodnocení mi plně nevyhovovala, což mě vedlo k tomu, abych si v rámci své bakalářské práce vytvořil vlastní portál~\cite{cajthaml_bp}.
-Tento portál umožňuje nejen sdílení materiálů, ale také zajišťuje automatickou interaktivitu, například tím, že studenti si mohou během hodiny zapisovat poznámky přímo do systému.
+Tento portál umožňuje nejen sdílení materiálů, ale také zajišťuje automatickou interaktivitu, například tím, že si studenti mohou během hodiny zapisovat poznámky přímo do systému k danému materiálu.
 Taktéž poskytuje další mnoho věcí, jako flexibilní hodnocení či motivační a gamifikační prvky.
 
 V minulosti jsem používal v podstatě všechny nástroje zmíněné dříve i později, ať už pro tvorbu materiálů, jejich sdílení nebo interaktivní výuku.
@@ -42,13 +42,14 @@ Skripta vytvářím buď přímo ve svém systému, nebo za pomoci LaTeXu, a pro
 
 Rozdělení různých typů materiálů do více platforem mi však nevyhovuje, protože jejich správa je zbytečně složitá a časově náročná.
 Právě tato zkušenost vedla k záměru této diplomové práce, jejímž cílem je vytvořit jednotnou platformu, která spojí různé typy materiálů a umožní jejich snadné rozšíření a úpravy.
+To by mi (a doufám i dalším učitelům) pomohlo tvořit kvalitní, ale i interaktivní a hezké materiály pro různé účely.
 
-Ze zpětných vazeb studentů, které pravidelně sbírám na konci školního roku, často zaznívá, že interaktivita materiálů je nedostatečná a že jejich používání je kvůli tomu složité a neintuitivní.
+Ze zpětných vazeb studentů, které pravidelně sbírám na konci pololetí a školního roku, často zaznívá, že interaktivita materiálů je nedostatečná a že jejich používání je kvůli tomu složité a neintuitivní.
 Tato zpětná vazba dále zdůrazňuje potřebu vytvořit systém, který by byl přehledný, interaktivní a přizpůsobitelný jak pro učitele, tak pro studenty.
 
-\subsection{Dotazník}
+% \subsection{Dotazník}
 
-Prozatím si nejsem jistý, zda je to dobrý nápad.\todo{Provést?}
+% Prozatím si nejsem jistý, zda je to dobrý nápad.\todo{Provést?}
 
 \section{Aplikace na tvorbu prezentací}
 
@@ -111,10 +112,10 @@ Celkově si lidi chválí i možnost modularity těchto snímků a že je velmi 
 \subsection{Beamer v \LaTeX}
 
 Beamer je třída v sázecím systému \LaTeX, která se zaměřuje na vytváření snímkových prezentací.
-Nejvíce je Beamer společně s \LaTeX~populární v akademickém prostředí zejména z důvodu jednoduchého sázení matematických formulí a zápisu pomocí kódového jazyka, který leccos dovoluje. 
+Nejvíce je Beamer společně s \LaTeX~populární v akademickém prostředí, zejména z důvodu jednoduchého sázení matematických formulí a zápisu pomocí kódového jazyka, který leccos dovoluje. 
 
 Zápis je ale zároveň to nejvíce nenáviděné na \LaTeX~\cite{latex_reddit}, a to zejména z důvodu kryptických kódových chyb a různých zastaralých zápisů.
-Vygenerované prezentace jsou taktéž statické a nedá se v nich dělat jakákoliv interaktivity. 
+Vygenerované prezentace jsou taktéž statické a nedá se v nich dělat jakákoliv interaktivita. 
 Výhodou takovéto kódové generace je, že často z jednoho zdrojového kódu -- pro prezentaci -- se dají tvořit taktéž skripta a to tím, že přidáváme takové bloky kódu, které vykreslí právě v jednom nebo v obou módech.
 
 \section{Aplikace na grafickou tvorbu}
@@ -144,7 +145,7 @@ Přesto Figma představuje výkonný a flexibilní nástroj, který může pedag
 \section{Aplikace na tvorbu materiálů}\todo{Celkově k tomuhle dopsat spoustu věcí}
 
 Tato sekce představuje nástroje, jež umožňují připravovat a distribuovat výukové materiály v podobě interaktivních prezentací, kvízů, vizuálních map či jiných vzdělávacích formátů.
-Tyto nástroje tedy cílí na velmi podobné cíle, které má i moje budoucí aplikace.
+Tyto nástroje tedy cílí na velmi podobné cíle, které má i tato aplikace, která má vzniknout z této práce.
 Hlavním cílem těchto aplikací je zefektivnit a zpestřit proces učení, zvýšit zapojení studentů a nabídnout pedagogům možnosti, jak obohatit svou výuku o moderní a atraktivní formy obsahu.
 
 \subsection{Genially}
@@ -210,7 +211,7 @@ Hlavní předností Prezi je vizuální atraktivita, flexibilita v organizaci ob
 Nicméně Prezi nenabízí výrazně interaktivní prvky pro zapojení studentů, nepodporuje komunitně tvořená rozšíření a soustředí se především na vizuální aspekt prezentací, nikoliv na interakci či možnost programových úprav.
 
 Prezi jsem se snažil použít, jejich editor je však velmi zvláštní a odbočuje od známých standardů \texttt{UI} a \texttt{UX}.
-Prezi je taktéž placená aplikace a omezuje použití jakýchkoliv pokročilých bloků za placenou verzí a tedy použití je prakticky bez toho nemožné.
+Prezi je taktéž placená aplikace a omezuje použití jakýchkoliv pokročilých bloků za placenou verzí, a tedy použití je prakticky bez toho nemožné.
 
 NÁZOR OSTATNÍCH\todo{najít}
 
@@ -331,8 +332,21 @@ Jejím cílem je ale být grafický nástroj a přesnost všeho je pro jejich u�
 
 \subsection{SVG}
 
+Scalable Vector Graphics (SVG) slouží a dovolují definovat vektorové prvky, které se mohou jednoduše vykreslovat na webové stránce.
+To dovoluje jednoduše používat daný vytvořený \enquote{obrázek} v jakémkoliv rozlišení.
+Moderní SVG dovolují dovnitř jako prvek vkládat i rastrové obrázky a další cizí objekty, které se poté poměrně jednoduše vykreslují.
 
-Toto vykreslování používá ze zmíněných služeb například Google služby, resp. Google Slides (viz kapitola \label{text:figma_popis}).
+Veškeré prvky by se tedy pro vykreslování obsahu mohly definovat v jednom velkém SVG (kde by každá stránka či slide bylo jedno SVG), které by v sobě mělo jednotlivé prvky.
+
+Mezi nevýhody tohoto systému je zejména problém s vykreslováním, protože rasterizace vektorového obrazu je drahá operace, a to zejména ve webovém prostředí.
+Další omezení je i v tom, co s danými prvky poté jde dělat, protože tento způsob limituje to, co můžeme na dané prvky nastavit jako odchytávače události a respektive vůbec jaké události můžeme vkládat.
+Hodně to ubírá na možné interaktivitě.
+Dále se uvádějí\todo{zdroj} nevýhody mezi kompatibilitou mezi prohlížeči.
+
+Mezi výhody patří velké možnosti filtrů a definic, jednoduchý možný export a jednoduché transformace.
+Tyto věci však umí i jiné varianty a nic navíc tento způsob nepřináší.
+
+Toto vykreslování používá ze zmíněných služeb například Google služby, resp. Google Slides (viz kapitola \ref{text:figma_popis}).
 
 \section{Komunitní rozšíření}\label{text:community_plugins}
 
@@ -522,6 +536,44 @@ Pro spojení WebAssembly a JS zajišťuje např. knihovna QuickJS\todo{citace}, 
 Tyto knihovny zabalují nějakou formu běhového prostředí (nejčastější je emscripten\todo{citace, citace}, který například používá systém rozšíření ve Figma\todo{zdroj}) přes kterou poté kód spouští.
 Tyto knihovny avšak nepotřebují řešit jen spouštění, ale je nutné taktéž řešit již zmíněné předávání (resp. konverze) dat mezi spuštěným programem, spouštěčem a programem v prohlížeči.
 
-\section{Uživatelé aplikace}
 
 \section{Požadavky}
+a
+
+\section{Uživatelské případy}
+
+Tato kapitola slouží k definici typů uživatelů aplikace a toho, jak aplikaci budou používat.
+Uživatelské případy rozvinují funkční požadavky tak, aby bylo zcela jasné, co cílená aplikace má umět a implementovat za funkcionality.
+
+Uživatelé -- aktéři této aplikace se dají rozdělit do následujících popisných skupin:
+
+\begin{description}
+    \item[Nepřihlášený uživatel] tedy někdo, kdo je na webové stránce, nemá k dispozici materiál k používání. Může se například přihlásit.
+    \item[Přihlášený uživatel] tedy někdo, kdo je přihlášen v aplikaci a chce v aplikaci používat -- například používat či tvořit materiály.
+    \item[Tvůrce] tedy někdo, kdo vytváří materiály. Může se jednat o učitele ale i obyčejného uživatele. Jeho cílem je v aplikaci vytvořit prezentaci, plakát či cokoliv jiného. V aplikaci musí být přihlášen.
+    \item[Čtenář] tedy někdo, kdo přišel do této webové aplikace číst, resp. používat materiály, které vytvořil někdo jiný. Může být přihlášen i nepřihlášen.
+\end{description}
+
+Níže jsou definovány všechny uživatelské případy, které mají být implementovány ve výsledné aplikaci z této práce.
+
+\begin{description}
+    \item[UC1 -- Registrace]
+    \item[UC2 -- Přihlášení]
+    \item[UC3 -- Prohlížet materiál] 
+    \item[UC4 -- Vytvořit materiál]
+    \item[UC5 -- Upravit materiál] ccc
+        \begin{description}
+            \item[UC5.1 -- xd] 
+        \end{description}
+    \item[UC6 -- Sdílet materiál]
+    \item[UC7 -- Seznam materiálů] 
+    \item[UC8 -- Změna nastavení]
+    
+    
+    \item[UCXXX -- Šablony]
+    \item[UCXXX -- Importování]
+    \item[UCXXX -- Exportování]
+    \item[UCXXX -- Změna jazyku]
+\end{description}
+
+\section{Doménový model}
