@@ -62,10 +62,14 @@ export class EditorHistory {
             return;
         }
 
-        const state = this.forwardStack.pop();
+        let state = this.forwardStack.pop()!;
 
-        if (!state) {
-            return;
+        if(this.backwardStack.length === 0) {
+            state = this.forwardStack.pop()!;
+
+            if(!state) {
+                return;
+            }
         }
 
         this.backwardStack.push(state);
