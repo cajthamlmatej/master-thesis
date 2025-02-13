@@ -15,11 +15,17 @@ import App from './App.vue'
 import router from './router'
 import FloatingVue from 'floating-vue'
 import {setupTranslations} from "@/translation/VueTranslations";
+import mermaid from "mermaid";
 
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router);
+
+mermaid.initialize({
+    startOnLoad: false,
+    securityLevel: 'sandbox'
+})
 
 setupTranslations(app);
 

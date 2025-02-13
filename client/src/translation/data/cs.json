@@ -410,6 +410,9 @@
                     "label": "Formátování"
                 }
             }
+        },
+        "mermaid": {
+            "failed": "Načtení diagramu se nezdařilo."
         }
     },
     "property": {

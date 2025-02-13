@@ -406,6 +406,9 @@
                     "label": "Formatting"
                 }
             }
+        },
+        "mermaid": {
+            "failed": "Failed to load Mermaid diagram."
         }
     },
     "property": {

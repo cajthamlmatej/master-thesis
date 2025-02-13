@@ -5,12 +5,15 @@ import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import mermaid from "mermaid";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 import {generateUUID} from "@/utils/Generators";
+import {$t} from "@/translation/Translation";
 
 export class MermaidEditorBlock extends EditorBlock {
     @BlockSerialize("content")
     private content: string = "";
+
     private editable: boolean = true;
     private removed = false;
+    private failedToLoad = false;
 
     constructor(base: BlockConstructorWithoutType, content: string) {
         super({
@@ -32,6 +35,20 @@ export class MermaidEditorBlock extends EditorBlock {
         element.appendChild(content);
 
         return element;
+    }
+
+
+    override synchronize() {
+        super.synchronize();
+
+        if (this.failedToLoad) {
+            this.element.classList.add("block--type-mermaid--failed");
+            this.element.style.setProperty("--text", "'" + $t("blocks.mermaid.failed") + "'");
+            return;
+        } else {
+            this.element.classList.remove("block--type-mermaid--failed");
+            this.element.style.removeProperty("--text");
+        }
     }
 
     override editorSupport() {
@@ -97,49 +114,59 @@ export class MermaidEditorBlock extends EditorBlock {
         const content = (this.element.querySelector(".block-content")! as HTMLElement);
 
         if (!value) {
-            this.element.classList.remove("block--type-mermaid--editable");
-            content.setAttribute("contenteditable", "false");
-            content.removeAttribute("data-processed");
+            try {
 
-            content.innerHTML = "";
-            const iframe = document.createElement("iframe");
+                this.element.classList.remove("block--type-mermaid--editable");
+                content.setAttribute("contenteditable", "false");
+                content.removeAttribute("data-processed");
 
-            content.appendChild(iframe);
+                content.innerHTML = "";
+                const iframe = document.createElement("iframe");
 
-            const css = document.createElement("style");
-            css.innerHTML = `
-            body {
-                margin: 0;
-                padding: 0;
-                height: 100%;
-                width: 100%;
+                content.appendChild(iframe);
+
+                const css = document.createElement("style");
+                css.innerHTML = `
+                body {
+                    margin: 0;
+                    padding: 0;
+                    height: 100%;
+                    width: 100%;
+                }
+                svg {
+                    height: 100%;
+                    width: 100%;
+                    flex-grow: 1;
+                    object-fit: contain;
+                    max-width: 100% !important;
+                    overflow: hidden;
+                }`;
+
+                iframe.contentDocument!.head.appendChild(css);
+
+                const {svg} = await mermaid.render('graphDiv', this.content);
+
+                iframe.contentDocument!.body.innerHTML = svg;
+
+                iframe.setAttribute("data-id", generateUUID());
+
+                iframe.contentDocument!.close();
+
+                content.removeAttribute("data-processed");
+            } catch (e) {
+                console.error(e);
+                this.failedToLoad = true;
+                // note(Matej): temporary fix because mermaid doesnt not remove the svg when it fails to render
+                document.body.querySelector(`#igraphDiv`)?.remove();
             }
-            svg {
-                height: 100%;
-                width: 100%;
-                flex-grow: 1;
-                object-fit: contain;
-                max-width: 100% !important;
-                overflow: hidden;
-            }`;
-
-            iframe.contentDocument!.head.appendChild(css);
-
-            const {svg} = await mermaid.render('graphDiv', this.content);
-
-            iframe.contentDocument!.body.innerHTML = svg;
-
-            iframe.setAttribute("data-id", generateUUID());
-
-            iframe.contentDocument!.close();
-
-            content.removeAttribute("data-processed");
         } else {
             this.element.classList.add("block--type-mermaid--editable");
             content.setAttribute("contenteditable", "true");
             content.removeAttribute("data-processed");
             content.innerText = this.content;
+            this.failedToLoad = false;
         }
+        this.synchronize();
     }
 
     @BlockEventListener(BlockEvent.MOUNTED)
