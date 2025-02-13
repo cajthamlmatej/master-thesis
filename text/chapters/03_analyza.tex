@@ -696,11 +696,18 @@ Uživatelé -- aktéři této aplikace se dají rozdělit do následujících po
 \begin{description}
     \item[Nepřihlášený uživatel] Tedy někdo, kdo je na webové stránce, nemá k dispozici materiál k používání. Může se například přihlásit.
     \item[Přihlášený uživatel] Tedy někdo, kdo je přihlášen v aplikaci a chce v aplikaci používat -- například používat či tvořit materiály.
-    \item[Tvůrce] Tedy někdo, kdo vytváří materiály. Může se jednat o učitele ale i obyčejného uživatele. Jeho cílem je v aplikaci vytvořit prezentaci, plakát či cokoliv jiného. V aplikaci musí být přihlášen.
+    \item[Tvůrce] Tedy někdo, kdo vytváří materiály a je přihlášen. Může se jednat o učitele ale i obyčejného uživatele. Jeho cílem je v aplikaci vytvořit prezentaci, plakát či cokoliv jiného. V aplikaci musí být přihlášen.
     \item[Čtenář] Tedy někdo, kdo přišel do této webové aplikace číst, resp. používat materiály, které vytvořil někdo jiný. Může být přihlášen i nepřihlášen.
 \end{description}
 
-Níže jsou definovány všechny uživatelské případy, které mají být implementovány ve výsledné aplikaci z této práce.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=1\textwidth]{media/03_analyza/uzivatelske_pripady.pdf}
+    \caption{Diagram uživatelských případů}\label{fig:uzivatelskePripady}
+\end{figure}
+
+Níže jsou definovány všechny uživatelské případy, které mají být implementovány ve výsledné aplikaci z této práce. Vztahy a propojení s jednotlivými aktéry jsou k dispozici na obrázku~\ref{fig:uzivatelskePripady}.
 
 \begin{description}
     \item[UC1 -- Registrace]
@@ -816,7 +823,7 @@ Pro lepší porozumění vztahům mezi jednotlivými prvky v aplikaci je nutné 
     Reprezentuje uživatelská nastavení editoru. Obsahuje možnosti ukládání, frekvenci ukládání, velikost historie a specifické funkce editoru. Vytváří se při vytvoření uživatele v aplikaci.
 
     \item[Soubor] 
-    Entita popisující soubory nahrané do systému. Obsahuje název, MIME typ, velikost, typ úložiště a umístění souboru. Mohou se používat v konkrétních blocích materiálů.
+    Entita popisující soubory nahrané do systému. Obsahuje mimo jiné název, MIME typ, velikost, typ úložiště a umístění souboru. Mohou se používat v konkrétních blocích materiálů.
     
     \item[Materiál] 
     Reprezentuje obsah vytvářený uživatelem. Obsahuje název, datum vytvoření a datum poslední úpravy. Obsahuje jednotlivé snímky.

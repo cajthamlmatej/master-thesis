@@ -58,10 +58,10 @@ V realizované aplikaci budou vrstvy pak dále děleny a bude vytvořena další
 Níže jsou naplánované veškeré vrstvy pro klientskou část.
 
 \begin{description}
-    \item[Komponenty] které zajišťuji unifikované chování pro často opakující se prvky na stránce tak, aby jejich tvorba byla co nejrychlejší a dovolovala přehlednější kód. Komunikují se stránkami pomocí dvoucestných vazeb či událostí.
-    \item[Stránky] které seskupují komponenty a vlastní funkcionality do jednotlivých stránek aplikace. Předávají komponentám data a určují jim, jak se mají chovat či zobrazovat.
-    \item[Perzistence] často nazývané ve webovém inženýrství jako obchody (stores), které globálně ukládají data pro celou aplikace, aby bylo jedno místo (či místa), kde je lze najít. Slouží k tomu, aby se o data nežádalo více, než je nutné (caching). Mohou dovolovat ukládat data zcela perzistentně i mezi načtením stránky pro rychlejší prvotní načtení. Komunikují se serverem pomocí další vrstvy.
-    \item[Komunikace] se serverem pomocí Restful API serveru. Určují a kontrolují jaká data od serveru přijdou, určují lokální rozhraní pro CRUD operace s danými zdroji a mapují je na lokální objekty.
+    \item[Komponenty] Které zajišťuji unifikované chování pro často opakující se prvky na stránce tak, aby jejich tvorba byla co nejrychlejší a dovolovala přehlednější kód. Komunikují se stránkami pomocí dvoucestných vazeb či událostí.
+    \item[Stránky] Které seskupují komponenty a vlastní funkcionality do jednotlivých stránek aplikace. Předávají komponentám data a určují jim, jak se mají chovat či zobrazovat.
+    \item[Perzistence] Které jsou často nazývané ve webovém inženýrství jako obchody (stores), které globálně ukládají data pro celou aplikace, aby bylo jedno místo (či místa), kde je lze najít. Slouží k tomu, aby se o data nežádalo více, než je nutné (caching). Mohou dovolovat ukládat data zcela perzistentně i mezi načtením stránky pro rychlejší prvotní načtení. Komunikují se serverem pomocí další vrstvy.
+    \item[Komunikace] Což zajišťuje komunikaci se serverem pomocí Restful API serveru. Určují a kontrolují jaká data od serveru přijdou, určují lokální rozhraní pro CRUD operace s danými zdroji a mapují je na lokální objekty.
 \end{description}
 
 \subsubsection{Editor a přehrávač}
@@ -169,6 +169,7 @@ Prisma má avšak velké problémy s MongoDB a často je nutné velmi složitě\
 Definice entit a jejich závislostí je taktéž velmi omezená.
 Proto jsem se rozhodl použít s MongoDB právě knihovnu ODM mongoose.
 
+\subsection{Databázové schéma}
 
 \section{Obsah}\label{text:navrh/obsah}
 
@@ -178,3 +179,6 @@ Proto jsem se rozhodl použít s MongoDB právě knihovnu ODM mongoose.
 
 \subsection{Komponenty}
 
+\subsection{Návrhové obrazovky}
+
+\section{Návrh API}
