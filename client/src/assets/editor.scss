@@ -118,7 +118,7 @@
 
                 &--failed {
                     overflow: hidden;
-                    position: relative;
+                    position: absolute;
                     background-color: rgba(255, 30, 40, 0.3);
 
                     &::after {
