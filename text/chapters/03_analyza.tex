@@ -1,19 +1,21 @@
 \chapter{Analýza}
 
 \begin{chapterabstract}
-Tato kapitola analyzuje nástroje a frameworky pro tvorbu a správu výukových materiálů, včetně jejich předností, nedostatků a podpory interaktivity. Zaměřuje se na tradiční i moderní nástroje, otázky komunitního rozšíření a bezpečnosti. V závěru jsou definovány klíčové požadavky na uživatele aplikace a funkčnosti, které je třeba řešit při návrhu platformy.
+Tato kapitola analyzuje nástroje a frameworky pro tvorbu a správu výukových materiálů, včetně jejich předností, nedostatků a podpory interaktivity. 
+Zaměřuje se na tradiční i moderní nástroje a otázky vykreslování obsahu, komunitního rozšíření a bezpečnosti. 
+V závěru jsou definovány klíčové požadavky na uživatele aplikace a funkčnosti, které je třeba řešit při návrhu platformy.
 \end{chapterabstract}
 
 
 \section{Správa a tvorba materiálů pro výuku}
 
-
 Do vzdělávacího procesu mimo klasické metody patří tvorba a distribuce výukových materiálů.
 Mezi výukové materiály lze zahrnout například prezentace, skripta, plakáty, interaktivní hry, doplňovačky, testy, simulační modely nebo audiovizuální obsah.
 V posledních letech, díky rozvoji digitálních technologií, je stále důležitější sdílet materiály online, aby studenti mohli pracovat samostatně nebo v týmech a měli k materiálům přístup kdykoliv.
 
-Online sdílení materiálů umožňuje rychlou aktualizaci obsahu, což je zvláště důležité v případech, kdy se výukový obsah mění nebo vyvíjí v reakci na aktuální potřeby studentů nebo průběh výuky.
+Online sdílení materiálů umožňuje rychlou aktualizaci obsahu, což je zvlášt důležité v případech, kdy se výukový obsah mění nebo vyvíjí v reakci na aktuální potřeby studentů nebo průběh výuky.
 Navíc umožňuje učitelům flexibilně přizpůsobovat obsah individuálním potřebám jednotlivých studentů nebo skupin.
+Studenti se poté cítí, že mohou studovat či si připomenout látku kdekoliv.
 
 Dalším přínosem je možnost zpětné vazby v reálném čase, kdy studenti mohou přímo komentovat, odpovídat a reagovat na obsah materiálu.
 
@@ -24,25 +26,28 @@ Každá z těchto platforem má své specifické funkce -- například Microsoft
 V některých případech však tyto nástroje mohou být omezené, například z hlediska podpory různorodých formátů materiálů nebo absence pokročilých funkcí pro práci s interaktivními prvky.
 
 I když se tato práce primárně nezabývá distribucí materiálů, je nezbytné, aby navrhovaná aplikace umožňovala sdílení obsahu pomocí odkazů.
+Potom aplikace může sloužit jako další místo, na které budou z jiných aplikací učitelé ukazovat.
 
 Nástroje pro tvorbu výukových materiálů zahrnují Google Slides, PowerPoint, Microsoft Word, \LaTeX, Canva a mnoho dalších, což podrobněji rozebírám v následujících kapitolách.
 Učitelé často využívají širokou škálu nástrojů, protože žádný z existujících nástrojů není zcela dokonalý a není jednoduché vytvořit univerzální řešení.
-To způsobuje značnou míru zmatení u studentů a ztěžuje práci učitelům.
+Problém bývá, že různé typy materiálů jsou v spoustě různých formátů, kde některé nepodporují interaktivní vzdělávání.
+To způsobuje nejen značnou míru zmatení u studentů, ale i ztěžuje práci učitelům s různými platformami.
 
 \subsection{Vlastní zkušenosti}
 
-Žádná z klasických platforem na sdílení výukových materiálů a hodnocení mi plně nevyhovovala, což mě vedlo k tomu, abych si v rámci své bakalářské práce vytvořil vlastní portál~\cite{cajthaml_bp}.
+Žádná z klasických platforem na sdílení výukových materiálů a hodnocení mi plně nevyhovovala~\cite{cajthaml_bp}, což mě vedlo k tomu, abych si v rámci své bakalářské práce vytvořil vlastní portál.
 Tento portál umožňuje nejen sdílení materiálů, ale také zajišťuje automatickou interaktivitu, například tím, že si studenti mohou během hodiny zapisovat poznámky přímo do systému k danému materiálu.
 Taktéž poskytuje další mnoho věcí, jako flexibilní hodnocení či motivační a gamifikační prvky.
 
 V minulosti jsem používal v podstatě všechny nástroje zmíněné dříve i později, ať už pro tvorbu materiálů, jejich sdílení nebo interaktivní výuku.
 
-Pro prezentace nyní často využívám RevealJS, který však má jistá omezení, jak podrobněji rozebírám v následujících kapitolách.
+Pro prezentace nyní často využívám RevealJS, který však má jistá omezení, jak podrobněji rozebírám v kapitole~\ref{text:revealjs}.
 Skripta vytvářím buď přímo ve svém systému, nebo za pomoci LaTeXu, a pro tvorbu herních a interaktivních aktivit používám nástroje jako Blooket, JeopardyLabs a mnoho dalších služeb.
 
 Rozdělení různých typů materiálů do více platforem mi však nevyhovuje, protože jejich správa je zbytečně složitá a časově náročná.
 Právě tato zkušenost vedla k záměru této diplomové práce, jejímž cílem je vytvořit jednotnou platformu, která spojí různé typy materiálů a umožní jejich snadné rozšíření a úpravy.
 To by mi (a doufám i dalším učitelům) pomohlo tvořit kvalitní, ale i interaktivní a hezké materiály pro různé účely.
+Podobné názory mají i moje kolegyně a kolegové na Smíchovské průmyslové škole a Gymnáziu, kde cíl školy je vytvořit co nejvíce individuální vzdělávání každého studenta.
 
 Ze zpětných vazeb studentů, které pravidelně sbírám na konci pololetí a školního roku, často zaznívá, že interaktivita materiálů je nedostatečná a že jejich používání je kvůli tomu složité a neintuitivní.
 Tato zpětná vazba dále zdůrazňuje potřebu vytvořit systém, který by byl přehledný, interaktivní a přizpůsobitelný jak pro učitele, tak pro studenty.
@@ -79,7 +84,7 @@ Ve výchozím stavu je služba zdarma, avšak pokročilé funkce a správa dat j
 
 Výhodou je automatické ukládání na cloud, takže není nutné se obávat ztráty dat~\cite{slides}, a navíc je vše dostupné na více zařízeních, což usnadňuje vzdálený přístup k prezentacím. 
 Na druhou stranu je nezbytné mít stabilní připojení k internetu a být obezřetný vůči ukládání citlivých údajů do cloudu, protože Google Slides shromažďuje metadata o aktivitě uživatelů (například informace o tom, kdo a kdy dokument editoval)~\cite{google_terms}, což může s ohledem na soukromí a bezpečnost některým institucím či uživatelům vadit. 
-Dále je možné, že prezentace vytvořené v Google Slides nebudou stoprocentně kompatibilní s PowerPointem a jinými nástroji zejména ve svojí interaktivitě a pluginy, což může způsobit problémy při přenosu mezi různými platformami. 
+Dále je možné, že prezentace vytvořené v Google Slides nebudou stoprocentně kompatibilní s PowerPointem a jinými nástroji zejména ve své interaktivitě a pluginy, což může způsobit problémy při přenosu mezi různými platformami. 
 Nevýhodou jsou také omezenější pokročilé funkce, animace či grafické úpravy oproti PowerPointu nebo jiným specializovaným nástrojům. 
 
 Google Slides nicméně celkově nabízí snadno použitelný a přístupný nástroj pro spolupráci a rychlou tvorbu prezentací, který uživatelům postačí pro většinu běžných scénářů, obzvláště tam, kde je důraz na flexibilitu, týmovou práci a okamžitý vzdálený přístup k materiálům.
@@ -99,7 +104,7 @@ Osobně jsem RevealJS knihovnu již řadu let používal pro tvorbu prezentací 
 Na obrázku \ref{fig:analyza:revealjs-ukazka} je vidět příklad takové prezentace, kde je vlevo kód a vpravo výsledek zobrazený v prohlížeči, což podporuje lepší pochopení učiva a aktivní zapojení studentů. 
 
 Zajímavou funkcí jsou i tzv. vertikální snímky, které umožňují nelineární strukturování prezentace, kdy se lze pohybovat nejen horizontálně, ale i vertikálně v rámci logických celků prezentace.
-Celkově si lidi chválí i možnost modularity těchto snímků a že je velmi jednoduché spojovat jednotlivé atomické skupiny do větších celků.
+Celkově si uživatelé chválí i možnost modularity těchto snímků a že je velmi jednoduché spojovat jednotlivé atomické skupiny do větších celků.
 
 
 \begin{figure}[h!]
@@ -116,7 +121,12 @@ Nejvíce je Beamer společně s \LaTeX~populární v akademickém prostředí, z
 
 Zápis je ale zároveň to nejvíce nenáviděné na \LaTeX~\cite{latex_reddit}, a to zejména z důvodu kryptických kódových chyb a různých zastaralých zápisů.
 Vygenerované prezentace jsou taktéž statické a nedá se v nich dělat jakákoliv interaktivita. 
-Výhodou takovéto kódové generace je, že často z jednoho zdrojového kódu -- pro prezentaci -- se dají tvořit taktéž skripta a to tím, že přidáváme takové bloky kódu, které vykreslí právě v jednom nebo v obou módech.
+Za částečnou interaktivitu jde počítat možnost generovat fragmenty snímků tak, že na dalším se zobrazí pouze následující část textu.
+Ve výsledku se pro každý fragment do výsledného PDF vygeneruje další snímek.
+
+Výhodou takovéto kódové generace je, že často z jednoho zdrojového kódu -- pro prezentaci -- se dají tvořit taktéž skripta, a to tím, že přidáváme takové bloky kódu, které vykreslí právě v jednom nebo v obou módech.
+Dalším je řada knihoven, které již existují mnoho let, které dovolují komplikované vizualizace a vykreslování.
+Jedna z nich je například knihovna TikZ. 
 
 \section{Aplikace na grafickou tvorbu}
 
@@ -124,25 +134,40 @@ Tato sekce se zaměřuje na nástroje, které umožňují snadno a rychle vytvá
 
 \subsection{Canva}\label{text:canva}
 
-Canva je webová platforma pro rychlou a snadnou tvorbu grafických materiálů, jako jsou plakáty, letáky, sociální příspěvky či prezentace, s bohatou nabídkou šablon, fontů a grafických prvků\todo{Zdroj}. 
-Hlavní výhody Canvy spočívají v intuitivním uživatelském rozhraní\todo{Zdroj}, obrovské knihovně předpřipravených šablon a prvků, možnosti drag-and-drop úprav a snadné integraci multimédií.
+Canva je webová platforma pro rychlou a snadnou tvorbu grafických materiálů, jako jsou plakáty, letáky, sociální příspěvky či prezentace, s bohatou nabídkou šablon, fontů a grafických prvků~\cite{canva_website}. 
+Hlavní výhody Canvy spočívají v intuitivním uživatelském rozhraní~\cite{canva_recenze} (které je možná až příliš jednoduché), obrovské knihovně předpřipravených šablon a prvků, možnosti \enquote{drag-and-drop} úprav a snadné integraci multimédií.
 
-Díky cloudovému prostředí umožňuje Canva týmovou spolupráci\todo{Zdroj}, sdílení souborů v reálném čase a přístup k materiálům odkudkoli, přičemž většina základních funkcí je dostupná zdarma. 
+Díky cloudovému prostředí umožňuje Canva týmovou spolupráci~\cite{canva_live_help, canva_live_features}, sdílení souborů v reálném čase a přístup k materiálům odkudkoli, přičemž většina základních funkcí je dostupná zdarma. 
 
 Nevýhodou může být omezenější možnost zcela individuálního designu u některých šablon, menší preciznost u specifických grafických úprav a u pokročilých funkcí potřeba placené verze Canva Pro. 
 Přesto je Canva velmi oblíbená pro rychlou tvorbu vizuálně atraktivních materiálů i mezi pedagogy, kteří nepotřebují pokročilé znalosti grafických programů a chtějí rychle připravit poutavé grafické materiály či prezentace.
-Čeští pedagogové mají program Canva k dispozici zdarma po ověření\todo{Zdroj}. Tento nástroj je mezi pedagogy velmi oceňován zejména právě pro jeho jednoduchost\todo{Zdroj}.
+Čeští pedagogové mají program Canva k dispozici zdarma po ověření~\cite{canva_education}. Tento nástroj je mezi pedagogy velmi oceňován zejména právě pro jeho jednoduchost~\cite{canva_facebook}.
+
+Canva má taktéž za svůj cíl vybudovat zodpovědnou firmu, a proto se zaměřují i na školení svých uživatelů, jak tvořit kvalitní grafické materiály.
+Tyto materiály, respektive kurzy, jsou zcela zdarma a tématy se zaměřují od logotypů, plakátů až ke tvoření kvalitních studijních materiálů pro specifické předměty.
+
 
 \subsection{Figma}\label{text:figma_popis}
 
-Figma je profesionální online nástroj pro design a prototypování uživatelských rozhraní, který se v posledních letech stal standardem v oblasti webového a aplikačního designu\todo{Zdroj}. 
-Nabízí vektorový grafický editor, možnost vytvářet interaktivní prototypy a sdílet je v reálném čase s kolegy, což výrazně usnadňuje spolupráci v týmech\todo{Zdroj}. 
+Figma je profesionální online nástroj pro design a prototypování uživatelských rozhraní, který se v posledních letech stal standardem v oblasti webového a aplikačního designu~\cite{figma_website}. 
+Nabízí vektorový grafický editor, možnost vytvářet interaktivní prototypy a sdílet je v reálném čase s kolegy, což výrazně usnadňuje spolupráci v týmech~\cite{figma_website}. 
 Velkou předností Figmy je její cloudové prostředí, ve kterém se změny ukládají automaticky, a každý člen týmu vidí okamžité aktualizace, což zjednodušuje proces zpětné vazby a revizí. 
 
 Nevýhodou může být vyšší křivka učení pro uživatele neznalé profesionálních grafických nástrojů a nutnost stabilního připojení k internetu, aby bylo možné plně využít funkce Figmy. 
 Přesto Figma představuje výkonný a flexibilní nástroj, který může pedagogům a školám pomoci při tvorbě interaktivních rozhraní pro studijní materiály, e-learningové platformy či jiné digitální vzdělávací projekty.
+Podobným problémem je omezený neplacený režim, který hodně omezuje počet a velikost projektů a to včetně počtu současných editorů dokumentu.
 
-\section{Aplikace na tvorbu materiálů}\todo{Celkově k tomuhle dopsat spoustu věcí}
+Inspirativní částí Figmy jsou velmi pokročilé možnosti editoru, jako je například interaktivní prototypování.
+To zahrnuje například možnosti přepínání komponent či jednotlivých rámců.
+Velké pozitivum je i velké komunitní zapojení do prosperity aplikace pomocí tvorby komunitních rozšíření a šablon.
+
+Figma se zaměřuje i na tvoření poznámek či pláten~\cite{figma_figjam} ve své dceřiné aplikaci FigJam.
+Tento nástroj je postaven na stejném editoru, jako používá hlavní aplikace.
+Podobně Figma dovoluje pomocí různých šablon tvoření i prezentací.
+Tyto prezentace však postrádají řadu nepostradatelných funkcionalit, jako jsou například animační schopnosti a optimalizace na procházení snímky.
+
+\section{Aplikace na tvorbu materiálů}
+% \todo{Celkově k tomuhle dopsat spoustu věcí}
 
 Tato sekce představuje nástroje, jež umožňují připravovat a distribuovat výukové materiály v podobě interaktivních prezentací, kvízů, vizuálních map či jiných vzdělávacích formátů.
 Tyto nástroje tedy cílí na velmi podobné cíle, které má i tato aplikace, která má vzniknout z této práce.
@@ -153,14 +178,14 @@ Hlavním cílem těchto aplikací je zefektivnit a zpestřit proces učení, zv�
 Genially je online platforma pro tvorbu interaktivních materiálů, prezentací, infografik a dalších multimediálních podkladů, které mohou publikum aktivně zapojit do obsahu.
 Platforma je navržena s důrazem na jednoduchost použití, aby byla dostupná jak profesionálům, tak i laikům.
 
-Jednou z klíčových vlastností Genially je možnost rychlého přidávání interaktivních prvků\todo{Zdroj}, jako jsou kvízy, hypertextové odkazy, animace a různorodý multimediální obsah. 
+Jednou z klíčových vlastností Genially je možnost rychlého přidávání interaktivních prvků~\cite{genially}, jako jsou kvízy, hypertextové odkazy, animace a různorodý multimediální obsah. 
 Tyto funkce nejen zvyšují zapojení studentů, ale také podněcují jejich motivaci k učení skrze aktivní interakci s obsahem. 
-Tím se platforma stává nejen nástrojem pro prezentaci informací, ale také prostředkem pro výuku založenou na principu konstruktivistické pedagogiky\todo{Zdroj}. 
+Tím se platforma stává nejen nástrojem pro prezentaci informací, ale také prostředkem pro výuku založenou na principu konstruktivistické pedagogiky~\cite{konstruktivismus}. 
 % Konkrétní příklady interaktivních prvků zahrnují již zmíněné odkazy, kliknutí, řazení, kvízy, interaktivní aplikace uvnitř a mnoho dalšího.
 
 Velkou předností Genially je jeho intuitivní rozhraní a široká škála připravených šablon.
 Tyto šablony jsou navrženy s ohledem na vizuální atraktivitu a dynamiku, což umožňuje rychlou tvorbu obsahu bez nutnosti pokročilých grafických znalostí.
-Platforma tak poskytuje tvůrcům nástroje, které by jinak vyžadovaly komplexní software a odborné znalosti.
+Platforma tak poskytuje tvůrcům nástroje, které by jinak vyžadovaly~\cite{genially} komplexní software a odborné znalosti.
 
 Genially je však placená služba, což může představovat značnou překážku pro vzdělávací instituce a jednotlivce s omezenými finančními zdroji. 
 Bezplatná verze nabízí pouze omezenou funkcionalitu a materiály vytvořené v rámci této verze obsahují vodoznak.
@@ -168,54 +193,62 @@ Dále je export obsahu možný pouze u placených tarifů, a to v různých form
 Tato omezení mohou snižovat flexibilitu uživatele, který by chtěl svůj obsah sdílet, archivovat offline a nebo celkově více plánovat výuku. 
 Zároveň nelze provádět vlastní úpravy kódu ani integrovat komunitní rozšíření, což omezující uživatele, kteří by potřebovali pokročilé nebo zcela unikátní funkce.
 
-Je třeba zmínit, že Genially jako firma je formálně napojena na platformu Canva\todo{Zdroj}, viz kapitola \ref{text:canva}, a tyto dvě služby sdílejí základ vizuálního editoru. 
+Je třeba zmínit, že Genially jako firma je formálně napojena na platformu Canva~\cite{genially}, viz kapitola \ref{text:canva}, a tyto dvě služby sdílejí základ vizuálního editoru. 
 Tento aspekt zvyšuje celkovou kvalitu uživatelského zážitku, protože editor se vyznačuje vysokou přehledností a snadnou manipulací s obsahem. 
 Z tohoto pohledu lze považovat Genially za nástroj, který efektivně staví na osvědčených principech uživatelského designu a zajišťuje širokou dostupnost profesionálních vizuálních standardů.
 
 Na základě vlastních zkušeností jsem využil Genially pro tvorbu několika prezentací a vzdělávacích materiálů. 
 Zatímco samotná tvorba byla rychlá a relativně bezproblémová, setkala jsem se s určitými nedostatky, které ztěžovaly optimální využití platformy. 
-Jedná se o:\todo{Dopsat}
+Jedná se o:
 
 \begin{itemize}
-    \item omezenost obsahu
-    \item limitace "klávesnice"
+    \item omezenost obsahu, kdy počet různých prvků, které lze vložit do plátna, je opravdu málo a obecně se tím pádem vytvořené materiály hodí pouze na hodně obecné předměty. Pro informační technologie obsahuje aplikace skoro nic vhodného.  
+    \item limitace \enquote{klávesnice}, kdy spousta věcí lze dělat pouze v uživatelském prostředí pomocí klikání. 
+    \item omezené možnosti exportu, jelikož hotové prezentace nelze jednoduše stáhnout ve formátu \texttt{PDF} nebo \texttt{PPTX} bez placené verze. To omezuje offline využití materiálů.  
+    \item pomalá odezva editoru u složitějších projektů, kdy větší množství objektů způsobuje zpomalení při úpravách a načítání.  
 \end{itemize}
 
-NÁZOR OSTATNÍCH\todo{najít}
+Problémy jsem měl i při prezentování a respektive i studenti při používání vytvořených materiálů.
+Sdílené materiály nemají moc intuitivní rozhraní a podobně použité interaktivní prvky se špatně používají.
+
+Na Genially jsem mezi českými učiteli nenašel moc objektivních hodnocení.
+Od platformy Učíme online existují webináře a kurzy~\cite{genially_ucimeonline}, které celou aplikaci představují.
+Podobně lze najít v různých komunitách na sociálních sítích i v nesouvisejících skupinách~\cite{canva_facebook} různé názory, které zejména zmiňují složitou tvorbu lekcí.
 
 \subsection{Mentimeter}
 
-Mentimeter je webová aplikace určená pro interaktivní zapojení publika prostřednictvím online hlasování, dotazníků, kvízů, slovních mraků, průzkumů a anket\todo{Zdroj}. 
+Mentimeter je webová aplikace určená pro interaktivní zapojení publika prostřednictvím online hlasování, dotazníků, kvízů, slovních mraků, průzkumů a anket~\cite{mentimeter}. 
 Umožňuje učitelům a přednášejícím získávat okamžitou zpětnou vazbu od studentů, což napomáhá identifikovat oblasti nepochopení, zvýšit míru interakce a podporovat aktivní účast na výuce. 
 
 Velkou předností Mentimeteru je jeho uživatelská přívětivost, široká nabídka interaktivních formátů, kompatibilita s mobilními zařízeními a snadná integrace do výukových scénářů, přičemž výsledky lze ihned zobrazit na obrazovce. 
-Vzhledem k tomu, že Mentimeter se zaměřuje zejména na interakci a aktivní zapojení publika, nikoliv na obsah samotný, nenabízí mnoho grafických funkcí pro tvorbu složitých nebo vizuálně bohatých materiálů\todo{Zdroj}. 
+Vzhledem k tomu, že Mentimeter se zaměřuje zejména na interakci a aktivní zapojení publika, nikoliv na obsah samotný, nenabízí~\cite{mentimeter_review} mnoho grafických funkcí pro tvorbu složitých nebo vizuálně bohatých materiálů. 
+Podobně vyučující uvádí problém s rozdělením odpovědí na jednotlivé studenty či s velmi omezenou neplacenou verzí.
 
 Stejně jako Genially zde chybí komunitně tvořené rozšíření a detailní možnosti kódových úprav, avšak pokud je cílem zvýšit interaktivitu a okamžitou odezvu od studentů, Mentimeter tento úkol splní velmi dobře.
 
 Mentimeter jsem aplikoval několikrát ve výuce a splnil to, co jsem očekával, a to, že se zvýšila interaktivita ve výukové skupině. 
-Velkým problémem je opravdu to, že obsah nejde upravovat natolik, aby šlo vytvořit cokoliv. 
+Velkým problémem je opravdu to, že obsah nejde upravovat natolik, aby šlo vytvořit originální a graficky rozlišitelný obsah. 
 V aplikaci taktéž velmi chybí grafické možnosti, na jednotlivé snímky lze vložit pouze jeden interaktivní prvek s jednotkami grafických variací.
-
-NÁZOR OSTATNÍCH\todo{najít}
 
 \subsection{Prezi}
 
 Prezi je prezentační nástroj, který se odlišuje od klasických lineárních prezentací svou nelineární strukturou.
-Místo jednotlivých snímků pracuje Prezi s jedním velkým plátnem\todo{Zdroj}, na němž lze rozmístit text, obrázky, videa a další obsah do logických celků, mezi kterými lze dynamicky přecházet pomocí pohyblivých či přibližovacích efektů.
-Aplikace je tedy takovou velkou jednou myšlenkovou mapou.
-To však omezuje její použití na pouze jeden konkrétní případ způsobu výuky -- obyčejné prezentace zde vypadají velmi zvláštně.
+Místo jednotlivých snímků pracuje Prezi s jedním velkým plátnem~\cite{prezi}, na němž lze rozmístit text, obrázky, videa a další obsah do logických celků, mezi kterými lze dynamicky přecházet pomocí pohyblivých či přibližovacích efektů.
+Aplikace je tedy takovým velkým plátnem, v podstatě jednou myšlenkovou mapou.
+To však omezuje její použití na pouze jeden konkrétní případ způsobu výuky -- obyčejné prezentace, plakáty a další materiály zde vypadají velmi zvláštně.
 
 Hlavní předností Prezi je vizuální atraktivita, flexibilita v organizaci obsahu a neobvyklý způsob zobrazení témat, který může pomoci udržet pozornost posluchačů a lépe vyjádřit souvislosti mezi jednotlivými informacemi. 
 
-Nicméně Prezi nenabízí výrazně interaktivní prvky pro zapojení studentů, nepodporuje komunitně tvořená rozšíření a soustředí se především na vizuální aspekt prezentací, nikoliv na interakci či možnost programových úprav.
+Nicméně Prezi nenabízí výrazně interaktivní prvky pro zapojení studentů, nepodporuje komunitně tvořená rozšíření a soustředí se především na propojení vytvořených témat společně s vizuálním aspektem prezentací, nikoliv na interakci či možnost programových úprav.
 
 Prezi jsem se snažil použít, jejich editor je však velmi zvláštní a odbočuje od známých standardů \texttt{UI} a \texttt{UX}.
-Prezi je taktéž placená aplikace a omezuje použití jakýchkoliv pokročilých bloků za placenou verzí, a tedy použití je prakticky bez toho nemožné.
+Prezi je taktéž placená aplikace a omezuje použití jakýchkoliv pokročilých obsahů za placenou verzí, a tedy použití je prakticky bez toho nemožné a slouží spíše jako ukázka možností.
 
-NÁZOR OSTATNÍCH\todo{najít}
 
-% \section{Sumarizace knihoven a nástrojů}
+
+\section{Sumarizace knihoven a nástrojů}
+
+\todo{do this}
 
 % % Tabulka kde vse vyse uvedene nejak sumarizuji, co chybi
 % \begin{table}[h!]
@@ -294,59 +327,59 @@ Tyto způsoby v této kapitole rozeberu i s jejich plusy a mínusy.
 
 \subsection{HTML prvky}\label{text:vykreslovani/html}
 
-HTML\todo{citace v celém tomhle} je základní značkovací jazyk pro tvorbu webových stránek. 
+HTML je základní značkovací jazyk~\cite{uzayr2022frontend} pro tvorbu webových stránek. 
 V rámci vykreslování obsahu na webu jsou k dispozici různé HTML prvky, které umožňují zobrazení statických i dynamických dat.
-S pomocí CSS je možné tyto prvky skoro nelimitovaně stylovat a pozicovat.
+S pomocí CSS je možné tyto prvky skoro nelimitovaně~\cite{uzayr2022frontend} stylovat a pozicovat.
 
 Použití tohoto způsobu je velmi jednoduché, protože je to v podstatě tvoření webové stránky.
-Problém bývá s interaktivitou, že i mimo tohle potřebuje s prvky pracovat a díky Document Object Model (DOM) je toto možné provést.
+Problém bývá s interaktivitou~\cite{uzayr2022frontend}, že i mimo tohle potřebuje s prvky pracovat a díky Document Object Model (DOM) je toto možné provést.
 Kvůli častým změnám a závislostem proměnných na šablonách, resp. konkrétních prvků je často nutné vytvořit tzv. virtuální DOM.
 Virtuální DOM tvoří a emuluje to, co dělá DOM, jen s tím, že program má nad celým vykreslováním, závislostmi celou kontrolu.
-Virtuální DOM je klíčovou věcí pro skoro všechny moderní frameworky na webových stránkách, jako React, Vue a tisíce dalších.
+Virtuální DOM je klíčovou věcí pro skoro všechny moderní frameworky~\cite{uzayr2022frontend} na webových stránkách, jako React, Vue a tisíce dalších.
 
 HTML, CSS, JS a (virtuální) DOM je poté možným způsobem, jak vykreslovat skoro jakýkoliv obsah na webové stránce a zároveň nad tím mít kompletní kontrolu.
 Problémem bývá omezenost box-modelu a způsob pozicování, což může v některých případech limitovat flexibilitu při vytváření složitějších layoutů nebo interaktivních prvků. Box-model vychází z pevně dané šířky, výšky, okrajů, paddingu a okrajů okna pro prohlížeč, což může být komplikováno v případě, kdy je potřeba pracovat s dynamickým a variabilním obsahem. 
-I když CSS nabízí pokročilé metody jako flexbox nebo grid, které značně zlepšují flexibilitu layoutu, stále existují případy, kdy HTML prvky samy o sobě nestačí k dosažení požadovaného chování bez použití komplexního skriptování a dalších technologií.
+I když CSS nabízí pokročilé metody jako flexbox nebo grid, které značně zlepšují~\cite{uzayr2022frontend} flexibilitu layoutu, stále existují případy, kdy HTML prvky samy o sobě nestačí k dosažení požadovaného chování bez použití komplexního skriptování a dalších technologií.
 Vykreslování je často pomalé s velkým počtem prvků díky (ne)optimalizacím prohlížečů.
 
 Tento způsob používá velmi mnoho služeb a knihoven, jako ukázku uvádím například zmíněnou knihovnu RevealJS (viz kapitola \ref{text:revealjs}).
 
 \subsection{Canvas}
 
-Canvas je prvek z HTML, který je sémanticky a definičně určen k vykreslování komplexního grafického designu, her a podobných věcí.
+Canvas je prvek z HTML~\cite{canvashtml5, uzayr2022frontend}, který je sémanticky a definičně určen k vykreslování komplexního grafického designu, her a podobných věcí.
 Do Canvas se vykresluje pomocí JS (případně jiné jazyky, viz kapitola \ref{text:webassembly}) a to dovoluje měnit jednotlivé pixely, překreslovat je a tvořit animace.
-Klasické módy Canvas jsou však omezené a často se aplikace rozhodnou používat nástavbovou knihovnu WebGL, která místo nekomplexního systému kreslení pixelů dovoluje komunikovat s GPU.
-Dovoluje totiž definovat shadery pro GPU a spoustu dalších nastavení pro renderování obrazu.
+Klasické módy Canvas jsou však omezené a často se aplikace rozhodnou používat nástavbovou knihovnu WebGL~\cite{canvashtml5}, která místo nekomplexního systému kreslení pixelů dovoluje komunikovat s GPU.
+Dovoluje totiž definovat shadery~\cite{canvashtml5} pro GPU a spoustu dalších nastavení pro renderování obrazu.
 Můžeme tedy tvořit velmi komplexní věci, optimalizovat to a webovou stránku ovládat jako jakýkoliv jiný obsah. 
 
-Nevýhodou však může být složitost implementace a potřeba znalosti programování pro shadery.
+Nevýhodou však může být složitost implementace~\cite{canvashtml5} a potřeba znalosti programování pro shadery.
 V podstatě není nic dalšího definováno a i obyčejný okraj je nutné složitě naprogramovat.
-Existují samozřejmě knihovny (např. ThreeJS) které pro nás definují shadery předem a dovolují další věci, jako např. načítání obrázků či modelů.
+Existují samozřejmě knihovny (např. ThreeJS) které pro nás definují~\cite{canvashtml5} shadery předem a dovolují další věci, jako např. načítání obrázků či modelů.
 Navíc takto komplexní výpočty potřebují silnější zařízení, na kterých webová stránka běží.
 
-I když je canvas sémanticky popsán, veškerý vykreslený obsah nikoliv a je tedy velmi těžké sémanticky určit, co se vlastně vykresluje.
+I když je canvas sémanticky popsán~\cite{canvashtml5}, veškerý vykreslený obsah nikoliv a je tedy velmi těžké sémanticky určit, co se vlastně vykresluje.
 
-Kvůli náročnosti tento způsob používá méně služeb, o zmíněných uvádím ukázku například Figma (viz kapitola \label{text:figma_popis}).
+Kvůli náročnosti tento způsob používá méně služeb, o zmíněných uvádím ukázku například Figma (viz kapitola~\ref{text:figma_popis}).
 Jejich způsob vykreslování je velmi kvalitní a je vidět, že do aplikace investovali velmi mnoho zdrojů.
 Jejím cílem je ale být grafický nástroj a přesnost všeho je pro jejich uživatele důležitá.
 
 \subsection{SVG}
 
-Scalable Vector Graphics (SVG) slouží a dovolují definovat vektorové prvky, které se mohou jednoduše vykreslovat na webové stránce.
+Scalable Vector Graphics (SVG) slouží k definování vektorových prvky~\cite{svg_css_html}, které se mohou jednoduše vykreslovat na webové stránce.
 To dovoluje jednoduše používat daný vytvořený \enquote{obrázek} v jakémkoliv rozlišení.
-Moderní SVG dovolují dovnitř jako prvek vkládat i rastrové obrázky a další cizí objekty, které se poté poměrně jednoduše vykreslují.
+Moderní SVG dovolují dovnitř jako prvek vkládat i rastrové obrázky a další cizí objekty~\cite{svg_css_html, uzayr2022frontend}, které se poté poměrně jednoduše vykreslují.
 
 Veškeré prvky by se tedy pro vykreslování obsahu mohly definovat v jednom velkém SVG (kde by každá stránka či slide bylo jedno SVG), které by v sobě mělo jednotlivé prvky.
 
-Mezi nevýhody tohoto systému je zejména problém s vykreslováním, protože rasterizace vektorového obrazu je drahá operace, a to zejména ve webovém prostředí.
+Mezi nevýhody tohoto systému je zejména problém s vykreslováním, protože rasterizace vektorového obrazu je drahá operace~\cite{svg_css_html}, a to zejména ve webovém prostředí.
 Další omezení je i v tom, co s danými prvky poté jde dělat, protože tento způsob limituje to, co můžeme na dané prvky nastavit jako odchytávače události a respektive vůbec jaké události můžeme vkládat.
 Hodně to ubírá na možné interaktivitě.
-Dále se uvádějí\todo{zdroj} nevýhody mezi kompatibilitou mezi prohlížeči.
+Dále se uvádějí~\cite{svg_css_html} nevýhody mezi kompatibilitou mezi prohlížeči.
 
 Mezi výhody patří velké možnosti filtrů a definic, jednoduchý možný export a jednoduché transformace.
 Tyto věci však umí i jiné varianty a nic navíc tento způsob nepřináší.
 
-Toto vykreslování používá ze zmíněných služeb například Google služby, resp. Google Slides (viz kapitola \ref{text:figma_popis}).
+Toto vykreslování používá ze zmíněných služeb například Google služby, resp. Google Slides (viz kapitola~\ref{text:figma_popis}).
 
 \section{Komunitní rozšíření}\label{text:community_plugins}
 
