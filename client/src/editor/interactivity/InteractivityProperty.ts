@@ -326,7 +326,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                 </div>`;
             element.innerHTML += `
                 <div class="field field--sub">
-                    <span class="label">${$t("property.interactivity.slide.value")}</span>
+                    <span class="label">${$t("property.interactivity.variable.value")}</span>
                     <div class="value">
                         <input type="text" data-property="changeVariableValue">
                     </div>
