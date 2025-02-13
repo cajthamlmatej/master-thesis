@@ -56,7 +56,7 @@ Tato zpětná vazba dále zdůrazňuje potřebu vytvořit systém, který by byl
 
 % Prozatím si nejsem jistý, zda je to dobrý nápad.\todo{Provést?}
 
-\section{Aplikace na tvorbu prezentací}
+\section{Aplikace na tvorbu prezentací}\label{text:analyza/prezentace}
 
 Nejpřirozenějším základem pro výuku je prezentace, která podporuje a vizualizuje myšlenky učitele před skupinou studentů.
 Správně strukturovaná prezentace poskytuje kostru výkladu, umožňuje přehledné předání látky a pomáhá udržet pozornost publika.
@@ -80,6 +80,7 @@ Další nevýhodou je cena –- přístup k plné verzi aplikace je placený, a 
 Google Slides je bezplatný webový nástroj pro tvorbu prezentací od společnosti Google. 
 Hlavní přednosti spočívají v možnostech snadné spolupráce více uživatelů v reálném čase~\cite{slides}, neboť dokument lze sdílet a společně editovat odkudkoli.
 Integrace s ostatními službami Google (Disk, Dokumenty, Tabulky) umožňuje jednoduchý import a export různých typů souborů, a díky tomu se výrazně usnadňuje týmová práce a přístup ke společným materiálům. 
+Podobně jsou implementovány integrace s komunitními rozšířeními ze služeb Google.
 Ve výchozím stavu je služba zdarma, avšak pokročilé funkce a správa dat jsou často vázány na účet v rámci Google Workspace~\cite{slides}, který mohou organizace platit v rámci firemního nebo institucionálního předplatného. 
 
 Výhodou je automatické ukládání na cloud, takže není nutné se obávat ztráty dat~\cite{slides}, a navíc je vše dostupné na více zařízeních, což usnadňuje vzdálený přístup k prezentacím. 
@@ -128,7 +129,7 @@ Výhodou takovéto kódové generace je, že často z jednoho zdrojového kódu 
 Dalším je řada knihoven, které již existují mnoho let, které dovolují komplikované vizualizace a vykreslování.
 Jedna z nich je například knihovna TikZ. 
 
-\section{Aplikace na grafickou tvorbu}
+\section{Aplikace na grafickou tvorbu}\label{text:analyza/grafika}
 
 Tato sekce se zaměřuje na nástroje, které umožňují snadno a rychle vytvářet vizuálně atraktivní materiály, ať už jde o grafiky, ilustrace, uživatelská rozhraní či jiné kreativní prvky doplňující prezentace a vzdělávací materiály.
 
@@ -166,7 +167,7 @@ Tento nástroj je postaven na stejném editoru, jako používá hlavní aplikace
 Podobně Figma dovoluje pomocí různých šablon tvoření i prezentací.
 Tyto prezentace však postrádají řadu nepostradatelných funkcionalit, jako jsou například animační schopnosti a optimalizace na procházení snímky.
 
-\section{Aplikace na tvorbu materiálů}
+\section{Aplikace na tvorbu materiálů}\label{text:analyza/materialy}
 % \todo{Celkově k tomuhle dopsat spoustu věcí}
 
 Tato sekce představuje nástroje, jež umožňují připravovat a distribuovat výukové materiály v podobě interaktivních prezentací, kvízů, vizuálních map či jiných vzdělávacích formátů.
@@ -202,10 +203,10 @@ Zatímco samotná tvorba byla rychlá a relativně bezproblémová, setkala jsem
 Jedná se o:
 
 \begin{itemize}
-    \item omezenost obsahu, kdy počet různých prvků, které lze vložit do plátna, je opravdu málo a obecně se tím pádem vytvořené materiály hodí pouze na hodně obecné předměty. Pro informační technologie obsahuje aplikace skoro nic vhodného.  
-    \item limitace \enquote{klávesnice}, kdy spousta věcí lze dělat pouze v uživatelském prostředí pomocí klikání. 
-    \item omezené možnosti exportu, jelikož hotové prezentace nelze jednoduše stáhnout ve formátu \texttt{PDF} nebo \texttt{PPTX} bez placené verze. To omezuje offline využití materiálů.  
-    \item pomalá odezva editoru u složitějších projektů, kdy větší množství objektů způsobuje zpomalení při úpravách a načítání.  
+    \item Omezenost obsahu, kdy počet různých prvků, které lze vložit do plátna, je opravdu málo a obecně se tím pádem vytvořené materiály hodí pouze na hodně obecné předměty. Pro informační technologie obsahuje aplikace skoro nic vhodného.  
+    \item Limitace \enquote{klávesnice}, kdy spousta věcí lze dělat pouze v uživatelském prostředí pomocí klikání. 
+    \item Omezené možnosti exportu, jelikož hotové prezentace nelze jednoduše stáhnout ve formátu \texttt{PDF} nebo \texttt{PPTX} bez placené verze. To omezuje offline využití materiálů.  
+    \item Pomalá odezva editoru u složitějších projektů, kdy větší množství objektů způsobuje zpomalení při úpravách a načítání.  
 \end{itemize}
 
 Problémy jsem měl i při prezentování a respektive i studenti při používání vytvořených materiálů.
@@ -244,40 +245,90 @@ Nicméně Prezi nenabízí výrazně interaktivní prvky pro zapojení studentů
 Prezi jsem se snažil použít, jejich editor je však velmi zvláštní a odbočuje od známých standardů \texttt{UI} a \texttt{UX}.
 Prezi je taktéž placená aplikace a omezuje použití jakýchkoliv pokročilých obsahů za placenou verzí, a tedy použití je prakticky bez toho nemožné a slouží spíše jako ukázka možností.
 
-
-
 \section{Sumarizace knihoven a nástrojů}
 
-\todo{do this}
+V tabulce \ref{tab:porovnani_prezentaci} je sumarizovaná kapitola \ref{text:analyza/prezentace}, která se zaobírá různým softwarem na tvorbu prezentací.
+Z tabulky vyplývá, že zatímco PowerPoint a Google Slides nabízí jednoduché a intuitivní použití, RevealJS a Beamer vyžadují znalosti kódování, ale umožňují větší flexibilitu. Největší rozdíly jsou v interaktivitě, přístupnosti a v dostupnosti pokročilých funkcí, přičemž žádný z těchto nástrojů není jednoznačně nejlepší pro všechny uživatele.
 
-% % Tabulka kde vse vyse uvedene nejak sumarizuji, co chybi
-% \begin{table}[h!]
-%     \centering
-%     \begin{tabular}{r|c|c|c|c|c}
-%         Vlastnost \\ Služba & Genially & Mentimeter & Prezi & Canva & Figma \\ \hline
-%         Tvorba prezentací & \cmark & \xmark & \xmark & \cmark & \cmark \\ \hline
-%         Tvorba materiálů & \cmark & \xmark & \xmark & \xmark & \cmark \\ \hline
-%         Tvorba grafiky & \cmark & \xmark & \xmark & \xmark & \cmark \\ \hline
-%         Spolupráce v reálném čase & \cmark & \cmark & \cmark & \cmark & \cmark \\ \hline
-%     \end{tabular}
-%     \caption{Porovnání služeb (část 1)}
-%     \label{tab:part1}
-% \end{table}
 
-% \begin{table}[h!]
-%     \centering
-%     \begin{tabular}{r|c|c|c|c|c|}
-%         Vlastnost / Služba & PowerPoint & Google Slides & RevealJS & Beamer \\ \hline
-%         Tvorba prezentací & \cmark & \cmark & \cmark & \cmark \\ \hline
-%         Tvorba materiálů & \xmark & \xmark & \xmark & \xmark \\ \hline
-%         Tvorba grafiky & \xmark & \xmark & \xmark & \xmark \\ \hline
-%         Spolupráce v reálném čase & \cmark (web. verze) & \cmark & \xmark & \xmark \\ \hline
-%     \end{tabular}
-%     \caption{Porovnání služeb (část 2)}
-%     \label{tab:part2}
-% \end{table}
+\begin{table*}[h!]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|p{2.3cm}||p{3cm}|p{2.5cm}|p{3cm}|p{3cm}|}
+        \hline
+        \textbf{Funkce} & \textbf{PowerPoint} & \textbf{Google Slides} & \textbf{RevealJS} & \textbf{Beamer} \\
+        \hline        \hline
+        Cena                & Placený & Zdarma & Zdarma & Zdarma \\\hline
+        Prémiové funkcionality & Ano & Ano & Ano (Slides.com) & - \\\hline
+        Přístupnost         & Desktop/Web & Web & Web & Lokální \\\hline
+        Spolupráce          & Ano & Ano & Git/Cloud/IDE & Git/Cloud/IDE \\\hline
+        Interaktivita       & Základní & Základní & Vysoká & Žádná \\\hline
+        Šablony             & Bohaté & Bohaté & Flexibilní & Základní \\\hline
+        % Podpora formátů     & PPTX &  & Webová &  \\\hline
+        Používání           & Intuitivní & Intuitivní & Kódování HTML, CSS a JS & Obtížné \\\hline
+        Unikátní vlastnosti & Integrace s Office & Cloudové ukládání & Interaktivní prvky & Možnost skript\\\hline 
+    \end{tabular}%
+    }
+    \caption{Porovnání aplikací pro tvorbu prezentací}
+    \label{tab:porovnani_prezentaci}
+\end{table*}
 
-% Možná už teď více definovat co jsou nutné problémy k vyřešení
+
+V tabulce \ref{tab:porovnani_grafika} je sumarizovaná kapitola \ref{text:analyza/grafika}, která se zaobírá různým softwarem na tvorbu grafických materiálů, prezentací a návrhů aplikací.
+Canva se vyznačuje jednoduchostí a rychlou tvorbou obsahu, zatímco Figma nabízí pokročilé nástroje a interaktivní prototypování, ale je náročnější na osvojení. Oba nástroje mají komunitní šablony, avšak Canva se zaměřuje spíše na rychlou grafickou úpravu, zatímco Figma cílí na UI/UX design s větší možností spolupráce v reálném čase.
+
+
+\begin{table*}[h!]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|p{2.3cm}||p{6cm}|p{6cm}|}
+        \hline
+        \textbf{Funkce} & \textbf{Canva} & \textbf{Figma} \\
+        \hline \hline
+        Cena & Zdarma vs. Canva Pro & Zdarma vs. Figma Pro \\\hline
+        Zaměření & Grafické materiály, prezentace & UI/UX design, prototypování \\\hline
+        Přístupnost & Webová aplikace, mobilní verze & Webová aplikace, desktopová aplikace \\\hline
+        Spolupráce & \multicolumn{2}{|c|}{Ano, v reálném čase} \\\hline
+        Interaktivita & Omezená (základní animace) & Pokročilá (interaktivní prototypy) \\\hline
+        Šablony & Bohatá knihovna & Šablony a komunitní rozšíření \\\hline
+        Používání & Intuitivní, drag-and-drop & Náročnější, vektorový editor \\\hline
+        Unikátní vlastnosti & Snadné použití, rychlá tvorba grafiky & Pokročilé nástroje, FigJam pro poznámky \\\hline
+        Omezení & Méně přizpůsobitelné šablony, nutnost placené verze pro některé funkce & Vyšší křivka učení, omezený neplacený režim \\\hline
+    \end{tabular}%
+    }
+    \caption{Porovnání aplikací na grafickou tvorbu}
+    \label{tab:porovnani_grafika}
+\end{table*}
+
+V tabulce \ref{tab:porovnani_materialy} je sumarizovaná kapitola \ref{text:analyza/materialy}, která se zaobírá aplikacemi, které slouží k tvorbě materiálů.
+Genially umožňuje tvorbu interaktivních vzdělávacích materiálů, ale omezuje uživatele placenými funkcemi a šablonovým systémem. Mentimeter je skvělý pro zapojení studentů do výuky prostřednictvím kvízů a hlasování, ale postrádá pokročilé grafické možnosti. Prezi nabízí inovativní způsob prezentování obsahu, ale kvůli své specifické struktuře není univerzálním řešením pro všechny výukové situace.
+
+
+\begin{table*}[h!]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|p{2.3cm}||p{3.5cm}|p{3.5cm}|p{3.5cm}|p{3cm}|}
+        \hline
+        \textbf{Funkce} & \textbf{Genially} & \textbf{Mentimeter} & \textbf{Prezi} \\
+        \hline \hline
+        Cena & \multicolumn{3}{|c|}{Zdarma, placená verze s prémiovými funkcionality} \\\hline
+        Zaměření & Interaktivní prezentace, infografiky & Interaktivní hlasování, kvízy & Prezentační software s nelineární strukturou \\\hline
+        Přístupnost & Webová aplikace & Webová aplikace & Webová aplikace, desktopová verze \\\hline
+        Interaktivita & Klikací prvky, kvízy, multimédia & Hlasování, dotazníky, slovní mraky & Zoom efekty, pohyblivé přechody \\\hline
+        Šablony & Bohatá knihovna & Omezené varianty & Specifické pro Prezi formát \\\hline
+        % Používání & Intuitivní & Snadné použití, rychlá odezva & Nestandardní ovládání, vyžaduje zvyk \\\hline
+        Export materiálů & Pouze v placené verzi (PDF, HTML) & Omezené exportní možnosti & Placená verze nutná pro export offline \\\hline
+        Unikátní vlastnosti & Kombinace vizuálních prvků a interaktivity & Okamžitá zpětná vazba od studentů & Nelineární prezentace, zoom efekt \\\hline
+        Omezení & Omezená přizpůsobitelnost, placené funkce & Grafická jednoduchost, pouze jeden interaktivní prvek na slide & Malé možnosti interakce, zvláštní UX \\\hline
+    \end{tabular}%
+    }
+    \caption{Porovnání aplikací pro tvorbu materiálů}
+    \label{tab:porovnani_materialy}
+\end{table*}
+
+Z analýzy jednotlivých kategorií aplikací vyplývá, že neexistuje jeden nástroj, který by splňoval všechny potřeby uživatelů, což značně komplikuje výběr ideálního řešení. Každá aplikace se zaměřuje na specifickou oblast a přináší své výhody i omezení, což znamená, že uživatelé často musí kombinovat více nástrojů. 
+Klíčovým problémem u většiny analyzovaných aplikací je závislost na placených verzích, omezená přizpůsobitelnost nebo nedostatek interaktivity.
+Pro ideální nástroj by bylo zásadní nabídnout dostatečnou míru flexibility, široké komunitní rozšíření a otevřenost vůči uživatelským úpravám, což by umožnilo efektivnější a univerzálnější využití v různých vzdělávacích scénářích.
 
 % \section{Interaktivní prvky}
 
@@ -390,11 +441,11 @@ V této sekci se podívám na to, jak komunitní rozšíření řeší jiné exi
 
 \subsection{Google služby}
 
-V kapitole~\ref{text:google_slides}\todo{pravda?} jsem uvedl, že Google Slides dovolují úpravy platformy pomocí tzv. pluginů.
+V kapitole~\ref{text:google_slides} jsem uvedl, že Google Slides integrují komunitní rozšíření -- úpravy platformy pomocí tzv. pluginů.
 Tyto pluginy se používají tím, že uživatel v aplikaci nalezne tlačítko se správou rozšíření, ve kterém vybere rozšíření, které chce aktivovat.
-Aktivací se spustí řada skriptů, se kterými poté samotná aplikace Google Slides komunikuje.
+Aktivací se spustí řada skriptů, se kterými poté samotná aplikace Google Slides komunikuje a zajišťuje danou funkcionalitu.
 
-Tyto skripty mohou definovat například\todo{source}:
+Tyto skripty mohou definovat~\cite{google_apps} například:
 
 \begin{description}
     \item[API] Komunikovat s API Google Slides, tedy např. přidávat a modifikovat obsah jednotlivých snímku, přidávat snímky a nebo poskytnout přídavné okna s dalším obsahem.
@@ -402,21 +453,21 @@ Tyto skripty mohou definovat například\todo{source}:
     \item[Menu] Vytvořit speciální položky v navigaci, které budou dělat konkrétní změny.
 \end{description}
 
-Na spouštění skriptů uvnitř aplikace Google používá vlastní jazyk JavaScript\todo{source}.
-Tento jazyk a skripty v něm vytvořené se zásadně spouští na jejich serverech v emulátoru JavaScriptu tak, aby mohli jasně omezovat\todo{source} k čemu má daný skript práva. 
+Na spouštění skriptů uvnitř aplikace Google používá vlastní nástavbu jazyka JavaScript~\cite{google_apps}.
+Tento jazyk a skripty v něm vytvořené se zásadně spouští na jejich serverech v emulátoru JavaScriptu tak, aby mohli jasně omezovat~\cite{google_apps} k čemu má daný skript práva. 
 Mezi omezení patří např. omezení volání požadavku, přístup k tokenům a dalšímu.
 Proto se nevolají skripty na klientské části, tedy není možné vytvořit emulátor, který poběží v bezpečném prostředí.
 Alternativou v moderních prohlížečích je WebAssembly, které by něco takového mohlo dovolovat.
 Tímto se budu zaobírat v kapitole~\ref{text:webassembly}.
 
-Na internetu jsem hledal názory na tento způsob tvorby pluginů\todo{source} a jeden z největších problémů, na který uživatelé píší hodnocení, je právě omezenost spouštěče kódu.
+Na internetu jsem hledal názory na tento způsob tvorby pluginů~\cite{google_apps_script_redit} a jeden z největších problémů, na které uživatelé píší hodnocení, je právě omezenost spouštěče kódu.
 Vzhledem k tomu, že se pouští na serveru, je velmi limitována možnost měnit samotné HTML v prohlížeči a tedy i v prezentacích.
 Pluginy jsou tedy velmi často omezené pouze na volání API a přidávání základních prvků, které ale nedovolují velké možnosti modifikace.
 Možnosti jsou ale přesto velké, nevýhoda je, že je nutné mít vlastní server, umět jasně pracovat se zabezpečením Google a hlavně se chytře vyhnout, resp. přizpůsobit se těmto omezením.
 
 Podobně taktéž fungují další služby od společnosti Google.
 Většina aplikací poté specializuje své API, aby sloužilo konkrétní službě.
-Jejich platforma na skripty -- Apps Script\todo{je to tak?} je stále stejná pro všechny služby.
+Jejich platforma na skripty -- Apps Script je stále stejná~\cite{google_apps_script_redit, google_apps} pro všechny služby.
 
 \subsection{RevealJS}
 
@@ -431,37 +482,38 @@ Tyto rozšíření často nemají žádný důvod zneužít důvěry instalace a
 Často totiž není ani co za data vzít, protože jsou stránky hostované v nějakém hostingu, ve kterém se uživatel nepřihlašuje a nemá v něm žádná data.
 To, co uživatel do prezentace nainstaluje, je zcela na něm.
 
-K RevealJS patří služba Slides.com, která je postavena na dané knihovně od stejných autorů.
-Tyto stránky již dovolují stránky sdílet, mají editor a vzhledem k tomu, že se již na stránce přihlašuje, sbírají se informace, je nutné, aby stránky omezily možné bezpečnostní rizika.
-Proto platforma implementuje veškeré věci pomocí vlastních zabezpečených pluginů a jakékoliv věci ze třetích stran není možné používat.
+K RevealJS patří služba Slides.com, která je postavena na dané knihovně od stejných autorů~\cite{slidescom}.
+Tyto stránky již dovolují stránky sdílet, mají editor a vzhledem k tomu, že se již na stránce přihlašuje, sbírají se informace, je nutné, aby stránky omezily možná bezpečnostní rizika.
+Proto platforma implementuje veškeré věci pomocí vlastních zabezpečených pluginů~\cite{slidescom} a jakékoliv věci ze třetích stran není možné používat.
 Platforma ale implementuje řadu věcí a prezentace jsou použitelné.
 
 \subsection{Figma}\label{text:figma}
 
-Figma je velmi populární nástroj (viz kapitola \ref{text:figma}, který taktéž implementoval komunitní rozšíření.
-Jejich přístup ke komunitnímu rozšíření je velmi veřejný a díky svému blogu\todo{citace} můžeme vidět řadu důvodů kvůli zvážení každé možnosti.
+Figma je velmi populární nástroj (viz kapitola \ref{text:figma}, který taktéž implementoval komunitní rozšíření~\cite{figma_website}.
+Jejich přístup ke komunitnímu rozšíření je velmi veřejný a díky jejímu blogu~\cite{figma_plugins_blog} je vidět řadu důvodů kvůli zvážení každé možnosti.
 Figma svými tzv. pluginy zajišťuje rozšiřitelnost platformy, resp. zjednodušení používání aplikace.
 Mezi ukázky takových pluginů patří například různé možnosti vkládání ikon, šablon, ale i komplexní systémy na práci uvnitř editoru, jako hlasování v návrzích.
 
-Pluginy se zejména zaměřují na práci v editoru a proto některá rozhodnutí nejsou pro práci relevantní.
-Při implementaci\todo{zdroj} se zaměřili na různé aspekty práce a způsoby spouštění nedůvěryhodného kódu, o kterých budu mluvit později.
+Pluginy se zejména zaměřují na práci v editoru, a proto některá rozhodnutí nejsou pro práci relevantní.
+Při implementaci~\cite{figma_plugins_blog} se zaměřili na různé aspekty práce a způsoby spouštění nedůvěryhodného kódu, o kterých budu mluvit později.
 
 Mezi její zvažované přístupy patřilo Iframe, Realms, WebAssembly a další.
 Každý přístup měl pro a proti, proto se nakonec rozhodli z dvou užších možností -- Realms a WebAssembly -- přistoupit na Realms.
 Jejich návrh platformy avšak dovoloval skoro bezpracné změnění způsobu volání kódu díky abstrakci.
-To taktéž velmi rychle použili díky zranitelnosti Realms a i když volání WebAssembly nebylo lepší v celkovém porovnání, rozhodli se na něj přejít.
+To taktéž velmi rychle využili díky zranitelnosti Realms a i když volání WebAssembly nebylo lepší v celkovém porovnání, rozhodli se na něj přejít.
 Jediná velká nevýhoda Realms je právě to, že daný kód běží ve stejném okně jako zbytek stránky a třeba i jeho zpomalení (nezáměrné i záměrné) může způsobit zaseknutí celé stránky.
 Pro lepší bezpečnost je obecně počítat s tím, že se ze systému, kde je kód uzavřen, může kód dostat.
 
-Mimo další platforma pro každou možnost zvažovala\todo{citace} řadu kritérií a specifikací. 
-Níže je takový seznam, který může pomoci rozhodnout mezi správným přístupem.
+Mimo další platforma pro každou možnost zvažovala~\cite{figma_plugins_blog, figma_website} řadu kritérií a specifikací. 
+Níže je takový seznam, který může pomoci rozhodnout mezi správným přístupem:
 
 \begin{itemize}
-    \item bezpecnost\todo{dopsat}
-    \item overhead nad spustením
-    \item kde se spousti
-    \item delay
-    \item moznosti kodovani, jazyk
+    \item Bezpečnost takové implementace, rizika opuštění kontrolovaného prostředí.
+    \item Jednoduchost psaní skriptů a i samotná implementace skriptů.
+    \item Prostředky na spuštění takového kódu tak, aby to nebylo příliš náročné na zařízení.
+    \item Kde spuštění probíhá, jak moc je možné systému věřit.
+    \item Zpomalení spuštění skriptů a jeho reakce na události.
+    \item Možnosti kódování a jeho jazyk.
 \end{itemize}
 
 \section{Spouštění nedůvěryhodného kódu}
@@ -477,42 +529,41 @@ Cílem této kapitoly je analyzovat možné způsoby spouštění nedůvěryhodn
 Uvnitř webových stránek díky podpoře JavaScriptu ve všech prohlížečích se lze bavit o základních přístupech k spouštění neověřeného kódu.
 Jedná se o evaluaci (\texttt{eval}) a o domény (\texttt{realm}).
 
-Přímá evaluace je funkce z JS, která dovoluje spustit jakýkoliv napsaný JS kód a získat z něj výsledek.
+Přímá evaluace je funkce~\cite{eval} z JS, která dovoluje spustit jakýkoliv napsaný JS kód a získat z něj výsledek.
 To dovoluje spuštění v podstatě jakéhokoliv skriptu v prohlížeči.
-Problém v tomto přístupu je v tom, že nelze jakkoliv omezit k čemu má spuštěný kód přístup.
+Problém v tomto přístupu je v tom, že nelze jakkoliv omezit k čemu má spuštěný kód přístup~\cite{eval, shadowrealms, figma_plugins_blog}.
 Tedy má přístup ke všemu.
 Omezení se dá pokusit vytvořit pomocí např. struktury \texttt{with}, která umí změnit kontext \texttt{this}.
 To lze však velmi jednoduše obejít např. pomocí přístupu k prototype.
 Tento způsob je tedy pro nedůvěryhodný kód nevhodný.
 
-Alternativou k \texttt{eval} je využití \texttt{Realms}, což je mechanismus poskytovaný specifikací ECMAScript (prostřednictvím návrhu TC39). 
-\texttt{Realms} umožňují vytvořit izolovaný běhový kontext, kde spuštěný kód nemá přímý přístup k objektům a funkcím globálního kontextu hlavní aplikace.
+Alternativou k \texttt{eval} je využití \texttt{Realms}, což je mechanismus poskytovaný specifikací ECMAScript (prostřednictvím návrhu TC39)~\cite{shadowrealms_propsal}. 
+\texttt{Realms} umožňují vytvořit izolovaný běhový kontext, kde spuštěný kód nemá přímý přístup k objektům a funkcím globálního kontextu hlavní aplikace~\cite{shadowrealms_propsal, shadowrealms}.
 Každý Realm obsahuje svou vlastní kopii globálního objektu a základních vestavěných knihoven, což ztěžuje únik kódu mimo sandbox.
 Přestože se jedná o bezpečnější variantu oproti \texttt{eval}, má \texttt{Realms} své omezení, například v podobě složitosti při komunikaci mezi hlavním a izolovaným kontextem. 
 Problém mají taktéž s tím, že kód běží na jednom vlákně společně se zbytkem stránky a tak zásek v tomto kódu způsobí zaseknutí celé webové stránky.
 
-Způsob pomocí \texttt{Realms} původně zvažoval a implementoval program Figma.
+Způsob pomocí \texttt{Realms} původně zvažoval a implementoval program Figma~\cite{figma_plugins_blog}.
 V kapitole \ref{text:figma} je popsán postupný vývoj této platformy a to, jak se rozhodla z Realms, kvůli svým kritickým chybám, přejít na WebAssembly.
 
 \subsection{Iframe}
 
 Iframe je sémantický tag v HTML, který je určen pro vkládání stránky do stránky.
-Iframe je velmi zabezpečený, protože pokud nejsou stránky ze stejné domény\todo{zdroj?}, tak nemohou spolu komunikovat.
+Iframe je velmi zabezpečený, protože pokud nejsou stránky ze stejné domény~\cite{iframe, figma_plugins_blog}, tak nemohou spolu komunikovat.
 Vnější a ani vnitřní stránka tedy nemůže přečíst obsah a jakákoliv jiná data z druhé stránky.
 Jediná možná komunikace je pomocí tzv. messagingu, kde si mezi sebou mohou stránky vyměňovat jednoduché textové zprávy.
 
-Iframe má taktéž kvůli zabezpečení tzv. nulový (\texttt{null}) origin pro CORS\todo{zdroj}.
+Iframe má taktéž kvůli zabezpečení tzv. nulový (\texttt{null}) origin pro CORSy~\cite{iframe, figma_plugins_blog}.
 To omezuje, resp. neguje, nastavení webových stránek pro ochranu uživatelů.
 Zabezpečení je celkově ale velmi stabilní a to díky častým updatům prohlížečů.
-Z iframe se v podstatě nedá utéct, ale samozřejmě existovali funkční pokusy o prolomení, např. se jedná o \cite{https://issues.chromium.org/issues/40090810}.
+Z iframe se v podstatě nedá utéct, ale samozřejmě existovaly funkční pokusy o prolomení, např. se jedná o~\cite{iframe_vuln}.
 Jedná se ale obecně o velmi stabilní ochranu, které můžeme věřit kvůli skvělé práci skoro všech prohlížečů.
 
-Iframe se nejčastěji používá na omezení nedůvěryhodného HTML kódu.
+Iframe se nejčastěji používá na omezení nedůvěryhodného HTML kódu~\cite{iframe}.
 Bez omezení by vložený kód z rozšíření mohl utéci z daného přiřazeného prvku a taktéž volat jakýkoliv kód jako stránka.
 To by mohlo vést k získání cookies či jiných lokálních souborů a tedy ke kompromitaci dat.
 
 Tento způsob se nehodí používat na obecné skriptování -- je totiž velmi závislé pouze na předávání dat mezi oknem a danou stránkou, což je velmi limitující.
-TODO\todo
 
 \subsection{Spuštění v emulátoru}
 
@@ -520,7 +571,7 @@ Jednou z možností, jak bezpečně spouštět nedůvěryhodný kód, je jeho iz
 Tento přístup zajišťuje, že kód nemá přímý přístup ke zdrojům hlavní aplikace. 
 Pro zvýšení bezpečnosti je nutné využít nástroj \texttt{chroot}, který omezuje přístup spuštěného procesu pouze na konkrétní adresářovou strukturu.
 
-Existují specializované knihovny, jako například \texttt{vm2} nebo \texttt{isolated-vm}, které umožňují vytvoření izolovaných prostředí pro spouštění kódu. 
+Existují specializované knihovny, jako například \texttt{vm2} nebo \texttt{isolated-vm} pro JS, které umožňují vytvoření izolovaných prostředí pro spouštění kódu. 
 Tyto knihovny však nejsou univerzálně použitelné, zejména v prostředí webových prohlížečů, kde nejsou podporovány. 
 Tím pádem nelze tento přístup nasadit v případech, kdy má být kód spuštěn přímo v uživatelském prohlížeči.
 
@@ -531,32 +582,31 @@ Je proto nezbytné pravidelně aktualizovat používané knihovny a sledovat nov
 Hlavním problémem tohoto přístupu je komunikace mezi izolovaným procesem a hlavní aplikací. 
 Vzhledem k oddělení prostředí je komunikace omezená na asynchronní předávání zpráv, což přináší zásadní omezení. 
 Například skript nebo plugin spuštěný v tomto režimu nemůže v reálném čase ovlivňovat stránku, což znemožňuje implementaci dynamických interakcí, jako je přidání prvku na stránku po kliknutí. 
-Implementace něčeho takového by měla velmi velké zpoždění a to se pro prezentační program nehodí.
+Implementace něčeho takového by měla velmi velké zpoždění, a to se pro prezentační program nehodí.
 
 Alternativou k samostatným procesům je spuštění nedůvěryhodného kódu v kontejnerech, například pomocí Dockeru. 
-Tento přístup poskytuje vyšší úroveň izolace, protože kontejnery mají vlastní virtuální prostředí a mohou být snadno omezeny v přístupu k hostitelskému systému.
+Tento přístup poskytuje vyšší úroveň izolace~\cite{docker}, protože kontejnery mají vlastní virtuální prostředí a mohou být snadno omezeny v přístupu k hostitelskému systému.
 
-Jedním z příkladů implementace tohoto přístupu je projekt Glot.io\todo{citace}, který umožňuje spouštění kódu různých programovacích jazyků v izolovaných kontejnerech. 
-Kontejnery však trpí podobnými problémy jako samostatné procesy, zejména v oblasti komunikace a výkonu. 
+Jedním z příkladů implementace tohoto přístupu je projekt Glot.io~\cite{glotio}, který umožňuje spouštění kódu různých programovacích jazyků v izolovaných kontejnerech. 
+Kontejnery však trpí podobnými problémy jako samostatné procesy~\cite{glotio}, zejména v oblasti komunikace a výkonu. 
 
-Kontejnery přidávají režii, což může vést k výraznému zpomalení při spouštění kódu a komunikaci s hlavní aplikací. 
+Kontejnery totiž přidávají režii, což může vést k výraznému zpomalení při spouštění kódu a komunikaci s hlavní aplikací. 
 Pro některé scénáře, například interaktivní webové aplikace, je toto zpoždění nepřijatelné.
-
 
 \subsection{WebAssembly}\label{text:webassembly}
 
 WebAssembly je nový způsob spouštění bezpečného kódu na webové stránce.
-WebAssembly spouští pseudo-assembly kód.
-Toto prostředí je velmi omezené, protože běží v jiném prostředí než obyčejné stránky.
+WebAssembly spouští pseudo-assembly kód~\cite{webassembly}.
+Toto prostředí je velmi omezené, protože běží v jiném prostředí než obyčejné stránky~\cite{webassembly, figma_plugins_blog}.
 Dané programy bez konkrétní implementace nemají k dispozici DOM a v podstatě cokoliv spojené s prohlížečem.
-WebAssembly je samozřejmě možné spouštět i mimo webový prohlížeč, např. na serveru či desktopu v běhových prostředích jako je Node.js či Deno.
+WebAssembly je samozřejmě možné spouštět i mimo webový prohlížeč, např. na serveru či desktopu v běhových prostředích jako je Node.js či Deno~\cite{webassembly}.
 
-Tento pseudo-assembly kód se dá vygenerovat v podstatě z jakéhokoliv jazyku, oficiálně jsou podporované základní jazyky jako například C++, C\#, Rust a mnoho dalšího.
-Spuštěný kód v prohlížeči či v běhovém prostředí může komunikovat s předem připravenými funkcemi, které mohou již prohlížeč, resp. webovou stránku, modifikovat.
+Tento pseudo-assembly kód se dá vygenerovat v podstatě z jakéhokoliv jazyku, oficiálně jsou podporované základní jazyky jako například C++, C\#, Rust~\cite{webassembly} a mnoho dalších.
+Spuštěný kód v prohlížeči či v běhovém prostředí může komunikovat s předem připravenými funkcemi~\cite{webassembly}, které mohou již prohlížeč, resp. webovou stránku, modifikovat.
 Spuštěný kód může v lineární paměti ukládat všelijaké data, ze kterých poté webová stránka může číst či i zapisovat data.
 Samotný kód totiž může pracovat jenom s číselnými hodnotami a často je nutné je konvertovat z interních do externích typů.
 
-Nevýhodou WebAssembly je poměrně malý výkon\todo{citace} a poměrně špatné možnosti debugování.
+Nevýhodou WebAssembly je poměrně malý výkon~\cite{webassembly, figma_plugins_blog} a poměrně špatné možnosti debugování.
 
 Pro skriptování je to vhodnou alternativou díky možnostem jazyků. 
 Na druhou stranu je to taktéž velký problém, protože udržovat dokumentaci a funkční několik jazyků je přinejmenším pro účely této práce skoro nemožné.
@@ -564,49 +614,231 @@ Na druhou stranu je to taktéž velký problém, protože udržovat dokumentaci 
 Pokud bych se rozhodl používat tento způsob skriptování, musel bych se zaměřit pouze na jeden jazyk.
 Nejlogičtější varianta na skriptování přídavných rozšíření by byl nějaký jazyk, který je již určen na skriptování.
 Na webu pro většinu vývojářů bude jasná volba JavaScript.
-Pro spojení WebAssembly a JS zajišťuje např. knihovna QuickJS\todo{citace}, AssemblyScript\todo{citace} a další.
+Pro spojení mezi WebAssembly a JS zajišťuje např. knihovna QuickJS~\cite{quickjs}, AssemblyScript~\cite{assemblyscript} a další.
 
-Tyto knihovny zabalují nějakou formu běhového prostředí (nejčastější je emscripten\todo{citace, citace}, který například používá systém rozšíření ve Figma\todo{zdroj}) přes kterou poté kód spouští.
-Tyto knihovny avšak nepotřebují řešit jen spouštění, ale je nutné taktéž řešit již zmíněné předávání (resp. konverze) dat mezi spuštěným programem, spouštěčem a programem v prohlížeči.
-
+Tyto knihovny zabalují nějakou formu běhového prostředí (nejčastější je emscripten~\cite{assemblyscript, quickjs, figma_plugins_blog}, který například používá systém rozšíření ve Figma~\cite{figma_plugins_blog}) přes kterou poté kód spouští.
+Tyto knihovny avšak nepotřebují řešit jen spouštění, ale je nutné taktéž řešit již zmíněné předávání (resp. konverze) dat~\cite{assemblyscript} mezi spuštěným programem, spouštěčem a programem v prohlížeči.
 
 \section{Požadavky}
-a
 
-\section{Uživatelské případy}
+Požadavky určují očekávané vlastnosti~\cite{uml_2007} a chování budoucí aplikace. Dělí se na dvě hlavní kategorie: funkční a nefunkční požadavky. Jsou klíčové pro správný návrh aplikace, aby byla schopna splnit veškeré definované nároky.
+
+\subsection{Funkční požadavky}
+
+Funkční požadavky vymezují konkrétní funkcionality~\cite{uml_2007}, které aplikace musí podporovat. Na těchto požadavcích jsou postaveny uživatelské případy (viz kapitola~\ref{chapter:analyza/uzivatelskePripady}), jež specifikují, jak bude aplikace využívána. Přehled všech identifikovaných funkčních požadavků je uveden níže.
+
+\begin{description}
+    \item[F1 -- Uživatelé]
+    Systém musí umožnit správu uživatelských účtů, včetně registrace, přihlášení a změny nastavení uživatele. Ke každému uživateli jsou vedeny různé informace, jako je nastavení a preference. Veškeré uživatelské účty mají stejné pravomoce.
+    
+    \item[F2 -- Materiály]
+    Uživatel musí mít možnost prohlížet, vytvářet, upravovat, sdílet, mazat a spravovat materiály. Materiál je soubor dat, které se vykreslují v přehrávači (viz F3). Mohou obsahovat jednotlivé snímky. Snímky obsahují jednotlivé bloky, které reprezentují např. text, obrázek či pokročilý graf.
+    
+    \item[F3 -- Editor a přehrávač]
+    Systém musí umožnit uživatelům vytvářet a upravovat materiály pomocí vestavěného editoru s podporou správy snímků, bloků a interaktivity.\todo{spolupráce, verzování?}
+    
+    \item[F4 -- Média]
+    Uživatel musí mít možnost přidávat do materiálů různé typy médií, včetně obrázků a videí.
+    
+    \item[F5 -- Šablony]
+    Uživatel musí mít možnost vytvářet a používat šablony pro efektivnější tvorbu materiálů. Šablony jsou předpřipravené materiály, které obsahují různé typy snímků, které lze opakovaně používat. 
+    
+    \item[F6 -- Rozšíření]
+    Systém musí podporovat komunitní rozšíření pro rozšíření funkcionality editoru a přehrávače.
+    Schválená rozšíření budou k dispozici přímo v aplikace pro instalaci kýmkoliv.
+    
+    \item[F7 -- Import/Export]
+    Systém musí umožnit importování a exportování materiálů do a z různých formátů.
+\end{description}
+
+
+
+
+\subsection{Nefunkční požadavky}
+Nefunkční požadavky~\cite{uml_2007} neurčují přímo funkčnost aplikace, ale stanovují podmínky, které zajistí její dlouhodobou udržitelnost a kvalitu. Přehled všech relevantních nefunkčních požadavků je uveden níže.
+
+
+\begin{description}
+    \item[N1 -- Výkon]
+    Aplikace musí být schopna efektivně pracovat i s velkými materiály bez znatelného zpomalení.
+    
+    \item[N2 -- Webová aplikace]
+    Výsledek musí být alespoň webová aplikace, která bude napsána ve validním HTML, CSS a JS.
+    
+    \item[N3 -- Bezpečnost]
+    Uživatelé musí být chráněni proti neoprávněnému přístupu k jejich datům pomocí ověřovacích mechanismů.
+    
+    \item[N4 -- Škálovatelnost]
+    Aplikace musí být navržena tak, aby zvládla velký počet uživatelů a jejich materiálů bez ztráty výkonu.
+    
+    \item[N5 -- Podpora jazyků]
+    Systém musí podporovat více jazyků a umožňovat snadnou lokalizaci.
+    
+    \item[N6 -- Kompatibilita]
+    Aplikace musí být přístupná z moderních webových prohlížečů a různých zařízení bez nutnosti instalace softwaru.
+    
+    \item[N7 -- Modularita]
+    Editor musí být navržen modulárně tak, aby bylo možné snadno rozšiřovat jeho funkcionalitu pomocí komunity (vlastní bloky) ale i komunitních rozšíření.
+    
+    \item[N8 -- Responzivní design]
+    Aplikace musí být optimalizovaná pro použití na různých typech zařízení, včetně mobilních telefonů a tabletů.
+    
+    \item[N9 -- Intuitivní uživatelské rozhraní]
+    Rozhraní musí být navrženo s ohledem na použitelnost a jednoduchost, aby umožnilo snadnou práci s materiály.
+\end{description}
+\section{Uživatelské případy}\label{chapter:analyza/uzivatelskePripady}
 
 Tato kapitola slouží k definici typů uživatelů aplikace a toho, jak aplikaci budou používat.
-Uživatelské případy rozvinují funkční požadavky tak, aby bylo zcela jasné, co cílená aplikace má umět a implementovat za funkcionality.
+Uživatelské případy rozvinují funkční požadavky~\cite{uml_2007} tak, aby bylo zcela jasné, co cílená aplikace má umět a implementovat za funkcionality.
 
 Uživatelé -- aktéři této aplikace se dají rozdělit do následujících popisných skupin:
 
 \begin{description}
-    \item[Nepřihlášený uživatel] tedy někdo, kdo je na webové stránce, nemá k dispozici materiál k používání. Může se například přihlásit.
-    \item[Přihlášený uživatel] tedy někdo, kdo je přihlášen v aplikaci a chce v aplikaci používat -- například používat či tvořit materiály.
-    \item[Tvůrce] tedy někdo, kdo vytváří materiály. Může se jednat o učitele ale i obyčejného uživatele. Jeho cílem je v aplikaci vytvořit prezentaci, plakát či cokoliv jiného. V aplikaci musí být přihlášen.
-    \item[Čtenář] tedy někdo, kdo přišel do této webové aplikace číst, resp. používat materiály, které vytvořil někdo jiný. Může být přihlášen i nepřihlášen.
+    \item[Nepřihlášený uživatel] Tedy někdo, kdo je na webové stránce, nemá k dispozici materiál k používání. Může se například přihlásit.
+    \item[Přihlášený uživatel] Tedy někdo, kdo je přihlášen v aplikaci a chce v aplikaci používat -- například používat či tvořit materiály.
+    \item[Tvůrce] Tedy někdo, kdo vytváří materiály. Může se jednat o učitele ale i obyčejného uživatele. Jeho cílem je v aplikaci vytvořit prezentaci, plakát či cokoliv jiného. V aplikaci musí být přihlášen.
+    \item[Čtenář] Tedy někdo, kdo přišel do této webové aplikace číst, resp. používat materiály, které vytvořil někdo jiný. Může být přihlášen i nepřihlášen.
 \end{description}
 
 Níže jsou definovány všechny uživatelské případy, které mají být implementovány ve výsledné aplikaci z této práce.
 
 \begin{description}
     \item[UC1 -- Registrace]
+    Uživatel se zaregistruje pomocí e-mailu a hesla. Po registraci je vyžadováno potvrzení e-mailové adresy prostřednictvím zaslaného ověřovacího odkazu.
+
     \item[UC2 -- Přihlášení]
-    \item[UC3 -- Prohlížet materiál] 
+    Uživatel se může přihlásit pomocí e-mailu a hesla. Alternativně lze použít ověření přes e-mail, kdy je na zadaný e-mail zaslán jednorázový přihlašovací kód.
+    
+    \item[UC3 -- Prohlížet materiál]
+    Uživatel může procházet dostupné materiály. Musí mít možnost přecházet mezi jednotlivými snímky, interagovat s interaktivními prvky, přepnout na celou obrazovku, provádět pohyb v materiálu a další související akce.
+    
     \item[UC4 -- Vytvořit materiál]
-    \item[UC5 -- Upravit materiál] ccc
+    Uživatel může vytvořit nový materiál buď od začátku, nebo duplikací existujícího materiálu.
+    
+    \item[UC5 -- Upravit materiál]
+    Uživatel může provádět komplexní úpravy materiálu pomocí vestavěného editoru. Upravování je rozděleno do několika dílčích případů:
+        
         \begin{description}
-            \item[UC5.1 -- xd] 
+            \item[UC5.1 -- Správa snímků]
+            Uživatel může přidávat více snímků, měnit jejich pořadí a upravovat jejich velikost.
+            
+            \item[UC5.2 -- Přidání bloku]
+            Uživatel může přidávat jednotlivé bloky nebo skupiny bloků. Obsah může být čerpán z banky zdrojů, například GIFů nebo obrázků.
+            
+            \item[UC5.3 -- Úprava vlastností bloku]
+            Uživatel může ručně měnit vlastnosti bloků, jejich zobrazení, grafiku a speficiké vlastnosti bloků. U interaktivních bloků lze definovat specifické akce, které se spustí při určité události (např. kliknutí, časovač, ...). Možné je také upravovat proměnné, nastavovat podmínky a další interaktivní chování.
+            
+            \item[UC5.4 -- Správa bloků]
+            Uživatel může bloky označovat, kopírovat, mazat, přesouvat, seskupovat a provádět další operace.
+            
+            \item[UC5.5 -- Přidat média]
+            Uživatel může nahrávat a vkládat vlastní obsah do prezentace.
+            
+            \item[UC5.6 -- Historie]
+            Uživatel má přístup k historii úprav, může se pohybovat zpět a vpřed v provedených změnách.
         \end{description}
+    
     \item[UC6 -- Sdílet materiál]
-    \item[UC7 -- Seznam materiálů] 
+    Uživatel může nastavit viditelnost materiálu v různých režimech (nepřihlášený, pouze přihlášení uživatelé, soukromý). Lze definovat způsob procházení materiálu (automatický, ruční, pouze interaktivitou). Dále může povolit procházení materiálů jako plátna či jako prezentaci.
+    
+    \item[UC7 -- Správa materiálů]
+    Uživatel může spravovat své materiály, zobrazit seznam, vyhledávat a provádět různé akce, včetně mazání materiálů.
+    
     \item[UC8 -- Změna nastavení]
+    Uživatel může měnit svá uživatelská nastavení, jako je heslo, e-mail a další osobní údaje.
     
+    \item[UC9 -- Změna preferencí]
+    Uživatel může upravovat nastavení editoru, způsob ukládání a způsob používání jednotlivých operací.
     
-    \item[UCXXX -- Šablony]
-    \item[UCXXX -- Importování]
-    \item[UCXXX -- Exportování]
-    \item[UCXXX -- Změna jazyku]
+    \item[UC10 -- Změna jazyka]
+    Uživatel může změnit jazyk aplikace. Aplikace se následně přepne do zvoleného jazyka. 
+    
+    \item[UC11 -- Použití šablon]
+    Uživatel může vytvářet, upravovat a používat předdefinované šablony pro rychlejší tvorbu materiálů.
+
+    \item[UC12 -- Použití komunitního rozšíření]
+    Uživatel může instalovat a spravovat komunitní rozšíření, která umožňují přidávání nových funkcí do editoru.
+
+    
+    \item[UC13 -- Tvorba komunitního rozšíření]
+    Uživatel může vytvářet vlastní komunitní rozšíření pro editor a přehrávač materiálů. Tyto rozšíření se píší ve skriptovacím jazyce a dovolují uživateli poslouchat různé akce, vytvářet bloky a upravovat je.
+    
+    \item[UC14 -- Importování materiálu]
+    Uživatel může importovat externí soubory nebo formáty pro vytvoření materiálu.
+    
+    \item[UC15 -- Exportování materiálu]
+    Uživatel může exportovat svůj materiál do různých formátů (např. PDF, obrázky, interaktivní formáty) pro sdílení a archivaci. Tato sdílení z důvodu nespolupracujících formátů budou velmi omezená svojí funkcionalitou a vzhledem.
 \end{description}
 
+
+Matice pokrytí určuje~\cite{uml_2007}, které funkční požadavky jsou nezbytné pro realizaci uživatelských případů. 
+Zajišťuje kontrolu, zda každý funkční požadavek odpovídá alespoň jednomu uživatelskému případu a zda jsou pro každý uživatelský případ definovány všechny potřebné funkční požadavky. 
+Pro tuto analýzu jsem sestavil matici pokrytí funkčních požadavků (viz tabulka~\ref{tabular:maticePokryti}).
+
+\renewcommand{\c}{\checkmark}
+
+\begin{table}[ht!]
+\centering
+\caption[Matice pokrytí funkčních požadavků]{~Matice pokrytí funkčních požadavků}\label{tabular:maticePokryti}
+\begin{tabular}{l|c|c|c|c|c|c|c}
+     ~         & F1 & F2 & F3 & F4 & F5 & F6 & F7 \\\hline\hline
+     UC1       & \c &    &    &    &    &    &    \\\hline
+     UC2       & \c &    &    &    &    &    &    \\\hline
+     UC3       &    & \c & \c &    &    &    &    \\\hline
+     UC4       & \c & \c &    &    &    &    &    \\\hline
+     UC5       &    & \c & \c & \c & \c & \c &    \\\hline
+     UC6       &    & \c & \c &    &    &    &    \\\hline
+     UC7       & \c & \c &    &    &    &    &    \\\hline
+     UC8       & \c &    &    &    &    &    &    \\\hline
+     UC9       & \c &    & \c &    &    &    &    \\\hline
+     UC10      & \c &    &    &    &    &    &    \\\hline
+     UC11      &    & \c & \c &    & \c &    &    \\\hline
+     UC12      & \c &    & \c &    &    & \c &    \\\hline
+     UC13      & \c &    & \c &    &    & \c &    \\\hline
+     UC14      & \c & \c &    & \c &    &    & \c \\\hline
+     UC15      & \c & \c &    & \c &    &    & \c \\
+\end{tabular}
+\end{table}
+
+
 \section{Doménový model}
+
+Pro lepší porozumění vztahům mezi jednotlivými prvky v aplikaci je nutné vytvořit doménový model. Tento model znázorňuje~\cite{uml_2007}, jak jsou entity vzájemně propojeny a jaká data uchovávají. Na základě doménového modelu lze následně navrhnout databázový model. Diagram doménového modelu je uveden na obrázku~\ref{fig:domenovyModel}. Níže jsou popsány klíčové entity tohoto modelu.
+
+\begin{description}
+    \item[Uživatel] 
+    Entita reprezentující uživatele systému. Obsahuje informace jako jméno a příjmení, e-mailovou adresu, hashované heslo, stav aktivace, aktivační token, datum vytvoření účtu, datum posledního přihlášení a datum poslední změny hesla.
+
+    \item[Žádost o přihlášení] 
+    Entita uchovávající kód žádosti o přihlášení, jeho expiraci a stav použití, o které požádal konkrétní uživatel
+    
+    \item[Preference] 
+    Reprezentuje uživatelská nastavení editoru. Obsahuje možnosti ukládání, frekvenci ukládání, velikost historie a specifické funkce editoru. Vytváří se při vytvoření uživatele v aplikaci.
+
+    \item[Soubor] 
+    Entita popisující soubory nahrané do systému. Obsahuje název, MIME typ, velikost, typ úložiště a umístění souboru. Mohou se používat v konkrétních blocích materiálů.
+    
+    \item[Materiál] 
+    Reprezentuje obsah vytvářený uživatelem. Obsahuje název, datum vytvoření a datum poslední úpravy. Obsahuje jednotlivé snímky.
+    
+    \item[Viditelnost] 
+    Definuje viditelnost materiálu v systému pro ostatní uživatele. Je připojena k různým entitám pro správu jejich přístupnosti.
+        
+    \item[Procházení] 
+    Nastavení pro procházení materiálu, zahrnuje způsob procházení a čas automatického přechodu mezi snímky.
+    
+    \item[Mód] 
+    Určuje režim, ve kterém je materiál zobrazen nebo přehráván.
+    
+    \item[Snímek] 
+    Každý materiál obsahuje snímky, které představují jednotlivé části obsahu. Entita obsahuje náhledový obrázek a pozici v rámci materiálu. Obsahuje taktéž data, které udávají nastavení snímku, např. velikost a šířku, a dále obsahuje bloky materiálu.
+    
+    \item[Blok] 
+    Základní stavební prvek snímku. Obsahuje atributy jako typ, pozici, velikost, rotaci, přiřazenou skupinu, vrstvu, stav zamknutí a interaktivitu. Má další specifické vlastnosti v závislosti na konkrétním typu bloku. Například se může jednat o text, obrázek či komplexní blok pro zobrazení kódu.
+\end{description}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=1\textwidth]{media/03_analyza/domenovy_model.pdf}
+    \caption{Diagram doménového modelu}\label{fig:domenovyModel}
+\end{figure}
