@@ -469,7 +469,10 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             this.render();
         });
         element.querySelector(".duplicate")?.addEventListener("click", () => {
-            this.blocks[0].interactivity.push(JSON.parse(JSON.stringify(interactivity)));
+            this.blocks[0].interactivity.push(JSON.parse(JSON.stringify({
+                ...interactivity,
+                id: Math.random().toString(36).substring(7)
+            })));
             this.render();
         });
         element.querySelector(".move-up")?.addEventListener("click", () => {
