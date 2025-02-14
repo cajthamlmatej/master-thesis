@@ -1,5 +1,6 @@
 import {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
+import mermaid from "mermaid";
 
 export class IframePlayerBlock extends PlayerBlock {
     private content: string;
@@ -18,6 +19,26 @@ export class IframePlayerBlock extends PlayerBlock {
         element.classList.add("block");
         element.classList.add("block--type-iframe");
 
+        const content = document.createElement("pre");
+
+        content.classList.add("block-content");
+        element.appendChild(content);
+
         return element;
+    }
+
+    synchronize() {
+        super.synchronize();
+
+        this.renderIframe(this.element.querySelector(".block-content")!);
+    }
+
+    private async renderIframe(content: HTMLElement) {
+        content.innerHTML = "";
+        const iframe = document.createElement("iframe");
+        iframe.srcdoc = this.content;
+        iframe.setAttribute("sandbox", "allow-scripts");
+
+        content.appendChild(iframe);
     }
 }

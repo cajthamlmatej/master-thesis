@@ -114,21 +114,18 @@ export class IframeEditorBlock extends EditorBlock {
                 content.removeAttribute("data-processed");
 
                 content.innerHTML = "";
+
                 const iframe = document.createElement("iframe");
+                iframe.srcdoc = this.content;
+                iframe.setAttribute("sandbox", "allow-scripts");
 
                 content.appendChild(iframe);
-
-                iframe.contentDocument!.body.innerHTML = this.content;
-                iframe.contentDocument!.close();
-
-                content.removeAttribute("data-processed");
             } catch (e) {
                 console.error(e);
             }
         } else {
             this.element.classList.add("block--type-iframe--editable");
             content.setAttribute("contenteditable", "true");
-            content.removeAttribute("data-processed");
             content.innerText = this.content;
         }
         this.synchronize();
