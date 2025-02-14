@@ -115,7 +115,6 @@ export class MermaidEditorBlock extends EditorBlock {
 
         if (!value) {
             try {
-
                 this.element.classList.remove("block--type-mermaid--editable");
                 content.setAttribute("contenteditable", "false");
                 content.removeAttribute("data-processed");

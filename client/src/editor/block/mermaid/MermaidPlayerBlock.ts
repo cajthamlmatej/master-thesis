@@ -39,32 +39,37 @@ export class MermaidPlayerBlock extends PlayerBlock {
 
         const css = document.createElement("style");
         css.innerHTML = `
-            body {
-                margin: 0;
-                padding: 0;
-                height: 100%;
-                width: 100%;
-            }
-            svg {
-                height: 100%;
-                width: 100%;
-                flex-grow: 1;
-                object-fit: contain;
-                max-width: 100% !important;
-                overflow: hidden;
-            }`;
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+        svg {
+            height: 100%;
+            width: 100%;
+            flex-grow: 1;
+            object-fit: contain;
+            max-width: 100% !important;
+            overflow: hidden;
+        }`;
 
         iframe.addEventListener("load", async() => {
-            iframe.contentDocument!.head.appendChild(css);
+            try {
+                iframe.contentDocument!.head.appendChild(css);
 
-            const {svg} = await mermaid.render('graphDiv', this.content);
+                const {svg} = await mermaid.render('graphDiv', this.content);
 
-            iframe.contentDocument!.body.innerHTML = svg;
-            iframe.contentDocument!.close();
+                iframe.contentDocument!.body.innerHTML = svg;
+                iframe.contentDocument!.close();
 
-            content.removeAttribute("data-processed");
+                content.removeAttribute("data-processed");
+            } catch (e) {
+                console.error(e);
+                console.log(document.body.querySelector(`#dgraphDiv`));
+                document.body.querySelector(`#dgraphDiv`)?.remove();
+            }
         });
-
 
         content.appendChild(iframe);
     }
