@@ -8,6 +8,7 @@
                 <button @mousedown="(e) => add(e, 'interactiveArea')"><span
                     class="mdi mdi-cursor-default-click-outline"></span></button>
                 <button @mousedown="(e) => add(e, 'mermaid')"><span class="mdi mdi-chart-timeline"></span></button>
+                <button @mousedown="(e) => add(e, 'iframe')"><span class="mdi mdi-application-parentheses-outline"></span></button>
             </div>
         </template>
     </Navigation>
@@ -25,6 +26,7 @@ import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
 import Editor from "@/editor/Editor";
 import {InteractiveAreaEditorBlock} from "@/editor/block/interactiveArea/InteractiveAreaEditorBlock";
 import {MermaidEditorBlock} from "@/editor/block/mermaid/MermaidEditorBlock";
+import {IframeEditorBlock} from "@/editor/block/iframe/IframeEditorBlock";
 
 const blocksMenu = ref(true);
 
@@ -53,7 +55,7 @@ watch(() => materialStore.getEditor(), (value) => {
     editor.value = value as Editor;
 });
 
-const add = (event: MouseEvent, type: 'text' | 'image' | 'shape' | 'interactiveArea' | 'mermaid') => {
+const add = (event: MouseEvent, type: 'text' | 'image' | 'shape' | 'interactiveArea' | 'mermaid' | 'iframe') => {
     const editorValue = toRaw(editor.value);
 
     if (!editorValue) {
@@ -134,6 +136,17 @@ const add = (event: MouseEvent, type: 'text' | 'image' | 'shape' | 'interactiveA
                     zIndex: 0,
                 },
                 "graph TB\na-->b");
+            break;
+        case 'iframe':
+            block = new IframeEditorBlock(
+                {
+                    id: generateUUID(),
+                    position: {x: -100, y: -100},
+                    size: {width: smaller / 4, height: smaller / 4},
+                    rotation: 0,
+                    zIndex: 0,
+                },
+                "<p><b>Example</b> iframe</p>");
             break;
     }
 

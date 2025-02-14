@@ -20,6 +20,9 @@ import {InteractiveAreaBlockDeserializer} from "@/editor/block/interactiveArea/I
 import {MermaidEditorBlock} from "@/editor/block/mermaid/MermaidEditorBlock";
 import {MermaidPlayerBlock} from "@/editor/block/mermaid/MermaidPlayerBlock";
 import {MermaidBlockDeserializer} from "@/editor/block/mermaid/MermaidBlockDeserializer";
+import {IframeEditorBlock} from "@/editor/block/iframe/IframeEditorBlock";
+import {IframePlayerBlock} from "@/editor/block/iframe/IframePlayerBlock";
+import {IframeBlockDeserializer} from "@/editor/block/iframe/IframeBlockDeserializer";
 // $ADD_BLOCK_REGISTRY_IMPORT
 
 // note(Matej): dont remove $ADD_BLOCK_REGISTRY_* comments, it is used by the generator
@@ -41,6 +44,7 @@ export class BlockRegistry {
         this.register("shape", ShapeEditorBlock, ShapePlayerBlock, ShapeBlockDeserializer);
         this.register("interactiveArea", InteractiveAreaEditorBlock, InteractiveAreaPlayerBlock, InteractiveAreaBlockDeserializer);
         this.register("mermaid", MermaidEditorBlock, MermaidPlayerBlock, MermaidBlockDeserializer);
+        this.register("iframe", IframeEditorBlock, IframePlayerBlock, IframeBlockDeserializer);
         // $ADD_BLOCK_REGISTRY_ENTRY
     }
 
