@@ -159,6 +159,8 @@
             "previous-slide": "Previous slide",
             "next-slide": "Next slide",
             "fullscreen": "Fullscreen",
+            "enable-draw": "Enable drawing",
+            "disable-draw": "Disable drawing",
             "edit": "Edit this material",
             "leave": "Leave material",
             "automatic-stop": "Stop automatic playback",

@@ -89,6 +89,15 @@
                 />
 
                 <NavigationButton
+                    :label="player?.getMode() !== PlayerMode.DRAW ? $t('player.control.enable-draw') : $t('player.control.disable-draw')"
+                    :tooltip-text="player?.getMode() !== PlayerMode.DRAW ? $t('player.control.enable-draw') : $t('player.control.disable-draw')"
+                    hide-mobile
+                    @click="drawing = !drawing"
+                    icon="draw-pen"
+                    tooltip-position="bottom"
+                />
+
+                <NavigationButton
                     :label="$t('player.control.edit')"
                     :to="{name: 'Editor', params: {material: route.params.material}}"
                     :tooltip-text="$t('player.control.edit')"
@@ -178,6 +187,12 @@ let active = ref<boolean>(false);
 
 const click = (e: MouseEvent) => {
     if (material.value.method !== 'MANUAL') return;
+    if (player.value?.getMode() === PlayerMode.DRAW) return;
+
+    const target = e.target as HTMLElement;
+    if(!target.classList.contains("player-container") && !target.classList.contains("player-content")) {
+        return;
+    }
 
     const position = {x: e.clientX, y: e.clientY};
     const width = window.innerWidth;
@@ -333,6 +348,22 @@ onUnmounted(() => {
     if (automaticMovementInterval) clearInterval(automaticMovementInterval);
 });
 
+const drawing = ref(false);
+
+watch(drawing, (value) => {
+    const player = playerStore.getPlayer() as Player | undefined;
+
+    if(!player) return;
+
+    if(value) {
+        player.changeMode(PlayerMode.DRAW);
+    } else {
+        if(material.value.sizing === 'MOVEMENT')
+            player.changeMode(PlayerMode.MOVE);
+        else
+            player.changeMode(PlayerMode.PLAY);
+    }
+});
 </script>
 
 <style lang="scss" scoped>

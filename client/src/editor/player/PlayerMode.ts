@@ -1,4 +1,5 @@
 export enum PlayerMode {
     PLAY = "play",
-    MOVE = "move"
+    MOVE = "move",
+    DRAW = "draw",
 }

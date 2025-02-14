@@ -1,6 +1,8 @@
 import {BlockRegistry} from "@/editor/block/BlockRegistry";
 import {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {PlayerMode} from "@/editor/player/PlayerMode";
+import {PlayerDraw} from "@/editor/player/PlayerDraw";
+import PlayerEvents from "@/editor/player/PlayerEvents";
 
 export default class Player {
     private static readonly DEFAULT_PADDING = 32;
@@ -14,6 +16,8 @@ export default class Player {
     private scale: number = 1;
     private position = {x: 0, y: 0};
 
+    public readonly events = new PlayerEvents();
+
     constructor(element: HTMLElement, size: { width: number, height: number }, blocks: PlayerBlock[]) {
         this.blockRegistry = new BlockRegistry();
         this.element = element;
@@ -25,6 +29,12 @@ export default class Player {
 
         this.setBlocks(blocks);
         this.changeMode(PlayerMode.PLAY);
+
+        new PlayerDraw(this);
+    }
+
+    public getElement() {
+        return this.element;
     }
 
     public addBlock(block: PlayerBlock) {
@@ -100,6 +110,8 @@ export default class Player {
                 y: this.position.y + offsetY * this.scale
             };
 
+            this.events.CANVAS_REPOSITION.emit();
+
             this.updateElement();
         };
         const handleUp = (event: MouseEvent) => {
@@ -116,7 +128,10 @@ export default class Player {
 
         this.element.classList.remove("player--mode-play");
         this.element.classList.remove("player--mode-move");
+        this.element.classList.remove("player--mode-draw");
         this.element.classList.add("player--mode-" + mode);
+
+        this.events.MODE_CHANGED.emit(mode);
     }
 
     public screenToEditorCoordinates(screenX: number, screenY: number) {
@@ -163,6 +178,7 @@ export default class Player {
         this.position.y -= (mouseY * (scaleChange - 1));
 
         this.scale = newScale;
+        this.events.CANVAS_REPOSITION.emit();
 
         this.updateElement();
     }
@@ -221,5 +237,9 @@ export default class Player {
 
     private setupPlayer() {
         this.element.innerHTML = `<div class="player-content"></div>`
+    }
+
+    public getMode() {
+        return this.mode;
     }
 }

@@ -159,6 +159,8 @@
             "previous-slide": "Předchozí snímek",
             "next-slide": "Další snímek",
             "fullscreen": "Celá obrazovka",
+            "enable-draw": "Zapnout kreslení",
+            "disable-draw": "Zrušit kreslení",
             "edit": "Upravit materiál",
             "leave": "Opustit materiál",
             "automatic-stop": "Zastavit automatické procházení",
