@@ -57,6 +57,10 @@
                 }
             }
 
+            &--moving {
+                cursor: move;
+            }
+
             &--hover.block--selectable:not(&.block--locked) {
                 outline: var(--selector-size) ridge rgba(0, 0, 0, 0.24);
             }
@@ -330,6 +334,11 @@
                         display: none;
                     }
                 }
+
+
+                &.block--movable.block--selected:not(&.block--moving) {
+                    cursor: pointer;
+                }
             }
 
 
@@ -367,6 +376,10 @@
 
                         overflow: auto;
                     }
+                }
+
+                &.block--movable.block--selected:not(&.block--moving) {
+                    cursor: pointer;
                 }
             }
         }

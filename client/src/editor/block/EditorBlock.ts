@@ -492,11 +492,13 @@ export abstract class EditorBlock {
 
     @BlockEventListener(BlockEvent.MOVEMENT_STARTED)
     private _onMovementStarted() {
+        this.element.classList.add("block--moving");
         this.moving = true;
     }
 
     @BlockEventListener(BlockEvent.MOVEMENT_ENDED)
     private _onMovementCompleted(start: { x: number; y: number; }) {
+        this.element.classList.remove("block--moving");
         this.moving = false;
         this.editor.events.HISTORY.emit();
     }
