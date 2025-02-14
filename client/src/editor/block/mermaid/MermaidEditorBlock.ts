@@ -86,6 +86,18 @@ export class MermaidEditorBlock extends EditorBlock {
     private onSelected() {
         this.element.addEventListener("keydown", this.onKeyDown.bind(this));
         this.element.addEventListener("input", this.onInput.bind(this));
+        this.element.addEventListener("paste", this.onPaste.bind(this));
+    }
+
+    private onPaste(event: ClipboardEvent) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const text = event.clipboardData?.getData("text/plain").trim() ?? "";
+
+        // note(Matej): the execCommand is obsolete but this is the only way to insert text (and is deprecated from 2020)
+        //     drafts for alternative are currently in progress (2025)
+        document.execCommand("insertText", false, text);
     }
 
     private onKeyDown(event: KeyboardEvent) {
@@ -191,6 +203,7 @@ export class MermaidEditorBlock extends EditorBlock {
 
         this.element.removeEventListener("keydown", this.onKeyDown.bind(this));
         this.element.removeEventListener("input", this.onInput.bind(this));
+        this.element.removeEventListener("paste", this.onPaste.bind(this));
         this.editor.events.HISTORY.emit();
     }
 
