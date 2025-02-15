@@ -30,7 +30,12 @@ const props = defineProps({
     }
 });
 
-const wrap = computed(() => props.wrap ? 'wrap' : 'nowrap');
+// const wrap = computed(() => props.wrap ? 'wrap' : 'nowrap');
+const wrapType = computed(() => {
+    return {
+        'value': props.wrap ? 'wrap' : 'nowrap'
+    }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -39,7 +44,7 @@ const wrap = computed(() => props.wrap ? 'wrap' : 'nowrap');
     flex-direction: row;
     align-items: v-bind("props.align");
     justify-content: v-bind("props.justify");
-    flex-wrap: v-bind("wrap");
+    flex-wrap: v-bind("wrapType.value");
 
     //width: calc(100% + v-bind("props.gap") * 1em);
     box-sizing: border-box;

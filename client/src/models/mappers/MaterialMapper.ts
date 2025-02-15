@@ -4,7 +4,7 @@ import {MaterialMethod, MaterialSizing, MaterialVisibility} from "../../../lib/d
 
 export default class MaterialMapper {
 
-    public static fromMaterialDTO(dto: MaterialDTO | (Omit<MaterialDTO, "slides"> & { thumbnail?: string })): Material {
+    public static fromMaterialDTO(dto: MaterialDTO | (Omit<MaterialDTO & { thumbnail: string | undefined }, "slides">)): Material {
         return new Material(dto.id, dto.createdAt, dto.updatedAt, dto.name,
             'slides' in dto ? dto.slides : [],
             dto.visibility as MaterialVisibility, dto.method as MaterialMethod, dto.automaticTime, dto.sizing as MaterialSizing,

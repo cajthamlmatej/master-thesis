@@ -3,11 +3,11 @@ export interface AllMaterialSuccessDTO {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
         visibility: string;
         method: string;
         automaticTime: number;
         sizing: string;
-        name: string;
         thumbnail: string | undefined;
     }[];
 }

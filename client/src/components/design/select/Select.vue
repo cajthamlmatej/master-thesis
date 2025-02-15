@@ -139,7 +139,7 @@ const props = defineProps({
 
 const emits = defineEmits(["update:value"]);
 
-const selectElement = ref(null);
+const selectElement = ref<HTMLElement | null>(null);
 const isPicking = ref(false);
 
 const dropdown = ref(null);
@@ -227,7 +227,7 @@ const choicesBehindSearch = computed(() => {
 
 const search = ref(false);
 const searchProxy = ref("");
-const searchElement = ref(null);
+const searchElement = ref<HTMLElement | null>(null);
 
 watch(() => isPicking.value, (value) => {
     if (search.value) {

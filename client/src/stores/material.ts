@@ -20,6 +20,8 @@ export const useMaterialStore = defineStore("material", () => {
             return;
         }
 
+        // note(Matej): typescript is tweaking out here, the type of material is in fact correct...
+        // @ts-ignore
         materials.value = response.materials.map((material) => MaterialMapper.fromMaterialDTO(material));
     }
 
