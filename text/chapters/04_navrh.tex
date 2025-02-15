@@ -76,7 +76,7 @@ Takovéto fundamentální rozdělení taktéž dovolí, že editor se může vel
 
 V pozdější kapitole \ref{text:navrh/obsah} rozepíši, jak hodlám řešit to, jak se bude obsah zobrazovat v editoru a přehrávači, jak se bude upravovat, definovat a podobně.
 
-\subsection{Server}
+\subsection{Server}\label{text:navrh/server}
 
 Cílem serverové části je poskytovat data klientské části a to kvůli \enquote{thick klienta}. 
 Tyto data bude server získávat z dalších služeb a zejména z databáze, ve které budou data perzistentně uložena.
@@ -147,25 +147,26 @@ Databázová část je zodpovědná za ukládání dat a poskytování rozhraní
 V této části je potřeba databáze, respektive systém řízení báze dat (SŘBD).
 
 Mezi zvažované možnosti jsem prvně přemýšlel o PostgreSQL a MongoDB.
-Tyto dvě databáze poskytují základní spektrum pro databáze a to SQL a NoSQL databáze. 
+Tyto dvě databáze poskytují základní spektrum pro databáze a to jsou~\cite{irena2015big, marek2018sql} SQL a NoSQL databáze. 
 Aplikace jako celý cíl má stanovené to, že má být v budoucnu rozšiřitelná.
 Je možné si představit, že tato aplikace bude v budoucnu ukládat velmi mnoho dat a bude potřeba, aby databázový stroj podporoval horizontální i vertikální škálování.
-Podobně data, která budou v databázi uložena, nemají jasně stanovenou strukturu a obecně se bude jednat o velmi komplexní objekty\todo{nekam dale odkazat?}.
-I když budou na sebe data ukazovat\todo{viz datový model?}, jsou tyto propojení velmi triviální.
+Podobně data, která budou v databázi uložena, nemají jasně stanovenou strukturu a obecně se bude jednat o velmi komplexní objekty.
+V této aplikaci je lepší ztratit konzistenci dat, které např. MongoDB negarantuje (resp. je v módu \enquote{někdy bude konzistentní}~\cite{irena2015big}), důležitá je dostupnost a odolnost k přerušení.
+I když budou na sebe data ukazovat (viz datový model v kapitole \ref{text:analyza/datovymodel}), jsou tyto propojení velmi triviální a spíše je vhodné dokumenty do sebe vnořovat.
 Proto nevidím důvod na použití relační databáze a to i díky struktuře dat.
 
-Alternativou s podobnými vlastnostmi jako MongoDB je CouchDB a Firebase Firestore. 
+Alternativou s podobnými vlastnostmi~\cite{irena2015big} jako MongoDB je CouchDB a Firebase Firestore. 
 CouchDB je dokumentová databáze, která využívá JSON pro ukládání dat, podporuje replikaci a je navržena pro distribuované systémy. 
 Její hlavní výhodou je tzv. \enquote{multi-master} replikace, která umožňuje synchronizaci mezi více instancemi databáze. 
-Firestore, jako součást ekosystému Firebase, nabízí jednoduché škálování a real-time synchronizaci, což je výhodné pro aplikace s požadavky na okamžitou aktualizaci dat mezi uživateli. 
+Firestore, jako součást ekosystému Firebase~\cite{firebase}, nabízí jednoduché škálování a real-time synchronizaci, což je výhodné pro aplikace s požadavky na okamžitou aktualizaci dat mezi uživateli. 
 Nicméně, Firestore je úzce spjat s Google Cloud platformou a může být nákladnější v závislosti na objemu provozu a požadavcích na škálovatelnost. 
 Vzhledem k těmto faktorům jsem se rozhodl zvolit MongoDB, která poskytuje dostatečnou flexibilitu pro strukturu dat i škálovatelnost bez závislosti na konkrétním poskytovateli cloudových služeb.
 
 Díky výběru knihovny Nest (viz kapitola \ref{text:navrh/server}) je vhodné pro databázi použít takový driver, aby s ním i daná knihovna uměla pracovat.
-V základním rozpoložení umí Nest pracovat s drivery (resp. ODM) Mongoose a Prisma.
+V základním rozpoložení umí Nest pracovat mimo jiné s drivery (resp. ODM/ORM) Mongoose a Prisma~\cite{nest_database}.
 S Mongoose mám velmi velké zkušenosti a používám ho i v projektech mimo Nest.
 Prisma je na druhou stranu velmi populární nejen pro MongoDB, ale i pro ostatní databázové stroje.
-Prisma má avšak velké problémy s MongoDB a často je nutné velmi složitě\todo{footnote na issues?} nastavovat server.
+Prisma má avšak velké problémy s MongoDB -- například se jedná o pomalejší dotazování\footnote{např. issue: \url{https://github.com/prisma/prisma/issues/16916}} či často je nutné velmi složitě nastavovat server~\cite{prisma_2025}.
 Definice entit a jejich závislostí je taktéž velmi omezená.
 Proto jsem se rozhodl použít s MongoDB právě knihovnu ODM mongoose.
 
@@ -173,12 +174,13 @@ Proto jsem se rozhodl použít s MongoDB právě knihovnu ODM mongoose.
 
 \section{Obsah}\label{text:navrh/obsah}
 
-\section{Autentizace a autorizace}\label{text:navrh/auth}
-
 \section{Uživatelské prostředí}
 
 \subsection{Komponenty}
 
 \subsection{Návrhové obrazovky}
 
+\section{Autentizace a autorizace}\label{text:navrh/auth}
+
 \section{Návrh API}
+
