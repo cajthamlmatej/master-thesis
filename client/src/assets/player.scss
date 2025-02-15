@@ -171,6 +171,9 @@
 
         > .player-draw-canvas {
             pointer-events: none;
+
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
         }
 
         > .player-draw-navigation {
@@ -450,6 +453,12 @@
             > .player-draw-navigation {
                 opacity: 1;
                 pointer-events: all;
+            }
+        }
+
+        &--visible {
+            > .player-draw-canvas {
+                opacity: 1;
             }
         }
     }

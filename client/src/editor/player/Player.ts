@@ -18,6 +18,8 @@ export default class Player {
 
     public readonly events = new PlayerEvents();
 
+    private draw: PlayerDraw;
+
     constructor(element: HTMLElement, size: { width: number, height: number }, blocks: PlayerBlock[]) {
         this.blockRegistry = new BlockRegistry();
         this.element = element;
@@ -30,7 +32,7 @@ export default class Player {
         this.setBlocks(blocks);
         this.changeMode(PlayerMode.PLAY);
 
-        new PlayerDraw(this);
+        this.draw = new PlayerDraw(this);
     }
 
     public getElement() {
@@ -241,5 +243,9 @@ export default class Player {
 
     public getMode() {
         return this.mode;
+    }
+
+    public getDraw() {
+        return this.draw;
     }
 }

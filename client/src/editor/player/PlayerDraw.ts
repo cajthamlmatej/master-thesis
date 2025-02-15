@@ -26,6 +26,7 @@ export class PlayerDraw {
     }
 
     private active: boolean = false;
+    private visible: boolean = true;
 
     private init() {
         this.element = document.createElement('div');
@@ -79,6 +80,7 @@ export class PlayerDraw {
                     <button data-open="smoothing"><span class="mdi mdi-gesture"></span></button>
                     <button data-eraser><span class="mdi mdi-eraser"></span></button>
                     <button data-delete><span class="mdi mdi-delete-outline"></span></button>
+                    <button data-visible><span class="mdi mdi-eye-circle-outline"></span></button>
                 </div>
             </div>`;
 
@@ -87,6 +89,12 @@ export class PlayerDraw {
 
     private synchronize() {
         this.element.classList.toggle("player-draw--active", this.active);
+        this.element.classList.toggle("player-draw--visible", this.visible);
+
+        if(this.visible) {
+            const btn = this.element.querySelector("button[data-visible]") as HTMLElement;
+            btn.classList.add("player-draw-navigation-options-option--active");
+        }
 
         const navigation = this.element.querySelector(".player-draw-navigation") as HTMLElement;
         const height = document.body.clientHeight;
@@ -117,6 +125,10 @@ export class PlayerDraw {
             this.element.querySelector(`button[data-eraser]`)
                 ?.classList.add("player-draw-navigation-options-option--active");
         }
+        if (this.visible) {
+            this.element.querySelector(`button[data-visible]`)
+                ?.classList.add("player-draw-navigation-options-option--active");
+        }
 
         this.activeSettings = null;
     }
@@ -144,6 +156,16 @@ export class PlayerDraw {
                 } else if (button.hasAttribute("data-delete")) {
                     const canvas = this.element.querySelector(".player-draw-canvas") as HTMLElement;
                     canvas.innerHTML = "";
+                    return;
+                } else if (button.hasAttribute("data-visible")) {
+                    this.visible = !this.visible;
+                    this.synchronize();
+
+                    if (this.visible) {
+                        button.classList.add("player-draw-navigation-options-option--active");
+                    } else {
+                        button.classList.remove("player-draw-navigation-options-option--active");
+                    }
                     return;
                 }
 
@@ -346,5 +368,15 @@ export class PlayerDraw {
 
         window.addEventListener("mousemove", handleMove);
         window.addEventListener("mouseup", handleUp);
+    }
+
+    public getData() {
+        const canvas = this.element.querySelector(".player-draw-canvas") as HTMLElement;
+        return canvas.innerHTML;
+    }
+
+    public applyData(data: string) {
+        const canvas = this.element.querySelector(".player-draw-canvas") as HTMLElement;
+        canvas.innerHTML = data;
     }
 }

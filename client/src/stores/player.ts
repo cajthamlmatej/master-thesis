@@ -18,11 +18,13 @@ export const usePlayerStore = defineStore("player", () => {
     const variables = ref<{ [key: string]: string }>({});
 
     const slides = ref<Slide[]>([]);
+    const drawData = ref<{ slide: Slide, data: string }[]>([]);
 
     watch(() => materialStore.currentMaterial, (material) => {
         if (!material) return;
 
         slides.value = material.slides;
+        drawData.value = [];
     });
 
     const activeSlide = ref<string | undefined>(undefined);
@@ -58,6 +60,35 @@ export const usePlayerStore = defineStore("player", () => {
 
     const setPlayerElement = (element: HTMLElement) => {
         playerElement.value = element;
+
+        if(player.value) {
+            player.value.destroy();
+            player.value = undefined;
+        }
+
+        drawData.value = [];
+    }
+
+    const saveDrawData = () => {
+        if (!activeSlide.value) return;
+
+        const slide = getSlideById(activeSlide.value);
+        if (!slide) return;
+
+        const player = getPlayer() as Player;
+
+        if (!player) return;
+
+        const data = player.getDraw().getData();
+
+        let instance = drawData.value.find(d => d.slide.id === slide.id);
+
+        if (!instance) {
+            instance = {slide, data: ""};
+            drawData.value.push(instance);
+        }
+
+        instance.data = data;
     }
 
     const changeSlide = async (slideOrId: Slide | string) => {
@@ -67,6 +98,7 @@ export const usePlayerStore = defineStore("player", () => {
         if (!slide) return;
 
         if (player.value) {
+            saveDrawData();
             player.value.destroy();
         }
 
@@ -76,6 +108,8 @@ export const usePlayerStore = defineStore("player", () => {
         setPlayer(newPlayer);
         activeSlide.value = slide.id;
         slideTime.value = Date.now();
+
+        newPlayer.getDraw().applyData(drawData.value.find(d => d.slide.id === slide.id)?.data || "");
     }
 
     const getActiveSlide = () => {
