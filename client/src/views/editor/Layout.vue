@@ -212,46 +212,6 @@ const fitToScreen = () => {
     editor.fitToParent();
 };
 
-onMounted(async () => {
-    // PLUGIN TEST
-    let started = false;
-
-    watch(() => editorStore.getEditor(), () => {
-        if (!editorStore.getEditor()) return;
-
-        if (started) return;
-
-        started = true;
-
-
-        // const plugin = new Plugin(`Basic`, `
-        // export const onLoad = function() {
-        //     api.log("This should be logged");
-        // }
-        //
-        // export const onSlideChange = function() {
-        //     api.log("Slide changed");
-        //
-        //     api.getEditor().addBlock({
-        //         type: "text",
-        //         position: {
-        //             x: 100,
-        //             y: 100
-        //         },
-        //         size: {
-        //             width: 200,
-        //             height: 100
-        //         },
-        //         rotation: 0,
-        //         zIndex: 0,
-        //         content: 'Ahoj Avo!!!',
-        //         fontSize: 20,
-        //     });
-        // }
-        //
-        // `);
-    });
-});
 </script>
 
 <style lang="scss" scoped>
