@@ -8,6 +8,7 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
 import { EmailModule } from './email/email.module';
 import { PreferencesModule } from './preferences/preferences.module';
 import { MediaModule } from './media/media.module';
+import { PluginModule } from './plugin/plugin.module';
 
 @Module({
     imports: [
@@ -19,7 +20,7 @@ import { MediaModule } from './media/media.module';
             }),
             inject: [ConfigService],
         }),
-        MaterialsModule, AuthModule, UsersModule, EmailModule, PreferencesModule, MediaModule],
+        MaterialsModule, AuthModule, UsersModule, EmailModule, PreferencesModule, MediaModule, PluginModule],
     providers: [EmailService],
 })
 export class AppModule {
