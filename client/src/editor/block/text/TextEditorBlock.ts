@@ -112,7 +112,15 @@ export class TextEditorBlock extends EditorBlock {
         }
 
         if (this.content !== this.textEditor?.getHTML()) {
-            this.textEditor?.commands.setContent(this.content);
+            if(this.textEditor && !this.removed) {
+                try {
+                    this.textEditor.commands.setContent(this.content);
+                } catch (e) {
+                    // note(Matej): Sometimes the editor screams about "mismatched transition", frequently
+                    //     when the content is being changed while the block is being resized or destroyed.
+                    // AFAIK we can just ignore this error, as it doesn't seem to have any effect on the editor.
+                }
+            }
         }
     }
 
@@ -173,6 +181,15 @@ export class TextEditorBlock extends EditorBlock {
         });
         this.editable = true;
         this.synchronize();
+    }
+
+    @BlockEventListener(BlockEvent.UNMOUNTED)
+    private onUnmount() {
+        this.removed = true;
+
+        if(this.textEditor) {
+            this.textEditor.destroy();
+        }
     }
 
     @BlockEventListener(BlockEvent.DESELECTED)
