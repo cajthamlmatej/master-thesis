@@ -217,13 +217,15 @@ export default class Editor {
         }
 
         const blockInstance = this.blocks[blockIndex];
-        blockInstance.element.remove();
-        blockInstance.processEvent(BlockEvent.UNMOUNTED);
-        this.blocks.splice(blockIndex, 1);
 
+        blockInstance.processEvent(BlockEvent.UNMOUNTED);
         if (this.selector.isSelected(blockInstance)) {
             this.selector.deselectBlock(blockInstance);
         }
+
+        blockInstance.element.remove();
+        this.blocks.splice(blockIndex, 1);
+
         this.events.BLOCK_REMOVED.emit(blockInstance);
         this.events.HISTORY.emit();
     }
