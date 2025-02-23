@@ -41,7 +41,17 @@ export class EditorSelector {
      * Deselects a block.
      * @param block to be deselected
      */
-    public deselectBlock(block: EditorBlock) {
+    public deselectBlock(block: EditorBlock | string) {
+        if(typeof block === "string") {
+            let blockData = this.editor.getBlockById(block);
+
+            if(!blockData) {
+                return;
+            }
+
+            block = blockData;
+        }
+
         this.selectedBlocks = this.selectedBlocks.filter(b => b !== block);
         block.processEvent(BlockEvent.DESELECTED);
         this.events.SELECTED_BLOCK_CHANGED.emit(this.selectedBlocks);
@@ -53,8 +63,18 @@ export class EditorSelector {
      * @param addToSelection if the block should be added to the current selection, otherwise the current selection will be cleared
      * @param event the event that will be passed to the block if it was already selected
      */
-    public selectBlock(block: EditorBlock, addToSelection: boolean = false, event?: MouseEvent) {
+    public selectBlock(block: EditorBlock | string, addToSelection: boolean = false, event?: MouseEvent) {
         if (this.editor.getMode() !== "select") return;
+
+        if(typeof block === "string") {
+            let blockData = this.editor.getBlockById(block);
+
+            if(!blockData) {
+                return;
+            }
+
+            block = blockData;
+        }
 
         if (!addToSelection) {
             if (this.selectedBlocks.length === 1 && this.selectedBlocks[0] === block && event) {
@@ -141,7 +161,17 @@ export class EditorSelector {
      * @param block to check
      * @param soloOnly if is counted only if the block is the only selected block
      */
-    public isSelected(block: EditorBlock, soloOnly: boolean = false) {
+    public isSelected(block: EditorBlock | string, soloOnly: boolean = false) {
+        if(typeof block === "string") {
+            let blockData = this.editor.getBlockById(block);
+
+            if(!blockData) {
+                return false;
+            }
+
+            block = blockData;
+        }
+
         if (soloOnly) {
             return this.selectedBlocks.length === 1 && this.selectedBlocks[0] === block;
         }
