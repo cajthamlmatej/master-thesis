@@ -47,6 +47,8 @@
                               :tooltip-text="$t('editor.panel.content.title')"
                               icon="web-plus"
                               @click="contentMenu = !contentMenu"></NavigationButton>
+
+            <EditorPlugins v-model:value="currentPluginMenu"></EditorPlugins>
         </template>
         <template #secondary>
             <NavigationButton :label="$t('editor.ui.fit-to-screen')"
@@ -97,6 +99,12 @@ import ChangeLanguage from "@/components/ChangeLanguage.vue";
 import Sharing from "@/components/editor/dialogs/Sharing.vue";
 import Media from "@/components/editor/panels/Media.vue";
 import Content from "@/components/editor/panels/Content.vue";
+import {PluginManager} from "@/editor/plugin/PluginManager";
+import PluginPanel from "@/components/plugin/panel/PluginPanel.vue";
+import EditorPlugins from "@/components/plugin/EditorPlugins.vue";
+import {PluginEditorPanel} from "@/editor/plugin/PluginEditorPanel";
+import {usePluginStore} from "@/stores/plugin";
+
 
 const data = reactive({
     menu: false
@@ -104,6 +112,7 @@ const data = reactive({
 
 const editorStore = useEditorStore();
 const materialStore = useMaterialStore();
+const pluginStore = usePluginStore();
 const editor = ref<Editor | null>(null);
 
 watch(() => editorStore.getEditor(), (value) => {
@@ -116,11 +125,14 @@ const propertiesMenu = ref(false);
 const mediaMenu = ref(false);
 const contentMenu = ref(false);
 
+const currentPluginMenu = ref<string|null>(null);
+
 watch(() => slidesMenu.value, (value) => {
     if (slidesMenu.value) {
         blockMenu.value = false;
         mediaMenu.value = false;
         contentMenu.value = false;
+        currentPluginMenu.value = null;
     }
 });
 watch(() => blockMenu.value, (value) => {
@@ -128,6 +140,7 @@ watch(() => blockMenu.value, (value) => {
         slidesMenu.value = false;
         mediaMenu.value = false;
         contentMenu.value = false;
+        currentPluginMenu.value = null;
     }
 });
 watch(() => mediaMenu.value, (value) => {
@@ -135,6 +148,7 @@ watch(() => mediaMenu.value, (value) => {
         slidesMenu.value = false;
         blockMenu.value = false;
         contentMenu.value = false;
+        currentPluginMenu.value = null;
     }
 });
 watch(() => contentMenu.value, (value) => {
@@ -142,6 +156,15 @@ watch(() => contentMenu.value, (value) => {
         slidesMenu.value = false;
         blockMenu.value = false;
         mediaMenu.value = false;
+        currentPluginMenu.value = null;
+    }
+});
+watch(() => currentPluginMenu.value, (value) => {
+    if (currentPluginMenu.value) {
+        slidesMenu.value = false;
+        blockMenu.value = false;
+        mediaMenu.value = false;
+        contentMenu.value = false;
     }
 });
 
@@ -153,6 +176,7 @@ const handleClick = (event: MouseEvent) => {
         blockMenu.value = false;
         mediaMenu.value = false;
         contentMenu.value = false;
+        currentPluginMenu.value = null;
     }
 }
 
@@ -163,6 +187,7 @@ onMounted(async () => {
     window.addEventListener("click", handleClick);
 
     await materialStore.load();
+    await pluginStore.load();
 
     let materialId = route.params.material as string;
 
