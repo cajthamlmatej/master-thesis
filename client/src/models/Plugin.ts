@@ -14,11 +14,11 @@ export default class Plugin {
     id: string;
     name: string;
     icon: string;
-    description: number;
+    description: string;
     tags: string[];
     releases: PluginRelease[];
 
-    constructor(author: string, id: string, name: string, icon: string, description: number, tags: string[], releases: PluginRelease[]) {
+    constructor(author: string, id: string, name: string, icon: string, description: string, tags: string[], releases: PluginRelease[]) {
         this.author = author;
         this.id = id;
         this.name = name;
