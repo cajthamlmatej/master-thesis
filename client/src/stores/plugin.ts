@@ -1,9 +1,8 @@
 import {defineStore} from "pinia";
 import {ref, toRaw, watch} from "vue";
-import {useAuthenticationStore} from "@/stores/authentication";
 import {api} from "@/api/api";
 import {useUserStore} from "@/stores/user";
-import Plugin, {PluginRelease} from "@/models/Plugin";
+import Plugin from "@/models/Plugin";
 import {PluginManager} from "@/editor/plugin/PluginManager";
 import PluginMapper from "@/models/mappers/PluginMapper";
 import {PluginEditorPanel} from "@/editor/plugin/PluginEditorPanel";
@@ -18,7 +17,6 @@ export const usePluginStore = defineStore("plugin", () => {
     const pluginManager = new PluginManager();
     const pluginPanels = ref<PluginEditorPanel[]>([]);
 
-    const userStore = useUserStore();
     const editorStore = useEditorStore();
     const materialStore = useMaterialStore();
 
@@ -49,19 +47,23 @@ export const usePluginStore = defineStore("plugin", () => {
             return;
         }
 
-        const newPlugins = response.plugins.map((p) => PluginMapper.fromPluginDTO(p));
+        plugins.value = plugins.value.map((p) => {
+            const plugin = response.plugins.find((plugin) => plugin.id === p.id);
+            if (!plugin) {
+                console.error("Plugin is loaded but currently not in the list", p.id);
+                return p;
+            }
 
-        for (const plugin of newPlugins) {
-            const existingPlugin = plugins.value.find((p) => p.id === plugin.id);
+            return PluginMapper.fromPluginDTO(plugin);
+        });
 
-            if (!existingPlugin) {
-                plugins.value.push(plugin);
-            } else {
-                Object.assign(existingPlugin, plugin);
+        for(const plugin of response.plugins) {
+            const foundPlugin = plugins.value.find((p) => p.id === plugin.id);
+
+            if(!foundPlugin) {
+                plugins.value.push(PluginMapper.fromPluginDTO(plugin));
             }
         }
-
-        return newPlugins;
     }
 
     const getPanels = async () => {
