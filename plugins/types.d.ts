@@ -35,9 +35,9 @@ interface WatermarkBlock {
     type: 'watermark';
 }
 
-interface BlockBase {
+interface BlockBaseData {
     id: string;
-    type: string;
+    type: 'iframe' | 'image' | 'interactiveArea' | 'mermaid' | 'shape' | 'text' | 'watermark';
     position: {
         x: number;
         y: number;
@@ -49,7 +49,9 @@ interface BlockBase {
     rotation: number;
     zIndex: number;
     opacity: number;
+}
 
+interface BlockBaseActions {
     unlock(): void;
     lock(): void;
     setZIndex(zIndex: number): void;
@@ -77,15 +79,20 @@ interface BlockBase {
     rotate(rotation: number): void;
 }
 
-type Block = BlockBase & (
+
+type BlockType = 
     | IframeBlock
     | ImageBlock
     | InteractiveAreaBlock
     | MermaidBlock
     | ShapeBlock
     | TextBlock
-    | WatermarkBlock
-);
+    | WatermarkBlock;
+
+type Block = BlockBaseData & BlockBaseActions & BlockType;
+
+// CreateBlock should not include an `id`, as it will be generated.
+type CreateBlock = Omit<BlockBaseData, "id"> & BlockType;
 
 interface ApiEditor {
     getBlocks(): Block[];
@@ -96,7 +103,7 @@ interface ApiEditor {
      * @param block The block data to add to the editor.
      * @returns The ID of the newly added block.
      */
-    addBlock(block: Omit<Block, "id">): string;
+    addBlock(block: CreateBlock): string;
     getSize(): { width: number, height: number };
     setSize(width: number, height: number, resizeToFit: boolean): void;
     getMode(): 'select' | 'move';
