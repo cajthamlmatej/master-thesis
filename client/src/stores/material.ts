@@ -57,6 +57,7 @@ export const useMaterialStore = defineStore("material", () => {
     const createMaterial = async () => {
         const response = await api.material.create({
             name: $t("page.dashboard.new-material"),
+            plugins: [],
             visibility: "PRIVATE",
             method: "MANUAL",
             automaticTime: 60,
@@ -84,6 +85,10 @@ export const useMaterialStore = defineStore("material", () => {
 
         const response = await api.material.update(currentMaterial.value.id, {
             name: currentMaterial.value.name,
+            plugins: currentMaterial.value.plugins.map((plugin) => ({
+                plugin: plugin.plugin,
+                release: plugin.release
+            }), []),
             visibility: currentMaterial.value.visibility,
             method: currentMaterial.value.method,
             automaticTime: currentMaterial.value.automaticTime,
@@ -119,6 +124,7 @@ export const useMaterialStore = defineStore("material", () => {
 
         const response = await api.material.create({
             name: original.name,
+            plugins: original.plugins,
             visibility: original.visibility,
             method: original.method,
             automaticTime: original.automaticTime,
