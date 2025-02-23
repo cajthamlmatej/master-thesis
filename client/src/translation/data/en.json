@@ -258,6 +258,10 @@
                 "undo": "Undo",
                 "redo": "Redo"
             },
+            "plugin": {
+                "manage": "Manage plugins",
+                "plugin": "%name% (plugin)"
+            },
             "save": "Save to cloud"
         },
         "preferences": {
@@ -363,6 +367,32 @@
             },
             "unlock": {
                 "label": "Unlock"
+            }
+        },
+        "plugin": {
+            "manage": {
+                "active": "Currently active",
+                "by": "by %name%",
+                "browse": {
+                    "title": "Browse plugins",
+                    "search": "Search among plugins",
+                    "tags": {
+                        "ALL": "All",
+                        "EDITOR": "Editor",
+                        "WIDGETS": "Widgets",
+                        "CONTENT": "Content",
+                        "PLAYER": "Player",
+                        "GAMIFICATION": "Gamification"
+                    },
+                    "no-plugins": "No plugins found with the given search criteria."
+                },
+                "deactivate": "Deactivate plugin",
+                "activate": {
+                    "title": "Activate plugin",
+                    "error": "Failed to activate plugin. Please try again later."
+                },
+                "no-plugins": "Current material has no active plugins. You can add some from the browse section.",
+                "new-version": "New version of the plugin is available. Remove the plugin and add it again to get the new version."
             }
         }
     },

@@ -258,6 +258,10 @@
                 "undo": "Zpět",
                 "redo": "Opakovat"
             },
+            "plugin": {
+                "manage": "Spravovat pluginy",
+                "plugin": "%name% (plugin)"
+            },
             "save": "Uložit do cloudu"
         },
         "preferences": {
@@ -367,6 +371,32 @@
             },
             "unlock": {
                 "label": "Odemknout"
+            }
+        },
+        "plugin": {
+            "manage": {
+                "active": "Aktivní pluginy",
+                "by": "od %name%",
+                "browse": {
+                    "title": "Procházet pluginy",
+                    "search": "Hledat pluginy...",
+                    "tags": {
+                        "ALL": "Vše",
+                        "EDITOR": "Editor",
+                        "WIDGETS": "Widgety",
+                        "CONTENT": "Obsah",
+                        "PLAYER": "Přehrávač",
+                        "GAMIFICATION": "Gamifikace"
+                    },
+                    "no-plugins": "Žádné pluginy nebyly nalezeny podle zadaných kritérií."
+                },
+                "deactivate": "Deaktivovat plugin",
+                "activate": {
+                    "title": "Aktivovat plugin",
+                    "error": "Nepodařilo se aktivovat plugin. Zkuste to znovu později."
+                },
+                "no-plugins": "Aktuální materiál nemá žádné aktivní pluginy. Můžete přidat nové skrz procházení pluginů.",
+                "new-version": "Nová verze pluginu je k dispozici. Deaktivujte plugin a znovu ho aktivujte, abyste získali novou verzi."
             }
         }
     },
