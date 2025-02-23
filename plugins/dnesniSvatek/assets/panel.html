@@ -1,0 +1,41 @@
+<style>
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    section button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        background-color: #f0f0f0;
+        cursor: pointer;
+        color: #333;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        font-size: 20px;
+        transition: background-color 0.3s ease;
+        text-align: center;
+    }
+
+    section button:hover {
+        background-color: #e0e0e0;
+    }
+</style>
+
+<section>
+    <button>
+        Přidat pole dnešního svátku
+    </button>
+</section>
+
+
+<script>
+document.querySelector("button").addEventListener("click", () => {
+    window.parent.postMessage({target: "script", message: "add"}, "*");
+});
+</script>
