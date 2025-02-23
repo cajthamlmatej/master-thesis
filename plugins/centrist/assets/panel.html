@@ -1,0 +1,14 @@
+<link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet" crossorigin="anonymous">
+
+<section>
+    <button id="horizontal-distribute">
+        <span class="mdi mdi-align-horizontal-distribute"></span>
+    </button>
+</section>
+
+
+<script>
+document.querySelector("#horizontal-distribute").addEventListener("click", () => {
+    window.parent.postMessage({target: "script", message: "horizontal-distribute"}, "*");
+});
+</script>
