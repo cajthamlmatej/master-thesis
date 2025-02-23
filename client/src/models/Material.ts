@@ -23,10 +23,21 @@ export class Slide {
     }
 }
 
+export class MaterialPlugin {
+    plugin: string;
+    release: string;
+
+    constructor(plugin: string, release: string) {
+        this.plugin = plugin;
+        this.release = release;
+    }
+}
+
 export default class Material {
     id: string;
     createdAt: moment.Moment;
     updatedAt: moment.Moment;
+    plugins: MaterialPlugin[] = [];
     name: string;
     visibility: MaterialVisibility;
     method: MaterialMethod;
@@ -42,6 +53,10 @@ export default class Material {
                     thumbnail: string | undefined;
                     position: number;
                 }[],
+                plugins: {
+                    plugin: string;
+                    release: string;
+                }[],
                 visibility: MaterialVisibility, method: MaterialMethod, automaticTime: number, sizing: MaterialSizing,
                 user?: string,
                 thumbnail?: string) {
@@ -55,6 +70,7 @@ export default class Material {
         this.sizing = sizing;
         this.user = user || "";
         this.slides = slides.map(slide => new Slide(slide.id, slide.data, slide.thumbnail, slide.position));
+        this.plugins = plugins.map(plugin => new MaterialPlugin(plugin.plugin, plugin.release));
 
         if (thumbnail) {
             this.thumbnail = thumbnail;
