@@ -223,12 +223,12 @@ export abstract class EditorBlock {
         this.position.x = Math.floor(x);
         this.position.y = Math.floor(y);
 
+        if (!skipSynchronization) this.synchronize();
+
         this.editor.events.BLOCK_POSITION_CHANGED.emit({
             block: this,
             manual: manual
         });
-
-        if (!skipSynchronization) this.synchronize();
     }
 
     public rotate(rotation: number, skipSynchronization: boolean = false, manual: boolean = false) {
@@ -255,6 +255,11 @@ export abstract class EditorBlock {
         });
 
         if (!skipSynchronization) this.synchronize();
+    }
+
+    public setZIndex(zIndex: number) {
+        this.zIndex = Math.max(0, Math.min(1000, zIndex));
+        this.synchronize();
     }
 
     public zIndexUp() {
