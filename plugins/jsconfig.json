@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "checkJs": true,
+      "allowJs": true,
+      "maxNodeModuleJsDepth": 2,
+      "noEmit": true,
+      "moduleResolution": "node",
+      "baseUrl": ".",
+      "paths": {
+        "*": ["types.d.ts"]
+      }
+    },
+    "include": ["**/*.js", "types.d.ts"],
+    "exclude": ["node_modules"]
+}
