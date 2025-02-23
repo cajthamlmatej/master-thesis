@@ -1,4 +1,4 @@
-import {BlockApiFeature} from "@/editor/plugin/editor/api/BlockApiFeature";
+import {BlockApiFeature} from "@/editor/plugin/editor/BlockApiFeature";
 import {Type} from "@/utils/TypeScriptTypes";
 export const BLOCK_API_FEATURE_METADATA_KEY = 'block:api-feature';
 

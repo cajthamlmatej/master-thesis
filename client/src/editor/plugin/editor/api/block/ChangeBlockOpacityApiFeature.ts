@@ -3,7 +3,7 @@ import {QuickJSHandle} from "quickjs-emscripten";
 import {ApiData} from "@/editor/plugin/editor/Api";
 import {generateUUID} from "@/utils/Generators";
 import {EditorBlock} from "@/editor/block/EditorBlock";
-import {BlockApiFeature} from "@/editor/plugin/editor/api/BlockApiFeature";
+import {BlockApiFeature} from "@/editor/plugin/editor/BlockApiFeature";
 
 export class ChangeBlockOpacityApiFeature extends BlockApiFeature {
     register(obj: QuickJSHandle, data: ApiData, block: EditorBlock): void {
