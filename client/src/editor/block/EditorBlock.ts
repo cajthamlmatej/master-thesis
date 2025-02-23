@@ -14,7 +14,26 @@ import {InteractivityProperty} from "@/editor/interactivity/InteractivityPropert
 import {BlockConstructor} from "@/editor/block/BlockConstructor";
 import {OpacityProperty} from "@/editor/property/base/OpacityProperty";
 import {generateUUID} from "@/utils/Generators";
+import {
+    BLOCK_API_FEATURE_METADATA_KEY,
+    BlockApiFeatureEntry,
+    RegisterBlockApiFeature
+} from "@/editor/plugin/editor/RegisterBlockApiFeature";
+import {MoveBlockApiFeature} from "@/editor/plugin/editor/api/block/MoveBlock";
+import {RotateBlockApiFeature} from "@/editor/plugin/editor/api/block/RotateBlock";
+import {ResizeBlockApiFeature} from "@/editor/plugin/editor/api/block/ResizeBlock";
+import {ChangeBlockOpacityApiFeature} from "@/editor/plugin/editor/api/block/ChangeBlockOpacityApiFeature";
+import {SetBlockZIndexApiFeature} from "@/editor/plugin/editor/api/block/SetBlockZIndex";
+import {LockBlockApiFeature} from "@/editor/plugin/editor/api/block/LockBlock";
+import {UnlockBlockApiFeature} from "@/editor/plugin/editor/api/block/UnlockBlock";
 
+@RegisterBlockApiFeature(MoveBlockApiFeature)
+@RegisterBlockApiFeature(RotateBlockApiFeature)
+@RegisterBlockApiFeature(ResizeBlockApiFeature)
+@RegisterBlockApiFeature(ChangeBlockOpacityApiFeature)
+@RegisterBlockApiFeature(SetBlockZIndexApiFeature)
+@RegisterBlockApiFeature(LockBlockApiFeature)
+@RegisterBlockApiFeature(UnlockBlockApiFeature)
 export abstract class EditorBlock {
     @BlockSerialize("id")
     public id: string;
@@ -164,7 +183,10 @@ export abstract class EditorBlock {
         ]
     }
 
-    public getInteractivityProperties(): Omit<BlockInteractiveProperty & { relative: boolean, animate: boolean }, "change" | "reset" | "getBaseValue">[] {
+    public getInteractivityProperties(): Omit<BlockInteractiveProperty & {
+        relative: boolean,
+        animate: boolean
+    }, "change" | "reset" | "getBaseValue">[] {
         return [
             {
                 label: "Position X",
@@ -443,6 +465,28 @@ export abstract class EditorBlock {
                 instance[listener](...args);
             }
         }
+    }
+
+    public getApiFeatures(): BlockApiFeatureEntry[] {
+        const target = Object.getPrototypeOf(this).constructor;
+        const keys = Reflect.getMetadataKeys(target);
+        const apiFeatures: BlockApiFeatureEntry[] = [];
+
+        for (const key of keys) {
+            if (!key.startsWith(BLOCK_API_FEATURE_METADATA_KEY)) continue;
+
+            const metadata = Reflect.getMetadata(key, target);
+
+            if (!metadata) continue;
+
+            const metadataFeatures = metadata as Set<BlockApiFeatureEntry>;
+
+            for (const feature of metadataFeatures) {
+                apiFeatures.push(feature);
+            }
+        }
+
+        return apiFeatures;
     }
 
     protected getCloneBase(): BlockConstructor {
