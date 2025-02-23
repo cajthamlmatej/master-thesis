@@ -1,14 +1,56 @@
 <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet" crossorigin="anonymous">
 
+<style>
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    section button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        background-color: #f0f0f0;
+        cursor: pointer;
+        color: #333;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        font-size: 20px;
+        transition: background-color 0.3s ease;
+    }
+
+    section button:hover {
+        background-color: #e0e0e0;
+    }
+</style>
+
 <section>
     <button id="horizontal-distribute">
         <span class="mdi mdi-align-horizontal-distribute"></span>
+    </button>
+    <button id="vertical-distribute">
+        <span class="mdi mdi-align-vertical-distribute"></span>
+    </button>
+    <button id="horizontal-center">
+        <span class="mdi mdi-align-horizontal-center"></span>
+    </button>
+    <button id="vertical-center">
+        <span class="mdi mdi-align-vertical-center"></span>
     </button>
 </section>
 
 
 <script>
-document.querySelector("#horizontal-distribute").addEventListener("click", () => {
-    window.parent.postMessage({target: "script", message: "horizontal-distribute"}, "*");
-});
+const buttons = document.querySelectorAll("[id]");
+
+for(let button of buttons) {
+    const id = button.id;
+    button.addEventListener("click", () => {
+        window.parent.postMessage({target: "script", message: id}, "*");
+    });
+}
 </script>
