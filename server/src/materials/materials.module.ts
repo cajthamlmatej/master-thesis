@@ -6,10 +6,14 @@ import {Material, MaterialSchema} from "./material.schema";
 import {UsersModule} from "../users/users.module";
 import {ConfigModule} from "@nestjs/config";
 import {EmailService} from "../email/email.service";
+import {PluginModule} from "../plugin/plugin.module";
 
 @Module({
-    imports: [MongooseModule.forFeature([{name: Material.name, schema: MaterialSchema}]), UsersModule,
-        ConfigModule.forRoot()],
+    imports: [
+        MongooseModule.forFeature([{name: Material.name, schema: MaterialSchema}]), UsersModule,
+        ConfigModule.forRoot(),
+        PluginModule
+    ],
     controllers: [MaterialsController],
     providers: [MaterialsService],
 })

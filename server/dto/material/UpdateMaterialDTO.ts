@@ -26,6 +26,13 @@ export class UpdateSlideMaterialDTO {
     position: number;
 }
 
+export class UpdateMaterialPluginDTO {
+    @IsString()
+    plugin: string;
+    @IsString()
+    release: string;
+}
+
 export class UpdateMaterialDTO {
     @IsString()
     @MinLength(1)
@@ -36,6 +43,12 @@ export class UpdateMaterialDTO {
     @IsIn(["PUBLIC", "PRIVATE"])
     @IsOptional()
     visibility?: string;
+
+    @IsArray()
+    @IsOptional()
+    @ValidateNested()
+    @Type(() => UpdateMaterialPluginDTO)
+    plugins?: UpdateMaterialPluginDTO[];
 
     @IsString()
     @IsIn(["AUTOMATIC", "MANUAL", "INTERACTIVITY"])

@@ -4,6 +4,7 @@ import { HydratedDocument } from 'mongoose';
 import * as mongoose from "mongoose";
 import {User, UserDocument} from "../users/user.schema";
 import {MaterialMethod, MaterialSizing, MaterialVisibility} from "../../dto/material/MaterialEnums";
+import {Plugin} from "../plugin/plugin.schema";
 
 export type MaterialDocument = HydratedDocument<Material>;
 
@@ -18,6 +19,14 @@ class Slide {
     data: string;
 }
 
+class MaterialPlugin {
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Plugin' })
+    plugin: Plugin;
+
+    @Prop()
+    release: string;
+}
+
 @Schema()
 export class Material {
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
@@ -25,6 +34,9 @@ export class Material {
 
     @Prop()
     name: string;
+
+    @Prop()
+    plugins: MaterialPlugin[];
 
     @Prop()
     visibility: MaterialVisibility;

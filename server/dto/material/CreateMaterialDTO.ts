@@ -14,6 +14,13 @@ export class CreateSlideMaterialDTO {
     position: number;
 }
 
+export class CreateMaterialPluginDTO {
+    @IsString()
+    plugin: string;
+    @IsString()
+    release: string;
+}
+
 export class CreateMaterialDTO {
     @IsString()
     @MinLength(1)
@@ -22,6 +29,11 @@ export class CreateMaterialDTO {
     @IsString()
     @IsIn(["PUBLIC", "PRIVATE"])
     visibility: string;
+
+    @IsArray()
+    @ValidateNested()
+    @Type(() => CreateMaterialPluginDTO)
+    plugins: CreateMaterialPluginDTO[];
 
     @IsString()
     @IsIn(["AUTOMATIC", "MANUAL", "INTERACTIVITY"])

@@ -50,20 +50,22 @@ export class MaterialsController {
     async findOne(@Param('id') id: string, @Req() req: RequestWithUser) {
         const material = await this.materialsService.findById(id);
 
-        if(!material) throw new Error("Material not found");
+        if (!material) throw new Error("Material not found");
 
-        if(material.visibility === 'PRIVATE') {
-            const user = req.user || { id: null };
+        if (material.visibility === 'PRIVATE') {
+            const user = req.user || {id: null};
 
-            console.log(material.user.toString(), req.user);
-
-            if(material.user.toString() !== user.id) throw new UnauthorizedException('You are not allowed to access this resource');
+            if (material.user.toString() !== user.id) throw new UnauthorizedException('You are not allowed to access this resource');
         }
 
         return {
             material: {
                 id: material.id,
                 name: material.name,
+                plugins: material.plugins.map((plugin) => ({
+                    plugin: plugin.plugin.toString(),
+                    release: plugin.release
+                })),
                 visibility: material.visibility,
                 method: material.method,
                 automaticTime: material.automaticTime,
@@ -90,6 +92,8 @@ export class MaterialsController {
         if (!material) throw new Error("Material not found");
         if (material.user.toString() !== req.user.id) throw new UnauthorizedException('You are not allowed to access this resource');
 
+        // TODO: validate if release & plugin exists
+
         await this.materialsService.update(material, updateMaterialDto);
     }
 
@@ -99,14 +103,21 @@ export class MaterialsController {
     async create(@Body() createMaterialDto: CreateMaterialDTO, @Req() req: RequestWithUser) {
         const material = await this.materialsService.create(createMaterialDto, req.user);
 
+        // TODO: validate if release & plugin exists
+
         return {
             material: {
                 id: material.id,
                 name: material.name,
+                plugins: material.plugins.map((plugin) => ({
+                    plugin: plugin.plugin.toString(),
+                    release: plugin.release
+                })),
                 visibility: material.visibility,
                 method: material.method,
                 automaticTime: material.automaticTime,
                 sizing: material.sizing,
+                user: material.user.toString(),
                 createdAt: material.createdAt,
                 updatedAt: material.updatedAt,
                 slides: material.slides.map((slide) => ({
