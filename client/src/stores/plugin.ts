@@ -142,7 +142,7 @@ export const usePluginStore = defineStore("plugin", () => {
             plugin = foundPlugin;
         }
 
-        const lastRelease = plugin.releases.sort((a, b) => a.date.diff(b.date))[0].version;
+        const lastRelease = [...plugin.releases].sort((a, b) => a.date.diff(b.date))[0].version;
 
         material.plugins.push(new MaterialPlugin(plugin.id, lastRelease));
 

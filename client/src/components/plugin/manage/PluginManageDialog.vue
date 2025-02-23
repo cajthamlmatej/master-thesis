@@ -80,11 +80,10 @@ watch(() => pluginStore.manager, () => {
 });
 
 const recalculate = () => {
-    console.log('Recalculating plugins', pluginStore.manager, pluginStore.manager.getPlugins());
     plugins.value = pluginStore.manager.getPlugins().map(p => {
         const plugin = pluginStore.plugins.find(pl => pl.id == p.getId())!;
 
-        const latestVersion = plugin.releases.sort((a, b) => a.date.diff(b.date)).pop()!;
+        const latestVersion = [...plugin.releases].sort((a, b) => a.date.diff(b.date)).pop()!;
         const newVersion = latestVersion.version != p.getVersion();
 
         return {
