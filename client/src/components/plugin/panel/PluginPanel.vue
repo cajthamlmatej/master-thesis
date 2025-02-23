@@ -42,12 +42,12 @@ watch(() => iframe.value, (value) => {
         const data = event.data;
 
         if(typeof data !== "object" || !('target' in data) || !('message' in data)) {
-            plugin.log("Invalid message received from parent", data);
+            plugin.log("Invalid message received from parent: " + data);
             return;
         }
 
         if(event.source !== iframe.value!.contentWindow) {
-            plugin.log("Invalid source received from parent", data);
+            plugin.log("Invalid source received from parent: " + data);
             return;
         }
 
@@ -57,10 +57,10 @@ watch(() => iframe.value, (value) => {
             if(data.message === 'close') {
                 menu.value = false;
             } else {
-                plugin.log("Invalid message received from parent, editor can't process", data.message);
+                plugin.log("Invalid message received from parent, editor can't process: " + data.message);
             }
         } else {
-            plugin.log("Invalid target received from parent", data);
+            plugin.log("Invalid target received from parent: " + data);
         }
     });
 });
