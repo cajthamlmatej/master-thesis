@@ -3,6 +3,10 @@ export interface MaterialDTO {
     createdAt: Date;
     updatedAt: Date;
     name: string;
+    plugins: {
+        plugin: string;
+        release: string;
+    }[];
     visibility: string;
     method: string;
     automaticTime: number;
