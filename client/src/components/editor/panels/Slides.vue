@@ -21,7 +21,7 @@
                                 {{ $t('editor.panel.slides.slide-number', {number: (i + 1).toString()}) }}
                             </div>
                             <div class="actions">
-                                <SlideResizeAction :slide="slide"/>
+                                <SlideResizeAction :slide="slide" :key="slide.getSize().width +'-'+ slide.getSize().height "/>
 
                                 <i v-tooltip="$t('editor.panel.slides.action.up')" :class="{disabled: i === 0}"
                                    class="mdi mdi-arrow-up" @click="materialStore.moveSlide(slide, -1)"/>

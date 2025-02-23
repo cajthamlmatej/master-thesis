@@ -54,7 +54,7 @@ const size = ref({
 
 const resizeToFit = ref(true);
 
-watch(() => props, () => {
+watch(() => props.slide, () => {
     const slideSize = props.slide.getSize();
     size.value.width = slideSize.width;
     size.value.height = slideSize.height;
