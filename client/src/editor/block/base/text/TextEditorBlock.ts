@@ -11,7 +11,7 @@ import {Superscript} from '@tiptap/extension-superscript'
 import {TextStyle} from '@tiptap/extension-text-style'
 import {Color} from '@tiptap/extension-color'
 import {FontFamily} from '@tiptap/extension-font-family'
-import {TextFormattingProperty} from "@/editor/block/text/property/TextFormattingProperty";
+import {TextFormattingProperty} from "@/editor/block/base/text/property/TextFormattingProperty";
 import {TextAlign} from "@tiptap/extension-text-align";
 import {FontSize} from "@/utils/font-size";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";

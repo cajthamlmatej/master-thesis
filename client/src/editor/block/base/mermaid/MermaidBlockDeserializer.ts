@@ -1,17 +1,17 @@
 import {BlockDeserializer} from "@/editor/block/serialization/BlockDeserializer";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 import type {PlayerBlock} from "@/editor/block/PlayerBlock";
-import {InteractiveAreaPlayerBlock} from "@/editor/block/interactiveArea/InteractiveAreaPlayerBlock";
-import {InteractiveAreaEditorBlock} from "@/editor/block/interactiveArea/InteractiveAreaEditorBlock";
+import {MermaidPlayerBlock} from "@/editor/block/base/mermaid/MermaidPlayerBlock";
+import {MermaidEditorBlock} from "@/editor/block/base/mermaid/MermaidEditorBlock";
 
-export class InteractiveAreaBlockDeserializer extends BlockDeserializer {
+export class MermaidBlockDeserializer extends BlockDeserializer {
     deserializeEditor(data: any): EditorBlock {
         const base = this.getBaseBlockData(data);
-        return new InteractiveAreaEditorBlock(base);
+        return new MermaidEditorBlock(base, data.content);
     }
 
     deserializePlayer(data: any): PlayerBlock {
         const base = this.getBaseBlockData(data);
-        return new InteractiveAreaPlayerBlock(base);
+        return new MermaidPlayerBlock(base, data.content);
     }
 }

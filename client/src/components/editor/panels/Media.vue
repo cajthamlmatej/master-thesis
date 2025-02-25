@@ -51,12 +51,12 @@ import Button from "@/components/design/button/Button.vue";
 import {api} from "@/api/api";
 import {useMediaStore} from "@/stores/media";
 import {EditorBlock} from "@/editor/block/EditorBlock";
-import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
+import {TextEditorBlock} from "@/editor/block/base/text/TextEditorBlock";
 import {generateUUID} from "@/utils/Generators";
-import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
-import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
-import {InteractiveAreaEditorBlock} from "@/editor/block/interactiveArea/InteractiveAreaEditorBlock";
-import {MermaidEditorBlock} from "@/editor/block/mermaid/MermaidEditorBlock";
+import {ShapeEditorBlock} from "@/editor/block/base/shape/ShapeEditorBlock";
+import {ImageEditorBlock} from "@/editor/block/base/image/ImageEditorBlock";
+import {InteractiveAreaEditorBlock} from "@/editor/block/base/interactiveArea/InteractiveAreaEditorBlock";
+import {MermaidEditorBlock} from "@/editor/block/base/mermaid/MermaidEditorBlock";
 
 const contentMenu = ref(true);
 

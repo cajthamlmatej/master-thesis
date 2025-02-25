@@ -1,8 +1,8 @@
 import {BlockDeserializer} from "@/editor/block/serialization/BlockDeserializer";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
-import {WatermarkEditorBlock} from "@/editor/block/watermark/WatermarkEditorBlock";
+import {WatermarkEditorBlock} from "@/editor/block/base/watermark/WatermarkEditorBlock";
 import type {PlayerBlock} from "@/editor/block/PlayerBlock";
-import {WatermarkPlayerBlock} from "@/editor/block/watermark/WatermarkPlayerBlock";
+import {WatermarkPlayerBlock} from "@/editor/block/base/watermark/WatermarkPlayerBlock";
 
 export class WatermarkBlockDeserializer extends BlockDeserializer {
     deserializeEditor(data: any): EditorBlock {

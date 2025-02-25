@@ -19,14 +19,14 @@
 import {onMounted, ref, toRaw, watch} from "vue";
 import {useEditorStore} from "@/stores/editor";
 import {EditorBlock} from "@/editor/block/EditorBlock";
-import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
+import {TextEditorBlock} from "@/editor/block/base/text/TextEditorBlock";
 import {generateUUID} from "@/utils/Generators";
-import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
-import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
+import {ShapeEditorBlock} from "@/editor/block/base/shape/ShapeEditorBlock";
+import {ImageEditorBlock} from "@/editor/block/base/image/ImageEditorBlock";
 import Editor from "@/editor/Editor";
-import {InteractiveAreaEditorBlock} from "@/editor/block/interactiveArea/InteractiveAreaEditorBlock";
-import {MermaidEditorBlock} from "@/editor/block/mermaid/MermaidEditorBlock";
-import {IframeEditorBlock} from "@/editor/block/iframe/IframeEditorBlock";
+import {InteractiveAreaEditorBlock} from "@/editor/block/base/interactiveArea/InteractiveAreaEditorBlock";
+import {MermaidEditorBlock} from "@/editor/block/base/mermaid/MermaidEditorBlock";
+import {IframeEditorBlock} from "@/editor/block/base/iframe/IframeEditorBlock";
 
 const blocksMenu = ref(true);
 

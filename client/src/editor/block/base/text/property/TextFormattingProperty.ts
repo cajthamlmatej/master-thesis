@@ -1,5 +1,5 @@
 import {Property} from "@/editor/property/Property";
-import {TextEditorBlock} from "@/editor/block/text/TextEditorBlock";
+import {TextEditorBlock} from "@/editor/block/base/text/TextEditorBlock";
 import {$t} from "@/translation/Translation";
 
 export class TextFormattingProperty<T extends TextEditorBlock = TextEditorBlock> extends Property<T> {

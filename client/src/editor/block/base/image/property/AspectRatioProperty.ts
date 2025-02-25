@@ -1,6 +1,6 @@
 import {$t} from "@/translation/Translation";
 import {TextProperty} from "@/editor/property/type/TextProperty";
-import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
+import {ImageEditorBlock} from "@/editor/block/base/image/ImageEditorBlock";
 import {BooleanProperty} from "@/editor/property/type/BooleanProperty";
 
 export class AspectRatioProperty<T extends ImageEditorBlock = ImageEditorBlock> extends BooleanProperty<T> {

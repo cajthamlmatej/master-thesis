@@ -26,7 +26,7 @@
 import {nextTick, onMounted, ref, toRaw, watch} from "vue";
 import {$t, translation} from "@/translation/Translation";
 import Input from "@/components/design/input/Input.vue";
-import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
+import {ImageEditorBlock} from "@/editor/block/base/image/ImageEditorBlock";
 import {generateUUID} from "@/utils/Generators";
 import Editor from "@/editor/Editor";
 import {useEditorStore} from "@/stores/editor";

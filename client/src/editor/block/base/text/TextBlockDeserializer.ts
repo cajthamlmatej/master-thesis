@@ -1,17 +1,17 @@
 import {BlockDeserializer} from "@/editor/block/serialization/BlockDeserializer";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
+import {TextEditorBlock} from "@/editor/block/base/text/TextEditorBlock";
 import type {PlayerBlock} from "@/editor/block/PlayerBlock";
-import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
-import {ShapePlayerBlock} from "@/editor/block/shape/ShapePlayerBlock";
+import {TextPlayerBlock} from "@/editor/block/base/text/TextPlayerBlock";
 
-export class ShapeBlockDeserializer extends BlockDeserializer {
+export class TextBlockDeserializer extends BlockDeserializer {
     deserializeEditor(data: any): EditorBlock {
         const base = this.getBaseBlockData(data);
-        return new ShapeEditorBlock(base, data.color, data.shape);
+        return new TextEditorBlock(base, data.content, data.fontSize);
     }
 
     deserializePlayer(data: any): PlayerBlock {
         const base = this.getBaseBlockData(data);
-        return new ShapePlayerBlock(base, data.color, data.shape);
+        return new TextPlayerBlock(base, data.content, data.fontSize);
     }
 }

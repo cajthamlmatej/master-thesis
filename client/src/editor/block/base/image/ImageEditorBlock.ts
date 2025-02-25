@@ -3,11 +3,11 @@ import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerializ
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 import {useMediaStore} from "@/stores/media";
 import {Property} from "@/editor/property/Property";
-import {ImageUrlProperty} from "@/editor/block/image/property/ImageUrlProperty";
+import {ImageUrlProperty} from "@/editor/block/base/image/property/ImageUrlProperty";
 import {BlockEventListener} from "@/editor/block/events/BlockListener";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {$t} from "@/translation/Translation";
-import {AspectRatioProperty} from "@/editor/block/image/property/AspectRatioProperty";
+import {AspectRatioProperty} from "@/editor/block/base/image/property/AspectRatioProperty";
 
 const mediaStore = useMediaStore();
 

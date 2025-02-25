@@ -1,6 +1,6 @@
 import {SelectorAction} from "@/editor/actions/SelectorAction";
 import type {ActionParameters} from "@/editor/actions/EditorAction";
-import {ImageEditorBlock} from "@/editor/block/image/ImageEditorBlock";
+import {ImageEditorBlock} from "@/editor/block/base/image/ImageEditorBlock";
 
 export class ImageAspectRatioAction extends SelectorAction {
     constructor() {

@@ -1,6 +1,6 @@
 import {ColorProperty as BaseColorProperty} from "@/editor/property/type/ColorProperty";
 
-import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
+import {ShapeEditorBlock} from "@/editor/block/base/shape/ShapeEditorBlock";
 import {$t} from "@/translation/Translation";
 
 export class ColorProperty<T extends ShapeEditorBlock = ShapeEditorBlock> extends BaseColorProperty<T> {

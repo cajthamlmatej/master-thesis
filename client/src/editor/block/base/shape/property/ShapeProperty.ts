@@ -1,6 +1,6 @@
-import {ShapeEditorBlock} from "@/editor/block/shape/ShapeEditorBlock";
+import {ShapeEditorBlock} from "@/editor/block/base/shape/ShapeEditorBlock";
 import {SelectProperty} from "@/editor/property/type/SelectProperty";
-import {shapes} from "@/editor/block/shape/Shapes";
+import {shapes} from "@/editor/block/base/shape/Shapes";
 import {$t} from "@/translation/Translation";
 
 export class ShapeProperty<T extends ShapeEditorBlock = ShapeEditorBlock> extends SelectProperty<T> {
