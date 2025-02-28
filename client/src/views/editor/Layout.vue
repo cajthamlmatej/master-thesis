@@ -176,7 +176,7 @@ const handleClick = (event: MouseEvent) => {
         blockMenu.value = false;
         mediaMenu.value = false;
         contentMenu.value = false;
-        currentPluginMenu.value = null;
+        // currentPluginMenu.value = null;
     }
 }
 

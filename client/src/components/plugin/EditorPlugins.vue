@@ -4,6 +4,7 @@
         <Divider v-if="pluginPanels.length >= 1" />
         <NavigationButton
             v-for="panel in pluginPanels"
+            :active="panel.name === value"
             :label="$t('editor.ui.plugin.plugin', {name: panel.name})"
             :tooltip-text="$t('editor.ui.plugin.plugin', {name: panel.name})"
             @click="emits('update:value', panel.name === value ? null : panel.name)"
