@@ -44,6 +44,11 @@ interface PluginBlock {
     properties: PluginProperty[];
 }
 
+interface PluginBlockActions {
+    sendMessage(message: string): void;
+}
+
+
 interface IframeBlock {
     type: 'iframe';
     content: string;
@@ -127,7 +132,7 @@ interface BlockBaseActions {
 
 
 type BlockType = 
-    | PluginBlock
+    | (PluginBlock & PluginBlockActions)
     | IframeBlock
     | ImageBlock
     | InteractiveAreaBlock
@@ -177,18 +182,19 @@ interface ApiEditor {
     setSize(width: number, height: number, resizeToFit: boolean): void;
     
     /**
-     * Called when the editor requests a block to be rendered.
-     * Can be called for many different reasons, for example:
-     *  - block is selected or deselected
-     *  - block was created
-     *  - block properties were changed
-     *  - and more
-     * @param eventName 'renderBlock'
+     * Calls the callback when the editor requests a block to be rendered.
+     * Only requests for this plugin's plugin blocks are sent to this function. 
+     * Can be called for multiple reasons, but has to be the "base evaluation" of the block.
+     * You can continue to communicate with this block using the plugin block's methods.
+     * 
+     * **Calling this function multiple times will overwrite the previous callback.**
+     * @param eventName 'blockRender'
      * @param callback A function that takes a block and returns a string. The string should be the HTML content of the block.
      */
-    on(eventName: 'renderBlock', callback: (block: PluginBlock) => string): void;
+    on(eventName: 'blockRender', callback: (block: PluginBlock) => string): void;
     on(eventName: 'panelRegister', callback: () => string): void;
     on(eventName: 'panelMessage', callback: (message: string) => void): void;
+    on(eventName: 'blockMessage', callback: (block: PluginBlock) => void): void;
 
     /**
      * Sends a message to this plugin's panel. The message will be received by the window's `message` event.
@@ -250,6 +256,11 @@ interface Api {
      * Currently supported languages are 'en-US' and 'cs-CZ'.
      */
     language: string;
+
+    /**
+     * Contains the current plugin id.
+     */
+    plugin: string;
 
     // TODO:
     // material - way to create & read slides
