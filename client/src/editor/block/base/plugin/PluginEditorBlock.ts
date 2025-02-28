@@ -6,7 +6,10 @@ import {PluginProperty} from "@/editor/block/base/plugin/PluginProperty";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {BlockEventListener} from "@/editor/block/events/BlockListener";
 import {PluginPropertyFactory} from "@/editor/block/base/plugin/PluginPropertyFactory";
+import {RegisterBlockApiFeature} from "@/editor/plugin/editor/RegisterBlockApiFeature";
+import {SendMessageApiFeature} from "@/editor/block/base/plugin/api/SendMessageApiFeature";
 
+@RegisterBlockApiFeature(SendMessageApiFeature)
 export class PluginEditorBlock extends EditorBlock {
     @BlockSerialize("plugin")
     private plugin: string;
@@ -43,7 +46,7 @@ export class PluginEditorBlock extends EditorBlock {
     private async renderIframe() {
         const content = (this.element.querySelector(".block-content")! as HTMLElement);
 
-        const render = await this.editor.getBlockRenderer().render(this);
+        const render = await this.editor.getPluginCommunicator().render(this);
 
         try {
             content.removeAttribute("data-processed");
@@ -64,8 +67,44 @@ export class PluginEditorBlock extends EditorBlock {
     public onMounted() {
         this.renderIframe();
 
+        window.addEventListener("message", async(event) => {
+            const content = (this.element.querySelector(".block-content")! as HTMLElement);
+            const iframe = content.querySelector("iframe");
+
+            if(!iframe) {
+                return;
+            }
+
+            if(event.source !== iframe!.contentWindow) {
+                return;
+            }
+
+            if(event.data.target === "script") {
+                await this.editor.getPluginCommunicator().processMessage(this);
+            } else {
+                console.log("[PluginEditorBlock] Unknown target of received message");
+            }
+        });
     }
+
+    public sendMessage(message: string) {
+        const content = (this.element.querySelector(".block-content")! as HTMLElement);
+        const iframe = content.querySelector("iframe");
+
+        if(iframe) {
+            iframe.contentWindow?.postMessage({
+                target: "block",
+                message: message,
+            }, "*");
+        }
     }
+
+    // @BlockEventListener(BlockEvent.SELECTED)
+    // @BlockEventListener(BlockEvent.DESELECTED)
+    // @BlockEventListener(BlockEvent.MOUNTED)
+    // private onUpdate() {
+    //     this.renderIframe();
+    // }
 
     public getDataField(key: string): any {
         return this.data[key];
