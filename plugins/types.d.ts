@@ -1,3 +1,49 @@
+interface TextPluginProperty {
+    type: 'text';
+    label: string;
+}
+
+interface BooleanPluginProperty {
+    type: 'boolean';
+    label: string;
+}
+
+interface ColorPluginProperty {
+    type: 'color';
+    label: string;
+}
+
+interface NumberPluginProperty {
+    type: 'number';
+    label: string;
+}
+ interface SelectPluginProperty {
+    type: 'select';
+    label: string;
+    options: { value: string; label: string }[];
+}
+
+interface PluginPropertyBase {
+    type: string;
+    key: string;
+}
+
+type PluginProperty = PluginPropertyBase & (
+    | TextPluginProperty
+    | BooleanPluginProperty
+    | ColorPluginProperty
+    | NumberPluginProperty
+    | SelectPluginProperty
+);
+
+
+interface PluginBlock {
+    type: 'plugin';
+    plugin: string;
+    data: Record<string, string>;
+    properties: PluginProperty[];
+}
+
 interface IframeBlock {
     type: 'iframe';
     content: string;
@@ -37,7 +83,7 @@ interface WatermarkBlock {
 
 interface BlockBaseData {
     id: string;
-    type: 'iframe' | 'image' | 'interactiveArea' | 'mermaid' | 'shape' | 'text' | 'watermark';
+    type: 'plugin' | 'iframe' | 'image' | 'interactiveArea' | 'mermaid' | 'shape' | 'text' | 'watermark';
     position: {
         x: number;
         y: number;
@@ -81,6 +127,7 @@ interface BlockBaseActions {
 
 
 type BlockType = 
+    | PluginBlock
     | IframeBlock
     | ImageBlock
     | InteractiveAreaBlock
@@ -91,8 +138,18 @@ type BlockType =
 
 type Block = BlockBaseData & BlockBaseActions & BlockType;
 
-// CreateBlock should not include an `id`, as it will be generated.
-type CreateBlock = Omit<BlockBaseData, "id"> & BlockType;
+
+type CreateBlockType = 
+    | Omit<PluginBlock, "plugin">
+    | IframeBlock
+    | ImageBlock
+    | InteractiveAreaBlock
+    | MermaidBlock
+    | ShapeBlock
+    | TextBlock
+    | WatermarkBlock;
+
+type CreateBlock = Omit<BlockBaseData, "id"> & CreateBlockType;
 
 interface ApiEditor {
     getBlocks(): Block[];
@@ -111,6 +168,20 @@ interface ApiEditor {
     selectBlock(id: string, addToSelection?: boolean): void;
     deselectBlock(id: string): void;
     isBlockSelected(id: string): boolean;
+
+    /**
+     * Called when the editor requests a block to be rendered.
+     * Can be called for many different reasons, for example:
+     *  - block is selected or deselected
+     *  - block was created
+     *  - block properties were changed
+     *  - and more
+     * @param eventName 'renderBlock'
+     * @param callback A function that takes a block and returns a string. The string should be the HTML content of the block.
+     */
+    on(eventName: 'renderBlock', callback: (block: PluginBlock) => string): void;
+    on(eventName: 'panelRegister', callback: () => string): void;
+    on(eventName: 'panelMessage', callback: (message: string) => void): void;
 }
 
 interface FetchOptions {
