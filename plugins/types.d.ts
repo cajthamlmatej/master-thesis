@@ -156,19 +156,26 @@ interface ApiEditor {
     removeBlock(id: string): void;
     /**
      * Add a new block to the editor. The supplied data has to be in the correct format for the block type.
+     * Created block will be selected after creation.
+     * 
      * The block will recieve a unique ID and be added to the editor.
+     * If the block is a plugin block, the block's plugin will be set to this plugin.
+     * 
      * @param block The block data to add to the editor.
      * @returns The ID of the newly added block.
      */
     addBlock(block: CreateBlock): string;
-    getSize(): { width: number, height: number };
-    setSize(width: number, height: number, resizeToFit: boolean): void;
-    getMode(): 'select' | 'move';
-    setMode(mode: 'select' | 'move'): void;
+
     selectBlock(id: string, addToSelection?: boolean): void;
     deselectBlock(id: string): void;
     isBlockSelected(id: string): boolean;
 
+    getMode(): 'select' | 'move';
+    setMode(mode: 'select' | 'move'): void;
+
+    getSize(): { width: number, height: number };
+    setSize(width: number, height: number, resizeToFit: boolean): void;
+    
     /**
      * Called when the editor requests a block to be rendered.
      * Can be called for many different reasons, for example:
@@ -182,6 +189,12 @@ interface ApiEditor {
     on(eventName: 'renderBlock', callback: (block: PluginBlock) => string): void;
     on(eventName: 'panelRegister', callback: () => string): void;
     on(eventName: 'panelMessage', callback: (message: string) => void): void;
+
+    /**
+     * Sends a message to this plugin's panel. The message will be received by the window's `message` event.
+     * @param message The message to send to the panel.
+     */
+    sendPanelMessage(message: string): void;
 }
 
 interface FetchOptions {
@@ -197,6 +210,12 @@ interface FetchOptions {
      * The body to send with the request. Only used for POST, PUT, DELETE and PATCH requests.
      */
     body?: string;
+}
+
+interface ApiCache {
+    get(key: string): string | null;
+    set(key: string, value: string): void;
+    remove(key: string): void;
 }
 
 interface Api {
@@ -218,6 +237,22 @@ interface Api {
      * Editor is one slide in the presentation and changes for each slide.
      */
     editor: ApiEditor;
+
+    /**
+     * Represents the cache for the plugin. Use this to store some data between instances of the plugin.
+     * These data are not persisted and can be deleted at any time.
+     * The cache is shared between all instances of the current plugin. Other plugins cannot access this cache.
+     */
+    cache: ApiCache;
+
+    /**
+     * The current language of the platform. This is the language that the user has selected in the application.
+     * Currently supported languages are 'en-US' and 'cs-CZ'.
+     */
+    language: string;
+
+    // TODO:
+    // material - way to create & read slides
 }
 
 declare global {
