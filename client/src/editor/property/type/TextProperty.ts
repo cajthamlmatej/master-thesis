@@ -39,6 +39,11 @@ export abstract class TextProperty<T extends EditorBlock = EditorBlock> extends 
     public processRecalculateValues() {
         this.recalculateValues((value) => {
             const input = this.element.querySelector<HTMLInputElement>(`[data-property="${this.name}"]`)!;
+
+            if(value == undefined) {
+                value = "";
+            }
+
             input.value = value.toString();
         });
     }
