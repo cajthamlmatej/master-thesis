@@ -7,6 +7,7 @@ import {EditorBlock} from "@/editor/block/EditorBlock";
 import {EditorPluginEvent} from "@/editor/plugin/editor/EditorPluginEvent";
 import {usePluginStore} from "@/stores/plugin";
 import {PluginManager} from "@/editor/plugin/PluginManager";
+import {PluginEditorBlock} from "@/editor/block/base/plugin/PluginEditorBlock";
 
 export class EditorPlugin {
     private plugin: PluginContext;
@@ -22,7 +23,7 @@ export class EditorPlugin {
         this.loadedResolve = resolve;
     });
 
-    private callbacks: Record<EditorPluginEvent, QuickJSHandle | undefined> = {panelMessage: undefined, panelRegister: undefined, renderBlock: undefined};
+    private callbacks: Record<EditorPluginEvent, QuickJSHandle | undefined> = {panelMessage: undefined, panelRegister: undefined, blockRender: undefined, blockMessage: undefined};
 
     constructor(plugin: PluginContext, code: string, editor?: Editor) {
         this.plugin = plugin;
@@ -196,7 +197,8 @@ export class EditorPlugin {
     public async renderBlock(block: EditorBlock) {
         const serializedBlock = this.serializeBlock(block);
 
-        const result = await this.callEvent(EditorPluginEvent.RENDER_BLOCK, serializedBlock);
+        console.log("Calling render block event");
+        const result = await this.callEvent(EditorPluginEvent.BLOCK_RENDER, serializedBlock);
 
         if (!result) return "";
 
@@ -207,5 +209,15 @@ export class EditorPlugin {
         if (this.pluginMessageCallback) {
             this.pluginMessageCallback(message);
         }
+    }
+
+    async processBlockMessage(block: PluginEditorBlock) {
+        const serializedBlock = this.serializeBlock(block);
+
+        const result = await this.callEvent(EditorPluginEvent.BLOCK_MESSAGE, serializedBlock);
+
+        if (!result) return "";
+
+        return this.context!.dump(result.unwrap());
     }
 }

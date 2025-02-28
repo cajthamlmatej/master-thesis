@@ -10,6 +10,7 @@ import {EventsApiFeature} from "@/editor/plugin/editor/api/editor/Events";
 import {PluginManager} from "@/editor/plugin/PluginManager";
 import {CacheApiFeature} from "@/editor/plugin/editor/api/Cache";
 import {LanguageApiFeature} from "@/editor/plugin/editor/api/Language";
+import {PluginApiFeature} from "@/editor/plugin/editor/api/Plugin";
 
 export interface ApiData {
     context: QuickJSContext;
@@ -30,7 +31,9 @@ export class Api {
         (new EditorApiFeature()).register(api, data);
         (new FetchApiFeature()).register(api, data);
         (new CacheApiFeature()).register(api, data);
+
         (new LanguageApiFeature()).register(api, data);
+        (new PluginApiFeature()).register(api, data);
 
         context.setProp(context.global, "api", api);
     }
