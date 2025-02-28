@@ -6,6 +6,7 @@ import Editor from "@/editor/Editor";
 import {LogApiFeature} from "@/editor/plugin/editor/api/Log";
 import {EditorApiFeature} from "@/editor/plugin/editor/api/Editor";
 import {FetchApiFeature} from "@/editor/plugin/editor/api/Fetch";
+import {EventsApiFeature} from "@/editor/plugin/editor/api/editor/Events";
 
 export interface ApiData {
     context: QuickJSContext;

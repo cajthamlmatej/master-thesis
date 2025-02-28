@@ -12,6 +12,7 @@ import {SetModeApiFeature} from "@/editor/plugin/editor/api/editor/SetMode";
 import {SelectBlockApiFeature} from "@/editor/plugin/editor/api/editor/SelectBlock";
 import {DeselectBlockApiFeature} from "@/editor/plugin/editor/api/editor/DeselectBlock";
 import {IsBlockSelectedApiFeature} from "@/editor/plugin/editor/api/editor/IsBlockSelected";
+import {EventsApiFeature} from "@/editor/plugin/editor/api/editor/Events";
 
 export class EditorApiFeature extends ApiFeature {
     register(obj: QuickJSHandle, data: ApiData): void {
@@ -32,6 +33,8 @@ export class EditorApiFeature extends ApiFeature {
         (new SelectBlockApiFeature()).register(editorObj, data);
         (new DeselectBlockApiFeature()).register(editorObj, data);
         (new IsBlockSelectedApiFeature()).register(editorObj, data);
+
+        (new EventsApiFeature()).register(editorObj, data);
 
         context.setProp(obj, "editor", editorObj);
     }

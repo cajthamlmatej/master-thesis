@@ -2,10 +2,9 @@ import {PluginContext} from '../PluginContext';
 import Editor from "@/editor/Editor";
 import {load} from "@/editor/plugin/quickjs/QuickJSRunner";
 import {QuickJSContext, QuickJSHandle} from "quickjs-emscripten";
-import {useMaterialStore} from "@/stores/material";
-import {useEditorStore} from "@/stores/editor";
 import {Api} from "@/editor/plugin/editor/Api";
 import {EditorBlock} from "@/editor/block/EditorBlock";
+import {EditorPluginEvent} from "@/editor/plugin/editor/EditorPluginEvent";
 
 export class EditorPlugin {
     private plugin: PluginContext;
@@ -21,6 +20,8 @@ export class EditorPlugin {
         this.loadedResolve = resolve;
     });
 
+    private callbacks: Record<EditorPluginEvent, QuickJSHandle | undefined> = {panelMessage: undefined, panelRegister: undefined, renderBlock: undefined};
+
     constructor(plugin: PluginContext, code: string, editor?: Editor) {
         this.plugin = plugin;
         this.code = code;
@@ -28,6 +29,36 @@ export class EditorPlugin {
         if (editor) this.editor = editor;
 
         this.prepareContext();
+    }
+
+    public registerCallback(name: EditorPluginEvent, fnc: QuickJSHandle) {
+        if (!this.context) throw new Error("Context not ready");
+
+        try {
+            const evalFnc = this.context.evalCode(`(${fnc})`, "event.js");
+            const result = this.context.unwrapResult(evalFnc);
+
+            if (!result) {
+                this.plugin.log(`Error while registering function ${name}: ${evalFnc}`);
+                return;
+            }
+
+            this.callbacks[name] = result;
+        } catch (e) {
+            this.plugin.log(`Error while registering function ${name}: ${e}`);
+        }
+    }
+
+    public async callEvent(name: EditorPluginEvent, ...args: QuickJSHandle[]) {
+        if (!this.context) throw new Error("Context not ready");
+
+        const fnc = this.callbacks[name];
+
+        if (!fnc) {
+            return;
+        }
+
+        return this.context.callFunction(fnc, this.context.undefined, ...args);
     }
 
     private async prepareContext() {
@@ -40,6 +71,7 @@ export class EditorPlugin {
 
         this.setupContext();
         this.loadedResolve();
+        await this.callFunctionIfExists("initEditor");
     }
 
     public serializeAny(value: any): QuickJSHandle {
@@ -79,7 +111,7 @@ export class EditorPlugin {
         for (const feature of blockApiFeatures) {
             const newFeature = new feature.apiFeature();
             newFeature.register(base, data, block);
-            this.plugin.log(`Registered block api feature ${feature.apiFeature.name}`);
+            // this.plugin.log(`Registered block api feature ${feature.apiFeature.name}`);
         }
 
         return base;
@@ -128,7 +160,8 @@ export class EditorPlugin {
     }
 
     public async getPanel() {
-        const result = await this.callFunctionIfExists("onPanelRegister");
+        await this.loadedPromise;
+        const result = await this.callEvent(EditorPluginEvent.PANEL_REGISTER);
 
         if (!result) return;
 
@@ -140,15 +173,23 @@ export class EditorPlugin {
         this.setupContext();
 
         this.plugin.log(`Successfully loaded for editor`);
-
-        await this.callFunctionIfExists("onLoad");
     }
 
     public async processMessageFromParent(message: string) {
         const args = this.context!.newString(message);
-        const result = await this.callFunctionIfExists("onPanelMessage", args);
+        const result = await this.callEvent(EditorPluginEvent.PANEL_MESSAGE, args);
 
         if (!result) return;
+
+        return this.context!.dump(result.unwrap());
+    }
+
+    public async renderBlock(block: EditorBlock) {
+        const serializedBlock = this.serializeBlock(block);
+
+        const result = await this.callEvent(EditorPluginEvent.RENDER_BLOCK, serializedBlock);
+
+        if (!result) return "";
 
         return this.context!.dump(result.unwrap());
     }
