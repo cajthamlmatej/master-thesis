@@ -60,11 +60,11 @@ export class PluginEditorBlock extends EditorBlock {
         }
     }
 
-    @BlockEventListener(BlockEvent.SELECTED)
-    @BlockEventListener(BlockEvent.DESELECTED)
     @BlockEventListener(BlockEvent.MOUNTED)
-    private onUpdate() {
+    public onMounted() {
         this.renderIframe();
+
+    }
     }
 
     public getDataField(key: string): any {
@@ -74,7 +74,7 @@ export class PluginEditorBlock extends EditorBlock {
     public setDataField(key: string, value: any) {
         this.data[key] = value;
 
-        this.renderIframe();
+        // this.renderIframe();
     }
 
     public override getProperties(): Property<this>[] {

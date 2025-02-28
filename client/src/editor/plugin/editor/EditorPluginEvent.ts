@@ -1,5 +1,6 @@
 export enum EditorPluginEvent {
     PANEL_REGISTER = "panelRegister",
     PANEL_MESSAGE = "panelMessage",
-    RENDER_BLOCK = "renderBlock",
+    BLOCK_RENDER = "blockRender",
+    BLOCK_MESSAGE = "blockMessage",
 }

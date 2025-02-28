@@ -11,7 +11,7 @@ import {BlockRegistry} from "@/editor/block/BlockRegistry";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {EditorKeybinds} from "@/editor/EditorKeybinds";
 import {EditorHistory} from "@/editor/history/EditorHistory";
-import {BlockRenderer} from "@/editor/BlockRenderer";
+import {EditorPluginCommunicator} from "@/editor/EditorPluginCommunicator";
 
 export default class Editor {
     private static readonly DEFAULT_PADDING = 32;
@@ -33,7 +33,7 @@ export default class Editor {
     private readonly keybinds: EditorKeybinds;
     private readonly history: EditorHistory;
 
-    private blockRenderer: BlockRenderer<EditorBlock>;
+    private pluginCommunicator: EditorPluginCommunicator;
 
     constructor(editorElement: HTMLElement, options?: EditorOptions, preferences?: EditorPreferences) {
         this.editorElement = editorElement;
@@ -506,15 +506,15 @@ export default class Editor {
         this.editorElement.style.setProperty("--scale", this.scale.toString());
     }
 
-    public setBlockRenderer(blockRenderer: BlockRenderer<EditorBlock>) {
-        this.blockRenderer = blockRenderer;
+    public setPluginCommunicator(pluginCommunicator: EditorPluginCommunicator) {
+        this.pluginCommunicator = pluginCommunicator;
     }
 
-    public getBlockRenderer() {
-        if(!this.blockRenderer) {
+    public getPluginCommunicator() {
+        if(!this.pluginCommunicator) {
             throw new Error("Block renderer not set before rendering blocks");
         }
 
-        return this.blockRenderer;
+        return this.pluginCommunicator;
     }
 }
