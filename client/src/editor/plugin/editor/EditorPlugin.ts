@@ -23,7 +23,10 @@ export class EditorPlugin {
         this.loadedResolve = resolve;
     });
 
-    private callbacks: Record<EditorPluginEvent, QuickJSHandle | undefined> = {panelMessage: undefined, panelRegister: undefined, blockRender: undefined, blockMessage: undefined};
+    private callbacks: Record<EditorPluginEvent, QuickJSHandle | undefined> = {
+        panelMessage: undefined, panelRegister: undefined,
+        pluginBlockRender: undefined, pluginBlockMessage: undefined, pluginBlockPropertyChange: undefined
+    };
 
     constructor(plugin: PluginContext, code: string, editor?: Editor) {
         this.plugin = plugin;
@@ -198,7 +201,7 @@ export class EditorPlugin {
         const serializedBlock = this.serializeBlock(block);
 
         console.log("Calling render block event");
-        const result = await this.callEvent(EditorPluginEvent.BLOCK_RENDER, serializedBlock);
+        const result = await this.callEvent(EditorPluginEvent.PLUGIN_BLOCK_RENDER, serializedBlock);
 
         if (!result) return "";
 
@@ -214,10 +217,16 @@ export class EditorPlugin {
     async processBlockMessage(block: PluginEditorBlock, message: string) {
         const serializedBlock = this.serializeBlock(block);
 
-        const result = await this.callEvent(EditorPluginEvent.BLOCK_MESSAGE, serializedBlock, this.context!.newString(message));
+        const result = await this.callEvent(EditorPluginEvent.PLUGIN_BLOCK_MESSAGE, serializedBlock, this.context!.newString(message));
 
         if (!result) return "";
 
         return this.context!.dump(result.unwrap());
+    }
+
+    async processBlockPropertyChange(param: PluginEditorBlock, key: string) {
+        const serializedBlock = this.serializeBlock(param);
+
+        await this.callEvent(EditorPluginEvent.PLUGIN_BLOCK_PROPERTY_CHANGE, serializedBlock, this.context!.newString(key));
     }
 }

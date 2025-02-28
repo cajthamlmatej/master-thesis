@@ -8,8 +8,10 @@ import {BlockEventListener} from "@/editor/block/events/BlockListener";
 import {PluginPropertyFactory} from "@/editor/block/base/plugin/PluginPropertyFactory";
 import {RegisterBlockApiFeature} from "@/editor/plugin/editor/RegisterBlockApiFeature";
 import {SendMessageApiFeature} from "@/editor/block/base/plugin/api/SendMessageApiFeature";
+import {RenderApiFeature} from "@/editor/block/base/plugin/api/RenderApiFeature";
 
 @RegisterBlockApiFeature(SendMessageApiFeature)
+@RegisterBlockApiFeature(RenderApiFeature)
 export class PluginEditorBlock extends EditorBlock {
     @BlockSerialize("plugin")
     private plugin: string;
@@ -43,7 +45,7 @@ export class PluginEditorBlock extends EditorBlock {
         return element;
     }
 
-    private async renderIframe() {
+    public async renderIframe() {
         const content = (this.element.querySelector(".block-content")! as HTMLElement);
 
         const render = await this.editor.getPluginCommunicator().render(this);
@@ -99,13 +101,6 @@ export class PluginEditorBlock extends EditorBlock {
         }
     }
 
-    // @BlockEventListener(BlockEvent.SELECTED)
-    // @BlockEventListener(BlockEvent.DESELECTED)
-    // @BlockEventListener(BlockEvent.MOUNTED)
-    // private onUpdate() {
-    //     this.renderIframe();
-    // }
-
     public getDataField(key: string): any {
         return this.data[key];
     }
@@ -113,7 +108,7 @@ export class PluginEditorBlock extends EditorBlock {
     public setDataField(key: string, value: any) {
         this.data[key] = value;
 
-        // this.renderIframe();
+        this.editor.getPluginCommunicator().processPropertyChange(this, key);
     }
 
     public override getProperties(): Property<this>[] {

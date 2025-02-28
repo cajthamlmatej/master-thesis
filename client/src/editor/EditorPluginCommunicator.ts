@@ -10,24 +10,28 @@ export class EditorPluginCommunicator {
         this.pluginManager = pluginManager;
     }
 
-    async render(block: EditorBlock): Promise<string> {
-        if (!(block instanceof PluginEditorBlock)) {
-            console.error("[EditorPluginCommunicator] Block is not an instance of PluginEditorBlock and cannot be rendered.");
-            return "";
-        }
-
-        const pluginId = block.getPlugin();
+    private getEditorPlugin(pluginId: string) {
         const plugin = this.pluginManager.getPlugin(pluginId);
 
         if (!plugin) {
             console.error("[EditorPluginCommunicator] Plugin with ID " + pluginId + " not found.");
-            return "";
+            return undefined;
         }
 
         const editorPlugin = toRaw(plugin.getEditorPlugin());
 
         if (!editorPlugin) {
             console.error("[EditorPluginCommunicator] Plugin with ID " + pluginId + " has no editor plugin.");
+            return undefined;
+        }
+
+        return editorPlugin;
+    }
+
+    async render(block: PluginEditorBlock): Promise<string> {
+        const editorPlugin = this.getEditorPlugin(block.getPlugin());
+
+        if(!editorPlugin) {
             return "";
         }
 
@@ -35,21 +39,22 @@ export class EditorPluginCommunicator {
     }
 
     async processMessage(block: PluginEditorBlock, message: string) {
-        const pluginId = block.getPlugin();
-        const plugin = this.pluginManager.getPlugin(pluginId);
+        const editorPlugin = this.getEditorPlugin(block.getPlugin());
 
-        if (!plugin) {
-            console.error("[EditorPluginCommunicator] Plugin with ID " + pluginId + " not found.");
-            return;
-        }
-
-        const editorPlugin = toRaw(plugin.getEditorPlugin());
-
-        if (!editorPlugin) {
-            console.error("[EditorPluginCommunicator] Plugin with ID " + pluginId + " has no editor plugin.");
-            return;
+        if(!editorPlugin) {
+            return "";
         }
 
         await editorPlugin.processBlockMessage(block, message);
+    }
+
+    async processPropertyChange(block: PluginEditorBlock, key: string) {
+        const editorPlugin = this.getEditorPlugin(block.getPlugin());
+
+        if(!editorPlugin) {
+            return "";
+        }
+
+        await editorPlugin.processBlockPropertyChange(block, key);
     }
 }
