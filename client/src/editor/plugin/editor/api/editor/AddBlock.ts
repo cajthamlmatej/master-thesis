@@ -16,6 +16,10 @@ export class AddBlockApiFeature extends ApiFeature {
                 parsedData.id = generateUUID();
             }
 
+            if(parsedData.type === "plugin") {
+                parsedData.plugin = plugin.getId();
+            }
+
             const block = editor.blockRegistry.deserializeEditor(parsedData);
 
             if (!block) {
