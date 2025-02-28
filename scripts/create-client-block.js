@@ -12,7 +12,7 @@ const fs = require('fs');
 const frontend = '../client/src/editor/block';
 
 const blockName = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
-const folder = `${frontend}/${name}`;
+const folder = `${frontend}/base/${name}`;
 
 if (fs.existsSync(folder)) {
     console.error(`Block ${blockName} already exists.`);
@@ -100,8 +100,8 @@ export class ${className} extends PlayerBlock {
     const content = `import {BlockDeserializer} from "@/editor/block/serialization/BlockDeserializer";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 import type {PlayerBlock} from "@/editor/block/PlayerBlock";
-import {${playerClassName}} from "@/editor/block/${name}/${playerClassName}";
-import {${editorClassName}} from "@/editor/block/${name}/${editorClassName}";
+import {${playerClassName}} from "@/editor/block/base/${name}/${playerClassName}";
+import {${editorClassName}} from "@/editor/block/base/${name}/${editorClassName}";
 
 export class ${className} extends BlockDeserializer {
     deserializeEditor(data: any): EditorBlock {
@@ -140,9 +140,9 @@ export class ${className} extends BlockDeserializer {
 
     lines.splice(entryIndex, 0, `        this.register("${name}", ${editorClassName}, ${playerClassName}, ${deserializerClassName});`);
 
-    lines.splice(importIndex, 0, `import {${editorClassName}} from "@/editor/block/${name}/${editorClassName}";
-import {${playerClassName}} from "@/editor/block/${name}/${playerClassName}";
-import {${deserializerClassName}} from "@/editor/block/${name}/${deserializerClassName}";`);
+    lines.splice(importIndex, 0, `import {${editorClassName}} from "@/editor/block/base/${name}/${editorClassName}";
+import {${playerClassName}} from "@/editor/block/base/${name}/${playerClassName}";
+import {${deserializerClassName}} from "@/editor/block/base/${name}/${deserializerClassName}";`);
 
     fs.writeFileSync(file, lines.join('\n'));
 }
