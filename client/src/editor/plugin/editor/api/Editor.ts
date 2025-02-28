@@ -13,6 +13,7 @@ import {SelectBlockApiFeature} from "@/editor/plugin/editor/api/editor/SelectBlo
 import {DeselectBlockApiFeature} from "@/editor/plugin/editor/api/editor/DeselectBlock";
 import {IsBlockSelectedApiFeature} from "@/editor/plugin/editor/api/editor/IsBlockSelected";
 import {EventsApiFeature} from "@/editor/plugin/editor/api/editor/Events";
+import {PanelMessageApiFeature} from "@/editor/plugin/editor/api/editor/PanelMessage";
 
 export class EditorApiFeature extends ApiFeature {
     register(obj: QuickJSHandle, data: ApiData): void {
@@ -35,6 +36,8 @@ export class EditorApiFeature extends ApiFeature {
         (new IsBlockSelectedApiFeature()).register(editorObj, data);
 
         (new EventsApiFeature()).register(editorObj, data);
+
+        (new PanelMessageApiFeature()).register(editorObj, data);
 
         context.setProp(obj, "editor", editorObj);
     }

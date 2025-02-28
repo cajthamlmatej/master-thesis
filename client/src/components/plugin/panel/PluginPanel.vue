@@ -38,6 +38,20 @@ watch(() => iframe.value, (value) => {
     if(!value) return;
 
     const plugin = toRaw(panel.value.plugin);
+
+    plugin.getEditorPlugin()!.setPanelMessageCallback((message) => {
+        try {
+            const iframeContentWindow = toRaw(iframe.value)!.contentWindow!;
+
+            iframeContentWindow.postMessage({
+                target: "panel",
+                message: message
+            }, "*");
+        } catch (e) {
+            plugin.log("Error sending message to panel: " + e);
+        }
+    });
+
     window.addEventListener("message", (event) => {
         const data = event.data;
 

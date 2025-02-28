@@ -168,6 +168,11 @@ export class EditorPlugin {
         return this.context!.dump(result.unwrap());
     }
 
+    private pluginMessageCallback: ((message: string) => void) | undefined;
+    public setPanelMessageCallback(fnc: (message: string) => void) {
+        this.pluginMessageCallback = fnc;
+    }
+
     public async loadForEditor(editor: Editor) {
         this.editor = editor;
         this.setupContext();
@@ -192,5 +197,11 @@ export class EditorPlugin {
         if (!result) return "";
 
         return this.context!.dump(result.unwrap());
+    }
+
+    public sendMessageToPanel(message: string) {
+        if (this.pluginMessageCallback) {
+            this.pluginMessageCallback(message);
+        }
     }
 }
