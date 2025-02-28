@@ -5,6 +5,8 @@ import {QuickJSContext, QuickJSHandle} from "quickjs-emscripten";
 import {Api} from "@/editor/plugin/editor/Api";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {EditorPluginEvent} from "@/editor/plugin/editor/EditorPluginEvent";
+import {usePluginStore} from "@/stores/plugin";
+import {PluginManager} from "@/editor/plugin/PluginManager";
 
 export class EditorPlugin {
     private plugin: PluginContext;
@@ -103,7 +105,8 @@ export class EditorPlugin {
             context: this.context!,
             editorPlugin: this,
             editor: this.editor!,
-            plugin: this.plugin
+            plugin: this.plugin,
+            pluginManager: usePluginStore().manager as PluginManager
         };
 
         const blockApiFeatures = block.getApiFeatures();
@@ -128,7 +131,8 @@ export class EditorPlugin {
             context: this.context,
             editor: this.editor,
             editorPlugin: this,
-            plugin: this.plugin
+            plugin: this.plugin,
+            pluginManager: usePluginStore().manager as PluginManager
         });
 
         this.plugin.log(`Prepared context`);

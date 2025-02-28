@@ -2,10 +2,12 @@ import Editor from "@/editor/Editor";
 import {PluginContext} from "@/editor/plugin/PluginContext";
 import {PluginEditorPanel} from "@/editor/plugin/PluginEditorPanel";
 import Event from "@/utils/Event";
+import {PluginCache} from "@/editor/plugin/PluginCache";
 
 export class PluginManager {
     private plugins: PluginContext[] = [];
     public PLUGIN_LOADED = new Event();
+    public readonly cache = new PluginCache();
 
     public async loadPlugin(plugin: PluginContext) {
         console.log("[PluginManager] Loading plugin " + plugin.toString());
