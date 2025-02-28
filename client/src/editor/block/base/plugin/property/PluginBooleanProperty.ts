@@ -10,6 +10,10 @@ export class PluginBooleanProperty extends BooleanProperty<PluginEditorBlock> {
         this.property = property;
     }
 
+    override getPriority(): number {
+        return 2000;
+    }
+
     applyValue(value: boolean): boolean {
         this.blocks[0].setDataField(this.property.key, value);
         return true;

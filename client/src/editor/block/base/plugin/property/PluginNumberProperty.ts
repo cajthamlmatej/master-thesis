@@ -11,6 +11,10 @@ export class PluginNumberProperty extends NumberProperty<PluginEditorBlock> {
         this.property = property;
     }
 
+    override getPriority(): number {
+        return 2000;
+    }
+
     applyValue(value: number): boolean {
         this.blocks[0].setDataField(this.property.key, value);
         return true;

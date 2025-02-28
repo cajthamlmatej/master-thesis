@@ -211,10 +211,10 @@ export class EditorPlugin {
         }
     }
 
-    async processBlockMessage(block: PluginEditorBlock) {
+    async processBlockMessage(block: PluginEditorBlock, message: string) {
         const serializedBlock = this.serializeBlock(block);
 
-        const result = await this.callEvent(EditorPluginEvent.BLOCK_MESSAGE, serializedBlock);
+        const result = await this.callEvent(EditorPluginEvent.BLOCK_MESSAGE, serializedBlock, this.context!.newString(message));
 
         if (!result) return "";
 

@@ -80,7 +80,7 @@ export class PluginEditorBlock extends EditorBlock {
             }
 
             if(event.data.target === "script") {
-                await this.editor.getPluginCommunicator().processMessage(this);
+                await this.editor.getPluginCommunicator().processMessage(this, event.data.message);
             } else {
                 console.log("[PluginEditorBlock] Unknown target of received message");
             }

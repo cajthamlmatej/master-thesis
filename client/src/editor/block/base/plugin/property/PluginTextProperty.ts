@@ -9,6 +9,10 @@ export class PluginTextProperty extends TextProperty<PluginEditorBlock> {
         this.property = property;
     }
 
+    override getPriority(): number {
+        return 2000;
+    }
+
     applyValue(value: string): boolean {
         this.blocks[0].setDataField(this.property.key, value);
         return true;

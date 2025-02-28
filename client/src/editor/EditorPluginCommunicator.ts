@@ -34,7 +34,7 @@ export class EditorPluginCommunicator {
         return await editorPlugin.renderBlock(block);
     }
 
-    async processMessage(block: PluginEditorBlock) {
+    async processMessage(block: PluginEditorBlock, message: string) {
         const pluginId = block.getPlugin();
         const plugin = this.pluginManager.getPlugin(pluginId);
 
@@ -50,6 +50,6 @@ export class EditorPluginCommunicator {
             return;
         }
 
-        await editorPlugin.processBlockMessage(block);
+        await editorPlugin.processBlockMessage(block, message);
     }
 }
