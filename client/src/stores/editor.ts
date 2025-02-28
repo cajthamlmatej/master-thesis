@@ -9,6 +9,10 @@ import {toJpeg} from 'html-to-image';
 import {useMaterialStore} from "@/stores/material";
 import {Slide} from "@/models/Material";
 import {synchronizeCssStyles} from "@/utils/SynchronizeCssStyles";
+import {EditorBlockRenderer} from "@/editor/EditorBlockRenderer";
+import {usePluginStore} from "@/stores/plugin";
+import plugin from "floating-vue";
+import {PluginManager} from "@/editor/plugin/PluginManager";
 
 
 export const useEditorStore = defineStore("editor", () => {
@@ -220,6 +224,7 @@ export const useEditorStore = defineStore("editor", () => {
         }
     }
 
+
     const changeSlide = async (slideOrId: Slide | string) => {
         if (!editorElement.value) return;
         const slide = typeof slideOrId === "string" ? getSlideById(slideOrId) : slideOrId;
@@ -239,7 +244,11 @@ export const useEditorStore = defineStore("editor", () => {
         const deserializer = new EditorDeserializer();
         const newEditor = deserializer.deserialize(slide.data, editorElement.value);
 
+        const pluginStore = usePluginStore();
+
         setEditor(newEditor);
+        // note(Matej): TS is tweaking out here, but it should be fine
+        newEditor.setBlockRenderer(new EditorBlockRenderer(toRaw(pluginStore.manager) as PluginManager));
         activeSlide.value = slide.id;
 
         if (!editorPropertyElement.value) return;

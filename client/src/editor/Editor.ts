@@ -11,6 +11,7 @@ import {BlockRegistry} from "@/editor/block/BlockRegistry";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {EditorKeybinds} from "@/editor/EditorKeybinds";
 import {EditorHistory} from "@/editor/history/EditorHistory";
+import {BlockRenderer} from "@/editor/BlockRenderer";
 
 export default class Editor {
     private static readonly DEFAULT_PADDING = 32;
@@ -31,6 +32,8 @@ export default class Editor {
     private readonly clipboard: EditorClipboard;
     private readonly keybinds: EditorKeybinds;
     private readonly history: EditorHistory;
+
+    private blockRenderer: BlockRenderer<EditorBlock>;
 
     constructor(editorElement: HTMLElement, options?: EditorOptions, preferences?: EditorPreferences) {
         this.editorElement = editorElement;
@@ -501,5 +504,17 @@ export default class Editor {
         this.editorElement.style.width = this.size.width + "px";
         this.editorElement.style.height = this.size.height + "px";
         this.editorElement.style.setProperty("--scale", this.scale.toString());
+    }
+
+    public setBlockRenderer(blockRenderer: BlockRenderer<EditorBlock>) {
+        this.blockRenderer = blockRenderer;
+    }
+
+    public getBlockRenderer() {
+        if(!this.blockRenderer) {
+            throw new Error("Block renderer not set before rendering blocks");
+        }
+
+        return this.blockRenderer;
     }
 }
