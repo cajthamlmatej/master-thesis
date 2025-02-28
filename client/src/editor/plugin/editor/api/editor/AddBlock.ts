@@ -28,6 +28,9 @@ export class AddBlockApiFeature extends ApiFeature {
             }
 
             editor.addBlock(block, true);
+
+            editor.getSelector().selectBlock(block);
+
             return context.newString(parsedData.id);
         }));
     }
