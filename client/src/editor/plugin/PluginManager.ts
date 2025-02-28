@@ -44,15 +44,19 @@ export class PluginManager {
 
         for(const plugin of plugins) {
             const editorPlugin = plugin.getEditorPlugin();
-            const panel = await editorPlugin!.getPanel();
+            try {
+                const panel = await editorPlugin!.getPanel();
 
-            if(panel) {
-                panels.push({
-                    name: plugin.getName(),
-                    content: panel,
-                    plugin: plugin,
-                    icon: plugin.getIcon()
-                });
+                if(panel) {
+                    panels.push({
+                        name: plugin.getName(),
+                        content: panel,
+                        plugin: plugin,
+                        icon: plugin.getIcon()
+                    });
+                }
+            } catch (e) {
+                plugin.log(`Error while getting panel: ${e}`);
             }
         }
 
@@ -67,5 +71,9 @@ export class PluginManager {
         }
 
         this.plugins.splice(index, 1);
+    }
+
+    getPlugin(pluginId: string) {
+        return this.plugins.find(p => p.getId() === pluginId);
     }
 }
