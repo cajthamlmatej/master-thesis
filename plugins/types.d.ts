@@ -46,6 +46,7 @@ interface PluginBlock {
 
 interface PluginBlockActions {
     sendMessage(message: string): void;
+    render(): void;
 }
 
 
@@ -189,12 +190,18 @@ interface ApiEditor {
      * 
      * **Calling this function multiple times will overwrite the previous callback.**
      * @param eventName 'blockRender'
-     * @param callback A function that takes a block and returns a string. The string should be the HTML content of the block.
+     * @param callback The returned string should be the HTML content of the block.
      */
-    on(eventName: 'blockRender', callback: (block: PluginBlock) => string): void;
+    on(eventName: 'pluginBlockRender', callback: (block: BlockBaseData & BlockBaseActions & PluginBlock & PluginBlockActions) => string): void;
     on(eventName: 'panelRegister', callback: () => string): void;
     on(eventName: 'panelMessage', callback: (message: string) => void): void;
-    on(eventName: 'blockMessage', callback: (block: PluginBlock) => void): void;
+    on(eventName: 'pluginBlockMessage', callback: (block: BlockBaseData & BlockBaseActions & PluginBlock & PluginBlockActions, message: string) => void): void;
+    /**
+     * Calls the callback when a property of a this plugin's block changes.
+     * @param eventName 'blockPropertyChange'
+     * @param callback Block and block property key.
+     */
+    on(eventName: 'pluginBlockPropertyChange', callback: (block: BlockBaseData & BlockBaseActions & PluginBlock & PluginBlockActions, property: string) => void): void;
 
     /**
      * Sends a message to this plugin's panel. The message will be received by the window's `message` event.
