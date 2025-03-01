@@ -12,7 +12,7 @@ import {CacheApiFeature} from "@/editor/plugin/editor/api/Cache";
 import {LanguageApiFeature} from "@/editor/plugin/editor/api/Language";
 import {PluginApiFeature} from "@/editor/plugin/editor/api/Plugin";
 
-export interface ApiData {
+export interface EditorPluginApiData {
     context: QuickJSContext;
     editorPlugin: EditorPlugin;
     plugin: PluginContext;
@@ -20,9 +20,9 @@ export interface ApiData {
     pluginManager: PluginManager;
 }
 
-export class Api {
+export class EditorPluginApi {
 
-    public register(data: ApiData) {
+    public register(data: EditorPluginApiData) {
         const context = data.context;
 
         const api = context.newObject();

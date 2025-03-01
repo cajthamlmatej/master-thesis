@@ -1,6 +1,6 @@
-import {ApiFeature} from "@/editor/plugin/editor/ApiFeature";
+import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
-import {ApiData} from "@/editor/plugin/editor/Api";
+import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
 import {generateUUID} from "@/utils/Generators";
 import {AddBlockApiFeature} from "@/editor/plugin/editor/api/editor/AddBlock";
 import {RemoveBlockApiFeature} from "@/editor/plugin/editor/api/editor/RemoveBlock";
@@ -15,8 +15,8 @@ import {IsBlockSelectedApiFeature} from "@/editor/plugin/editor/api/editor/IsBlo
 import {EventsApiFeature} from "@/editor/plugin/editor/api/editor/Events";
 import {PanelMessageApiFeature} from "@/editor/plugin/editor/api/editor/PanelMessage";
 
-export class EditorApiFeature extends ApiFeature {
-    register(obj: QuickJSHandle, data: ApiData): void {
+export class EditorApiFeature extends EditorPluginApiFeature {
+    register(obj: QuickJSHandle, data: EditorPluginApiData): void {
         const context = data.context;
 
         const editorObj = context.newObject();

@@ -1,14 +1,14 @@
-import {ApiFeature} from "@/editor/plugin/editor/ApiFeature";
+import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
-import {ApiData} from "@/editor/plugin/editor/Api";
+import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
 
-export class CacheApiFeature extends ApiFeature {
-    register(obj: QuickJSHandle, data: ApiData): void {
+export class CacheApiFeature extends EditorPluginApiFeature {
+    register(obj: QuickJSHandle, data: EditorPluginApiData): void {
         const context = data.context;
         const plugin = data.plugin;
 
         const cacheObj = context.newObject();
-        const cache = data.pluginManager.cache.getPluginCache(plugin.id);
+        const cache = data.pluginManager.cache.getPluginCache(plugin.getId());
 
         context.setProp(cacheObj, "get", context.newFunction("get", (keyRaw) => {
             const key = context!.dump(keyRaw);

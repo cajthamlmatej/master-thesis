@@ -1,12 +1,12 @@
-import {ApiFeature} from "@/editor/plugin/editor/ApiFeature";
+import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
-import {ApiData} from "@/editor/plugin/editor/Api";
+import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
 import {generateUUID} from "@/utils/Generators";
 import {EditorBlock} from "@/editor/block/EditorBlock";
-import {BlockApiFeature} from "@/editor/plugin/editor/BlockApiFeature";
+import {EditorBlockApiFeature} from "@/editor/plugin/editor/EditorBlockApiFeature";
 
-export class LockBlockApiFeature extends BlockApiFeature {
-    register(obj: QuickJSHandle, data: ApiData, block: EditorBlock): void {
+export class LockBlockApiFeature extends EditorBlockApiFeature {
+    register(obj: QuickJSHandle, data: EditorPluginApiData, block: EditorBlock): void {
         const context = data.context;
         const plugin = data.plugin;
         const editor = data.editor;

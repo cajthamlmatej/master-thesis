@@ -1,11 +1,11 @@
-import {ApiFeature} from "@/editor/plugin/editor/ApiFeature";
+import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
-import {ApiData} from "@/editor/plugin/editor/Api";
+import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
 import {generateUUID} from "@/utils/Generators";
 import {EditorMode} from "@/editor/EditorMode";
 
-export class GetModeApiFeature extends ApiFeature {
-    register(obj: QuickJSHandle, data: ApiData): void {
+export class GetModeApiFeature extends EditorPluginApiFeature {
+    register(obj: QuickJSHandle, data: EditorPluginApiData): void {
         const context = data.context;
         const plugin = data.plugin;
         const editor = data.editor;
