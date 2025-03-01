@@ -8,7 +8,8 @@
       "baseUrl": ".",
       "paths": {
         "*": ["types.d.ts"]
-      }
+      },
+      "lib": ["ES2024"]
     },
     "include": ["**/*.js", "types.d.ts"],
     "exclude": ["node_modules"]

@@ -17,7 +17,8 @@ interface NumberPluginProperty {
     type: 'number';
     label: string;
 }
- interface SelectPluginProperty {
+
+interface SelectPluginProperty {
     type: 'select';
     label: string;
     options: { value: string; label: string }[];
@@ -37,57 +38,57 @@ type PluginProperty = PluginPropertyBase & (
 );
 
 
-interface PluginBlock {
+interface PluginEditorBlock {
     type: 'plugin';
     plugin: string;
     data: Record<string, string>;
     properties: PluginProperty[];
 }
 
-interface PluginBlockActions {
+interface PluginEditorBlockActions {
     sendMessage(message: string): void;
     render(): void;
 }
 
 
-interface IframeBlock {
+interface IframeEditorBlock {
     type: 'iframe';
     content: string;
 }
 
-interface ImageBlock {
+interface ImageEditorBlock {
     type: 'image';
     imageUrl: string | undefined;
     mediaId: string | undefined;
     aspectRatio: boolean;
 }
 
-interface InteractiveAreaBlock {
+interface InteractiveAreaEditorBlock {
     type: 'interactiveArea';
 }
 
-interface MermaidBlock {
+interface MermaidEditorBlock {
     type: 'mermaid';
     content: string;
 }
 
-interface ShapeBlock {
+interface ShapeEditorBlock {
     type: 'shape';
     shape: string; // TODO: maybe type this already?
     color: string;
 }
 
-interface TextBlock {
+interface TextEditorBlock {
     type: 'text';
     content: string;
     fontSize: number;
 }
 
-interface WatermarkBlock {
+interface WatermarkEditorBlock {
     type: 'watermark';
 }
 
-interface BlockBaseData {
+interface EditorBlockBaseData {
     id: string;
     type: 'plugin' | 'iframe' | 'image' | 'interactiveArea' | 'mermaid' | 'shape' | 'text' | 'watermark';
     position: {
@@ -103,7 +104,7 @@ interface BlockBaseData {
     opacity: number;
 }
 
-interface BlockBaseActions {
+interface EditorBlockBaseActions {
     unlock(): void;
     lock(): void;
     setZIndex(zIndex: number): void;
@@ -132,33 +133,33 @@ interface BlockBaseActions {
 }
 
 
-type BlockType = 
-    | (PluginBlock & PluginBlockActions)
-    | IframeBlock
-    | ImageBlock
-    | InteractiveAreaBlock
-    | MermaidBlock
-    | ShapeBlock
-    | TextBlock
-    | WatermarkBlock;
+type EditorBlockType = 
+    | (PluginEditorBlock & PluginEditorBlockActions)
+    | IframeEditorBlock
+    | ImageEditorBlock
+    | InteractiveAreaEditorBlock
+    | MermaidEditorBlock
+    | ShapeEditorBlock
+    | TextEditorBlock
+    | WatermarkEditorBlock;
 
-type Block = BlockBaseData & BlockBaseActions & BlockType;
+type EditorBlock = EditorBlockBaseData & EditorBlockBaseActions & EditorBlockType;
 
 
-type CreateBlockType = 
-    | Omit<PluginBlock, "plugin">
-    | IframeBlock
-    | ImageBlock
-    | InteractiveAreaBlock
-    | MermaidBlock
-    | ShapeBlock
-    | TextBlock
-    | WatermarkBlock;
+type CreateEditorBlockType = 
+    | Omit<PluginEditorBlock, "plugin">
+    | IframeEditorBlock
+    | ImageEditorBlock
+    | InteractiveAreaEditorBlock
+    | MermaidEditorBlock
+    | ShapeEditorBlock
+    | TextEditorBlock
+    | WatermarkEditorBlock;
 
-type CreateBlock = Omit<BlockBaseData, "id"> & CreateBlockType;
+type CreateEditorBlock = Omit<EditorBlockBaseData, "id"> & CreateEditorBlockType;
 
 interface ApiEditor {
-    getBlocks(): Block[];
+    getBlocks(): EditorBlock[];
     removeBlock(id: string): void;
     /**
      * Add a new block to the editor. The supplied data has to be in the correct format for the block type.
@@ -170,7 +171,7 @@ interface ApiEditor {
      * @param block The block data to add to the editor.
      * @returns The ID of the newly added block.
      */
-    addBlock(block: CreateBlock): string;
+    addBlock(block: CreateEditorBlock): string;
 
     selectBlock(id: string, addToSelection?: boolean): void;
     deselectBlock(id: string): void;
@@ -192,22 +193,62 @@ interface ApiEditor {
      * @param eventName 'blockRender'
      * @param callback The returned string should be the HTML content of the block.
      */
-    on(eventName: 'pluginBlockRender', callback: (block: BlockBaseData & BlockBaseActions & PluginBlock & PluginBlockActions) => string): void;
+    on(eventName: 'pluginBlockRender', callback: (block: EditorBlockBaseData & EditorBlockBaseActions & PluginEditorBlock & PluginEditorBlockActions) => string): void;
     on(eventName: 'panelRegister', callback: () => string): void;
     on(eventName: 'panelMessage', callback: (message: string) => void): void;
-    on(eventName: 'pluginBlockMessage', callback: (block: BlockBaseData & BlockBaseActions & PluginBlock & PluginBlockActions, message: string) => void): void;
+    on(eventName: 'pluginBlockMessage', callback: (block: EditorBlockBaseData & EditorBlockBaseActions & PluginEditorBlock & PluginEditorBlockActions, message: string) => void): void;
     /**
      * Calls the callback when a property of a this plugin's block changes.
      * @param eventName 'blockPropertyChange'
      * @param callback Block and block property key.
      */
-    on(eventName: 'pluginBlockPropertyChange', callback: (block: BlockBaseData & BlockBaseActions & PluginBlock & PluginBlockActions, property: string) => void): void;
+    on(eventName: 'pluginBlockPropertyChange', callback: (block: EditorBlockBaseData & EditorBlockBaseActions & PluginEditorBlock & PluginEditorBlockActions, property: string) => void): void;
 
     /**
      * Sends a message to this plugin's panel. The message will be received by the window's `message` event.
      * @param message The message to send to the panel.
      */
     sendPanelMessage(message: string): void;
+}
+
+// Currently the types are exactly the same as for the editor, but they might differ in the future
+type PlayerBlockType = 
+    | PluginEditorBlock
+    | IframeEditorBlock
+    | ImageEditorBlock
+    | InteractiveAreaEditorBlock
+    | MermaidEditorBlock
+    | ShapeEditorBlock
+    | TextEditorBlock
+    | WatermarkEditorBlock;
+
+type PlayerBlock = EditorBlockBaseData /*& EditorBlockBaseActions*/ & PlayerBlockType;
+
+
+type CreatePlayerBlockType = 
+    | Omit<PluginEditorBlock, "plugin">
+    | IframeEditorBlock
+    | ImageEditorBlock
+    | InteractiveAreaEditorBlock
+    | MermaidEditorBlock
+    | ShapeEditorBlock
+    | TextEditorBlock
+    | WatermarkEditorBlock;
+
+type CreatePlayerBlock = Omit<PlayerBlock, "id"> & CreatePlayerBlockType;
+
+type FullPlayerBlock = EditorBlockBaseData & EditorBlockBaseActions & PluginEditorBlock & PluginEditorBlockActions;
+
+interface ApiPlayer {
+    getBlocks(): PlayerBlock[];
+    removeBlock(id: string): void;
+    addBlock(block: CreatePlayerBlock): string;
+
+    getMode(): 'select' | 'move';
+    setMode(mode: 'select' | 'move'): void;
+    
+    on(eventName: 'pluginBlockMessage', callback: (block: FullPlayerBlock, message: string) => void): void;
+    on(eventName: 'pluginBlockRender', callback: (block: FullPlayerBlock) => string): void;
 }
 
 interface FetchOptions {
@@ -233,10 +274,27 @@ interface ApiCache {
 
 interface Api {
     /**
+     * Represents the current editor instance. Use this to interact with the editor.
+     * Editor is one slide in the presentation and changes for each slide.
+     * 
+     * **The editor is available just in the editor plugin script.**
+     */
+    editor: ApiEditor;
+
+    /**
+     * Represents the current player instance. Use this to interact with the player.
+     * Player is one slide in the presentation and changes for each slide.
+     * 
+     * **The player is available just in the player plugin script.**
+     */
+    player: ApiPlayer;
+
+    /**
      * Log a message to the console. Can be used for debugging.
      * @param message The message to log.
      */
     log(message: string): void;
+
     /**
      * Fetch data from the specified URL. Returns a promise that resolves with the response body as a string.
      * The URL has to be added in manifest.json to be accessible. Follow the instructions in the documentation.
@@ -244,12 +302,6 @@ interface Api {
      * @param options  Optional options for the fetch request.
      */
     fetch(url: string, options?: FetchOptions): Promise<string>;
-
-    /**
-     * Represents the current editor instance. Use this to interact with the editor.
-     * Editor is one slide in the presentation and changes for each slide.
-     */
-    editor: ApiEditor;
 
     /**
      * Represents the cache for the plugin. Use this to store some data between instances of the plugin.
