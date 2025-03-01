@@ -5,25 +5,48 @@ import {
     BlockInteractivityEasings
 } from "@/editor/interactivity/BlockInteractivity";
 import {BlockConstructor} from "@/editor/block/BlockConstructor";
+import {BlockEvent} from "@/editor/block/events/BlockEvent";
+import {LISTENER_METADATA_KEY} from "@/editor/block/events/BlockListener";
+import {
+    BLOCK_API_FEATURE_METADATA_KEY,
+    PlayerBlockApiFeatureEntry,
+    RegisterPlayerBlockApiFeature
+} from "@/editor/plugin/player/RegisterPlayerBlockApiFeature";
+import {BaseBlockApiFeature} from "@/editor/plugin/player/api/block/BaseBlock";
+import {
+    BlockSerialize,
+    SerializeEntry,
+    SERIALIZER_METADATA_KEY
+} from "@/editor/block/serialization/BlockPropertySerialize";
 
 export abstract class PlayerBlock {
+    @BlockSerialize("id")
     public id: string;
+    @BlockSerialize("type")
     public type: string;
+    @BlockSerialize("position")
     public position: {
         x: number;
         y: number;
     }
+    @BlockSerialize("size")
     public size: {
         width: number;
         height: number;
     }
+    @BlockSerialize("opacity")
     public opacity: number = 1;
+    @BlockSerialize("rotation")
     public rotation: number = 0;
+    @BlockSerialize("zIndex")
     public zIndex: number = 0;
+    @BlockSerialize("group")
     public group?: string;
+
     public element!: HTMLElement;
     public player!: Player;
     public interactivity: BlockInteractivity[] = [];
+
     public readonly baseValues: {
         position: {
             x: number;
@@ -38,7 +61,9 @@ export abstract class PlayerBlock {
         opacity: number;
         group?: string;
     }
+
     public playerStore: any; // TODO: add type
+
     public loaded: Promise<void>;
     private repeats: { timeouts: NodeJS.Timeout[], intervals: NodeJS.Timeout[] } = {timeouts: [], intervals: []};
     private resolveLoaded: () => void;
@@ -349,6 +374,101 @@ export abstract class PlayerBlock {
     private async handleMouseLeave(event: MouseEvent) {
         const result = this.tryProcessInteractivity("HOVER_END", event);
         if (result) event.stopPropagation();
+    }
+
+    /**
+     * Serializes the block properties to an object, so it can be saved.
+     */
+    public serialize(): Object {
+        let serialized: any = {};
+
+        const instance = this as any;
+        const keys = Reflect.getMetadataKeys(this);
+
+        for (const key of keys) {
+            if (!key.startsWith(SERIALIZER_METADATA_KEY)) continue;
+
+            const metadata = Reflect.getMetadata(key, this);
+
+            if (!metadata) continue;
+
+            const serializers = metadata as Set<SerializeEntry>;
+
+            for (const serializer of serializers) {
+                if (!(serializer.propertyKey in instance)) {
+                    console.error(`Property ${serializer.propertyKey} does not exist on block ${this.id} (${this.type}).`);
+                    continue;
+                }
+
+                if (serializer.key in serialized) {
+                    console.error(`Key ${serializer.key} already exists on block ${this.id} (${this.type}).`);
+                    continue;
+                }
+
+                serialized[serializer.key] = instance[serializer.propertyKey];
+            }
+        }
+
+        // TODO: hotfix
+        serialized = JSON.parse(JSON.stringify(serialized));
+
+        return serialized;
+    }
+
+
+    /**
+     * Calls all event listeners for the supplied event with the supplied arguments.
+     *
+     * Listeners are methods that are decorated with `@BlockEventListener(event: BlockEvent)`.
+     * @param event The event to call the listeners for.
+     * @param args The arguments to pass to the listeners.
+     */
+    public processEvent(event: BlockEvent, ...args: any[]) {
+        const instance = this as any;
+        const keys = Reflect.getMetadataKeys(this);
+
+        for (const key of keys) {
+            if (!key.startsWith(LISTENER_METADATA_KEY)) continue;
+
+            const metadata = Reflect.getMetadata(key, this);
+
+            if (!metadata) continue;
+
+            const listeners = metadata.get(event);
+
+            if (!listeners) continue;
+
+            for (const listener of listeners) {
+                if (!instance[listener]) {
+                    console.error(`Listener ${listener} for event ${event} does not exist on block ${this.id} (${this.type}).`);
+                    continue
+                }
+
+                instance[listener](...args);
+            }
+        }
+    }
+
+    public getApiFeatures(): PlayerBlockApiFeatureEntry[] {
+        const target = Object.getPrototypeOf(this).constructor;
+        const keys = Reflect.getMetadataKeys(target);
+        const apiFeatures: PlayerBlockApiFeatureEntry[] = [];
+
+        for (const key of keys) {
+            if (!key.startsWith(BLOCK_API_FEATURE_METADATA_KEY)) continue;
+
+            const metadata = Reflect.getMetadata(key, target);
+
+            if (!metadata) continue;
+
+            const metadataFeatures = metadata as Set<PlayerBlockApiFeatureEntry>;
+
+            for (const feature of metadataFeatures) {
+                apiFeatures.push(feature);
+            }
+        }
+
+        return apiFeatures;
     }
 
     private tryProcessInteractivity(event: "CLICKED" | "HOVER_START" | "HOVER_END" | "DRAG_START" | "DRAG_END", eventObject: Event) {

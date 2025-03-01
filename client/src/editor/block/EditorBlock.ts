@@ -16,9 +16,9 @@ import {OpacityProperty} from "@/editor/property/base/OpacityProperty";
 import {generateUUID} from "@/utils/Generators";
 import {
     BLOCK_API_FEATURE_METADATA_KEY,
-    BlockApiFeatureEntry,
-    RegisterBlockApiFeature
-} from "@/editor/plugin/editor/RegisterBlockApiFeature";
+    EditorBlockApiFeatureEntry,
+    RegisterEditorBlockApiFeature
+} from "@/editor/plugin/editor/RegisterEditorBlockApiFeature";
 import {MoveBlockApiFeature} from "@/editor/plugin/editor/api/block/MoveBlock";
 import {RotateBlockApiFeature} from "@/editor/plugin/editor/api/block/RotateBlock";
 import {ResizeBlockApiFeature} from "@/editor/plugin/editor/api/block/ResizeBlock";
@@ -27,13 +27,13 @@ import {SetBlockZIndexApiFeature} from "@/editor/plugin/editor/api/block/SetBloc
 import {LockBlockApiFeature} from "@/editor/plugin/editor/api/block/LockBlock";
 import {UnlockBlockApiFeature} from "@/editor/plugin/editor/api/block/UnlockBlock";
 
-@RegisterBlockApiFeature(MoveBlockApiFeature)
-@RegisterBlockApiFeature(RotateBlockApiFeature)
-@RegisterBlockApiFeature(ResizeBlockApiFeature)
-@RegisterBlockApiFeature(ChangeBlockOpacityApiFeature)
-@RegisterBlockApiFeature(SetBlockZIndexApiFeature)
-@RegisterBlockApiFeature(LockBlockApiFeature)
-@RegisterBlockApiFeature(UnlockBlockApiFeature)
+@RegisterEditorBlockApiFeature(MoveBlockApiFeature)
+@RegisterEditorBlockApiFeature(RotateBlockApiFeature)
+@RegisterEditorBlockApiFeature(ResizeBlockApiFeature)
+@RegisterEditorBlockApiFeature(ChangeBlockOpacityApiFeature)
+@RegisterEditorBlockApiFeature(SetBlockZIndexApiFeature)
+@RegisterEditorBlockApiFeature(LockBlockApiFeature)
+@RegisterEditorBlockApiFeature(UnlockBlockApiFeature)
 export abstract class EditorBlock {
     @BlockSerialize("id")
     public id: string;
@@ -467,10 +467,10 @@ export abstract class EditorBlock {
         }
     }
 
-    public getApiFeatures(): BlockApiFeatureEntry[] {
+    public getApiFeatures(): EditorBlockApiFeatureEntry[] {
         const target = Object.getPrototypeOf(this).constructor;
         const keys = Reflect.getMetadataKeys(target);
-        const apiFeatures: BlockApiFeatureEntry[] = [];
+        const apiFeatures: EditorBlockApiFeatureEntry[] = [];
 
         for (const key of keys) {
             if (!key.startsWith(BLOCK_API_FEATURE_METADATA_KEY)) continue;
@@ -479,7 +479,7 @@ export abstract class EditorBlock {
 
             if (!metadata) continue;
 
-            const metadataFeatures = metadata as Set<BlockApiFeatureEntry>;
+            const metadataFeatures = metadata as Set<EditorBlockApiFeatureEntry>;
 
             for (const feature of metadataFeatures) {
                 apiFeatures.push(feature);

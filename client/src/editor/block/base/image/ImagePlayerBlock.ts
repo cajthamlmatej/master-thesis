@@ -1,10 +1,13 @@
 import {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 import {useMediaStore} from "@/stores/media";
+import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 
 const mediaStore = useMediaStore();
 export class ImagePlayerBlock extends PlayerBlock {
+    @BlockSerialize("imageUrl")
     private imageUrl?: string;
+    @BlockSerialize("mediaId")
     private mediaId?: string;
 
     private imageElement!: HTMLImageElement;

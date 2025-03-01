@@ -2,9 +2,12 @@ import {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {shapes} from "@/editor/block/base/shape/Shapes";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 import {BlockInteractiveProperty, BlockInteractivityEasings} from "@/editor/interactivity/BlockInteractivity";
+import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 
 export class ShapePlayerBlock extends PlayerBlock {
+    @BlockSerialize("color")
     private color: string;
+    @BlockSerialize("shape")
     private shape: string;
 
     private readonly blockBaseValues: {
