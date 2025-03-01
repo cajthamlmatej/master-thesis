@@ -12,6 +12,6 @@ export class PluginBlockDeserializer extends BlockDeserializer {
 
     deserializePlayer(data: any): PlayerBlock {
         const base = this.getBaseBlockData(data);
-        return new PluginPlayerBlock(base);
+        return new PluginPlayerBlock(base, data.plugin, data.data);
     }
 }

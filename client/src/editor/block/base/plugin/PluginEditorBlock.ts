@@ -6,12 +6,12 @@ import {PluginProperty} from "@/editor/block/base/plugin/PluginProperty";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {BlockEventListener} from "@/editor/block/events/BlockListener";
 import {PluginPropertyFactory} from "@/editor/block/base/plugin/PluginPropertyFactory";
-import {RegisterBlockApiFeature} from "@/editor/plugin/editor/RegisterBlockApiFeature";
-import {SendMessageApiFeature} from "@/editor/block/base/plugin/api/SendMessageApiFeature";
-import {RenderApiFeature} from "@/editor/block/base/plugin/api/RenderApiFeature";
+import {RegisterEditorBlockApiFeature} from "@/editor/plugin/editor/RegisterEditorBlockApiFeature";
+import {SendMessageApiFeature} from "@/editor/block/base/plugin/api/editor/SendMessageApiFeature";
+import {RenderApiFeature} from "@/editor/block/base/plugin/api/editor/RenderApiFeature";
 
-@RegisterBlockApiFeature(SendMessageApiFeature)
-@RegisterBlockApiFeature(RenderApiFeature)
+@RegisterEditorBlockApiFeature(SendMessageApiFeature)
+@RegisterEditorBlockApiFeature(RenderApiFeature)
 export class PluginEditorBlock extends EditorBlock {
     @BlockSerialize("plugin")
     private plugin: string;
