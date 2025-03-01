@@ -18,7 +18,7 @@ export default class PluginMapper {
                 changelog: r.changelog,
                 manifest: r.manifest,
                 editorCode: r.editorCode,
-                pluginCode: r.pluginCode
+                playerCode: r.playerCode
             }))
         )
     }

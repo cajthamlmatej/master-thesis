@@ -6,7 +6,7 @@ export class PluginRelease {
     changelog: string;
     manifest: string;
     editorCode: string;
-    pluginCode: string;
+    playerCode: string;
 }
 
 export default class Plugin {
