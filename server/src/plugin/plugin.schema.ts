@@ -23,7 +23,7 @@ class PluginRelease {
     editorCode: string;
 
     @Prop({ isRequired: false })
-    pluginCode: string;
+    playerCode: string;
 }
 
 @Schema()

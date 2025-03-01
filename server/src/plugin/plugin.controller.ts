@@ -46,7 +46,7 @@ export class PluginController {
                     changelog: r.changelog,
                     manifest: r.manifest,
                     editorCode: r.editorCode,
-                    pluginCode: r.pluginCode
+                    playerCode: r.playerCode
                 }))
             }))
         } as SpecificPluginsSuccessDTO;

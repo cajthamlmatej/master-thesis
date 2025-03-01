@@ -4,7 +4,7 @@ export interface PluginReleaseDTO {
     changelog: string;
     manifest: string;
     editorCode: string;
-    pluginCode: string;
+    playerCode: string;
 }
 
 export interface PluginDTO {
