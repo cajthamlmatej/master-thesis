@@ -136,10 +136,13 @@ import ChangeLanguage from "@/components/ChangeLanguage.vue";
 import {useUserStore} from "@/stores/user";
 
 import {PlayerMode} from "@/editor/player/PlayerMode";
+import {usePluginStore} from "@/stores/plugin";
 
 const materialStore = useMaterialStore();
 const playerStore = usePlayerStore();
 const userStore = useUserStore();
+const pluginStore = usePluginStore();
+
 const player = ref<Player | null>(null);
 
 watch(() => playerStore.getPlayer(), (value) => {
@@ -159,12 +162,15 @@ const material = computed(() => materialStore.currentMaterial!);
 
 onMounted(async () => {
     await materialStore.load();
+    await pluginStore.load();
 
     let materialId = route.params.material as string;
 
     if (materialId) {
         await materialStore.loadMaterial(materialId);
     }
+
+    await pluginStore.loaded;
 
     await playerStore.requestPlayer();
     hasNextSlide.value = !!playerStore.getSlides().find(s => s.position > playerStore.getActiveSlide()!.position);

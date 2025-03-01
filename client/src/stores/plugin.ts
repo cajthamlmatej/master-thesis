@@ -1,7 +1,6 @@
 import {defineStore} from "pinia";
 import {ref, toRaw, watch} from "vue";
 import {api} from "@/api/api";
-import {useUserStore} from "@/stores/user";
 import Plugin from "@/models/Plugin";
 import {PluginManager} from "@/editor/plugin/PluginManager";
 import PluginMapper from "@/models/mappers/PluginMapper";
@@ -10,14 +9,18 @@ import {useEditorStore} from "@/stores/editor";
 import {useMaterialStore} from "@/stores/material";
 import Material, {MaterialPlugin} from "@/models/Material";
 import {PluginContext} from "@/editor/plugin/PluginContext";
+import {usePlayerStore} from "@/stores/player";
 
 export const usePluginStore = defineStore("plugin", () => {
     const plugins = ref([] as Plugin[]);
+    let loadedResolve = (val?: any) => {};
+    let loaded = new Promise((r) => loadedResolve = r);
 
     const pluginManager = new PluginManager();
     const pluginPanels = ref<PluginEditorPanel[]>([]);
 
     const editorStore = useEditorStore();
+    const playerStore = usePlayerStore();
     const materialStore = useMaterialStore();
 
     const tags = [
@@ -57,10 +60,10 @@ export const usePluginStore = defineStore("plugin", () => {
             return PluginMapper.fromPluginDTO(plugin);
         });
 
-        for(const plugin of response.plugins) {
+        for (const plugin of response.plugins) {
             const foundPlugin = plugins.value.find((p) => p.id === plugin.id);
 
-            if(!foundPlugin) {
+            if (!foundPlugin) {
                 plugins.value.push(PluginMapper.fromPluginDTO(plugin));
             }
         }
@@ -70,7 +73,7 @@ export const usePluginStore = defineStore("plugin", () => {
         pluginPanels.value = await pluginManager.getEditorPanels();
     }
 
-    watch(() => editorStore.getEditor(), async() => {
+    watch(() => editorStore.getEditor(), async () => {
         const editor = editorStore.getEditor();
         if (!editor) return;
 
@@ -80,8 +83,15 @@ export const usePluginStore = defineStore("plugin", () => {
 
         // TODO: maybe notify the plugins that the editor has changed
     });
+    watch(() => playerStore.getPlayer(), async () => {
+        const player = playerStore.getPlayer();
+        if (!player) return;
+
+        await pluginManager.changePlayer(player);
+    });
 
     watch(() => materialStore.currentMaterial, async () => {
+        // loaded = new Promise((r) => loadedResolve = r);
         const material = toRaw(materialStore.currentMaterial) as Material | undefined;
         if (!material) return;
 
@@ -92,12 +102,12 @@ export const usePluginStore = defineStore("plugin", () => {
             .filter((p) => p.releases.length <= 0)
             .map((p) => p.id);
 
-        if(toLoadPlugins.length > 0) {
+        if (toLoadPlugins.length > 0) {
             await loadMultiple(toLoadPlugins);
         }
 
         for (const plugin of material.plugins) {
-            if(pluginManager.isActive(plugin.plugin)) continue;
+            if (pluginManager.isActive(plugin.plugin)) continue;
 
             const pluginObject = plugins.value.find((p) => p.id === plugin.plugin);
 
@@ -113,10 +123,11 @@ export const usePluginStore = defineStore("plugin", () => {
                 continue;
             }
 
-            const pluginContext = new PluginContext(pluginObject, release, editorStore.getEditor()!);
+            const pluginContext = new PluginContext(pluginObject, release, editorStore.getEditor()!, playerStore.getPlayer()!);
 
             await pluginManager.loadPlugin(pluginContext);
         }
+        loadedResolve();
 
         await getPanels();
     });
@@ -130,13 +141,13 @@ export const usePluginStore = defineStore("plugin", () => {
             return false;
         }
 
-        if(plugin.releases.length === 0) {
+        if (plugin.releases.length === 0) {
             // note(Matej): This will happened when the plugin is loaded just in "overview" mode
             // We need to load the plugin in full of releases
 
             const foundPlugin = await loadOne(plugin.id);
 
-            if(!foundPlugin) {
+            if (!foundPlugin) {
                 console.error("Failed to load plugin");
                 return false;
             }
@@ -150,7 +161,10 @@ export const usePluginStore = defineStore("plugin", () => {
 
         await materialStore.save();
 
-        await pluginManager.loadPlugin(new PluginContext(plugin, plugin.releases.find((r) => r.version === lastRelease)!, editorStore.getEditor()!));
+        await pluginManager.loadPlugin(
+            new PluginContext(plugin,
+                plugin.releases.find((r) => r.version === lastRelease)!,
+                editorStore.getEditor()!, playerStore.getPlayer()!));
 
         await getPanels();
 
@@ -180,6 +194,7 @@ export const usePluginStore = defineStore("plugin", () => {
 
     return {
         plugins,
+        loaded,
         load,
         tags,
         panels: pluginPanels,

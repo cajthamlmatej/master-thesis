@@ -1,6 +1,8 @@
 import {EditorPlugin} from "@/editor/plugin/editor/EditorPlugin";
 import Plugin, {PluginRelease} from "@/models/Plugin";
 import Editor from "@/editor/Editor";
+import Player from "@/editor/player/Player";
+import {PlayerPlugin} from "@/editor/plugin/player/PlayerPlugin";
 
 export class PluginContext {
     private id: string;
@@ -12,8 +14,9 @@ export class PluginContext {
     private allowedOrigins: string[] = [];
 
     private readonly editorPlugin: EditorPlugin | undefined;
+    private readonly playerPlugin: PlayerPlugin | undefined;
 
-    constructor(plugin: Plugin, release: PluginRelease, editor?: Editor) {
+    constructor(plugin: Plugin, release: PluginRelease, editor?: Editor, player?: Player) {
         this.parseManifest(release.manifest);
         this.author = plugin.author;
         this.name = plugin.name;
@@ -23,11 +26,21 @@ export class PluginContext {
 
         if(release.editorCode) {
             this.editorPlugin = new EditorPlugin(this, release.editorCode, editor);
+        } else {
+            this.log("No editor code found, skipping editor plugin creation");
+        }
+        if(release.playerCode) {
+            this.playerPlugin = new PlayerPlugin(this, release.playerCode, player);
+        } else {
+            this.log("No player code found, skipping player plugin creation");
         }
     }
 
     public getEditorPlugin() {
         return this.editorPlugin;
+    }
+    public getPlayerPlugin() {
+        return this.playerPlugin;
     }
 
     private parseManifest(manifest: string) {

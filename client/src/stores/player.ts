@@ -1,9 +1,12 @@
 import {defineStore} from "pinia";
-import {ref, watch} from "vue";
+import {ref, toRaw, watch} from "vue";
 import {useMaterialStore} from "@/stores/material";
 import {Slide} from "@/models/Material";
 import type Player from "@/editor/player/Player";
 import {PlayerDeserializer} from "@/editor/player/PlayerDeserializer";
+import {PlayerPluginCommunicator} from "@/editor/player/PlayerPluginCommunicator";
+import {usePluginStore} from "@/stores/plugin";
+import {PluginManager} from "@/editor/plugin/PluginManager";
 
 
 export const usePlayerStore = defineStore("player", () => {
@@ -103,7 +106,8 @@ export const usePlayerStore = defineStore("player", () => {
         }
 
         const deserializer = new PlayerDeserializer();
-        const newPlayer = deserializer.deserialize(slide.data, playerElement.value);
+        const pluginStore = usePluginStore();
+        const newPlayer = deserializer.deserialize(slide.data, playerElement.value, new PlayerPluginCommunicator(toRaw(pluginStore.manager) as PluginManager));
 
         setPlayer(newPlayer);
         activeSlide.value = slide.id;

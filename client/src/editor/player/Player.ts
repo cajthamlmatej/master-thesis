@@ -3,6 +3,9 @@ import {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {PlayerMode} from "@/editor/player/PlayerMode";
 import {PlayerDraw} from "@/editor/player/PlayerDraw";
 import PlayerEvents from "@/editor/player/PlayerEvents";
+import {PlayerPluginCommunicator} from "@/editor/player/PlayerPluginCommunicator";
+import {BlockEvent} from "@/editor/block/events/BlockEvent";
+import {EditorBlock} from "@/editor/block/EditorBlock";
 
 export default class Player {
     private static readonly DEFAULT_PADDING = 32;
@@ -19,6 +22,7 @@ export default class Player {
     public readonly events = new PlayerEvents();
 
     private draw: PlayerDraw;
+    private pluginCommunicator: PlayerPluginCommunicator;
 
     constructor(element: HTMLElement, size: { width: number, height: number }, blocks: PlayerBlock[]) {
         this.blockRegistry = new BlockRegistry();
@@ -51,7 +55,7 @@ export default class Player {
         block.element = element;
         block.setPlayer(this);
 
-        // block.onMounted(); // TODO: call this?
+        block.processEvent(BlockEvent.MOUNTED);
         block.synchronize();
 
         block.afterRender();
@@ -248,4 +252,35 @@ export default class Player {
     public getDraw() {
         return this.draw;
     }
+
+    public setPluginCommunicator(pluginCommunicator: PlayerPluginCommunicator) {
+        this.pluginCommunicator = pluginCommunicator;
+    }
+
+    public getPluginCommunicator() {
+        if(!this.pluginCommunicator) {
+            throw new Error("Block renderer not set before rendering blocks");
+        }
+
+        return this.pluginCommunicator;
+    }
+
+
+    public removeBlock(block: EditorBlock | string) {
+        const blockId = typeof block === "string" ? block : block.id;
+        const blockIndex = this.blocks.findIndex(block => block.id === blockId);
+
+        if (blockIndex === -1) {
+            console.error("[Editor] Block not found. Cannot remove.");
+            return;
+        }
+
+        const blockInstance = this.blocks[blockIndex];
+
+        blockInstance.processEvent(BlockEvent.UNMOUNTED);
+
+        blockInstance.element.remove();
+        this.blocks.splice(blockIndex, 1);
+    }
+
 }

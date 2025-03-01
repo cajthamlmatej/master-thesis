@@ -3,6 +3,7 @@ import {PluginContext} from "@/editor/plugin/PluginContext";
 import {PluginEditorPanel} from "@/editor/plugin/PluginEditorPanel";
 import Event from "@/utils/Event";
 import {PluginCache} from "@/editor/plugin/PluginCache";
+import Player from "@/editor/player/Player";
 
 export class PluginManager {
     private plugins: PluginContext[] = [];
@@ -35,6 +36,15 @@ export class PluginManager {
 
             if(editorPlugin) {
                 await editorPlugin.loadForEditor(editor);
+            }
+        }
+    }
+    public async changePlayer(player: Player) {
+        for(const plugin of this.plugins) {
+            const playerPlugin = plugin.getPlayerPlugin();
+
+            if(playerPlugin) {
+                await playerPlugin.loadForPlayer(player);
             }
         }
     }
