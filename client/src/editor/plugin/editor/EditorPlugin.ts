@@ -2,7 +2,7 @@ import {PluginContext} from '../PluginContext';
 import Editor from "@/editor/Editor";
 import {load} from "@/editor/plugin/quickjs/QuickJSRunner";
 import {QuickJSContext, QuickJSHandle} from "quickjs-emscripten";
-import {Api} from "@/editor/plugin/editor/Api";
+import {EditorPluginApi} from "@/editor/plugin/editor/EditorPluginApi";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {EditorPluginEvent} from "@/editor/plugin/editor/EditorPluginEvent";
 import {usePluginStore} from "@/stores/plugin";
@@ -124,7 +124,7 @@ export class EditorPlugin {
         return base;
     }
 
-    private api: Api = new Api();
+    private api: EditorPluginApi = new EditorPluginApi();
     private setupContext() {
         if (!this.context || !this.editor) {
             console.error("Context or editor not ready, cannot setup context");
@@ -188,7 +188,7 @@ export class EditorPlugin {
         this.plugin.log(`Successfully loaded for editor`);
     }
 
-    public async processMessageFromParent(message: string) {
+    public async processMessageFromPanel(message: string) {
         const args = this.context!.newString(message);
         const result = await this.callEvent(EditorPluginEvent.PANEL_MESSAGE, args);
 
@@ -198,6 +198,7 @@ export class EditorPlugin {
     }
 
     public async renderBlock(block: EditorBlock) {
+        await this.loadedPromise;
         const serializedBlock = this.serializeBlock(block);
 
         console.log("Calling render block event");
@@ -215,6 +216,7 @@ export class EditorPlugin {
     }
 
     async processBlockMessage(block: PluginEditorBlock, message: string) {
+        await this.loadedPromise;
         const serializedBlock = this.serializeBlock(block);
 
         const result = await this.callEvent(EditorPluginEvent.PLUGIN_BLOCK_MESSAGE, serializedBlock, this.context!.newString(message));

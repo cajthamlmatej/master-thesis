@@ -66,7 +66,7 @@ watch(() => iframe.value, (value) => {
         }
 
         if(data.target === "script") {
-            plugin.getEditorPlugin()!.processMessageFromParent(data.message);
+            plugin.getEditorPlugin()!.processMessageFromPanel(data.message);
         } else if(data.target === "editor") {
             if(data.message === 'close') {
                 menu.value = false;
