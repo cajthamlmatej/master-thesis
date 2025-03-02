@@ -95,8 +95,7 @@ export class PlayerPlugin {
             return this.serializeObject(value);
         } else if (!value) {
             return this.context!.undefined;
-        }
-        else {
+        } else {
             throw new Error(`Unsupported type for serialization: ${typeof value}`);
         }
     }
@@ -104,7 +103,7 @@ export class PlayerPlugin {
     public serializeObject(value: any, object?: QuickJSHandle): QuickJSHandle {
         if (!this.context) throw new Error("Context not ready");
 
-        if(!object) {
+        if (!object) {
             object = this.context.newObject();
         }
 
@@ -137,6 +136,7 @@ export class PlayerPlugin {
     }
 
     private api: PlayerPluginApi = new PlayerPluginApi();
+
     private setupContext() {
         if (!this.context || !this.player) {
             console.error("Context or player not ready, cannot setup context");
@@ -200,10 +200,15 @@ export class PlayerPlugin {
         await this.loadedPromise;
         const serializedBlock = this.serializeBlock(block);
 
-        const result = await this.callEvent(PlayerPluginEvent.PLUGIN_BLOCK_MESSAGE, serializedBlock, this.context!.newString(message));
+        try {
+            const result = await this.callEvent(PlayerPluginEvent.PLUGIN_BLOCK_MESSAGE, serializedBlock, this.context!.newString(message));
 
-        if (!result) return "";
+            if (!result) return "";
 
-        return this.context!.dump(result.unwrap());
+            return this.context!.dump(result.unwrap());
+        } catch (e) {
+            console.error(e);
+            return undefined;
+        }
     }
 }

@@ -202,6 +202,8 @@ onMounted(async () => {
         await materialStore.loadMaterial(materialId);
     }
 
+    await pluginStore.loaded;
+
     await editorStore.requestEditor();
 });
 

@@ -240,14 +240,12 @@ export const useEditorStore = defineStore("editor", () => {
             editorProperty.value.destroy();
         }
 
-        const deserializer = new EditorDeserializer();
-        const newEditor = deserializer.deserialize(slide.data, editorElement.value);
-
         const pluginStore = usePluginStore();
 
+        const deserializer = new EditorDeserializer();
+        const newEditor = deserializer.deserialize(slide.data, editorElement.value, undefined, new EditorPluginCommunicator(toRaw(pluginStore.manager) as PluginManager));
+
         setEditor(newEditor);
-        // note(Matej): TS is tweaking out here, but it should be fine
-        newEditor.setPluginCommunicator(new EditorPluginCommunicator(toRaw(pluginStore.manager) as PluginManager));
         activeSlide.value = slide.id;
 
         if (!editorPropertyElement.value) return;

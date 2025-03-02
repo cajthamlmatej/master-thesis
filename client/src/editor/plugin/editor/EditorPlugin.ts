@@ -76,8 +76,8 @@ export class EditorPlugin {
         this.baseEvaluation = this.context.unwrapResult(result);
 
         this.setupContext();
-        this.loadedResolve();
         await this.callFunctionIfExists("initEditor");
+        this.loadedResolve();
     }
 
     public serializeAny(value: any): QuickJSHandle {
@@ -143,7 +143,6 @@ export class EditorPlugin {
     }
 
     private async callFunctionIfExists(name: string, ...args: QuickJSHandle[]) {
-        await this.loadedPromise;
         if (!this.context) throw new Error("Context not ready");
 
         const fnc = this.context.getProp(this.baseEvaluation, name);
@@ -189,6 +188,7 @@ export class EditorPlugin {
     }
 
     public async processMessageFromPanel(message: string) {
+        console.log("Processing message from panel");
         const args = this.context!.newString(message);
         const result = await this.callEvent(EditorPluginEvent.PANEL_MESSAGE, args);
 
