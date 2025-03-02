@@ -21,7 +21,9 @@ export class PluginController {
                 name: p.name,
                 icon: p.icon,
                 description: p.description,
-                tags: p.tags
+                tags: p.tags,
+                lastReleaseDate: p.releases[0].date.toISOString(),
+                lastManifest: p.releases[0].manifest
             }))
         } as AllPluginsSuccessDTO;
     }
