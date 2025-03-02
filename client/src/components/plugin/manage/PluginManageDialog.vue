@@ -22,7 +22,7 @@
                                         plugin.plugin.getName()
                                     }} (v{{ plugin.plugin.getVersion() }})</span>
                                 <span class="author">{{
-                                        $t('editor.plugin.manage.by', {name: plugin.plugin.getAuthor()})
+                                        $t('editor.plugin.manage.by', {name: plugin.plugin.getAuthor(), version: plugin.plugin.getManifestVersion().toString()})
                                     }}</span>
                             </div>
                             <div class="warning-container" v-if="plugin.newVersion">
@@ -44,10 +44,43 @@
                             {{ $t('editor.plugin.manage.no-plugins') }}
                         </ListItem>
                     </List>
+
+                    <p
+                        class="disabled-title"
+                        v-if="disabled.length > 0"
+                    >{{ $t('editor.plugin.manage.disabled.title') }}</p>
+
+                    <p
+                        v-if="disabled.length > 0" class="disabled-description">{{ $t('editor.plugin.manage.disabled.description')
+                        }}</p>
+
+                    <List v-if="disabled.length > 0">
+                        <ListItem class="plugin disabled flex-align-center" v-for="plugin in disabled" :key="plugin.getName()">
+                            <div class="meta">
+                                <span><span :class="`mdi mdi-` + plugin.getIcon()"></span> {{
+                                        plugin.getName()
+                                    }} (v{{ plugin.getVersion() }})</span>
+                                <span class="author">{{
+                                        $t('editor.plugin.manage.by', {name: plugin.getAuthor(), version: plugin.getManifestVersion().toString()})
+                                    }}</span>
+                            </div>
+
+                            <div class="actions">
+                                <Button
+                                    icon="package-variant-closed-minus"
+                                    v-tooltip="$t('editor.plugin.manage.deactivate')"
+                                    @click="removePlugin(plugin as PluginContext)"
+                                    :loading="loading"
+                                ></Button>
+                            </div>
+                        </ListItem>
+                    </List>
                 </div>
                 <div v-else-if="selected == 'browse'">
                     <PluginBrowse/>
                 </div>
+
+                <p class="version">{{ $t('editor.plugin.manage.manifest', {version: manifestVersion.toString()})}}</p>
             </Card>
         </template>
     </Dialog>
@@ -60,6 +93,8 @@ import ListItem from "@/components/design/list/ListItem.vue";
 import {PluginContext} from "@/editor/plugin/PluginContext";
 import PluginBrowse from "@/components/plugin/manage/PluginBrowse.vue";
 import {usePluginStore} from "@/stores/plugin";
+import {PluginManager} from "@/editor/plugin/PluginManager";
+import Card from "@/components/design/card/Card.vue";
 
 const selected = ref('active');
 
@@ -68,6 +103,7 @@ const plugins = ref<{
     plugin: PluginContext,
     newVersion: boolean
 }[]>([]);
+const disabled = ref<PluginContext[]>([]);
 
 onMounted(() => {
     recalculate();
@@ -90,7 +126,10 @@ const recalculate = () => {
             plugin: p,
             newVersion: newVersion
         }
-    })
+    });
+
+    disabled.value = pluginStore.manager.getDisabledPlugins();
+
 };
 
 const loading = ref(false);
@@ -100,9 +139,31 @@ const removePlugin = async (plugin: PluginContext) => {
     await pluginStore.removePluginFromMaterial(plugin);
     loading.value = false;
 };
+
+const manifestVersion = PluginManager.CURRENT_MANIFEST_VERSION;
 </script>
 
 <style scoped lang="scss">
+.disabled-title {
+    font-size: 1.2rem;
+    margin-top: 1em;
+    margin-bottom: 0.25em;
+}
+.disabled-description {
+    font-size: 0.9rem;
+    color: var(--color-text-subtle);
+    margin-bottom: 1em;
+}
+
+.version {
+    width: 100%;
+    text-align: right;
+    font-size: 0.8rem;
+    color: var(--color-text-subtle);
+    margin-top: 0.25em;
+    margin-bottom: 0;
+}
+
 .plugin {
     .meta {
         display: flex;
@@ -131,6 +192,10 @@ const removePlugin = async (plugin: PluginContext) => {
             align-items: center;
             font-size: 1.5rem;
         }
+    }
+
+    &.disabled {
+        background-color: var(--color-background);
     }
 }
 </style>

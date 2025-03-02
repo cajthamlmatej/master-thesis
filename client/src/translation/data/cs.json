@@ -376,7 +376,8 @@
         "plugin": {
             "manage": {
                 "active": "Aktivní pluginy",
-                "by": "od %name%",
+                "by": "od %name%, pro správce verze v%version%",
+                "manifest": "Aktuální verze správce: v%version%",
                 "browse": {
                     "title": "Procházet pluginy",
                     "search": "Hledat pluginy...",
@@ -388,6 +389,7 @@
                         "PLAYER": "Přehrávač",
                         "GAMIFICATION": "Gamifikace"
                     },
+                    "last-version": "Poslední verze dne %date%",
                     "no-plugins": "Žádné pluginy nebyly nalezeny podle zadaných kritérií."
                 },
                 "deactivate": "Deaktivovat plugin",
@@ -396,7 +398,12 @@
                     "error": "Nepodařilo se aktivovat plugin. Zkuste to znovu později."
                 },
                 "no-plugins": "Aktuální materiál nemá žádné aktivní pluginy. Můžete přidat nové skrz procházení pluginů.",
-                "new-version": "Nová verze pluginu je k dispozici. Deaktivujte plugin a znovu ho aktivujte, abyste získali novou verzi."
+                "new-version": "Nová verze pluginu je k dispozici. Deaktivujte plugin a znovu ho aktivujte, abyste získali novou verzi.",
+                "disabled": {
+                    "title": "Nedostupné pluginy",
+                    "description": "Následující pluginy byly deaktivovány, protože nejsou kompatibilní s aktuální verzí správce a nebo byly odstraněny z katalogu pluginů."
+                },
+                "old-version": "Plugin není podporován a nemůže být aktivován."
             }
         }
     },

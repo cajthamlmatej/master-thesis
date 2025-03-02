@@ -12,24 +12,33 @@
         </div>
 
         <div class="description">
-            <p>{{plugin.description}}</p>
+            <p>{{ plugin.description }}</p>
+        </div>
+
+        <div class="lastVersion">
+            <p>
+                {{ $t("editor.plugin.manage.browse.last-version", {date: plugin.lastReleaseDate.format("DD. MM. YYYY")}) }}</p>
         </div>
 
         <div v-if="includeActions" class="actions">
             <Button
                 icon="package-variant-closed-plus"
                 @click="activate"
+                :disabled="plugin.lastManifest.manifest !== PluginManager.CURRENT_MANIFEST_VERSION.toString()"
                 :loading="loading"
-                v-tooltip="$t('editor.plugin.manage.activate.title')"></Button>
+                v-tooltip="plugin.lastManifest.manifest !== PluginManager.CURRENT_MANIFEST_VERSION.toString() ? $t('editor.plugin.manage.old-version') : $t('editor.plugin.manage.activate.title')"
+            ></Button>
         </div>
 
-        <Alert
-            fluidy
-            v-if="error"
-            type="error"
-        >
-            {{ error }}
-        </Alert>
+        <transition name="fade">
+            <Alert
+                fluidy
+                v-if="error"
+                type="error"
+            >
+                {{ error }}
+            </Alert>
+        </transition>
     </div>
 </template>
 
@@ -39,6 +48,7 @@ import {computed, PropType, ref} from "vue";
 import {$t} from "@/translation/Translation";
 import Plugin from "@/models/Plugin";
 import {usePluginStore} from "@/stores/plugin";
+import {PluginManager} from "@/editor/plugin/PluginManager";
 
 const props = defineProps({
     plugin: {
@@ -91,6 +101,7 @@ const activate = async () => {
 
     &--active {
         pointer-events: none;
+
         &::before {
             content: '';
             position: absolute;
@@ -141,6 +152,14 @@ const activate = async () => {
         font-size: 0.8rem;
 
         flex-grow: 1;
+    }
+
+    .lastVersion {
+        padding: 1em;
+        border-top: 2px solid var(--color-background-accent);
+        color: var(--color-text-subtle);
+        text-align: right;
+        font-size: 0.6rem;
     }
 
     .actions {

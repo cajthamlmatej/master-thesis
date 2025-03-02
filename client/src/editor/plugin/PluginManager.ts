@@ -6,12 +6,23 @@ import {PluginCache} from "@/editor/plugin/PluginCache";
 import Player from "@/editor/player/Player";
 
 export class PluginManager {
+    public static readonly CURRENT_MANIFEST_VERSION = 1;
+
     private plugins: PluginContext[] = [];
+    private disabledPlugins: PluginContext[] = [];
     public PLUGIN_LOADED = new Event();
     public readonly cache = new PluginCache();
 
     public async loadPlugin(plugin: PluginContext) {
         console.log("[PluginManager] Loading plugin " + plugin.toString());
+
+        const pluginManifest = plugin.getManifestVersion();
+
+        if(PluginManager.CURRENT_MANIFEST_VERSION !== pluginManifest) {
+            console.error(`[PluginManager] Plugin ${plugin.toString()} was created for older manifest version, skipping. Current version: ${PluginManager.CURRENT_MANIFEST_VERSION}, plugin version: ${pluginManifest}`);
+            this.disabledPlugins.push(plugin);
+            return;
+        }
 
         if(this.plugins.find(p => p.getId() === plugin.getId())) {
             throw new Error("Plugin already loaded or ID conflict, cannot load plugin with ID " + plugin.getId());
@@ -87,5 +98,9 @@ export class PluginManager {
 
     getPlugin(pluginId: string) {
         return this.plugins.find(p => p.getId() === pluginId);
+    }
+
+    getDisabledPlugins() {
+        return this.disabledPlugins;
     }
 }

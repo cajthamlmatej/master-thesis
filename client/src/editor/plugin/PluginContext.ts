@@ -43,6 +43,10 @@ export class PluginContext {
         return this.playerPlugin;
     }
 
+    public getManifestVersion() {
+        return this.manifestVersion;
+    }
+
     private parseManifest(manifest: string) {
         const manifestData = JSON.parse(manifest);
 
