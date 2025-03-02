@@ -10,8 +10,6 @@ export const onPanelMessage = function(message) {
 
     const size = editor.getSize();
 
-    api.log("Received message: " + message);
-
     if(message === "horizontal-distribute") {
         const totalWidth = selectedBlocks.reduce((acc, block) => acc + block.size.width, 0);
         const space = size.width - totalWidth;
@@ -36,7 +34,7 @@ export const onPanelMessage = function(message) {
             block.move(block.position.x, y);
             y += block.size.height + spaceBetween;
         }
-    } else if(message === "horizontal-center") {
+    } else if(message === "horizontal-align-center") {
         const totalWidth = selectedBlocks.reduce((acc, block) => acc + block.size.width, 0);
         const space = size.width - totalWidth;
 
@@ -47,7 +45,7 @@ export const onPanelMessage = function(message) {
             block.move(x, block.position.y);
             x += block.size.width;
         }
-    } else if(message === "vertical-center") {
+    } else if(message === "format-align-middle") {
         const totalHeight = selectedBlocks.reduce((acc, block) => acc + block.size.height, 0);
         const space = size.height - totalHeight;
 
@@ -57,6 +55,18 @@ export const onPanelMessage = function(message) {
         for(const block of sortedBlocks) {
             block.move(block.position.x, y);
             y += block.size.height;
+        }
+    } else if(message === "align-vertical-center") {
+        const largestBlock = selectedBlocks.reduce((acc, block) => block.size.height > acc.size.height ? block : acc, selectedBlocks[0]);
+
+        for(const block of selectedBlocks) {
+            block.move(block.position.x, largestBlock.position.y + (largestBlock.size.height - block.size.height) / 2);
+        }
+    } else if(message === "align-horizontal-center") {
+        const largestBlock = selectedBlocks.reduce((acc, block) => block.size.width > acc.size.width ? block : acc, selectedBlocks[0]);
+
+        for(const block of selectedBlocks) {
+            block.move(largestBlock.position.x + (largestBlock.size.width - block.size.width) / 2, block.position.y);
         }
     }
 };
@@ -100,10 +110,16 @@ export const onPanelRegister = function() {
     <button id="vertical-distribute">
         <span class="mdi mdi-align-vertical-distribute"></span>
     </button>
-    <button id="horizontal-center">
+    <button id="horizontal-align-center">
+        <span class="mdi mdi-format-horizontal-align-center"></span>
+    </button>
+    <button id="format-align-middle">
+        <span class="mdi mdi-format-align-middle"></span>
+    </button>
+    <button id="align-horizontal-center">
         <span class="mdi mdi-align-horizontal-center"></span>
     </button>
-    <button id="vertical-center">
+    <button id="align-vertical-center">
         <span class="mdi mdi-align-vertical-center"></span>
     </button>
 </section>
@@ -120,4 +136,9 @@ for(let button of buttons) {
 }
 </script>
 `;
+};
+
+export const initEditor = function() {
+    api.editor.on("panelMessage", onPanelMessage);
+    api.editor.on("panelRegister", onPanelRegister);
 };
