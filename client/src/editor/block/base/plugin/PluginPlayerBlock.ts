@@ -4,7 +4,12 @@ import {PluginProperty} from "@/editor/block/base/plugin/PluginProperty";
 import {BlockEventListener} from "@/editor/block/events/BlockListener";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
+import {RenderApiFeature} from "@/editor/block/base/plugin/api/player/RenderApiFeature";
+import {RegisterPlayerBlockApiFeature} from "@/editor/plugin/player/RegisterPlayerBlockApiFeature";
+import {SendMessageApiFeature} from "@/editor/block/base/plugin/api/player/SendMessageApiFeature";
 
+@RegisterPlayerBlockApiFeature(RenderApiFeature)
+@RegisterPlayerBlockApiFeature(SendMessageApiFeature)
 export class PluginPlayerBlock extends PlayerBlock {
     @BlockSerialize("plugin")
     private plugin: string;
