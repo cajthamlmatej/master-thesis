@@ -11,7 +11,7 @@ export class FetchApiFeature extends EditorPluginApiFeature {
         context.setProp(obj, "fetch", context.newFunction("fetch", (urlRaw, optionsRaw) => {
             const promise = context!.newPromise();
             const url = context!.dump(urlRaw);
-            const options = context!.dump(optionsRaw);
+            const options = optionsRaw ? context!.dump(optionsRaw) : undefined;
 
             const canExecute = plugin.canExecuteOnUrl(url);
 
