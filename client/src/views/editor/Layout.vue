@@ -1,31 +1,38 @@
 <template>
     <Header v-model:menu="data.menu">
         <template #logo>
+            <div class="flex flex-align-center gap-2">
+                <span>
+                    {{materialStore.currentMaterial?.name}}
+                </span>
+
+                <div class="flex gap-1">
+                    <Save/>
+
+                    <NavigationButton :label="$t('editor.navigation.preview')"
+                                      :to="{ name: 'Player', params: { material: $route.params.material } }" :tooltip-text="$t('editor.navigation.preview')"
+                                      hide-mobile
+                                      icon="play"
+                                      tooltip-position="bottom"></NavigationButton>
+
+                    <Sharing />
+
+                    <NavigationButton
+                        :label="$t('editor.navigation.dashboard')" :to="{name: 'Dashboard'}"
+                        :tooltip-text="$t('editor.navigation.dashboard')"
+                        hide-mobile
+                        icon="solar-panel"
+                        tooltip-position="bottom"></NavigationButton>
+                </div>
+            </div>
         </template>
 
         <template #navigation>
             <History/>
 
-            <Save/>
-
             <Preferences />
 
-            <Sharing />
-
-            <NavigationButton :label="$t('editor.navigation.preview')"
-                              :to="{ name: 'Player', params: { material: $route.params.material } }" :tooltip-text="$t('editor.navigation.preview')"
-                              hide-mobile
-                              icon="presentation"
-                              tooltip-position="bottom"></NavigationButton>
-
             <ChangeLanguage/>
-
-            <NavigationButton
-                :label="$t('editor.navigation.dashboard')" :to="{name: 'Dashboard'}"
-                :tooltip-text="$t('editor.navigation.dashboard')"
-                hide-mobile
-                icon="solar-panel"
-                tooltip-position="bottom"></NavigationButton>
         </template>
     </Header>
 

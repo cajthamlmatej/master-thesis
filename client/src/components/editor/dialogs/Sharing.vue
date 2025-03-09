@@ -11,109 +11,152 @@
 
         <template #default>
             <Card dialog>
-                <div class="flex flex-justify-space-between">
-                    <p v-t class="title">editor.share.title</p>
+                <p class="title" v-t>editor.sharing.title</p>
 
-                    <div>
-                        <Dialog>
-                            <template #activator="{toggle}">
-                                <Button
-                                    icon="link-variant"
-                                    color="primary"
-                                    @click="toggle"
-                                >
-                                    <span v-t>editor.share.link</span>
-                                </Button>
-                            </template>
-                            <template #default>
-                                <Card dialog>
+                <List>
+                    <Dialog>
+                        <template #activator="{toggle}">
+                            <ListItem hover @click="toggle">
+                                <span v-t>editor.sharing.share.title</span>
+                            </ListItem>
+                        </template>
+                        <template #default>
+                            <Card dialog>
+                                <div class="flex flex-justify-space-between">
+                                    <p v-t class="title">editor.share.title</p>
+
+                                    <div>
+                                        <Dialog>
+                                            <template #activator="{toggle}">
+                                                <Button
+                                                    icon="link-variant"
+                                                    color="primary"
+                                                    @click="toggle"
+                                                >
+                                                    <span v-t>editor.share.link</span>
+                                                </Button>
+                                            </template>
+                                            <template #default>
+                                                <Card dialog>
+                                                    <div class="flex flex-justify-space-between flex-align-center gap-2">
+                                                        <div class="flex-grow">
+                                                            <Input :readonly="true" hide-error hide-label v-model:value="link"></Input>
+                                                        </div>
+
+                                                        <div>
+                                                            <Button
+                                                                icon="content-copy"
+                                                                @click="copyLink"
+                                                                color="primary"
+                                                            ></Button>
+                                                        </div>
+                                                    </div>
+                                                </Card>
+                                            </template>
+                                        </Dialog>
+                                    </div>
+                                </div>
+
+                                <Input :label="$t('editor.share.name')" v-model:value="data.name"></Input>
+
+                                <Select :choices="[
+                                    {
+                                        name: $t('editor.share.visibility.PUBLIC'),
+                                        value: 'PUBLIC'
+                                    },
+                                    {
+                                        name: $t('editor.share.visibility.PRIVATE'),
+                                        value: 'PRIVATE'
+                                    }
+                                ]"
+                                        :label="$t('editor.share.visibility.label')"
+                                        v-model:value="data.visibility"
+                                ></Select>
+
+                                <Select
+                                    :choices="[
+                                        {
+                                            name: $t('editor.share.method.AUTOMATIC'),
+                                            value: 'AUTOMATIC'
+                                        },
+                                        {
+                                            name: $t('editor.share.method.MANUAL'),
+                                            value: 'MANUAL'
+                                        },
+                                        {
+                                            name: $t('editor.share.method.INTERACTIVITY'),
+                                            value: 'INTERACTIVITY'
+                                        }
+                                    ]"
+                                    :label="$t('editor.share.method.label')"
+                                    v-model:value="data.method"
+                                />
+
+                                <div v-if="data.method === 'AUTOMATIC'">
                                     <div class="flex flex-justify-space-between flex-align-center gap-2">
                                         <div class="flex-grow">
-                                            <Input :readonly="true" hide-error hide-label v-model:value="link"></Input>
+                                            <Input :label="$t('editor.share.automatic.time')" type="number"
+                                                   :readonly="data.visibility !== 'PUBLIC'"
+                                                   v-model:value="data.automaticTime"></Input>
                                         </div>
-
-                                        <div>
-                                            <Button
-                                                icon="content-copy"
-                                                @click="copyLink"
-                                                color="primary"
-                                            ></Button>
-                                        </div>
+                                        <span class="mt-0-5" v-t>unit.s</span>
                                     </div>
-                                </Card>
-                            </template>
-                        </Dialog>
-                    </div>
-                </div>
+                                </div>
 
-                <Input :label="$t('editor.share.name')" v-model:value="data.name"></Input>
+                                <Select
+                                    :choices="[
+                                        {
+                                            name: $t('editor.share.sizing.FIT_TO_SCREEN'),
+                                            value: 'FIT_TO_SCREEN'
+                                        },
+                                        {
+                                            name: $t('editor.share.sizing.MOVEMENT'),
+                                            value: 'MOVEMENT'
+                                        }
+                                    ]"
+                                    :label="$t('editor.share.sizing.label')"
+                                    v-model:value="data.sizing"
+                                />
 
-                <Select :choices="[
-                    {
-                        name: $t('editor.share.visibility.PUBLIC'),
-                        value: 'PUBLIC'
-                    },
-                    {
-                        name: $t('editor.share.visibility.PRIVATE'),
-                        value: 'PRIVATE'
-                    }
-                ]"
-                        :label="$t('editor.share.visibility.label')"
-                        v-model:value="data.visibility"
-                ></Select>
+                                <div class="flex flex-justify-end">
+                                    <Button @click="save" color="primary" :loading="saving">
+                                        <span v-t>editor.share.save</span>
+                                    </Button>
+                                </div>
+                            </Card>
+                        </template>
+                    </Dialog>
+                    <Dialog>
+                        <template #activator="{toggle}">
+                            <ListItem hover @click="toggle">
+                                <span v-t>editor.sharing.export.title</span>
+                            </ListItem>
+                        </template>
+                        <template #default>
+                            <Card dialog>
+                                <p class="title" v-t>editor.sharing.export.title</p>
 
-                <Select
-                    :choices="[
-                        {
-                            name: $t('editor.share.method.AUTOMATIC'),
-                            value: 'AUTOMATIC'
-                        },
-                        {
-                            name: $t('editor.share.method.MANUAL'),
-                            value: 'MANUAL'
-                        },
-                        {
-                            name: $t('editor.share.method.INTERACTIVITY'),
-                            value: 'INTERACTIVITY'
-                        }
-                    ]"
-                    :label="$t('editor.share.method.label')"
-                    v-model:value="data.method"
-                />
+                                <p class="description mb-1" v-t>editor.sharing.export.description</p>
 
-                <div v-if="data.method === 'AUTOMATIC'">
-                    <div class="flex flex-justify-space-between flex-align-center gap-2">
-                        <div class="flex-grow">
-                            <Input :label="$t('editor.share.automatic.time')" type="number"
-                                   :readonly="data.visibility !== 'PUBLIC'"
-                                   v-model:value="data.automaticTime"></Input>
-                        </div>
-                        <span class="mt-0-5" v-t>unit.s</span>
-                    </div>
-                </div>
+                                <List>
+                                    <ListItem hover>
+                                        <span v-t>editor.sharing.export.local</span>
 
-                <Select
-                    :choices="[
-                        {
-                            name: $t('editor.share.sizing.FIT_TO_SCREEN'),
-                            value: 'FIT_TO_SCREEN'
-                        },
-                        {
-                            name: $t('editor.share.sizing.MOVEMENT'),
-                            value: 'MOVEMENT'
-                        }
-                    ]"
-                    :label="$t('editor.share.sizing.label')"
-                    v-model:value="data.sizing"
-                />
+                                        <span class="mdi mdi-download-outline"></span>
+                                    </ListItem>
+                                    <ListItem hover>
+                                        <span v-t>editor.sharing.export.pdf</span>
 
-                <div class="flex flex-justify-end">
-                    <Button @click="save" color="primary" :loading="saving">
-                        <span v-t>editor.share.save</span>
-                    </Button>
-                </div>
+                                        <span class="mdi mdi-download-outline"></span>
+                                    </ListItem>
+                                </List>
+                            </Card>
+                        </template>
+                    </Dialog>
+                </List>
             </Card>
         </template>
+
     </Dialog>
 </template>
 
@@ -127,6 +170,9 @@ import {useMaterialStore} from "@/stores/material";
 import Select from "@/components/design/select/Select.vue";
 import {MaterialMethod, MaterialSizing, MaterialVisibility} from "../../../../lib/dto/material/MaterialEnums";
 import router from "@/router";
+import ListItem from "@/components/design/list/ListItem.vue";
+import Card from "@/components/design/card/Card.vue";
+import List from "@/components/design/list/List.vue";
 
 const editorStore = useEditorStore();
 const materialStore = useMaterialStore();
