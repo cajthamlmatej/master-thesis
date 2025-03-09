@@ -9,7 +9,7 @@
         </template>
 
         <template #default>
-            <Card dialog>
+            <Card dialog class="dialog-holder">
                 <p v-t class="title">editor.preferences.title</p>
 
                 <List>
@@ -24,7 +24,7 @@
                                 <template v-if="property.type === 'boolean'">
                                     <Checkbox v-model:value="values[property.key]"
                                               :label="$t('editor.preferences.enabled')"/>
-                                </template>
+                               </template>
                                 <template v-else-if="property.type === 'number'">
                                     <Input v-model:value="values[property.key]" :validators="property.validator"
                                            type="number"/>
@@ -38,7 +38,7 @@
                     </ListItem>
                 </List>
 
-                <div class="flex flex-justify-end mt-1">
+                <div class="flex flex-justify-end mt-1 saving">
                     <Button @click="save" :loading="saving"><span v-t>editor.preferences.save</span></Button>
                 </div>
             </Card>
@@ -205,6 +205,15 @@ watch(() => editorStore.getEditor(), async(editor) => {
 </script>
 
 <style lang="scss" scoped>
+.saving {
+    position: sticky;
+    left: 0;
+    bottom: 0;
+    background-color: var(--color-background-accent);
+    width: 100%;
+    padding: 0.5em;
+}
+
 .property-holder {
     padding: 0.5em;
 }

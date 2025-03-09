@@ -266,7 +266,7 @@
         },
         "preferences": {
             "open": "Preferences",
-            "title": "Preferences",
+            "title": "Editor preferences",
             "save": "Save",
             "enabled": "Enabled",
             "validation": {

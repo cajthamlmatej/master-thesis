@@ -266,7 +266,7 @@
         },
         "preferences": {
             "open": "Předvolby",
-            "title": "Předvolby",
+            "title": "Předvolby editoru",
             "save": "Uložit",
             "enabled": "Povoleno",
             "validation": {
