@@ -158,4 +158,8 @@ a.button {
         }
     }
 }
+
+li {
+    list-style: none;
+}
 </style>
