@@ -119,7 +119,14 @@ const recalculate = () => {
     plugins.value = pluginStore.manager.getPlugins().map(p => {
         const plugin = pluginStore.plugins.find(pl => pl.id == p.getId())!;
 
-        const latestVersion = [...plugin.releases].sort((a, b) => a.date.diff(b.date)).pop()!;
+        const latestVersion = [...plugin.releases].sort((a, b) => a.date.diff(b.date)).pop();
+        if(!latestVersion) {
+            return {
+                plugin: p,
+                newVersion: false
+            }
+        }
+
         const newVersion = latestVersion.version != p.getVersion();
 
         return {

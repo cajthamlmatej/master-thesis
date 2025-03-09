@@ -10,13 +10,14 @@ import {useMaterialStore} from "@/stores/material";
 import Material, {MaterialPlugin} from "@/models/Material";
 import {PluginContext} from "@/editor/plugin/PluginContext";
 import {usePlayerStore} from "@/stores/player";
+import {useRouter} from "vue-router";
 
 export const usePluginStore = defineStore("plugin", () => {
     const plugins = ref([] as Plugin[]);
     let loadedResolve = (val?: any) => {};
     let loaded = new Promise((r) => loadedResolve = r);
 
-    const pluginManager = new PluginManager();
+    let pluginManager = new PluginManager();
     const pluginPanels = ref<PluginEditorPanel[]>([]);
 
     const editorStore = useEditorStore();
@@ -30,6 +31,11 @@ export const usePluginStore = defineStore("plugin", () => {
         "PLAYER",
         "GAMIFICATION",
     ]
+
+    const router = useRouter();
+    watch(() => router.currentRoute.value, async () => {
+        pluginManager = new PluginManager();
+    });
 
     const load = async () => {
         const response = await api.plugin.all();
