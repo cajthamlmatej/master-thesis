@@ -277,6 +277,41 @@
     }
 }
 
+.editor-property-hint {
+    position: fixed;
+    left: -50px;
+    top: calc(50% - 75px);
+    height: 150px;
+    width: 40px;
+    background-color: rgba(229, 229, 229, 0.77);
+    z-index: 1000;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    backdrop-filter: blur(10px);
+
+    padding-left: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 3em;
+
+    transition: all 0.2s ease;
+
+    &--visible {
+        left: -10px;
+
+        &:hover {
+            cursor: pointer;
+
+            left: 0;
+            padding-left: 0px;
+        }
+
+    }
+}
+
 .cursor-visual {
     display: none;
     position: fixed;

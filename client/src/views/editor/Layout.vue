@@ -92,7 +92,7 @@
     <Content v-model:value="contentMenu"></Content>
 
     <Keybinds v-if="editor"></Keybinds>
-    <Properties v-model:value="propertiesMenu"></Properties>
+    <Properties/>
 
     <router-view v-slot="{ Component, route }">
         <transition mode="out-in" name="fade-ease">
@@ -141,7 +141,6 @@ watch(() => editorStore.getEditor(), (value) => {
 
 const slidesMenu = ref(false);
 const blockMenu = ref(false);
-const propertiesMenu = ref(false);
 const mediaMenu = ref(false);
 const contentMenu = ref(false);
 
