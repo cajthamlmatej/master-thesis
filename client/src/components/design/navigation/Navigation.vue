@@ -167,6 +167,12 @@ aside.navigation {
                 cursor: pointer;
 
                 //overflow: hidden;
+
+                &:has(.button--hide-desktop) {
+                    @media (min-width: 768px) {
+                        display: none;
+                    }
+                }
             }
 
             &.secondary {
@@ -178,6 +184,12 @@ aside.navigation {
             > ::v-deep(.dialog-activator) {
                 display: flex;
                 justify-content: center;
+
+                &:has(.button--hide-desktop) {
+                    @media (min-width: 768px) {
+                        display: none;
+                    }
+                }
             }
         }
     }

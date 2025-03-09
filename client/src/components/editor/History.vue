@@ -1,17 +1,21 @@
 <template>
 
     <NavigationButton
-        :disabled="!backward" :hide-mobile="header"
+        :disabled="!backward"
+        :hide-mobile="header"
         :label="$t('editor.ui.history.undo')"
         :tooltip-text="$t('editor.ui.history.undo')"
         icon="undo"
+        :hide-desktop="!header"
         tooltip-position="bottom"
         @click="undo"></NavigationButton>
     <NavigationButton
-        :disabled="!forward" :hide-mobile="header"
+        :disabled="!forward"
+        :hide-mobile="header"
         :label="$t('editor.ui.history.redo')"
         :tooltip-text="$t('editor.ui.history.redo')"
         icon="redo"
+        :hide-desktop="!header"
         tooltip-position="bottom"
         @click="redo"></NavigationButton>
 </template>

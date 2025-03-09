@@ -72,13 +72,11 @@
             <NavigationButton
                 :label="$t('editor.navigation.dashboard')" :to="{name: 'Dashboard'}"
                 :tooltip-text="$t('editor.navigation.dashboard')"
-                hide-mobile
+                hide-desktop
                 icon="solar-panel"
                 tooltip-position="bottom"></NavigationButton>
 
-            <Divider/>
-
-            <History :header="false"/>
+            <History :header="false" />
 
             <Preferences :header="false"/>
 

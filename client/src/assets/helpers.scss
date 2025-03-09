@@ -3,6 +3,11 @@
         display: none;
     }
 }
+.hide-desktop {
+    @media (min-width: 769px) {
+        display: none;
+    }
+}
 
 .show-mobile {
     @media (max-width: 768px) {

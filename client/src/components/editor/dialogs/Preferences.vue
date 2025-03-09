@@ -2,6 +2,7 @@
     <Dialog v-model:value="dialog">
         <template #activator="{toggle}">
             <NavigationButton :hide-mobile="header"
+                              :hide-desktop="!header"
                               :label="$t('editor.preferences.open')"
                               :tooltip-text="$t('editor.preferences.open')"
                               icon="cog-outline"

@@ -31,6 +31,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    hideDesktop: {
+        type: Boolean,
+        default: false,
+    },
 
     icon: {
         type: String,
@@ -81,7 +85,7 @@ const classes = computed(() => {
         "button--active": ($route.name !== undefined && props.to?.name === $route.name) || props.active,
         "button--hide-mobile": props.hideMobile,
         "button--disabled": props.disabled,
-        // "button--show-mobile": props.showMobile,
+        "button--hide-desktop": props.hideDesktop,
     };
 });
 
@@ -146,6 +150,11 @@ a.button {
 
     &.button--hide-mobile {
         @media (max-width: 768px) {
+            display: none;
+        }
+    }
+    &.button--hide-desktop {
+        @media (min-width: 768px) {
             display: none;
         }
     }

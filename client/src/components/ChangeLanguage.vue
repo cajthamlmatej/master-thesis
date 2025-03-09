@@ -1,7 +1,8 @@
 <template>
     <Dialog>
         <template #activator="{ toggle }">
-            <NavigationButton :hide-mobile="props.header" :label="language" icon="translate-variant"
+            <NavigationButton :hide-mobile="props.header"
+                              :hide-desktop="!props.header" :label="language" icon="translate-variant"
                               tooltip-position="bottom" tooltip-text="Language" @click="toggle"></NavigationButton>
         </template>
         <template #default>
