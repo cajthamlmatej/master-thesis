@@ -4,6 +4,6 @@ export abstract class SelectorCommand {
 
     abstract getElements(): HTMLElement | HTMLElement[];
 
-    abstract execute(event: MouseEvent, element: HTMLElement, selectorArea: EditorSelectorArea): void;
+    abstract execute(event: Event, element: HTMLElement, selectorArea: EditorSelectorArea): void;
 
 }

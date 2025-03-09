@@ -268,14 +268,15 @@ export default class EditorSelectorArea {
             for (let element of elements instanceof Array ? elements : [elements]) {
                 selectorElement.appendChild(element);
 
-                element.addEventListener("mousedown", (event) => {
-                    if (!(event instanceof MouseEvent)) return;
-
+                const handler = (event: MouseEvent | TouchEvent) => {
                     event.preventDefault();
                     event.stopPropagation();
 
                     command.execute(event, element, this);
-                });
+                };
+
+                element.addEventListener("mousedown", handler);
+                element.addEventListener("touchstart", handler, {capture: true});
             }
         }
 
@@ -293,12 +294,15 @@ export default class EditorSelectorArea {
 
     private setupEvents() {
         const mouseDown = this.handleMouseDownEvent.bind(this);
+        const touchStart = this.handleMouseDownMobileEvent.bind(this);
 
         // Selecting blocks
-        window.addEventListener("mousedown", mouseDown);
+        window.addEventListener("mousedown", mouseDown)
+        window.addEventListener("touchstart", touchStart, {capture: true});
 
         this.editor.events.EDITOR_DESTROYED.on(() => {
             window.removeEventListener("mousedown", mouseDown);
+            window.removeEventListener("touchstart", touchStart);
         });
     }
 
@@ -335,8 +339,29 @@ export default class EditorSelectorArea {
         // Probably clicked inside the editor and not in a block, deselect all blocks
         this.selector.deselectAllBlocks();
         this.handleVisibility();
-
         this.setupSelectBox(event);
+    }
+
+    private handleMouseDownMobileEvent(event: TouchEvent) {
+        // If the element is not in the editor, do not do anything
+        if (!this.editor.getWrapperElement().contains(event.target as Node)) {
+            return;
+        }
+
+        const blockElement = (event.target as HTMLElement).closest(".block");
+
+        // Is a block?
+        if (blockElement) {
+            const block = this.editor.getBlockById(blockElement.getAttribute("data-block-id")!);
+
+            if (!block) {
+                console.error("[EditorSelector] Clicked block not found (by id).");
+                return;
+            }
+
+            this.setupMovementOrSelect(event, block);
+            return;
+        }
     }
 
     private handleVisibility() {
@@ -349,16 +374,90 @@ export default class EditorSelectorArea {
         }
     }
 
-    private setupMovementOrSelect(originalEvent: MouseEvent, block: EditorBlock) {
-        let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(originalEvent.clientX, originalEvent.clientY);
-
-        this.selector.selectBlock(block, originalEvent.shiftKey, originalEvent);
+    private setupMovementOrSelect(originalEvent: MouseEvent | TouchEvent, block: EditorBlock) {
+        this.selector.selectBlock(block, originalEvent.shiftKey, originalEvent instanceof MouseEvent ? originalEvent : undefined);
         this.handleVisibility();
 
         if (originalEvent.shiftKey) {
             // If shift is pressed, do not move the block
             return;
         }
+
+        if(originalEvent instanceof MouseEvent) {
+            this.setupMovementOrSelectDesktop(block, originalEvent);
+        } else {
+            this.setupMovementOrSelectMobile(block, originalEvent);
+        }
+    }
+
+    private getPositionFromEvent(selectorArea: EditorSelectorArea, event: MouseEvent | TouchEvent) {
+        let x = 0, y = 0;
+
+        if (event instanceof MouseEvent) {
+            x = event.clientX;
+            y = event.clientY;
+        } else if (event instanceof TouchEvent) {
+            x = event.touches[0].clientX;
+            y = event.touches[0].clientY;
+        } else {
+            throw new Error("Unsupported event type");
+        }
+
+        return selectorArea.getEditor().screenToEditorCoordinates(x, y);
+    }
+
+    private setupMovementOrSelectMobile(block: EditorBlock, originalEvent: TouchEvent) {
+        let {x: initialX, y: initialY} = this.getPositionFromEvent(this, originalEvent);
+
+        let moved = false;
+        const touchMoveHandler = (event: TouchEvent) => {
+            if (moved) return;
+
+            if(event.touches.length > 1)
+                return;
+
+            let {x: deltaX, y: deltaY} = this.editor.screenToEditorCoordinates(event.touches[0].clientX, event.touches[0].clientY);
+
+            deltaX -= initialX;
+            deltaY -= initialY;
+
+            if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+                moved = true;
+            }
+
+            if (moved && block.locked) {
+                this.selector.deselectBlock(block);
+
+                window.removeEventListener("touchmove", touchMoveHandler);
+                window.removeEventListener("touchend", touchEndHandler);
+                window.removeEventListener("touchcancel", touchEndHandler);
+                return;
+            }
+
+            if (moved && block.canCurrentlyDo("move")) {
+                this.commands.find(c => c instanceof MovingSelectorCommand)!.execute(originalEvent, block.element, this);
+
+                window.removeEventListener("touchmove", touchMoveHandler);
+                window.removeEventListener("touchend", touchEndHandler);
+                window.removeEventListener("touchcancel", touchEndHandler);
+            }
+        };
+
+        const touchEndHandler = () => {
+            window.removeEventListener("touchmove", touchMoveHandler);
+            window.removeEventListener("touchend", touchEndHandler);
+            window.removeEventListener("touchcancel", touchEndHandler);
+
+            this.handleVisibility();
+        };
+
+        window.addEventListener("touchmove", touchMoveHandler);
+        window.addEventListener("touchend", touchEndHandler);
+        window.addEventListener("touchcancel", touchEndHandler);
+    }
+
+    private setupMovementOrSelectDesktop(block: EditorBlock, originalEvent: MouseEvent) {
+        let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(originalEvent.clientX, originalEvent.clientY);
 
         let moved = false;
         const mouseMoveHandler = (event: MouseEvent) => {

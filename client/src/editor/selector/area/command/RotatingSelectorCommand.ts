@@ -2,6 +2,7 @@ import {SelectorCommand} from "@/editor/selector/area/SelectorCommand";
 import type EditorSelectorArea from "@/editor/selector/area/EditorSelectorArea";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {createElementFromHTML} from "@/utils/CreateElementFromHTML";
+import * as trace_events from "node:trace_events";
 
 export class RotatingSelectorCommand extends SelectorCommand {
 
@@ -11,8 +12,24 @@ export class RotatingSelectorCommand extends SelectorCommand {
         ]
     }
 
-    public execute(event: MouseEvent, element: HTMLElement, selectorArea: EditorSelectorArea): void {
-        let {x: initialX, y: initialY} = selectorArea.getEditor().screenToEditorCoordinates(event.clientX, event.clientY);
+    private getPositionFromEvent(selectorArea: EditorSelectorArea, event: MouseEvent | TouchEvent) {
+        let x = 0, y = 0;
+
+        if (event instanceof MouseEvent) {
+            x = event.clientX;
+            y = event.clientY;
+        } else if (event instanceof TouchEvent) {
+            x = event.touches[0].clientX;
+            y = event.touches[0].clientY;
+        } else {
+            throw new Error("Unsupported event type");
+        }
+
+        return selectorArea.getEditor().screenToEditorCoordinates(x, y);
+    }
+
+    public execute(event: MouseEvent | TouchEvent, element: HTMLElement, selectorArea: EditorSelectorArea): void {
+        let {x: initialX, y: initialY} = this.getPositionFromEvent(selectorArea, event);
         const PER_OBJECT = selectorArea.getEditor().getPreferences().PER_OBJECT_TRANSFORMATION;
         const SNAPPING_COUNT = selectorArea.getEditor().getPreferences().ROTATION_SNAPPING_COUNT;
 
@@ -35,11 +52,8 @@ export class RotatingSelectorCommand extends SelectorCommand {
             }
         });
 
-        const mouseMoveHandler = (event: MouseEvent) => {
-            const {x: currentX, y: currentY} = selectorArea.getEditor().screenToEditorCoordinates(
-                event.clientX,
-                event.clientY
-            );
+        const mouseMoveHandler = (event: MouseEvent | TouchEvent) => {
+            const {x: currentX, y: currentY} = this.getPositionFromEvent(selectorArea, event);
 
             const angle = Math.atan2(currentY - centerY, currentX - centerX);
 
@@ -93,6 +107,9 @@ export class RotatingSelectorCommand extends SelectorCommand {
         const mouseUpHandler = () => {
             window.removeEventListener("mousemove", mouseMoveHandler);
             window.removeEventListener("mouseup", mouseUpHandler);
+            window.removeEventListener("touchmove", mouseMoveHandler, {capture: true});
+            window.removeEventListener("touchend", mouseUpHandler);
+            window.removeEventListener("touchcancel", mouseUpHandler);
 
             for (const {block, rotation} of initialPositions) {
                 block.processEvent(BlockEvent.ROTATION_ENDED, rotation);
@@ -108,6 +125,9 @@ export class RotatingSelectorCommand extends SelectorCommand {
 
         window.addEventListener("mousemove", mouseMoveHandler);
         window.addEventListener("mouseup", mouseUpHandler);
+        window.addEventListener("touchmove", mouseMoveHandler, {capture: true});
+        window.addEventListener("touchend", mouseUpHandler);
+        window.addEventListener("touchcancel", mouseUpHandler);
     }
 
 }

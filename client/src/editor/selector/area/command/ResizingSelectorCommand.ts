@@ -28,15 +28,13 @@ export class ResizingSelectorCommand extends SelectorCommand {
     }
 
     public execute(
-        event: MouseEvent,
+        event: MouseEvent | TouchEvent,
         element: HTMLElement,
         selectorArea: EditorSelectorArea
     ): void {
         const preferences = selectorArea.getEditor().getPreferences();
         const perObject = preferences.PER_OBJECT_TRANSFORMATION;
-        const {x: initialMouseX, y: initialMouseY} = selectorArea
-            .getEditor()
-            .screenToEditorCoordinates(event.clientX, event.clientY);
+        const {x: initialMouseX, y: initialMouseY} = this.getPositionFromEvent(selectorArea, event);
         const type =
             [...element.classList].find((c) => c.startsWith("resize--"))?.replace("resize--", "") ||
             "top-left";
@@ -58,7 +56,6 @@ export class ResizingSelectorCommand extends SelectorCommand {
         const isProportionalY = type.includes("top-middle") || type.includes("bottom-middle");
 
         if (perObject || selectorArea.getEditor().getSelector().getSelectedBlocks().length === 1) {
-
             const blockInitialData = selectorArea.getEditor().getSelector().getSelectedBlocks().map(block => {
                 block.processEvent(BlockEvent.RESIZING_STARTED);
 
@@ -111,11 +108,12 @@ export class ResizingSelectorCommand extends SelectorCommand {
             });
 
 
-            const mouseMoveHandler = (event: MouseEvent) => {
+            const mouseMoveHandler = (event: MouseEvent | TouchEvent) => {
+                event.stopPropagation();
                 let {
                     x: deltaX,
                     y: deltaY
-                } = selectorArea.getEditor().screenToEditorCoordinates(event.clientX, event.clientY);
+                } = this.getPositionFromEvent(selectorArea, event);
 
                 deltaX -= initialMouseX;
                 deltaY -= initialMouseY;
@@ -212,8 +210,12 @@ export class ResizingSelectorCommand extends SelectorCommand {
             };
 
             const mouseUpHandler = () => {
+                event.stopPropagation();
                 window.removeEventListener("mousemove", mouseMoveHandler);
                 window.removeEventListener("mouseup", mouseUpHandler);
+                window.removeEventListener("touchmove", mouseMoveHandler, {capture: true});
+                window.removeEventListener("touchend", mouseUpHandler);
+                window.removeEventListener("touchcancel", mouseUpHandler);
 
                 for (const {block, width, height} of blockInitialData) {
                     block.processEvent(BlockEvent.RESIZING_ENDED,
@@ -225,6 +227,9 @@ export class ResizingSelectorCommand extends SelectorCommand {
 
             window.addEventListener("mousemove", mouseMoveHandler);
             window.addEventListener("mouseup", mouseUpHandler);
+            window.addEventListener("touchmove", mouseMoveHandler, {capture: true});
+            window.addEventListener("touchend", mouseUpHandler);
+            window.addEventListener("touchcancel", mouseUpHandler);
         } else {
             this.handleCollectiveTransformation(
                 type,
@@ -239,6 +244,24 @@ export class ResizingSelectorCommand extends SelectorCommand {
             );
         }
     }
+
+
+    private getPositionFromEvent(selectorArea: EditorSelectorArea, event: MouseEvent | TouchEvent) {
+        let x = 0, y = 0;
+
+        if (event instanceof MouseEvent) {
+            x = event.clientX;
+            y = event.clientY;
+        } else if (event instanceof TouchEvent) {
+            x = event.touches[0].clientX;
+            y = event.touches[0].clientY;
+        } else {
+            throw new Error("Unsupported event type");
+        }
+
+        return selectorArea.getEditor().screenToEditorCoordinates(x, y);
+    }
+
 
     private handleCollectiveTransformation(
         type: string,
@@ -312,11 +335,9 @@ export class ResizingSelectorCommand extends SelectorCommand {
                 rotatedY,
             };
         });
+        const mouseMoveHandler = (moveEvent: MouseEvent | TouchEvent) => {
+            const {x: currentMouseX, y: currentMouseY} = this.getPositionFromEvent(selectorArea, moveEvent);
 
-        const mouseMoveHandler = (moveEvent: MouseEvent) => {
-            const {x: currentMouseX, y: currentMouseY} = selectorArea
-                .getEditor()
-                .screenToEditorCoordinates(moveEvent.clientX, moveEvent.clientY);
             const deltaX = currentMouseX - initialMouseX;
             const deltaY = currentMouseY - initialMouseY;
 
@@ -415,6 +436,9 @@ export class ResizingSelectorCommand extends SelectorCommand {
         const mouseUpHandler = () => {
             window.removeEventListener("mousemove", mouseMoveHandler);
             window.removeEventListener("mouseup", mouseUpHandler);
+            window.removeEventListener("touchmove", mouseMoveHandler, {capture: true});
+            window.removeEventListener("touchend", mouseUpHandler);
+            window.removeEventListener("touchcancel", mouseUpHandler);
 
             blocksInitialData.forEach((data) => {
                 data.block.processEvent(BlockEvent.RESIZING_ENDED, isProportional ? "PROPORTIONAL" : "NON_PROPORTIONAL", {
@@ -427,5 +451,8 @@ export class ResizingSelectorCommand extends SelectorCommand {
 
         window.addEventListener("mousemove", mouseMoveHandler);
         window.addEventListener("mouseup", mouseUpHandler);
+        window.addEventListener("touchmove", mouseMoveHandler, {capture: true});
+        window.addEventListener("touchend", mouseUpHandler);
+        window.addEventListener("touchcancel", mouseUpHandler);
     }
 }
