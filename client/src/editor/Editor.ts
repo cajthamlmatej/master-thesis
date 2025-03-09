@@ -418,15 +418,18 @@ export default class Editor {
         const resizeEvent = this.usageResizeEvent.bind(this);
         const mouseDownEvent = this.usageMouseDownEvent.bind(this);
         const wheelEvent = this.usageWheelEvent.bind(this);
+        const touchEvent = this.usageTouchEvent.bind(this);
 
         window.addEventListener("resize", resizeEvent);
         window.addEventListener("mousedown", mouseDownEvent);
         window.addEventListener("wheel", wheelEvent);
+        window.addEventListener("touchstart", touchEvent);
 
         this.events.EDITOR_DESTROYED.on(() => {
             window.removeEventListener("resize", resizeEvent);
             window.removeEventListener("mousedown", mouseDownEvent);
             window.removeEventListener("wheel", wheelEvent);
+            window.removeEventListener("touchstart", touchEvent);
         });
     }
 
@@ -490,6 +493,81 @@ export default class Editor {
         this.scale = newScale;
 
         this.updateElement();
+    }
+
+    private usageTouchEvent(event: TouchEvent) {
+        if(event.touches.length === 2) {
+            if (this.mode !== EditorMode.MOVE) return;
+
+            if (!this.editorElement.parentElement!.contains(event.target as Node)) return;
+
+            let startOne = {x: event.touches[0].clientX, y: event.touches[0].clientY};
+            let startTwo = {x: event.touches[1].clientX, y: event.touches[1].clientY};
+
+            let startDistance = Math.sqrt((startTwo.x - startOne.x) ** 2 + (startTwo.y - startOne.y) ** 2);
+
+            const touchMove = (event: TouchEvent) => {
+                let moveOne = {x: event.touches[0].clientX, y: event.touches[0].clientY};
+                let moveTwo = {x: event.touches[1].clientX, y: event.touches[1].clientY};
+
+                let moveDistance = Math.sqrt((moveTwo.x - moveOne.x) ** 2 + (moveTwo.y - moveOne.y) ** 2);
+
+                let scaleFactor = moveDistance / startDistance;
+
+                let newScale = Math.max(0.05, Math.min(6, this.scale * scaleFactor));
+
+                if (newScale === this.scale) return;
+
+                const rect = this.editorElement.getBoundingClientRect();
+
+                const mouseX = (moveOne.x + moveTwo.x) / 2 - rect.left;
+                const mouseY = (moveOne.y + moveTwo.y) / 2 - rect.top;
+
+                const scaleChange = newScale / this.scale;
+
+                this.position.x -= (mouseX * (scaleChange - 1));
+                this.position.y -= (mouseY * (scaleChange - 1));
+
+                this.scale = newScale;
+
+                this.updateElement();
+            }
+
+            const touchEnd = (event: TouchEvent) => {
+                window.removeEventListener("touchmove", touchMove);
+                window.removeEventListener("touchend", touchEnd);
+            }
+
+            window.addEventListener("touchmove", touchMove);
+            window.addEventListener("touchend", touchEnd);
+        } else if (event.touches.length === 1) {
+            if (this.mode !== EditorMode.MOVE) return;
+
+            if (!this.editorElement.parentElement!.contains(event.target as Node)) return;
+
+            const start = this.screenToEditorCoordinates(event.touches[0].clientX, event.touches[0].clientY);
+
+            const handleMove = (event: TouchEvent) => {
+                const end = this.screenToEditorCoordinates(event.touches[0].clientX, event.touches[0].clientY);
+                const offsetX = end.x - start.x;
+                const offsetY = end.y - start.y;
+
+                this.position = {
+                    x: this.position.x + offsetX * this.scale,
+                    y: this.position.y + offsetY * this.scale
+                };
+
+                this.updateElement();
+            };
+            const handleUp = () => {
+                window.removeEventListener("touchmove", handleMove, {capture: true});
+                window.removeEventListener("touchend", handleUp);
+            };
+
+            window.addEventListener("touchmove", handleMove, {capture: true});
+            window.addEventListener("touchend", handleUp);
+            window.addEventListener("touchcancel", handleUp);
+        }
     }
 
     private setupEditorContent() {
