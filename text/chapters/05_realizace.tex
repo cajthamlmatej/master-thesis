@@ -1,12 +1,93 @@
 \chapter{Realizace}
 
-todo:
+\begin{chapterabstract}
+Tato kapitola ...
+\end{chapterabstract}
 
-\begin{itemize}
-    \item prototyp
-    \item kolektivni transformace a okolo problemy s editorem
-    \item tvorba bloku
-    \item tvorba pluginů
-    \item dokumentace platformy
-    \item ke konci pouziti na prezentace => vytvoreni her a podobne (mozna az v testovani)
-\end{itemize}
+\section{Tvorba prototypu}
+
+
+Během výběru samotného zadání této diplomové práce bylo nutné zvážit řadu faktorů, které by mohly ovlivnit realizovatelnost navrhovaného řešení. 
+Jedním z klíčových aspektů byl potenciální problém s editorem, který by měl sloužit jako základ pro interaktivní tvorbu vzdělávacích materiálů. 
+Jelikož existovalo riziko, že požadovanou funkcionalitu nebude možné efektivně implementovat v dostupných technologiích, bylo rozhodnuto o vytvoření prototypu. 
+Tento prototyp měl za cíl ověřit proveditelnost hlavních funkcí a eliminovat případné zásadní překážky v rané fázi vývoje.
+
+V rámci tvorby prototypu byly implementovány a testovány různé způsoby vykreslování obsahu, přičemž klíčovou otázkou bylo, zda bude vhodnější využít technologii HTML, SVG nebo Canvas.
+Každý z těchto přístupů má své specifické výhody a nevýhody, které ovlivňují jak kvalitu zobrazení, tak výkon a možnosti interakce s uživatelem. 
+Podrobnější rozbor těchto technologií je uveden v kapitole \ref{text:vykreslovani}, kde jsou jednotlivé přístupy porovnány z hlediska efektivity a použitelnosti v kontextu plánované platformy.
+
+Při vývoji prototypu se objevily i obecné problémy související s implementací editoru -- respektive s jejich matematickou reprezentaci. 
+Klíčovou výzvou se ukázaly být skupinové transformace a manipulace s prvky na plátně, zejména pokud jde o jejich pohyb a transformaci v rámci editačního prostoru.
+Bylo nutné vyřešit, jakým způsobem budou tyto operace realizovány tak, aby editor zůstal uživatelsky přívětivý, efektivní a zároveň umožňoval pokročilé úpravy vytvořeného obsahu.
+
+Na základě získaných poznatků byl prototyp úspěšně dokončen a posloužil jako důkaz, že zamýšlená funkcionalita může být realizována v rozumném stavu. 
+Tento krok umožnil přejít k další fázi vývoje, která se zaměřuje na návrh a implementaci finální verze platformy s důrazem na rozšiřitelnost, komunitní podporu a snadnou použitelnost pro pedagogy i studenty.
+
+Prototyp sloužil především k ověření základního konceptu a nebyl určen pro přímé použití v konečné implementaci platformy. 
+Jeho účelem bylo rychlé experimentování s klíčovými funkcionalitami, bez důrazu na optimalizaci kódu či dlouhodobou udržitelnost. 
+Po potvrzení, že zamýšlené principy mohou fungovat, bylo nutné přistoupit k přepsání prototypu do robustní a udržitelné podoby. 
+Tento krok zahrnoval refaktorování kódu, zpřehlednění architektury a návrh struktury, která umožní snadnou údržbu i budoucí rozšíření funkcionalit. 
+Přepis zároveň eliminoval technické dluhy vzniklé při rychlém vývoji.
+
+% - behem vyberu samotneho zadani
+% - velky risk problemu s editorem
+% - implementovany ruzne zpusoby vykreslovani (viz kapitola \ref{text:vykreslovani}
+% - obecny problemy s editorem a matematikou
+
+\section{Metodika vývoje}
+
+Proces vývoje platformy pro tvorbu interaktivních výukových materiálů probíhal iterativním způsobem, což umožnilo průběžné testování a úpravy jednotlivých částí aplikace. 
+Tento přístup se ukázal jako efektivní nejen při samotné implementaci, ale i při optimalizaci uživatelského prostředí na základě zpětné vazby od testerů.
+
+Vývoj začal základním návrhem a analýzou požadavků, což bylo detailně popsáno v kapitolách \ref{text:navrh} a \ref{text:analyza}. 
+Po definování architektury systému a stanovení klíčových funkcionalit byl zahájen samotný vývoj. 
+Každá část aplikace byla pečlivě promyšlena před jejím naprogramováním, přičemž se důraz kladl na modularitu a možnost budoucího rozšíření.
+
+Samotný vývoj probíhal iterativně. 
+V každém cyklu bylo nejprve rozhodnuto, na které části aplikace se bude pracovat. 
+Poté následovala detailní analýza a návrh této části, což umožnilo identifikovat možné komplikace ještě před samotnou implementací. 
+Po naprogramování byla nová funkcionalita nasazena na dočasné testovací prostředí, kde probíhalo její testování různými uživateli. 
+K testování byli zapojeni především kolegové a studenti (viz kapitola \ref{text:testovani}), jejichž zpětná vazba byla klíčová pro identifikaci problémů a návrh zlepšení.
+
+Získané podněty byly zaznamenány a klasifikovány dle priority. 
+Kritické chyby byly opraveny okamžitě, zatímco drobné úpravy a návrhy na zlepšení byly zařazeny do plánu budoucího vývoje. 
+Tento přístup zajišťoval nejen stabilní vývoj systému, ale také jeho postupné vylepšování bez nutnosti výrazných zásahů do již implementovaných částí.
+
+Během vývoje byl také kladen důraz na refaktoring kódu, což umožnilo udržovat čitelnost a efektivitu implementace. 
+Starší části aplikace byly pravidelně přepisovány a optimalizovány s cílem zvýšit výkon a usnadnit další rozšíření systému.
+
+Tento iterativní proces vývoje umožnil nejen průběžné zdokonalování aplikace, ale také pružně reagovat na nové požadavky a potřeby uživatelů. 
+Díky tomuto přístupu bylo možné zajistit vysokou kvalitu finální verze platformy a její snadnou škálovatelnost pro budoucí rozšíření.
+
+
+% - po zakladnim navrhu a analyze (viz kapitoly \ref{text:navrh} a \ref{text:analyza})
+% - iterativni zpusob prace
+%     - rozhodnout co dale programovat, analyza a navrh dane casti
+%     - naprogramovat cast
+%     - cast nasadit na docasnou produkci
+%     - predat k testovani ruznymi kamarady (viz kapitola \ref{text:testovani})
+%     - ulozit si feedback, issues
+%     - opravit akutni chyby
+% - prepisovani a vyuziti refactoring
+
+\section{Serverová část}
+
+\subsection{Autentizace a autorizace}
+
+\section{Klientská část}
+
+\subsection{Designový návrh}
+
+\subsection{Komponenty}
+
+\subsection{Editor a přehrávač}
+
+\subsection{Optimalizace pro webové vyhledávače}
+
+\section{Sestavení a nasazení aplikace}
+
+\section{Dokumentace}
+
+\section{Vytvořené bloky a rozšíření}
+
+\section{Ukázkové materiály}

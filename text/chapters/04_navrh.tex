@@ -1,12 +1,37 @@
-\chapter{Návrh}
+\chapter{Návrh}\label{text:navrh}
 
 \begin{chapterabstract}
-Tato kapitola ...
+Tato kapitola představuje návrh architektury aplikace s důrazem na její modularitu, škálovatelnost a udržitelnost. 
+Zabývá se rozvržením klientské a serverové části, volbou technologií a organizací kódu. 
+Dále rozebírá klíčové prvky systému, jako je editor a přehrávač materiálů, možnosti komunitního rozšíření pomocí pluginů a bezpečnostní mechanismy pro ochranu uživatelských dat. 
+Kapitola nabízí hlubší pohled na rozhodnutí, která ovlivní aktuální ale i budoucí vývoj platformy.
 \end{chapterabstract}
 
 \section{Architektura}
 
-Celá aplikace bude rozdělena do několika částí, které v této kapitole vysvětlím a popíšu svá rozhodnutí.
+Návrh architektury je klíčový pro správný softwarový vývoj. 
+Jeho cílem je vytvořit aplikaci a kód tak, aby byly snadno rozšiřitelné, přehledné a jednoduché k údržbě. 
+Pokud je architektura špatně navržena, programátoři na ni často navazují a problémy se dále prohlubují.
+Kód bývá často psán ve spěchu bez ohledu na budoucnost. 
+Funkcionality lze implementovat různými způsoby, avšak důležité je myslet na možnost budoucího rozšíření a refaktorizace. 
+Nepřehledný kód znesnadňuje jeho úpravy, údržbu i rozšiřování.
+
+Základním prvkem architektury je definování odpovědností jednotlivých částí systému. 
+Vzhledem k požadavku na webovou aplikaci byl zvolen model klient-server. 
+Tento model je široce využíván, jelikož umožňuje vývoj multiplatformních aplikací, které lze používat na různých zařízeních. 
+Klient může být vyvíjen nezávisle na serveru, přičemž je klíčové jasně definovat rozhraní pro vzájemnou komunikaci. 
+V této aplikaci bude ke komunikaci používat zabezpečený protokol HTTPS.
+
+Klientská část zpravidla představuje uživatelské prostředí běžící na zařízení uživatele a závisí na serveru. 
+Serverová část zpracovává požadavky, odpovídá na ně a komunikuje s databází, externími službami nebo zajišťuje odesílání e-mailových zpráv. 
+Následující části textu se věnují podrobnostem o struktuře jednotlivých komponent, použitých technologiích a způsobu jejich rozdělení. 
+Diagram návrhu architektury je vyobrazen v obrázku~\ref{fig:architektura}.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.85\textwidth]{chapters/navrh/architektura.pdf}
+    \caption{Diagram architektury aplikace}\label{fig:architektura}
+\end{figure}
 
 \subsection{Klient}\label{text:navrh/klient}
 
@@ -71,10 +96,10 @@ Editor i přehrávač jsou příliš komplexní a vzhledem k cíli práce vytvo�
 Rozšiřování frameworku by bylo velmi zvláštní a nebylo by to příliš intuitivní.
 Hlavním problémem je však ztracení jakékoliv kontroly, jak a kdy se vykresluje daný obsah, co framework spravuje.
 Z tohoto důvodu musí být takto komplexní komponenta, tedy editor a přehrávač, manuálně spravována.
-Naštěstí framework Vue dovoluje označit část kódu jako spravovanou někým jiným a tento prvek nebude překreslovat, pokud se nezmění jeho rodič (a jeho rodič a tak dále). 
+Naštěstí framework Vue dovoluje označit část kódu jako spravovanou někým jiným a tento prvek nebude překreslovat, pokud se nezmění jeho závislost (tedy pokud mu to kód neoznámí). 
 Takovéto fundamentální rozdělení taktéž dovolí, že editor se může velmi jednoduše přidat i do jiných projektů či komponent.
 
-V pozdější kapitole \ref{text:navrh/obsah} rozepíši, jak hodlám řešit to, jak se bude obsah zobrazovat v editoru a přehrávači, jak se bude upravovat, definovat a podobně.
+V pozdější kapitole \ref{text:navrh/editor_player} rozepíši, jak hodlám řešit to, jak se bude obsah zobrazovat v editoru a přehrávači, jak se bude upravovat, definovat a podobně.
 
 \subsection{Server}\label{text:navrh/server}
 
@@ -85,7 +110,9 @@ Mezi další služby bude patřit e-mailový server či různá další externí
 
 Poskytované API, což jsem zmínil v kapitole \ref{text:navrh/klient}, bude Restful a tedy bude pracovat jako se zdroji. 
 Alternativní způsob designu API je například Simple Object Access Protocol (SOAP), který dovoluje volání akcí na serveru.
-REST API je standard mezi moderními komunikacemi a vzhledem k cíli vytvořit rozšiřitelnou aplikaci je REST nejvhodnější možnost.
+Standard REST API, jakožto moderní způsob komunikace, ukládá za povinnost takové věci API, které se slučují s navrhovanou aplikací.
+SOAP by byl v tomto případě nevhodný a to zejména z důvodu, že server v tomto případě zejména slouží jakožto služba, která ukládá data.
+Většina funkcionality v celém projektu je na klientské části, ve které se materiály vytváří a prezentují.
 
 Server bude získávat data z URL adresy, těla a hlavičky požadavku.
 Požadavky i odpovědi na a ze serveru budou komunikovat zejména v JavaScript Object Notation (JSON).
@@ -125,6 +152,9 @@ Proto jsem se rozhodl NestJS s pomocí Express použít a to za pomoci TypeScrip
 
 Server nejspíše bude používat i řadu dalších knihoven, například na odesílání e-mailů, jejich formátování a například na generování přihlašovacích tokenů pomocí JWT (viz kapitola \ref{text:navrh/auth}).
 
+Výsledné API, které vznikne z této aplikace pokusí dodržovat vše, co uvádí standard REST.
+To souvisí i s návrhem jednotlivých koncových bodů, které budou řádně uvádět stavové kódy, dodržovat metody komunikace a řadu dalšího.
+
 \subsubsection{Vrstvy a zodpovědnosti}
 
 I serverová část bude rozdělena do vrstev. 
@@ -134,10 +164,10 @@ V realizované aplikaci budou vrstvy pak dále děleny a bude vytvořena další
 Níže jsou naplánované veškeré vrstvy pro serverovou část.
 
 \begin{description}
-    \item[Moduly] které sumarizují následující vrstvy do jednotlivých balíčků, se kterými se dá jednoduše pracovat. Definují co se má exportovat a importovat v rámci DI.
-    \item[Služby] které sumarizují společné funkcionality do jednoo balíčku, aby se kód nemusel opakovat. Vztahují závislosti a agregují další služby a modely. Dají se sem počítat i tzv. Guardy, které kontrolují zda bude požadavek potvrzen a v aplikaci dále předáván do funkcí kontroleru.
-    \item[Kontroléry] které tvoří REST API, volají funkce služeb, určují vstupní a výstupní data včetně návratových kódů.
-    \item[Modely] které definují schéma databáze, respektive jednotlivých entit uvnitř.
+    \item[Moduly] Ty sumarizují následující vrstvy do jednotlivých balíčků, se kterými se dá jednoduše pracovat. Definují co se má exportovat a importovat v rámci DI.
+    \item[Služby] Ty sumarizují společné funkcionality do jednoo balíčku, aby se kód nemusel opakovat. Vztahují závislosti a agregují další služby a modely. Dají se sem počítat i tzv. Guardy, které kontrolují zda bude požadavek potvrzen a v aplikaci dále předáván do funkcí kontroleru.
+    \item[Kontroléry] Ty tvoří REST API, volají funkce služeb, určují vstupní a výstupní data včetně návratových kódů.
+    \item[Modely] Ty definují schéma databáze, respektive jednotlivých entit uvnitř.
 \end{description}
 
 
@@ -172,15 +202,406 @@ Proto jsem se rozhodl použít s MongoDB právě knihovnu ODM mongoose.
 
 \subsection{Databázové schéma}
 
-\section{Obsah}\label{text:navrh/obsah}
+Přestože návrh využívá nerelační databázi MongoDB, která nevyžaduje pevné schéma, je struktura dat vynucena pomocí ODM Mongoose na serveru.
+Konzistenci dat tedy zajišťuje samotná aplikace při jejich zápisu a čtení. 
+Pro vytvoření databázového schématu bylo nutné vycházet z doménového modelu a provedené analýzy z kapitoly~\ref{text:analyza/datovymodel}.
 
-\section{Uživatelské prostředí}
+Navržené databázové schéma pracuje s relacemi, a proto jeho níže uvedená reprezentace není zcela přesná -- jde o hrubý návrh, kde jsou relace nahrazeny vazbami mezi jednotlivými dokumenty. 
+V návrhu se rovněž nacházejí vlastnosti s datovými typy označenými otazníkem na konci, což signalizuje možnost absence dané hodnoty.
+V kontextu MongoDB a JavaScriptu to znamená, že hodnota může být buď explicitně definovaná, nebo mít hodnotu \texttt{undefined}.
 
-\subsection{Komponenty}
+Entity v databázovém schématu odpovídají těm v doménovém modelu, avšak jejich názvy, atributy a další části byly přeloženy do angličtiny pro snadnější implementaci. 
+Do návrhu byly doplněny další entity, dle provedeného návrhu aplikace, a také dekompozice vazeb typu \texttt{M:N}. 
+Schéma je uvedeno v diagramu v obrázku \ref{fig:databazoveSchema}
+
+Kompletní definice schématu jsou dostupné v kódové příloze ve složce \todo{složka}. 
+Každá entita obsahuje validaci, která definuje platné hodnoty, povinné atributy, unikátnost či požadovanou délku.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=1\textwidth]{chapters/navrh/databazoveSchema.pdf}
+    \caption{Diagram databázového schématu}\label{fig:databazoveSchema}
+\end{figure}
+
+\section{Designový systém}
+
+Uživatelské prostředí je klíčovou součástí každé aplikace, protože určuje, jak snadno a příjemně se s ní uživatelé budou schopni orientovat a pracovat. 
+Je to nejen vizuální aspekt, ale i celková interakce mezi uživatelem a aplikací. Kvalitně navržené uživatelské prostředí může zlepšit uživatelský zážitek a zvýšit efektivitu používání aplikace.
+
+Při návrhu aplikace je dobré si dopředu rozhodnout, jak bude uživatelské prostředí vypadat, aby uživatelský zážitek z celé aplikace byl co nejlepší. 
+To zahrnuje nejen grafickou podobu, ale i logické uspořádání jednotlivých prvků, navigaci a celkovou ergonomii rozhraní.
+
+Uživatelské prostředí lze rozdělit do dvou částí -- samotný designový návrh a technickou implementaci. 
+V podstatě se jedná o komplexní designový systém. Ten určuje, jaké komponenty aplikace obsahuje, jak vypadají, jaké mají parametry, ale hlavně jak spolu navzájem interagují. 
+Jako komponenty si lze představit tlačítka, vstupní pole, záložky a další, ale i jejich stav, například zda jsou vypnuté, zda vypadají speciálně, jejich pozice a mnoho dalšího.
+
+Mezi známé designové systémy patří například Material Design od společnosti Google, který se používá nejen v Google aplikacích a systémech. 
+Dále se používají například Apple Human Interface Guidelines, které jsou určeny pro aplikace v ekosystému iOS a macOS, nebo Fluent Design System od Microsoftu, který se používá především v aplikacích pro Windows.
+
+CSS frameworky jsou v podstatě knihovny předpřipravených stylů a komponent, které usnadňují tvorbu konzistentního designu. 
+Mezi známé CSS frameworky patří Bootstrap, který je jedním z nejpopulárnějších frameworků díky své jednoduchosti a široké komunitě, Tailwind CSS, který umožňuje větší flexibilitu při stylingu, nebo Bulma, který je založen na flexboxu a poskytuje moderní a elegantní vzhled.
+
+Designové systémy a CSS frameworky jsou velmi dobrým nástrojem, který usnadní zejména vývojářům čas s vymýšlením prvků a designu, ale i zejména s funkcionalitou jednotlivých komponent. 
+Problémem bývá ale to, že upravovat design těchto komponent a celkovou interakci mezi nimi je skoro nemožné. 
+Proto často dovolují pouze změnit základní styly a třeba barvy jednotlivých stavů. 
+Stránky, které používají stejné designové systémy, často vypadají identicky, a například v případě Google (při dodržení všeho uvedeného) si spousta uživatelů může myslet, že daná aplikace je přímo od nich. 
+Tyto systémy se často hodí na nástroje a aplikace pro dané platformy.
+Pro odlišení mezi konkurencí je skoro nezbytné si vytvořit vlastní systém, design a přemýšlet nad tím, aby si uživatelé stránku zapamatovali. 
+To souvisí s designovou identitou a všechny pojmy se tímto propojují.
+
+Designové systémy často mají předpřipravené komponenty pro různá prostředí. 
+Například Material Design je implementován pro framework Vue (který jsem vybral v kapitole \ref{text:navrh/klient}) v různých knihovnách, mezi nejznámější patří například Vuetify či Quasar.
+
+Výsledná aplikace je sice nástroj, ale reálně by měla být použita a být něco nového. 
+Chtěl bych, aby aplikaci ihned kdokoliv poznal. 
+Proto jsem se rozhodl nepoužívat žádný předpřipravený designový systém a vytvořit pro tuto aplikaci speciální, který bude plně odpovídat požadavkům a unikátně reflektovat její funkčnost a estetiku.
+
+\subsection{Komponenty a styly}
+
+Designový systém budu zakládat na komponentách a jejich interakcích.
+Jednotlivým komponentám, ale i celé stránce, budu implementovat design.
+
+Ve své bakalářské práci~\cite{cajthaml_bp} ale i v jiných projektech jsem implementoval řadu designových systémů.
+Dle mého názoru je důležité si rozhodnout zejména o typech komponent, které se budou využívat.
+
+Níže jsou uvedeny komponenty a jejich krátký popis, které bude zajisté nutné ve výsledné práci používat.
+Celým seznamem se inspiruji zejména z již existujících projektů.
+Plánuji taktéž použít část kódu z již vytvořených komponent, které jsem vytvořil.
+Nějaké i z bakalářské práce, kterou jsem dále upravoval dle potřeb evoluce daného studijního informačního portálu. 
+
+\begin{description} 
+    \item[Upozornění] Slouží k upozornění uživatele na nějaký speciální stav – například chybu či varování. 
+    \item[Tlačítko] K interakci s částmi aplikace, umožňuje akce, přesměrování a vizualizaci. 
+    \item[Rozdělovač] Odděluje obsahové sekce pro lepší přehlednost. 
+    \item[Dialog] Zobrazí modální okno pro potvrzení, zadání nebo informaci. 
+    \item[Karta] Umožňuje organizaci obsahu do vizuálně oddělených bloků. 
+    \item[Seznam] Strukturované zobrazení prvků pro snadnou orientaci. 
+    \item[Záložky] Přepínání mezi různými sekcemi bez změny stránky. 
+    \item[Stránkování] Rozděluje obsah na více stran pro lepší navigaci. 
+    \item[Navigace] Umožňuje pohyb mezi různými částmi aplikace. 
+    \item[Formulář] Sběr a odesílání dat od uživatele. 
+    \item[Vstupní pole] Umožňuje zadání textových nebo číselných hodnot. Taktéž výběr z možností.
+\end{description}
+
+Mezi další základní styly, které bude nutné implementovat, patří:
+
+\begin{itemize}
+    \item Typografii a různé zvýrazňovací prvky.
+    \item Grid systém pro rozdělení stránky do jednotlivých sloupců.
+    \item Pomocné třídy na odsazení a základní rozložení, jako je například flexbox.
+\end{itemize}
+
+Komponenty se budou implementovat graficky, díky omezení a požadavkům na webovou stránku, pomocí HTML a CSS.
+Funkčnost budu tvořit za pomocí interaktivního frameworku Vue.
+
+Pro jednoduché grafické úpravy barev, odsazení a celkovou konzistenci skrz celou aplikaci je nutné implementovat tyto hodnoty jako proměnné.
+Je možné je definovat jako nativní CSS proměnné či v nějakém CSS preprocesoru, jako je například Syntactically awesome style sheets (Sass).
+Obě možnosti by byly dobrým rozhodnutím pro budoucnost projektu a ze dřívějších zkušeností avšak musím pro proměnné použít nativní CSS proměnné.
+Ty jednodušeji dovolují měnit hodnoty za běhu a zároveň i dědičnost mezi prvky, což vytvoří systém, který reaguje na požadavky aplikace.
+To taktéž dovolí vytvořit systém motivů, který bude měnit jednotlivé barvy v proměnných do předpřipravených stylů, které bude moci uživatel vybírat.
+
+Přesto hodlám metajazyk Sass v práci používat, protože dovoluje například jednodušší vnořování jednotlivých selektorů či prosté cykly pro tvoření komplexních názvů, pro pomocné třídy.
+Sass je nutné kompilovat, naštěstí to řeší rovnou spojení Vite společně s Vue za pomocí knihovny \texttt{sass}.
+
+Styly budu psát přímo ke komponentám a pomocné třídy do globálních souborů, které budou vždy načteny.
+
+Responzivitu komponent budu řešit jednotlivě a všechny pomocné třídy budou mít podpůrné třídy nebo automaticky nastavenou responzivitu.
+Responzivita bude fungovat na tzv. breakpoint (či zlomové body) mechaniku.
+To zajišťuje, že stránka je responzivní vždy do určité šířky zařízení.
+Na webové stránce těchto zlomových bodů bude několik, což dovoluje přizpůsobení na většinu zařízení.
+Na obrovských (širokoúhlých) monitorech se stránka umístí doprostřed obrazovky a více se neadaptuje.
+Stránka bude responzivní na výšku automaticky díky nepoužívání relativních jednotek vůči výšce.
 
 \subsection{Návrhové obrazovky}
 
+Wireframy (také označované jako návrhové obrazovky) slouží k rychlému náhledu uspořádání prvků a obsahu v připravované aplikaci. 
+Oproti detailnějším prototypům či mockupům se u nich klade důraz především na pozici a význam prvků, nikoliv na finální grafické zpracování či prokliky mezi obrazovkami.
+
+Vytváření návrhů pro tuto aplikaci probíhalo v nástroji Uizard2. 
+
+Během práce jsem se inspiroval zejména svými již dříve vytvořenými uživatelskými prostředími a obecně z nástrojů, které jsem analyzoval v kapitolách \ref{text:analyza/prezentace}, \ref{text:analyza/grafika} a \ref{text:analyza/materialy}.
+
+Během práce bylo možné ihned provádět úpravy na základě zpětné vazby od uživatelů a lépe tak vyladit přehlednost nebo ergonomii rozložení. 
+Více o testování a zpětné vazbě při tvorbě aplikace je k dispozici v kapitole \ref{text:testovani}.
+Každá z vytvořených obrazovek proto odráží aktuální požadavky na funkčnost i strukturu aplikace.
+
+
+Celkem vzniklo X návrhových obrazovek, jejichž ukázky jsou uvedeny v obrázcích Y a Z, zatímco úplný přehled všech návrhů lze nalézt v příloze \ref{appendix:navrhoveObrazovky}.
+Mezi ně patří:
+
+\begin{itemize}
+    \item přihlášení, registraci
+    \item TODO
+\end{itemize}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{chapters/navrh/navrhovaObrazovkaEditace.pdf}
+    \caption{Návrhová obrazovka administrační části upozornění}\label{fig:navrhovaObrazovkaEditaceAdministrace}
+\end{figure}
+
+
+\section{Návrh editoru a přehrávače}\label{text:navrh/editor_player}
+
+Při návrhu platformy bylo nutné definovat základní komponenty systému, které umožní tvorbu, editaci a následné přehrávání interaktivních výukových materiálů. 
+Klíčovými prvky jsou bloky jako nejmenší jednotky obsahu, editor sloužící k jejich úpravám a přehrávač, který umožňuje interakci s uživateli.
+
+\subsection{Bloky jako stavební prvky}
+
+Základním konstrukčním prvkem v navrhovaném systému je blok. 
+Každý blok představuje samostatnou jednotku obsahu, která může nabývat různých podob. 
+V rámci návrhu je definována sada základních bloků, které lze kombinovat a upravovat podle potřeb uživatele.
+
+Základní typy bloků mimo jiné zahrnují:
+
+\begin{description}
+    \item[Textové bloky] Které dovolují formátování textu, což zahrnuje velikosti, barvy, fonty a další.
+    \item[Obrazové a multimediální bloky] Dovolují vkládání a manipulaci s obrázky, videi a dalším interaktivním obsahem
+    \item[Tvarové bloky] Který umožňuje vložit předefinované tvary a jejich modifikaci.
+    \item[HTML blok] Umožňuje skoro neomezeně rozšiřovat funkcionality prezentace pomocí psaní si vlastního HTML kódu, který se bezpečné vykreslí pomocí tagu iframe.
+\end{description}
+
+Bloky mohou být mezi sebou uspořádávány, transformovány a jejich vlastnosti lze dynamicky měnit. 
+Každý blok může obsahovat specifické vlastnosti, která ovlivňují jeho chování a vizuální reprezentaci.
+Mezi základní vlastnosti patří pozice, velikost, průhlednost, otočení a řada dalších.
+Dále je možné blokům nastavit různé stavy, které mohou sloužit jako vodítka pro editor při jejich správě, jako je například zamezení transformace a podobně.
+To se hodí, pokud bloky mají existovat pouze v nějakém určitém místě.
+
+\subsection{Editor}
+
+Editor slouží jako prostředí, ve kterém jsou výukové materiály vytvářeny a upravovány. 
+Uživatelé zde mohou vkládat a přemisťovat bloky, nastavovat jejich vlastnosti a provádět transformace všeho obsahu.
+
+Hlavní funkce editoru zahrnují:
+\begin{description}
+    \item[Práce s plátnem] Což dovoluje nastavovat velikost plátna, se kterým bude uživatel pracovat, dovoluje přibližovat a hýbat s ním.
+    \item[Práce s bloky] Dovoluje již zmíněné transformace, změny vlastností, interakce a dalšího.
+    \item[Správa pluginů] Která dovolí upravovat nainstalované a aktivní pluginy, jejich aktualizace a používání. Každý plugin v editoru bude mít své připravené místo na jeho ovládání, viz kapitola \ref{text:navrh/plugins}.
+    \item[Vkládání obsahu] Umožňuje vkládat obsah z veřejných knihoven (fotobanky a další) ale taktéž z uživatelský zdrojů, do kterých si uživatel může nahrát vlastní obsah.
+    \item[Nastavení] Dovolí nastavit viditelnost materiálů, způsob jeho průchodu a další.
+    \item[Export] Dovolí uložit si kopie materiálu v různých formátech.
+\end{description}
+
+Editor informuje a reaguje na to, co dělá, například pomocí různých dialogů a vyskakovacích upozornění, aby umožnil intuitivní práci s materiály.
+
+\subsection{Přehrávač}
+
+Přehrávač je určen pro zobrazování a interakci s vytvořenými materiály. 
+Uživatelé mohou obsah procházet, interagovat s prvky a využívat pokročilé možnosti zobrazení.
+
+Funkce přehrávače zahrnují:
+
+\begin{description}
+    \item[Navigace] Přehrávač umožňuje procházet skrz snímky materiálu dle jeho nastavení. Tedy například průchod automaticky (časovačem), ručně či pouze pomocí interakce.
+    \item[Pluginy] Dovolují upravovat a zobrazovat speciální obsah i mimo editor.
+    \item[Interakce] Přehrávač dovoluje interagovat s prvky dle jejich nastavení.
+    \item[Personalizace] Dovolují úpravu nastavení zobrazování podle preferencí uživatele.
+\end{description}
+
+Přehrávač je navržen tak, aby zajistil plynulou prezentaci obsahu a umožnil efektivní zapojení uživatelů do výukového procesu.
+
+\subsection{Interakce v systému}
+
+Interaktivita je klíčovou vlastností platformy.
+Každý blok může obsahovat několik interaktivních nastavení, které reagují na různé akce. 
+
+Mezi podporované interakce patří například časovače (po nějaké době, opakovaně) a různé uživatelské akce (kliknutí, najetí kurzoru) a mnoho dalšího. 
+
+Po dané akci může interakce způsobit mnoho dalších akci, například se jedná o:
+
+\begin{itemize}
+    \item Upravit vlastnosti sebe i cizích bloků.
+    \item Změnit snímek.
+    \item Resetování bloku či jeho vlastnosti.
+    \item Změnu hodnoty proměnné. 
+\end{itemize}
+
+Interakce se mohou spustit za nastavených určitých podmínek, jako je například čas na snímku, hodnoty proměnné a další.
+
+Interakce jsou plně přizpůsobitelné a uživatelé mohou nastavit parametry, které určují jejich chování.
+Lze taktéž nastavit animaci mezi jednotlivými stavy interakce.
+
+\subsection{Kódový návrh}\todo{todo}
+
+% - blok
+%     - nejmensi jednotka v materialu
+%     - muze byt cokoliv
+%     - ze zakladu navrhuji vytvorit zakladni bloky jako:
+%         - textové (práce s textem, velikosti, formatovani, barvy, fonty, ...) s pokrocilym editorem
+%         - obrazek a dalsi multimedia
+%         - tvary
+%         - HTML
+%     - bloky lze radit mezi sebou, upravovat, transformovat
+%     - bloky maji vlastnosti, ktere ovlivnuji jak se chovani a vypadaji, kazdy blok muze mit jake chce
+%     - ruzne stavy ve kterych jsou, *hinty* pro editor
+    
+% - editor - kde se edituji materialy
+%     - instalují se pluginy (viz kapitola \ref{text:navrh/plugins})
+%     - pohyb a celková transformace bloků
+%     - pohyb a práce s plátnem
+%     - vkládání dalšího obsahu a multimédií
+%         - verejne banky
+%         - vlastni nahravani obsahu
+
+% - prehravace - kde se prehrava
+%     - interakce s prvky
+%     - dovoluje kresleni
+%     - presouvani mezi snímky 
+%     - pouzivaji se pluginy
+%     - moznost ruzne nastavovat prochazeni
+
+% - interakce
+%     - kazdemu bloku muze byt nastavena interakce
+%     - jedna se napriklad o:
+%         - casove udalosti
+%         - kliknuti
+%         - najeti mysi
+%         - a další
+%     - na tyto udalosti blok muze reagovat:
+%         - upravou sebe ci jinych bloku
+%         - resetovanim bloku
+%         - zmenu snimku
+%         - zmeny hodnoty
+%         - a další
+%     - omezeni a nastaveni vsech hodnot, napriklad kdy se tato interakce muze vubec spustit
+%     - animace pomoci interpolace hodnot
+
+\section{Návrh komunitního rozšíření}\label{text:navrh/plugins}
+
+Navrhovaná platforma bude podporovat komunitní rozšíření, což umožní uživatelům přizpůsobit si prostředí dle vlastních potřeb a vytvářet nové funkce nad základním jádrem aplikace.
+Klíčovými aspekty tohoto rozšíření je jazyková kompatibilita, bezpečnost, registrace API a způsob distribuce pluginů.
+Základní analýzou tohoto byla kapitola \ref{text:community_plugins}.
+
+Jako hlavní programovací jazyk pro komunitní rozšíření byl zvolen JavaScript.
+Tento jazyk byl vybrán pro svou jednoduchost, širokou adopci a kompatibilitu s webovým prostředím.
+Skripty budou spouštěny pomocí knihovny QuickJS, která umožňuje běh JavaScriptu na straně klienta s minimalizovanými bezpečnostními riziky díky využítí WebAssembly.
+Aby byla zajištěna integrace s editorem a přehrávačem platformy, bude vytvořeno API, které umožní pluginům komunikaci s těmito komponentami. 
+Přímá abstrakce nad API nebude implementována, vzhledem k tomu, že zmenšení bezpečnosti QuickJS není pravděpodobné.
+Pokud by se stala knihovna QuickJS nebezpečnou tak, že by z ni mohli jednotlivé rozšíření uniknout, budou pravděpodobně nefunkční všechna další jiná řešení.
+
+Každý plugin bude sestávat z několika klíčových částí. 
+Základem je manifest, který bude obsahovat základní informace o pluginu, jeho verzi a další nastavení. 
+Další částí je samotný kód pluginu, který bude realizovat požadovanou funkcionalitu v přehrávači. 
+Třetí část tvoří kód pro editaci v rámci editoru. 
+V databázi platformy bude navíc uchovávána metadata, jako je název pluginu, jeho popis, informace o autorovi a jeho verze.
+
+Systém verzování bude umožňovat udržení kompatibility s předchozími verzemi platformy. 
+Nové verze pluginů budou vyžadovat aktualizovaný manifest, přičemž starší verze pluginů budou nadále funkční pro existující instalace. 
+Uživatelé však nebudou moci instalovat starší verze pluginů, čímž se zajistí plynulá aktualizace celého ekosystému.
+V rámci jedné instalace nebude možné mít aktivní více verzí jednoho pluginu současně.
+
+Pro rozšíření funkcionality editoru i přehrávače bude možné registrovat API pro různé bloky a celý editor či plugin.
+Editor bude umožňovat modifikaci velikosti, vytváření a úpravy jednotlivých bloků, zatímco přehrávač nabídne možnosti manipulace s přehrávaným obsahem, včetně navigace mezi snímky.
+Mezi další API budou různé debugovací nástroje, posílání požadavků či třeba systém cache pro ukládání dočasných dat.
+Dále bude pro rozšíření možné registrovat panely přímo do uživatelského rozhraní, což umožní hlubší integraci pluginů.
+Panely budou implementovány s využitím iframe technologie, která zajistí izolaci kódu a zvýší bezpečnost systému.
+
+Podobně bude vytvořen systém, kdy plugin bude moci vytvořit sám pro sebe určitý blok tak, že pouze on ho spravuje a vykresluje.
+To dovoluje si ukládat speciální data a vytvořit řadu dalších funkcionalit.
+Tyto bloky budou v podstatě již zmíněné HTML bloky, jen budou dovolovat ukládaní dalších dat, registraci vlastních vlastností a další věci.
+
+Rozšíření budou moci oběma směry komunikovat jak s pluginy, tak i s jednotlivými bloky.
+To dovolí řadu budoucích rozšíření, kdy například kliknutí v panelu vytvoří blok, který se může informovat plugin o tom, že se něco děje.
+
+Bezpečnostní aspekty budou klíčovým prvkem návrhu.
+Správné používání QuickJS je zásadní pro minimalizaci rizik spojených se spuštěním nedůvěryhodného kódu.
+Komunikace mezi pluginy a hlavní aplikací bude co nejjednodušší, přičemž veškerá data budou podrobena validaci v každém použití.
+Logování chyb a aktivit pluginů umožní lepší sledování a detekci potenciálních problémů.
+Omezena bude také funkcionalita pluginů z hlediska síťové komunikace, zejména co se týče možnosti provádět HTTP požadavky (pomocí funkce \texttt{fetch}), čímž se zamezí neoprávněné komunikaci se servery třetích stran.
+Uživatelé budou o speciálních povolení pluginů obeznámeni před instalací.
+
+Pro podporu komunitního rozšíření bude nutné zajistit i dokumentaci a nástroje, které usnadní vývoj pluginů. 
+Dokumentace bude pokrývat jak základy tvorby pluginů, tak možnosti rozšíření kódu samotné platformy. 
+Důraz bude kladen na snadnost implementace a přístupnost pro širší komunitu vývojářů.
+Nejvíce klíčové bude, aby pluginy měli jasně vytvořený systém typování, které dovolí kontrolu pluginu před během a pomocí IDE dovolí uživatelům prozkoumávat celé API.
+
+% - základní analýza dle kapitoly \ref{text:community_plugins}
+%     - jazykem bude JS, vzhledem k jednoduchosti a typingu
+%     - spousteni pomoci quickjs, bezi u klienta
+%     - vytvoreni API ktere bude dovolovat komunikovat s editorem/prehravacem
+%     - nevyuzuji abstrakci nad api, protoze by to zpusobilo velmi velke zkompilovani tvorby
+%     - pluginy na serveru, moznost pouzivani
+
+% - pluginy se skladaji z:
+%     - manifestu (nastaveni, verze)
+%     - plugin kodu
+%     - editor kodu
+%     - v db dale ulozene info o: jmeno, description, autor
+    
+% - system releases
+%     - novy kod, manifest
+%     - stare verze pluginu (pro aktualni manifest verzi editoru) funguji
+%     - stare verze nelze instalovat - uzivatel je musi aktualizovat
+%     - dve verze nelze mit najednou
+    
+% - vytvoreni features, ruzne registrace API pro bloky
+%     - komunikace podle daneho zamereni
+%     - editor - velikost, bloky, vytvreni, jejich uprava
+%     - prehravac - velikost, ovladani pozice slidu
+%     - registrace panelu
+%     - bloky primo pro pluginy, pomoci iframes, panely taktez
+    
+% - nutne myslet na bezpecnost
+%     - spravne pouzivani quickjs
+%     - komunikace stroha, dumpovani a validovani vsech hodnot
+%     - logováni chyb a toho, co jaky plugin dela
+%     - napriklad omezeni funkcionalit, komu muze delat fetch pozadavky
+
+% - dalsi komunitni rozsireni:
+%     - programovani tak, aby byla aplikace jednodusi
+%     - vytvoreni dokumentace tvorby pluginu ale i rozsirovani samotneho kodu a moznosti
+%     - jednoduche moznsoti pridavani novych typu bloku
+
 \section{Autentizace a autorizace}\label{text:navrh/auth}
 
-\section{Návrh API}
+Autentizace je proces ověřování identity uživatele, tedy zajištění, že se daná osoba skutečně nachází v systému. 
+Typickými metodami autentizace jsou přihlašování pomocí uživatelského jména a hesla, biometrické údaje nebo autentizace prostřednictvím třetích stran.
 
+Autorizace naopak určuje, jaká oprávnění má autentizovaný uživatel v rámci systému.
+Rozhoduje tedy o tom, ke kterým zdrojům má uživatel přístup a jak s nimi může nakládat.
+
+\subsection{Autentizace}
+
+V rámci této práce se autentizace soustředí na dvě základní metody přihlašování: kombinaci e-mailu a hesla a potvrzení pomocí odkazu zaslaného na e-mailovou adresu uživatele. 
+Po úspěšné autentizaci se vygeneruje JWT (JSON Web Token), který slouží k ověřování uživatele během jeho aktivity v systému.
+
+JWT token je podepsán na určitou dobu a obsahuje základní informace o uživateli, například jeho identifikátor a základní údaje pro rychlé vykreslení. 
+Tento token se následně posílá v hlavičce požadavků \texttt{Authorization} pod typem \texttt{Bearer}, čímž je umožněno bezpečné ověřování uživatele při komunikaci s serverovou částí systému.
+
+Uživatel si tento token ukládá lokálně, a to buď v cookies nebo v local storage prohlížeče, což mu umožňuje zůstat přihlášený i po uzavření okna prohlížeče. 
+Do budoucna je žádoucí rozšířit možnosti přihlašování například o autentizaci prostřednictvím OAuth, což by umožnilo přihlašování skrze služby třetích stran, jako je Google či Meta.
+Aplikace na to musí být připravena.
+
+\subsection{Autorizace}
+
+Vzhledem k návrhu platformy není autorizace zatím příliš složitá. 
+Hlavní princip spočívá v tom, že určité akce smí provádět pouze vlastník obsahu, což je validováno při každé operaci.
+Například editace materiálu je povolena pouze jeho tvůrci. 
+
+Dále jsou v systému prvky s nastavitelnou viditelností. 
+Například materiál může být označen jako veřejný, což znamená, že si jej může prohlédnout kdokoliv. 
+Podobně jsou některé části systému, například rozšíření (pluginy), standardně dostupné všem uživatelům.
+
+V současné fázi vývoje platforma neobsahuje roli administrátora\todo{Bude potřeba, bude implementována?}, což znamená, že neexistuje centrální správa uživatelů či jejich oprávnění. 
+Toto rozhodnutí bylo učiněno s ohledem na jednoduchost návrhu, avšak do budoucna je možné uvažovat o zavedení administrativních funkcí pro efektivnější moderaci obsahu.
+
+
+% - definice autentizace a autorizace
+% - autentizace:
+%     - system v budoucnu by mel podporovat radu prihlaseni, napriklad i treti strany a tj. i oauth
+%     - pro tuto praci pouze:
+%         - email \& heslo
+%         - email a potvrzeni z emailu
+%     - po prihlaseni se vygeneruje token JWT
+%     - tento token je podepsan na urcitou dobu, obsahuje zakladni informace o prihlasenem
+%     - token pouziva pri komunikaci v hlavicce Authentication s typem `Bearer`
+%     - klient uklada token u sebe v ulozisti, napriklad cookies ci local storage
+
+% - autorizace
+%     - vzhledem k navrhu nic sloziteho
+%     - aplikace obsahuje radu veci, ke kterym ma prava k uprave jen majitel, to je nutne validovat
+%     - nektere casti mohou mit nastavenou viditelnost pro ostatni - ze mohou pristupovat (videt) danou vec
+%         - napriklad material muze mit nastavenou viditelnost public, tj vsichni budou moci tento material zobrazit. 
+%         - pluginy jsou viditelne vsem
+%     - administrace prozatim neni potreba\todo{asi bude?}, tj neexistuje nikdo s pristupem administratora
+    
