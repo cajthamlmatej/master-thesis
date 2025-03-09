@@ -1,7 +1,7 @@
 <template>
     <Dialog v-model:value="dialog">
         <template #activator="{toggle}">
-            <NavigationButton hide-mobile
+            <NavigationButton
                               icon="share-variant-outline"
                               :label="$t('editor.share.open')"
                               :tooltip-text="$t('editor.share.open')"

@@ -3,14 +3,14 @@
     <NavigationButton
         :disabled="!backward" :label="$t('editor.ui.history.undo')"
         :tooltip-text="$t('editor.ui.history.undo')"
-        hide-mobile
+        :hide-mobile="header"
         icon="undo"
         tooltip-position="bottom"
         @click="undo"></NavigationButton>
     <NavigationButton
         :disabled="!forward" :label="$t('editor.ui.history.redo')"
         :tooltip-text="$t('editor.ui.history.redo')"
-        hide-mobile
+        :hide-mobile="header"
         icon="redo"
         tooltip-position="bottom"
         @click="redo"></NavigationButton>
@@ -21,6 +21,14 @@ import {useMaterialStore} from "@/stores/material";
 import {useEditorStore} from "@/stores/editor";
 import {onMounted, onUnmounted, ref, watch} from "vue";
 import {$t} from "@/translation/Translation";
+
+
+const props = defineProps({
+    header: {
+        type: Boolean,
+        default: true,
+    }
+})
 
 const materialStore = useMaterialStore();
 const editorStore = useEditorStore();

@@ -1,9 +1,9 @@
 <template>
     <Header v-model:menu="data.menu">
         <template #logo>
-            <div class="flex flex-align-center gap-2">
-                <span>
-                    {{materialStore.currentMaterial?.name}}
+            <div class="flex flex-align-center">
+                <span class="hide-mobile">
+                    <span class="mr-1">{{materialStore.currentMaterial?.name}}</span>
                 </span>
 
                 <div class="flex gap-1">
@@ -11,7 +11,6 @@
 
                     <NavigationButton :label="$t('editor.navigation.preview')"
                                       :to="{ name: 'Player', params: { material: $route.params.material } }" :tooltip-text="$t('editor.navigation.preview')"
-                                      hide-mobile
                                       icon="play"
                                       tooltip-position="bottom"></NavigationButton>
 
@@ -20,8 +19,8 @@
                     <NavigationButton
                         :label="$t('editor.navigation.dashboard')" :to="{name: 'Dashboard'}"
                         :tooltip-text="$t('editor.navigation.dashboard')"
-                        hide-mobile
                         icon="solar-panel"
+                        hide-mobile
                         tooltip-position="bottom"></NavigationButton>
                 </div>
             </div>
@@ -32,7 +31,7 @@
 
             <Preferences />
 
-            <ChangeLanguage/>
+            <ChangeLanguage header/>
         </template>
     </Header>
 
@@ -63,10 +62,26 @@
                               icon="fit-to-screen-outline"
                               @click="fitToScreen"></NavigationButton>
             <NavigationButton
+
                 :icon="`mdi ${mode === EditorMode.SELECT ? 'mdi mdi-cursor-move' : 'mdi mdi-cursor-default'}`"
                 :label="`${mode === EditorMode.SELECT ? $t('editor.ui.change-mode.to-move') : $t('editor.ui.change-mode.to-select')}`"
                 :tooltip-text="`${mode === EditorMode.SELECT ? $t('editor.ui.change-mode.to-move') : $t('editor.ui.change-mode.to-select')}`"
                 @click="changeMode"></NavigationButton>
+
+            <NavigationButton
+                :label="$t('editor.navigation.dashboard')" :to="{name: 'Dashboard'}"
+                :tooltip-text="$t('editor.navigation.dashboard')"
+                icon="solar-panel"
+                hide-mobile
+                tooltip-position="bottom"></NavigationButton>
+
+            <Divider/>
+
+            <History :header="false"/>
+
+            <Preferences :header="false" />
+
+            <ChangeLanguage :header="false" />
         </template>
     </Navigation>
 
@@ -111,6 +126,7 @@ import PluginPanel from "@/components/plugin/panel/PluginPanel.vue";
 import EditorPlugins from "@/components/plugin/EditorPlugins.vue";
 import {PluginEditorPanel} from "@/editor/plugin/PluginEditorPanel";
 import {usePluginStore} from "@/stores/plugin";
+import PluginManageDialog from "@/components/plugin/manage/PluginManageDialog.vue";
 
 
 const data = reactive({

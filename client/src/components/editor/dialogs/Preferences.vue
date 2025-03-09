@@ -2,7 +2,8 @@
     <Dialog v-model:value="dialog">
         <template #activator="{toggle}">
             <NavigationButton :label="$t('editor.preferences.open')"
-                              :tooltip-text="$t('editor.preferences.open')" hide-mobile
+                              :tooltip-text="$t('editor.preferences.open')"
+                              :hide-mobile="header"
                               icon="cog-outline"
                               tooltip-position="bottom"
                               @click="toggle"></NavigationButton>
@@ -57,6 +58,15 @@ import Checkbox from "@/components/design/checkbox/Checkbox.vue";
 import {$t} from "@/translation/Translation";
 import {useEditorStore} from "@/stores/editor";
 import {useMaterialStore} from "@/stores/material";
+
+
+const props = defineProps({
+    header: {
+        type: Boolean,
+        default: true,
+    }
+})
+
 
 const editorStore = useEditorStore();
 const preferences = computed(() => {

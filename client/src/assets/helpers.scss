@@ -1,3 +1,14 @@
+.hide-mobile {
+    @media (max-width: 768px) {
+        display: none;
+    }
+}
+.show-mobile {
+    @media (max-width: 768px) {
+        display: block;
+    }
+}
+
 @each $size in (0, 1, 2, 3, 4, 5) {
     @each $side in (l, r, b, t, x, y, a) {
         .m#{$side}-#{$size} {

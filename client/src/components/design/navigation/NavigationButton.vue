@@ -81,6 +81,7 @@ const classes = computed(() => {
         "button--active": ($route.name !== undefined && props.to?.name === $route.name) || props.active,
         "button--hide-mobile": props.hideMobile,
         "button--disabled": props.disabled,
+        // "button--show-mobile": props.showMobile,
     };
 });
 
@@ -145,6 +146,11 @@ a.button {
 
     &.button--hide-mobile {
         @media (max-width: 768px) {
+            display: none;
+        }
+    }
+    &.button--show-mobile {
+        @media (min-width: 768px) {
             display: none;
         }
     }

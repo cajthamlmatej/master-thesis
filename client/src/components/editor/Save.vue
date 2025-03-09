@@ -1,7 +1,6 @@
 <template>
     <NavigationButton :disabled="saving" :label="$t('editor.ui.save')"
                       :tooltip-text="$t('editor.ui.save')"
-                      hide-mobile
                       icon="content-save-outline"
                       tooltip-position="bottom"
                       @click="save"></NavigationButton>

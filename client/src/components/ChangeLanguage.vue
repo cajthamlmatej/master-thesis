@@ -1,7 +1,7 @@
 <template>
     <Dialog>
         <template #activator="{ toggle }">
-            <NavigationButton tooltip-text="Language" tooltip-position="bottom" :label="language" icon="translate-variant" @click="toggle"></NavigationButton>
+            <NavigationButton :hide-mobile="props.header" tooltip-text="Language" tooltip-position="bottom" :label="language" icon="translate-variant" @click="toggle"></NavigationButton>
         </template>
         <template #default>
             <Card dialog>
@@ -25,6 +25,13 @@ import NavigationButton from "@/components/design/navigation/NavigationButton.vu
 import {ref} from "vue";
 import {translation} from "@/translation/Translation";
 import {useRoute, useRouter} from "vue-router";
+
+const props = defineProps({
+    header: {
+        type: Boolean,
+        default: true,
+    }
+})
 
 const language = ref(translation.getLanguage());
 
