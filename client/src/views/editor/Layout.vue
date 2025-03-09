@@ -3,24 +3,25 @@
         <template #logo>
             <div class="flex flex-align-center">
                 <span class="hide-mobile">
-                    <span class="mr-1">{{materialStore.currentMaterial?.name}}</span>
+                    <span class="mr-1">{{ materialStore.currentMaterial?.name }}</span>
                 </span>
 
                 <div class="flex gap-1">
                     <Save/>
 
                     <NavigationButton :label="$t('editor.navigation.preview')"
-                                      :to="{ name: 'Player', params: { material: $route.params.material } }" :tooltip-text="$t('editor.navigation.preview')"
+                                      :to="{ name: 'Player', params: { material: $route.params.material } }"
+                                      :tooltip-text="$t('editor.navigation.preview')"
                                       icon="play"
                                       tooltip-position="bottom"></NavigationButton>
 
-                    <Sharing />
+                    <Sharing/>
 
                     <NavigationButton
                         :label="$t('editor.navigation.dashboard')" :to="{name: 'Dashboard'}"
                         :tooltip-text="$t('editor.navigation.dashboard')"
-                        icon="solar-panel"
                         hide-mobile
+                        icon="solar-panel"
                         tooltip-position="bottom"></NavigationButton>
                 </div>
             </div>
@@ -29,7 +30,7 @@
         <template #navigation>
             <History/>
 
-            <Preferences />
+            <Preferences/>
 
             <ChangeLanguage header/>
         </template>
@@ -71,17 +72,17 @@
             <NavigationButton
                 :label="$t('editor.navigation.dashboard')" :to="{name: 'Dashboard'}"
                 :tooltip-text="$t('editor.navigation.dashboard')"
-                icon="solar-panel"
                 hide-mobile
+                icon="solar-panel"
                 tooltip-position="bottom"></NavigationButton>
 
             <Divider/>
 
             <History :header="false"/>
 
-            <Preferences :header="false" />
+            <Preferences :header="false"/>
 
-            <ChangeLanguage :header="false" />
+            <ChangeLanguage :header="false"/>
         </template>
     </Navigation>
 
@@ -90,7 +91,7 @@
     <Media v-model:value="mediaMenu"></Media>
     <Content v-model:value="contentMenu"></Content>
 
-    <Keybinds v-if="editor" ></Keybinds>
+    <Keybinds v-if="editor"></Keybinds>
     <Properties v-model:value="propertiesMenu"></Properties>
 
     <router-view v-slot="{ Component, route }">
@@ -121,12 +122,8 @@ import ChangeLanguage from "@/components/ChangeLanguage.vue";
 import Sharing from "@/components/editor/dialogs/Sharing.vue";
 import Media from "@/components/editor/panels/Media.vue";
 import Content from "@/components/editor/panels/Content.vue";
-import {PluginManager} from "@/editor/plugin/PluginManager";
-import PluginPanel from "@/components/plugin/panel/PluginPanel.vue";
 import EditorPlugins from "@/components/plugin/EditorPlugins.vue";
-import {PluginEditorPanel} from "@/editor/plugin/PluginEditorPanel";
 import {usePluginStore} from "@/stores/plugin";
-import PluginManageDialog from "@/components/plugin/manage/PluginManageDialog.vue";
 
 
 const data = reactive({
@@ -148,7 +145,7 @@ const propertiesMenu = ref(false);
 const mediaMenu = ref(false);
 const contentMenu = ref(false);
 
-const currentPluginMenu = ref<string|null>(null);
+const currentPluginMenu = ref<string | null>(null);
 
 watch(() => slidesMenu.value, (value) => {
     if (slidesMenu.value) {

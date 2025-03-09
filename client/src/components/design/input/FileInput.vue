@@ -1,10 +1,10 @@
 <template>
     <section :class="classes" @drop.prevent="onDrop" @dragover.prevent="onDragOver">
         <div class="content" @click.self="($refs.input as HTMLInputElement).click()" @dragstart.prevent>
-<!--            <span v-if="proxy && proxy.name" @click="($refs.input as HTMLInputElement).click()">{{ proxy.name }}</span>-->
-<!--            <span v-else-if="proxy && typeof proxy === 'string' && proxy.length > 0"-->
-<!--                  @click="($refs.input as HTMLInputElement).click()">{{ selectedFileText }} <a-->
-<!--                :href="File.linkToFile(proxy)" target="_blank"><span class="mdi mdi-link-variant"></span></a></span>-->
+            <!--            <span v-if="proxy && proxy.name" @click="($refs.input as HTMLInputElement).click()">{{ proxy.name }}</span>-->
+            <!--            <span v-else-if="proxy && typeof proxy === 'string' && proxy.length > 0"-->
+            <!--                  @click="($refs.input as HTMLInputElement).click()">{{ selectedFileText }} <a-->
+            <!--                :href="File.linkToFile(proxy)" target="_blank"><span class="mdi mdi-link-variant"></span></a></span>-->
             <span
                 v-if="proxy"
                 @click="($refs.input as HTMLInputElement).click()">{{
@@ -71,7 +71,7 @@ const props = defineProps({
     andMoreText: {
         type: Function,
         default: (count: number) => {
-            if(count === 0)
+            if (count === 0)
                 return '';
 
             return $t('components.file-input.and-more', {count: count.toString()});

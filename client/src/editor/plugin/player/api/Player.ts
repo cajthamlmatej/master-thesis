@@ -1,4 +1,3 @@
-
 import {QuickJSHandle} from "quickjs-emscripten";
 import {PlayerPluginApiFeature} from "@/editor/plugin/player/PlayerPluginApiFeature";
 import {PlayerPluginApiData} from "@/editor/plugin/player/PlayerPluginApi";

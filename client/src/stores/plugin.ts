@@ -14,7 +14,8 @@ import {useRouter} from "vue-router";
 
 export const usePluginStore = defineStore("plugin", () => {
     const plugins = ref([] as Plugin[]);
-    let loadedResolve = (val?: any) => {};
+    let loadedResolve = (val?: any) => {
+    };
     let loaded = new Promise((r) => loadedResolve = r);
 
     let pluginManager = new PluginManager();

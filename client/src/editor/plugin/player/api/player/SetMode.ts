@@ -1,8 +1,4 @@
-import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
-import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
-import {generateUUID} from "@/utils/Generators";
-import {EditorMode} from "@/editor/EditorMode";
 import {PlayerPluginApiFeature} from "@/editor/plugin/player/PlayerPluginApiFeature";
 import {PlayerPluginApiData} from "@/editor/plugin/player/PlayerPluginApi";
 import {PlayerMode} from "@/editor/player/PlayerMode";
@@ -16,7 +12,7 @@ export class SetModeApiFeature extends PlayerPluginApiFeature {
         context.setProp(obj, "setMode", context.newFunction("setMode", (data) => {
             const type = context!.dump(data);
 
-            if(!(type in Object.keys(PlayerMode))) {
+            if (!(type in Object.keys(PlayerMode))) {
                 plugin.log(`Invalid mode ${type}`);
                 return context!.undefined;
             }

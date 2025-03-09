@@ -7,24 +7,23 @@ import Player from "@/editor/player/Player";
 
 export class PluginManager {
     public static readonly CURRENT_MANIFEST_VERSION = 1;
-
-    private plugins: PluginContext[] = [];
-    private disabledPlugins: PluginContext[] = [];
     public PLUGIN_LOADED = new Event();
     public readonly cache = new PluginCache();
+    private plugins: PluginContext[] = [];
+    private disabledPlugins: PluginContext[] = [];
 
     public async loadPlugin(plugin: PluginContext) {
         console.log("[PluginManager] Loading plugin " + plugin.toString());
 
         const pluginManifest = plugin.getManifestVersion();
 
-        if(PluginManager.CURRENT_MANIFEST_VERSION !== pluginManifest) {
+        if (PluginManager.CURRENT_MANIFEST_VERSION !== pluginManifest) {
             console.error(`[PluginManager] Plugin ${plugin.toString()} was created for older manifest version, skipping. Current version: ${PluginManager.CURRENT_MANIFEST_VERSION}, plugin version: ${pluginManifest}`);
             this.disabledPlugins.push(plugin);
             return;
         }
 
-        if(this.plugins.find(p => p.getId() === plugin.getId())) {
+        if (this.plugins.find(p => p.getId() === plugin.getId())) {
             throw new Error("Plugin already loaded or ID conflict, cannot load plugin with ID " + plugin.getId());
         }
 
@@ -42,19 +41,20 @@ export class PluginManager {
     }
 
     public async changeEditor(editor: Editor) {
-        for(const plugin of this.plugins) {
+        for (const plugin of this.plugins) {
             const editorPlugin = plugin.getEditorPlugin();
 
-            if(editorPlugin) {
+            if (editorPlugin) {
                 await editorPlugin.loadForEditor(editor);
             }
         }
     }
+
     public async changePlayer(player: Player) {
-        for(const plugin of this.plugins) {
+        for (const plugin of this.plugins) {
             const playerPlugin = plugin.getPlayerPlugin();
 
-            if(playerPlugin) {
+            if (playerPlugin) {
                 await playerPlugin.loadForPlayer(player);
             }
         }
@@ -65,12 +65,12 @@ export class PluginManager {
 
         let panels: PluginEditorPanel[] = [];
 
-        for(const plugin of plugins) {
+        for (const plugin of plugins) {
             const editorPlugin = plugin.getEditorPlugin();
             try {
                 const panel = await editorPlugin!.getPanel();
 
-                if(panel) {
+                if (panel) {
                     panels.push({
                         name: plugin.getName(),
                         content: panel,
@@ -89,7 +89,7 @@ export class PluginManager {
     public removePlugin(id: string) {
         const index = this.plugins.findIndex(p => p.getId() === id);
 
-        if(index === -1) {
+        if (index === -1) {
             throw new Error("Plugin not found");
         }
 

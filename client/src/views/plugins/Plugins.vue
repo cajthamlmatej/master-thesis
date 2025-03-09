@@ -5,10 +5,10 @@
         </div>
     </Card>
 
-    <Card fluid class="mt-1">
+    <Card class="mt-1" fluid>
         <div class="flex flex-justify-space-between">
 
-            <p class="title" v-t>page.plugins.yours</p>
+            <p v-t class="title">page.plugins.yours</p>
 
             <div>
                 <Button color="primary" icon="plus">
@@ -18,8 +18,8 @@
         </div>
     </Card>
 
-    <Card fluid class="mt-1">
-        <p class="title" v-t>page.plugins.faq</p>
+    <Card class="mt-1" fluid>
+        <p v-t class="title">page.plugins.faq</p>
     </Card>
 </template>
 

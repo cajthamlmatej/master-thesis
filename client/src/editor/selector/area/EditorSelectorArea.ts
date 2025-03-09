@@ -383,7 +383,7 @@ export default class EditorSelectorArea {
             return;
         }
 
-        if(originalEvent instanceof MouseEvent) {
+        if (originalEvent instanceof MouseEvent) {
             this.setupMovementOrSelectDesktop(block, originalEvent);
         } else {
             this.setupMovementOrSelectMobile(block, originalEvent);
@@ -413,10 +413,13 @@ export default class EditorSelectorArea {
         const touchMoveHandler = (event: TouchEvent) => {
             if (moved) return;
 
-            if(event.touches.length > 1)
+            if (event.touches.length > 1)
                 return;
 
-            let {x: deltaX, y: deltaY} = this.editor.screenToEditorCoordinates(event.touches[0].clientX, event.touches[0].clientY);
+            let {
+                x: deltaX,
+                y: deltaY
+            } = this.editor.screenToEditorCoordinates(event.touches[0].clientX, event.touches[0].clientY);
 
             deltaX -= initialX;
             deltaY -= initialY;
@@ -457,7 +460,10 @@ export default class EditorSelectorArea {
     }
 
     private setupMovementOrSelectDesktop(block: EditorBlock, originalEvent: MouseEvent) {
-        let {x: initialX, y: initialY} = this.editor.screenToEditorCoordinates(originalEvent.clientX, originalEvent.clientY);
+        let {
+            x: initialX,
+            y: initialY
+        } = this.editor.screenToEditorCoordinates(originalEvent.clientX, originalEvent.clientY);
 
         let moved = false;
         const mouseMoveHandler = (event: MouseEvent) => {
@@ -533,7 +539,10 @@ export default class EditorSelectorArea {
 
             updateBox();
 
-            let range = {topLeft: {x: box.x, y: box.y}, bottomRight: {x: box.x + Math.abs(box.width), y: box.y + Math.abs(box.height)}};
+            let range = {
+                topLeft: {x: box.x, y: box.y},
+                bottomRight: {x: box.x + Math.abs(box.width), y: box.y + Math.abs(box.height)}
+            };
 
             for (let block of this.editor.getBlocks()) {
                 if (block.overlaps(range) && !block.locked) {
@@ -552,7 +561,10 @@ export default class EditorSelectorArea {
             window.removeEventListener("mousemove", mouseMoveHandler);
             window.removeEventListener("mouseup", mouseUpHandler);
 
-            let range = {topLeft: {x: box.x, y: box.y}, bottomRight: {x: box.x + Math.abs(box.width), y: box.y + Math.abs(box.height)}};
+            let range = {
+                topLeft: {x: box.x, y: box.y},
+                bottomRight: {x: box.x + Math.abs(box.width), y: box.y + Math.abs(box.height)}
+            };
 
             // Find all blocks that overlap with the box
             const foundBlocks = [];

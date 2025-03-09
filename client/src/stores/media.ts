@@ -1,11 +1,10 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
-import {useAuthenticationStore} from "@/stores/authentication";
 import {api} from "@/api/api";
 import {useUserStore} from "@/stores/user";
 
 export const useMediaStore = defineStore("media", () => {
-    const media = ref([] as {id: string, name: string, mimetype: string, size: number}[]);
+    const media = ref([] as { id: string, name: string, mimetype: string, size: number }[]);
     const userStore = useUserStore();
 
     const load = async () => {
@@ -22,7 +21,7 @@ export const useMediaStore = defineStore("media", () => {
         media.value = response.media;
     };
 
-    const linkToMedia = (param: string | {id: string}) => {
+    const linkToMedia = (param: string | { id: string }) => {
         const mediaId = typeof param === "string" ? param : param.id;
         return `${api.base}media/${mediaId}`;
     }

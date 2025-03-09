@@ -9,7 +9,8 @@
                 </div>
 
                 <div class="slides">
-                    <div v-for="(slide, i) in materialStore.getSlides()" :class="{'slide--active': slide.id === materialStore.getActiveSlide()?.id}"
+                    <div v-for="(slide, i) in materialStore.getSlides()"
+                         :class="{'slide--active': slide.id === materialStore.getActiveSlide()?.id}"
                          class="slide"
                          @click="changeSlide(slide.id)">
                         <div class="image-container">
@@ -21,16 +22,19 @@
                                 {{ $t('editor.panel.slides.slide-number', {number: (i + 1).toString()}) }}
                             </div>
                             <div class="actions">
-                                <SlideResizeAction :slide="slide" :key="slide.getSize().width +'-'+ slide.getSize().height "/>
+                                <SlideResizeAction :key="slide.getSize().width +'-'+ slide.getSize().height "
+                                                   :slide="slide"/>
 
                                 <i v-tooltip="$t('editor.panel.slides.action.up')" :class="{disabled: i === 0}"
                                    class="mdi mdi-arrow-up" @click="materialStore.moveSlide(slide, -1)"/>
-                                <i v-tooltip="$t('editor.panel.slides.action.down')" :class="{disabled: i === materialStore.getSlides().length - 1}"
+                                <i v-tooltip="$t('editor.panel.slides.action.down')"
+                                   :class="{disabled: i === materialStore.getSlides().length - 1}"
                                    class="mdi mdi-arrow-down"
                                    @click="materialStore.moveSlide(slide, 1)"/>
                                 <i v-tooltip="$t('editor.panel.slides.action.copy')" class="mdi mdi-content-copy"
                                    @click="copySlide(slide)"/>
-                                <i v-tooltip="$t('editor.panel.slides.action.delete')" :class="{disabled: canRemoveSlide}"
+                                <i v-tooltip="$t('editor.panel.slides.action.delete')"
+                                   :class="{disabled: canRemoveSlide}"
                                    class="mdi mdi-trash-can-outline" @click="removeSlide(slide)"/>
                             </div>
                         </div>

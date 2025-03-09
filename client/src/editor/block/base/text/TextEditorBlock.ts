@@ -112,7 +112,7 @@ export class TextEditorBlock extends EditorBlock {
         }
 
         if (this.content !== this.textEditor?.getHTML()) {
-            if(this.textEditor && !this.removed) {
+            if (this.textEditor && !this.removed) {
                 try {
                     this.textEditor.commands.setContent(this.content);
                 } catch (e) {
@@ -187,7 +187,7 @@ export class TextEditorBlock extends EditorBlock {
     private onUnmount() {
         this.removed = true;
 
-        if(this.textEditor) {
+        if (this.textEditor) {
             this.textEditor.destroy();
         }
     }

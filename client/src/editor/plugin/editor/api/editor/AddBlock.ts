@@ -16,7 +16,7 @@ export class AddBlockApiFeature extends EditorPluginApiFeature {
                 parsedData.id = generateUUID();
             }
 
-            if(parsedData.type === "plugin") {
+            if (parsedData.type === "plugin") {
                 parsedData.plugin = plugin.getId();
             }
 

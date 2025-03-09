@@ -8,7 +8,8 @@
                 <button @mousedown="(e) => add(e, 'interactiveArea')"><span
                     class="mdi mdi-cursor-default-click-outline"></span></button>
                 <button @mousedown="(e) => add(e, 'mermaid')"><span class="mdi mdi-chart-timeline"></span></button>
-                <button @mousedown="(e) => add(e, 'iframe')"><span class="mdi mdi-application-parentheses-outline"></span></button>
+                <button @mousedown="(e) => add(e, 'iframe')"><span
+                    class="mdi mdi-application-parentheses-outline"></span></button>
             </div>
         </template>
     </Navigation>

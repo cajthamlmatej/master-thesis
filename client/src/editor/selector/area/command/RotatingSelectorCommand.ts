@@ -2,7 +2,6 @@ import {SelectorCommand} from "@/editor/selector/area/SelectorCommand";
 import type EditorSelectorArea from "@/editor/selector/area/EditorSelectorArea";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {createElementFromHTML} from "@/utils/CreateElementFromHTML";
-import * as trace_events from "node:trace_events";
 
 export class RotatingSelectorCommand extends SelectorCommand {
 
@@ -10,22 +9,6 @@ export class RotatingSelectorCommand extends SelectorCommand {
         return [
             createElementFromHTML(`<div class="rotate"></div>`),
         ]
-    }
-
-    private getPositionFromEvent(selectorArea: EditorSelectorArea, event: MouseEvent | TouchEvent) {
-        let x = 0, y = 0;
-
-        if (event instanceof MouseEvent) {
-            x = event.clientX;
-            y = event.clientY;
-        } else if (event instanceof TouchEvent) {
-            x = event.touches[0].clientX;
-            y = event.touches[0].clientY;
-        } else {
-            throw new Error("Unsupported event type");
-        }
-
-        return selectorArea.getEditor().screenToEditorCoordinates(x, y);
     }
 
     public execute(event: MouseEvent | TouchEvent, element: HTMLElement, selectorArea: EditorSelectorArea): void {
@@ -128,6 +111,22 @@ export class RotatingSelectorCommand extends SelectorCommand {
         window.addEventListener("touchmove", mouseMoveHandler, {capture: true});
         window.addEventListener("touchend", mouseUpHandler);
         window.addEventListener("touchcancel", mouseUpHandler);
+    }
+
+    private getPositionFromEvent(selectorArea: EditorSelectorArea, event: MouseEvent | TouchEvent) {
+        let x = 0, y = 0;
+
+        if (event instanceof MouseEvent) {
+            x = event.clientX;
+            y = event.clientY;
+        } else if (event instanceof TouchEvent) {
+            x = event.touches[0].clientX;
+            y = event.touches[0].clientY;
+        } else {
+            throw new Error("Unsupported event type");
+        }
+
+        return selectorArea.getEditor().screenToEditorCoordinates(x, y);
     }
 
 }

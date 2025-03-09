@@ -1,6 +1,5 @@
 import Editor from "@/editor/Editor";
 import type EditorPreferences from "@/editor/EditorPreferences";
-import {PlayerPluginCommunicator} from "@/editor/player/PlayerPluginCommunicator";
 import {EditorPluginCommunicator} from "@/editor/EditorPluginCommunicator";
 
 export class EditorDeserializer {
@@ -12,7 +11,7 @@ export class EditorDeserializer {
 
         const editor = new Editor(element, editorData, preferences);
 
-        if(communicator) {
+        if (communicator) {
             editor.setPluginCommunicator(communicator);
         }
 

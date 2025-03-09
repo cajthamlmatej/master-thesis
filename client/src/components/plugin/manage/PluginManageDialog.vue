@@ -4,39 +4,43 @@
             <NavigationButton
                 :label="$t('editor.ui.plugin.manage')"
                 :tooltip-text="$t('editor.ui.plugin.manage')"
-                @click="toggle"
-                icon="package-variant"></NavigationButton>
+                icon="package-variant"
+                @click="toggle"></NavigationButton>
         </template>
         <template #default>
             <Card dialog>
-                <Tabs v-model:selected="selected" fluid :items="[
+                <Tabs v-model:selected="selected" :items="[
                     {value: 'active', text:$t('editor.plugin.manage.active')},
                     {value: 'browse', text:$t('editor.plugin.manage.browse.title')}
-                ]"></Tabs>
+                ]" fluid></Tabs>
 
                 <div v-if="selected == 'active'">
                     <List>
-                        <ListItem class="plugin flex-align-center" v-for="plugin in plugins" :key="plugin.plugin.getName()">
+                        <ListItem v-for="plugin in plugins" :key="plugin.plugin.getName()"
+                                  class="plugin flex-align-center">
                             <div class="meta">
                                 <span><span :class="`mdi mdi-` + plugin.plugin.getIcon()"></span> {{
                                         plugin.plugin.getName()
                                     }} (v{{ plugin.plugin.getVersion() }})</span>
                                 <span class="author">{{
-                                        $t('editor.plugin.manage.by', {name: plugin.plugin.getAuthor(), version: plugin.plugin.getManifestVersion().toString()})
+                                        $t('editor.plugin.manage.by', {
+                                            name: plugin.plugin.getAuthor(),
+                                            version: plugin.plugin.getManifestVersion().toString()
+                                        })
                                     }}</span>
                             </div>
-                            <div class="warning-container" v-if="plugin.newVersion">
-                                <div class="warning" v-tooltip="$t('editor.plugin.manage.new-version')">
+                            <div v-if="plugin.newVersion" class="warning-container">
+                                <div v-tooltip="$t('editor.plugin.manage.new-version')" class="warning">
                                     <span class="mdi mdi-shield-alert-outline"></span>
                                 </div>
                             </div>
 
                             <div class="actions">
                                 <Button
-                                    icon="package-variant-closed-minus"
                                     v-tooltip="$t('editor.plugin.manage.deactivate')"
-                                    @click="removePlugin(plugin.plugin as PluginContext)"
                                     :loading="loading"
+                                    icon="package-variant-closed-minus"
+                                    @click="removePlugin(plugin.plugin as PluginContext)"
                                 ></Button>
                             </div>
                         </ListItem>
@@ -46,31 +50,36 @@
                     </List>
 
                     <p
-                        class="disabled-title"
                         v-if="disabled.length > 0"
+                        class="disabled-title"
                     >{{ $t('editor.plugin.manage.disabled.title') }}</p>
 
                     <p
-                        v-if="disabled.length > 0" class="disabled-description">{{ $t('editor.plugin.manage.disabled.description')
+                        v-if="disabled.length > 0" class="disabled-description">{{
+                            $t('editor.plugin.manage.disabled.description')
                         }}</p>
 
                     <List v-if="disabled.length > 0">
-                        <ListItem class="plugin disabled flex-align-center" v-for="plugin in disabled" :key="plugin.getName()">
+                        <ListItem v-for="plugin in disabled" :key="plugin.getName()"
+                                  class="plugin disabled flex-align-center">
                             <div class="meta">
                                 <span><span :class="`mdi mdi-` + plugin.getIcon()"></span> {{
                                         plugin.getName()
                                     }} (v{{ plugin.getVersion() }})</span>
                                 <span class="author">{{
-                                        $t('editor.plugin.manage.by', {name: plugin.getAuthor(), version: plugin.getManifestVersion().toString()})
+                                        $t('editor.plugin.manage.by', {
+                                            name: plugin.getAuthor(),
+                                            version: plugin.getManifestVersion().toString()
+                                        })
                                     }}</span>
                             </div>
 
                             <div class="actions">
                                 <Button
-                                    icon="package-variant-closed-minus"
                                     v-tooltip="$t('editor.plugin.manage.deactivate')"
-                                    @click="removePlugin(plugin as PluginContext)"
                                     :loading="loading"
+                                    icon="package-variant-closed-minus"
+                                    @click="removePlugin(plugin as PluginContext)"
                                 ></Button>
                             </div>
                         </ListItem>
@@ -80,13 +89,13 @@
                     <PluginBrowse/>
                 </div>
 
-                <p class="version">{{ $t('editor.plugin.manage.manifest', {version: manifestVersion.toString()})}}</p>
+                <p class="version">{{ $t('editor.plugin.manage.manifest', {version: manifestVersion.toString()}) }}</p>
             </Card>
         </template>
     </Dialog>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import {$t} from "@/translation/Translation";
 import {onMounted, ref, watch} from "vue";
 import ListItem from "@/components/design/list/ListItem.vue";
@@ -120,7 +129,7 @@ const recalculate = () => {
         const plugin = pluginStore.plugins.find(pl => pl.id == p.getId())!;
 
         const latestVersion = [...plugin.releases].sort((a, b) => a.date.diff(b.date)).pop();
-        if(!latestVersion) {
+        if (!latestVersion) {
             return {
                 plugin: p,
                 newVersion: false
@@ -150,12 +159,13 @@ const removePlugin = async (plugin: PluginContext) => {
 const manifestVersion = PluginManager.CURRENT_MANIFEST_VERSION;
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .disabled-title {
     font-size: 1.2rem;
     margin-top: 1em;
     margin-bottom: 0.25em;
 }
+
 .disabled-description {
     font-size: 0.9rem;
     color: var(--color-text-subtle);

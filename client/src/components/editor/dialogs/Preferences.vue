@@ -1,16 +1,16 @@
 <template>
     <Dialog v-model:value="dialog">
         <template #activator="{toggle}">
-            <NavigationButton :label="$t('editor.preferences.open')"
+            <NavigationButton :hide-mobile="header"
+                              :label="$t('editor.preferences.open')"
                               :tooltip-text="$t('editor.preferences.open')"
-                              :hide-mobile="header"
                               icon="cog-outline"
                               tooltip-position="bottom"
                               @click="toggle"></NavigationButton>
         </template>
 
         <template #default>
-            <Card dialog class="dialog-holder">
+            <Card class="dialog-holder" dialog>
                 <p v-t class="title">editor.preferences.title</p>
 
                 <List>
@@ -25,7 +25,7 @@
                                 <template v-if="property.type === 'boolean'">
                                     <Checkbox v-model:value="values[property.key]"
                                               :label="$t('editor.preferences.enabled')"/>
-                               </template>
+                                </template>
                                 <template v-else-if="property.type === 'number'">
                                     <Input v-model:value="values[property.key]" :validators="property.validator"
                                            type="number"/>
@@ -40,7 +40,7 @@
                 </List>
 
                 <div class="flex flex-justify-end mt-1 saving">
-                    <Button @click="save" :loading="saving"><span v-t>editor.preferences.save</span></Button>
+                    <Button :loading="saving" @click="save"><span v-t>editor.preferences.save</span></Button>
                 </div>
             </Card>
         </template>
@@ -50,8 +50,7 @@
 <script lang="ts" setup>
 
 import NavigationButton from "@/components/design/navigation/NavigationButton.vue";
-import Editor from "@/editor/Editor";
-import {computed, onMounted, ref, watch} from "vue";
+import {computed, ref, watch} from "vue";
 import EditorPreferences from "@/editor/EditorPreferences";
 import ListItem from "@/components/design/list/ListItem.vue";
 import Checkbox from "@/components/design/checkbox/Checkbox.vue";
@@ -170,7 +169,7 @@ const dialog = ref(false);
 
 const materialStore = useMaterialStore();
 const saving = ref(false);
-const save = async() => {
+const save = async () => {
     const newPreferences = {} as any;
     saving.value = true;
 
@@ -201,7 +200,7 @@ const save = async() => {
     saving.value = false;
 };
 
-watch(() => editorStore.getEditor(), async(editor) => {
+watch(() => editorStore.getEditor(), async (editor) => {
     const preferences = await materialStore.getPreferences();
 
     if (!preferences) return;

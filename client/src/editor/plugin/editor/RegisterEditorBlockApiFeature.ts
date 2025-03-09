@@ -1,5 +1,6 @@
 import {EditorBlockApiFeature} from "@/editor/plugin/editor/EditorBlockApiFeature";
 import {Type} from "@/utils/TypeScriptTypes";
+
 export const BLOCK_API_FEATURE_METADATA_KEY = 'editor:block:api-feature';
 
 export interface EditorBlockApiFeatureEntry {

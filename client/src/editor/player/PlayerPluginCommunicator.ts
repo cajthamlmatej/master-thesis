@@ -1,6 +1,4 @@
 import {PluginManager} from "@/editor/plugin/PluginManager";
-import {EditorBlock} from "@/editor/block/EditorBlock";
-import {PluginEditorBlock} from "@/editor/block/base/plugin/PluginEditorBlock";
 import {toRaw} from "vue";
 import {PluginPlayerBlock} from "@/editor/block/base/plugin/PluginPlayerBlock";
 
@@ -9,6 +7,26 @@ export class PlayerPluginCommunicator {
 
     constructor(pluginManager: PluginManager) {
         this.pluginManager = pluginManager;
+    }
+
+    async render(block: PluginPlayerBlock): Promise<string> {
+        const playerPlugin = this.getPlayerPlugin(block.getPlugin());
+
+        if (!playerPlugin) {
+            return "";
+        }
+
+        return await playerPlugin.renderBlock(block);
+    }
+
+    async processMessage(block: PluginPlayerBlock, message: string) {
+        const playerPlugin = this.getPlayerPlugin(block.getPlugin());
+
+        if (!playerPlugin) {
+            return "";
+        }
+
+        await playerPlugin.processBlockMessage(block, message);
     }
 
     private getPlayerPlugin(pluginId: string) {
@@ -27,25 +45,5 @@ export class PlayerPluginCommunicator {
         }
 
         return playerPlugin;
-    }
-
-    async render(block: PluginPlayerBlock): Promise<string> {
-        const playerPlugin = this.getPlayerPlugin(block.getPlugin());
-
-        if(!playerPlugin) {
-            return "";
-        }
-
-        return await playerPlugin.renderBlock(block);
-    }
-
-    async processMessage(block: PluginPlayerBlock, message: string) {
-        const playerPlugin = this.getPlayerPlugin(block.getPlugin());
-
-        if(!playerPlugin) {
-            return "";
-        }
-
-        await playerPlugin.processBlockMessage(block, message);
     }
 }

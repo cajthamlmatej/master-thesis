@@ -41,8 +41,8 @@
                               tooltip-text="Browse templates"
             ></NavigationButton>
 
-            <NavigationButton icon="package-variant"
-                              :to="{name: 'Plugins'}"
+            <NavigationButton :to="{name: 'Plugins'}"
+                              icon="package-variant"
                               label="Plugins"
                               tooltip-text="Plugins"
             ></NavigationButton>

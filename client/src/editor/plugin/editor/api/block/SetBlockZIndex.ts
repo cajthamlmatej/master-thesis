@@ -1,7 +1,5 @@
-import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
 import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
-import {generateUUID} from "@/utils/Generators";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {EditorBlockApiFeature} from "@/editor/plugin/editor/EditorBlockApiFeature";
 
@@ -14,7 +12,7 @@ export class SetBlockZIndexApiFeature extends EditorBlockApiFeature {
         context.setProp(obj, "setZIndex", context.newFunction("setZIndex", (zIndexRaw) => {
             const zIndex = context.dump(zIndexRaw);
 
-            if(typeof zIndex !== "number") {
+            if (typeof zIndex !== "number") {
                 plugin.log(`[Plugin ${plugin.getName()}] Set block z-index failed: z-index must be a number`);
                 return context.undefined;
             }

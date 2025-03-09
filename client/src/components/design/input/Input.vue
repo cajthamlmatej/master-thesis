@@ -3,8 +3,9 @@
         <label v-if="!hideLabel" :for="id">{{ label }}</label>
 
         <section class="content">
-            <input v-if="props.type !== 'textarea'" :id="id" v-model="proxy" :placeholder="placeholder" :readonly="readonly"
-                   :type="props.type" ref="input"/>
+            <input v-if="props.type !== 'textarea'" :id="id" ref="input" v-model="proxy"
+                   :placeholder="placeholder"
+                   :readonly="readonly" :type="props.type"/>
 
             <textarea v-if="props.type === 'textarea'" :id="id" v-model="proxy" :readonly="readonly"/>
 

@@ -1,14 +1,14 @@
 <template>
     <div class="plugins">
         <PluginManageDialog/>
-        <Divider v-if="pluginPanels.length >= 1" />
+        <Divider v-if="pluginPanels.length >= 1"/>
         <NavigationButton
             v-for="panel in pluginPanels"
             :active="panel.name === value"
+            :icon="panel.icon"
             :label="$t('editor.ui.plugin.plugin', {name: panel.name})"
             :tooltip-text="$t('editor.ui.plugin.plugin', {name: panel.name})"
-            @click="emits('update:value', panel.name === value ? null : panel.name)"
-            :icon="panel.icon"></NavigationButton>
+            @click="emits('update:value', panel.name === value ? null : panel.name)"></NavigationButton>
 
     </div>
 
@@ -21,7 +21,7 @@
     </teleport>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import {computed, PropType} from "vue";
 import {usePluginStore} from "@/stores/plugin";
 import {PluginEditorPanel} from "@/editor/plugin/PluginEditorPanel";
@@ -39,7 +39,7 @@ const pluginStore = usePluginStore();
 const pluginPanels = computed(() => pluginStore.panels);
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .plugins {
     display: flex;
     flex-direction: column;

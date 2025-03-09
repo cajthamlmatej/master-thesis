@@ -1,6 +1,5 @@
 import {PluginProperty} from "@/editor/block/base/plugin/PluginProperty";
 import {Property} from "@/editor/property/Property";
-import {TextProperty} from "@/editor/property/type/TextProperty";
 import {PluginEditorBlock} from "@/editor/block/base/plugin/PluginEditorBlock";
 import {PluginTextProperty} from "@/editor/block/base/plugin/property/PluginTextProperty";
 import {PluginBooleanProperty} from "@/editor/block/base/plugin/property/PluginBooleanProperty";

@@ -1,7 +1,7 @@
 <template>
-    <div class="plugin" :class="{
+    <div :class="{
         'plugin--active': props.active,
-    }">
+    }" class="plugin">
         <div class="icons">
             <span :class="`mdi mdi-` + plugin.icon"></span>
         </div>
@@ -17,23 +17,25 @@
 
         <div class="lastVersion">
             <p>
-                {{ $t("editor.plugin.manage.browse.last-version", {date: plugin.lastReleaseDate.format("DD. MM. YYYY")}) }}</p>
+                {{
+                    $t("editor.plugin.manage.browse.last-version", {date: plugin.lastReleaseDate.format("DD. MM. YYYY")})
+                }}</p>
         </div>
 
         <div v-if="includeActions" class="actions">
             <Button
-                icon="package-variant-closed-plus"
-                @click="activate"
+                v-tooltip="plugin.lastManifest.manifest != PluginManager.CURRENT_MANIFEST_VERSION.toString() ? $t('editor.plugin.manage.old-version') : $t('editor.plugin.manage.activate.title')"
                 :disabled="plugin.lastManifest.manifest != PluginManager.CURRENT_MANIFEST_VERSION.toString()"
                 :loading="loading"
-                v-tooltip="plugin.lastManifest.manifest != PluginManager.CURRENT_MANIFEST_VERSION.toString() ? $t('editor.plugin.manage.old-version') : $t('editor.plugin.manage.activate.title')"
+                icon="package-variant-closed-plus"
+                @click="activate"
             ></Button>
         </div>
 
         <transition name="fade">
             <Alert
-                fluidy
                 v-if="error"
+                fluidy
                 type="error"
             >
                 {{ error }}
@@ -42,7 +44,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import {computed, PropType, ref} from "vue";
 import {$t} from "@/translation/Translation";
@@ -88,7 +90,7 @@ const activate = async () => {
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .plugin {
     width: 100%;
     display: flex;

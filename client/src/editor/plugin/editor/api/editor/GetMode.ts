@@ -1,8 +1,6 @@
 import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
 import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
-import {generateUUID} from "@/utils/Generators";
-import {EditorMode} from "@/editor/EditorMode";
 
 export class GetModeApiFeature extends EditorPluginApiFeature {
     register(obj: QuickJSHandle, data: EditorPluginApiData): void {

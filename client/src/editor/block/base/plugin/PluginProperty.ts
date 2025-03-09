@@ -35,4 +35,4 @@ export type PluginProperty = PluginPropertyBase & (
     | ColorPluginProperty
     | NumberPluginProperty
     | SelectPluginProperty
-);
+    );

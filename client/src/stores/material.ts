@@ -25,7 +25,8 @@ export const useMaterialStore = defineStore("material", () => {
         materials.value = response.materials.map((material) => MaterialMapper.fromMaterialDTO(material));
     }
 
-    let resolve = (val?: any) => {};
+    let resolve = (val?: any) => {
+    };
     const loaded = new Promise((r) => resolve = r);
     const loadMaterial = async (id: string) => {
         const response = await api.material.one(id);
@@ -148,7 +149,7 @@ export const useMaterialStore = defineStore("material", () => {
     }
 
     const savePreferences = async (preferences: any) => {
-        if(!authenticationStore.parsed) {
+        if (!authenticationStore.parsed) {
             throw new Error("No user logged in");
         }
 
@@ -160,7 +161,7 @@ export const useMaterialStore = defineStore("material", () => {
     }
 
     const getPreferences = async () => {
-        if(!authenticationStore.parsed) {
+        if (!authenticationStore.parsed) {
             throw new Error("No user logged in");
         }
 

@@ -96,6 +96,7 @@
                             }
                         }
                     }
+
                     > textarea {
                         resize: vertical;
                         width: 100%;
@@ -532,7 +533,6 @@
 }
 
 
-
 .editor-content {
     position: relative;
     display: flex;
@@ -613,6 +613,7 @@
             &.gifs {
                 background-image: url("https://media1.tenor.com/m/st9EJWVgShwAAAAd/sad-cat-car.gif");
             }
+
             &.images {
                 background-image: url("https://unsplash.com/photos/8up-8xmamnM/download?ixid=M3wxMjA3fDB8MXxhbGx8MTB8fHx8fHx8fDE3MzkzMTMwMzB8&force=true&w=640");
             }

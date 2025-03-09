@@ -2,16 +2,16 @@
     <Dialog v-model:value="dialog">
         <template #activator="{toggle}">
             <NavigationButton
-                              icon="share-variant-outline"
-                              :label="$t('editor.share.open')"
-                              :tooltip-text="$t('editor.share.open')"
-                              tooltip-position="bottom"
-                              @click="toggle"></NavigationButton>
+                :label="$t('editor.share.open')"
+                :tooltip-text="$t('editor.share.open')"
+                icon="share-variant-outline"
+                tooltip-position="bottom"
+                @click="toggle"></NavigationButton>
         </template>
 
         <template #default>
             <Card dialog>
-                <p class="title" v-t>editor.sharing.title</p>
+                <p v-t class="title">editor.sharing.title</p>
 
                 <List>
                     <Dialog>
@@ -29,8 +29,8 @@
                                         <Dialog>
                                             <template #activator="{toggle}">
                                                 <Button
-                                                    icon="link-variant"
                                                     color="primary"
+                                                    icon="link-variant"
                                                     @click="toggle"
                                                 >
                                                     <span v-t>editor.share.link</span>
@@ -38,16 +38,18 @@
                                             </template>
                                             <template #default>
                                                 <Card dialog>
-                                                    <div class="flex flex-justify-space-between flex-align-center gap-2">
+                                                    <div
+                                                        class="flex flex-justify-space-between flex-align-center gap-2">
                                                         <div class="flex-grow">
-                                                            <Input :readonly="true" hide-error hide-label v-model:value="link"></Input>
+                                                            <Input v-model:value="link" :readonly="true" hide-error
+                                                                   hide-label></Input>
                                                         </div>
 
                                                         <div>
                                                             <Button
+                                                                color="primary"
                                                                 icon="content-copy"
                                                                 @click="copyLink"
-                                                                color="primary"
                                                             ></Button>
                                                         </div>
                                                     </div>
@@ -57,9 +59,10 @@
                                     </div>
                                 </div>
 
-                                <Input :label="$t('editor.share.name')" v-model:value="data.name"></Input>
+                                <Input v-model:value="data.name" :label="$t('editor.share.name')"></Input>
 
-                                <Select :choices="[
+                                <Select v-model:value="data.visibility"
+                                        :choices="[
                                     {
                                         name: $t('editor.share.visibility.PUBLIC'),
                                         value: 'PUBLIC'
@@ -70,10 +73,10 @@
                                     }
                                 ]"
                                         :label="$t('editor.share.visibility.label')"
-                                        v-model:value="data.visibility"
                                 ></Select>
 
                                 <Select
+                                    v-model:value="data.method"
                                     :choices="[
                                         {
                                             name: $t('editor.share.method.AUTOMATIC'),
@@ -89,21 +92,21 @@
                                         }
                                     ]"
                                     :label="$t('editor.share.method.label')"
-                                    v-model:value="data.method"
                                 />
 
                                 <div v-if="data.method === 'AUTOMATIC'">
                                     <div class="flex flex-justify-space-between flex-align-center gap-2">
                                         <div class="flex-grow">
-                                            <Input :label="$t('editor.share.automatic.time')" type="number"
+                                            <Input v-model:value="data.automaticTime" :label="$t('editor.share.automatic.time')"
                                                    :readonly="data.visibility !== 'PUBLIC'"
-                                                   v-model:value="data.automaticTime"></Input>
+                                                   type="number"></Input>
                                         </div>
-                                        <span class="mt-0-5" v-t>unit.s</span>
+                                        <span v-t class="mt-0-5">unit.s</span>
                                     </div>
                                 </div>
 
                                 <Select
+                                    v-model:value="data.sizing"
                                     :choices="[
                                         {
                                             name: $t('editor.share.sizing.FIT_TO_SCREEN'),
@@ -115,11 +118,10 @@
                                         }
                                     ]"
                                     :label="$t('editor.share.sizing.label')"
-                                    v-model:value="data.sizing"
                                 />
 
                                 <div class="flex flex-justify-end">
-                                    <Button @click="save" color="primary" :loading="saving">
+                                    <Button :loading="saving" color="primary" @click="save">
                                         <span v-t>editor.share.save</span>
                                     </Button>
                                 </div>
@@ -134,9 +136,9 @@
                         </template>
                         <template #default>
                             <Card dialog>
-                                <p class="title" v-t>editor.sharing.export.title</p>
+                                <p v-t class="title">editor.sharing.export.title</p>
 
-                                <p class="description mb-1" v-t>editor.sharing.export.description</p>
+                                <p v-t class="description mb-1">editor.sharing.export.description</p>
 
                                 <List>
                                     <ListItem hover>
@@ -203,7 +205,7 @@ const load = () => {
     data.value.sizing = material.sizing ?? "FIT_TO_SCREEN";
 
     const domain = window.location.origin;
-    const player = router.resolve({ name: 'Player', params: {material: material.id }}).href;
+    const player = router.resolve({name: 'Player', params: {material: material.id}}).href;
 
     link.value = `${domain}${player}`;
 };
@@ -221,7 +223,7 @@ watch(() => materialStore.currentMaterial, () => {
 });
 
 const saving = ref(false);
-const save = async() => {
+const save = async () => {
     const material = materialStore.currentMaterial;
 
     if (!material) {

@@ -10,19 +10,18 @@ import {EditorBlock} from "@/editor/block/EditorBlock";
 export default class Player {
     private static readonly DEFAULT_PADDING = 32;
     public readonly blockRegistry: BlockRegistry;
-
+    public readonly events = new PlayerEvents();
     private _size = {width: 1200, height: 800};
     private blocks: PlayerBlock[] = [];
-
     private readonly element: HTMLElement;
     private mode: PlayerMode = PlayerMode.PLAY;
     private scale: number = 1;
     private position = {x: 0, y: 0};
-
-    public readonly events = new PlayerEvents();
-
     private draw: PlayerDraw;
     private pluginCommunicator: PlayerPluginCommunicator;
+    private resizeEvent: () => void;
+    private mouseDownEvent: (event: MouseEvent) => void;
+    private wheelEvent: (event: WheelEvent) => void;
 
     constructor(element: HTMLElement, size: { width: number, height: number }, blocks: PlayerBlock[]) {
         this.blockRegistry = new BlockRegistry();
@@ -96,39 +95,6 @@ export default class Player {
         this.updateElement();
     }
 
-
-    private usageMouseDownEvent(event: MouseEvent) {
-        if (this.mode !== PlayerMode.MOVE) return;
-
-        if (event.button !== 0) return;
-
-        if (!this.element.parentElement!.contains(event.target as Node)) return;
-
-        const start = this.screenToEditorCoordinates(event.clientX, event.clientY);
-
-        const handleMove = (event: MouseEvent) => {
-            const end = this.screenToEditorCoordinates(event.clientX, event.clientY);
-            const offsetX = end.x - start.x;
-            const offsetY = end.y - start.y;
-
-            this.position = {
-                x: this.position.x + offsetX * this.scale,
-                y: this.position.y + offsetY * this.scale
-            };
-
-            this.events.CANVAS_REPOSITION.emit();
-
-            this.updateElement();
-        };
-        const handleUp = (event: MouseEvent) => {
-            window.removeEventListener("mousemove", handleMove);
-            window.removeEventListener("mouseup", handleUp);
-        };
-
-        window.addEventListener("mousemove", handleMove);
-        window.addEventListener("mouseup", handleUp);
-    }
-
     public changeMode(mode: PlayerMode) {
         this.mode = mode;
 
@@ -162,6 +128,93 @@ export default class Player {
         return this.scale;
     }
 
+    public getSize(): { width: number; height: number } {
+        return this._size;
+    }
+
+    /**
+     * Returns the blocks in the player.
+     */
+    public getBlocks() {
+        return this.blocks;
+    }
+
+    public destroy() {
+        console.log("[Player] Destroying player");
+        window.removeEventListener("resize", this.resizeEvent);
+        window.removeEventListener("mousedown", this.mouseDownEvent);
+        window.removeEventListener("wheel", this.wheelEvent);
+    }
+
+    public getMode() {
+        return this.mode;
+    }
+
+    public getDraw() {
+        return this.draw;
+    }
+
+    public setPluginCommunicator(pluginCommunicator: PlayerPluginCommunicator) {
+        this.pluginCommunicator = pluginCommunicator;
+    }
+
+    public getPluginCommunicator() {
+        if (!this.pluginCommunicator) {
+            throw new Error("Block renderer not set before rendering blocks");
+        }
+
+        return this.pluginCommunicator;
+    }
+
+    public removeBlock(block: EditorBlock | string) {
+        const blockId = typeof block === "string" ? block : block.id;
+        const blockIndex = this.blocks.findIndex(block => block.id === blockId);
+
+        if (blockIndex === -1) {
+            console.error("[Editor] Block not found. Cannot remove.");
+            return;
+        }
+
+        const blockInstance = this.blocks[blockIndex];
+
+        blockInstance.processEvent(BlockEvent.UNMOUNTED);
+
+        blockInstance.element.remove();
+        this.blocks.splice(blockIndex, 1);
+    }
+
+    private usageMouseDownEvent(event: MouseEvent) {
+        if (this.mode !== PlayerMode.MOVE) return;
+
+        if (event.button !== 0) return;
+
+        if (!this.element.parentElement!.contains(event.target as Node)) return;
+
+        const start = this.screenToEditorCoordinates(event.clientX, event.clientY);
+
+        const handleMove = (event: MouseEvent) => {
+            const end = this.screenToEditorCoordinates(event.clientX, event.clientY);
+            const offsetX = end.x - start.x;
+            const offsetY = end.y - start.y;
+
+            this.position = {
+                x: this.position.x + offsetX * this.scale,
+                y: this.position.y + offsetY * this.scale
+            };
+
+            this.events.CANVAS_REPOSITION.emit();
+
+            this.updateElement();
+        };
+        const handleUp = (event: MouseEvent) => {
+            window.removeEventListener("mousemove", handleMove);
+            window.removeEventListener("mouseup", handleUp);
+        };
+
+        window.addEventListener("mousemove", handleMove);
+        window.addEventListener("mouseup", handleUp);
+    }
+
     private usageWheelEvent(event: WheelEvent) {
         if (this.mode !== PlayerMode.MOVE) return;
 
@@ -189,26 +242,11 @@ export default class Player {
         this.updateElement();
     }
 
-    public getSize(): { width: number; height: number } {
-        return this._size;
-    }
-
-    /**
-     * Returns the blocks in the player.
-     */
-    public getBlocks() {
-        return this.blocks;
-    }
-
     private setBlocks(blocks: PlayerBlock[]) {
         for (const block of blocks) {
             this.addBlock(block);
         }
     }
-
-    private resizeEvent: () => void;
-    private mouseDownEvent: (event: MouseEvent) => void;
-    private wheelEvent: (event: WheelEvent) => void;
 
     private setupUsage() {
         this.resizeEvent = this.usageResizeEvent.bind(this);
@@ -221,15 +259,9 @@ export default class Player {
     }
 
     private usageResizeEvent() {
-        if(this.mode === PlayerMode.MOVE) return;
+        if (this.mode === PlayerMode.MOVE) return;
 
         this.fitToParent();
-    }
-    public destroy() {
-        console.log("[Player] Destroying player");
-        window.removeEventListener("resize", this.resizeEvent);
-        window.removeEventListener("mousedown", this.mouseDownEvent);
-        window.removeEventListener("wheel", this.wheelEvent);
     }
 
     private updateElement() {
@@ -243,44 +275,6 @@ export default class Player {
 
     private setupPlayer() {
         this.element.innerHTML = `<div class="player-content"></div>`
-    }
-
-    public getMode() {
-        return this.mode;
-    }
-
-    public getDraw() {
-        return this.draw;
-    }
-
-    public setPluginCommunicator(pluginCommunicator: PlayerPluginCommunicator) {
-        this.pluginCommunicator = pluginCommunicator;
-    }
-
-    public getPluginCommunicator() {
-        if(!this.pluginCommunicator) {
-            throw new Error("Block renderer not set before rendering blocks");
-        }
-
-        return this.pluginCommunicator;
-    }
-
-
-    public removeBlock(block: EditorBlock | string) {
-        const blockId = typeof block === "string" ? block : block.id;
-        const blockIndex = this.blocks.findIndex(block => block.id === blockId);
-
-        if (blockIndex === -1) {
-            console.error("[Editor] Block not found. Cannot remove.");
-            return;
-        }
-
-        const blockInstance = this.blocks[blockIndex];
-
-        blockInstance.processEvent(BlockEvent.UNMOUNTED);
-
-        blockInstance.element.remove();
-        this.blocks.splice(blockIndex, 1);
     }
 
 }

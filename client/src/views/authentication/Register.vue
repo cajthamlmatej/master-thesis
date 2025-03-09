@@ -33,7 +33,8 @@
                                        type="password"
                                        @validationChange="validationChange"/>
 
-                                <Input v-model:value="data.passwordRepeat" :label="$t('page.register.fields.password-repeat.label')"
+                                <Input v-model:value="data.passwordRepeat"
+                                       :label="$t('page.register.fields.password-repeat.label')"
                                        :validators="[
                                         (v: string) => v === data.password || $t('page.register.fields.password-repeat.not-match')
                                     ]"

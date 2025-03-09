@@ -1,6 +1,6 @@
 <template>
     <div class="underlay">
-        <Header :active="active" fixed v-if="material">
+        <Header v-if="material" :active="active" fixed>
             <template #logo>
                 <div class="meta">
                     <span class="name">{{ material.name }}</span>
@@ -40,39 +40,39 @@
                 </Dialog>
 
                 <NavigationButton
+                    v-if="material.method === 'MANUAL'"
                     :disabled="!hasPreviousSlide"
                     :label="$t('player.control.previous-slide')"
                     :tooltip-text="$t('player.control.previous-slide')"
-                    v-if="material.method === 'MANUAL'"
                     hide-mobile
                     icon="arrow-left"
                     tooltip-position="bottom"
                     @click.stop="previousSlide"
                 />
                 <NavigationButton
+                    v-if="material.method === 'MANUAL'"
                     :disabled="!hasNextSlide"
                     :label="$t('player.control.next-slide')"
                     :tooltip-text="$t('player.control.next-slide')"
-                    v-if="material.method === 'MANUAL'"
                     hide-mobile
                     icon="arrow-right"
                     tooltip-position="bottom"
                     @click.stop="nextSlide"
                 />
                 <NavigationButton
+                    v-if="material.method === 'AUTOMATIC'"
+                    :icon="automaticMovement ? 'stop-circle-outline' : 'play-circle-outline'"
                     :label="automaticMovement ? $t('player.control.automatic-stop') : $t('player.control.automatic-play')"
                     :tooltip-text="automaticMovement ? $t('player.control.automatic-stop') : $t('player.control.automatic-play')"
-                    v-if="material.method === 'AUTOMATIC'"
                     hide-mobile
-                    :icon="automaticMovement ? 'stop-circle-outline' : 'play-circle-outline'"
                     tooltip-position="bottom"
                     @click.stop="toggleAutomaticMovement"
                 />
 
                 <NavigationButton
+                    v-if="material.sizing === 'MOVEMENT'"
                     :label="$t('player.control.focus')"
                     :tooltip-text="$t('player.control.focus')"
-                    v-if="material.sizing === 'MOVEMENT'"
                     hide-mobile
                     icon="fit-to-screen-outline"
                     tooltip-position="bottom"
@@ -92,16 +92,16 @@
                     :label="player?.getMode() !== PlayerMode.DRAW ? $t('player.control.enable-draw') : $t('player.control.disable-draw')"
                     :tooltip-text="player?.getMode() !== PlayerMode.DRAW ? $t('player.control.enable-draw') : $t('player.control.disable-draw')"
                     hide-mobile
-                    @click="drawing = !drawing"
                     icon="draw-pen"
                     tooltip-position="bottom"
+                    @click="drawing = !drawing"
                 />
 
                 <NavigationButton
+                    v-if="material.user === userStore.user?.id"
                     :label="$t('player.control.edit')"
                     :to="{name: 'Editor', params: {material: route.params.material}}"
                     :tooltip-text="$t('player.control.edit')"
-                    v-if="material.user === userStore.user?.id"
                     hide-mobile
                     icon="square-edit-outline"
                     tooltip-position="bottom"
@@ -148,9 +148,9 @@ const player = ref<Player | null>(null);
 watch(() => playerStore.getPlayer(), (value) => {
     player.value = value as Player;
 
-    if(!material) return;
+    if (!material) return;
 
-    if(material.value.sizing === 'MOVEMENT')
+    if (material.value.sizing === 'MOVEMENT')
         player.value.changeMode(PlayerMode.MOVE);
     else
         player.value.changeMode(PlayerMode.PLAY);
@@ -196,7 +196,7 @@ const click = (e: MouseEvent) => {
     if (player.value?.getMode() === PlayerMode.DRAW) return;
 
     const target = e.target as HTMLElement;
-    if(!target.classList.contains("player-container") && !target.classList.contains("player-content")) {
+    if (!target.classList.contains("player-container") && !target.classList.contains("player-content")) {
         return;
     }
 
@@ -359,12 +359,12 @@ const drawing = ref(false);
 watch(drawing, (value) => {
     const player = playerStore.getPlayer() as Player | undefined;
 
-    if(!player) return;
+    if (!player) return;
 
-    if(value) {
+    if (value) {
         player.changeMode(PlayerMode.DRAW);
     } else {
-        if(material.value.sizing === 'MOVEMENT')
+        if (material.value.sizing === 'MOVEMENT')
             player.changeMode(PlayerMode.MOVE);
         else
             player.changeMode(PlayerMode.PLAY);

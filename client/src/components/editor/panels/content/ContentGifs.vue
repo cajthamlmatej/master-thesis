@@ -1,11 +1,12 @@
 <template>
     <div class="flex flex-justify-space-between flex-align-center">
-        <Input v-model:value="search" hide-label hide-error :placeholder="$t('editor.panel.content.gifs.search')" ref="searchInput"></Input>
+        <Input ref="searchInput" v-model:value="search" :placeholder="$t('editor.panel.content.gifs.search')" hide-error
+               hide-label></Input>
         <Button icon="close" @click="search = ''"></Button>
     </div>
 
-    <div class="categories" v-if="categories.length > 0 && (search.length < 1 || results.length == 0)">
-        <div class="category" v-for="category in categories" :key="category.id" @click="selectCategory(category)">
+    <div v-if="categories.length > 0 && (search.length < 1 || results.length == 0)" class="categories">
+        <div v-for="category in categories" :key="category.id" class="category" @click="selectCategory(category)">
             <div class="name">{{ category.name }}</div>
             <div class="image">
                 <img :src="category.image" alt="Category Image"/>
@@ -13,16 +14,16 @@
         </div>
     </div>
 
-    <div class="results" v-if="results.length > 0" ref="content">
-        <div class="result" v-for="result in results" :key="result.id"
+    <div v-if="results.length > 0" ref="content" class="results">
+        <div v-for="result in results" :key="result.id" class="result"
              @mousedown="(e) => add(e, result.media_formats.gif.url)">
-            <img src="" :data-src="result.media_formats.gif.url"
-                 draggable="false">
+            <img :data-src="result.media_formats.gif.url" draggable="false"
+                 src="">
         </div>
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import {nextTick, onMounted, ref, toRaw, watch} from "vue";
 import {$t, translation} from "@/translation/Translation";
 import Input from "@/components/design/input/Input.vue";
@@ -39,6 +40,7 @@ interface Image {
         }
     };
 }
+
 interface Category {
     id: string;
     name: string;
@@ -66,8 +68,10 @@ const searchInput = ref<{
     focus: () => void;
     blur: () => void;
 }>({
-    focus: () => {},
-    blur: () => {}
+    focus: () => {
+    },
+    blur: () => {
+    }
 });
 onMounted(() => {
     loadCategories();
@@ -221,7 +225,7 @@ const add = (event: MouseEvent, media: string) => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .categories {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));

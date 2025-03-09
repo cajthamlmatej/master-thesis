@@ -60,7 +60,17 @@ export class ShapeEditorBlock extends EditorBlock {
             content.classList.add(c);
     }
 
-    editorSupport(): { group: boolean; selection: boolean; movement: boolean; proportionalResizing: boolean; nonProportionalResizingX: boolean; nonProportionalResizingY: boolean; rotation: boolean; zIndex: boolean; lock: boolean } {
+    editorSupport(): {
+        group: boolean;
+        selection: boolean;
+        movement: boolean;
+        proportionalResizing: boolean;
+        nonProportionalResizingX: boolean;
+        nonProportionalResizingY: boolean;
+        rotation: boolean;
+        zIndex: boolean;
+        lock: boolean
+    } {
         const shape = shapes.find(s => s.name === this.shape);
 
         if (!shape || shape.nonProportionalResizing) {
@@ -90,7 +100,10 @@ export class ShapeEditorBlock extends EditorBlock {
         ];
     }
 
-    override getInteractivityProperties(): Omit<BlockInteractiveProperty & { relative: boolean; animate: boolean }, "change" | "reset" | "getBaseValue">[] {
+    override getInteractivityProperties(): Omit<BlockInteractiveProperty & {
+        relative: boolean;
+        animate: boolean
+    }, "change" | "reset" | "getBaseValue">[] {
         return [
             ...super.getInteractivityProperties(),
             {

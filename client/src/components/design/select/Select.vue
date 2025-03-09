@@ -4,8 +4,8 @@
 
         <VDropdown
             ref="dropdown"
-            :disabled="props.disabled"
             v-model:shown="isPicking"
+            :disabled="props.disabled"
             :distance="-1"
             class="dropdown"
             placement="bottom-start"
@@ -54,7 +54,7 @@
                         </button>
 
                         <button v-if="choicesBehindSearch.length === 0" class="choice not-found" disabled>
-                            <span class="name" v-t>components.select.no-results</span>
+                            <span v-t class="name">components.select.no-results</span>
                         </button>
                     </section>
                 </section>

@@ -5,11 +5,11 @@
 
             <p class="icon"><span class="mdi mdi-loading"></span></p>
         </div>
-        <div class="wrapper" v-if="material && !loading">
+        <div v-if="material && !loading" class="wrapper">
             <Player/>
         </div>
         <div v-else-if="!loading" class="fail">
-            <p class="title" v-t>player.not-found.title</p>
+            <p v-t class="title">player.not-found.title</p>
 
             <p v-t>player.not-found.message</p>
 
@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 import Player from "@/components/Player.vue";
 import {useMaterialStore} from "@/stores/material";
-import {computed, onMounted, ref, watch} from "vue";
+import {computed, onMounted, ref} from "vue";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
 
 const materialStore = useMaterialStore();
@@ -111,6 +111,7 @@ article.view {
 
 .language {
     margin-top: 2em;
+
     :deep(li) {
         list-style: none;
     }

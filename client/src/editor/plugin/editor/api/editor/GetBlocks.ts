@@ -1,7 +1,6 @@
 import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
 import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
-import {generateUUID} from "@/utils/Generators";
 
 export class GetBlocksApiFeature extends EditorPluginApiFeature {
     register(obj: QuickJSHandle, data: EditorPluginApiData): void {

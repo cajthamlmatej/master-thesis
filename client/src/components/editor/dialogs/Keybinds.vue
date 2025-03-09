@@ -24,7 +24,6 @@
 </template>
 
 <script lang="ts" setup>
-import type Editor from "@/editor/Editor";
 import {onMounted, onUnmounted, ref, watch} from "vue";
 import ListItem from "@/components/design/list/ListItem.vue";
 import {$t, translation} from "@/translation/Translation";

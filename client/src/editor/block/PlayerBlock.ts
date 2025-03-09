@@ -9,10 +9,8 @@ import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {LISTENER_METADATA_KEY} from "@/editor/block/events/BlockListener";
 import {
     BLOCK_API_FEATURE_METADATA_KEY,
-    PlayerBlockApiFeatureEntry,
-    RegisterPlayerBlockApiFeature
+    PlayerBlockApiFeatureEntry
 } from "@/editor/plugin/player/RegisterPlayerBlockApiFeature";
-import {BaseBlockApiFeature} from "@/editor/plugin/player/api/block/BaseBlock";
 import {
     BlockSerialize,
     SerializeEntry,
@@ -353,29 +351,6 @@ export abstract class PlayerBlock {
         }
     }
 
-    private async loadPlayerStore() {
-        const {usePlayerStore} = await import("@/stores/player");
-        this.playerStore = usePlayerStore();
-        this.resolveLoaded();
-    }
-
-    // TODO: destroy method for cleanup (interactivity timeouts, intervals, etc.)
-
-    private async handleClick(event: MouseEvent) {
-        const result = this.tryProcessInteractivity("CLICKED", event);
-        if (result) event.stopPropagation();
-    }
-
-    private async handleMouseEnter(event: MouseEvent) {
-        const result = this.tryProcessInteractivity("HOVER_START", event);
-        if (result) event.stopPropagation();
-    }
-
-    private async handleMouseLeave(event: MouseEvent) {
-        const result = this.tryProcessInteractivity("HOVER_END", event);
-        if (result) event.stopPropagation();
-    }
-
     /**
      * Serializes the block properties to an object, so it can be saved.
      */
@@ -415,6 +390,7 @@ export abstract class PlayerBlock {
         return serialized;
     }
 
+    // TODO: destroy method for cleanup (interactivity timeouts, intervals, etc.)
 
     /**
      * Calls all event listeners for the supplied event with the supplied arguments.
@@ -469,6 +445,27 @@ export abstract class PlayerBlock {
         }
 
         return apiFeatures;
+    }
+
+    private async loadPlayerStore() {
+        const {usePlayerStore} = await import("@/stores/player");
+        this.playerStore = usePlayerStore();
+        this.resolveLoaded();
+    }
+
+    private async handleClick(event: MouseEvent) {
+        const result = this.tryProcessInteractivity("CLICKED", event);
+        if (result) event.stopPropagation();
+    }
+
+    private async handleMouseEnter(event: MouseEvent) {
+        const result = this.tryProcessInteractivity("HOVER_START", event);
+        if (result) event.stopPropagation();
+    }
+
+    private async handleMouseLeave(event: MouseEvent) {
+        const result = this.tryProcessInteractivity("HOVER_END", event);
+        if (result) event.stopPropagation();
     }
 
     private tryProcessInteractivity(event: "CLICKED" | "HOVER_START" | "HOVER_END" | "DRAG_START" | "DRAG_END", eventObject: Event) {

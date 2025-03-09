@@ -15,7 +15,6 @@ import App from './App.vue'
 import router from './router'
 import FloatingVue from 'floating-vue'
 import {setupTranslations} from "@/translation/VueTranslations";
-import mermaid from "mermaid";
 
 const app = createApp(App)
 

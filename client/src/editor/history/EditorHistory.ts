@@ -64,10 +64,10 @@ export class EditorHistory {
 
         let state = this.forwardStack.pop()!;
 
-        if(this.backwardStack.length === 0) {
+        if (this.backwardStack.length === 0) {
             state = this.forwardStack.pop()!;
 
-            if(!state) {
+            if (!state) {
                 return;
             }
         }

@@ -21,6 +21,7 @@ export class ImageEditorBlock extends EditorBlock {
 
     private imageElement!: HTMLImageElement;
     private failedToLoad = false;
+    private loadedImage: HTMLImageElement | undefined = undefined;
 
     constructor(base: BlockConstructorWithoutType, aspectRatio: boolean, imageUrl?: string, mediaId?: string) {
         super({
@@ -31,6 +32,7 @@ export class ImageEditorBlock extends EditorBlock {
         this.imageUrl = imageUrl;
         this.mediaId = mediaId;
     }
+
     override editorSupport() {
         return {
             ...super.editorSupport(),
@@ -40,7 +42,7 @@ export class ImageEditorBlock extends EditorBlock {
     }
 
     public getUrl() {
-        if(this.mediaId) {
+        if (this.mediaId) {
             return mediaStore.linkToMedia(this.mediaId);
         }
 
@@ -108,7 +110,7 @@ export class ImageEditorBlock extends EditorBlock {
 
         this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
 
-        if(this.aspectRatio && this.imageElement) {
+        if (this.aspectRatio && this.imageElement) {
             let newHeight = this.size.width / this.imageElement.naturalWidth * this.imageElement.naturalHeight;
 
             this.resize(this.size.width, newHeight);
@@ -125,7 +127,6 @@ export class ImageEditorBlock extends EditorBlock {
         ];
     }
 
-    private loadedImage: HTMLImageElement | undefined = undefined;
     @BlockEventListener(BlockEvent.MOUNTED)
     loadImage() {
         const image = new Image();
@@ -137,7 +138,7 @@ export class ImageEditorBlock extends EditorBlock {
 
             // note(Matej): this is a hack to detect if the image is a 1x1 pixel, because for example
             //   tenor gifs are 1x1 pixels when they are not found
-            if(image.height === 1 && image.width === 1) {
+            if (image.height === 1 && image.width === 1) {
                 this.failedToLoad = true;
             }
 

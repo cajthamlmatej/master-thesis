@@ -27,6 +27,8 @@ export class EditorPlugin {
         panelMessage: undefined, panelRegister: undefined,
         pluginBlockRender: undefined, pluginBlockMessage: undefined, pluginBlockPropertyChange: undefined
     };
+    private api: EditorPluginApi = new EditorPluginApi();
+    private pluginMessageCallback: ((message: string) => void) | undefined;
 
     constructor(plugin: PluginContext, code: string, editor?: Editor) {
         this.plugin = plugin;
@@ -65,19 +67,6 @@ export class EditorPlugin {
         }
 
         return this.context.callFunction(fnc, this.context.undefined, ...args);
-    }
-
-    private async prepareContext() {
-        const QuickJS = await load();
-        this.context = QuickJS.newContext();
-
-        const result = this.context.evalCode(this.code, "editor.js", {type: "module"});
-
-        this.baseEvaluation = this.context.unwrapResult(result);
-
-        this.setupContext();
-        await this.callFunctionIfExists("initEditor");
-        this.loadedResolve();
     }
 
     public serializeAny(value: any): QuickJSHandle {
@@ -124,48 +113,6 @@ export class EditorPlugin {
         return base;
     }
 
-    private api: EditorPluginApi = new EditorPluginApi();
-    private setupContext() {
-        if (!this.context || !this.editor) {
-            console.error("Context or editor not ready, cannot setup context");
-            return;
-        }
-
-        this.api.register({
-            context: this.context,
-            editor: this.editor,
-            editorPlugin: this,
-            plugin: this.plugin,
-            pluginManager: usePluginStore().manager as PluginManager
-        });
-
-        this.plugin.log(`Prepared context`);
-    }
-
-    private async callFunctionIfExists(name: string, ...args: QuickJSHandle[]) {
-        if (!this.context) throw new Error("Context not ready");
-
-        const fnc = this.context.getProp(this.baseEvaluation, name);
-
-        if (!fnc) {
-            return;
-        }
-
-        const dump = this.context.dump(fnc);
-
-        if (!dump) {
-            return;
-        }
-
-        try {
-            return this.context.callFunction(fnc, this.context.undefined, ...args);
-        } catch (e) {
-            this.plugin.log(`Error while calling function ${name}: ${e}`);
-        }
-
-        return;
-    }
-
     public async getPanel() {
         await this.loadedPromise;
         const result = await this.callEvent(EditorPluginEvent.PANEL_REGISTER);
@@ -175,7 +122,6 @@ export class EditorPlugin {
         return this.context!.dump(result.unwrap());
     }
 
-    private pluginMessageCallback: ((message: string) => void) | undefined;
     public setPanelMessageCallback(fnc: (message: string) => void) {
         this.pluginMessageCallback = fnc;
     }
@@ -230,5 +176,59 @@ export class EditorPlugin {
         const serializedBlock = this.serializeBlock(param);
 
         await this.callEvent(EditorPluginEvent.PLUGIN_BLOCK_PROPERTY_CHANGE, serializedBlock, this.context!.newString(key));
+    }
+
+    private async prepareContext() {
+        const QuickJS = await load();
+        this.context = QuickJS.newContext();
+
+        const result = this.context.evalCode(this.code, "editor.js", {type: "module"});
+
+        this.baseEvaluation = this.context.unwrapResult(result);
+
+        this.setupContext();
+        await this.callFunctionIfExists("initEditor");
+        this.loadedResolve();
+    }
+
+    private setupContext() {
+        if (!this.context || !this.editor) {
+            console.error("Context or editor not ready, cannot setup context");
+            return;
+        }
+
+        this.api.register({
+            context: this.context,
+            editor: this.editor,
+            editorPlugin: this,
+            plugin: this.plugin,
+            pluginManager: usePluginStore().manager as PluginManager
+        });
+
+        this.plugin.log(`Prepared context`);
+    }
+
+    private async callFunctionIfExists(name: string, ...args: QuickJSHandle[]) {
+        if (!this.context) throw new Error("Context not ready");
+
+        const fnc = this.context.getProp(this.baseEvaluation, name);
+
+        if (!fnc) {
+            return;
+        }
+
+        const dump = this.context.dump(fnc);
+
+        if (!dump) {
+            return;
+        }
+
+        try {
+            return this.context.callFunction(fnc, this.context.undefined, ...args);
+        } catch (e) {
+            this.plugin.log(`Error while calling function ${name}: ${e}`);
+        }
+
+        return;
     }
 }

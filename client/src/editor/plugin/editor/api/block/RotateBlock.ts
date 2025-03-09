@@ -1,7 +1,5 @@
-import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
 import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
-import {generateUUID} from "@/utils/Generators";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {EditorBlockApiFeature} from "@/editor/plugin/editor/EditorBlockApiFeature";
 
@@ -14,7 +12,7 @@ export class RotateBlockApiFeature extends EditorBlockApiFeature {
         context.setProp(obj, "rotate", context.newFunction("rotate", (degreesRaw) => {
             const degrees = context.dump(degreesRaw);
 
-            if(typeof degrees !== "number") {
+            if (typeof degrees !== "number") {
                 plugin.log(`[Plugin ${plugin.getName()}] Rotate block failed: degrees must be a number`);
                 return context.undefined;
             }

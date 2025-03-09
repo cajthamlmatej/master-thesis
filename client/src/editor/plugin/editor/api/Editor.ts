@@ -1,7 +1,6 @@
 import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
 import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
-import {generateUUID} from "@/utils/Generators";
 import {AddBlockApiFeature} from "@/editor/plugin/editor/api/editor/AddBlock";
 import {RemoveBlockApiFeature} from "@/editor/plugin/editor/api/editor/RemoveBlock";
 import {GetBlocksApiFeature} from "@/editor/plugin/editor/api/editor/GetBlocks";

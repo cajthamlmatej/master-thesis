@@ -9,6 +9,14 @@ enum DrawMode {
 export class PlayerDraw {
     private player: Player;
     private element: HTMLElement;
+    private active: boolean = false;
+    private visible: boolean = true;
+    private activeSettings: string | null = null;
+    private mode = DrawMode.DRAW;
+    private penSize: number = 20;
+    private penColor: string = "#000000";
+    private opacity: number = 100;
+    private smoothing: number = 8;
 
     constructor(player: Player) {
         this.player = player;
@@ -25,8 +33,15 @@ export class PlayerDraw {
         });
     }
 
-    private active: boolean = false;
-    private visible: boolean = true;
+    public getData() {
+        const canvas = this.element.querySelector(".player-draw-canvas") as HTMLElement;
+        return canvas.innerHTML;
+    }
+
+    public applyData(data: string) {
+        const canvas = this.element.querySelector(".player-draw-canvas") as HTMLElement;
+        canvas.innerHTML = data;
+    }
 
     private init() {
         this.element = document.createElement('div');
@@ -91,7 +106,7 @@ export class PlayerDraw {
         this.element.classList.toggle("player-draw--active", this.active);
         this.element.classList.toggle("player-draw--visible", this.visible);
 
-        if(this.visible) {
+        if (this.visible) {
             const btn = this.element.querySelector("button[data-visible]") as HTMLElement;
             btn.classList.add("player-draw-navigation-options-option--active");
         }
@@ -107,7 +122,7 @@ export class PlayerDraw {
         }
 
         // note(Matej): 200 is arbitrary number, it should be "somewhat" the height of the navigation
-        if(newY > height - 200) {
+        if (newY > height - 200) {
             newY = height - 200;
         }
 
@@ -132,8 +147,6 @@ export class PlayerDraw {
 
         this.activeSettings = null;
     }
-
-    private activeSettings: string | null = null;
 
     private setupUsage() {
         window.addEventListener("mousedown", this.mouseDownEvent.bind(this));
@@ -212,12 +225,6 @@ export class PlayerDraw {
             this.smoothing = parseInt(smoothing.value);
         });
     }
-
-    private mode = DrawMode.DRAW;
-    private penSize: number = 20;
-    private penColor: string = "#000000";
-    private opacity: number = 100;
-    private smoothing: number = 8;
 
     private mouseDownEvent(event: MouseEvent) {
         if (this.player.getMode() !== PlayerMode.DRAW) return;
@@ -368,15 +375,5 @@ export class PlayerDraw {
 
         window.addEventListener("mousemove", handleMove);
         window.addEventListener("mouseup", handleUp);
-    }
-
-    public getData() {
-        const canvas = this.element.querySelector(".player-draw-canvas") as HTMLElement;
-        return canvas.innerHTML;
-    }
-
-    public applyData(data: string) {
-        const canvas = this.element.querySelector(".player-draw-canvas") as HTMLElement;
-        canvas.innerHTML = data;
     }
 }

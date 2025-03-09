@@ -1,6 +1,4 @@
-import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
-import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
 import {generateUUID} from "@/utils/Generators";
 import {PlayerPluginApiData} from "@/editor/plugin/player/PlayerPluginApi";
 import {PlayerPluginApiFeature} from "@/editor/plugin/player/PlayerPluginApiFeature";
@@ -18,7 +16,7 @@ export class AddBlockApiFeature extends PlayerPluginApiFeature {
                 parsedData.id = generateUUID();
             }
 
-            if(parsedData.type === "plugin") {
+            if (parsedData.type === "plugin") {
                 parsedData.plugin = plugin.getId();
             }
 

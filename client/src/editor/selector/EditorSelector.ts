@@ -42,10 +42,10 @@ export class EditorSelector {
      * @param block to be deselected
      */
     public deselectBlock(block: EditorBlock | string) {
-        if(typeof block === "string") {
+        if (typeof block === "string") {
             let blockData = this.editor.getBlockById(block);
 
-            if(!blockData) {
+            if (!blockData) {
                 return;
             }
 
@@ -66,10 +66,10 @@ export class EditorSelector {
     public selectBlock(block: EditorBlock | string, addToSelection: boolean = false, event?: MouseEvent) {
         if (this.editor.getMode() !== "select") return;
 
-        if(typeof block === "string") {
+        if (typeof block === "string") {
             let blockData = this.editor.getBlockById(block);
 
-            if(!blockData) {
+            if (!blockData) {
                 return;
             }
 
@@ -162,10 +162,10 @@ export class EditorSelector {
      * @param soloOnly if is counted only if the block is the only selected block
      */
     public isSelected(block: EditorBlock | string, soloOnly: boolean = false) {
-        if(typeof block === "string") {
+        if (typeof block === "string") {
             let blockData = this.editor.getBlockById(block);
 
-            if(!blockData) {
+            if (!blockData) {
                 return false;
             }
 

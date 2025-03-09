@@ -2,22 +2,22 @@
     <header>
         <div>
             <Tabs
-                fluid
                 v-model:selected="currentTag"
                 :items="
                     ['ALL', ...pluginStore.tags]
                         .map((tag) => ({ value: tag, text: $t(`editor.plugin.manage.browse.tags.${tag}`) }))
                 "
+                fluid
             />
         </div>
 
         <div class="mb-1">
             <Input
-                icon="magnify"
-                hide-error
                 v-model:value="search"
-                hide-label
                 :placeholder="$t('editor.plugin.manage.browse.search')"
+                hide-error
+                hide-label
+                icon="magnify"
             ></Input>
         </div>
     </header>
@@ -26,9 +26,9 @@
 
     <div class="browse">
         <PluginCard v-for="plugin in pluginsToShow"
-                    :plugin="plugin"
                     :key="plugin.id"
                     :active="plugin.active"
+                    :plugin="plugin"
                     include-actions
 
                     @activate="updateKey++"
@@ -38,7 +38,7 @@
     <p v-if="pluginsToShow.length === 0" class="no-results">{{ $t('editor.plugin.manage.browse.no-plugins') }}</p>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import {$t} from "@/translation/Translation";
 import PluginCard from "@/components/plugin/manage/PluginCard.vue";
@@ -55,7 +55,7 @@ const currentTag = ref('ALL');
 
 const updateKey = ref(0);
 
-const pluginsToShow = ref<(Plugin & {active: boolean})[]>([]);
+const pluginsToShow = ref<(Plugin & { active: boolean })[]>([]);
 
 onMounted(() => {
     recalculate();
@@ -66,7 +66,7 @@ watch([currentTag, search, page, updateKey], () => {
 });
 
 const recalculate = () => {
-    pluginsToShow.value =  plugins.value.filter((plugin) => {
+    pluginsToShow.value = plugins.value.filter((plugin) => {
         return currentTag.value === 'ALL' || plugin.tags.includes(currentTag.value);
     })
         .filter((plugin) => {
@@ -92,7 +92,7 @@ onMounted(() => {
 const plugins = computed(() => pluginStore.plugins);
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 header {
     display: flex;
     justify-content: space-between;

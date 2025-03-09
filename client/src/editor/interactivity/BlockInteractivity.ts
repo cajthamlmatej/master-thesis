@@ -117,5 +117,9 @@ export type BlockInteractivity =
 export interface BlockInteractiveProperty {
     label: string,
     getBaseValue: () => any,
-    change: (value: any, relative: boolean, {animate, duration, easing}: { animate: boolean, duration: number, easing: string }) => void;
+    change: (value: any, relative: boolean, {animate, duration, easing}: {
+        animate: boolean,
+        duration: number,
+        easing: string
+    }) => void;
 }

@@ -1,7 +1,5 @@
-import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
 import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
-import {generateUUID} from "@/utils/Generators";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {EditorBlockApiFeature} from "@/editor/plugin/editor/EditorBlockApiFeature";
 
@@ -15,7 +13,7 @@ export class ResizeBlockApiFeature extends EditorBlockApiFeature {
             const width = context.dump(widthRaw);
             const height = context.dump(heightRaw);
 
-            if(typeof width !== "number" || typeof height !== "number") {
+            if (typeof width !== "number" || typeof height !== "number") {
                 plugin.log(`[Plugin ${plugin.getName()}] Resize block failed: width and height must be numbers`);
                 return context.undefined;
             }

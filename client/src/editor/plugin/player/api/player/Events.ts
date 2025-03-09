@@ -1,8 +1,4 @@
-import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
-import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
-import {generateUUID} from "@/utils/Generators";
-import {EditorPluginEvent} from "@/editor/plugin/editor/EditorPluginEvent";
 import {PlayerPluginApiFeature} from "@/editor/plugin/player/PlayerPluginApiFeature";
 import {PlayerPluginApiData} from "@/editor/plugin/player/PlayerPluginApi";
 import {PlayerPluginEvent} from "@/editor/plugin/player/PlayerPluginEvent";
@@ -23,7 +19,7 @@ export class EventsApiFeature extends PlayerPluginApiFeature {
             }
 
             const values = Object.values(PlayerPluginEvent) as string[];
-            if(values.indexOf(type) === -1) {
+            if (values.indexOf(type) === -1) {
                 plugin.log(`Event type not found: ${type}`);
                 throw new Error("Event type not found");
             }

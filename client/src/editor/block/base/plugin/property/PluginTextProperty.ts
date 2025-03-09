@@ -4,6 +4,7 @@ import {PluginProperty} from "@/editor/block/base/plugin/PluginProperty";
 
 export class PluginTextProperty extends TextProperty<PluginEditorBlock> {
     private property: PluginProperty;
+
     constructor(property: PluginProperty) {
         super(property.label.substring(0, 25), property.key);
         this.property = property;

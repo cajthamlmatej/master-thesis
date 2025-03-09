@@ -40,7 +40,8 @@
 
                             <Form v-if="data.tab === 'EMAIL'" :onSubmit="() => handle('EMAIL')" class="form">
                                 <template #default="{ validationChange }">
-                                    <Input v-model:value="data.email" :disabled="data.emailStage === 1" :label="$t('page.authentication.fields.email.label')"
+                                    <Input v-model:value="data.email" :disabled="data.emailStage === 1"
+                                           :label="$t('page.authentication.fields.email.label')"
                                            :validators="[
                                         (v: string) => !!v || $t('page.authentication.fields.email.required'),
                                         (v: string) => /.+@.+\..+/.test(v) || $t('page.authentication.fields.email.invalid')

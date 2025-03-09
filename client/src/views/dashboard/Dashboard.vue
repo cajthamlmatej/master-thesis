@@ -4,10 +4,12 @@
             <span v-t="{ name: userStore.user?.name ?? '' }" class="main-title">page.dashboard.title-welcome</span>
 
             <div class="flex flex-align-center gap-1">
-                <Button v-tooltip="$t('page.dashboard.add-tooltip')" :to="{name: 'Editor', params: {material: 'new'}}" color="primary"
+                <Button v-tooltip="$t('page.dashboard.add-tooltip')" :to="{name: 'Editor', params: {material: 'new'}}"
+                        color="primary"
                         icon="mdi mdi-plus"/>
 
-                <Input v-model:value="search" :label="$t('page.dashboard.search')" :placeholder="$t('page.dashboard.search')" dense
+                <Input v-model:value="search" :label="$t('page.dashboard.search')"
+                       :placeholder="$t('page.dashboard.search')" dense
                        hide-error hide-label type="text"/>
             </div>
         </div>
@@ -68,7 +70,8 @@
                             </template>
                         </Dialog>
                         <Button v-tooltip="$t('page.dashboard.materials.copy-tooltip')" :loading="processing"
-                                color="primary" icon="mdi mdi-content-copy" @click.stop.capture="copyMaterial(material.id)"/>
+                                color="primary" icon="mdi mdi-content-copy"
+                                @click.stop.capture="copyMaterial(material.id)"/>
                     </div>
                 </div>
             </article>

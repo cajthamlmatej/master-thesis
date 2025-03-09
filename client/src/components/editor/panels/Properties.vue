@@ -43,7 +43,7 @@ watch(() => properties.value, async (value) => {
         return;
     }
 
-    if(!menu.value) {
+    if (!menu.value) {
         console.error("Editor property element not found");
         return;
     }

@@ -4,6 +4,7 @@ import {useMediaStore} from "@/stores/media";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 
 const mediaStore = useMediaStore();
+
 export class ImagePlayerBlock extends PlayerBlock {
     @BlockSerialize("imageUrl")
     private imageUrl?: string;
@@ -22,7 +23,7 @@ export class ImagePlayerBlock extends PlayerBlock {
     }
 
     public getUrl() {
-        if(this.mediaId) {
+        if (this.mediaId) {
             return mediaStore.linkToMedia(this.mediaId);
         }
 

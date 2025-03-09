@@ -1,7 +1,6 @@
 import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
 import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
-import {generateUUID} from "@/utils/Generators";
 import {useEditorStore} from "@/stores/editor";
 
 export class SetSizeApiFeature extends EditorPluginApiFeature {
@@ -18,12 +17,12 @@ export class SetSizeApiFeature extends EditorPluginApiFeature {
             const parsedResizeToFit = context.dump(resizeToFit);
 
             console.log(typeof parsedWidthData, typeof parsedHeightData, typeof parsedResizeToFit);
-            if(typeof parsedWidthData !== "number" || typeof parsedHeightData !== "number" || typeof parsedResizeToFit !== "boolean") {
+            if (typeof parsedWidthData !== "number" || typeof parsedHeightData !== "number" || typeof parsedResizeToFit !== "boolean") {
                 plugin.log(`Invalid parameters for setSize`);
                 return context.undefined;
             }
 
-            (async() => {
+            (async () => {
                 await editorStore.saveCurrentSlide()
                 editor.resize(parsedWidthData, parsedHeightData, parsedResizeToFit);
                 await editorStore.saveCurrentSlide()

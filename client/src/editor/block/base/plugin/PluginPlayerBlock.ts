@@ -1,6 +1,5 @@
 import {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
-import {PluginProperty} from "@/editor/block/base/plugin/PluginProperty";
 import {BlockEventListener} from "@/editor/block/events/BlockListener";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
@@ -67,19 +66,19 @@ export class PluginPlayerBlock extends PlayerBlock {
         console.log("[PluginPlayerBlock] Mounted");
         this.renderIframe();
 
-        window.addEventListener("message", async(event) => {
+        window.addEventListener("message", async (event) => {
             const content = (this.element.querySelector(".block-content")! as HTMLElement);
             const iframe = content.querySelector("iframe");
 
-            if(!iframe) {
+            if (!iframe) {
                 return;
             }
 
-            if(event.source !== iframe!.contentWindow) {
+            if (event.source !== iframe!.contentWindow) {
                 return;
             }
 
-            if(event.data.target === "script") {
+            if (event.data.target === "script") {
                 await this.player.getPluginCommunicator().processMessage(this, event.data.message);
             } else {
                 console.log("[PluginEditorBlock] Unknown target of received message");
@@ -91,7 +90,7 @@ export class PluginPlayerBlock extends PlayerBlock {
         const content = (this.element.querySelector(".block-content")! as HTMLElement);
         const iframe = content.querySelector("iframe");
 
-        if(iframe) {
+        if (iframe) {
             iframe.contentWindow?.postMessage({
                 target: "block",
                 message: message,

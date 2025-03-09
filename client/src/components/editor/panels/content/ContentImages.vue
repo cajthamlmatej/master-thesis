@@ -1,17 +1,18 @@
 <template>
     <div class="flex flex-justify-space-between flex-align-center">
-        <Input v-model:value="search" hide-label hide-error :placeholder="$t('editor.panel.content.images.search')" ref="searchInput"></Input>
+        <Input ref="searchInput" v-model:value="search" :placeholder="$t('editor.panel.content.images.search')" hide-error
+               hide-label></Input>
         <Button icon="close" @click="search = ''"></Button>
     </div>
 
-    <div class="results" v-if="results.length > 0" ref="content">
-        <div class="result" v-for="result in results" :key="result.id" @mousedown="(e) => add(e, result.src.large2x)">
-            <img src="" :data-src="result.src.tiny" loading="lazy" draggable="false">
+    <div v-if="results.length > 0" ref="content" class="results">
+        <div v-for="result in results" :key="result.id" class="result" @mousedown="(e) => add(e, result.src.large2x)">
+            <img :data-src="result.src.tiny" draggable="false" loading="lazy" src="">
         </div>
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import {nextTick, onMounted, ref, toRaw, watch} from "vue";
 import {$t, translation} from "@/translation/Translation";
 import Input from "@/components/design/input/Input.vue";
@@ -40,7 +41,7 @@ const search = ref('');
 const curated = ref([] as Image[]);
 const results = ref([] as Image[]);
 
-onMounted(async() => {
+onMounted(async () => {
     await loadCurated();
     results.value = curated.value;
 })
@@ -61,8 +62,10 @@ const searchInput = ref<{
     focus: () => void;
     blur: () => void;
 }>({
-    focus: () => {},
-    blur: () => {}
+    focus: () => {
+    },
+    blur: () => {
+    }
 });
 onMounted(() => {
     nextTick(() => {
@@ -85,7 +88,7 @@ const loadCurated = async () => {
 const searchTerm = async () => {
     search.value = search.value.trim();
 
-    if(search.value.length < 1) {
+    if (search.value.length < 1) {
         results.value = curated.value;
         return;
     }
@@ -213,7 +216,7 @@ const add = (event: MouseEvent, media: string) => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .categories {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -300,6 +303,7 @@ const add = (event: MouseEvent, media: string) => {
             color: transparent;;
 
             text-indent: -10000px;
+
             &[src=""] {
                 opacity: 0;
             }

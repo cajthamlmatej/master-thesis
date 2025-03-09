@@ -1,11 +1,10 @@
-import {TextProperty} from "@/editor/property/type/TextProperty";
 import {PluginEditorBlock} from "@/editor/block/base/plugin/PluginEditorBlock";
 import {PluginProperty} from "@/editor/block/base/plugin/PluginProperty";
-import {BooleanProperty} from "@/editor/property/type/BooleanProperty";
 import {NumberProperty} from "@/editor/property/type/NumberProperty";
 
 export class PluginNumberProperty extends NumberProperty<PluginEditorBlock> {
     private property: PluginProperty;
+
     constructor(property: PluginProperty) {
         super(property.label.substring(0, 25), property.key);
         this.property = property;

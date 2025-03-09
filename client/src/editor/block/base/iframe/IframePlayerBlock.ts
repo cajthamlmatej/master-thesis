@@ -1,6 +1,5 @@
 import {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
-import mermaid from "mermaid";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 
 export class IframePlayerBlock extends PlayerBlock {

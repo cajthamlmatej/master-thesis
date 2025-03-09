@@ -15,23 +15,6 @@ export class MovingSelectorCommand extends SelectorCommand {
         ]
     }
 
-    private getPositionFromEvent(selectorArea: EditorSelectorArea, event: MouseEvent | TouchEvent) {
-        let x = 0, y = 0;
-
-        if (event instanceof MouseEvent) {
-            x = event.clientX;
-            y = event.clientY;
-        } else if (event instanceof TouchEvent) {
-            x = event.touches[0].clientX;
-            y = event.touches[0].clientY;
-        } else {
-            throw new Error("Unsupported event type");
-        }
-
-        return selectorArea.getEditor().screenToEditorCoordinates(x, y);
-    }
-
-
     public execute(event: MouseEvent | TouchEvent, element: HTMLElement, selectorArea: EditorSelectorArea): void {
         event.preventDefault();
         event.stopPropagation();
@@ -82,6 +65,22 @@ export class MovingSelectorCommand extends SelectorCommand {
         window.addEventListener("touchmove", mouseMoveHandler);
         window.addEventListener("touchend", mouseUpHandler);
         window.addEventListener("touchcancel", mouseUpHandler);
+    }
+
+    private getPositionFromEvent(selectorArea: EditorSelectorArea, event: MouseEvent | TouchEvent) {
+        let x = 0, y = 0;
+
+        if (event instanceof MouseEvent) {
+            x = event.clientX;
+            y = event.clientY;
+        } else if (event instanceof TouchEvent) {
+            x = event.touches[0].clientX;
+            y = event.touches[0].clientY;
+        } else {
+            throw new Error("Unsupported event type");
+        }
+
+        return selectorArea.getEditor().screenToEditorCoordinates(x, y);
     }
 
 }

@@ -2,6 +2,7 @@ import {Property} from "@/editor/property/Property";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 
 import {v4} from 'uuid';
+
 export abstract class BooleanProperty<T extends EditorBlock = EditorBlock> extends Property<T> {
 
     private readonly label: string;

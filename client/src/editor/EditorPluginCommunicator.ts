@@ -1,5 +1,4 @@
 import {PluginManager} from "@/editor/plugin/PluginManager";
-import {EditorBlock} from "@/editor/block/EditorBlock";
 import {PluginEditorBlock} from "@/editor/block/base/plugin/PluginEditorBlock";
 import {toRaw} from "vue";
 
@@ -8,6 +7,36 @@ export class EditorPluginCommunicator {
 
     constructor(pluginManager: PluginManager) {
         this.pluginManager = pluginManager;
+    }
+
+    async render(block: PluginEditorBlock): Promise<string> {
+        const editorPlugin = this.getEditorPlugin(block.getPlugin());
+
+        if (!editorPlugin) {
+            return "";
+        }
+
+        return await editorPlugin.renderBlock(block);
+    }
+
+    async processMessage(block: PluginEditorBlock, message: string) {
+        const editorPlugin = this.getEditorPlugin(block.getPlugin());
+
+        if (!editorPlugin) {
+            return "";
+        }
+
+        await editorPlugin.processBlockMessage(block, message);
+    }
+
+    async processPropertyChange(block: PluginEditorBlock, key: string) {
+        const editorPlugin = this.getEditorPlugin(block.getPlugin());
+
+        if (!editorPlugin) {
+            return "";
+        }
+
+        await editorPlugin.processBlockPropertyChange(block, key);
     }
 
     private getEditorPlugin(pluginId: string) {
@@ -26,35 +55,5 @@ export class EditorPluginCommunicator {
         }
 
         return editorPlugin;
-    }
-
-    async render(block: PluginEditorBlock): Promise<string> {
-        const editorPlugin = this.getEditorPlugin(block.getPlugin());
-
-        if(!editorPlugin) {
-            return "";
-        }
-
-        return await editorPlugin.renderBlock(block);
-    }
-
-    async processMessage(block: PluginEditorBlock, message: string) {
-        const editorPlugin = this.getEditorPlugin(block.getPlugin());
-
-        if(!editorPlugin) {
-            return "";
-        }
-
-        await editorPlugin.processBlockMessage(block, message);
-    }
-
-    async processPropertyChange(block: PluginEditorBlock, key: string) {
-        const editorPlugin = this.getEditorPlugin(block.getPlugin());
-
-        if(!editorPlugin) {
-            return "";
-        }
-
-        await editorPlugin.processBlockPropertyChange(block, key);
     }
 }

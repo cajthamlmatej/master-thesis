@@ -56,7 +56,7 @@ export class MermaidPlayerBlock extends PlayerBlock {
             overflow: hidden;
         }`;
 
-        iframe.addEventListener("load", async() => {
+        iframe.addEventListener("load", async () => {
             try {
                 iframe.contentDocument!.head.appendChild(css);
 

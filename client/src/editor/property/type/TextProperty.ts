@@ -40,7 +40,7 @@ export abstract class TextProperty<T extends EditorBlock = EditorBlock> extends 
         this.recalculateValues((value) => {
             const input = this.element.querySelector<HTMLInputElement>(`[data-property="${this.name}"]`)!;
 
-            if(value == undefined) {
+            if (value == undefined) {
                 value = "";
             }
 

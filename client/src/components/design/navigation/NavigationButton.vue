@@ -149,6 +149,7 @@ a.button {
             display: none;
         }
     }
+
     &.button--show-mobile {
         @media (min-width: 768px) {
             display: none;

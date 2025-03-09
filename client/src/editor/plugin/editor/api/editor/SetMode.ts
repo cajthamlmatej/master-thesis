@@ -1,7 +1,6 @@
 import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
 import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
-import {generateUUID} from "@/utils/Generators";
 import {EditorMode} from "@/editor/EditorMode";
 
 export class SetModeApiFeature extends EditorPluginApiFeature {
@@ -13,7 +12,7 @@ export class SetModeApiFeature extends EditorPluginApiFeature {
         context.setProp(obj, "setMode", context.newFunction("setMode", (data) => {
             const type = context!.dump(data);
 
-            if(!(type in Object.keys(EditorMode))) {
+            if (!(type in Object.keys(EditorMode))) {
                 plugin.log(`Invalid mode ${type}`);
                 return context!.undefined;
             }

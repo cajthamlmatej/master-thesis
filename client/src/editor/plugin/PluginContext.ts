@@ -24,12 +24,12 @@ export class PluginContext {
         this.icon = plugin.icon;
         this.id = plugin.id;
 
-        if(release.editorCode) {
+        if (release.editorCode) {
             this.editorPlugin = new EditorPlugin(this, release.editorCode, editor);
         } else {
             this.log("No editor code found, skipping editor plugin creation");
         }
-        if(release.playerCode) {
+        if (release.playerCode) {
             this.playerPlugin = new PlayerPlugin(this, release.playerCode, player);
         } else {
             this.log("No player code found, skipping player plugin creation");
@@ -39,6 +39,7 @@ export class PluginContext {
     public getEditorPlugin() {
         return this.editorPlugin;
     }
+
     public getPlayerPlugin() {
         return this.playerPlugin;
     }
@@ -47,37 +48,22 @@ export class PluginContext {
         return this.manifestVersion;
     }
 
-    private parseManifest(manifest: string) {
-        const manifestData = JSON.parse(manifest);
-
-        switch(manifestData.manifest ?? -1) {
-            case 1: {
-                this.manifestVersion = 1;
-                this.allowedOrigins = manifestData.allowedOrigins ?? [];
-                break;
-            }
-            default: {
-                throw new Error("Invalid plugin manifest version");
-            }
-        }
-    }
-
     public canExecuteOnUrl(url: string) {
-        if(["file://", "http://", "about:", "chrome:", "chrome-extension:"].some(domain => url.startsWith(domain))) {
+        if (["file://", "http://", "about:", "chrome:", "chrome-extension:"].some(domain => url.startsWith(domain))) {
             return false;
         }
 
         try {
             const urlObj = new URL(url);
             return this.allowedOrigins.includes(urlObj.origin);
-        } catch(e) {
+        } catch (e) {
             return false;
         }
     }
 
     public log(message: string, fromScript: boolean = false) {
         const prefix = `[Plugin ${this.getName()}] `;
-        if(fromScript) {
+        if (fromScript) {
             console.log(`${prefix}[Script] %c${message}`, "color: #bada55; background: #222; padding: 2px 4px; border-radius: 4px;");
         } else {
             console.log(`${prefix}%c${message}`, "");
@@ -89,7 +75,7 @@ export class PluginContext {
     }
 
     public toString() {
-        return this.name + " (v"+this.version+")";
+        return this.name + " (v" + this.version + ")";
     }
 
     public getIcon() {
@@ -106,5 +92,20 @@ export class PluginContext {
 
     public getAuthor() {
         return this.author;
+    }
+
+    private parseManifest(manifest: string) {
+        const manifestData = JSON.parse(manifest);
+
+        switch (manifestData.manifest ?? -1) {
+            case 1: {
+                this.manifestVersion = 1;
+                this.allowedOrigins = manifestData.allowedOrigins ?? [];
+                break;
+            }
+            default: {
+                throw new Error("Invalid plugin manifest version");
+            }
+        }
     }
 }

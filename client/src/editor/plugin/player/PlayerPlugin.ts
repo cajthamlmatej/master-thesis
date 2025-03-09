@@ -26,6 +26,7 @@ export class PlayerPlugin {
     private callbacks: Record<PlayerPluginEvent, QuickJSHandle | undefined> = {
         pluginBlockRender: undefined, pluginBlockMessage: undefined
     };
+    private api: PlayerPluginApi = new PlayerPluginApi();
 
     constructor(plugin: PluginContext, code: string, player?: Player) {
         this.plugin = plugin;
@@ -65,19 +66,6 @@ export class PlayerPlugin {
         }
 
         return this.context.callFunction(fnc, this.context.undefined, ...args);
-    }
-
-    private async prepareContext() {
-        const QuickJS = await load();
-        this.context = QuickJS.newContext();
-
-        const result = this.context.evalCode(this.code, "player.js", {type: "module"});
-
-        this.baseEvaluation = this.context.unwrapResult(result);
-
-        this.setupContext();
-        await this.callFunctionIfExists("initPlayer");
-        this.loadedResolve();
     }
 
     public serializeAny(value: any): QuickJSHandle {
@@ -135,7 +123,52 @@ export class PlayerPlugin {
         return base;
     }
 
-    private api: PlayerPluginApi = new PlayerPluginApi();
+    public async loadForPlayer(player: Player) {
+        this.player = player;
+        this.setupContext();
+
+        this.plugin.log(`Successfully loaded for player`);
+    }
+
+    public async renderBlock(block: PlayerBlock) {
+        await this.loadedPromise;
+        const serializedBlock = this.serializeBlock(block);
+
+        const result = await this.callEvent(PlayerPluginEvent.PLUGIN_BLOCK_RENDER, serializedBlock);
+
+        if (!result) return "";
+
+        return this.context!.dump(result.unwrap());
+    }
+
+    async processBlockMessage(block: PluginPlayerBlock, message: string) {
+        await this.loadedPromise;
+        const serializedBlock = this.serializeBlock(block);
+
+        try {
+            const result = await this.callEvent(PlayerPluginEvent.PLUGIN_BLOCK_MESSAGE, serializedBlock, this.context!.newString(message));
+
+            if (!result) return "";
+
+            return this.context!.dump(result.unwrap());
+        } catch (e) {
+            console.error(e);
+            return undefined;
+        }
+    }
+
+    private async prepareContext() {
+        const QuickJS = await load();
+        this.context = QuickJS.newContext();
+
+        const result = this.context.evalCode(this.code, "player.js", {type: "module"});
+
+        this.baseEvaluation = this.context.unwrapResult(result);
+
+        this.setupContext();
+        await this.callFunctionIfExists("initPlayer");
+        this.loadedResolve();
+    }
 
     private setupContext() {
         if (!this.context || !this.player) {
@@ -176,39 +209,5 @@ export class PlayerPlugin {
         }
 
         return;
-    }
-
-    public async loadForPlayer(player: Player) {
-        this.player = player;
-        this.setupContext();
-
-        this.plugin.log(`Successfully loaded for player`);
-    }
-
-    public async renderBlock(block: PlayerBlock) {
-        await this.loadedPromise;
-        const serializedBlock = this.serializeBlock(block);
-
-        const result = await this.callEvent(PlayerPluginEvent.PLUGIN_BLOCK_RENDER, serializedBlock);
-
-        if (!result) return "";
-
-        return this.context!.dump(result.unwrap());
-    }
-
-    async processBlockMessage(block: PluginPlayerBlock, message: string) {
-        await this.loadedPromise;
-        const serializedBlock = this.serializeBlock(block);
-
-        try {
-            const result = await this.callEvent(PlayerPluginEvent.PLUGIN_BLOCK_MESSAGE, serializedBlock, this.context!.newString(message));
-
-            if (!result) return "";
-
-            return this.context!.dump(result.unwrap());
-        } catch (e) {
-            console.error(e);
-            return undefined;
-        }
     }
 }

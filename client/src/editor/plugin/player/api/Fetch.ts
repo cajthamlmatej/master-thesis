@@ -1,7 +1,4 @@
-import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
-import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
-import {generateUUID} from "@/utils/Generators";
 import {PlayerPluginApiData} from "@/editor/plugin/player/PlayerPluginApi";
 import {PlayerPluginApiFeature} from "@/editor/plugin/player/PlayerPluginApiFeature";
 
@@ -25,21 +22,21 @@ export class FetchApiFeature extends PlayerPluginApiFeature {
 
             const optionsToFetch = {} as Record<string, any>;
             if (options !== undefined) {
-                if(typeof options !== 'object') {
+                if (typeof options !== 'object') {
                     plugin.log(`Options must be an object`);
                     promise.reject(context!.undefined);
                     return promise.handle;
                 }
 
-                if(options.headers !== undefined) {
-                    if(typeof options.headers !== 'object') {
+                if (options.headers !== undefined) {
+                    if (typeof options.headers !== 'object') {
                         plugin.log(`Headers must be an object`);
                         promise.reject(context!.undefined);
                         return promise.handle;
                     }
 
-                    for(const key in options.headers) {
-                        if(typeof options.headers[key] !== 'string') {
+                    for (const key in options.headers) {
+                        if (typeof options.headers[key] !== 'string') {
                             plugin.log(`Header value must be a string`);
                             promise.reject(context!.undefined);
                             return promise.handle;
@@ -49,12 +46,12 @@ export class FetchApiFeature extends PlayerPluginApiFeature {
                     }
                 }
 
-                if(options.method !== undefined) {
-                    if(typeof options.method !== 'string') {
+                if (options.method !== undefined) {
+                    if (typeof options.method !== 'string') {
                         plugin.log(`Method must be a string`);
                     }
 
-                    if(!['GET', 'POST', 'PUT', 'DELETE', 'PATCH'].includes(options.method)) {
+                    if (!['GET', 'POST', 'PUT', 'DELETE', 'PATCH'].includes(options.method)) {
                         plugin.log(`Method must be one of GET, POST, PUT, DELETE, PATCH`);
                         promise.reject(context!.undefined);
                         return promise.handle;
@@ -63,8 +60,8 @@ export class FetchApiFeature extends PlayerPluginApiFeature {
                     optionsToFetch.method = options.method;
                 }
 
-                if(options.body !== undefined) {
-                    if(typeof options.body !== 'string') {
+                if (options.body !== undefined) {
+                    if (typeof options.body !== 'string') {
                         plugin.log(`Body must be a string`);
                     }
 

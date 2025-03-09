@@ -4,8 +4,8 @@
             <div v-show="menu" class="menu">
                 <iframe
                     ref="iframe"
-                    sandbox="allow-scripts"
                     :srcdoc="panel.content"
+                    sandbox="allow-scripts"
                 >
                 </iframe>
             </div>
@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 
-import {computed, nextTick, onMounted, PropType, ref, toRaw, watch} from "vue";
+import {computed, ref, toRaw, watch} from "vue";
 
 import {PluginEditorPanel} from "@/editor/plugin/PluginEditorPanel";
 
@@ -35,7 +35,7 @@ watch(() => props.value, (value) => {
 
 const iframe = ref<HTMLIFrameElement | null>(null);
 watch(() => iframe.value, (value) => {
-    if(!value) return;
+    if (!value) return;
 
     const plugin = toRaw(panel.value.plugin);
 
@@ -55,20 +55,20 @@ watch(() => iframe.value, (value) => {
     window.addEventListener("message", (event) => {
         const data = event.data;
 
-        if(typeof data !== "object" || !('target' in data) || !('message' in data)) {
+        if (typeof data !== "object" || !('target' in data) || !('message' in data)) {
             plugin.log("Invalid message received from parent: " + data);
             return;
         }
 
-        if(event.source !== iframe.value!.contentWindow) {
+        if (event.source !== iframe.value!.contentWindow) {
             plugin.log("Invalid source received from parent: " + data);
             return;
         }
 
-        if(data.target === "script") {
+        if (data.target === "script") {
             plugin.getEditorPlugin()!.processMessageFromPanel(data.message);
-        } else if(data.target === "editor") {
-            if(data.message === 'close') {
+        } else if (data.target === "editor") {
+            if (data.message === 'close') {
                 menu.value = false;
             } else {
                 plugin.log("Invalid message received from parent, editor can't process: " + data.message);

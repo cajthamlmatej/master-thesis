@@ -54,7 +54,7 @@ export const usePlayerStore = defineStore("player", () => {
     }
 
     const setPlayer = (playerInstance: Player) => {
-        if(player.value) {
+        if (player.value) {
             player.value.destroy();
         }
 
@@ -64,7 +64,7 @@ export const usePlayerStore = defineStore("player", () => {
     const setPlayerElement = (element: HTMLElement) => {
         playerElement.value = element;
 
-        if(player.value) {
+        if (player.value) {
             player.value.destroy();
             player.value = undefined;
         }

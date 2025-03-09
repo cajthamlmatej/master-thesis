@@ -12,15 +12,15 @@
 
                         <template #default>
                             <Card dialog>
-                                <p class="title" v-t>editor.panel.media.add</p>
+                                <p v-t class="title">editor.panel.media.add</p>
 
-                                <FileInput fluid v-model:value="file"></FileInput>
+                                <FileInput v-model:value="file" fluid></FileInput>
 
                                 <div class="flex flex-justify-end mt-2">
                                     <Button
+                                        :loading="loading"
                                         icon="plus"
                                         @click="addContent"
-                                        :loading="loading"
                                     >
                                         <span v-t>editor.panel.media.add</span>
                                     </Button>
@@ -31,9 +31,11 @@
                 </div>
 
 
-                <div class="content" ref="content">
-                    <div v-for="media in mediaStore.media" class="media" @mousedown="(e) => add(e, media.id)" :key="media.id">
-                        <img src="" :data-src="mediaStore.linkToMedia(media)" :alt="media.name" loading="lazy" draggable="false"/>
+                <div ref="content" class="content">
+                    <div v-for="media in mediaStore.media" :key="media.id" class="media"
+                         @mousedown="(e) => add(e, media.id)">
+                        <img :alt="media.name" :data-src="mediaStore.linkToMedia(media)" draggable="false" loading="lazy"
+                             src=""/>
                     </div>
                 </div>
             </div>
@@ -48,15 +50,9 @@ import {useEditorStore} from "@/stores/editor";
 import Editor from "@/editor/Editor";
 import FileInput from "@/components/design/input/FileInput.vue";
 import Button from "@/components/design/button/Button.vue";
-import {api} from "@/api/api";
 import {useMediaStore} from "@/stores/media";
-import {EditorBlock} from "@/editor/block/EditorBlock";
-import {TextEditorBlock} from "@/editor/block/base/text/TextEditorBlock";
 import {generateUUID} from "@/utils/Generators";
-import {ShapeEditorBlock} from "@/editor/block/base/shape/ShapeEditorBlock";
 import {ImageEditorBlock} from "@/editor/block/base/image/ImageEditorBlock";
-import {InteractiveAreaEditorBlock} from "@/editor/block/base/interactiveArea/InteractiveAreaEditorBlock";
-import {MermaidEditorBlock} from "@/editor/block/base/mermaid/MermaidEditorBlock";
 
 const contentMenu = ref(true);
 
@@ -70,7 +66,7 @@ onMounted(() => {
 
 const emits = defineEmits(['update:value']);
 
-watch(() => contentMenu.value, async(value) => {
+watch(() => contentMenu.value, async (value) => {
     emits('update:value', value);
 
     await nextTick();
@@ -90,7 +86,7 @@ watch(() => materialStore.getEditor(), (value) => {
     editor.value = value as Editor;
 });
 
-onMounted(async() => {
+onMounted(async () => {
     await mediaStore.load();
 
 
@@ -100,8 +96,8 @@ onMounted(async() => {
 const file = ref<File[]>([]);
 const addMenu = ref(false);
 const loading = ref(false);
-const addContent = async() => {
-    if(loading.value) return;
+const addContent = async () => {
+    if (loading.value) return;
 
     loading.value = true;
 
@@ -114,8 +110,8 @@ const addContent = async() => {
     await recalculateImages();
 };
 
-const recalculateImages = async() => {
-    if(!content.value) return;
+const recalculateImages = async () => {
+    if (!content.value) return;
 
     const images = content.value.querySelectorAll("img[src='']") as NodeListOf<HTMLImageElement>;
     const contentScroll = content.value.scrollTop;
@@ -139,7 +135,7 @@ const content = ref<HTMLElement | null>(null);
 const menu = ref<HTMLElement | null>(null);
 
 watch(() => content.value, async () => {
-    if(!content.value) return;
+    if (!content.value) return;
 
     await nextTick();
 

@@ -46,7 +46,10 @@ export class InteractiveAreaEditorBlock extends EditorBlock {
         return new InteractiveAreaEditorBlock(this.getCloneBase());
     }
 
-    override getInteractivityProperties(): Omit<BlockInteractiveProperty & { relative: boolean; animate: boolean }, "change" | "reset" | "getBaseValue">[] {
+    override getInteractivityProperties(): Omit<BlockInteractiveProperty & {
+        relative: boolean;
+        animate: boolean
+    }, "change" | "reset" | "getBaseValue">[] {
         return [
             ...super.getInteractivityProperties().filter((p) => !["Opacity", "Z-Index"].includes(p.label))
         ]

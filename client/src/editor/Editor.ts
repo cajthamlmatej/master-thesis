@@ -391,6 +391,18 @@ export default class Editor {
         this.selector.deselectAllBlocks();
     }
 
+    public setPluginCommunicator(pluginCommunicator: EditorPluginCommunicator) {
+        this.pluginCommunicator = pluginCommunicator;
+    }
+
+    public getPluginCommunicator() {
+        if (!this.pluginCommunicator) {
+            throw new Error("Block renderer not set before rendering blocks");
+        }
+
+        return this.pluginCommunicator;
+    }
+
     private parseOptions(options?: EditorOptions) {
         if (!options) return;
 
@@ -496,7 +508,7 @@ export default class Editor {
     }
 
     private usageTouchEvent(event: TouchEvent) {
-        if(event.touches.length === 2) {
+        if (event.touches.length === 2) {
             if (this.mode !== EditorMode.MOVE) return;
 
             if (!this.editorElement.parentElement!.contains(event.target as Node)) return;
@@ -582,17 +594,5 @@ export default class Editor {
         this.editorElement.style.width = this.size.width + "px";
         this.editorElement.style.height = this.size.height + "px";
         this.editorElement.style.setProperty("--scale", this.scale.toString());
-    }
-
-    public setPluginCommunicator(pluginCommunicator: EditorPluginCommunicator) {
-        this.pluginCommunicator = pluginCommunicator;
-    }
-
-    public getPluginCommunicator() {
-        if(!this.pluginCommunicator) {
-            throw new Error("Block renderer not set before rendering blocks");
-        }
-
-        return this.pluginCommunicator;
     }
 }
