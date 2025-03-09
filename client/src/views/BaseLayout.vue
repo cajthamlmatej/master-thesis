@@ -40,6 +40,12 @@
                               label="Browse templates"
                               tooltip-text="Browse templates"
             ></NavigationButton>
+
+            <NavigationButton icon="package-variant"
+                              :to="{name: 'Plugins'}"
+                              label="Plugins"
+                              tooltip-text="Plugins"
+            ></NavigationButton>
         </template>
 
         <template #secondary>
