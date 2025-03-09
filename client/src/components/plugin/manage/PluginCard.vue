@@ -24,9 +24,9 @@
             <Button
                 icon="package-variant-closed-plus"
                 @click="activate"
-                :disabled="plugin.lastManifest.manifest !== PluginManager.CURRENT_MANIFEST_VERSION.toString()"
+                :disabled="plugin.lastManifest.manifest != PluginManager.CURRENT_MANIFEST_VERSION.toString()"
                 :loading="loading"
-                v-tooltip="plugin.lastManifest.manifest !== PluginManager.CURRENT_MANIFEST_VERSION.toString() ? $t('editor.plugin.manage.old-version') : $t('editor.plugin.manage.activate.title')"
+                v-tooltip="plugin.lastManifest.manifest != PluginManager.CURRENT_MANIFEST_VERSION.toString() ? $t('editor.plugin.manage.old-version') : $t('editor.plugin.manage.activate.title')"
             ></Button>
         </div>
 
