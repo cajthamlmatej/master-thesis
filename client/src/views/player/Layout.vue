@@ -1,6 +1,6 @@
 <template>
     <div class="underlay">
-        <Header v-if="material" v-model:menu="menu" :active="active" fixed>
+        <Header v-if="material && !rendering" v-model:menu="menu" :active="active" fixed>
             <template #logo>
                 <div class="meta">
                     <span class="name">{{ material.name }}</span>
@@ -122,7 +122,7 @@
                 </div>
             </template>
         </Header>
-        <Navigation v-model:menu="menu" primary full-control>
+        <Navigation v-model:menu="menu" primary full-control v-if="!rendering">
             <template #primary>
                 <ChangeLanguage :header="false"/>
 
@@ -179,7 +179,7 @@
                     </template>
                     <template #activator="{toggle}">
                         <NavigationButton
-                            v-if="material.user === userStore.user?.id"
+                            v-if="material && material.user === userStore.user?.id"
                             :label="$t('player.debug')"
                             :tooltip-text="$t('player.debug')"
                             icon="bug"
@@ -214,7 +214,7 @@
 
 <script lang="ts" setup>
 import {computed, onMounted, onUnmounted, ref, watch} from "vue";
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {useMaterialStore} from "@/stores/material";
 import {usePlayerStore} from "@/stores/player";
 import type Player from "@/editor/player/Player";
@@ -233,6 +233,11 @@ const playerStore = usePlayerStore();
 const userStore = useUserStore();
 const pluginStore = usePluginStore();
 
+const router = useRouter();
+const route = useRoute();
+
+const rendering = ref(route.query.rendering !== null || route.query.rendering === 'true');
+
 const menu = ref<boolean>(false);
 
 const player = ref<Player | null>(null);
@@ -242,13 +247,17 @@ watch(() => playerStore.getPlayer(), (value) => {
 
     if (!material) return;
 
+    if(rendering) {
+        player.value.changeMode(PlayerMode.PLAY);
+
+        return;
+    }
+
     if (material.value.sizing === 'MOVEMENT')
         player.value.changeMode(PlayerMode.MOVE);
     else
         player.value.changeMode(PlayerMode.PLAY);
 });
-
-const route = useRoute();
 
 const material = computed(() => materialStore.currentMaterial!);
 
@@ -264,7 +273,7 @@ onMounted(async () => {
 
     await pluginStore.loaded;
 
-    await playerStore.requestPlayer();
+    await playerStore.requestPlayer(route.query.slide as string);
     hasNextSlide.value = !!playerStore.getSlides().find(s => s.position > playerStore.getActiveSlide()!.position);
     hasPreviousSlide.value = !!playerStore.getSlides().reverse().find(s => s.position < playerStore.getActiveSlide()!.position);
 
@@ -467,6 +476,10 @@ watch(drawing, (value) => {
         else
             player.changeMode(PlayerMode.PLAY);
     }
+});
+
+watch(() => playerStore.getActiveSlide(), (value) => {
+    router.push({query: {slide: value?.id, rendering: route.query.rendering}});
 });
 </script>
 

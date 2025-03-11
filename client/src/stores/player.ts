@@ -32,12 +32,16 @@ export const usePlayerStore = defineStore("player", () => {
 
     const activeSlide = ref<string | undefined>(undefined);
 
-    const requestPlayer = async () => {
+    const requestPlayer = async (slideId: string | undefined) => {
         if (!materialStore.currentMaterial) {
             throw new Error("No material loaded, cannot request player");
         }
 
-        await changeSlide(getSlides()[0]);
+        if(!slideId) {
+            await changeSlide(getSlides()[0]);
+        } else {
+            await changeSlide(slideId);
+        }
 
         playerTime.value = Date.now();
         variables.value = {};
