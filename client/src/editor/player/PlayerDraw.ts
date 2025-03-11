@@ -1,5 +1,6 @@
 import Player from "@/editor/player/Player";
 import {PlayerMode} from "@/editor/player/PlayerMode";
+import type EditorSelectorArea from "@/editor/selector/area/EditorSelectorArea";
 
 enum DrawMode {
     DRAW = "draw",
@@ -150,6 +151,7 @@ export class PlayerDraw {
 
     private setupUsage() {
         window.addEventListener("mousedown", this.mouseDownEvent.bind(this));
+        window.addEventListener("touchstart", this.mouseDownEvent.bind(this));
 
         const buttons = this.element.querySelectorAll(".player-draw-navigation-options button");
 
@@ -226,10 +228,10 @@ export class PlayerDraw {
         });
     }
 
-    private mouseDownEvent(event: MouseEvent) {
+    private mouseDownEvent(event: MouseEvent | TouchEvent) {
         if (this.player.getMode() !== PlayerMode.DRAW) return;
 
-        if (event.button !== 0) return;
+        if (event instanceof MouseEvent && event.button !== 0) return;
 
         const target = event.target as HTMLElement;
 
@@ -244,7 +246,23 @@ export class PlayerDraw {
         }
     }
 
-    private draw(event: MouseEvent) {
+    private getPositionFromEvent(event: MouseEvent | TouchEvent) {
+        let x = 0, y = 0;
+
+        if (event instanceof MouseEvent) {
+            x = event.clientX;
+            y = event.clientY;
+        } else if (event instanceof TouchEvent) {
+            x = event.touches[0].clientX;
+            y = event.touches[0].clientY;
+        } else {
+            throw new Error("Unsupported event type");
+        }
+
+        return this.player.screenToEditorCoordinates(x, y);
+    }
+
+    private draw(event: MouseEvent | TouchEvent) {
         const canvas = this.element.querySelector(".player-draw-canvas") as HTMLElement;
         const bufferSize = this.smoothing;
         let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -255,7 +273,7 @@ export class PlayerDraw {
         path.setAttribute("stroke-linecap", "round");
 
         let buffer = [] as { x: number, y: number }[];
-        let point = this.player.screenToEditorCoordinates(event.clientX, event.clientY);
+        let point = this.getPositionFromEvent(event);
 
         const appendToBuffer = (pt: { x: number, y: number }) => {
             buffer.push(pt);
@@ -312,18 +330,21 @@ export class PlayerDraw {
 
         canvas.appendChild(path);
 
-        const handleMove = (event: MouseEvent) => {
+        const handleMove = (event: MouseEvent | TouchEvent) => {
             if (this.player.getMode() !== PlayerMode.DRAW) return;
 
-            point = this.player.screenToEditorCoordinates(event.clientX, event.clientY);
+            point = this.getPositionFromEvent(event);
             appendToBuffer(point);
 
             updateSvgPath();
         }
 
-        const handleUp = (event: MouseEvent) => {
+        const handleUp = () => {
             window.removeEventListener("mousemove", handleMove);
             window.removeEventListener("mouseup", handleUp);
+            window.removeEventListener("touchmove", handleMove);
+            window.removeEventListener("touchend", handleUp);
+            window.removeEventListener("touchcancel", handleUp);
 
             const pathLength = path.getTotalLength();
 
@@ -337,15 +358,18 @@ export class PlayerDraw {
 
         window.addEventListener("mousemove", handleMove);
         window.addEventListener("mouseup", handleUp);
+        window.addEventListener("touchmove", handleMove);
+        window.addEventListener("touchend", handleUp);
+        window.addEventListener("touchcancel", handleUp);
     }
 
-    private erase(event: MouseEvent) {
+    private erase(event: MouseEvent | TouchEvent) {
         const canvas = this.element.querySelector(".player-draw-canvas") as SVGSVGElement;
         if (!canvas) return;
 
-        const erase = (event: MouseEvent) => {
+        const erase = (event: MouseEvent | TouchEvent) => {
             const paths = canvas.querySelectorAll("path");
-            const cursorPoint = this.player.screenToEditorCoordinates(event.clientX, event.clientY);
+            const cursorPoint = this.getPositionFromEvent(event);
 
             paths.forEach(path => {
                 const pathLength = path.getTotalLength();
@@ -364,16 +388,22 @@ export class PlayerDraw {
         };
         erase(event);
 
-        const handleMove = (event: MouseEvent) => {
+        const handleMove = (event: MouseEvent | TouchEvent) => {
             erase(event);
         };
 
         const handleUp = () => {
             window.removeEventListener("mousemove", handleMove);
             window.removeEventListener("mouseup", handleUp);
+            window.removeEventListener("touchmove", handleMove);
+            window.removeEventListener("touchend", handleUp);
+            window.removeEventListener("touchcancel", handleUp);
         };
 
         window.addEventListener("mousemove", handleMove);
         window.addEventListener("mouseup", handleUp);
+        window.addEventListener("touchmove", handleMove);
+        window.addEventListener("touchend", handleUp);
+        window.addEventListener("touchcancel", handleUp);
     }
 }
