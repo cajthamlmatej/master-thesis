@@ -17,10 +17,17 @@ const editorStore = useEditorStore();
 
 const saving = ref(false);
 
+const emits = defineEmits(["saving", "save"]);
+
 const save = async () => {
+    emits("saving");
+
     saving.value = true;
     await materialStore.save();
+    await (new Promise(resolve => setTimeout(resolve, 1000)));
     saving.value = false;
+
+    emits("save");
 }
 
 let saveInterval = null as null | number;

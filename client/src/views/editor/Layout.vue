@@ -2,12 +2,14 @@
     <Header v-model:menu="data.menu">
         <template #logo>
             <div class="flex flex-align-center">
-                <span class="hide-mobile">
-                    <span class="mr-1">{{ materialStore.currentMaterial?.name }}</span>
-                </span>
+                <div class="meta">
+                    <span class="title">{{ materialStore.currentMaterial?.name }}</span>
+
+                    <span class="state">{{ state }}</span>
+                </div>
 
                 <div class="flex gap-1">
-                    <Save/>
+                    <Save @save="saved" @saving="saving" />
 
                     <NavigationButton :label="$t('editor.navigation.preview')"
                                       :to="{ name: 'Player', params: { material: $route.params.material } }"
@@ -122,7 +124,9 @@ import Media from "@/components/editor/panels/Media.vue";
 import Content from "@/components/editor/panels/Content.vue";
 import EditorPlugins from "@/components/plugin/EditorPlugins.vue";
 import {usePluginStore} from "@/stores/plugin";
+import moment from "moment";
 
+const state = ref($t('editor.ui.state.nothing'));
 
 const data = reactive({
     menu: true
@@ -222,7 +226,17 @@ onMounted(async () => {
     await pluginStore.loaded;
 
     await editorStore.requestEditor();
+
+    state.value = $t('editor.ui.state.last-save', {time: materialStore.currentMaterial?.updatedAt.fromNow() ?? ''});
 });
+
+const saved = () => {
+    state.value = $t('editor.ui.state.last-save', {time: moment().fromNow()});
+}
+
+const saving = () => {
+    state.value = $t('editor.ui.state.saving');
+}
 
 onUnmounted(() => {
     window.removeEventListener("click", handleClick);
@@ -277,6 +291,36 @@ main {
 
     @media (max-width: 768px) {
         padding: 0;
+    }
+}
+
+.meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em;
+    width: clamp(10em, 30vw, 30em);
+    margin-right: 1em;
+
+    line-height: 1.25em;
+
+    .title {
+        font-size: 1.25em;
+        font-weight: 500;
+    }
+
+    .title, .state {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .state {
+        @media (max-width: 768px) {
+            display: none;
+        }
+    }
+    @media (max-width: 768px) {
+        width: 100%;
     }
 }
 </style>

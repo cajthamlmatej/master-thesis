@@ -263,7 +263,12 @@
                 "manage": "Manage plugins",
                 "plugin": "%name% (plugin)"
             },
-            "save": "Save to cloud"
+            "save": "Save to cloud",
+            "state": {
+                "nothing": "---",
+                "last-save": "Last saved %time%",
+                "saving": "Saving..."
+            }
         },
         "preferences": {
             "open": "Preferences",

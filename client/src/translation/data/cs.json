@@ -263,7 +263,12 @@
                 "manage": "Spravovat pluginy",
                 "plugin": "%name% (plugin)"
             },
-            "save": "Uložit do cloudu"
+            "save": "Uložit do cloudu",
+            "state": {
+                "nothing": "---",
+                "last-save": "Naposledy uloženo %time%",
+                "saving": "Ukládání..."
+            }
         },
         "preferences": {
             "open": "Předvolby",
