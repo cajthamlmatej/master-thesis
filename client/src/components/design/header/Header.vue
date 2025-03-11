@@ -211,6 +211,20 @@ header {
             @media (max-width: 769px) {
                 gap: 0.5em;
             }
+
+
+            ::v-deep(li) {
+                &:has(.button--hide-desktop) {
+                    @media (min-width: 768px) {
+                        display: none;
+                    }
+                }
+                &:has(.button--hide-mobile) {
+                    @media (max-width: 768px) {
+                        display: none;
+                    }
+                }
+            }
         }
     }
 }

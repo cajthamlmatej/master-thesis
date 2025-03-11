@@ -6,120 +6,126 @@
                     <span class="name">{{ material.name }}</span>
 
                     <span v-t="{start: timeFromStart, slide: timeFromSlide}" class="time">player.timer</span>
+                    <span v-t="{start: timeFromStart, slide: timeFromSlide}" class="time-short">player.timer-short</span>
                 </div>
             </template>
             <template #navigation>
-                <ChangeLanguage :header="false"/>
+                <div class="flex gap-0-5">
 
-                <Dialog>
-                    <template #default>
-                        <Card dialog>
-                            <p v-t class="title">player.variables.title</p>
+                    <ChangeLanguage/>
 
-                            <List>
-                                <ListItem v-for="variable in Object.keys(playerStore.variables) ?? []" :key="variable">
-                                    <span>{{ variable }}</span>
-                                    <pre><code>{{ playerStore.variables[variable] }}</code></pre>
-                                </ListItem>
-                                <ListItem v-if="Object.keys(playerStore.variables).length === 0">
-                                    <span v-t>player.variables.not-found</span>
-                                </ListItem>
-                            </List>
-                        </Card>
-                    </template>
-                    <template #activator="{toggle}">
-                        <NavigationButton
-                            v-if="material.user === userStore.user?.id"
-                            :label="$t('player.debug')"
-                            :tooltip-text="$t('player.debug')"
-                            hide-mobile
-                            icon="bug"
-                            tooltip-position="bottom"
-                            @click.stop="toggle"
-                        />
-                    </template>
-                </Dialog>
-
-                <NavigationButton
-                    v-if="material.method === 'MANUAL'"
-                    :disabled="!hasPreviousSlide"
-                    :label="$t('player.control.previous-slide')"
-                    :tooltip-text="$t('player.control.previous-slide')"
-                    icon="arrow-left"
-                    tooltip-position="bottom"
-                    @click.stop="previousSlide"
-                />
-                <NavigationButton
-                    v-if="material.method === 'MANUAL'"
-                    :disabled="!hasNextSlide"
-                    :label="$t('player.control.next-slide')"
-                    :tooltip-text="$t('player.control.next-slide')"
-                    icon="arrow-right"
-                    tooltip-position="bottom"
-                    @click.stop="nextSlide"
-                />
+                    <NavigationButton
+                        v-if="material.method === 'MANUAL'"
+                        :disabled="!hasPreviousSlide"
+                        :label="$t('player.control.previous-slide')"
+                        :tooltip-text="$t('player.control.previous-slide')"
+                        icon="arrow-left"
+                        tooltip-position="bottom"
+                        @click.stop="previousSlide"
+                    />
+                    <NavigationButton
+                        v-if="material.method === 'MANUAL'"
+                        :disabled="!hasNextSlide"
+                        :label="$t('player.control.next-slide')"
+                        :tooltip-text="$t('player.control.next-slide')"
+                        icon="arrow-right"
+                        tooltip-position="bottom"
+                        @click.stop="nextSlide"
+                    />
 
 
-                <NavigationButton
-                    v-if="material.method === 'AUTOMATIC'"
-                    :icon="automaticMovement ? 'stop-circle-outline' : 'play-circle-outline'"
-                    :label="automaticMovement ? $t('player.control.automatic-stop') : $t('player.control.automatic-play')"
-                    :tooltip-text="automaticMovement ? $t('player.control.automatic-stop') : $t('player.control.automatic-play')"
-                    hide-mobile
-                    tooltip-position="bottom"
-                    @click.stop="toggleAutomaticMovement"
-                />
+                    <NavigationButton
+                        v-if="material.method === 'AUTOMATIC'"
+                        :icon="automaticMovement ? 'stop-circle-outline' : 'play-circle-outline'"
+                        :label="automaticMovement ? $t('player.control.automatic-stop') : $t('player.control.automatic-play')"
+                        :tooltip-text="automaticMovement ? $t('player.control.automatic-stop') : $t('player.control.automatic-play')"
+                        hide-mobile
+                        tooltip-position="bottom"
+                        @click.stop="toggleAutomaticMovement"
+                    />
 
-                <NavigationButton
-                    v-if="material.sizing === 'MOVEMENT'"
-                    :label="$t('player.control.focus')"
-                    :tooltip-text="$t('player.control.focus')"
-                    hide-mobile
-                    icon="fit-to-screen-outline"
-                    tooltip-position="bottom"
-                    @click.stop="focus"
-                />
+                    <NavigationButton
+                        v-if="material.sizing === 'MOVEMENT'"
+                        :label="$t('player.control.focus')"
+                        :tooltip-text="$t('player.control.focus')"
+                        hide-mobile
+                        icon="fit-to-screen-outline"
+                        tooltip-position="bottom"
+                        @click.stop="focus"
+                    />
 
-                <NavigationButton
-                    :label="$t('player.control.fullscreen')"
-                    :tooltip-text="$t('player.control.fullscreen')"
-                    hide-mobile
-                    icon="fullscreen"
-                    tooltip-position="bottom"
-                    @click.stop="fullscreen"
-                />
+                    <NavigationButton
+                        :label="$t('player.control.fullscreen')"
+                        :tooltip-text="$t('player.control.fullscreen')"
+                        hide-mobile
+                        icon="fullscreen"
+                        tooltip-position="bottom"
+                        @click.stop="fullscreen"
+                    />
 
-                <NavigationButton
-                    :label="player?.getMode() !== PlayerMode.DRAW ? $t('player.control.enable-draw') : $t('player.control.disable-draw')"
-                    :tooltip-text="player?.getMode() !== PlayerMode.DRAW ? $t('player.control.enable-draw') : $t('player.control.disable-draw')"
-                    hide-mobile
-                    icon="draw-pen"
-                    tooltip-position="bottom"
-                    @click="drawing = !drawing"
-                />
+                    <NavigationButton
+                        :label="player?.getMode() !== PlayerMode.DRAW ? $t('player.control.enable-draw') : $t('player.control.disable-draw')"
+                        :tooltip-text="player?.getMode() !== PlayerMode.DRAW ? $t('player.control.enable-draw') : $t('player.control.disable-draw')"
+                        hide-mobile
+                        icon="draw-pen"
+                        tooltip-position="bottom"
+                        @click="drawing = !drawing"
+                    />
 
-                <NavigationButton
-                    v-if="material.user === userStore.user?.id"
-                    :label="$t('player.control.edit')"
-                    :to="{name: 'Editor', params: {material: route.params.material}}"
-                    :tooltip-text="$t('player.control.edit')"
-                    hide-mobile
-                    icon="square-edit-outline"
-                    tooltip-position="bottom"
-                />
+                    <NavigationButton
+                        v-if="material.user === userStore.user?.id"
+                        :label="$t('player.control.edit')"
+                        :to="{name: 'Editor', params: {material: route.params.material}}"
+                        :tooltip-text="$t('player.control.edit')"
+                        hide-mobile
+                        icon="square-edit-outline"
+                        tooltip-position="bottom"
+                    />
+                    <Dialog>
+                        <template #default>
+                            <Card dialog>
+                                <p v-t class="title">player.variables.title</p>
 
-                <NavigationButton
-                    :label="$t('player.control.leave')"
-                    :to="{name: 'Dashboard'}"
-                    :tooltip-text="$t('player.control.leave')"
-                    hide-mobile
-                    icon="exit-to-app"
-                    tooltip-position="bottom"
-                />
+                                <List>
+                                    <ListItem v-for="variable in Object.keys(playerStore.variables) ?? []" :key="variable">
+                                        <span>{{ variable }}</span>
+                                        <pre><code>{{ playerStore.variables[variable] }}</code></pre>
+                                    </ListItem>
+                                    <ListItem v-if="Object.keys(playerStore.variables).length === 0">
+                                        <span v-t>player.variables.not-found</span>
+                                    </ListItem>
+                                </List>
+                            </Card>
+                        </template>
+                        <template #activator="{toggle}">
+                            <NavigationButton
+                                v-if="material.user === userStore.user?.id"
+                                :label="$t('player.debug')"
+                                :tooltip-text="$t('player.debug')"
+                                hide-mobile
+                                icon="bug"
+                                tooltip-position="bottom"
+                                @click.stop="toggle"
+                            />
+                        </template>
+                    </Dialog>
+
+
+                    <NavigationButton
+                        :label="$t('player.control.leave')"
+                        :to="{name: 'Dashboard'}"
+                        :tooltip-text="$t('player.control.leave')"
+                        hide-mobile
+                        icon="exit-to-app"
+                        tooltip-position="bottom"
+                    />
+                </div>
             </template>
         </Header>
         <Navigation v-model:menu="menu" primary full-control>
             <template #primary>
+                <ChangeLanguage :header="false"/>
+
                 <NavigationButton
                     v-if="material && material.method === 'AUTOMATIC'"
                     :icon="automaticMovement ? 'stop-circle-outline' : 'play-circle-outline'"
@@ -479,10 +485,26 @@ watch(drawing, (value) => {
     .name {
         font-size: 1.5em;
         font-weight: bold;
+
+        @media (max-width: 768px) {
+            font-size: 1.2em;
+        }
     }
 
     .time {
         font-size: 1em;
+
+        @media (max-width: 768px) {
+            display: none;
+        }
+    }
+    .time-short {
+        font-size: 0.8em;
+        display: none;
+
+        @media (max-width: 768px) {
+            display: block;
+        }
     }
 }
 </style>

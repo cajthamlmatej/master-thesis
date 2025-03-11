@@ -178,6 +178,11 @@ aside.navigation {
                         display: none;
                     }
                 }
+                &:has(.button--hide-mobile) {
+                    @media (max-width: 768px) {
+                        display: none;
+                    }
+                }
             }
 
             &.secondary {
@@ -192,6 +197,11 @@ aside.navigation {
 
                 &:has(.button--hide-desktop) {
                     @media (min-width: 768px) {
+                        display: none;
+                    }
+                }
+                &:has(.button--hide-mobile) {
+                    @media (max-width: 768px) {
                         display: none;
                     }
                 }

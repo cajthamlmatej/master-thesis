@@ -154,6 +154,7 @@
             "not-found": "Žádné proměnné nebyly nalezeny."
         },
         "timer": "%start% (čas na snímku: %slide%)",
+        "timer-short": "%start% (%slide%)",
         "debug": "Debug",
         "control": {
             "previous-slide": "Předchozí snímek",

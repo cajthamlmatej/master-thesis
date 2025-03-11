@@ -154,6 +154,7 @@
             "not-found": "No variables found in this material."
         },
         "timer": "%start% (time on slide: %slide%)",
+        "timer-short": "%start% (%slide%)",
         "debug": "Debug",
         "control": {
             "previous-slide": "Previous slide",
