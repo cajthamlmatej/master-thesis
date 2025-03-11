@@ -112,8 +112,13 @@ aside.navigation {
         width: 4.5em;
         z-index: 1001;
 
-        &--hidden {
-            left: -4.5em;
+        &.navigation--hidden {
+            @media (max-width: 768px) {
+                right: -4.5em;
+            }
+            @media (min-width: 768px) {
+                left: -4.5em;
+            }
         }
     }
 

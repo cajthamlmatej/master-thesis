@@ -1,6 +1,6 @@
 <template>
     <div class="underlay">
-        <Header v-if="material" :active="active" fixed>
+        <Header v-if="material" v-model:menu="menu" :active="active" fixed>
             <template #logo>
                 <div class="meta">
                     <span class="name">{{ material.name }}</span>
@@ -9,7 +9,7 @@
                 </div>
             </template>
             <template #navigation>
-                <ChangeLanguage/>
+                <ChangeLanguage :header="false"/>
 
                 <Dialog>
                     <template #default>
@@ -29,6 +29,7 @@
                     </template>
                     <template #activator="{toggle}">
                         <NavigationButton
+                            v-if="material.user === userStore.user?.id"
                             :label="$t('player.debug')"
                             :tooltip-text="$t('player.debug')"
                             hide-mobile
@@ -44,7 +45,6 @@
                     :disabled="!hasPreviousSlide"
                     :label="$t('player.control.previous-slide')"
                     :tooltip-text="$t('player.control.previous-slide')"
-                    hide-mobile
                     icon="arrow-left"
                     tooltip-position="bottom"
                     @click.stop="previousSlide"
@@ -54,11 +54,12 @@
                     :disabled="!hasNextSlide"
                     :label="$t('player.control.next-slide')"
                     :tooltip-text="$t('player.control.next-slide')"
-                    hide-mobile
                     icon="arrow-right"
                     tooltip-position="bottom"
                     @click.stop="nextSlide"
                 />
+
+
                 <NavigationButton
                     v-if="material.method === 'AUTOMATIC'"
                     :icon="automaticMovement ? 'stop-circle-outline' : 'play-circle-outline'"
@@ -117,6 +118,89 @@
                 />
             </template>
         </Header>
+        <Navigation v-model:menu="menu" primary full-control>
+            <template #primary>
+                <NavigationButton
+                    v-if="material && material.method === 'AUTOMATIC'"
+                    :icon="automaticMovement ? 'stop-circle-outline' : 'play-circle-outline'"
+                    :label="automaticMovement ? $t('player.control.automatic-stop') : $t('player.control.automatic-play')"
+                    :tooltip-text="automaticMovement ? $t('player.control.automatic-stop') : $t('player.control.automatic-play')"
+                    tooltip-position="bottom"
+                    @click.stop="toggleAutomaticMovement"
+                />
+
+                <NavigationButton
+                    v-if="material && material.sizing === 'MOVEMENT'"
+                    :label="$t('player.control.focus')"
+                    :tooltip-text="$t('player.control.focus')"
+                    icon="fit-to-screen-outline"
+                    tooltip-position="bottom"
+                    @click.stop="focus"
+                />
+
+                <NavigationButton
+                    :label="$t('player.control.fullscreen')"
+                    :tooltip-text="$t('player.control.fullscreen')"
+                    icon="fullscreen"
+                    tooltip-position="bottom"
+                    @click.stop="fullscreen"
+                />
+
+                <NavigationButton
+                    :label="player?.getMode() !== PlayerMode.DRAW ? $t('player.control.enable-draw') : $t('player.control.disable-draw')"
+                    :tooltip-text="player?.getMode() !== PlayerMode.DRAW ? $t('player.control.enable-draw') : $t('player.control.disable-draw')"
+                    icon="draw-pen"
+                    tooltip-position="bottom"
+                    @click="drawing = !drawing"
+                />
+            </template>
+            <template #secondary>
+                <Dialog>
+                    <template #default>
+                        <Card dialog>
+                            <p v-t class="title">player.variables.title</p>
+
+                            <List>
+                                <ListItem v-for="variable in Object.keys(playerStore.variables) ?? []" :key="variable">
+                                    <span>{{ variable }}</span>
+                                    <pre><code>{{ playerStore.variables[variable] }}</code></pre>
+                                </ListItem>
+                                <ListItem v-if="Object.keys(playerStore.variables).length === 0">
+                                    <span v-t>player.variables.not-found</span>
+                                </ListItem>
+                            </List>
+                        </Card>
+                    </template>
+                    <template #activator="{toggle}">
+                        <NavigationButton
+                            v-if="material.user === userStore.user?.id"
+                            :label="$t('player.debug')"
+                            :tooltip-text="$t('player.debug')"
+                            icon="bug"
+                            tooltip-position="bottom"
+                            @click.stop="toggle"
+                        />
+                    </template>
+                </Dialog>
+
+                <NavigationButton
+                    v-if="material && material.user === userStore.user?.id"
+                    :label="$t('player.control.edit')"
+                    :to="{name: 'Editor', params: {material: route.params.material}}"
+                    :tooltip-text="$t('player.control.edit')"
+                    icon="square-edit-outline"
+                    tooltip-position="bottom"
+                />
+
+                <NavigationButton
+                    :label="$t('player.control.leave')"
+                    :to="{name: 'Dashboard'}"
+                    :tooltip-text="$t('player.control.leave')"
+                    icon="exit-to-app"
+                    tooltip-position="bottom"
+                />
+            </template>
+        </Navigation>
 
         <router-view/>
     </div>
@@ -142,6 +226,8 @@ const materialStore = useMaterialStore();
 const playerStore = usePlayerStore();
 const userStore = useUserStore();
 const pluginStore = usePluginStore();
+
+const menu = ref<boolean>(false);
 
 const player = ref<Player | null>(null);
 
@@ -190,6 +276,12 @@ onUnmounted(() => {
 
 let cursorTimeout = undefined as undefined | number;
 let active = ref<boolean>(false);
+
+watch(() => active.value, (value) => {
+    if (!value) {
+        menu.value = false;
+    }
+});
 
 const click = (e: MouseEvent) => {
     if (material.value.method !== 'MANUAL') return;

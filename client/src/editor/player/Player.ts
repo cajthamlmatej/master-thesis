@@ -146,6 +146,7 @@ export default class Player {
         window.removeEventListener("resize", this.resizeEvent);
         window.removeEventListener("mousedown", this.mouseDownEvent);
         window.removeEventListener("wheel", this.wheelEvent);
+        window.removeEventListener("touchstart", this.touchEvent);
     }
 
     public getMode() {
