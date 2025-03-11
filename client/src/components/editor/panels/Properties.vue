@@ -23,16 +23,16 @@ import {useEditorStore} from "@/stores/editor";
 
 
 const onMobile = ref(false);
-const visible = ref(true);
+const visible = ref(false);
 const canBeVisible = ref(false);
 
 onMounted(() => {
     onMobile.value = window.innerWidth < 768;
 
     if (onMobile.value) {
-        visible.value = false;
+        canBeVisible.value = false;
     } else {
-        visible.value = true;
+        canBeVisible.value = true;
     }
 
     window.addEventListener('resize', () => {
@@ -73,8 +73,12 @@ watch(() => materialStore.getEditor(), (value) => {
         // visible.value = blocks.length > 0;
         canBeVisible.value = blocks.length > 0;
 
-        if(!canBeVisible.value && visible.value) {
+        if(onMobile.value && !canBeVisible.value) {
             visible.value = false;
+        }
+
+        if(!onMobile.value) {
+            visible.value = canBeVisible.value;
         }
     });
 });

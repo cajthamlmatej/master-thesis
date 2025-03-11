@@ -83,7 +83,7 @@ import {$t} from "@/translation/Translation";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
 
 const data = reactive({
-    menu: false
+    menu: true
 });
 
 const authenticationStore = useAuthenticationStore();

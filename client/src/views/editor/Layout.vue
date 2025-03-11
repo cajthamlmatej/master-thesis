@@ -125,7 +125,7 @@ import {usePluginStore} from "@/stores/plugin";
 
 
 const data = reactive({
-    menu: false
+    menu: true
 });
 
 const editorStore = useEditorStore();

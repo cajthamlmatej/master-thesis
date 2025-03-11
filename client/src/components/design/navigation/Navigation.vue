@@ -54,7 +54,7 @@ const classes = computed(() => {
 });
 
 const emits = defineEmits(["menuVisible"]);
-const menuVisible = ref(false);
+const menuVisible = ref(props.menu);
 
 watch(() => props.menu, (value) => {
     const width = window.innerWidth;
