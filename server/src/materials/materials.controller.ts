@@ -7,7 +7,7 @@ import {
     Param,
     Patch,
     Post,
-    Req,
+    Req, StreamableFile,
     UnauthorizedException,
     UseGuards
 } from '@nestjs/common';
@@ -19,6 +19,9 @@ import {OneMaterialSuccessDTO} from "../../dto/material/OneMaterialSuccessDTO";
 import {UpdateMaterialDTO} from "../../dto/material/UpdateMaterialDTO";
 import {CreateMaterialDTO} from "../../dto/material/CreateMaterialDTO";
 import {CreateMaterialSuccessDTO} from "../../dto/material/CreateMaterialSuccessDTO";
+import puppeteer from "puppeteer";
+import * as fs from "fs";
+import PDFMerger from "./../utils/pdfMerger.js";
 
 @Controller('')
 export class MaterialsController {
@@ -140,5 +143,88 @@ export class MaterialsController {
         if (material.user.toString() !== req.user.id) throw new UnauthorizedException('You are not allowed to access this resource');
 
         await this.materialsService.remove(material);
+    }
+
+    @Get('/material/:id/export/:format')
+    @UseGuards(RequiresAuthenticationGuard)
+    async export(@Param('id') id: string, @Req() req: RequestWithUser, @Param('format') format: string) {
+        const material = await this.materialsService.findById(id);
+
+        if (!material) throw new Error("Material not found");
+        if (material.user.toString() !== req.user.id) throw new UnauthorizedException('You are not allowed to access this resource');
+
+        const materialId = material.id;
+        const outputFolder = `./temp/${materialId}/`;
+
+        fs.mkdirSync(outputFolder, { recursive: true });
+
+        let suffix = '';
+        if(format === 'pdf') {
+            suffix = '.pdf';
+        } else if(format === 'local') {
+            suffix = '.json';
+        } else {
+            throw new Error("Invalid format");
+        }
+
+        let output = `${outputFolder}/output-${format}${suffix}`;
+
+        if(format === 'pdf') {
+            const browser = await puppeteer.launch();
+
+            for (let slide of material.slides) {
+                const slideId = slide.id;
+                const outputFile = `${outputFolder}/${slideId}.pdf`;
+                const data = JSON.parse(slide.data);
+                const width = data.editor.size.width;
+                const height = data.editor.size.height;
+
+                const page = await browser.newPage();
+                await page.setViewport({width: width, height: height});
+
+                await page.goto(
+                    `http://localhost:5173/cs/player/${materialId}?slide=${slideId}&rendering=true&cookies=true`, {waitUntil: 'networkidle2'});
+
+                await page.pdf({
+                    path: outputFile,
+                    width: width,
+                    height: height,
+                    printBackground: true
+                });
+            }
+
+            await browser.close();
+
+            const merger = new PDFMerger();
+
+            for (let slide of material.slides) {
+                const slideId = slide.id;
+                const outputFile = `${outputFolder}/${slideId}.pdf`;
+
+                await merger.add(outputFile);
+            }
+
+            const updated = await material.populate("user");
+
+            await merger.setMetadata({
+                title: material.name,
+                author: updated.user.name.toString(),
+            });
+
+            await merger.save(output);
+        } else if(format === 'local') {
+            fs.writeFileSync(output, JSON.stringify(material.slides.map(s => {
+                return {
+                    ...s,
+                    thumbnail: undefined,
+                }
+            })));
+        }
+
+        const stream = fs.createReadStream(output);
+
+        return new StreamableFile(stream, {
+            disposition: 'inline; filename="' + material.name + '"; filename*=UTF-8\'\'' + encodeURIComponent(material.name) + '\'\;',
+        });
     }
 }
