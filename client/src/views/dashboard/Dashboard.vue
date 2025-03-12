@@ -517,6 +517,7 @@ article.material {
         gap: 0.5em;
 
         display: flex;
+        overflow: hidden;
 
         .title {
             font-size: 1.5em;
@@ -524,6 +525,11 @@ article.material {
             line-height: 1.05em;
 
             margin-bottom: 0.4em;
+
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .time {
@@ -531,7 +537,13 @@ article.material {
             color: #666;
         }
 
+        .state {
+            flex-grow: 0;
+            max-width: 70%;
+        }
+
         .actions {
+            flex-shrink: 0;
             display: flex;
             flex-direction: column;
             gap: 0.5em;
