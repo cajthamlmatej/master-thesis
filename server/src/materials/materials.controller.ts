@@ -176,8 +176,8 @@ export class MaterialsController {
                 const slideId = slide.id;
                 const outputFile = `${outputFolder}/${slideId}.pdf`;
                 const data = JSON.parse(slide.data);
-                const width = data.editor.size.width;
-                const height = data.editor.size.height;
+                const width = Number(data.editor.size.width);
+                const height = Number(data.editor.size.height);
 
                 const page = await browser.newPage();
                 await page.setViewport({width: width, height: height});
