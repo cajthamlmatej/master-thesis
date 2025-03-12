@@ -273,7 +273,7 @@
                 "link": "Link"
             },
             "export": {
-                "title": "Material Export",
+                "title": "Material export",
                 "description": "Download an offline backup of your material in various formats. Exported files contain all slides but may be limited by the given format and all are without interactivity, for example.",
                 "local": "Local backup (JSON)",
                 "pdf": "PDF"

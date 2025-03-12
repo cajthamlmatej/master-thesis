@@ -156,7 +156,7 @@
 
 
 
-                                <Dialog v-model:value="exporting">
+                                <Dialog v-model:value="exporting" persistent>
                                     <template #default>
                                         <Card dialog>
                                             <p v-t class="title">editor.sharing.exporting.title</p>
