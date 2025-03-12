@@ -81,7 +81,7 @@
                         icon="square-edit-outline"
                         tooltip-position="bottom"
                     />
-                    <Dialog>
+                    <Dialog v-if="debugging">
                         <template #default>
                             <Card dialog>
                                 <p v-t class="title">player.variables.title</p>
@@ -161,7 +161,7 @@
                 />
             </template>
             <template #secondary>
-                <Dialog>
+                <Dialog v-if="debugging">
                     <template #default>
                         <Card dialog>
                             <p v-t class="title">player.variables.title</p>
@@ -237,7 +237,7 @@ const router = useRouter();
 const route = useRoute();
 
 const rendering = ref(route.query.rendering === 'true');
-const debuging = computed(() => route.query.debug === 'true');
+const debugging = computed(() => route.query.debug === 'true');
 
 const menu = ref<boolean>(false);
 
