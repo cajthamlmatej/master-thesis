@@ -102,6 +102,30 @@ export const useMaterialStore = defineStore("material", () => {
         }
     }
 
+    const updateMaterial = async (material: Material) => {
+        const response = await api.material.update(material.id, {
+            name: material.name,
+            plugins: material.plugins.map((plugin) => ({
+                plugin: plugin.plugin,
+                release: plugin.release
+            }), []),
+            visibility: material.visibility,
+            method: material.method,
+            automaticTime: material.automaticTime,
+            sizing: material.sizing,
+            slides: material.slides.map((slide) => ({
+                id: slide.id,
+                data: slide.data,
+                thumbnail: slide.thumbnail,
+                position: slide.position
+            }))
+        });
+
+        if (!response) {
+            throw new Error("Failed to save material");
+        }
+    }
+
     const deleteMaterial = async (id: string) => {
         const response = await api.material.delete(id);
 
@@ -181,6 +205,7 @@ export const useMaterialStore = defineStore("material", () => {
         loaded,
         loadMaterial,
         createMaterial,
+        updateMaterial,
         save,
         deleteMaterial,
         copyMaterial,

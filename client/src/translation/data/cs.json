@@ -66,7 +66,26 @@
                 "delete-tooltip": "Smazat materiál",
                 "copy-tooltip": "Kopírovat materiál"
             },
-            "add-tooltip": "Přidat materiál",
+            "new": {
+                "tooltip": "Vytvořit nový materiál",
+                "import": {
+                    "tooltip": "Importovat materiál",
+                    "title": "Importovat materiál",
+                    "description": "Zde můžete importovat materiál z různých typů souborů. Aplikace aktuálně podporuje nahrání lokální zálohy (ve formátu JSON) nebo souboru ve formátu Markdown, který je vytvořen podle nápovědy.",
+                    "process": "Importovat soubor",
+                    "error": "Nahraný soubor neodpovídá žádnému podporovanému formátu. Zkontrolujte, zda jste vybrali správný soubor.",
+                    "json": {
+                        "error": "Neplatný formát JSON souboru. Zkontrolujte, zda je soubor vytvořen podle nápovědy."
+                    },
+                    "md": {
+                        "error": "Neplatný formát souboru Markdown. Zkontrolujte, zda je soubor vytvořen podle nápovědy."
+                    },
+                    "saving": {
+                        "error": "Problém během ukládání materiálu. Zkuste to znovu později."
+                    }
+                },
+                "empty": "Prázdný materiál"
+            },
             "new-material": "Nový materiál"
         },
         "authentication": {

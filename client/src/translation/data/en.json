@@ -66,7 +66,28 @@
                 "delete-tooltip": "Delete material",
                 "copy-tooltip": "Copy material"
             },
-            "add-tooltip": "Add material",
+
+            "new": {
+                "tooltip": "Create new material",
+                "import": {
+                    "tooltip": "Import material",
+                    "title": "Import material",
+                    "description": "Here you can import material from various file types. The application currently supports uploading a local backup (in JSON format) or a Markdown file created according to the guidelines.",
+                    "process": "Import file",
+                    "error": "The uploaded file does not match any supported format. Please check if you selected the correct file.",
+                    "json": {
+                        "error": "Invalid JSON file format. Please check if the file was created according to the guidelines."
+                    },
+                    "md": {
+                        "error": "Invalid Markdown file format. Please check if the file was created according to the guidelines."
+                    },
+                    "saving": {
+                        "error": "Problem while saving the material. Please try again later."
+                    }
+                },
+                "empty": "Empty material"
+            },
+
             "new-material": "New material"
         },
         "authentication": {

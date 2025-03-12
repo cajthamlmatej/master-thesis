@@ -4,9 +4,51 @@
             <span v-t="{ name: userStore.user?.name ?? '' }" class="main-title">page.dashboard.title-welcome</span>
 
             <div class="flex flex-align-center gap-1">
-                <Button v-tooltip="$t('page.dashboard.add-tooltip')" :to="{name: 'Editor', params: {material: 'new'}}"
-                        color="primary"
-                        icon="mdi mdi-plus"/>
+                <Dialog>
+                    <template #activator="{toggle}">
+                        <Button v-tooltip="$t('page.dashboard.new.tooltip')"
+                                color="primary"
+                                @click="toggle"
+                                icon="mdi mdi-plus"/>
+                    </template>
+                    <template #default="{toggle}">
+                        <Card dialog>
+                            <div class="import-buttons">
+                                <Dialog>
+                                    <template #activator="{toggle}">
+                                        <button @click="toggle">
+                                            <span class="icon mdi mdi-file-import-outline"></span>
+                                            <span class="text" v-t>page.dashboard.new.import.tooltip</span>
+                                        </button>
+                                    </template>
+                                    <template #default="{toggle}">
+                                        <Card dialog>
+                                            <p class="title" v-t>page.dashboard.new.import.title</p>
+
+                                            <p v-t>page.dashboard.new.import.description</p>
+
+                                            <FileInput v-model:value="importFile" class="mt-1"/>
+
+                                            <Alert type="error" v-if="importError">
+                                                {{ importError }}
+                                            </Alert>
+
+                                            <div class="flex flex-justify-end mt-1">
+                                                <Button @click="() => processImport(toggle)" :disabled="importFile.length != 1">
+                                                    <span v-t>page.dashboard.new.import.process</span>
+                                                </Button>
+                                            </div>
+                                        </Card>
+                                    </template>
+                                </Dialog>
+                                <button @click="router.push({name: 'Editor', params: {material: 'new'}})">
+                                    <span class="icon mdi mdi-artboard"></span>
+                                    <span class="text" v-t>page.dashboard.new.empty</span>
+                                </button>
+                            </div>
+                        </Card>
+                    </template>
+                </Dialog>
 
                 <Input v-model:value="search" :label="$t('page.dashboard.search')"
                        :placeholder="$t('page.dashboard.search')" dense
@@ -86,6 +128,11 @@ import {useMaterialStore} from "@/stores/material";
 import Pagination from "@/components/design/pagination/Pagination.vue";
 import {useRouter} from "vue-router";
 import {$t} from "@/translation/Translation";
+import Card from "@/components/design/card/Card.vue";
+import FileInput from "@/components/design/input/FileInput.vue";
+import {ListItem, marked} from "marked";
+import {Slide} from "@/models/Material";
+import {generateUUID} from "@/utils/Generators";
 
 const router = useRouter();
 
@@ -133,6 +180,277 @@ const copyMaterial = async (materialId: string) => {
     await materialStore.copyMaterial(materialId);
     processing.value = false;
 };
+
+const importError = ref<string | undefined>(undefined);
+const importFile = ref<File[]>([]);
+
+const processImport = (toggle: () => void) => {
+    const file = importFile.value[0];
+
+    console.log(file);
+    const mime = file.type;
+    const extension = file.name.split('.').pop() ?? '';
+
+    // JSON, markdown
+    if(!["application/json"].includes(mime) && !["md"].includes(extension)) {
+        console.log("Invalid mime type", mime, extension);
+        importError.value = $t('page.dashboard.new.import.error');
+        return;
+    }
+
+    // Read file content
+    const reader = new FileReader();
+
+    reader.addEventListener("load", async () => {
+        try {
+            const content = reader.result as string;
+            // toggle();
+            const material = await materialStore.createMaterial();
+            const materialId = material.id;
+
+            await materialStore.loadMaterial(materialId);
+
+            const currentMaterial = materialStore.currentMaterial!;
+
+            if(mime === "application/json") {
+                try {
+                    currentMaterial.slides = JSON.parse(content);
+                } catch (error) {
+                    console.error(error);
+                    importError.value = $t('page.dashboard.new.import.json.error');
+                    return;
+                }
+            } else if(extension === "md") {
+                try {
+                    type SlideData = {
+                        title: string;
+                        blocks: {
+                            type: string;
+                            html: string;
+                            items?: number;
+                        }[]
+                    };
+                    const data = marked.lexer(content);
+
+                    let presentationTitle = '';
+                    let slides = [] as SlideData[];
+                    let currentSlide = null as SlideData | null;
+
+                    for (let i = 0; i < data.length; i++) {
+                        const token = data[i];
+
+                        if (token.type === 'heading' && token.depth === 1 && !presentationTitle) {
+                            presentationTitle = token.text;
+                            continue;
+                        }
+
+                        if (token.type === 'heading' && token.depth > 1) {
+                            if (currentSlide) {
+                                // Save the current read slide
+                                slides.push(currentSlide);
+                            }
+
+                            currentSlide = {
+                                title: token.text,
+                                blocks: []
+                            };
+                            continue;
+                        }
+
+                        if (currentSlide) {
+                            if (token.type === 'paragraph') {
+                                // Render the paragraph content as HTML
+                                const html = marked.parser([token]);
+
+                                currentSlide.blocks.push({
+                                    type: 'paragraph',
+                                    html: html,
+                                });
+                            }
+
+                            // Handle list blocks
+                            else if (token.type === 'list') {
+                                // Render the entire list as HTML
+                                const html = marked.parser([token]);
+
+                                const items = token.items.length;
+
+                                currentSlide.blocks.push({
+                                    type: 'list',
+                                    html: html,
+                                    items: items
+                                });
+                            }
+
+                            // TODO: Handle other block types
+                        }
+                    }
+
+                    if (currentSlide) {
+                        slides.push(currentSlide);
+                    }
+
+                    currentMaterial.name = presentationTitle;
+
+                    const correctSlides = [] as Slide[];
+
+                    let width = 1200;
+                    let height = 800;
+
+                    // Title slide
+                    (() => {
+                        let blocks = [] as any[];
+
+                        let fontSize = 128;
+                        let titleHeight = fontSize * 1.5;
+                        let titleCenter = height / 2 - titleHeight / 2;
+                        blocks.push({
+                            type: "text",
+                            content: `<p style="text-align: center">${presentationTitle}</p>`,
+                            fontSize: fontSize,
+                            id: generateUUID(),
+                            position: {
+                                x: 0,
+                                y: titleCenter
+                            },
+                            size: {
+                                width: width,
+                                height: titleHeight
+                            },
+                            rotation: 0,
+                            zIndex: 0,
+                            opacity: 1,
+                            locked: false,
+                            interactivity: []
+                        });
+
+                        let data = `{"editor":{"size":{"width":${width},"height":${height}}},"blocks":${JSON.stringify(blocks)}}`;
+
+                        correctSlides.push(new Slide(generateUUID(), data, undefined,0));
+                    })();
+
+                    for(let slide of slides) {
+                        let blocks = [] as any[];
+
+                        let padding = 20;
+                        let gaps = 20;
+
+                        let lastSpace = padding;
+
+                        // TITLE
+                        (() => {
+                            let fontSize = 64;
+                            let titleHeight = fontSize * 1.5;
+                            blocks.push({
+                                type: "text",
+                                content: `<p style="text-align: center">${slide.title}</p>`,
+                                fontSize: fontSize,
+                                id: generateUUID(),
+                                position: {
+                                    x: padding,
+                                    y: lastSpace
+                                },
+                                size: {
+                                    width: width - padding * 2,
+                                    height: titleHeight
+                                },
+                                rotation: 0,
+                                zIndex: 0,
+                                opacity: 1,
+                                locked: false,
+                                interactivity: []
+                            });
+
+                            lastSpace += titleHeight;
+                        })();
+
+                        lastSpace += gaps;
+
+                        for(let block of slide.blocks) {
+                            switch(block.type) {
+                                case "paragraph": {
+                                    let fontSize = 48;
+                                    let height = fontSize * 1.5;
+                                    blocks.push({
+                                        type: "text",
+                                        content: block.html,
+                                        fontSize: fontSize,
+                                        id: generateUUID(),
+                                        position: {
+                                            x: padding,
+                                            y: lastSpace
+                                        },
+                                        size: {
+                                            width: width - padding * 2,
+                                            height: height
+                                        },
+                                        rotation: 0,
+                                        zIndex: 0,
+                                        opacity: 1,
+                                        locked: false,
+                                        interactivity: []
+                                    });
+
+                                    lastSpace += height + gaps;
+
+                                    break;
+                                }
+                                case "list": {
+                                    let fontSize = 48;
+                                    let height = fontSize * 1.5 * (block.items ?? 0);
+
+                                    blocks.push({
+                                        type: "text",
+                                        content: block.html,
+                                        fontSize: fontSize,
+                                        id: generateUUID(),
+                                        position: {
+                                            x: padding,
+                                            y: lastSpace
+                                        },
+                                        size: {
+                                            width: width - padding * 2,
+                                            height: height
+                                        },
+                                        rotation: 0,
+                                        zIndex: 0,
+                                        opacity: 1,
+                                        locked: false,
+                                        interactivity: []
+                                    });
+
+                                    lastSpace += height + gaps;
+
+                                    break;
+                                }
+                            }
+                        }
+
+                        let data = `{"editor":{"size":{"width":${width},"height":${height}}},"blocks":${JSON.stringify(blocks)}}`;
+
+                        correctSlides.push(new Slide(generateUUID(), data, undefined, correctSlides.length));
+                    }
+
+                    currentMaterial.slides = correctSlides;
+                } catch (error) {
+                    console.error(error);
+                    importError.value = $t('page.dashboard.new.import.markdown.error');
+                    return;
+                }
+
+            }
+
+            await materialStore.updateMaterial(currentMaterial);
+
+            await router.push({name: 'Editor', params: {material: material.id}});
+        } catch (e) {
+            console.error(e);
+            importError.value = $t('page.dashboard.new.import.saving.error');
+        }
+    });
+
+    reader.readAsText(file);
+}
 </script>
 
 <style lang="scss" scoped>
@@ -287,6 +605,48 @@ article.material {
 .delete-dialog {
     p:not(:last-child) {
         margin-bottom: 0.5em;
+    }
+}
+
+
+.import-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1em;
+
+    button {
+        background: var(--color-primary);
+        border-radius: 0.25em;
+        padding: 1em;
+        width: 100%;
+        aspect-ratio: 1/1;
+
+        border: none;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 1em;
+        color: var(--color-text);
+
+        .icon {
+            font-size: 4em;
+            transition: transform 0.2s;
+        }
+        .text {
+            font-size: 1em;
+        }
+        transition: background 0.2s;
+
+        &:hover {
+            background: var(--color-primary-dark);
+            cursor: pointer;
+
+            .icon {
+                transform: scale(1.1) rotate(5deg);
+            }
+        }
     }
 }
 </style>
