@@ -41,4 +41,8 @@ export default class Plugin {
         return this.releases.sort((a, b) => b.date.diff(a.date));
     }
 
+    requiresUserAttention() {
+        return this.lastManifest && this.lastManifest.allowedOrigins && this.lastManifest.allowedOrigins.length !== 0;
+    }
+
 }

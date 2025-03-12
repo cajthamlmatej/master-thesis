@@ -79,7 +79,8 @@ const recalculate = () => {
         .map((plugin) => {
             return {
                 ...plugin,
-                active: pluginStore.manager.isActive(plugin.id)
+                active: pluginStore.manager.isActive(plugin.id),
+                requiresUserAttention: plugin.requiresUserAttention,
             };
         });
 };

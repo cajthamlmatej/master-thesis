@@ -23,13 +23,45 @@
         </div>
 
         <div v-if="includeActions" class="actions">
-            <Button
-                v-tooltip="plugin.lastManifest.manifest != PluginManager.CURRENT_MANIFEST_VERSION.toString() ? $t('editor.plugin.manage.old-version') : $t('editor.plugin.manage.activate.title')"
-                :disabled="plugin.lastManifest.manifest != PluginManager.CURRENT_MANIFEST_VERSION.toString()"
-                :loading="loading"
-                icon="package-variant-closed-plus"
-                @click="activate"
-            ></Button>
+            <Dialog>
+                <template #activator="{toggle}">
+                    <Button
+                        v-tooltip="plugin.lastManifest.manifest != PluginManager.CURRENT_MANIFEST_VERSION.toString() ? $t('editor.plugin.manage.old-version') : $t('editor.plugin.manage.activate.title')"
+                        :disabled="plugin.lastManifest.manifest != PluginManager.CURRENT_MANIFEST_VERSION.toString()"
+                        :loading="loading"
+                        icon="package-variant-closed-plus"
+                        @click="() => plugin.requiresUserAttention() ? toggle() : activate()"
+                    ></Button>
+                </template>
+
+                <template #default="{toggle}">
+                    <Card dialog>
+                        <p class="title" v-t>editor.plugin.manage.attention.title</p>
+
+                        <p v-t>editor.plugin.manage.attention.description</p>
+
+                        <p v-t v-if="plugin.lastManifest.allowedOrigins.length > 0" class="mt-1">editor.plugin.manage.attention.allowed-origins</p>
+                        <List v-if="plugin.lastManifest.allowedOrigins.length > 0">
+                            <ListItem v-for="origin in plugin.lastManifest.allowedOrigins" :key="origin">
+                                <span>{{ origin }}</span>
+                            </ListItem>
+                        </List>
+
+                        <div class="flex flex-justify-end gap-1 flex-wrap mt-1">
+                            <Button
+                                @click="toggle"
+                            >
+                                <span v-t>editor.plugin.manage.attention.cancel</span>
+                            </Button>
+                            <Button
+                                @click="() => {activate(); toggle()}"
+                            >
+                                <span v-t>editor.plugin.manage.attention.confirm</span>
+                            </Button>
+                        </div>
+                    </Card>
+                </template>
+            </Dialog>
         </div>
 
         <transition name="fade">
@@ -51,6 +83,7 @@ import {$t} from "@/translation/Translation";
 import Plugin from "@/models/Plugin";
 import {usePluginStore} from "@/stores/plugin";
 import {PluginManager} from "@/editor/plugin/PluginManager";
+import ListItem from "@/components/design/list/ListItem.vue";
 
 const props = defineProps({
     plugin: {

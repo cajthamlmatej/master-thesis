@@ -418,7 +418,14 @@
                     "title": "Not available plugins",
                     "description": "Following plugins are not enabled or loaded in because they are not supported, they are not compatible with the current version of the manager or were removed from the application."
                 },
-                "old-version": "This plugin is not supported thus it cannot be activated."
+                "old-version": "This plugin is not supported thus it cannot be activated.",
+                "attention": {
+                    "title": "Warning",
+                    "description": "The plugin you are trying to add requires special permissions to access the editor. Please read the following plugin requirements carefully and if you agree, you can activate the plugin.",
+                    "allowed-origins": "The plugin requires and will have access to call any actions from the following domains:",
+                    "cancel": "Cancel",
+                    "confirm": "Activate"
+                }
             }
         }
     },

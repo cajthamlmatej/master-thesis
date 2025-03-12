@@ -423,7 +423,14 @@
                     "title": "Nedostupné pluginy",
                     "description": "Následující pluginy byly deaktivovány, protože nejsou kompatibilní s aktuální verzí správce a nebo byly odstraněny z katalogu pluginů."
                 },
-                "old-version": "Plugin není podporován a nemůže být aktivován."
+                "old-version": "Plugin není podporován a nemůže být aktivován.",
+                "attention": {
+                    "title": "Upozornění",
+                    "description": "Plugin, který se snažíte přidat vyžaduje speciální oprávnění k přístupu k editoru. Pozorně si přečtěte následující požadavky pluginu a pokud souhlasíte, můžete plugin aktivovat.",
+                    "allowed-origins": "Plugin vyžaduje a bude mít přístup k volání jakýchkoliv akcí z následujících domén:",
+                    "cancel": "Zrušit",
+                    "confirm": "Aktivovat"
+                }
             }
         }
     },
