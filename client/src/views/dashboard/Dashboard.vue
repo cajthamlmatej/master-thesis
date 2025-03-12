@@ -122,6 +122,10 @@ const deleteMaterial = async (materialId: string, toggle: () => void) => {
     await materialStore.deleteMaterial(materialId);
     processing.value = false;
     toggle();
+
+    if(page.value > Math.max(Math.ceil(materials.value.length/8), 1)) {
+        page.value = Math.max(Math.ceil(materials.value.length/8), 1);
+    }
 };
 
 const copyMaterial = async (materialId: string) => {
