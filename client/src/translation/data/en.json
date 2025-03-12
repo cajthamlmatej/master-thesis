@@ -223,31 +223,44 @@
                 }
             }
         },
-        "share": {
+        "sharing": {
             "open": "Sharing material",
             "title": "Sharing material",
-            "name": "Material name",
-            "visibility": {
-                "PUBLIC": "Public for everyone",
-                "PRIVATE": "Private",
-                "label": "Visibility"
+            "share": {
+                "title": "Share and settings",
+                "name": "Material name",
+                "visibility": {
+                    "PUBLIC": "Public for everyone",
+                    "PRIVATE": "Private",
+                    "label": "Visibility"
+                },
+                "method": {
+                    "AUTOMATIC": "Automatic playback",
+                    "MANUAL": "Manual playback",
+                    "INTERACTIVITY": "Only via interactivity",
+                    "label": "Playback method"
+                },
+                "automatic": {
+                    "time": "Time per slide"
+                },
+                "sizing": {
+                    "FIT_TO_SCREEN": "Fit to screen",
+                    "MOVEMENT": "Stretch and move",
+                    "label": "Display mode"
+                },
+                "save": "Save",
+                "link": "Link"
             },
-            "method": {
-                "AUTOMATIC": "Automatic playback",
-                "MANUAL": "Manual playback",
-                "INTERACTIVITY": "Only via interactivity",
-                "label": "Playback method"
+            "export": {
+                "title": "Material Export",
+                "description": "Download an offline backup of your material in various formats. Exported files contain all slides but may be limited by the given format and all are without interactivity, for example.",
+                "local": "Local backup (JSON)",
+                "pdf": "PDF"
             },
-            "automatic": {
-                "time": "Time per slide"
-            },
-            "sizing": {
-                "FIT_TO_SCREEN": "Fit to screen",
-                "MOVEMENT": "Stretch and move",
-                "label": "Display mode"
-            },
-            "save": "Save",
-            "link": "Link"
+            "exporting": {
+                "title": "Material is being exported",
+                "description": "The material is being exported to the format. This operation may take several minutes. Once completed, the file will be automatically downloaded."
+            }
         },
         "ui": {
             "fit-to-screen": "Fit to the screen",

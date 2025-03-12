@@ -42,4 +42,11 @@ export class MaterialRepository extends Repository {
             "DELETE"
         );
     }
+
+    async export(id: string, type: string) {
+        return this.makeRequestRaw(
+            `material/${id}/export/${type}`,
+            "GET"
+        );
+    }
 }

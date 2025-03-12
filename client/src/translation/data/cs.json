@@ -223,31 +223,45 @@
                 }
             }
         },
-        "share": {
+        "sharing": {
             "open": "Sdílení materiálu",
             "title": "Sdílení materiálu",
-            "name": "Název materiálu",
-            "visibility": {
-                "PUBLIC": "Veřejný pro všechny",
-                "PRIVATE": "Soukromý",
-                "label": "Viditelnost"
+
+            "share": {
+                "title": "Sdílení a nastavení",
+                "name": "Název materiálu",
+                "visibility": {
+                    "PUBLIC": "Veřejný pro všechny",
+                    "PRIVATE": "Soukromý",
+                    "label": "Viditelnost"
+                },
+                "method": {
+                    "AUTOMATIC": "Automatické přehrávání",
+                    "MANUAL": "Manuální přehrávání",
+                    "INTERACTIVITY": "Pouze pomocí interaktivity",
+                    "label": "Způsob přehrávání"
+                },
+                "automatic": {
+                    "time": "Čas na snímek"
+                },
+                "sizing": {
+                    "FIT_TO_SCREEN": "Přizpůsobit obrazovce",
+                    "MOVEMENT": "Roztáhnout a pohyb",
+                    "label": "Způsob zobrazení"
+                },
+                "save": "Uložit",
+                "link": "Odkaz"
             },
-            "method": {
-                "AUTOMATIC": "Automatické přehrávání",
-                "MANUAL": "Manuální přehrávání",
-                "INTERACTIVITY": "Pouze pomocí interaktivity",
-                "label": "Způsob přehrávání"
+            "export": {
+                "title": "Export materiálu",
+                "description": "Stáhněte si offline zálohu vašeho materiálu v různých formátech. Exportované soubory obsahují všechny snímky ale mohou být omezeny daným formátem a všechny jsou například bez interaktivity.",
+                "local": "Lokální záloha (JSON)",
+                "pdf": "PDF"
             },
-            "automatic": {
-                "time": "Čas na snímek"
-            },
-            "sizing": {
-                "FIT_TO_SCREEN": "Přizpůsobit obrazovce",
-                "MOVEMENT": "Roztáhnout a pohyb",
-                "label": "Způsob zobrazení"
-            },
-            "save": "Uložit",
-            "link": "Odkaz"
+            "exporting": {
+                "title": "Materiál se exportuje",
+                "dscription": "Materiál se exportuje do formátu. Tato operace může trvat několik minut. Po dokončení bude soubor automaticky stáhnut."
+            }
         },
         "ui": {
             "fit-to-screen": "Přizpůsobit obrazovce",

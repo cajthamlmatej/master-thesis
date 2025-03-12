@@ -236,7 +236,8 @@ const pluginStore = usePluginStore();
 const router = useRouter();
 const route = useRoute();
 
-const rendering = ref(route.query.rendering !== null || route.query.rendering === 'true');
+const rendering = ref(route.query.rendering === 'true');
+const debuging = computed(() => route.query.debug === 'true');
 
 const menu = ref<boolean>(false);
 
@@ -272,8 +273,9 @@ onMounted(async () => {
     }
 
     await pluginStore.loaded;
+    await router.isReady();
 
-    await playerStore.requestPlayer(route.query.slide as string);
+    await playerStore.requestPlayer(route.query.slide as string, rendering.value);
     hasNextSlide.value = !!playerStore.getSlides().find(s => s.position > playerStore.getActiveSlide()!.position);
     hasPreviousSlide.value = !!playerStore.getSlides().reverse().find(s => s.position < playerStore.getActiveSlide()!.position);
 
@@ -479,7 +481,7 @@ watch(drawing, (value) => {
 });
 
 watch(() => playerStore.getActiveSlide(), (value) => {
-    router.push({query: {slide: value?.id, rendering: route.query.rendering}});
+    router.push({query: {...route.query, slide: value?.id}});
 });
 </script>
 

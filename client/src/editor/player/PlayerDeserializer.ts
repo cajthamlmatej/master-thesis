@@ -3,7 +3,7 @@ import {PlayerPluginCommunicator} from "@/editor/player/PlayerPluginCommunicator
 
 export class PlayerDeserializer {
 
-    deserialize(data: string, element: HTMLElement, communicator: PlayerPluginCommunicator): Player {
+    deserialize(data: string, element: HTMLElement, communicator: PlayerPluginCommunicator, rendering: boolean = false): Player {
         const parsedData = JSON.parse(data);
         const editorData = parsedData.editor;
         const blocksData = parsedData.blocks;
@@ -19,6 +19,10 @@ export class PlayerDeserializer {
             const block = player.blockRegistry.deserializePlayer(blockData);
 
             if (block) {
+                if(rendering) {
+                    block.interactivity = []; // TODO: move to block?
+                }
+
                 player.addBlock(block);
             }
         }

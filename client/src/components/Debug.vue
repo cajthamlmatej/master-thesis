@@ -1,9 +1,14 @@
 <template>
-    <p class="debug">{{ version }}</p>
+    <p class="debug" v-if="!route.query.rendering">{{ version }}</p>
 </template>
 
 <script lang="ts" setup>
+import {ref} from "vue";
+import {useRoute} from "vue-router";
+
 const version = `v${import.meta.env.VITE_APP_VERSION}`;
+
+const route = useRoute();
 </script>
 
 

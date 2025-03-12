@@ -25,6 +25,7 @@
     "@tiptap/extension-underline": "^2.11.2",
     "@tiptap/pm": "^2.11.2",
     "@tiptap/starter-kit": "^2.11.2",
+    "file-saver": "^2.0.5",
     "floating-vue": "^5.2.2",
     "html-to-image": "^1.11.11",
     "jsonwebtoken": "^9.0.2",
@@ -41,6 +42,7 @@
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
+    "@types/file-saver": "^2.0.7",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20.17.0",
     "@vitejs/plugin-vue": "^5.1.4",

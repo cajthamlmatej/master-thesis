@@ -29,11 +29,20 @@
 <script lang="ts" setup>
 import {onMounted, ref} from "vue";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
+import {useRoute, useRouter} from "vue-router";
 
 const visible = ref(false);
 
-onMounted(() => {
+const route = useRoute();
+const router = useRouter();
+onMounted(async() => {
     visible.value = localStorage.getItem("cookies") !== "true";
+
+    await router.isReady();
+
+    if(route.query.cookies === "true") {
+        visible.value = false;
+    }
 });
 
 function accept() {

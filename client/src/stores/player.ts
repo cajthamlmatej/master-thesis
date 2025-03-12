@@ -32,7 +32,7 @@ export const usePlayerStore = defineStore("player", () => {
 
     const activeSlide = ref<string | undefined>(undefined);
 
-    const requestPlayer = async (slideId: string | undefined) => {
+    const requestPlayer = async (slideId: string | undefined, rendering: boolean) => {
         if (!materialStore.currentMaterial) {
             throw new Error("No material loaded, cannot request player");
         }
@@ -40,7 +40,7 @@ export const usePlayerStore = defineStore("player", () => {
         if(!slideId) {
             await changeSlide(getSlides()[0]);
         } else {
-            await changeSlide(slideId);
+            await changeSlide(slideId, rendering);
         }
 
         playerTime.value = Date.now();
@@ -98,7 +98,7 @@ export const usePlayerStore = defineStore("player", () => {
         instance.data = data;
     }
 
-    const changeSlide = async (slideOrId: Slide | string) => {
+    const changeSlide = async (slideOrId: Slide | string, rendering: boolean = false) => {
         if (!playerElement.value) return;
         const slide = typeof slideOrId === "string" ? getSlideById(slideOrId) : slideOrId;
 
@@ -111,7 +111,7 @@ export const usePlayerStore = defineStore("player", () => {
 
         const deserializer = new PlayerDeserializer();
         const pluginStore = usePluginStore();
-        const newPlayer = deserializer.deserialize(slide.data, playerElement.value, new PlayerPluginCommunicator(toRaw(pluginStore.manager) as PluginManager));
+        const newPlayer = deserializer.deserialize(slide.data, playerElement.value, new PlayerPluginCommunicator(toRaw(pluginStore.manager) as PluginManager), rendering);
 
         setPlayer(newPlayer);
         activeSlide.value = slide.id;
