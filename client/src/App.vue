@@ -17,9 +17,12 @@ import {ref, watch} from "vue";
 import {useAuthenticationStore} from "@/stores/authentication";
 
 useHead({
+    htmlAttrs: {
+        lang: translation.getLanguage(),
+    },
     titleTemplate: (title?: string) => {
         return title ? `${title} — ` + translation.get('web.name') : translation.get('web.name');
-    },
+    }
 });
 
 const router = useRouter();

@@ -226,6 +226,7 @@ import {useUserStore} from "@/stores/user";
 
 import {PlayerMode} from "@/editor/player/PlayerMode";
 import {usePluginStore} from "@/stores/plugin";
+import {useSeoMeta} from "unhead";
 
 const materialStore = useMaterialStore();
 const playerStore = usePlayerStore();
@@ -270,6 +271,12 @@ onMounted(async () => {
     if (materialId) {
         await materialStore.loadMaterial(materialId);
     }
+
+    useSeoMeta({
+        title: $t('page.player.title', {
+            name: materialStore.currentMaterial?.name ?? ''
+        })
+    });
 
     await pluginStore.loaded;
     await router.isReady();

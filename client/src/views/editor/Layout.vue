@@ -125,6 +125,10 @@ import Content from "@/components/editor/panels/Content.vue";
 import EditorPlugins from "@/components/plugin/EditorPlugins.vue";
 import {usePluginStore} from "@/stores/plugin";
 import moment from "moment";
+import {useSeoMeta} from "unhead";
+
+const materialStore = useMaterialStore();
+
 
 const state = ref($t('editor.ui.state.nothing'));
 
@@ -133,7 +137,6 @@ const data = reactive({
 });
 
 const editorStore = useEditorStore();
-const materialStore = useMaterialStore();
 const pluginStore = usePluginStore();
 const editor = ref<Editor | null>(null);
 
@@ -222,6 +225,12 @@ onMounted(async () => {
     if (materialId) {
         await materialStore.loadMaterial(materialId);
     }
+
+    useSeoMeta({
+        title: $t('page.editor.title', {
+            name: materialStore.currentMaterial?.name ?? ''
+        })
+    });
 
     await pluginStore.loaded;
 

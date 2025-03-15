@@ -1,6 +1,6 @@
 {
     "web": {
-        "name": "Mattelight"
+        "name": "Materalist"
     },
     "unit": {
         "ms": "ms",
@@ -50,6 +50,7 @@
             "dashboard": "Jít na ovládací panel"
         },
         "dashboard": {
+            "title": "Ovládací panel",
             "title-welcome": "Vítej, %name%",
             "search": "Hledat...",
             "materials": {
@@ -165,6 +166,12 @@
             "loading": "Aktivace účtu, prosím čekejte...",
             "fail": "Aktivace účtu se nezdařila. Odkaz je neplatný nebo již byl použit, zkuste to znovu.",
             "sign-in": "Přihlásit se"
+        },
+        "editor": {
+            "title": "Editor %name% materiál"
+        },
+        "player": {
+            "title": "Přehrávač %name% materiál"
         }
     },
     "player": {

@@ -131,12 +131,16 @@ import {useRouter} from "vue-router";
 import {$t} from "@/translation/Translation";
 import Card from "@/components/design/card/Card.vue";
 import FileInput from "@/components/design/input/FileInput.vue";
-import {ListItem, marked} from "marked";
+import {marked} from "marked";
 import {Slide} from "@/models/Material";
 import {generateUUID} from "@/utils/Generators";
+import {useHead, useSeoMeta} from "unhead";
+
+useSeoMeta({
+    title: $t('page.dashboard.title')
+});
 
 const router = useRouter();
-
 const userStore = useUserStore();
 const materialStore = useMaterialStore();
 
