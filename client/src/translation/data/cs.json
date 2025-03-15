@@ -455,9 +455,11 @@
     },
     "blocks": {
         "interactiveArea": {
+            "name": "Interaktivní oblast",
             "warning": "Toto nebude viditelné v přehrávači."
         },
         "shape": {
+            "name": "Obrázek",
             "ladder": "Žebřík",
             "crescent": "Půlměsíc",
             "hexagon": "Šestiúhelník",
@@ -479,6 +481,7 @@
             }
         },
         "image": {
+            "name": "Obrázek",
             "failed": "Načtení obrázku se nezdařilo.",
             "property": {
                 "imageUrl": {
@@ -490,6 +493,7 @@
             }
         },
         "text": {
+            "name": "Text",
             "property": {
                 "formatting": {
                     "label": "Formátování"
@@ -497,7 +501,11 @@
             }
         },
         "mermaid": {
+            "name": "Diagram Mermaid",
             "failed": "Načtení diagramu se nezdařilo."
+        },
+        "iframe": {
+            "name": "Webová stránka"
         }
     },
     "property": {
