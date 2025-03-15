@@ -2,8 +2,6 @@
     <header :class="classes">
         <div class="logo">
             <slot name="logo">
-                <router-link :to="{ name: 'Dashboard' }" class="logo cursor-clickable"></router-link>
-
                 <router-link :to="{ name: 'Dashboard' }" class="icon cursor-clickable"></router-link>
             </slot>
         </div>
@@ -144,56 +142,17 @@ header {
     }
 
     > .logo {
-        .logo {
-            position: relative;
-
-            display: block;
-            height: 4em;
-            width: 192px;
-
-            background-image: var(--logo-image);
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-
-            @media (max-width: 768px) {
-                display: none;
-            }
-
-            &::before {
-                position: absolute;
-                top: 0;
-                left: 0;
-
-                height: 100%;
-                width: 100%;
-
-                display: flex;
-                align-items: center;
-
-                content: "Materials";
-                font-size: 2.5em;
-                font-weight: bold;
-                letter-spacing: -0.1em;
-            }
-        }
+        position: relative;
+        left: -0.6em;
 
         .icon {
+            display: block;
             position: relative;
             height: 4em;
-            width: auto;
-
-            display: none;
-
-            @media (max-width: 768px) {
-                display: block;
-            }
-
-            @media (max-width: 400px) {
-                display: none;
-            }
+            width: 5em;
 
             &::before {
+                content: "";
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -204,10 +163,20 @@ header {
                 display: flex;
                 align-items: center;
 
-                content: "M";
+                background: var(--logo-image) no-repeat center;
+                background-size: contain;
                 font-size: 2.5em;
                 font-weight: bold;
                 letter-spacing: -0.1em;
+                transition: filter 0.3s ease-in-out;
+            }
+
+
+            &:hover {
+                &::before {
+                    cursor: pointer;
+                    filter: brightness(1.2) contrast(1.2) drop-shadow(0 0 0.1em rgba(37, 16, 100, 0.28));
+                }
             }
         }
     }

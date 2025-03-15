@@ -8,6 +8,10 @@ body, body.theme--light {
 
     --border-radius: 1rem;
 
+    // GLOBALS
+    --name: "Materialist";
+    --logo-image: url("/logo.png");
+
     // SCROLLBAR
     --color-scrollbar-background: rgba(117, 111, 111, 0.07);
     --color-scrollbar-thumb: #96939b;
@@ -146,4 +150,7 @@ body, body.theme--light {
     --color-plugin-card-background-active: var(--color-background);
     --color-plugin-card-icon-background: var(--color-primary);
     --color-plugin-card-icon-foreground: #f0eafd;
+
+    --color-property-background: #f9f7faba;
+    --color-property-interactive-background: rgba(210, 197, 227, 0.63);
 }
