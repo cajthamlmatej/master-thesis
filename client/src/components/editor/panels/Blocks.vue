@@ -6,7 +6,7 @@
                     v-for="block in blocks"
                     :key="block.type"
                     :icon="block.icon"
-                    @mousedown="(e: MouseEvent) => add(e, 'text')">
+                    @mousedown="(e: MouseEvent) => add(e, block.type)">
                     <span v-t>blocks.{{block.type}}.name</span>
                 </Button>
             </div>
@@ -163,7 +163,7 @@ const blocks: CreateBlockData[] = [
     }
 ]
 
-const add = (event: MouseEvent, type: 'text' | 'image' | 'shape' | 'interactiveArea' | 'mermaid' | 'iframe') => {
+const add = (event: MouseEvent, type: string) => {
     const editorValue = toRaw(editor.value);
 
     if (!editorValue) {
