@@ -91,6 +91,7 @@ watch(() => iframe.value, (value) => {
         width: 100%;
         height: 100%;
         border: none;
+        min-height: calc(100vh - 5em);
     }
 }
 </style>

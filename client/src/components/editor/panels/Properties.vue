@@ -2,8 +2,8 @@
     <Navigation v-model:menu="visible" full-control shift side="right">
         <template #primary>
             <div ref="menu" class="editor-property">
-
             </div>
+            <div class="editor-property-resizer" @mousedown.stop.prevent="resize" ref="resizer"></div>
         </template>
     </Navigation>
 
@@ -20,7 +20,6 @@
 
 import {nextTick, onMounted, ref, watch} from "vue";
 import {useEditorStore} from "@/stores/editor";
-
 
 const onMobile = ref(false);
 const visible = ref(false);
@@ -43,6 +42,58 @@ onMounted(() => {
         }
     });
 });
+//
+// const resizer = ref<HTMLElement | null>(null);
+// watch(() => resizer.value, (value) => {
+//     if (!value) {
+//         return;
+//     }
+//
+//     const closestNavigation = value.closest(".navigation") as HTMLElement;
+//
+//     if (!closestNavigation) {
+//         return;
+//     }
+//
+//     // closestNavigation.addEventListener("scroll", () => {
+//     //     resizer.value!.style.top = closestNavigation.scrollTop + "px";
+//     // });
+// });
+
+const resize = (e: MouseEvent) => {
+    const start = e.clientX;
+    const parent = (e.target! as HTMLDivElement).closest(".navigation") as HTMLElement;
+
+    if (!parent) {
+        return;
+    }
+
+    const width = parent.clientWidth;
+
+    const onMouseMove = (e: MouseEvent) => {
+        const diff = e.clientX - start;
+        const targetWidth = width - diff;
+
+        const halfDisplay = window.innerWidth / 2;
+
+        if(targetWidth < 150 || targetWidth > halfDisplay) {
+            return;
+        }
+
+        parent.style.width = `${width - diff}px`;
+
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
+    const onMouseUp = () => {
+        window.removeEventListener("mousemove", onMouseMove);
+        window.removeEventListener("mouseup", onMouseUp);
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+};
 
 
 const menu = ref<HTMLElement | null>(null);
@@ -83,7 +134,3 @@ watch(() => materialStore.getEditor(), (value) => {
     });
 });
 </script>
-
-<style lang="scss" scoped>
-
-</style>

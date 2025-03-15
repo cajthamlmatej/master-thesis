@@ -281,7 +281,7 @@ const add = (event: MouseEvent, media: string) => {
 }
 
 .results {
-    height: calc(100% - 80px);
+    height: calc(100vh - 20em);
     overflow-y: auto;
 
     display: grid;

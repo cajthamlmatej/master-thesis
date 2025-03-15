@@ -1,4 +1,20 @@
+.editor-property-resizer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 5px;
+    cursor: col-resize;
+    border-right: double 5px rgba(0, 0, 0, 0.1);
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+}
+
 .editor-property {
+    position: relative;
+
     > .properties {
         display: flex;
         flex-direction: column;
@@ -64,6 +80,7 @@
 
                 &--row {
                     flex-direction: row;
+                    width: 100%;
                 }
 
                 > .property-data {
@@ -79,7 +96,7 @@
 
                     &--wrap {
                         flex-wrap: wrap;
-                        justify-content: space-between;
+                        justify-content: center;
                     }
 
                     > input, > select, > textarea {
@@ -176,6 +193,7 @@
                         padding: 0.25em;
                         cursor: pointer;
                         transition: all 0.2s ease;
+                        margin: 0 auto;
 
                         &:hover {
                             background-color: var(--color-button-primary-background-hover);
@@ -191,6 +209,7 @@
                         align-items: center;
 
                         gap: 0.3em;
+                        width: 100%;
                     }
 
                 }
@@ -200,13 +219,12 @@
                 display: flex;
                 flex-direction: column;
                 border-radius: 0.5em;
-                overflow: hidden;
-                box-shadow: var(--shadow-accent);
 
                 gap: 0.5em;
 
                 > .interactivity {
                     background-color: var(--color-property-background);
+                    box-shadow: var(--shadow-accent);
 
                     display: flex;
                     flex-direction: column;
@@ -242,7 +260,6 @@
                                 border: 0px;
                                 padding: 0.15rem 0.4rem;
                                 border-radius: 0.5rem;
-                                border: 0;
 
                                 box-shadow: var(--shadow-accent);
 
@@ -304,6 +321,7 @@
                             > .label {
                                 padding-left: 0.05rem;
                                 color: #1a1a1a;
+                                width: calc(30% - 0.25rem);
                             }
                         }
 
@@ -372,11 +390,11 @@
     top: calc(50% - 75px);
     height: 150px;
     width: 40px;
-    background-color: rgba(229, 229, 229, 0.77);
+    background-color: var(--color-background-accent);
     z-index: 1000;
-    border-top-right-radius: 0.5rem;
-    border-bottom-right-radius: 0.5rem;
-    backdrop-filter: blur(10px);
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    backdrop-filter: blur(18px);
 
     padding-left: 10px;
 

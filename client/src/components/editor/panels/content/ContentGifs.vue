@@ -231,7 +231,8 @@ const add = (event: MouseEvent, media: string) => {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
-    height: calc(100% - 80px);
+    //height: calc(100% - 80px);
+    height: calc(100vh - 20em);
     overflow-y: auto;
 
     > .category {
@@ -297,7 +298,7 @@ const add = (event: MouseEvent, media: string) => {
 }
 
 .results {
-    height: calc(100% - 80px);
+    height: calc(100vh - 20em);
     overflow-y: auto;
 
     display: grid;

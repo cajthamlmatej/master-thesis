@@ -27,12 +27,14 @@ export class TextFormattingProperty<T extends TextEditorBlock = TextEditorBlock>
                     <select data-property="font-family" name="font-family">
                         ${fonts.map(font => `<option value="${font}" style="font-family: ${font};">${font}</option>`).join("")}
                     </select>
-                    <button data-property="font-size-decrease" name="font-size-decrease"><i class="mdi mdi-format-font-size-decrease"></i></button>
-                    <button data-property="font-size-increase" name="font-size-increase"><i class="mdi mdi-format-font-size-increase"></i></button>
                 </div>
                 <div class="property-data property-data--row property-data--wrap">
+                    <button data-property="font-size-decrease" name="font-size-decrease"><i class="mdi mdi-format-font-size-decrease"></i></button>
+                    <button data-property="font-size-increase" name="font-size-increase"><i class="mdi mdi-format-font-size-increase"></i></button>
                     <button data-property="list-bulleted" name="list-bulleted"><i class="mdi mdi-format-list-bulleted"></i></button>
                     <button data-property="list-numbered" name="list-numbered"><i class="mdi mdi-format-list-numbered"></i></button>
+                </div>
+                <div class="property-data property-data--row property-data--wrap">
                     <button data-property="align-left" name="align-left"><i class="mdi mdi-format-align-left"></i></button>
                     <button data-property="align-center" name="align-center"><i class="mdi mdi-format-align-center"></i></button>
                     <button data-property="align-right" name="align-right"><i class="mdi mdi-format-align-right"></i></button>

@@ -143,11 +143,11 @@ header {
 
     > .logo {
         position: relative;
-        left: -0.6em;
 
         .icon {
             display: block;
             position: relative;
+            left: -0.6em;
             height: 4em;
             width: 5em;
 
