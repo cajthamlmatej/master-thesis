@@ -233,7 +233,8 @@
                 }
 
                 .player-draw-navigation-settings-content {
-                    background-color: white;
+                    background-color: var(--color-background-accent);
+                    backdrop-filter: blur(18px);
                     border-radius: 100em;
                     padding: 1em;
                     box-shadow: 0 0 0.5em 0.25em rgba(0, 0, 0, 0.2);
@@ -452,9 +453,10 @@
                     justify-content: center;
                     align-items: center;
 
-                    background-color: white;
                     border: 0;
-                    box-shadow: 0 0 0.5em 0.25em rgba(0, 0, 0, 0.2);
+                    box-shadow: var(--shadow-accent);
+                    background-color: var(--color-background-accent);
+                    backdrop-filter: blur(18px);
 
                     transition: background-color 0.2s, color 0.2s;
 

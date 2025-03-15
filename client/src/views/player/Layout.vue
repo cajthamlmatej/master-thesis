@@ -1,6 +1,6 @@
 <template>
     <div class="underlay">
-        <Header v-if="material && !rendering" v-model:menu="menu" :active="active" fixed>
+        <Header v-if="material && !rendering" v-model:menu="menu" :active="active" fixed class="player-header">
             <template #logo>
                 <div class="meta">
                     <span class="name">{{ material.name }}</span>
@@ -11,7 +11,6 @@
             </template>
             <template #navigation>
                 <div class="flex gap-0-5">
-
                     <ChangeLanguage/>
 
                     <NavigationButton
@@ -486,6 +485,10 @@ watch(() => playerStore.getActiveSlide(), (value) => {
 </script>
 
 <style lang="scss" scoped>
+.player-header {
+    background-color: var(--color-background-accent);
+}
+
 .underlay {
     width: 100%;
     height: 100%;

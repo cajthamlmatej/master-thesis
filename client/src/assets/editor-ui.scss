@@ -20,6 +20,7 @@
         flex-direction: column;
         gap: 0.5em;
         padding: 1em;
+        height: calc(100vh - 5em);
 
         .property {
             display: flex;
