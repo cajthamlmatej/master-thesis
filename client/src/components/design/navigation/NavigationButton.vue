@@ -101,8 +101,8 @@ const handleClick = (e: any) => {
 <style lang="scss" scoped>
 button.button,
 a.button {
-    width: 4em;
-    height: 4em;
+    width: 3rem;
+    height: 3rem;
 
     display: flex;
     justify-content: center;
@@ -120,7 +120,7 @@ a.button {
     padding: 0;
     margin: 0;
     line-height: normal;
-    font-size: 0.8em;
+    font-size: 0.7em;
 
     &:hover {
         background-color: var(--color-navigation-button-background-hover);

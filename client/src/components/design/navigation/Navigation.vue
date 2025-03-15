@@ -96,10 +96,13 @@ aside.navigation {
 
     overflow-y: auto;
 
-    padding: 1em 0;
+    //padding: 1em 0;
+    padding-bottom: 1em;
 
     background-color: var(--color-navigation-background);
-    border-right: var(--nagivation-border-width) solid var(--color-navigation-border);
+    //border-right: var(--nagivation-border-width) solid var(--color-navigation-border);
+
+    box-shadow: var(--shadow-primary);
 
     transition: left 0.3s ease-in-out, right 0.3s ease-in-out;
 
@@ -111,6 +114,7 @@ aside.navigation {
         left: 0;
         width: 4.5em;
         z-index: 1001;
+        backdrop-filter: blur(18px);
 
         &.navigation--hidden {
             @media (max-width: 768px) {
@@ -121,12 +125,16 @@ aside.navigation {
             }
         }
     }
+    &:not(&--primary) {
+        backdrop-filter: blur(18px);
+        background-color: var(--color-navigation-background-overlay);
+    }
 
     &--right {
         right: 0;
         left: unset;
         border-right: unset;
-        border-left: var(--nagivation-border-width) solid var(--color-navigation-border);
+        //border-left: var(--nagivation-border-width) solid var(--color-navigation-border);
 
         &.navigation--hidden {
             right: -20em;
@@ -223,7 +231,7 @@ aside.navigation {
         height: calc(100 * (var(--vh, 1vh)) - 5em);
 
         border-right: unset;
-        border-left: var(--nagivation-border-width) solid var(--color-navigation-border);
+        //border-left: var(--nagivation-border-width) solid var(--color-navigation-border);
 
         transition: right 0.3s ease-in-out;
 
@@ -249,7 +257,7 @@ aside.navigation {
             left: 0;
             right: unset;
             border-left: unset;
-            border-right: var(--nagivation-border-width) solid var(--color-navigation-border);
+            //border-right: var(--nagivation-border-width) solid var(--color-navigation-border);
 
             &.navigation--hidden {
                 left: -20em;

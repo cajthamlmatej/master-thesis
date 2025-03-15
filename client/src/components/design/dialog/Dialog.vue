@@ -105,7 +105,7 @@ const classes = computed(() => {
     return {
         'dialog': true,
         'dialog--persistent': props.persistent,
-        'dialog--stretch': props.stretch
+        'dialog--stretch': props.stretch,
     }
 });
 </script>
@@ -152,19 +152,28 @@ const classes = computed(() => {
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        box-shadow: var(--shadow-accent);
+
+        &:has(.card.card--dialog) {
+            border-radius: var(--border-radius);
+        }
     }
 
     &--stretch {
         > .dialog-content {
-            height: 100%;
+            height: 70vh;
 
-            > * {
-                flex: 1;
+            //> * {
+            //    flex: 1;
+            //    height: 100%;
+            //}
+
+            ::v-deep(.dialog-content, .card--dialog), .card--dialog {
                 height: 100%;
             }
-
-            ::v-deep(.dialog-content) {
-                height: 100%;
+            > ::v-deep(.card--dialog) {
+                min-height: 100%;
             }
         }
     }

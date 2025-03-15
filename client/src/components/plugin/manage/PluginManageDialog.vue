@@ -1,5 +1,5 @@
 <template>
-    <Dialog>
+    <Dialog stretch>
         <template #activator="{toggle}">
             <NavigationButton
                 :label="$t('editor.ui.plugin.manage')"
@@ -8,11 +8,13 @@
                 @click="toggle"></NavigationButton>
         </template>
         <template #default>
-            <Card dialog>
-                <Tabs v-model:selected="selected" :items="[
-                    {value: 'active', text:$t('editor.plugin.manage.active')},
-                    {value: 'browse', text:$t('editor.plugin.manage.browse.title')}
-                ]" fluid></Tabs>
+            <Card dialog class="editor-plugin-manage-dialog">
+                <div class="tabs">
+                    <Tabs v-model:selected="selected" :items="[
+                        {value: 'active', text:$t('editor.plugin.manage.active')},
+                        {value: 'browse', text:$t('editor.plugin.manage.browse.title')}
+                    ]" fluid></Tabs>
+                </div>
 
                 <div v-if="selected == 'active'">
                     <List>
@@ -158,61 +160,3 @@ const removePlugin = async (plugin: PluginContext) => {
 
 const manifestVersion = PluginManager.CURRENT_MANIFEST_VERSION;
 </script>
-
-<style lang="scss" scoped>
-.disabled-title {
-    font-size: 1.2rem;
-    margin-top: 1em;
-    margin-bottom: 0.25em;
-}
-
-.disabled-description {
-    font-size: 0.9rem;
-    color: var(--color-text-subtle);
-    margin-bottom: 1em;
-}
-
-.version {
-    width: 100%;
-    text-align: right;
-    font-size: 0.8rem;
-    color: var(--color-text-subtle);
-    margin-top: 0.25em;
-    margin-bottom: 0;
-}
-
-.plugin {
-    .meta {
-        display: flex;
-        flex-direction: column;
-
-        .author {
-            font-size: 0.8rem;
-            color: var(--color-text-subtle);
-        }
-    }
-
-    .warning-container {
-        display: flex;
-        justify-content: start;
-        align-items: center;
-
-        flex-grow: 1;
-
-        .warning {
-            background-color: var(--color-primary);
-            border-radius: 50%;
-            width: 2em;
-            height: 2em;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-        }
-    }
-
-    &.disabled {
-        background-color: var(--color-background);
-    }
-}
-</style>

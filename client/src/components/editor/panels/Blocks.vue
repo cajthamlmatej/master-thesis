@@ -2,14 +2,13 @@
     <Navigation v-model:menu="blocksMenu" full-control shift>
         <template #primary>
             <div v-show="blocksMenu" ref="menu" class="menu editor-blocks">
-                <button @mousedown="(e) => add(e, 'text')"><span class="mdi mdi-pencil-plus-outline"></span></button>
-                <button @mousedown="(e) => add(e, 'image')"><span class="mdi mdi-image-plus-outline"></span></button>
-                <button @mousedown="(e) => add(e, 'shape')"><span class="mdi mdi-shape-plus-outline"></span></button>
-                <button @mousedown="(e) => add(e, 'interactiveArea')"><span
-                    class="mdi mdi-cursor-default-click-outline"></span></button>
-                <button @mousedown="(e) => add(e, 'mermaid')"><span class="mdi mdi-chart-timeline"></span></button>
-                <button @mousedown="(e) => add(e, 'iframe')"><span
-                    class="mdi mdi-application-parentheses-outline"></span></button>
+                <Button
+                    v-for="block in blocks"
+                    :key="block.type"
+                    :icon="block.icon"
+                    @mousedown="(e: MouseEvent) => add(e, 'text')">
+                    <span v-t>blocks.{{block.type}}.name</span>
+                </Button>
             </div>
         </template>
     </Navigation>
@@ -56,6 +55,114 @@ watch(() => materialStore.getEditor(), (value) => {
     editor.value = value as Editor;
 });
 
+interface CreateBlockData {
+    icon: string;
+    type: string;
+    create: (x: number, y: number, width: number, height: number, smaller: number) => EditorBlock;
+}
+
+const blocks: CreateBlockData[] = [
+    {
+        icon: "pencil-plus-outline",
+        type: "text",
+        create: (x, y, width, height, smaller) => {
+            const fontSize = smaller / 20;
+            const lineHeight = fontSize * 1.5;
+
+            return new TextEditorBlock(
+                {
+                    id: generateUUID(),
+                    position: {x: -100, y: -100},
+                    size: {width: Math.max(width / 4, 300), height: lineHeight},
+                    rotation: 0,
+                    zIndex: 0,
+                },
+                "Your text here",
+                fontSize,
+            );
+        }
+    },
+    {
+        icon: "shape-plus-outline",
+        type: "shape",
+        create: (x, y, width, height, smaller) => {
+            return new ShapeEditorBlock(
+                {
+                    id: generateUUID(),
+                    position: {x: -100, y: -100},
+                    size: {width: smaller / 4, height: smaller / 4},
+                    rotation: 0,
+                    zIndex: 0,
+                },
+                "#1a1a19",
+                "arrow-1"
+            );
+        }
+    },
+    {
+        icon: "image-plus-outline",
+        type: "image",
+        create: (x, y, width, height, smaller) => {
+            return new ImageEditorBlock(
+                {
+                    id: generateUUID(),
+                    position: {x: -100, y: -100},
+                    size: {width: smaller / 4, height: smaller / 4},
+                    rotation: 0,
+                    zIndex: 0,
+                },
+                true,
+                "https://robohash.org/" + generateUUID() + "?set=set4"
+            );
+        }
+    },
+    {
+        icon: "chart-timeline",
+        type: "mermaid",
+        create: (x, y, width, height, smaller) => {
+            return new MermaidEditorBlock(
+                {
+                    id: generateUUID(),
+                    position: {x: -100, y: -100},
+                    size: {width: smaller / 4, height: smaller / 4},
+                    rotation: 0,
+                    zIndex: 0,
+                },
+                "graph TB\na-->b");
+        }
+    },
+    {
+        icon: "cursor-default-click-outline",
+        type: "interactiveArea",
+        create: (x, y, width, height, smaller) => {
+            return new InteractiveAreaEditorBlock(
+                {
+                    id: generateUUID(),
+                    position: {x: -100, y: -100},
+                    size: {width: smaller / 4, height: smaller / 4},
+                    rotation: 0,
+                    zIndex: 0,
+                },
+            );
+        }
+    },
+    {
+        icon: "application-parentheses-outline",
+        type: "iframe",
+        create: (x, y, width, height, smaller) => {
+            return new IframeEditorBlock(
+                {
+                    id: generateUUID(),
+                    position: {x: -100, y: -100},
+                    size: {width: smaller / 4, height: smaller / 4},
+                    rotation: 0,
+                    zIndex: 0,
+                },
+                "<p><b>Example</b> iframe</p>");
+        }
+    }
+]
+
 const add = (event: MouseEvent, type: 'text' | 'image' | 'shape' | 'interactiveArea' | 'mermaid' | 'iframe') => {
     const editorValue = toRaw(editor.value);
 
@@ -73,83 +180,14 @@ const add = (event: MouseEvent, type: 'text' | 'image' | 'shape' | 'interactiveA
 
     const smaller = width < height ? width : height;
 
-    switch (type) {
-        case 'text':
-            const fontSize = smaller / 20;
-            const lineHeight = fontSize * 1.5;
+    const blockData = blocks.find(b => b.type === type);
 
-            block = new TextEditorBlock(
-                {
-                    id: generateUUID(),
-                    position: {x: -100, y: -100},
-                    size: {width: Math.max(width / 4, 300), height: lineHeight},
-                    rotation: 0,
-                    zIndex: 0,
-                },
-                "Your text here",
-                fontSize,
-            );
-            break;
-        case 'shape':
-            block = new ShapeEditorBlock(
-                {
-                    id: generateUUID(),
-                    position: {x: -100, y: -100},
-                    size: {width: smaller / 4, height: smaller / 4},
-                    rotation: 0,
-                    zIndex: 0,
-                },
-                "#1a1a19",
-                "arrow-1"
-            );
-            break;
-        case 'image':
-            block = new ImageEditorBlock(
-                {
-                    id: generateUUID(),
-                    position: {x: -100, y: -100},
-                    size: {width: smaller / 4, height: smaller / 4},
-                    rotation: 0,
-                    zIndex: 0,
-                },
-                true,
-                "https://robohash.org/" + generateUUID() + "?set=set4"
-            );
-            break;
-        case 'interactiveArea':
-            block = new InteractiveAreaEditorBlock(
-                {
-                    id: generateUUID(),
-                    position: {x: -100, y: -100},
-                    size: {width: smaller / 4, height: smaller / 4},
-                    rotation: 0,
-                    zIndex: 0,
-                },
-            );
-            break;
-        case 'mermaid':
-            block = new MermaidEditorBlock(
-                {
-                    id: generateUUID(),
-                    position: {x: -100, y: -100},
-                    size: {width: smaller / 4, height: smaller / 4},
-                    rotation: 0,
-                    zIndex: 0,
-                },
-                "graph TB\na-->b");
-            break;
-        case 'iframe':
-            block = new IframeEditorBlock(
-                {
-                    id: generateUUID(),
-                    position: {x: -100, y: -100},
-                    size: {width: smaller / 4, height: smaller / 4},
-                    rotation: 0,
-                    zIndex: 0,
-                },
-                "<p><b>Example</b> iframe</p>");
-            break;
+    if(!blockData) {
+        console.error("Block not found");
+        return;
     }
+
+    block = blockData.create(startX, startY, width, height, smaller);
 
     editorValue.addBlock(block);
     block.move(startX, startY);
@@ -183,7 +221,3 @@ const add = (event: MouseEvent, type: 'text' | 'image' | 'shape' | 'interactiveA
     window.addEventListener("mouseup", up);
 };
 </script>
-
-<style lang="scss" scoped>
-
-</style>

@@ -222,6 +222,7 @@ watch(() => editorStore.getEditor(), async (editor) => {
     background-color: var(--color-background-accent);
     width: 100%;
     padding: 0.5em;
+    backdrop-filter: blur(18px);
 }
 
 .property-holder {

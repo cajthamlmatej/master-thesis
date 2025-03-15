@@ -1,7 +1,7 @@
 <template>
     <Header :hasMenu="false">
         <template #navigation>
-            <ChangeLanguage/>
+            <ChangeLanguage :header="false"/>
 
             <!-- TODO: Link to mainpage on diff domain -->
             <NavigationButton :label="$t('layout.auth.home')" icon="home-outline"/>

@@ -234,6 +234,7 @@ const iconSize = computed(() => {
         cursor: not-allowed;
         background-color: var(--background-color-disabled);
         position: relative;
+        color: var(--foreground-color-disabled);
 
         > * {
             opacity: 0.5;
@@ -256,6 +257,7 @@ const iconSize = computed(() => {
         cursor: not-allowed;
         position: relative;
         background-color: var(--background-color-disabled);
+        color: var(--foreground-color-disabled);
 
         > * {
             opacity: 0.5;
@@ -327,6 +329,7 @@ const iconSize = computed(() => {
         --background-color-active: var(--color-button-primary-background-active);
         --background-color-disabled: var(--color-button-primary-background-disabled);
         --button-text-color: var(--color-button-primary-foreground);
+        --foreground-color-disabled: var(--color-button-primary-foreground-disabled);
     }
 
     &--neutral {
@@ -335,14 +338,16 @@ const iconSize = computed(() => {
         --background-color-active: var(--color-button-neutral-background-active);
         --background-color-disabled: var(--color-button-neutral-background-disabled);
         --button-text-color: var(--color-button-neutral-foreground);
+        --foreground-color-disabled: var(--button-text-color);
     }
 
     &--transparent {
-        --background-color: transparent;
-        --background-color-hover: rgba(0, 0, 0, 0.1);
-        --background-color-active: rgba(0, 0, 0, 0.2);
-        --background-color-disabled: rgba(0, 0, 0, 0.05);
-        --button-text-color: inherit;
+        --background-color: var(--color-button-transparent-background);
+        --background-color-hover: var(--color-button-transparent-background-hover);
+        --background-color-active: var(--color-button-transparent-background-active);
+        --background-color-disabled: var(--color-button-transparent-background-disabled);
+        --button-text-color: var(--color-button-transparent-foreground);
+        --foreground-color-disabled: var(--button-text-color);
     }
 }
 </style>

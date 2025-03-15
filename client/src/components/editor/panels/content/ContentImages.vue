@@ -1,8 +1,8 @@
 <template>
-    <div class="flex flex-justify-space-between flex-align-center">
+    <div class="flex flex-justify-space-between mb-1 flex-align-stretch">
         <Input ref="searchInput" v-model:value="search" :placeholder="$t('editor.panel.content.images.search')" hide-error
                hide-label></Input>
-        <Button icon="close" @click="search = ''"></Button>
+<!--        <Button icon="close" @click="search = ''"></Button>-->
     </div>
 
     <div v-if="results.length > 0" ref="content" class="results">
@@ -281,7 +281,7 @@ const add = (event: MouseEvent, media: string) => {
 }
 
 .results {
-    height: calc(100% - 60px);
+    height: calc(100% - 80px);
     overflow-y: auto;
 
     display: grid;

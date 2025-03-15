@@ -1,6 +1,6 @@
 <template>
     <Card fluid>
-        <div class="flex flex-justify-space-between flex-align-center">
+        <div class="flex flex-justify-center flex-justify-sm-space-between flex-align-center flex-wrap gap-1">
             <span v-t="{ name: userStore.user?.name ?? '' }" class="main-title">page.dashboard.title-welcome</span>
 
             <div class="flex flex-align-center gap-1">
@@ -29,7 +29,7 @@
 
                                             <FileInput v-model:value="importFile" class="mt-1"/>
 
-                                            <Alert type="error" v-if="importError">
+                                            <Alert type="error" v-if="importError" class="mt-1">
                                                 {{ importError }}
                                             </Alert>
 
@@ -67,8 +67,8 @@
         </Alert>
     </div>
 
-    <Row align="stretch" class="mt-1" wrap>
-        <Col v-for="material in materialsOnPage" :key="material.id" cols="12" lg="3" md="3" sm="4">
+    <Row align="stretch" class="mt-1" :gap="1" wrap >
+        <Col v-for="material in materialsOnPage" :key="material.id" cols="12" lg="3" md="4" sm="6">
             <article class="material" @click="router.push({name: 'Editor', params: {material: material.id}})">
                 <div class="image-holder">
                     <img v-if="material.thumbnail"
@@ -78,7 +78,7 @@
 
                 <div class="meta">
                     <div class="state">
-                        <p class="title">{{ material.name }}</p>
+                        <p class="title" v-tooltip="material.name">{{ material.name }}</p>
 
                         <p class="time">
                             <span v-t>page.dashboard.materials.modified</span> {{ material.updatedAt.fromNow() }}</p>
@@ -91,6 +91,7 @@
                         <Dialog>
                             <template #activator="{toggle}">
                                 <Button v-tooltip="$t('page.dashboard.materials.delete-tooltip')" :loading="processing"
+                                        color="transparent"
                                         icon="mdi mdi-delete" @click.stop.capture="toggle"/>
                             </template>
                             <template #default="{toggle}">
@@ -112,7 +113,7 @@
                             </template>
                         </Dialog>
                         <Button v-tooltip="$t('page.dashboard.materials.copy-tooltip')" :loading="processing"
-                                color="primary" icon="mdi mdi-content-copy"
+                                color="transparent" icon="mdi mdi-content-copy"
                                 @click.stop.capture="copyMaterial(material.id)"/>
                     </div>
                 </div>
@@ -465,8 +466,9 @@ a.material {
 }
 
 article.material {
-    border: 1px solid #ccc;
-    border-radius: 0.25em;
+    //border: 1px solid #ccc;
+    background-color: var(--color-background-accent);
+    border-radius: var(--border-radius);
     cursor: pointer;
     transition: all 0.2s ease;
     color: var(--color-text);
@@ -475,7 +477,6 @@ article.material {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: white;
 
     position: relative;
 
@@ -486,7 +487,7 @@ article.material {
         height: 100%;
         top: 0;
         left: 0;
-        box-shadow: inset var(--shadow-accent);
+        //box-shadow: inset var(--shadow-accent);
         background-color: rgba(221, 250, 209, 0.04);
         z-index: 3;
         opacity: 0;
@@ -494,15 +495,20 @@ article.material {
     }
 
     &:hover {
-        background-color: #f0f0f0;
+        //background-color: rgba(231, 222, 253, 0.91);
+        box-shadow: var(--shadow-accent);
 
         &:before {
             opacity: 1;
         }
+
+        .image-holder {
+            filter: brightness(1.1);
+        }
     }
 
     &:hover:has(.button:hover), &:hover:has(.actions:hover) {
-        background: white;
+        //background: white;
 
         &:before {
             opacity: 0;
@@ -513,7 +519,7 @@ article.material {
         width: 100%;
         justify-content: space-between;
         align-items: end;
-        padding: 0.5em;
+        padding: 1em;
         gap: 0.5em;
 
         display: flex;
@@ -557,13 +563,16 @@ article.material {
 
     .image-holder {
         position: relative;
-        border-radius: 0.25em;
+        border-radius: var(--border-radius);
         width: 100%;
-        height: 8em;
+        height: 10em;
         flex-grow: 1;
 
         background-color: #ffffff;
         overflow: hidden;
+        box-shadow: var(--shadow-accent);
+
+        transition: filter 0.2s;
 
         &:before {
             position: absolute;
@@ -573,7 +582,8 @@ article.material {
             top: 0;
             left: 0;
             z-index: 1;
-            box-shadow: inset var(--shadow-accent);
+            //box-shadow: inset var(--shadow-accent);
+            background-color: rgba(72, 0, 255, 0.11);
         }
 
         .thumbnail, .placeholder {

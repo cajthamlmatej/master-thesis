@@ -12,16 +12,11 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
-    noOutline: {
-        type: Boolean,
-        default: false,
-    },
 });
 
 const classes = computed(() => ({
     'list': true,
     'list--dense': props.dense,
-    'list--no-outline': props.noOutline,
 }));
 </script>
 
@@ -32,20 +27,12 @@ const classes = computed(() => ({
     flex-direction: column;
 
     background-color: var(--color-list-background);
-    border-radius: 0.5em;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-accent);
 
-    border: var(--list-border-width) solid var(--color-list-border);
+    //border: var(--list-border-width) solid var(--color-list-border);
 
     //overflow: hidden;
-
-    &.list--no-outline {
-        border: none;
-        border-radius: 0.5rem;
-
-        > ::v-deep(.list-item) {
-            border-top: 0px;
-        }
-    }
 
     &.list--dense {
         ::v-deep(.list-item) {

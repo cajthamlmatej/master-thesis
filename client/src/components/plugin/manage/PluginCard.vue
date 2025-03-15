@@ -128,9 +128,9 @@ const activate = async () => {
     width: 100%;
     display: flex;
     flex-direction: column;
-    background: var(--color-background);
+    background: var(--color-plugin-card-background);
     box-shadow: var(--shadow-accent);
-    border-radius: 0.5em;
+    border-radius: var(--border-radius);
     overflow: hidden;
     position: relative;
 
@@ -144,8 +144,7 @@ const activate = async () => {
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--color-background);
-            opacity: 0.4;
+            background: var(--color-plugin-card-background-active);
             z-index: 1;
         }
     }
@@ -154,20 +153,20 @@ const activate = async () => {
         display: flex;
         justify-content: center;
         align-items: center;
-        background: var(--color-background-accent);
-        box-shadow: inset var(--shadow-accent);
+        background: var(--color-plugin-card-icon-background);
 
         span {
-            font-size: 2.5em;
-            color: var(--color-primary);
+            font-size: 3em;
+            color: var(--color-plugin-card-icon-foreground);
         }
     }
 
     .meta {
-        padding: 1em;
+        padding: 0.5rem 1rem;
         display: flex;
         flex-direction: column;
-        gap: 0.25em;
+        gap: 0.15em;
+        font-size: 1.2em;
 
         p {
             margin: 0;
@@ -180,18 +179,16 @@ const activate = async () => {
     }
 
     .description {
-        padding: 1em;
-        border-top: 2px solid var(--color-background-accent);
+        padding: 0.25rem 1rem;
         color: var(--color-text-subtle);
         font-style: italic;
-        font-size: 0.8rem;
+        font-size: 0.8em;
 
         flex-grow: 1;
     }
 
     .lastVersion {
-        padding: 1em;
-        border-top: 2px solid var(--color-background-accent);
+        padding: 0.25rem 1rem;
         color: var(--color-text-subtle);
         text-align: right;
         font-size: 0.6rem;
@@ -200,7 +197,7 @@ const activate = async () => {
     .actions {
         display: flex;
         justify-content: flex-end;
-        padding: 0.25em;
+        padding: 0.25rem 1rem 1rem 1rem;
         gap: 0.5em;
     }
 }

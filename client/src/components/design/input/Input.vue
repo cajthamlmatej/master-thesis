@@ -305,6 +305,8 @@ defineExpose({
             border-radius: 0.4em;
             border: var(--input-invalid-border-width) solid transparent;
 
+            box-shadow: var(--shadow-accent);
+
             font-size: 1em;
             //font-weight: 600;
             color: var(--color-input-text);

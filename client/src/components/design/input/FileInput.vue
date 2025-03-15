@@ -24,7 +24,7 @@
             @change="selectFiles"
         />
 
-        <Button color="neutral" fluid icon="upload" @click="openFileSelect"
+        <Button color="transparent" fluid icon="upload" @click="openFileSelect"
                 @dragstart.prevent>
             {{ uploadText }}
         </Button>
@@ -187,7 +187,7 @@ const classes = computed(() => ({
 <style lang="scss" scoped>
 .file-input {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
 
     gap: 1em;
@@ -249,7 +249,8 @@ const classes = computed(() => ({
         padding: 1em 0.8em;
 
         color: var(--color-input-text);
-        background-color: var(--color-input-background-accent);
+        background-color: var(--color-input-background);
+        box-shadow: var(--shadow-primary);
         border-radius: 0.4em;
         border: 1px solid transparent;
 
@@ -274,7 +275,9 @@ const classes = computed(() => ({
             right: 0.5em;
             padding: 0.2em;
 
-            top: calc(50% - 0.7em);
+            //top: calc(50% - 0.7em);
+            top: 50%;
+            transform: translateY(-50%);
 
             transition: color 0.1s ease-in-out;
 

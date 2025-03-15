@@ -40,10 +40,11 @@ const classes = computed(() => ({
     padding: 1em;
 
     background-color: var(--color-card-background);
-    border-radius: 0.5em;
+    border-radius: var(--color-card-border-radius);
     box-shadow: var(--shadow-primary);
 
     &.card--dialog {
+        background-color: var(--color-card-dialog-background);
         width: 600px;
 
         @media (max-width: 768px) {

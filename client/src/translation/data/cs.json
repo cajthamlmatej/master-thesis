@@ -110,8 +110,8 @@
                 }
             },
             "login": "Přihlásit se",
-            "already-code": "Mám kód",
-            "no-code": "Potřebuji kód",
+            "already-code": "Mám kód.",
+            "no-code": "Potřebuji kód.",
             "create-account": "Vytvořit účet",
             "fail": {
                 "failed": "Přihlášení se nezdařilo. Zkontrolujte, zda jste zadali správné údaje o účtu.",
@@ -148,7 +148,7 @@
             "after-register": "Po registraci budete vyzváni k potvrzení registrace pomocí odkazu v zadaném e-mailu.",
             "by-registering": "Registrací souhlasíte s podmínkami používání a zásadami ochrany osobních údajů.",
             "already-account": "Už máte účet?",
-            "sign-in": "Přihlaste se zde",
+            "sign-in": "Přihlaste se zde.",
             "success": {
                 "title": "Úspěšná registrace",
                 "message": "Registrace proběhla úspěšně. Podívejte se do e-mailu na odkaz pro potvrzení registrace. Poté se můžete přihlásit.",

@@ -8,7 +8,7 @@
                     <span class="state">{{ state }}</span>
                 </div>
 
-                <div class="flex gap-1">
+                <div class="flex gap-0-5">
                     <Save @save="saved" @saving="saving" />
 
                     <NavigationButton :label="$t('editor.navigation.preview')"
@@ -287,10 +287,12 @@ const fitToScreen = () => {
 }
 
 main {
-    padding: 0 0 0 4.5em;
+    margin: 0 0 0 4.5em;
+    padding: 0;
+    overflow: hidden;
 
     @media (max-width: 768px) {
-        padding: 0;
+        margin: 0;
     }
 }
 

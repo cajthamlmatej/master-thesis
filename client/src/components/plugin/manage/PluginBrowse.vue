@@ -1,41 +1,43 @@
 <template>
-    <header>
-        <div>
-            <Tabs
-                v-model:selected="currentTag"
-                :items="
+    <div class="editor-plugin-browse-dialog">
+        <header>
+            <div>
+                <Tabs
+                    v-model:selected="currentTag"
+                    :items="
                     ['ALL', ...pluginStore.tags]
                         .map((tag) => ({ value: tag, text: $t(`editor.plugin.manage.browse.tags.${tag}`) }))
                 "
-                fluid
+                    fluid
+                />
+            </div>
+
+            <div class="mb-1">
+                <Input
+                    v-model:value="search"
+                    :placeholder="$t('editor.plugin.manage.browse.search')"
+                    hide-error
+                    hide-label
+                    icon="magnify"
+                ></Input>
+            </div>
+        </header>
+
+        <Pagination v-model:page="page" :page-size="3" class="mb-1" :total="pageCount"/>
+
+        <div class="browse">
+            <PluginCard v-for="plugin in pluginsToShow"
+                        :key="plugin.id"
+                        :active="plugin.active"
+                        :plugin="plugin"
+                        include-actions
+
+                        @activate="updateKey++"
             />
         </div>
 
-        <div class="mb-1">
-            <Input
-                v-model:value="search"
-                :placeholder="$t('editor.plugin.manage.browse.search')"
-                hide-error
-                hide-label
-                icon="magnify"
-            ></Input>
-        </div>
-    </header>
-
-    <Pagination v-model:page="page" :page-size="3" :total="pageCount"/>
-
-    <div class="browse">
-        <PluginCard v-for="plugin in pluginsToShow"
-                    :key="plugin.id"
-                    :active="plugin.active"
-                    :plugin="plugin"
-                    include-actions
-
-                    @activate="updateKey++"
-        />
+        <p v-if="pluginsToShow.length === 0" class="no-results">{{ $t('editor.plugin.manage.browse.no-plugins') }}</p>
     </div>
-
-    <p v-if="pluginsToShow.length === 0" class="no-results">{{ $t('editor.plugin.manage.browse.no-plugins') }}</p>
 </template>
 
 <script lang="ts" setup>
@@ -94,39 +96,4 @@ const plugins = computed(() => pluginStore.plugins);
 </script>
 
 <style lang="scss" scoped>
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1em;
-    padding: 0.5em;
-
-    div {
-        flex-grow: 0;
-        width: 40%;
-
-        &:nth-child(1) {
-            width: 60%;
-        }
-    }
-}
-
-
-.browse {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1em;
-    padding: 0.5em;
-    justify-content: space-between;
-
-    :deep(.plugin) {
-        flex-basis: 30%;
-    }
-}
-
-.no-results {
-    text-align: center;
-    padding: 1em;
-    color: var(--color-text-subtle);
-}
 </style>

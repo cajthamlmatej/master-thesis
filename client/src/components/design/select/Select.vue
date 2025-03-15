@@ -335,6 +335,7 @@ article.select {
             width: 100%;
             height: 100%;
             background-color: var(--color-select-wrapper-background);
+            box-shadow: var(--shadow-accent);
             border: none;
             border-radius: 0.5em;
             padding: 0 0.75em;
@@ -348,7 +349,7 @@ article.select {
 
             &:hover {
                 background-color: var(--color-select-wrapper-background-hover);
-                box-shadow: var(--shadow-primary);
+                box-shadow: var(--shadow-accent), inset var(--shadow-primary);
             }
 
             > span.mdi {

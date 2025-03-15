@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
 import {useRoute, useRouter} from "vue-router";
-import {computed, onMounted, onUnmounted, watch} from "vue";
+import {computed, onMounted, ref, onUnmounted, watch} from "vue";
 
 const props = defineProps({
     hasMenu: {
@@ -91,8 +91,27 @@ onUnmounted(() => {
 const classes = computed(() => {
     return {
         "header--active": props.active,
-        "header--fixed": props.fixed
+        "header--fixed": props.fixed,
+        "header--scrolled": scrolled.value
     }
+});
+
+const scrolled = ref(false);
+
+const scroll = () => {
+    if (window.scrollY > 0) {
+        scrolled.value = true;
+    } else {
+        scrolled.value = false;
+    }
+};
+
+onMounted(() => {
+    window.addEventListener("scroll", scroll);
+});
+
+onUnmounted(() => {
+    window.removeEventListener("scroll", scroll);
 });
 </script>
 
@@ -105,7 +124,8 @@ header {
     height: 5em;
     width: 100%;
     background-color: var(--color-navigation-background-accent);
-    border-bottom: var(--nagivation-border-width) solid var(--color-navigation-border);
+    backdrop-filter: blur(18px);
+    //border-bottom: var(--nagivation-border-width) solid var(--color-navigation-border);
 
     display: flex;
     justify-content: space-between;
@@ -200,7 +220,7 @@ header {
             display: flex;
             justify-content: center;
 
-            gap: 1.5em;
+            gap: 0.5em;
 
             > li#menu {
                 @media (min-width: 769px) {
@@ -212,8 +232,23 @@ header {
                 gap: 0.5em;
             }
 
+            > ::v-deep(li) {
+                &:has(.button--hide-desktop) {
+                    @media (min-width: 768px) {
+                        display: none;
+                    }
+                }
+                &:has(.button--hide-mobile) {
+                    @media (max-width: 768px) {
+                        display: none;
+                    }
+                }
+            }
 
-            ::v-deep(li) {
+            > ::v-deep(.dialog-activator) {
+                display: flex;
+                justify-content: center;
+
                 &:has(.button--hide-desktop) {
                     @media (min-width: 768px) {
                         display: none;
@@ -227,5 +262,10 @@ header {
             }
         }
     }
+
+    &.header--scrolled {
+        background-color: var(--color-navigation-background-active);
+    }
+
 }
 </style>

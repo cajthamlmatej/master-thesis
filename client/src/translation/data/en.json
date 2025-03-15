@@ -112,8 +112,8 @@
                 }
             },
             "login": "Login",
-            "already-code": "I already have a code",
-            "no-code": "I need a code",
+            "already-code": "I already have a code.",
+            "no-code": "I need a code.",
             "create-account": "Create an account",
             "fail": {
                 "failed": "Login failed. Make sure you entered correct account details.",
@@ -150,7 +150,7 @@
             "after-register": "After registration, you will be asked to confirm your registration using the link in the entered e-mail.",
             "by-registering": "By registering you agree to conditions of use and privacy policy.",
             "already-account": "Already have an account?",
-            "sign-in": "Sign in here",
+            "sign-in": "Sign in here.",
             "success": {
                 "title": "Registration successful",
                 "message": "Registration was successful. Check your e-mail for a link to confirm your registration. Then you can log in.",
@@ -452,9 +452,11 @@
     },
     "blocks": {
         "interactiveArea": {
+            "name": "Interactive area",
             "warning": "This will not be visible in the player."
         },
         "shape": {
+            "name": "Shape",
             "ladder": "Ladder",
             "crescent": "Crescent",
             "hexagon": "Hexagon",
@@ -476,6 +478,7 @@
             }
         },
         "image": {
+            "name": "Image",
             "failed": "Failed to load image.",
             "property": {
                 "imageUrl": {
@@ -487,6 +490,7 @@
             }
         },
         "text": {
+            "name": "Text",
             "property": {
                 "formatting": {
                     "label": "Formatting"
@@ -494,7 +498,12 @@
             }
         },
         "mermaid": {
+            "name": "Mermaid diagram",
             "failed": "Failed to load Mermaid diagram."
+        },
+        "iframe": {
+            "name": "Iframe",
+            "failed": "Failed to load iframe."
         }
     },
     "property": {

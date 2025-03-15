@@ -1,5 +1,5 @@
 <template>
-    <div class="plugins">
+    <div class="editor-navigation-plugins">
         <PluginManageDialog/>
         <Divider v-if="pluginPanels.length >= 1"/>
         <NavigationButton
@@ -40,25 +40,4 @@ const pluginPanels = computed(() => pluginStore.panels);
 </script>
 
 <style lang="scss" scoped>
-.plugins {
-    display: flex;
-    flex-direction: column;
-    //flex-grow: 1;
-    gap: 0.5em;
-    padding: 0.5em;
-    background-color: #f0f0f0;
-    box-shadow: inset 0 0 0.5em 0.5em #e0e0e0;
-    margin: 0.5em 0;
-    overflow-y: auto;
-    max-height: 40vh;
-
-    button.button {
-        background-color: #f0f0f0;
-        color: black;
-    }
-
-    &::-webkit-scrollbar {
-        width: 0.25em;
-    }
-}
 </style>
