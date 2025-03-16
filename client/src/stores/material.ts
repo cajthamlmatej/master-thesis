@@ -28,7 +28,7 @@ export const useMaterialStore = defineStore("material", () => {
     let resolve = (val?: any) => {
     };
     const loaded = new Promise((r) => resolve = r);
-    const loadMaterial = async (id: string, token: string | undefined) => {
+    const loadMaterial = async (id: string, token: string | undefined = undefined) => {
         const response = await api.material.one(id, token);
 
         if (!response) {
