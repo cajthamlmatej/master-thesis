@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .editor {
     transform-origin: top left;
 
@@ -423,8 +425,8 @@
         }
 
         > .move {
-            --selector-size: calc(0.5 * var(--vh, 1vh) / var(--scale));
-            //--selector-size: 8px;
+            --selector-size: calc(0.25 * var(--vh, 1vh) / var(--scale));
+            //--selector-size: 2px;
             display: none;
             position: absolute;
             pointer-events: auto;
@@ -432,9 +434,9 @@
 
             &::after {
                 position: absolute;
-                border-style: dashed;
+                border-style: solid;
                 border-width: var(--selector-size);
-                border-color: rgba(0, 0, 0, 0.2);
+                border-color: var(--color-primary-dark);
             }
 
             &--top {
@@ -515,65 +517,66 @@
         }
 
         > .resize {
-            --selector-size: calc(0.5 * var(--vh, 1vh) / var(--scale));
+            --selector-size: calc(0.4 * var(--vh, 1vh) / var(--scale));
             display: none;
             position: absolute;
-            width: calc(3 * var(--selector-size));
-            height: calc(3 * var(--selector-size));
+            $size: 3;
+            width: calc($size * var(--selector-size));
+            height: calc($size * var(--selector-size));
             aspect-ratio: 1/1;
             border-radius: 50%;
-            background-color: rgba(0, 0, 0, 1);
+            background-color: var(--color-primary-light);
             box-shadow: var(--shadow-accent);
-            outline: 0.25em solid rgba(255, 255, 255, 0.24);
+            outline: calc(1 * var(--selector-size)) solid rgba(255, 255, 255, 0.24);
             pointer-events: auto;
 
             &--top-right {
-                top: calc(-1 * 2 * var(--selector-size));
-                right: calc(-1 * 2 * var(--selector-size));
+                top: calc(-1 * (math.div($size, 2)) * var(--selector-size));
+                right: calc(-1 * (math.div($size, 2)) * var(--selector-size));
                 cursor: ne-resize;
             }
 
             &--top-left {
-                top: calc(-1 * 2 * var(--selector-size));
-                left: calc(-1 * 2 * var(--selector-size));
+                top: calc(-1 * (math.div($size, 2)) * var(--selector-size));
+                left: calc(-1 * (math.div($size, 2)) * var(--selector-size));
                 cursor: nw-resize;
             }
 
             &--bottom-right {
-                bottom: calc(-1 * 2 * var(--selector-size));
-                right: calc(-1 * 2 * var(--selector-size));
+                bottom: calc(-1 * (math.div($size, 2)) * var(--selector-size));
+                right: calc(-1 * (math.div($size, 2)) * var(--selector-size));
                 cursor: se-resize;
             }
 
             &--bottom-left {
-                bottom: calc(-1 * 2 * var(--selector-size));
-                left: calc(-1 * 2 * var(--selector-size));
+                bottom: calc(-1 * (math.div($size, 2)) * var(--selector-size));
+                left: calc(-1 * (math.div($size, 2)) * var(--selector-size));
                 cursor: sw-resize;
             }
 
             &--middle-right {
                 top: 50%;
-                right: calc(-1 * 2 * var(--selector-size));
+                right: calc(-1 * (math.div($size, 2)) * var(--selector-size));
                 transform: translateY(-50%);
                 cursor: e-resize;
             }
 
             &--middle-left {
                 top: 50%;
-                left: calc(-1 * 2 * var(--selector-size));
+                left: calc(-1 * (math.div($size, 2)) * var(--selector-size));
                 transform: translateY(-50%);
                 cursor: w-resize;
             }
 
             &--top-middle {
-                top: calc(-1 * 2 * var(--selector-size));
+                top: calc(-1 * (math.div($size, 2)) * var(--selector-size));
                 left: 50%;
                 transform: translateX(-50%);
                 cursor: n-resize;
             }
 
             &--bottom-middle {
-                bottom: calc(-1 * 2 * var(--selector-size));
+                bottom: calc(-1 * (math.div($size, 2)) * var(--selector-size));
                 left: 50%;
                 transform: translateX(-50%);
                 cursor: s-resize;
@@ -585,8 +588,8 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                width: calc(1.5 * var(--selector-size));
-                height: calc(1.5 * var(--selector-size));
+                width: calc((math.div($size, 2)) * var(--selector-size));
+                height: calc((math.div($size, 2)) * var(--selector-size));
                 background-color: white;
                 border-radius: 50%;
                 opacity: 0;
