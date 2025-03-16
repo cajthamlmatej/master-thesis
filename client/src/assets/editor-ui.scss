@@ -220,6 +220,7 @@
                 display: flex;
                 flex-direction: column;
                 border-radius: 0.5em;
+                padding-bottom: 0.5em;
 
                 gap: 0.5em;
 
@@ -448,7 +449,7 @@
                     }
 
 
-                    > .footer {
+                    div > .footer {
                         display: flex;
 
                         padding: 0.25em 0.5em;

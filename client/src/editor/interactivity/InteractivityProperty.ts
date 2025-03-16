@@ -91,10 +91,38 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         }
     }
 
-    private renderInteractivityEvent(interactivity: BlockInteractivity): HTMLElement {
-        const element = document.createElement("field");
+    private renderInteractivityEventTimer(interactivity: BlockInteractivity): HTMLElement {
+        const element = document.createElement("div");
 
-        element.innerHTML += `
+        if (interactivity.event != 'TIMER')
+            return element;
+
+        element.innerHTML += `<div class="field field--sub">
+            <span class="label">${$t("property.interactivity.timer.label")}</span>
+            <div class="value">
+                <select data-property="timerType">
+                    <option value="TIMEOUT">${$t("property.interactivity.timer.TIMEOUT")}</option>
+                    <option value="REPEAT">${$t("property.interactivity.timer.REPEAT")}</option>
+                </select>
+            </div>
+        </div>
+        `;
+
+        element.innerHTML += `<div class="field field--sub">
+            <span class="label">${interactivity.timerType == 'TIMEOUT' ? $t("property.interactivity.timer.TIMEOUT-selected") : $t("property.interactivity.timer.REPEAT-selected")}</span>
+            <div class="value">
+                <input type="number" data-property="timerTime">
+                <span class="unit">${$t("unit.ms")}</span>
+            </div>
+        </div>`;
+
+        return element;
+    }
+
+    private renderInteractivityEvent(interactivity: BlockInteractivity): HTMLElement {
+        const element = document.createElement("div");
+
+        element.innerHTML += `<div class="field">
             <span class="label">${$t("property.interactivity.event.label")}</span>
             <div class="value">
                 <select data-property="event">
@@ -105,120 +133,144 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 <!--                                <option disabled value="DRAG_START">Drag start</option>--> <!-- TODO: blocks dont yet have drag support -->
 <!--                                <option disabled value="DRAG_END">Drag end</option>-->
                 </select>
-            </div>`;
-    }
-
-    private renderInteractivity(interactivity: BlockInteractivity): HTMLElement {
-        const element = document.createElement("div");
-        element.classList.add("interactivity");
-        const editor = this.blocks[0].getEditor();
-
-        element.innerHTML += `<div class="field">
-                        <span class="label">${$t("property.interactivity.event.label")}</span>
-                        <div class="value">
-                            <select data-property="event">
-                                <option value="CLICKED">${$t("property.interactivity.event.CLICKED")}</option>
-                                <option value="HOVER_START">${$t("property.interactivity.event.HOVER_START")}</option>
-                                <option value="HOVER_END">${$t("property.interactivity.event.HOVER_END")}</option>
-                                <option value="TIMER">${$t("property.interactivity.event.TIMER")}</option>
-<!--                                <option disabled value="DRAG_START">Drag start</option>--> <!-- TODO: blocks dont yet have drag support -->
-<!--                                <option disabled value="DRAG_END">Drag end</option>-->
-                            </select>
-                        </div>
-                    </div>`;
+            </div>
+        </div>`;
 
         if (interactivity.event == 'TIMER') {
-            element.innerHTML += `<div class="field field--sub">
-                <span class="label">${$t("property.interactivity.timer.label")}</span>
+            element.appendChild(this.renderInteractivityEventTimer(interactivity));
+        }
+
+        return element;
+    }
+
+    private renderInteractivityActionAction(action: BlockInteractivityAction): HTMLElement {
+        const element = document.createElement("div");
+
+
+        element.innerHTML += `
+            <div class="field">
+                <span class="label">${$t("property.interactivity.action.label")}</span>
                 <div class="value">
-                    <select data-property="timerType">
-                        <option value="TIMEOUT">${$t("property.interactivity.timer.TIMEOUT")}</option>
-                        <option value="REPEAT">${$t("property.interactivity.timer.REPEAT")}</option>
+                    <select data-property="action">
+                        <option value="CHANGE_PROPERTY">${$t("property.interactivity.action.CHANGE_PROPERTY")}</option>
+                        <option value="RESET_PROPERTY">${$t("property.interactivity.action.RESET_PROPERTY")}</option>
+                        <option value="CHANGE_SLIDE">${$t("property.interactivity.action.CHANGE_SLIDE")}</option>
+                        <option value="CHANGE_VARIABLE">${$t("property.interactivity.action.CHANGE_VARIABLE")}</option>
                     </select>
                 </div>
             </div>`;
 
-            element.innerHTML += `<div class="field field--sub">
-                <span class="label">${interactivity.timerType == 'TIMEOUT' ? $t("property.interactivity.timer.TIMEOUT-selected") : $t("property.interactivity.timer.REPEAT-selected")}</span>
-                <div class="value">
-                    <input type="number" data-property="timerTime">
-                    <span class="unit">${$t("unit.ms")}</span>
-                </div>
-            </div>`;
+        return element;
+    }
+
+    private renderInteractivityActionSlide(action: BlockInteractivityAction): HTMLElement {
+        const element = document.createElement("div");
+
+        if (action.action != 'CHANGE_SLIDE')
+            return element;
+
+        element.innerHTML += `
+                <div class="field field--sub">
+                    <span class="label">${$t("property.interactivity.slide.label")}</span>
+                    <div class="value">
+                        <select data-property="slideType">
+                            <option value="NEXT">${$t("property.interactivity.slide.NEXT")}</option>
+                            <option value="PREVIOUS">${$t("property.interactivity.slide.PREVIOUS")}</option>
+                            <option value="FIRST">${$t("property.interactivity.slide.FIRST")}</option>
+                            <option value="LAST">${$t("property.interactivity.slide.LAST")}</option>
+                            <option value="RANDOM">${$t("property.interactivity.slide.RANDOM")}</option>
+                            <option value="SLIDE">${$t("property.interactivity.slide.SLIDE")}</option>
+                        </select>
+                    </div>
+                </div>`;
+
+        if (action.slideType == 'SLIDE') {
+            element.innerHTML += `
+                    <div class="field field--sub">
+                        <span class="label">${$t("property.interactivity.slide.index")}</span>
+                        <div class="value">
+                            <input type="number" data-property="slideIndex">
+                        </div>
+                    </div>`;
         }
 
-        const actionsElement = document.createElement("div");
-        actionsElement.classList.add("actions");
+        return element;
+    }
 
-        actionsElement.innerHTML += `
-            <header>
-                <span>Akce</span>
+    private renderInteractivityActionVariable(action: BlockInteractivityAction): HTMLElement {
+        const actionElement = document.createElement("div");
 
-                <div class="buttons">
-<!--                    <button class=""><span class="mdi mdi-checkbox-multiple-blank"></span></button>-->
-<!--                    <button class=""><span class="mdi mdi-delete"></span></button>-->
-                    <button class="plus-action"><span class="mdi mdi-plus"></span></button>
-                </div>
-            </header>
-        `
+        actionElement.innerHTML += `
+                <div class="field field--sub">
+                    <span class="label">${$t("property.interactivity.variable.name")}</span>
+                    <div class="value">
+                        <input type="text" data-property="changeVariable">
+                    </div>
+                </div>`;
+        actionElement.innerHTML += `
+                <div class="field field--sub">
+                    <span class="label">${$t("property.interactivity.variable.value")}</span>
+                    <div class="value">
+                        <input type="text" data-property="changeVariableValue">
+                    </div>
+                </div>`;
 
-        element.appendChild(actionsElement);
+        return actionElement;
+    }
 
-        for(let action of interactivity.actions) {
-            const actionElement = document.createElement("div");
-            actionElement.classList.add("action");
-            actionElement.dataset.id = action.id;
+    private renderInteractivityActionFooter(action: BlockInteractivityAction): HTMLElement {
+        const element = document.createElement("div");
+        element.classList.add("footer");
 
-            actionsElement.appendChild(actionElement);
+        element.innerHTML += `
+                <button class="delete-action"><span class="mdi mdi-delete"></span></button>
+                <button class="duplicate-action"><span class="mdi mdi-checkbox-multiple-blank"></span></button>
+            `;
 
-            actionElement.innerHTML += `
-                    <div class="field">
-                        <span class="label">${$t("property.interactivity.action.label")}</span>
-                        <div class="value">
-                            <select data-property="action">
-                                <option value="CHANGE_PROPERTY">${$t("property.interactivity.action.CHANGE_PROPERTY")}</option>
-                                <option value="RESET_PROPERTY">${$t("property.interactivity.action.RESET_PROPERTY")}</option>
-                                <option value="CHANGE_SLIDE">${$t("property.interactivity.action.CHANGE_SLIDE")}</option>
-                                <option value="CHANGE_VARIABLE">${$t("property.interactivity.action.CHANGE_VARIABLE")}</option>
-                            </select>
-                        </div>
-                    </div>`;
+        return element;
+    }
 
-            if (action.action == 'CHANGE_PROPERTY' || action.action == 'RESET_PROPERTY') {
-                actionElement.innerHTML += `
-                    <div class="field field--sub">
-                        <span class="label">${$t("property.interactivity.on.label")}</span>
-                        <div class="value">
-                            <select data-property="on">
-                                <option value="SELF">${$t("property.interactivity.on.SELF")}</option>
-                                <option value="ALL">${$t("property.interactivity.on.ALL")}</option>
-                                <option value="SELECTED">${$t("property.interactivity.on.SELECTED")}</option>
-                            </select>
-                        </div>
-                    </div>`;
+    private renderInteractivityActionProperty(action: BlockInteractivityAction): HTMLElement {
+        const element = document.createElement("div");
+        const editor = this.blocks[0].getEditor();
 
-                if (action.on == 'SELECTED') {
-                    const blocks = editor.getBlocks();
+        if (action.action != 'CHANGE_PROPERTY' && action.action != 'RESET_PROPERTY')
+            return element;
 
-                    const blocksPairs = [];
-                    const seenTypes = new Map<string, number>();
+        element.innerHTML += `
+                <div class="field field--sub">
+                    <span class="label">${$t("property.interactivity.on.label")}</span>
+                    <div class="value">
+                        <select data-property="on">
+                            <option value="SELF">${$t("property.interactivity.on.SELF")}</option>
+                            <option value="ALL">${$t("property.interactivity.on.ALL")}</option>
+                            <option value="SELECTED">${$t("property.interactivity.on.SELECTED")}</option>
+                        </select>
+                    </div>
+                </div>`;
 
-                    for (let block of blocks) {
-                        const type = block.type;
+        if (action.on == 'SELECTED') {
+            const blocks = editor.getBlocks();
 
-                        if (!seenTypes.has(type)) {
-                            seenTypes.set(type, 0);
-                        }
+            const blocksPairs = [];
+            const seenTypes = new Map<string, number>();
 
-                        seenTypes.set(type, seenTypes.get(type)! + 1);
+            for (let block of blocks) {
+                const type = block.type;
 
-                        blocksPairs.push({
-                            id: block.id,
-                            name: block.type + " " + seenTypes.get(type), // TODO: this needs overhaul
-                        });
-                    }
+                if (!seenTypes.has(type)) {
+                    seenTypes.set(type, 0);
+                }
 
-                    actionElement.innerHTML += `
+                seenTypes.set(type, seenTypes.get(type)! + 1);
+
+                blocksPairs.push({
+                    id: block.id,
+                    name: block.type + " " + seenTypes.get(type), // TODO: this needs overhaul
+                });
+            }
+
+            element.innerHTML += `
                     <div class="field field--sub">
                         <span class="label">${$t("property.interactivity.on.blocks")}</span>
                         <div class="value">
@@ -227,56 +279,56 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                             </select>
                         </div>
                     </div>`;
+        }
+
+        const selectedBlocks = [];
+
+        if (action.on == 'SELF') {
+            selectedBlocks.push(this.blocks[0]);
+        } else if (action.on == 'ALL') {
+            selectedBlocks.push(...editor.getBlocks());
+        } else if (action.on == 'SELECTED') {
+            selectedBlocks.push(...editor.getBlocks().filter(block => (action.blocks ?? []).includes(block.id)));
+        }
+
+        const properties = [] as Omit<BlockInteractiveProperty & {
+            relative: boolean,
+            animate: boolean
+        }, "change" | "getBaseValue">[];
+
+        for (let block of selectedBlocks) {
+            for (let property of block.getInteractivityProperties()) {
+                properties.push(property);
+            }
+        }
+
+        const propertiesPairs = [] as { id: string, name: string }[];
+
+        for (let property of properties) {
+            if (propertiesPairs.some(p => p.id == property.label)) {
+                continue;
+            }
+
+            let pass = true;
+            for (let block of selectedBlocks) {
+                // All properties must be present on all blocks
+                if (!block.getInteractivityProperties().some(p => p.label == property.label)) {
+                    pass = false;
+                    break;
                 }
+            }
 
-                const selectedBlocks = [];
+            if (!pass) {
+                continue;
+            }
 
-                if (action.on == 'SELF') {
-                    selectedBlocks.push(this.blocks[0]);
-                } else if (action.on == 'ALL') {
-                    selectedBlocks.push(...editor.getBlocks());
-                } else if (action.on == 'SELECTED') {
-                    selectedBlocks.push(...editor.getBlocks().filter(block => (action.blocks ?? []).includes(block.id)));
-                }
+            propertiesPairs.push({
+                id: property.label,
+                name: property.label
+            });
+        }
 
-                const properties = [] as Omit<BlockInteractiveProperty & {
-                    relative: boolean,
-                    animate: boolean
-                }, "change" | "getBaseValue">[];
-
-                for (let block of selectedBlocks) {
-                    for (let property of block.getInteractivityProperties()) {
-                        properties.push(property);
-                    }
-                }
-
-                const propertiesPairs = [] as { id: string, name: string }[];
-
-                for (let property of properties) {
-                    if (propertiesPairs.some(p => p.id == property.label)) {
-                        continue;
-                    }
-
-                    let pass = true;
-                    for (let block of selectedBlocks) {
-                        // All properties must be present on all blocks
-                        if (!block.getInteractivityProperties().some(p => p.label == property.label)) {
-                            pass = false;
-                            break;
-                        }
-                    }
-
-                    if (!pass) {
-                        continue;
-                    }
-
-                    propertiesPairs.push({
-                        id: property.label,
-                        name: property.label
-                    });
-                }
-
-                actionElement.innerHTML += `
+        element.innerHTML += `
                     <div class="field field--sub">
                         <span class="label">${$t("property.interactivity.property.label")}</span>
                         <div class="value">
@@ -287,45 +339,45 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                         </div>
                     </div>`;
 
-                let property = properties.find(p => p.label == action.property);
+        let property = properties.find(p => p.label == action.property);
 
-                if (action.action == 'CHANGE_PROPERTY') {
-                    actionElement.innerHTML += `<div class="field field--sub">
+        if (action.action == 'CHANGE_PROPERTY') {
+            element.innerHTML += `<div class="field field--sub">
                         <span class="label">${$t("property.interactivity.property.value")}</span>
                         <div class="value">
                             <input type="text" data-property="value">
                         </div>
                     </div>`;
 
-                    if (property && property.relative) {
-                        actionElement.innerHTML += `<div class="field field--sub">
+            if (property && property.relative) {
+                element.innerHTML += `<div class="field field--sub">
                         <span class="label">${$t("property.interactivity.property.relative")}</span>
                         <div class="value">
-                            <input type="checkbox" data-property="relative" id="relative-${interactivity.id}">
-                            <label class="checkbox-label ${action.relative ? 'checked' : ''}" for="relative-${interactivity.id}"></label>
+                            <input type="checkbox" data-property="relative" id="relative-${action.id}">
+                            <label class="checkbox-label ${action.relative ? 'checked' : ''}" for="relative-${action.id}"></label>
                         </div>
                     </div>`;
-                    }
-                }
+            }
+        }
 
-                if ((property && property.animate) || action.property == "ALL") {
-                    actionElement.innerHTML += `<div class="field field--sub">
+        if ((property && property.animate) || action.property == "ALL") {
+            element.innerHTML += `<div class="field field--sub">
                             <span class="label">${$t("property.interactivity.animate.label")}</span>
                             <div class="value">
-                                <input type="checkbox" data-property="animate" id="animate-${interactivity.id}">
-                                <label class="checkbox-label ${action.animate ? 'checked' : ''}" for="animate-${interactivity.id}"></label>
+                                <input type="checkbox" data-property="animate" id="animate-${action.id}">
+                                <label class="checkbox-label ${action.animate ? 'checked' : ''}" for="animate-${action.id}"></label>
                             </div>
                         </div>`;
 
-                    if (action.animate) {
-                        actionElement.innerHTML += `<div class="field field--sub">
+            if (action.animate) {
+                element.innerHTML += `<div class="field field--sub">
                                 <span class="label">${$t("property.interactivity.animate.duration")}</span>
                                 <div class="value">
                                     <input type="number" data-property="duration">
                                     <span class="unit">${$t("unit.ms")}</span>
                                 </div>
                             </div>`;
-                        actionElement.innerHTML += `<div class="field field--sub">
+                element.innerHTML += `<div class="field field--sub">
                             <span class="label">${$t("property.interactivity.animate.easing")}</span>
                             <div class="value">
                                 <select data-property="easing">
@@ -341,55 +393,118 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                                 </select>
                             </div>
                         </div>`;
-                    }
-                }
-            } else if (action.action == 'CHANGE_SLIDE') {
-                actionElement.innerHTML += `
-                <div class="field field--sub">
-                    <span class="label">${$t("property.interactivity.slide.label")}</span>
-                    <div class="value">
-                        <select data-property="slideType">
-                            <option value="NEXT">${$t("property.interactivity.slide.NEXT")}</option>
-                            <option value="PREVIOUS">${$t("property.interactivity.slide.PREVIOUS")}</option>
-                            <option value="FIRST">${$t("property.interactivity.slide.FIRST")}</option>
-                            <option value="LAST">${$t("property.interactivity.slide.LAST")}</option>
-                            <option value="RANDOM">${$t("property.interactivity.slide.RANDOM")}</option>
-                            <option value="SLIDE">${$t("property.interactivity.slide.SLIDE")}</option>
-                        </select>
-                    </div>
-                </div>`;
+            }
+        }
 
-                if (action.slideType == 'SLIDE') {
-                    actionElement.innerHTML += `
+        return element;
+    }
+
+    private renderInteractivityAction(action: BlockInteractivityAction): HTMLElement {
+        const actionElement = document.createElement("div");
+        actionElement.classList.add("action");
+        actionElement.dataset.id = action.id;
+
+        actionElement.appendChild(this.renderInteractivityActionAction(action));
+
+        if (action.action == 'CHANGE_PROPERTY' || action.action == 'RESET_PROPERTY') {
+            actionElement.appendChild(this.renderInteractivityActionProperty(action));
+        } else if (action.action == 'CHANGE_SLIDE') {
+            actionElement.appendChild(this.renderInteractivityActionSlide(action));
+        } else if (action.action == 'CHANGE_VARIABLE') {
+            actionElement.appendChild(this.renderInteractivityActionVariable(action));
+        }
+
+        actionElement.appendChild(this.renderInteractivityActionFooter(action));
+
+        return actionElement;
+    }
+
+    private renderInteractivityActions(interactivity: BlockInteractivity): HTMLElement {
+        const element = document.createElement("div");
+
+        const actionsElement = document.createElement("div");
+        actionsElement.classList.add("actions");
+
+        actionsElement.innerHTML += `
+            <header>
+                <span>Akce</span>
+
+                <div class="buttons">
+                    <button class="plus-action"><span class="mdi mdi-plus"></span></button>
+                </div>
+            </header>
+        `
+
+        element.appendChild(actionsElement);
+
+        for (let action of interactivity.actions) {
+            actionsElement.appendChild(this.renderInteractivityAction(action));
+        }
+
+        return element;
+    }
+
+    private renderInteractivityConditionTimer(interactivity: BlockInteractivity): HTMLElement {
+        const element = document.createElement("div");
+
+        if (interactivity.condition != 'TIME_PASSED')
+            return element;
+
+        element.innerHTML += `
                     <div class="field field--sub">
-                        <span class="label">${$t("property.interactivity.slide.index")}</span>
+                        <span class="label">${$t("property.interactivity.time-passed.label")}</span>
                         <div class="value">
-                            <input type="number" data-property="slideIndex">
+                            <select data-property="timeFrom">
+                                <option value="OPEN">${$t("property.interactivity.time-passed.OPEN")}</option>
+                                <option value="SLIDE">${$t("property.interactivity.time-passed.SLIDE")}</option>
+                            </select>
                         </div>
                     </div>`;
-                }
-            } else if (action.action == 'CHANGE_VARIABLE') {
-                actionElement.innerHTML += `
-                <div class="field field--sub">
-                    <span class="label">${$t("property.interactivity.variable.name")}</span>
-                    <div class="value">
-                        <input type="text" data-property="changeVariable">
-                    </div>
-                </div>`;
-                actionElement.innerHTML += `
-                <div class="field field--sub">
-                    <span class="label">${$t("property.interactivity.variable.value")}</span>
-                    <div class="value">
-                        <input type="text" data-property="changeVariableValue">
-                    </div>
-                </div>`;
-            }
+        element.innerHTML += `
+                    <div class="field field--sub">
+                        <span class="label">${$t("property.interactivity.time-passed.time")}</span>
+                        <div class="value">
+                            <input type="number" value="${interactivity.time ?? ''}" data-property="time">
+                            <span class="unit">${$t("unit.ms")}</span>
+                        </div>
+                    </div>`;
 
-            actionElement.innerHTML += `<div class="footer">
-                <button class="delete-action"><span class="mdi mdi-delete"></span></button>
-                <button class="duplicate-action"><span class="mdi mdi-checkbox-multiple-blank"></span></button>
-            </div>`;
-        }
+        return element;
+    }
+
+    private renderInteractivityConditionVariable(interactivity: BlockInteractivity): HTMLElement {
+        const element = document.createElement("div");
+
+        element.innerHTML += `
+                    <div class="field field--sub">
+                        <span class="label">${$t('property.interactivity.variable.name')}</span>
+                        <div class="value">
+                            <input type="text" data-property="ifVariable">
+                        </div>
+                    </div>`;
+        element.innerHTML += `
+                    <div class="field field--sub">
+                        <span class="label">${$t('property.interactivity.variable.operator')}</span>
+                        <div class="value">
+                            <select data-property="ifVariableOperator">
+                                <option value="EQUALS">${$t('property.interactivity.variable.EQUALS')}</option>
+                                <option value="NOT_EQUALS">${$t('property.interactivity.variable.NOT_EQUALS')}</option>
+                            </select>
+                        </div>
+                    </div>`;
+        element.innerHTML += `
+                    <div class="field field--sub">
+                        <span class="label">${$t('property.interactivity.variable.value')}</span>
+                        <div class="value">
+                            <input type="text" data-property="ifVariableValue">
+                        </div>
+                    </div>`;
+
+        return element;
+    }
+
+    private renderInteractivityCondition(interactivity: BlockInteractivity): HTMLElement {
+        const element = document.createElement("div");
 
         element.innerHTML += `
                     <div class="field">
@@ -404,51 +519,17 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                     </div>`;
 
         if (interactivity.condition == 'TIME_PASSED') {
-            element.innerHTML += `
-                    <div class="field field--sub">
-                        <span class="label">${$t("property.interactivity.time-passed.label")}</span>
-                        <div class="value">
-                            <select data-property="timeFrom">
-                                <option value="OPEN">${$t("property.interactivity.time-passed.OPEN")}</option>
-                                <option value="SLIDE">${$t("property.interactivity.time-passed.SLIDE")}</option>
-                            </select>
-                        </div>
-                    </div>`;
-            element.innerHTML += `
-                    <div class="field field--sub">
-                        <span class="label">${$t("property.interactivity.time-passed.time")}</span>
-                        <div class="value">
-                            <input type="number" value="${interactivity.time ?? ''}" data-property="time">
-                            <span class="unit">${$t("unit.ms")}</span>
-                        </div>
-                    </div>`;
+            element.appendChild(this.renderInteractivityConditionTimer(interactivity));
         }
         if (interactivity.condition == 'VARIABLE') {
-            element.innerHTML += `
-                    <div class="field field--sub">
-                        <span class="label">${$t('property.interactivity.variable.name')}</span>
-                        <div class="value">
-                            <input type="text" data-property="ifVariable">
-                        </div>
-                    </div>`;
-            element.innerHTML += `
-                    <div class="field field--sub">
-                        <span class="label">${$t('property.interactivity.variable.operator')}</span>
-                        <div class="value">
-                            <select data-property="ifVariableOperator">
-                                <option value="EQUALS">${$t('property.interactivity.variable.EQUALS')}</option>
-                                <option value="NOT_EQUALS">${$t('property.interactivity.variable.NOT_EQUALS')}</option>
-                            </select>
-                        </div>
-                    </div>`;
-            element.innerHTML += `
-                    <div class="field field--sub">
-                        <span class="label">${$t('property.interactivity.variable.value')}</span>
-                        <div class="value">
-                            <input type="text" data-property="ifVariableValue">
-                        </div>
-                    </div>`;
+            element.appendChild(this.renderInteractivityConditionVariable(interactivity));
         }
+
+        return element;
+    }
+
+    private renderFooter(interactivity: BlockInteractivity): HTMLElement {
+        const element = document.createElement("div");
 
         const index = this.blocks[0].interactivity.indexOf(interactivity);
 
@@ -460,6 +541,10 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             <button class="duplicate"><span class="mdi mdi-checkbox-multiple-blank"></span></button>
         </div>`;
 
+        return element;
+    }
+
+    private setupPropertiesReactivity(interactivity: BlockInteractivity, element: HTMLElement) {
         for (const field of element.querySelectorAll("[data-property]") as unknown as HTMLElement[]) {
             const actionElement = field.closest(".action") as HTMLElement;
             const id = actionElement?.dataset.id ?? "";
@@ -467,7 +552,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             const key = field.getAttribute("data-property") as string;
 
             const getValue = (): any => {
-                if(action) {
+                if (action) {
                     return action[key as keyof BlockInteractivityAction];
                 } else {
                     return interactivity[key as keyof BlockInteractivity];
@@ -475,7 +560,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             }
 
             const setValue = (value: any) => {
-                if(action) {
+                if (action) {
                     action[key as keyof BlockInteractivityAction] = value;
                 } else {
                     // @ts-ignore // I think this is a bug in TypeScript
@@ -540,6 +625,10 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                 this.render();
             });
         }
+    }
+
+    private setupInteractivityEvents(interactivity: BlockInteractivity, element: HTMLElement) {
+        const index = this.blocks[0].interactivity.indexOf(interactivity);
 
         element.querySelector(".delete")?.addEventListener("click", () => {
             this.blocks[0].interactivity = this.blocks[0].interactivity.filter(i => i !== interactivity);
@@ -568,7 +657,9 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
             this.render();
         });
+    }
 
+    private setupActionsEvents(interactivity: BlockInteractivity, element: HTMLElement) {
         element.querySelector(".plus-action")?.addEventListener("click", () => {
             interactivity.actions.push({
                 id: v4(),
@@ -593,7 +684,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             const id = actionElement.dataset.id;
             const action = interactivity.actions.find(a => a.id == id);
 
-            if(!action) return;
+            if (!action) return;
 
             button.addEventListener("click", () => {
                 interactivity.actions = interactivity.actions.filter(a => a !== action);
@@ -605,7 +696,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             const id = actionElement.dataset.id;
             const action = interactivity.actions.find(a => a.id == id);
 
-            if(!action) return;
+            if (!action) return;
 
             button.addEventListener("click", () => {
                 interactivity.actions.push(JSON.parse(JSON.stringify({
@@ -615,6 +706,20 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                 this.render();
             });
         });
+    }
+
+    private renderInteractivity(interactivity: BlockInteractivity): HTMLElement {
+        const element = document.createElement("div");
+        element.classList.add("interactivity");
+
+        element.appendChild(this.renderInteractivityEvent(interactivity));
+        element.appendChild(this.renderInteractivityActions(interactivity));
+        element.appendChild(this.renderInteractivityCondition(interactivity));
+        element.appendChild(this.renderFooter(interactivity));
+
+        this.setupPropertiesReactivity(interactivity, element);
+        this.setupInteractivityEvents(interactivity, element);
+        this.setupActionsEvents(interactivity, element);
 
         return element;
     }
