@@ -142,7 +142,7 @@
                                 <p v-t class="description mb-1">editor.sharing.export.description</p>
 
                                 <List>
-                                    <ListItem hover :disabled="exporting" @click="exportFile('local')">
+                                    <ListItem hover :disabled="exporting" @click="exportFile('json')">
                                         <span v-t>editor.sharing.export.local</span>
 
                                         <span class="mdi mdi-download-outline"></span>
@@ -163,7 +163,9 @@
 
                                             <p v-t class="description">editor.sharing.exporting.description</p>
 
-                                            <span class="mdi mdi-loading mdi-spin mdi-48px"></span>
+                                            <div class="flex flex-justify-center">
+                                                <span class="mdi mdi-loading mdi-spin mdi-48px"></span>
+                                            </div>
                                         </Card>
                                     </template>
                                 </Dialog>
@@ -265,13 +267,13 @@ const exportFile = async (type: string) => {
 
     if(type === "pdf") {
         suffix = "pdf";
-    } else if(type === "local") {
+    } else if(type === "json") {
         suffix = "json";
     }
 
     const response = await api.material.export(materialStore.currentMaterial!.id, type);
 
-    if(!response) {
+    if(!response || response.status !== 200) {
         // TODO: notify
         exporting.value = false;
         return;
