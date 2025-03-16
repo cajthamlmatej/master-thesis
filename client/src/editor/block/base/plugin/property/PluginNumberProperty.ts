@@ -6,7 +6,7 @@ export class PluginNumberProperty extends NumberProperty<PluginEditorBlock> {
     private property: PluginProperty;
 
     constructor(property: PluginProperty) {
-        super(property.label.substring(0, 25), property.key);
+        super(property.label, property.key);
         this.property = property;
     }
 

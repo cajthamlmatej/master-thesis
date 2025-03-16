@@ -1,5 +1,6 @@
 import {Property} from "@/editor/property/Property";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
+import {sanitizeAttribute} from "@/utils/Sanitize";
 
 export interface Option {
     value: string;
@@ -15,9 +16,14 @@ export abstract class SelectProperty<T extends EditorBlock = EditorBlock> extend
 
     constructor(label: string, name: string, options: Option[]) {
         super();
-        this.label = label;
-        this.name = name;
-        this.options = options;
+        this.label = sanitizeAttribute(label);
+        this.name = sanitizeAttribute(name);
+        this.options = options.map(option => {
+            return {
+                value: sanitizeAttribute(option.value),
+                label: sanitizeAttribute(option.label)
+            };
+        });
     }
 
     public override setup(): void {

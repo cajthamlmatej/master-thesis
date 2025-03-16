@@ -2,6 +2,7 @@ import {Property} from "@/editor/property/Property";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 
 import {v4} from 'uuid';
+import {sanitizeAttribute} from "@/utils/Sanitize";
 
 export abstract class BooleanProperty<T extends EditorBlock = EditorBlock> extends Property<T> {
 
@@ -10,8 +11,8 @@ export abstract class BooleanProperty<T extends EditorBlock = EditorBlock> exten
 
     constructor(label: string, name: string) {
         super();
-        this.label = label;
-        this.name = name;
+        this.label = sanitizeAttribute(label);
+        this.name = sanitizeAttribute(name);
     }
 
     public override setup(): void {

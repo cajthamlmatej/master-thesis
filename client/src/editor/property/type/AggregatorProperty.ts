@@ -1,6 +1,7 @@
 import {Property} from "@/editor/property/Property";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 import type {Type} from "@/utils/TypeScriptTypes";
+import {sanitizeAttribute} from "@/utils/Sanitize";
 
 export abstract class AggregatorProperty<T extends EditorBlock = EditorBlock> extends Property<T> {
 
@@ -9,7 +10,7 @@ export abstract class AggregatorProperty<T extends EditorBlock = EditorBlock> ex
 
     public constructor(label: string, properties: Type<Property<T>>[]) {
         super();
-        this.label = label;
+        this.label = sanitizeAttribute(label);
         this.properties = properties;
     }
 

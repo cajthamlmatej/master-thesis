@@ -6,7 +6,7 @@ export class PluginSelectProperty extends SelectProperty<PluginEditorBlock> {
     private property: SelectPluginProperty & PluginPropertyBase;
 
     constructor(property: SelectPluginProperty & PluginPropertyBase) {
-        super(property.label.substring(0, 25), property.key, property.options);
+        super(property.label, property.key, property.options);
         this.property = property;
     }
 
