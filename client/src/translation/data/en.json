@@ -50,6 +50,7 @@
             "dashboard": "Go to dashboard"
         },
         "dashboard": {
+            "title": "Dashboard",
             "title-welcome": "Welcome, %name%",
             "search": "Search...",
             "materials": {
@@ -167,6 +168,12 @@
             "loading": "Activating account, please wait...",
             "fail": "Account activation failed. Please try again later.",
             "sign-in": "Sign in"
+        },
+        "editor": {
+            "title": "Editor %name% material"
+        },
+        "player": {
+            "title": "Player %name% material"
         }
     },
     "player": {

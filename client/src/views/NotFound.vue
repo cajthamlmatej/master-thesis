@@ -22,9 +22,10 @@
 
 <script lang="ts" setup>
 import {useHead} from "unhead";
+import {$t} from "@/translation/Translation";
 
 useHead({
-    title: 'Not Found'
+    title: $t("page.not-found.title"),
 });
 
 </script>
