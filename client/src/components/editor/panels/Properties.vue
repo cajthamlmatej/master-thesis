@@ -4,12 +4,16 @@
             <div ref="menu" class="editor-property">
             </div>
             <div class="editor-property-resizer" @mousedown.stop.prevent="resize" ref="resizer"></div>
+<!--            <div class="editor-property-hider"-->
+<!--                 @click="visible = false">-->
+<!--                <span class="mdi mdi-chevron-right"></span>-->
+<!--            </div>-->
         </template>
     </Navigation>
 
     <div class="editor-property-hint"
          :class="{
-            'editor-property-hint--visible': canBeVisible && !visible && onMobile
+            'editor-property-hint--visible': canBeVisible && !visible
          }"
          @click="visible = true">
         <span class="mdi mdi-chevron-right"></span>
@@ -30,8 +34,6 @@ onMounted(() => {
 
     if (onMobile.value) {
         canBeVisible.value = false;
-    } else {
-        canBeVisible.value = true;
     }
 
     window.addEventListener('resize', () => {
@@ -42,23 +44,6 @@ onMounted(() => {
         }
     });
 });
-//
-// const resizer = ref<HTMLElement | null>(null);
-// watch(() => resizer.value, (value) => {
-//     if (!value) {
-//         return;
-//     }
-//
-//     const closestNavigation = value.closest(".navigation") as HTMLElement;
-//
-//     if (!closestNavigation) {
-//         return;
-//     }
-//
-//     // closestNavigation.addEventListener("scroll", () => {
-//     //     resizer.value!.style.top = closestNavigation.scrollTop + "px";
-//     // });
-// });
 
 const resize = (e: MouseEvent) => {
     const start = e.clientX;
@@ -76,7 +61,14 @@ const resize = (e: MouseEvent) => {
 
         const halfDisplay = window.innerWidth / 2;
 
-        if(targetWidth < 150 || targetWidth > halfDisplay) {
+        if(targetWidth < 150) {
+            visible.value = false;
+            window.removeEventListener("mousemove", onMouseMove);
+            window.removeEventListener("mouseup", onMouseUp);
+            return;
+        }
+
+        if(targetWidth > halfDisplay) {
             return;
         }
 
@@ -115,22 +107,35 @@ watch(() => visible.value, async (value) => {
 
 const materialStore = useEditorStore();
 
+const firstTime = ref(true);
 watch(() => materialStore.getEditor(), (value) => {
     if (!value) return;
 
     const editor = value;
 
+    let debounce = undefined as undefined | number;
     editor.getSelector().events.SELECTED_BLOCK_CHANGED.on((blocks) => {
-        // visible.value = blocks.length > 0;
-        canBeVisible.value = blocks.length > 0;
-
-        if(onMobile.value && !canBeVisible.value) {
-            visible.value = false;
+        if (debounce) {
+            clearTimeout(debounce);
         }
 
-        if(!onMobile.value) {
-            visible.value = canBeVisible.value;
-        }
+        debounce = setTimeout(() => {
+            canBeVisible.value = blocks.length > 0;
+
+            if(canBeVisible.value && firstTime.value && !onMobile.value) {
+                visible.value = true;
+                firstTime.value = false;
+                return;
+            }
+
+            if(onMobile.value && !canBeVisible.value) {
+                visible.value = false;
+            }
+
+            if(!canBeVisible.value) {
+                visible.value = false;
+            }
+        }, 100) as any;
     });
 });
 </script>

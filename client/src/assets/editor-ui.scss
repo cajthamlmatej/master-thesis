@@ -407,6 +407,15 @@
 
     transition: all 0.2s ease;
 
+    .mdi::before {
+        content: "\F0142";
+        display: inline-block;
+        font: normal normal normal 24px / 1 "Material Design Icons";
+        text-rendering: auto;
+        line-height: inherit;
+        -webkit-font-smoothing: antialiased;
+    }
+
     &--visible {
         left: -10px;
 
@@ -417,6 +426,36 @@
             padding-left: 0px;
         }
 
+    }
+
+    @media (min-width: 768px) {
+        right: -50px;
+        left: auto;
+        padding-right: 10px;
+        padding-left: 0;
+        border-radius: var(--border-radius) 0 0 var(--border-radius);
+
+        .mdi::before {
+            content: "\F0141";
+            display: inline-block;
+            font: normal normal normal 24px / 1 "Material Design Icons";
+            text-rendering: auto;
+            line-height: inherit;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        &--visible {
+            right: -10px;
+            left: auto;
+
+            &:hover {
+                cursor: pointer;
+
+                right: 0;
+                left: auto;
+                padding-right: 0px;
+            }
+        }
     }
 }
 
