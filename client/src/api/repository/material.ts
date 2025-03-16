@@ -29,10 +29,10 @@ export class MaterialRepository extends Repository {
         );
     }
 
-    async one(id: string) {
+    async one(id: string, token: string | undefined) {
         return await this.makeRequest<OneMaterialSuccessDTO>(
-            `material/${id}`,
-            "GET"
+            `material/${id}${token ? `?token=${token}` : ""}`,
+            "GET",
         );
     }
 

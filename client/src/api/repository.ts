@@ -107,7 +107,8 @@ export class Repository {
 
             return {
                 blob: await finishedRequest.blob(),
-                headers: finishedRequest.headers
+                headers: finishedRequest.headers,
+                status: finishedRequest.status
             }
         } catch (err) {
             return undefined;

@@ -269,7 +269,11 @@ onMounted(async () => {
     let materialId = route.params.material as string;
 
     if (materialId) {
-        await materialStore.loadMaterial(materialId);
+        const query = route.query.token;
+        await materialStore.loadMaterial(materialId, query?.toString());
+    } else {
+        await router.push({name: 'Dashboard'});
+        return;
     }
 
     useSeoMeta({
