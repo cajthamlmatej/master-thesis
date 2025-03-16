@@ -8,6 +8,7 @@ import {BlockEventListener} from "@/editor/block/events/BlockListener";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {$t} from "@/translation/Translation";
 import {AspectRatioProperty} from "@/editor/block/base/image/property/AspectRatioProperty";
+import {BlockInteractiveProperty} from "@/editor/interactivity/BlockInteractivity";
 
 const mediaStore = useMediaStore();
 
@@ -151,4 +152,19 @@ export class ImageEditorBlock extends EditorBlock {
             this.loadedImage = undefined;
         });
     }
+
+    getInteractivityProperties(): Omit<BlockInteractiveProperty & {
+        relative: boolean;
+        animate: boolean
+    }, "change" | "reset" | "getBaseValue">[] {
+        return [
+            ...super.getInteractivityProperties(),
+            {
+                label: "imageUrl",
+                relative: false,
+                animate: false,
+            }
+        ];
+    }
+
 }

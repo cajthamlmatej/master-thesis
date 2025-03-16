@@ -15,6 +15,7 @@ import {TextFormattingProperty} from "@/editor/block/base/text/property/TextForm
 import {TextAlign} from "@tiptap/extension-text-align";
 import {FontSize} from "@/utils/font-size";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
+import {BlockInteractiveProperty} from "@/editor/interactivity/BlockInteractivity";
 
 export class TextEditorBlock extends EditorBlock {
     @BlockSerialize("content")
@@ -230,4 +231,20 @@ export class TextEditorBlock extends EditorBlock {
 
         this.synchronize();
     }
+
+    getInteractivityProperties(): Omit<BlockInteractiveProperty & {
+        relative: boolean;
+        animate: boolean
+    }, "change" | "reset" | "getBaseValue">[] {
+        return [
+            ...super.getInteractivityProperties(),
+            {
+                label: "content",
+                relative: false,
+                animate: false,
+            }
+        ];
+    }
+
+
 }

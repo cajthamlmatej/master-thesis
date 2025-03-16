@@ -1,12 +1,15 @@
 import {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
+import {BlockInteractiveProperty} from "@/editor/interactivity/BlockInteractivity";
 
 export class TextPlayerBlock extends PlayerBlock {
     @BlockSerialize("content")
     private content: string;
     @BlockSerialize("fontSize")
     private fontSize: number;
+
+    private baseContent: string;
 
     constructor(base: BlockConstructorWithoutType, content: string, fontSize: number) {
         super({
@@ -15,6 +18,7 @@ export class TextPlayerBlock extends PlayerBlock {
         });
         this.content = content;
         this.fontSize = fontSize;
+        this.baseContent = content;
     }
 
     override render(): HTMLElement {
@@ -42,7 +46,23 @@ export class TextPlayerBlock extends PlayerBlock {
         content.style.fontSize = this.fontSize + "px";
         content.style.width = this.size.width + "px";
 
-        // TODO: sync content?
+        content.innerHTML = this.content;
     }
 
+
+    getInteractivityProperties(): BlockInteractiveProperty[] {
+        return [
+            ...super.getInteractivityProperties(),
+            {
+                label: "content",
+                getBaseValue: () => this.baseContent,
+                change: (value: any, relative: boolean) => {
+                    this.content = value.toString();
+
+                    this.synchronize();
+                    return true;
+                }
+            }
+        ];
+    }
 }

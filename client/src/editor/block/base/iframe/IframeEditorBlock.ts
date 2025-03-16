@@ -3,6 +3,8 @@ import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 import {BlockEventListener} from "@/editor/block/events/BlockListener";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
+import {BlockInteractiveProperty} from "@/editor/interactivity/BlockInteractivity";
+import * as console from "node:console";
 
 export class IframeEditorBlock extends EditorBlock {
     @BlockSerialize("content")
@@ -32,6 +34,21 @@ export class IframeEditorBlock extends EditorBlock {
 
 
         return element;
+    }
+
+
+    getInteractivityProperties(): Omit<BlockInteractiveProperty & {
+        relative: boolean;
+        animate: boolean
+    }, "change" | "reset" | "getBaseValue">[] {
+        return [
+            ...super.getInteractivityProperties(),
+            {
+                label: "content",
+                relative: false,
+                animate: false,
+            }
+        ];
     }
 
     override editorSupport() {

@@ -609,7 +609,9 @@
                 "height": "Výška",
                 "rotation": "Rotace",
                 "z-index": "Z-index",
-                "opacity": "Průhlednost"
+                "opacity": "Průhlednost",
+                "content": "Obsah",
+                "imageUrl": "Odkaz na obrázek"
             }
         },
         "opacity": {

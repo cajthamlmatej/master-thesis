@@ -1,10 +1,13 @@
 import {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
+import {BlockInteractiveProperty} from "@/editor/interactivity/BlockInteractivity";
 
 export class IframePlayerBlock extends PlayerBlock {
     @BlockSerialize("content")
     private content: string;
+
+    private baseContent: string = "";
 
     constructor(base: BlockConstructorWithoutType, content: string) {
         super({
@@ -12,6 +15,7 @@ export class IframePlayerBlock extends PlayerBlock {
             type: "iframe",
         });
         this.content = content;
+        this.baseContent = content;
     }
 
     override render(): HTMLElement {
@@ -26,6 +30,22 @@ export class IframePlayerBlock extends PlayerBlock {
         element.appendChild(content);
 
         return element;
+    }
+
+    getInteractivityProperties(): BlockInteractiveProperty[] {
+        return [
+            ...super.getInteractivityProperties(),
+            {
+                label: "content",
+                getBaseValue: () => this.baseContent,
+                change: (value: any, relative: boolean) => {
+                    this.content = value.toString();
+
+                    this.synchronize();
+                    return true;
+                }
+            }
+        ];
     }
 
     synchronize() {

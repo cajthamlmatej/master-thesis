@@ -9,6 +9,7 @@ import {PluginPropertyFactory} from "@/editor/block/base/plugin/PluginPropertyFa
 import {RegisterEditorBlockApiFeature} from "@/editor/plugin/editor/RegisterEditorBlockApiFeature";
 import {SendMessageApiFeature} from "@/editor/block/base/plugin/api/editor/SendMessageApiFeature";
 import {RenderApiFeature} from "@/editor/block/base/plugin/api/editor/RenderApiFeature";
+import {BlockInteractiveProperty} from "@/editor/interactivity/BlockInteractivity";
 
 @RegisterEditorBlockApiFeature(SendMessageApiFeature)
 @RegisterEditorBlockApiFeature(RenderApiFeature)

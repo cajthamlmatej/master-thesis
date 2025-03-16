@@ -6,6 +6,7 @@ import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerializ
 import {RenderApiFeature} from "@/editor/block/base/plugin/api/player/RenderApiFeature";
 import {RegisterPlayerBlockApiFeature} from "@/editor/plugin/player/RegisterPlayerBlockApiFeature";
 import {SendMessageApiFeature} from "@/editor/block/base/plugin/api/player/SendMessageApiFeature";
+import {BlockInteractiveProperty} from "@/editor/interactivity/BlockInteractivity";
 
 @RegisterPlayerBlockApiFeature(RenderApiFeature)
 @RegisterPlayerBlockApiFeature(SendMessageApiFeature)

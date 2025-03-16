@@ -607,7 +607,9 @@
                 "height": "Height",
                 "rotation": "Rotation",
                 "z-index": "Z-Index",
-                "opacity": "Opacity"
+                "opacity": "Opacity",
+                "content": "Content",
+                "imageUrl": "Image URL"
             }
         },
         "opacity": {

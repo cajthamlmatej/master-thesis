@@ -6,6 +6,7 @@ import mermaid from "mermaid";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 import {generateUUID} from "@/utils/Generators";
 import {$t} from "@/translation/Translation";
+import {BlockInteractiveProperty} from "@/editor/interactivity/BlockInteractivity";
 
 export class MermaidEditorBlock extends EditorBlock {
     @BlockSerialize("content")
@@ -35,6 +36,21 @@ export class MermaidEditorBlock extends EditorBlock {
         element.appendChild(content);
 
         return element;
+    }
+
+
+    getInteractivityProperties(): Omit<BlockInteractiveProperty & {
+        relative: boolean;
+        animate: boolean
+    }, "change" | "reset" | "getBaseValue">[] {
+        return [
+            ...super.getInteractivityProperties(),
+            {
+                label: "content",
+                relative: false,
+                animate: false,
+            }
+        ];
     }
 
 

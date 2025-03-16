@@ -2,6 +2,7 @@ import {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 import {useMediaStore} from "@/stores/media";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
+import {BlockInteractiveProperty} from "@/editor/interactivity/BlockInteractivity";
 
 const mediaStore = useMediaStore();
 
@@ -11,6 +12,8 @@ export class ImagePlayerBlock extends PlayerBlock {
     @BlockSerialize("mediaId")
     private mediaId?: string;
 
+    private baseImageUrl?: string;
+
     private imageElement!: HTMLImageElement;
 
     constructor(base: BlockConstructorWithoutType, imageUrl?: string, mediaId?: string) {
@@ -19,6 +22,7 @@ export class ImagePlayerBlock extends PlayerBlock {
             type: "image"
         });
         this.imageUrl = imageUrl;
+        this.baseImageUrl = imageUrl;
         this.mediaId = mediaId;
     }
 
@@ -45,6 +49,22 @@ export class ImagePlayerBlock extends PlayerBlock {
         this.imageElement = content;
 
         return element;
+    }
+
+    getInteractivityProperties(): BlockInteractiveProperty[] {
+        return [
+            ...super.getInteractivityProperties(),
+            {
+                label: "imageUrl",
+                getBaseValue: () => this.baseImageUrl,
+                change: (value: any, relative: boolean) => {
+                    this.imageUrl = value.toString();
+
+                    this.synchronize();
+                    return true;
+                }
+            }
+        ];
     }
 
     override synchronize() {
