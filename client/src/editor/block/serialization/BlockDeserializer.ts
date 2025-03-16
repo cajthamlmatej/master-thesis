@@ -19,6 +19,7 @@ export abstract class BlockDeserializer {
             locked: data.locked,
             type: data.type,
             interactivity: data.interactivity,
+            group: data.group
         }
     }
 }
