@@ -523,17 +523,22 @@
                 "CLICKED": "Kliknuto",
                 "HOVER_START": "Začátek najetí",
                 "HOVER_END": "Konec najetí",
-                "TIMER": "Časovač"
+                "TIMER": "Časovač",
+                "SLIDE_LOAD": "Načtení snímku"
             },
             "timer": {
                 "label": "Kdy",
                 "TIMEOUT": "Po uplynutí",
                 "REPEAT": "Opakování",
+                "NOW-REPEAT": "Nyní a opakování",
                 "TIMEOUT-selected": "Po",
                 "REPEAT-selected": "Každých"
             },
+            "actions": {
+                "title": "Akce"
+            },
             "action": {
-                "label": "Akce",
+                "label": "Provést",
                 "CHANGE_PROPERTY": "Změnit vlastnost",
                 "RESET_PROPERTY": "Resetovat vlastnost",
                 "CHANGE_SLIDE": "Změnit snímek",

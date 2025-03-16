@@ -514,14 +514,19 @@
                 "CLICKED": "Clicked",
                 "HOVER_START": "Hover start",
                 "HOVER_END": "Hover end",
-                "TIMER": "Timer"
+                "TIMER": "Timer",
+                "SLIDE_LOAD": "Slide load"
             },
             "timer": {
                 "label": "When",
                 "TIMEOUT": "Timeout",
                 "REPEAT": "Repeat",
+                "NOW-REPEAT": "Now and repeat",
                 "TIMEOUT-selected": "After",
                 "REPEAT-selected": "Every"
+            },
+            "actions": {
+                "title": "Actions"
             },
             "action": {
                 "label": "Do",
