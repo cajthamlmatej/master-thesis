@@ -2,6 +2,7 @@ import type Editor from "@/editor/Editor";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 import {colorFromSeed} from "@/utils/Generators";
 import {boundingBoxOfElements} from "@/utils/Area";
+import {interpolateColor} from "@/utils/Color";
 
 interface GroupArea {
     x: number;
@@ -51,7 +52,7 @@ export default class EditorGroupAreaVisualiser {
                 y: area.y,
                 width: area.width,
                 height: area.height,
-                color: colorFromSeed(block.group)
+                color: interpolateColor(0.2, colorFromSeed(block.group), window.getComputedStyle(document.body).getPropertyValue("--color-primary")) // TODO: lepsi barvicky :)
             });
         }
 
