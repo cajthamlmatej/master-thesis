@@ -75,7 +75,7 @@ export class EditorClipboard {
 
     private deserializeBlocks(blocks: any[]) {
         const deserializer = new BlockRegistry(); // TODO: unify with others which use BlockRegistry
-        return blocks.map(b => deserializer.deserializeEditor(b)).filter(b => b !== undefined);
+        return blocks.map(b => deserializer.deserializeEditor(b)).filter(b => b !== undefined).map(block => block.clone())
     }
 
     private getTargetPosition(blocks: EditorBlock[]) {
