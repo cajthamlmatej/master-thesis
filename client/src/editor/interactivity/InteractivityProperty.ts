@@ -1,7 +1,12 @@
 import {Property} from "@/editor/property/Property";
 import {EditorBlock} from "@/editor/block/EditorBlock";
-import {BlockInteractiveProperty, BlockInteractivity} from "@/editor/interactivity/BlockInteractivity";
+import {
+    BlockInteractiveProperty,
+    BlockInteractivity,
+    BlockInteractivityAction
+} from "@/editor/interactivity/BlockInteractivity";
 import {$t} from "@/translation/Translation";
+import {v4} from "uuid";
 
 export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends Property<T> {
 
@@ -40,25 +45,32 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                 timerType: "TIMEOUT",
                 // timerFrom: "OPEN",
                 timerTime: 0,
-                action: "CHANGE_SLIDE",
-                slideType: "NEXT",
+
+                actions: [
+                    {
+                        id: v4(),
+                        action: "CHANGE_SLIDE",
+                        slideType: "NEXT",
+                        on: "SELF",
+                        property: "Position X",
+                        blocks: [],
+                        slideIndex: 0,
+                        value: "",
+                        relative: false,
+                        animate: false,
+                        duration: 0,
+                        easing: "LINEAR",
+                        changeVariable: "",
+                        changeVariableValue: "",
+                    }
+                ],
+
                 condition: "ALWAYS",
-                on: "SELF",
-                property: "Position X",
-                blocks: [],
                 time: 0,
-                slideIndex: 0,
-                value: "",
                 timeFrom: "OPEN",
                 ifVariable: "",
                 ifVariableValue: "",
                 ifVariableOperator: "EQUALS",
-                relative: false,
-                animate: false,
-                duration: 0,
-                easing: "LINEAR",
-                changeVariable: "",
-                changeVariableValue: ""
             } as any);
             this.render();
         });
@@ -77,6 +89,23 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         for (let interactivity of this.blocks[0].interactivity) {
             container.appendChild(this.renderInteractivity(interactivity));
         }
+    }
+
+    private renderInteractivityEvent(interactivity: BlockInteractivity): HTMLElement {
+        const element = document.createElement("field");
+
+        element.innerHTML += `
+            <span class="label">${$t("property.interactivity.event.label")}</span>
+            <div class="value">
+                <select data-property="event">
+                    <option value="CLICKED">${$t("property.interactivity.event.CLICKED")}</option>
+                    <option value="HOVER_START">${$t("property.interactivity.event.HOVER_START")}</option>
+                    <option value="HOVER_END">${$t("property.interactivity.event.HOVER_END")}</option>
+                    <option value="TIMER">${$t("property.interactivity.event.TIMER")}</option>
+<!--                                <option disabled value="DRAG_START">Drag start</option>--> <!-- TODO: blocks dont yet have drag support -->
+<!--                                <option disabled value="DRAG_END">Drag end</option>-->
+                </select>
+            </div>`;
     }
 
     private renderInteractivity(interactivity: BlockInteractivity): HTMLElement {
@@ -118,8 +147,31 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             </div>`;
         }
 
+        const actionsElement = document.createElement("div");
+        actionsElement.classList.add("actions");
 
-        element.innerHTML += `
+        actionsElement.innerHTML += `
+            <header>
+                <span>Akce</span>
+
+                <div class="buttons">
+<!--                    <button class=""><span class="mdi mdi-checkbox-multiple-blank"></span></button>-->
+<!--                    <button class=""><span class="mdi mdi-delete"></span></button>-->
+                    <button class="plus-action"><span class="mdi mdi-plus"></span></button>
+                </div>
+            </header>
+        `
+
+        element.appendChild(actionsElement);
+
+        for(let action of interactivity.actions) {
+            const actionElement = document.createElement("div");
+            actionElement.classList.add("action");
+            actionElement.dataset.id = action.id;
+
+            actionsElement.appendChild(actionElement);
+
+            actionElement.innerHTML += `
                     <div class="field">
                         <span class="label">${$t("property.interactivity.action.label")}</span>
                         <div class="value">
@@ -132,8 +184,8 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                         </div>
                     </div>`;
 
-        if (interactivity.action == 'CHANGE_PROPERTY' || interactivity.action == 'RESET_PROPERTY') {
-            element.innerHTML += `
+            if (action.action == 'CHANGE_PROPERTY' || action.action == 'RESET_PROPERTY') {
+                actionElement.innerHTML += `
                     <div class="field field--sub">
                         <span class="label">${$t("property.interactivity.on.label")}</span>
                         <div class="value">
@@ -145,28 +197,28 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                         </div>
                     </div>`;
 
-            if (interactivity.on == 'SELECTED') {
-                const blocks = editor.getBlocks();
+                if (action.on == 'SELECTED') {
+                    const blocks = editor.getBlocks();
 
-                const blocksPairs = [];
-                const seenTypes = new Map<string, number>();
+                    const blocksPairs = [];
+                    const seenTypes = new Map<string, number>();
 
-                for (let block of blocks) {
-                    const type = block.type;
+                    for (let block of blocks) {
+                        const type = block.type;
 
-                    if (!seenTypes.has(type)) {
-                        seenTypes.set(type, 0);
+                        if (!seenTypes.has(type)) {
+                            seenTypes.set(type, 0);
+                        }
+
+                        seenTypes.set(type, seenTypes.get(type)! + 1);
+
+                        blocksPairs.push({
+                            id: block.id,
+                            name: block.type + " " + seenTypes.get(type), // TODO: this needs overhaul
+                        });
                     }
 
-                    seenTypes.set(type, seenTypes.get(type)! + 1);
-
-                    blocksPairs.push({
-                        id: block.id,
-                        name: block.type + " " + seenTypes.get(type), // TODO: this needs overhaul
-                    });
-                }
-
-                element.innerHTML += `
+                    actionElement.innerHTML += `
                     <div class="field field--sub">
                         <span class="label">${$t("property.interactivity.on.blocks")}</span>
                         <div class="value">
@@ -175,105 +227,105 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                             </select>
                         </div>
                     </div>`;
-            }
-
-            const selectedBlocks = [];
-
-            if (interactivity.on == 'SELF') {
-                selectedBlocks.push(this.blocks[0]);
-            } else if (interactivity.on == 'ALL') {
-                selectedBlocks.push(...editor.getBlocks());
-            } else if (interactivity.on == 'SELECTED') {
-                selectedBlocks.push(...editor.getBlocks().filter(block => (interactivity.blocks ?? []).includes(block.id)));
-            }
-
-            const properties = [] as Omit<BlockInteractiveProperty & {
-                relative: boolean,
-                animate: boolean
-            }, "change" | "getBaseValue">[];
-
-            for (let block of selectedBlocks) {
-                for (let property of block.getInteractivityProperties()) {
-                    properties.push(property);
-                }
-            }
-
-            const propertiesPairs = [] as { id: string, name: string }[];
-
-            for (let property of properties) {
-                if (propertiesPairs.some(p => p.id == property.label)) {
-                    continue;
                 }
 
-                let pass = true;
+                const selectedBlocks = [];
+
+                if (action.on == 'SELF') {
+                    selectedBlocks.push(this.blocks[0]);
+                } else if (action.on == 'ALL') {
+                    selectedBlocks.push(...editor.getBlocks());
+                } else if (action.on == 'SELECTED') {
+                    selectedBlocks.push(...editor.getBlocks().filter(block => (action.blocks ?? []).includes(block.id)));
+                }
+
+                const properties = [] as Omit<BlockInteractiveProperty & {
+                    relative: boolean,
+                    animate: boolean
+                }, "change" | "getBaseValue">[];
+
                 for (let block of selectedBlocks) {
-                    // All properties must be present on all blocks
-                    if (!block.getInteractivityProperties().some(p => p.label == property.label)) {
-                        pass = false;
-                        break;
+                    for (let property of block.getInteractivityProperties()) {
+                        properties.push(property);
                     }
                 }
 
-                if (!pass) {
-                    continue;
+                const propertiesPairs = [] as { id: string, name: string }[];
+
+                for (let property of properties) {
+                    if (propertiesPairs.some(p => p.id == property.label)) {
+                        continue;
+                    }
+
+                    let pass = true;
+                    for (let block of selectedBlocks) {
+                        // All properties must be present on all blocks
+                        if (!block.getInteractivityProperties().some(p => p.label == property.label)) {
+                            pass = false;
+                            break;
+                        }
+                    }
+
+                    if (!pass) {
+                        continue;
+                    }
+
+                    propertiesPairs.push({
+                        id: property.label,
+                        name: property.label
+                    });
                 }
 
-                propertiesPairs.push({
-                    id: property.label,
-                    name: property.label
-                });
-            }
-
-            element.innerHTML += `
+                actionElement.innerHTML += `
                     <div class="field field--sub">
                         <span class="label">${$t("property.interactivity.property.label")}</span>
                         <div class="value">
                             <select data-property="property">
                                 ${propertiesPairs.map(property => `<option value="${property.id}">${property.name}</option>`).join("")}
-                                ${interactivity.action == 'RESET_PROPERTY' ? `<option value="ALL">${$t("property.interactivity.property.ALL")}</option>` : ''}
+                                ${action.action == 'RESET_PROPERTY' ? `<option value="ALL">${$t("property.interactivity.property.ALL")}</option>` : ''}
                             </select>
                         </div>
                     </div>`;
 
-            let property = properties.find(p => p.label == interactivity.property);
+                let property = properties.find(p => p.label == action.property);
 
-            if (interactivity.action == 'CHANGE_PROPERTY') {
-                element.innerHTML += `<div class="field field--sub">
+                if (action.action == 'CHANGE_PROPERTY') {
+                    actionElement.innerHTML += `<div class="field field--sub">
                         <span class="label">${$t("property.interactivity.property.value")}</span>
                         <div class="value">
                             <input type="text" data-property="value">
                         </div>
                     </div>`;
 
-                if (property && property.relative) {
-                    element.innerHTML += `<div class="field field--sub">
+                    if (property && property.relative) {
+                        actionElement.innerHTML += `<div class="field field--sub">
                         <span class="label">${$t("property.interactivity.property.relative")}</span>
                         <div class="value">
                             <input type="checkbox" data-property="relative" id="relative-${interactivity.id}">
-                            <label class="checkbox-label ${interactivity.relative ? 'checked' : ''}" for="relative-${interactivity.id}"></label>
+                            <label class="checkbox-label ${action.relative ? 'checked' : ''}" for="relative-${interactivity.id}"></label>
                         </div>
                     </div>`;
+                    }
                 }
-            }
 
-            if ((property && property.animate) || interactivity.property == "ALL") {
-                element.innerHTML += `<div class="field field--sub">
+                if ((property && property.animate) || action.property == "ALL") {
+                    actionElement.innerHTML += `<div class="field field--sub">
                             <span class="label">${$t("property.interactivity.animate.label")}</span>
                             <div class="value">
                                 <input type="checkbox" data-property="animate" id="animate-${interactivity.id}">
-                                <label class="checkbox-label ${interactivity.animate ? 'checked' : ''}" for="animate-${interactivity.id}"></label>
+                                <label class="checkbox-label ${action.animate ? 'checked' : ''}" for="animate-${interactivity.id}"></label>
                             </div>
                         </div>`;
 
-                if (interactivity.animate) {
-                    element.innerHTML += `<div class="field field--sub">
+                    if (action.animate) {
+                        actionElement.innerHTML += `<div class="field field--sub">
                                 <span class="label">${$t("property.interactivity.animate.duration")}</span>
                                 <div class="value">
                                     <input type="number" data-property="duration">
                                     <span class="unit">${$t("unit.ms")}</span>
                                 </div>
                             </div>`;
-                    element.innerHTML += `<div class="field field--sub">
+                        actionElement.innerHTML += `<div class="field field--sub">
                             <span class="label">${$t("property.interactivity.animate.easing")}</span>
                             <div class="value">
                                 <select data-property="easing">
@@ -289,10 +341,10 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                                 </select>
                             </div>
                         </div>`;
+                    }
                 }
-            }
-        } else if (interactivity.action == 'CHANGE_SLIDE') {
-            element.innerHTML += `
+            } else if (action.action == 'CHANGE_SLIDE') {
+                actionElement.innerHTML += `
                 <div class="field field--sub">
                     <span class="label">${$t("property.interactivity.slide.label")}</span>
                     <div class="value">
@@ -307,30 +359,36 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                     </div>
                 </div>`;
 
-            if (interactivity.slideType == 'SLIDE') {
-                element.innerHTML += `
+                if (action.slideType == 'SLIDE') {
+                    actionElement.innerHTML += `
                     <div class="field field--sub">
                         <span class="label">${$t("property.interactivity.slide.index")}</span>
                         <div class="value">
                             <input type="number" data-property="slideIndex">
                         </div>
                     </div>`;
-            }
-        } else if (interactivity.action == 'CHANGE_VARIABLE') {
-            element.innerHTML += `
+                }
+            } else if (action.action == 'CHANGE_VARIABLE') {
+                actionElement.innerHTML += `
                 <div class="field field--sub">
                     <span class="label">${$t("property.interactivity.variable.name")}</span>
                     <div class="value">
                         <input type="text" data-property="changeVariable">
                     </div>
                 </div>`;
-            element.innerHTML += `
+                actionElement.innerHTML += `
                 <div class="field field--sub">
                     <span class="label">${$t("property.interactivity.variable.value")}</span>
                     <div class="value">
                         <input type="text" data-property="changeVariableValue">
                     </div>
                 </div>`;
+            }
+
+            actionElement.innerHTML += `<div class="footer">
+                <button class="delete-action"><span class="mdi mdi-delete"></span></button>
+                <button class="duplicate-action"><span class="mdi mdi-checkbox-multiple-blank"></span></button>
+            </div>`;
         }
 
         element.innerHTML += `
@@ -350,7 +408,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                     <div class="field field--sub">
                         <span class="label">${$t("property.interactivity.time-passed.label")}</span>
                         <div class="value">
-                            <select data-property="condition">
+                            <select data-property="timeFrom">
                                 <option value="OPEN">${$t("property.interactivity.time-passed.OPEN")}</option>
                                 <option value="SLIDE">${$t("property.interactivity.time-passed.SLIDE")}</option>
                             </select>
@@ -403,8 +461,30 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         </div>`;
 
         for (const field of element.querySelectorAll("[data-property]") as unknown as HTMLElement[]) {
+            const actionElement = field.closest(".action") as HTMLElement;
+            const id = actionElement?.dataset.id ?? "";
+            const action = interactivity.actions.find(a => a.id == id);
+            const key = field.getAttribute("data-property") as string;
+
+            const getValue = (): any => {
+                if(action) {
+                    return action[key as keyof BlockInteractivityAction];
+                } else {
+                    return interactivity[key as keyof BlockInteractivity];
+                }
+            }
+
+            const setValue = (value: any) => {
+                if(action) {
+                    action[key as keyof BlockInteractivityAction] = value;
+                } else {
+                    // @ts-ignore // I think this is a bug in TypeScript
+                    interactivity[key as keyof BlockInteractivity] = value;
+                }
+            };
+
             if (field instanceof HTMLInputElement) {
-                let value = interactivity[field.getAttribute("data-property") as keyof BlockInteractivity] as any;
+                let value = getValue();
 
                 if (!value) {
                     value = "";
@@ -418,13 +498,13 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             } else if (field instanceof HTMLSelectElement) {
                 if (field.multiple) {
                     for (const option of field.querySelectorAll("option")) {
-                        if ((interactivity[field.getAttribute("data-property") as keyof BlockInteractivity] as unknown as string[] ?? []).includes(option.value)) {
+                        if ((getValue() as string[] ?? []).includes(option.value)) {
                             option.selected = true;
                         }
                     }
                 } else {
                     for (const option of field.querySelectorAll("option")) {
-                        if (option.value == interactivity[field.getAttribute("data-property") as keyof BlockInteractivity]) {
+                        if (option.value == getValue()) {
                             option.selected = true;
                         }
                     }
@@ -455,12 +535,9 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                     throw new Error("Unknown field type");
                 }
 
-                // @ts-ignore // I think this is a bug in TypeScript
-                interactivity[field.getAttribute("data-property") as keyof BlockInteractivity] = value;
+                setValue(value);
 
-                // if(field instanceof HTMLInputElement || (field instanceof HTMLSelectElement && !field.multiple)) {
                 this.render();
-                // }
             });
         }
 
@@ -490,6 +567,53 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             this.blocks[0].interactivity.splice(index + 1, 0, interactivity);
 
             this.render();
+        });
+
+        element.querySelector(".plus-action")?.addEventListener("click", () => {
+            interactivity.actions.push({
+                id: v4(),
+                action: "CHANGE_SLIDE",
+                slideType: "NEXT",
+                on: "SELF",
+                property: "Position X",
+                blocks: [],
+                slideIndex: 0,
+                value: "",
+                relative: false,
+                animate: false,
+                duration: 0,
+                easing: "LINEAR",
+                changeVariable: "",
+                changeVariableValue: "",
+            } as any);
+            this.render();
+        });
+        element.querySelectorAll(".delete-action")?.forEach((button) => {
+            const actionElement = button.closest(".action") as HTMLElement;
+            const id = actionElement.dataset.id;
+            const action = interactivity.actions.find(a => a.id == id);
+
+            if(!action) return;
+
+            button.addEventListener("click", () => {
+                interactivity.actions = interactivity.actions.filter(a => a !== action);
+                this.render();
+            });
+        });
+        element.querySelectorAll(".duplicate-action")?.forEach((button) => {
+            const actionElement = button.closest(".action") as HTMLElement;
+            const id = actionElement.dataset.id;
+            const action = interactivity.actions.find(a => a.id == id);
+
+            if(!action) return;
+
+            button.addEventListener("click", () => {
+                interactivity.actions.push(JSON.parse(JSON.stringify({
+                    ...action,
+                    id: v4()
+                })));
+                this.render();
+            });
         });
 
         return element;

@@ -62,6 +62,8 @@ const resize = (e: MouseEvent) => {
         const halfDisplay = window.innerWidth / 2;
 
         if(targetWidth < 150) {
+            parent.style.width = `${160}px`;
+
             visible.value = false;
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("mouseup", onMouseUp);
@@ -72,7 +74,7 @@ const resize = (e: MouseEvent) => {
             return;
         }
 
-        parent.style.width = `${width - diff}px`;
+        parent.style.width = `${targetWidth}px`;
 
         e.preventDefault();
         e.stopPropagation();

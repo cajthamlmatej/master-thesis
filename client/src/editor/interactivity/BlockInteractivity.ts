@@ -97,12 +97,21 @@ interface BlockInteractivityActionChangeVariable {
     changeVariableValue: string;
 }
 
-type BlockInteractivityAction =
-    BlockInteractivityActionChangeProperty
-    | BlockInteractivityActionResetProperty
-    | BlockInteractivityActionChangeSlideRelative
-    | BlockInteractivityActionChangeSlideAbsolute
-    | BlockInteractivityActionChangeVariable;
+interface BlockInteractivityActionBase {
+    id: string;
+}
+
+export type BlockInteractivityAction =
+    BlockInteractivityActionBase & (
+        BlockInteractivityActionChangeProperty
+        | BlockInteractivityActionResetProperty
+        | BlockInteractivityActionChangeSlideRelative
+        | BlockInteractivityActionChangeSlideAbsolute
+        | BlockInteractivityActionChangeVariable);
+
+type BlockInteractivityActions = {
+    actions: BlockInteractivityAction[];
+}
 
 interface BlockInteractivityBase {
     id: string;
@@ -112,7 +121,7 @@ export type BlockInteractivity =
     BlockInteractivityBase
     & BlockInteractivityEvents
     & BlockInteractivityConditions
-    & BlockInteractivityAction;
+    & BlockInteractivityActions;
 
 export interface BlockInteractiveProperty {
     label: string,

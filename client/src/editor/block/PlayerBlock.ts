@@ -522,126 +522,128 @@ export abstract class PlayerBlock {
     }
 
     private processInteractivity(interactivity: BlockInteractivity) {
-        switch (interactivity.action) {
-            case "CHANGE_PROPERTY": {
-                let blocks = [] as PlayerBlock[];
+        for(let action of interactivity.actions) {
+            switch (action.action) {
+                case "CHANGE_PROPERTY": {
+                    let blocks = [] as PlayerBlock[];
 
-                switch (interactivity.on) {
-                    case "ALL":
-                        blocks = this.player.getBlocks();
-                        break;
-                    case "SELF":
-                        blocks = [this];
-                        break;
-                    case "SELECTED":
-                        blocks = this.player.getBlocks().filter(b => interactivity.blocks?.includes(b.id));
-                        break;
-                }
-
-                for (const block of blocks) {
-                    const property = block.getInteractivityProperties().find(p => p.label === interactivity.property);
-
-                    if (!property) continue;
-
-                    property.change(interactivity.value, interactivity.relative, {
-                        animate: interactivity.animate,
-                        duration: Number(interactivity.duration),
-                        easing: interactivity.easing
-                    });
-                }
-                break;
-            }
-            case "RESET_PROPERTY": {
-                let blocks = [] as PlayerBlock[];
-
-                switch (interactivity.on) {
-                    case "ALL":
-                        blocks = this.player.getBlocks();
-                        break;
-                    case "SELF":
-                        blocks = [this];
-                        break;
-                    case "SELECTED":
-                        blocks = this.player.getBlocks().filter(b => interactivity.blocks?.includes(b.id));
-                        break;
-                }
-
-
-                for (const block of blocks) {
-                    if (interactivity.property === "ALL") {
-                        for (const property of block.getInteractivityProperties()) {
-                            property.change(property.getBaseValue(), false, {
-                                animate: interactivity.animate,
-                                duration: Number(interactivity.duration),
-                                easing: interactivity.easing
-                            });
-                        }
-                        continue;
+                    switch (action.on) {
+                        case "ALL":
+                            blocks = this.player.getBlocks();
+                            break;
+                        case "SELF":
+                            blocks = [this];
+                            break;
+                        case "SELECTED":
+                            blocks = this.player.getBlocks().filter(b => action.blocks?.includes(b.id));
+                            break;
                     }
 
-                    const property = block.getInteractivityProperties().find(p => p.label === interactivity.property);
+                    for (const block of blocks) {
+                        const property = block.getInteractivityProperties().find(p => p.label === action.property);
 
-                    if (!property) continue;
+                        if (!property) continue;
 
-                    property.change(property.getBaseValue(), false, {
-                        animate: interactivity.animate,
-                        duration: Number(interactivity.duration),
-                        easing: interactivity.easing
-                    });
+                        property.change(action.value, action.relative, {
+                            animate: action.animate,
+                            duration: Number(action.duration),
+                            easing: action.easing
+                        });
+                    }
+                    break;
                 }
-                break;
-            }
-            case "CHANGE_SLIDE": {
-                let slide: string | undefined = undefined;
+                case "RESET_PROPERTY": {
+                    let blocks = [] as PlayerBlock[];
 
-                const current = this.playerStore.getActiveSlide();
-                switch (interactivity.slideType) {
-                    case "NEXT":
-                        const next = this.playerStore.getSlides().find((s: any) => s.position > current!.position);
+                    switch (action.on) {
+                        case "ALL":
+                            blocks = this.player.getBlocks();
+                            break;
+                        case "SELF":
+                            blocks = [this];
+                            break;
+                        case "SELECTED":
+                            blocks = this.player.getBlocks().filter(b => action.blocks?.includes(b.id));
+                            break;
+                    }
 
-                        if (!next) break;
 
-                        slide = next.id;
-                        break;
-                    case "PREVIOUS":
-                        const prev = this.playerStore.getSlides().reverse().find((s: any) => s.position < current!.position);
+                    for (const block of blocks) {
+                        if (action.property === "ALL") {
+                            for (const property of block.getInteractivityProperties()) {
+                                property.change(property.getBaseValue(), false, {
+                                    animate: action.animate,
+                                    duration: Number(action.duration),
+                                    easing: action.easing
+                                });
+                            }
+                            continue;
+                        }
 
-                        if (!prev) return;
+                        const property = block.getInteractivityProperties().find(p => p.label === action.property);
 
-                        slide = prev.id;
-                        break;
-                    case "FIRST":
-                        slide = this.playerStore.getSlides()[0].id;
-                        break;
-                    case "LAST":
-                        slide = this.playerStore.getSlides()[this.playerStore.getSlides().length - 1].id;
-                        break;
-                    case "SLIDE":
-                        const slideIndex = Number(interactivity.slideIndex);
+                        if (!property) continue;
 
-                        if (isNaN(slideIndex)) break;
-
-                        slide = this.playerStore.getSlides().sort((a: any, b: any) => a.position - b.position)[slideIndex].id;
-                        break;
-                    case "RANDOM":
-                        slide = this.playerStore.getSlides()[Math.floor(Math.random() * this.playerStore.getSlides().length)].id;
-                        break;
+                        property.change(property.getBaseValue(), false, {
+                            animate: action.animate,
+                            duration: Number(action.duration),
+                            easing: action.easing
+                        });
+                    }
+                    break;
                 }
+                case "CHANGE_SLIDE": {
+                    let slide: string | undefined = undefined;
 
-                if (!slide) break;
+                    const current = this.playerStore.getActiveSlide();
+                    switch (action.slideType) {
+                        case "NEXT":
+                            const next = this.playerStore.getSlides().find((s: any) => s.position > current!.position);
 
-                this.playerStore.changeSlide(slide);
-                break;
-            }
-            case "CHANGE_VARIABLE": {
-                const variableBefore = this.playerStore.variables[interactivity.changeVariable];
+                            if (!next) break;
 
-                if (!!variableBefore) {
-                    console.log("[Player] Changing variable", interactivity.changeVariable, "from", variableBefore, "to", interactivity.changeVariableValue);
+                            slide = next.id;
+                            break;
+                        case "PREVIOUS":
+                            const prev = this.playerStore.getSlides().reverse().find((s: any) => s.position < current!.position);
+
+                            if (!prev) return;
+
+                            slide = prev.id;
+                            break;
+                        case "FIRST":
+                            slide = this.playerStore.getSlides()[0].id;
+                            break;
+                        case "LAST":
+                            slide = this.playerStore.getSlides()[this.playerStore.getSlides().length - 1].id;
+                            break;
+                        case "SLIDE":
+                            const slideIndex = Number(action.slideIndex);
+
+                            if (isNaN(slideIndex)) break;
+
+                            slide = this.playerStore.getSlides().sort((a: any, b: any) => a.position - b.position)[slideIndex].id;
+                            break;
+                        case "RANDOM":
+                            slide = this.playerStore.getSlides()[Math.floor(Math.random() * this.playerStore.getSlides().length)].id;
+                            break;
+                    }
+
+                    if (!slide) break;
+
+                    this.playerStore.changeSlide(slide);
+                    break;
                 }
+                case "CHANGE_VARIABLE": {
+                    const variableBefore = this.playerStore.variables[action.changeVariable];
 
-                this.playerStore.variables[interactivity.changeVariable] = interactivity.changeVariableValue;
-                break;
+                    if (!!variableBefore) {
+                        console.log("[Player] Changing variable", action.changeVariable, "from", variableBefore, "to", action.changeVariableValue);
+                    }
+
+                    this.playerStore.variables[action.changeVariable] = action.changeVariableValue;
+                    break;
+                }
             }
         }
     }
