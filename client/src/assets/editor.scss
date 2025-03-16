@@ -423,7 +423,7 @@
         }
 
         > .move {
-            --selector-size: calc(0.75 * var(--vh, 1vh) / var(--scale));
+            --selector-size: calc(0.5 * var(--vh, 1vh) / var(--scale));
             //--selector-size: 8px;
             display: none;
             position: absolute;
@@ -518,10 +518,13 @@
             --selector-size: calc(0.5 * var(--vh, 1vh) / var(--scale));
             display: none;
             position: absolute;
-            width: calc(4 * var(--selector-size));
-            height: calc(4 * var(--selector-size));
+            width: calc(3 * var(--selector-size));
+            height: calc(3 * var(--selector-size));
+            aspect-ratio: 1/1;
             border-radius: 50%;
             background-color: rgba(0, 0, 0, 1);
+            box-shadow: var(--shadow-accent);
+            outline: 0.25em solid rgba(255, 255, 255, 0.24);
             pointer-events: auto;
 
             &--top-right {
@@ -582,8 +585,8 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                width: calc(2 * var(--selector-size));
-                height: calc(2 * var(--selector-size));
+                width: calc(1.5 * var(--selector-size));
+                height: calc(1.5 * var(--selector-size));
                 background-color: white;
                 border-radius: 50%;
                 opacity: 0;
@@ -629,15 +632,17 @@
             --selector-size: calc(0.5 * var(--vh, 1vh) / var(--scale));
             display: none;
             position: absolute;
-            bottom: calc(-1 * 2 * 6 * var(--selector-size));
+            bottom: calc(-1 * 2 * 5 * var(--selector-size));
+            box-shadow: var(--shadow-accent);
+            outline: 0.25em solid rgba(255, 255, 255, 0.24);
             right: 50%;
             pointer-events: auto;
             cursor: grab;
 
             transform: translateX(50%);
 
-            width: calc(6 * var(--selector-size));
-            height: calc(6 * var(--selector-size));
+            width: calc(4 * var(--selector-size));
+            height: calc(4 * var(--selector-size));
 
             background-color: rgba(0, 0, 0, 1);
             border-radius: 50%;
@@ -681,11 +686,13 @@
 
         user-select: none;
 
-        background-color: white;
-        box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.24);
-        border-radius: 0.1em;
+        background-color: var(--color-background-accent);
+        backdrop-filter: blur(18px);
+        box-shadow: var(--shadow-accent);
+        border-radius: var(--border-radius);
         //padding: 0.25em;
         width: max-content;
+        padding: 0.75em 0;
 
         &--active {
             display: block;
@@ -694,7 +701,7 @@
         > .action {
             display: none;
             cursor: pointer;
-            padding: 0.25em;
+            padding: 0.25em 1rem;
             border-radius: 0.1em;
 
             &:hover {
@@ -735,13 +742,15 @@
             width: var(--action-size);
             height: var(--action-size);
             padding: 0.25em;
-            background-color: #a7d75e;
+            background-color: var(--color-primary);
+            outline: 0.2em solid rgba(255, 255, 255, 0.24);
             border-radius: 50%;
             font-size: 1.5em;
             color: white;
+            transition: background-color 0.2s ease;
 
             &:hover {
-                background-color: #749443;
+                background-color: var(--color-primary-dark);
             }
 
             &--visible {
@@ -766,6 +775,7 @@
             position: absolute;
             border: 3px dotted;
             border-color: var(--group-area-color, #6c29ff);
+            opacity: 0.5;
         }
     }
 
