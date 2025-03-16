@@ -131,7 +131,7 @@ export abstract class PlayerBlock {
     public getInteractivityProperties(): BlockInteractiveProperty[] {
         return [
             {
-                label: "Position X",
+                label: "position-x",
                 getBaseValue: () => this.baseValues.position.x,
                 change: (value: any, relative: boolean, {animate, duration, easing}) => {
                     let target = parseInt(value);
@@ -159,7 +159,7 @@ export abstract class PlayerBlock {
                 }
             },
             {
-                label: "Position Y",
+                label: "position-y",
                 getBaseValue: () => this.baseValues.position.y,
                 change: (value: any, relative: boolean, {animate, duration, easing}) => {
                     let target = parseInt(value);
@@ -187,7 +187,7 @@ export abstract class PlayerBlock {
                 }
             },
             {
-                label: "Width",
+                label: "width",
                 getBaseValue: () => this.baseValues.size.width,
                 change: (value: any, relative: boolean, {animate, duration, easing}) => {
                     let target = parseInt(value);
@@ -215,7 +215,7 @@ export abstract class PlayerBlock {
                 }
             },
             {
-                label: "Height",
+                label: "height",
                 getBaseValue: () => this.baseValues.size.height,
                 change: (value: any, relative: boolean, {animate, duration, easing}) => {
                     let target = parseInt(value);
@@ -243,7 +243,7 @@ export abstract class PlayerBlock {
                 }
             },
             {
-                label: "Rotation",
+                label: "rotation",
                 getBaseValue: () => this.baseValues.rotation,
                 change: (value: any, relative: boolean, {animate, duration, easing}) => {
                     let target = parseInt(value);
@@ -271,7 +271,7 @@ export abstract class PlayerBlock {
                 }
             },
             {
-                label: "Z-Index",
+                label: "z-index",
                 getBaseValue: () => this.baseValues.zIndex,
                 change: (value: any, relative: boolean) => {
                     let target = parseInt(value);
@@ -286,7 +286,7 @@ export abstract class PlayerBlock {
                 }
             },
             {
-                label: "Opacity",
+                label: "opacity",
                 getBaseValue: () => this.baseValues.opacity,
                 change: (value: any, relative: boolean, {animate, duration, easing}) => {
                     let target = parseFloat(value) / 100; // 0-100 to 0-1
@@ -370,9 +370,7 @@ export abstract class PlayerBlock {
             }
         }
 
-        console.log("Block loaded", this.id);
         this.player.events.LOADED.on(() => {
-            console.log("Slide loaded");
             this.tryProcessInteractivity("SLIDE_LOAD");
         });
     }

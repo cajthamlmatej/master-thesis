@@ -189,37 +189,37 @@ export abstract class EditorBlock {
     }, "change" | "reset" | "getBaseValue">[] {
         return [
             {
-                label: "Position X",
+                label: "position-x",
                 relative: true,
                 animate: true,
             },
             {
-                label: "Position Y",
+                label: "position-y",
                 relative: true,
                 animate: true,
             },
             {
-                label: "Width",
+                label: "width",
                 relative: true,
                 animate: true,
             },
             {
-                label: "Height",
+                label: "height",
                 relative: true,
                 animate: true,
             },
             {
-                label: "Rotation",
+                label: "rotation",
                 relative: true,
                 animate: true,
             },
             {
-                label: "Z-Index",
+                label: "z-index",
                 relative: true,
                 animate: false,
             },
             {
-                label: "Opacity",
+                label: "opacity",
                 relative: true,
                 animate: true,
             }

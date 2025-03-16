@@ -52,7 +52,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                         action: "CHANGE_SLIDE",
                         slideType: "NEXT",
                         on: "SELF",
-                        property: "Position X",
+                        property: "position-x",
                         blocks: [],
                         slideIndex: 0,
                         value: "",
@@ -326,7 +326,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
             propertiesPairs.push({
                 id: property.label,
-                name: property.label
+                name: $t("property.interactivity.properties." + property.label),
             });
         }
 
@@ -668,7 +668,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                 action: "CHANGE_SLIDE",
                 slideType: "NEXT",
                 on: "SELF",
-                property: "Position X",
+                property: "position-x",
                 blocks: [],
                 slideIndex: 0,
                 value: "",

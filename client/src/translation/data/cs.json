@@ -601,6 +601,15 @@
                 "OPEN": "Materiálu",
                 "SLIDE": "Snímku",
                 "time": "Čas"
+            },
+            "properties": {
+                "position-x": "Pozice X",
+                "position-y": "Pozice Y",
+                "width": "Šířka",
+                "height": "Výška",
+                "rotation": "Rotace",
+                "z-index": "Z-index",
+                "opacity": "Průhlednost"
             }
         },
         "opacity": {

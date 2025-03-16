@@ -592,6 +592,15 @@
                 "OPEN": "From the material",
                 "SLIDE": "From the slide",
                 "time": "Time"
+            },
+            "properties": {
+                "position-x": "Position X",
+                "position-y": "Position Y",
+                "width": "Width",
+                "height": "Height",
+                "rotation": "Rotation",
+                "z-index": "Z-Index",
+                "opacity": "Opacity"
             }
         },
         "opacity": {
