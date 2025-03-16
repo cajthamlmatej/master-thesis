@@ -1,5 +1,7 @@
 import Player from "@/editor/player/Player";
 import {PlayerPluginCommunicator} from "@/editor/player/PlayerPluginCommunicator";
+import {PlayerBlock} from "@/editor/block/PlayerBlock";
+import {BlockRegistry} from "@/editor/block/BlockRegistry";
 
 export class PlayerDeserializer {
 
@@ -8,24 +10,27 @@ export class PlayerDeserializer {
         const editorData = parsedData.editor;
         const blocksData = parsedData.blocks;
 
-        const player = new Player(element, {
-            width: editorData.size.width,
-            height: editorData.size.height
-        }, []);
-
-        player.setPluginCommunicator(communicator);
+        let blocks = [] as PlayerBlock[];
+        const blockRegistry = new BlockRegistry();
 
         for (let blockData of blocksData) {
-            const block = player.blockRegistry.deserializePlayer(blockData);
+            const block = blockRegistry.deserializePlayer(blockData);
 
             if (block) {
                 if(rendering) {
-                    block.interactivity = []; // TODO: move to block?
+                    block.interactivity = [];
                 }
 
-                player.addBlock(block);
+                blocks.push(block);
             }
         }
+
+        const player = new Player(element, {
+            width: editorData.size.width,
+            height: editorData.size.height
+        }, blocks);
+
+        player.setPluginCommunicator(communicator);
 
         return player;
 

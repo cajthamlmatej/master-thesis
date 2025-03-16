@@ -1,5 +1,5 @@
 interface BlockInteractivityEventsBase {
-    event: 'CLICKED' | 'HOVER_START' | 'HOVER_END' | 'DRAG_START' | 'DRAG_END';
+    event: 'CLICKED' | 'HOVER_START' | 'HOVER_END' | 'SLIDE_LOAD';
 }
 
 interface BlockInteractivityEventsTimerBase {
@@ -15,9 +15,14 @@ interface BlockInteractivityEventsTimerRepeat {
     timerType: 'REPEAT';
 }
 
+interface BlockInteractivityEventsTimerNowRepeat {
+    timerType: 'NOW-REPEAT';
+}
+
+
 type BlockInteractivityEventsTimer =
     BlockInteractivityEventsTimerBase
-    & (BlockInteractivityEventsTimerTimeout | BlockInteractivityEventsTimerRepeat);
+    & (BlockInteractivityEventsTimerTimeout | BlockInteractivityEventsTimerRepeat | BlockInteractivityEventsTimerNowRepeat);
 
 type BlockInteractivityEvents = BlockInteractivityEventsBase | BlockInteractivityEventsTimer;
 

@@ -38,6 +38,9 @@ export default class Player {
         this.changeMode(PlayerMode.PLAY);
 
         this.draw = new PlayerDraw(this);
+
+        console.log("[Player] Player initialized");
+        this.events.LOADED.emit();
     }
 
     public getElement() {

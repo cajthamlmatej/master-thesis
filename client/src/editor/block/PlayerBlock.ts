@@ -347,8 +347,34 @@ export abstract class PlayerBlock {
 
                     this.processInteractivity(interactivity);
                 }, interactivity.timerTime));
+            } else if(interactivity.timerType === "NOW-REPEAT") {
+                this.repeats.intervals.push(setInterval(async () => {
+                    await this.loaded;
+
+                    const canContinue = this.checkInteractivityConditions(interactivity);
+
+                    if (!canContinue) return;
+
+                    this.processInteractivity(interactivity);
+                }, interactivity.timerTime));
+
+                (async () => {
+                    await this.loaded;
+
+                    const canContinue = this.checkInteractivityConditions(interactivity);
+
+                    if (!canContinue) return;
+
+                    this.processInteractivity(interactivity);
+                })();
             }
         }
+
+        console.log("Block loaded", this.id);
+        this.player.events.LOADED.on(() => {
+            console.log("Slide loaded");
+            this.tryProcessInteractivity("SLIDE_LOAD");
+        });
     }
 
     /**
@@ -454,21 +480,21 @@ export abstract class PlayerBlock {
     }
 
     private async handleClick(event: MouseEvent) {
-        const result = this.tryProcessInteractivity("CLICKED", event);
+        const result = this.tryProcessInteractivity("CLICKED");
         if (result) event.stopPropagation();
     }
 
     private async handleMouseEnter(event: MouseEvent) {
-        const result = this.tryProcessInteractivity("HOVER_START", event);
+        const result = this.tryProcessInteractivity("HOVER_START");
         if (result) event.stopPropagation();
     }
 
     private async handleMouseLeave(event: MouseEvent) {
-        const result = this.tryProcessInteractivity("HOVER_END", event);
+        const result = this.tryProcessInteractivity("HOVER_END");
         if (result) event.stopPropagation();
     }
 
-    private tryProcessInteractivity(event: "CLICKED" | "HOVER_START" | "HOVER_END" | "DRAG_START" | "DRAG_END", eventObject: Event) {
+    private tryProcessInteractivity(event: "CLICKED" | "HOVER_START" | "HOVER_END" | "SLIDE_LOAD") {
         let anyCompleted = false;
         for (const interactivity of this.interactivity) {
             if (interactivity.event === event) {

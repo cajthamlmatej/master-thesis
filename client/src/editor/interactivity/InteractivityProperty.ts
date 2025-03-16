@@ -103,6 +103,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                 <select data-property="timerType">
                     <option value="TIMEOUT">${$t("property.interactivity.timer.TIMEOUT")}</option>
                     <option value="REPEAT">${$t("property.interactivity.timer.REPEAT")}</option>
+                    <option value="NOW-REPEAT">${$t("property.interactivity.timer.NOW-REPEAT")}</option>
                 </select>
             </div>
         </div>
@@ -130,6 +131,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                     <option value="HOVER_START">${$t("property.interactivity.event.HOVER_START")}</option>
                     <option value="HOVER_END">${$t("property.interactivity.event.HOVER_END")}</option>
                     <option value="TIMER">${$t("property.interactivity.event.TIMER")}</option>
+                    <option value="SLIDE_LOAD">${$t("property.interactivity.event.SLIDE_LOAD")}</option>
 <!--                                <option disabled value="DRAG_START">Drag start</option>--> <!-- TODO: blocks dont yet have drag support -->
 <!--                                <option disabled value="DRAG_END">Drag end</option>-->
                 </select>
@@ -427,7 +429,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
         actionsElement.innerHTML += `
             <header>
-                <span>Akce</span>
+                <span>${$t("property.interactivity.actions.title")}</span>
 
                 <div class="buttons">
                     <button class="plus-action"><span class="mdi mdi-plus"></span></button>
