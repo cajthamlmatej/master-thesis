@@ -286,7 +286,7 @@
             },
             "exporting": {
                 "title": "Materiál se exportuje",
-                "dscription": "Materiál se exportuje do formátu. Tato operace může trvat několik minut. Po dokončení bude soubor automaticky stáhnut."
+                "description": "Materiál se exportuje do formátu. Tato operace může trvat několik minut. Po dokončení bude soubor automaticky stáhnut."
             }
         },
         "ui": {
