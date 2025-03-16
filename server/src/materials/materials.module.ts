@@ -7,6 +7,7 @@ import {UsersModule} from "../users/users.module";
 import {ConfigModule} from "@nestjs/config";
 import {EmailService} from "../email/email.service";
 import {PluginModule} from "../plugin/plugin.module";
+import {MaterialsExportService} from "./materialsExport.service";
 
 @Module({
     imports: [
@@ -15,7 +16,7 @@ import {PluginModule} from "../plugin/plugin.module";
         PluginModule
     ],
     controllers: [MaterialsController],
-    providers: [MaterialsService],
+    providers: [MaterialsService, MaterialsExportService],
 })
 export class MaterialsModule {
 }
