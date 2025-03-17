@@ -10,6 +10,10 @@ export class PluginBooleanProperty extends BooleanProperty<PluginEditorBlock> {
         this.property = property;
     }
 
+    getID(): string {
+        return super.getID() + this.property.key;
+    }
+
     override getPriority(): number {
         return 2000;
     }

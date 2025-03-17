@@ -49,7 +49,7 @@ export abstract class NumberProperty<T extends EditorBlock = EditorBlock> extend
     public processRecalculateValues() {
         this.recalculateValues((value) => {
             const input = this.element.querySelector<HTMLInputElement>(`[data-property="${this.name}"]`)!;
-            input.value = value.toString();
+            input.value = (value??0).toString();
         });
     }
 
