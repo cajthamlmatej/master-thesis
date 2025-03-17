@@ -37,7 +37,10 @@ export class MaterialsExportService {
 
     private async exportToPDF(material: HydratedDocument<Material>, outputFolder: string) {
         let output = `${outputFolder}/output-pdf.pdf`;
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({
+            headless: true,
+            args: ['--no-sandbox']
+        })
 
         for (let slide of material.slides) {
             const slideId = slide.id;
@@ -49,8 +52,9 @@ export class MaterialsExportService {
             const page = await browser.newPage();
             await page.setViewport({width: width, height: height});
 
+            // TODO: make this prettier
             await page.goto(
-                `http://localhost:5173/cs/player/${material.id}?slide=${slideId}&rendering=true&cookies=true&token=${this.getToken()}`, {waitUntil: 'networkidle2'});
+                `https://masterthesis.cajthaml.dev/cs/player/${material.id}?slide=${slideId}&rendering=true&cookies=true&token=${this.getToken()}`, {waitUntil: 'networkidle2'});
 
             await page.pdf({
                 path: outputFile,
