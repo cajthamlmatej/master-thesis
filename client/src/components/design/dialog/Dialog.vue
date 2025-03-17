@@ -174,6 +174,7 @@ const classes = computed(() => {
             }
             > ::v-deep(.card--dialog) {
                 min-height: 100%;
+                overflow-y: auto;
             }
         }
     }
