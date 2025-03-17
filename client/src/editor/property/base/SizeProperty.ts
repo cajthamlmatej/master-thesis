@@ -101,11 +101,10 @@ export class SizeProperty<T extends EditorBlock = EditorBlock> extends Aggregato
                     if (delta) {
                         let resizeSuccess = true;
                         for (let block of this.blocks) {
-                            const newWidth = block.size.width + delta.changeX;
                             const newHeight = block.size.height + delta.changeX;
 
                             // Check resize constraints
-                            if (newWidth < 1 || newHeight < 1) {
+                            if (newHeight < 1) {
                                 resizeSuccess = false;
                                 break;
                             }
@@ -117,7 +116,7 @@ export class SizeProperty<T extends EditorBlock = EditorBlock> extends Aggregato
                     }
 
                     for (let block of this.blocks) {
-                        block.resize(value, block.size.height, false, true);
+                        block.resize(block.size.width, value, false, true);
                     }
 
                     return true;
