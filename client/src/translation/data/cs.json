@@ -296,8 +296,8 @@
                 "to-select": "Zapnout režim výběru"
             },
             "history": {
-                "undo": "Zpět",
-                "redo": "Opakovat"
+                "undo": "Zpět v historii",
+                "redo": "Dopředu v historii"
             },
             "plugin": {
                 "manage": "Spravovat pluginy",
@@ -383,13 +383,13 @@
                 "label": "Vložit"
             },
             "redo": {
-                "label": "Znovu"
+                "label": "Dopředu v historii"
             },
             "select-all": {
                 "label": "Vybrat vše"
             },
             "undo": {
-                "label": "Opakovat"
+                "label": "Zpět v historii"
             },
             "z-index-bottom": {
                 "label": "Posunout zcela dozadu"
