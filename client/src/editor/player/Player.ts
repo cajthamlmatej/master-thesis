@@ -160,14 +160,19 @@ export default class Player {
         return this.draw;
     }
 
+    private pluginCommunicatorPromiseResolve: (any?: any) => void;
+    private pluginCommunicatorPromise = new Promise((r) => this.pluginCommunicatorPromiseResolve = r);
     public setPluginCommunicator(pluginCommunicator: PlayerPluginCommunicator) {
         this.pluginCommunicator = pluginCommunicator;
+        this.pluginCommunicatorPromiseResolve();
     }
 
-    public getPluginCommunicator() {
-        if (!this.pluginCommunicator) {
-            throw new Error("Block renderer not set before rendering blocks");
-        }
+    public async getPluginCommunicator() {
+        await this.pluginCommunicatorPromise;
+
+        // if (!this.pluginCommunicator) {
+        //     throw new Error("Block renderer not set before rendering blocks");
+        // }
 
         return this.pluginCommunicator;
     }

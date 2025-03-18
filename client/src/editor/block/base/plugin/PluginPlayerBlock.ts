@@ -44,7 +44,7 @@ export class PluginPlayerBlock extends PlayerBlock {
         console.log("[PluginPlayerBlock] Rendering iframe");
         const content = (this.element.querySelector(".block-content")! as HTMLElement);
 
-        const render = await this.player.getPluginCommunicator().render(this);
+        const render = await (await this.player.getPluginCommunicator()).render(this);
 
         try {
             content.removeAttribute("data-processed");
@@ -80,7 +80,7 @@ export class PluginPlayerBlock extends PlayerBlock {
             }
 
             if (event.data.target === "script") {
-                await this.player.getPluginCommunicator().processMessage(this, event.data.message);
+                await (await this.player.getPluginCommunicator()).processMessage(this, event.data.message);
             } else {
                 console.log("[PluginEditorBlock] Unknown target of received message");
             }
