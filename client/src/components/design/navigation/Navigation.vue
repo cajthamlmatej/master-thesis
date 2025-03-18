@@ -104,10 +104,12 @@ aside.navigation {
 
     box-shadow: var(--shadow-primary);
 
-    transition: left 0.3s ease-in-out, right 0.3s ease-in-out;
+    transition: left 0.3s ease-in-out, right 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 1;
 
     &--hidden {
         left: -20em;
+        opacity: 0;
     }
 
     &--primary {
