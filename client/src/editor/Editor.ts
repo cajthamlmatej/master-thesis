@@ -275,7 +275,7 @@ export default class Editor {
             }
         }
 
-        this.fitToParent();
+        // this.fitToParent();
     }
 
     public getBlockById(blockId: string) {
