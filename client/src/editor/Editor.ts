@@ -583,7 +583,22 @@ export default class Editor {
     }
 
     private setupEditorContent() {
-        this.editorElement.innerHTML = `<div class="editor-content"></div>`
+        this.editorElement.innerHTML = `<div class="editor-content"></div>`;
+
+        const content = this.editorElement.querySelector(".editor-content")! as HTMLElement;
+
+        // note(Matej): This is a hack to prevent scrolling in the editor
+        //   updating the scroll position to 0 every time it changes.
+        //   This is a workaround because some blocks - respectively browsers
+        //   randomly scrolls focused (for example input/contenteditable) elements
+        //   so they are visible.
+        //   The editor content is oveflow: hidden, so the scroll is not visible,
+        //   but the element can be still scrolled by the browser or/and the JS.
+        const observer = new MutationObserver((mutations, observer) => {
+            content.scrollTop = 0;
+        });
+
+        observer.observe(content, {attributes: true, childList: true, subtree: true});
     }
 
     private updateElement() {
