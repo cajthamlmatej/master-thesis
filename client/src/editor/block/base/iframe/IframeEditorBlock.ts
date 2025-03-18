@@ -91,7 +91,7 @@ export class IframeEditorBlock extends EditorBlock {
 
     private onPaste(event: ClipboardEvent) {
         event.preventDefault();
-        event.stopPropagation();
+        event.stopImmediatePropagation();
 
         const text = event.clipboardData?.getData("text/plain").trim() ?? "";
 
