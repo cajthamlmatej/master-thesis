@@ -1,6 +1,7 @@
 import Editor from "@/editor/Editor";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 import {BlockRegistry} from "@/editor/block/BlockRegistry";
+import {generateUUID} from "@/utils/Generators";
 
 export class EditorClipboard {
     private readonly key;
@@ -70,7 +71,24 @@ export class EditorClipboard {
     }
 
     private serializeBlocks(blocks: EditorBlock[]) {
-        return blocks.map(b => b.clone().serialize());
+        const clonedBlocks = blocks.map(b => b.clone());
+
+        let mapper: Record<string, string> = {};
+
+        for(let cloned of clonedBlocks) {
+            if(!cloned.group) continue;
+
+            let newGroup = mapper[cloned.group];
+
+            if(!newGroup) {
+                newGroup = generateUUID();
+                mapper[cloned.group] = newGroup;
+            }
+
+            cloned.group = newGroup;
+        }
+
+        return clonedBlocks.map(b => b.serialize());
     }
 
     private deserializeBlocks(blocks: any[]) {
