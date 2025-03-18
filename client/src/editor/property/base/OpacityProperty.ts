@@ -30,7 +30,7 @@ export class OpacityProperty<T extends EditorBlock = EditorBlock> extends Number
             defaultOpacity = 0;
         }
 
-        change(Math.floor(defaultOpacity * 1000 * 100) / 1000);
+        change(Math.min(1, Math.max(0, Math.floor(defaultOpacity * 1000) / 1000)));
     }
 
     public override applyValue(value: number, delta?: { changeX: number, changeY: number, distance: number }): boolean {
