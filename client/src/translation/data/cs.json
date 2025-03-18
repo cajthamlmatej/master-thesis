@@ -363,7 +363,8 @@
                 "ArrowUp": "Šipka nahoru",
                 "ArrowDown": "Šipka dolů",
                 "ArrowLeft": "Šipka doleva",
-                "ArrowRight": "Šipka doprava"
+                "ArrowRight": "Šipka doprava",
+                " ": "Mezerník"
             }
         },
         "action": {
@@ -420,6 +421,9 @@
             },
             "mode": {
                 "label": "Změnit režim editoru"
+            },
+            "fit-canvas-to-parent": {
+                "label": "Přizpůsobit plátno rodiči"
             }
         },
         "plugin": {

@@ -361,6 +361,7 @@
                 "alt": "Alt"
             },
             "key": {
+                " ": "Space"
             }
         },
         "action": {
@@ -417,6 +418,9 @@
             },
             "mode": {
                 "label": "Change editor mode"
+            },
+            "fit-canvas-to-parent": {
+                "label": "Fit canvas to parent"
             }
         },
         "plugin": {

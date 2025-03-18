@@ -14,6 +14,7 @@ import {UndoAction} from "@/editor/actions/context/UndoAction";
 import {RedoAction} from "@/editor/actions/context/RedoAction";
 import {$t} from "@/translation/Translation";
 import {ModeAction} from "@/editor/actions/context/ModeAction";
+import {FitCanvasToParentAction} from "@/editor/actions/context/FitCanvasToParentAction";
 
 export class EditorContext {
     public element!: HTMLElement;
@@ -39,6 +40,7 @@ export class EditorContext {
         this.actions.push(new ModeAction());
         this.actions.push(new UndoAction());
         this.actions.push(new RedoAction());
+        this.actions.push(new FitCanvasToParentAction());
 
         this.setupContext();
     }
