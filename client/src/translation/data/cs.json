@@ -417,6 +417,9 @@
             },
             "unlock": {
                 "label": "Odemknout"
+            },
+            "mode": {
+                "label": "Změnit režim editoru"
             }
         },
         "plugin": {

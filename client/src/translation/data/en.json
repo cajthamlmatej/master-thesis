@@ -414,6 +414,9 @@
             },
             "unlock": {
                 "label": "Unlock"
+            },
+            "mode": {
+                "label": "Change editor mode"
             }
         },
         "plugin": {

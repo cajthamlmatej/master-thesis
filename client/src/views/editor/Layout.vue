@@ -259,6 +259,10 @@ watch(() => editorStore.getEditor(), (value) => {
 
     value.setMode(EditorMode.SELECT);
     mode.value = 'select';
+
+    value.events.MODE_CHANGED.on(() => {
+        mode.value = value.getMode();
+    });
 });
 
 const changeMode = () => {

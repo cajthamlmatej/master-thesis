@@ -13,6 +13,7 @@ import {SelectAllAction} from "@/editor/actions/context/SelectAllAction";
 import {UndoAction} from "@/editor/actions/context/UndoAction";
 import {RedoAction} from "@/editor/actions/context/RedoAction";
 import {$t} from "@/translation/Translation";
+import {ModeAction} from "@/editor/actions/context/ModeAction";
 
 export class EditorContext {
     public element!: HTMLElement;
@@ -35,6 +36,7 @@ export class EditorContext {
         this.actions.push(new MoveAction());
 
         this.actions.push(new SelectAllAction());
+        this.actions.push(new ModeAction());
         this.actions.push(new UndoAction());
         this.actions.push(new RedoAction());
 
