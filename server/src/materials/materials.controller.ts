@@ -107,6 +107,9 @@ export class MaterialsController {
         // TODO: validate if release & plugin exists
 
         await this.materialsService.update(material, updateMaterialDto);
+
+        // Do not wait, just trigger the export
+        this.materialsExportService.exportSlideThumbnails(material);
     }
 
 

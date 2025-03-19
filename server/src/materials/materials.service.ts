@@ -39,4 +39,20 @@ export class MaterialsService {
     async remove(material: HydratedDocument<Material>) {
         await this.materialModel.deleteOne({_id: material._id}).exec();
     }
+
+    /**
+     * Only saves slide's thumbnails to the database
+     * @param material
+     */
+    async updateThumbnails(material: HydratedDocument<Material>) {
+        const bulkOps = material.slides.map((slide) => ({
+            updateOne: {
+                filter: { _id: material.id, "slides.id": slide.id },
+                update: { $set: { "slides.$[elem].thumbnail": slide.thumbnail } },
+                arrayFilters: [{ "elem.id": slide.id }]
+            }
+        }));
+
+        await this.materialModel.bulkWrite(bulkOps);
+    }
 }

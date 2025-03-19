@@ -19,9 +19,6 @@ export class UpdateSlideMaterialDTO {
     id: string;
     @IsString()
     data: string;
-    @IsString()
-    @IsOptional()
-    thumbnail?: string;
     @IsNumber()
     position: number;
 }

@@ -5,12 +5,15 @@ import puppeteer from "puppeteer";
 import PDFMerger from "../utils/pdfMerger";
 import * as fs  from "fs";
 import generateToken from "../utils/generateToken";
+import {MaterialsService} from "./materials.service";
 
 @Injectable()
 export class MaterialsExportService {
     private TOKEN: string = generateToken(64);
 
-    constructor() {
+    constructor(
+        private readonly materialsService: MaterialsService,
+    ) {
 
     }
 
@@ -20,7 +23,6 @@ export class MaterialsExportService {
 
     public async exportMaterial(material: HydratedDocument<Material>, format: string) {
         const outputFolder = `./temp/${material.id}/`;
-
         fs.mkdirSync(outputFolder, { recursive: true });
 
         let path: string;
@@ -33,6 +35,42 @@ export class MaterialsExportService {
         }
 
         return fs.createReadStream(path);
+    }
+
+    public async exportSlideThumbnails(material: HydratedDocument<Material>) {
+        const outputFolder = `./temp/${material.id}/`;
+        fs.mkdirSync(outputFolder, { recursive: true });
+
+        const browser = await puppeteer.launch({
+            headless: true,
+            args: ['--no-sandbox']
+        });
+
+        for (let slide of material.slides) {
+            const slideId = slide.id;
+            const outputFile = `${outputFolder}/${slideId}.jpg`;
+            const data = JSON.parse(slide.data);
+            const width = Number(data.editor.size.width);
+            const height = Number(data.editor.size.height);
+
+            const page = await browser.newPage();
+            await page.setViewport({width: width, height: height});
+
+            // TODO: make this prettier
+            await page.goto(
+                `http://localhost:5173/en/player/${material.id}?slide=${slideId}&rendering=true&cookies=true&token=${this.getToken()}`, {waitUntil: 'networkidle2'});
+
+            await page.screenshot({
+                path: outputFile,
+                type: "jpeg",
+                quality: 80,
+            })
+
+            const header = "data:image/jpeg;base64,";
+            slide.thumbnail = header + fs.readFileSync(outputFile).toString('base64');
+        }
+
+        await this.materialsService.updateThumbnails(material);
     }
 
     private async exportToPDF(material: HydratedDocument<Material>, outputFolder: string) {

@@ -8,8 +8,6 @@ export class CreateSlideMaterialDTO {
     id: string;
     @IsString()
     data: string;
-    @IsString()
-    thumbnail?: string;
     @IsNumber()
     position: number;
 }
