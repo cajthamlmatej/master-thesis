@@ -213,6 +213,7 @@ export const useEditorStore = defineStore("editor", () => {
 
                 if (slide) {
                     slide.data = data;
+                    slide.parseData();
                 }
 
                 if (!skipThumbnail) {
@@ -262,20 +263,35 @@ export const useEditorStore = defineStore("editor", () => {
      * The size of the slide will be determined by currently selected slide.
      * If no slide is selected, the default size of 1200x800 will be used.
      */
-    const newSlide = () => {
+    const newSlide = async () => {
+        await saveCurrentSlide(true);
+
         let width = 1200;
         let height = 800;
+        let color = "#ffffff";
         const activeSlide = getActiveSlide();
 
         if (activeSlide) {
             const size = activeSlide.getSize();
             width = size.width;
             height = size.height;
+            color = activeSlide.getColor();
         }
 
         addSlide(new Slide(
             generateUUID(),
-            `{"editor":{"size":{"width":${width},"height":${height}}},"blocks":[]}`,
+            JSON.stringify(
+                {
+                    editor: {
+                        size: {
+                            width: width,
+                            height: height
+                        },
+                        color: color
+                    },
+                    blocks: []
+                }
+            ),
             undefined,
             slides.value.length
         ))

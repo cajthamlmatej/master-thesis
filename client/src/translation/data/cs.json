@@ -216,17 +216,25 @@
                     "down": "Posunout snímek dolů",
                     "copy": "Kopírovat snímek",
                     "delete": "Smazat snímek",
-                    "resize": "Změnit velikost snímku"
+                    "settings": "Nastavení snímku"
                 },
-                "size": {
-                    "title": "Velikost snímku",
-                    "resize": "Změnit velikost",
-                    "to-fit": "Přizpůsobit obsah velikosti",
-                    "width": "Šířka",
-                    "width-invalid": "Šířka musí být číslo větší než 0",
-                    "height": "Výška",
-                    "height-invalid": "Výška musí být číslo větší než 0",
-                    "times": "x"
+                "settings": {
+                    "title": "Nastavení snímku",
+                    "visual": {
+                        "title": "Vizuál",
+                        "color": "Barva pozadí",
+                        "save": "Uložit"
+                    },
+                    "size": {
+                        "title": "Velikost",
+                        "resize": "Změnit velikost",
+                        "to-fit": "Přizpůsobit obsah velikosti",
+                        "width": "Šířka",
+                        "width-invalid": "Šířka musí být číslo větší než 0",
+                        "height": "Výška",
+                        "height-invalid": "Výška musí být číslo větší než 0",
+                        "times": "x"
+                    }
                 }
             },
             "blocks": {

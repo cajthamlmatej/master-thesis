@@ -7,19 +7,35 @@ export class Slide {
     thumbnail: string | undefined;
     position: number;
 
+    private parsedData: {
+        editor: {
+            size: {
+                width: number;
+                height: number;
+            };
+            color: string;
+        };
+        blocks: any[];
+    }
+
     constructor(id: string, data: string, thumbnail: string | undefined, position: number) {
         this.id = id;
         this.data = data;
         this.thumbnail = thumbnail;
         this.position = position;
+        this.parseData();
     }
 
     parseData() {
-        return JSON.parse(this.data);
+        this.parsedData = JSON.parse(this.data);
     }
 
     getSize() {
-        return this.parseData().editor.size;
+        return this.parsedData.editor.size;
+    }
+
+    getColor() {
+        return this.parsedData.editor.color;
     }
 }
 

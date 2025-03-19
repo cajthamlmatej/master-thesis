@@ -6,7 +6,7 @@ import EditorEvents from "@/editor/EditorEvents";
 import EditorGroupAreaVisualiser from "@/editor/groups/EditorGroupAreaVisualiser";
 import EditorPreferences from "@/editor/EditorPreferences";
 import {EditorMode} from "@/editor/EditorMode";
-import type {EditorOptions} from "@/editor/EditorOptions";
+import type {MaterialOptions} from "@/editor/MaterialOptions";
 import {BlockRegistry} from "@/editor/block/BlockRegistry";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {EditorKeybinds} from "@/editor/EditorKeybinds";
@@ -19,6 +19,7 @@ export default class Editor {
     public readonly blockRegistry: BlockRegistry;
 
     private size = {width: 1200, height: 800};
+    private color: string = "#ffffff";
     private blocks: EditorBlock[] = [];
 
     private readonly editorElement: HTMLElement;
@@ -35,7 +36,7 @@ export default class Editor {
 
     private pluginCommunicator: EditorPluginCommunicator;
 
-    constructor(editorElement: HTMLElement, options?: EditorOptions, preferences?: EditorPreferences) {
+    constructor(editorElement: HTMLElement, options?: MaterialOptions, preferences?: EditorPreferences) {
         this.editorElement = editorElement;
         this.blockRegistry = new BlockRegistry();
 
@@ -115,6 +116,7 @@ export default class Editor {
     public serialize(): Object {
         return {
             size: this.size,
+            color: this.color,
         }
     }
 
@@ -278,6 +280,11 @@ export default class Editor {
         // this.fitToParent();
     }
 
+    public recolor(color: string) {
+        this.color = color;
+        this.updateElement();
+    }
+
     public getBlockById(blockId: string) {
         return this.blocks.find(block => block.id === blockId);
     }
@@ -403,11 +410,14 @@ export default class Editor {
         return this.pluginCommunicator;
     }
 
-    private parseOptions(options?: EditorOptions) {
+    private parseOptions(options?: MaterialOptions) {
         if (!options) return;
 
         if (options.size) {
             this.size = options.size;
+        }
+        if(options.color) {
+            this.color = options.color;
         }
     }
 
@@ -602,6 +612,7 @@ export default class Editor {
     }
 
     private updateElement() {
+        this.editorElement.style.backgroundColor = this.color;
         this.editorElement.style.left = this.position.x + "px";
         this.editorElement.style.top = this.position.y + "px";
         this.editorElement.style.transform = `scale(${this.scale})`;

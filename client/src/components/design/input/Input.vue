@@ -25,7 +25,7 @@ const id = v4();
 
 const props = defineProps({
     type: {
-        type: String as PropType<'text' | 'email' | 'password' | 'number' | 'datetime-local' | 'textarea'>,
+        type: String as PropType<'text' | 'email' | 'password' | 'number' | 'datetime-local' | 'textarea' | 'color'>,
         default: 'text',
     },
     label: {
@@ -322,6 +322,21 @@ defineExpose({
             resize: vertical;
             max-height: 15em;
             min-height: 2em;
+        }
+
+        input[type=color] {
+            padding: 0.25em;
+            height: 2em;
+
+            &::-webkit-color-swatch-wrapper {
+                padding: 0;
+            }
+
+            &::-webkit-color-swatch {
+                border: 0;
+                border-radius: 0.2em;
+            }
+
         }
 
         > .error {

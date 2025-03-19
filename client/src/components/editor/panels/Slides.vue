@@ -22,7 +22,7 @@
                                 {{ $t('editor.panel.slides.slide-number', {number: (i + 1).toString()}) }}
                             </div>
                             <div class="actions">
-                                <SlideResizeAction :key="slide.getSize().width +'-'+ slide.getSize().height "
+                                <SlideSettings :key="slide.getSize().width +'-'+ slide.getSize().height "
                                                    :slide="slide"/>
 
                                 <i v-tooltip="$t('editor.panel.slides.action.up')" :class="{disabled: i === 0}"
@@ -50,7 +50,7 @@
 import {computed, onMounted, ref, watch} from "vue";
 import {useEditorStore} from "@/stores/editor";
 import {Slide} from "@/models/Material";
-import SlideResizeAction from "@/components/editor/panels/SlideResizeAction.vue";
+import SlideSettings from "@/components/editor/panels/SlideSettings.vue";
 import {$t} from "../../../translation/Translation";
 
 const slides = ref(true);

@@ -670,7 +670,7 @@
                     display: flex;
                     gap: 0.25rem;
 
-                    .mdi, .dialog-activator {
+                    > .mdi, > .dialog-activator {
                         cursor: pointer;
                         background: var(--color-button-transparent-background);
                         padding: 0.2rem;

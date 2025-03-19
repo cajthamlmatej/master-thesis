@@ -7,28 +7,37 @@ import {PlayerPluginCommunicator} from "@/editor/player/PlayerPluginCommunicator
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {EditorMode} from "@/editor/EditorMode";
+import type {MaterialOptions} from "@/editor/MaterialOptions";
 
 export default class Player {
     private static readonly DEFAULT_PADDING = 32;
+
     public readonly blockRegistry: BlockRegistry;
     public readonly events = new PlayerEvents();
-    private _size = {width: 1200, height: 800};
-    private blocks: PlayerBlock[] = [];
     private readonly element: HTMLElement;
+
     private mode: PlayerMode = PlayerMode.PLAY;
+    private pluginCommunicator: PlayerPluginCommunicator;
+    private draw: PlayerDraw;
+
+    private size = {width: 1200, height: 800};
+    private color: string = "#ffffff";
+
+    private blocks: PlayerBlock[] = [];
+
     private scale: number = 1;
     private position = {x: 0, y: 0};
-    private draw: PlayerDraw;
-    private pluginCommunicator: PlayerPluginCommunicator;
+
     private resizeEvent: () => void;
     private mouseDownEvent: (event: MouseEvent) => void;
     private wheelEvent: (event: WheelEvent) => void;
     private touchEvent: (event: TouchEvent) => void;
 
-    constructor(element: HTMLElement, size: { width: number, height: number }, blocks: PlayerBlock[]) {
+    constructor(element: HTMLElement, options: MaterialOptions, blocks: PlayerBlock[]) {
         this.blockRegistry = new BlockRegistry();
         this.element = element;
-        this._size = size;
+
+        this.parseOptions(options);
 
         this.setupPlayer();
         this.fitToParent();
@@ -41,6 +50,16 @@ export default class Player {
 
         console.log("[Player] Player initialized");
         this.events.LOADED.emit();
+    }
+    private parseOptions(options?: MaterialOptions) {
+        if (!options) return;
+
+        if (options.size) {
+            this.size = options.size;
+        }
+        if(options.color) {
+            this.color = options.color;
+        }
     }
 
     public getElement() {
@@ -77,16 +96,16 @@ export default class Player {
         const parentHeight = parent.clientHeight;
 
         // Calculate the scale to fit the parent
-        const scaleX = parentWidth / this._size.width;
-        const scaleY = parentHeight / this._size.height;
+        const scaleX = parentWidth / this.size.width;
+        const scaleY = parentHeight / this.size.height;
 
         const scale = Math.min(scaleX, scaleY);
 
         this.scale = scale;
 
         // Calculate the scaled dimensions
-        const scaledWidth = this._size.width * scale;
-        const scaledHeight = this._size.height * scale;
+        const scaledWidth = this.size.width * scale;
+        const scaledHeight = this.size.height * scale;
 
         // Set the position to center
         const offsetX = (parentWidth - scaledWidth) / 2;
@@ -134,7 +153,7 @@ export default class Player {
     }
 
     public getSize(): { width: number; height: number } {
-        return this._size;
+        return this.size;
     }
 
     /**
@@ -353,12 +372,13 @@ export default class Player {
     }
 
     private updateElement() {
+        this.element.style.backgroundColor = this.color;
         this.element.style.left = this.position.x + "px";
         this.element.style.top = this.position.y + "px";
         this.element.style.transformOrigin = `0 0`;
         this.element.style.transform = `scale(${this.scale})`;
-        this.element.style.width = this._size.width + "px";
-        this.element.style.height = this._size.height + "px";
+        this.element.style.width = this.size.width + "px";
+        this.element.style.height = this.size.height + "px";
     }
 
     private setupPlayer() {
