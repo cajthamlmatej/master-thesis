@@ -116,7 +116,6 @@ export const useMaterialStore = defineStore("material", () => {
             slides: material.slides.map((slide) => ({
                 id: slide.id,
                 data: slide.data,
-                thumbnail: slide.thumbnail,
                 position: slide.position
             }))
         });
@@ -157,7 +156,6 @@ export const useMaterialStore = defineStore("material", () => {
             slides: original.slides.map((slide) => ({
                 id: slide.id,
                 data: slide.data,
-                thumbnail: slide.thumbnail,
                 position: slide.position
             }))
         });

@@ -113,91 +113,91 @@ export const useEditorStore = defineStore("editor", () => {
         }
     }
 
-    const saveCurrentSlideThumbnail = async () => {
-        try {
-
-            if (!editorElement.value) return;
-            if (!editor.value) return;
-
-            const slide = getActiveSlide();
-
-            if (!slide) return;
-
-            editor.value.getSelector().deselectAllBlocks();
-
-            const slideSize = slide.getSize();
-            const ratio = slideSize.width / slideSize.height;
-
-            let canvasHeight;
-            let canvasWidth;
-
-            if (ratio > 1) {
-                canvasHeight = Math.min(slideSize.width, 300);
-                canvasWidth = canvasHeight * ratio;
-            } else {
-                canvasWidth = Math.min(slideSize.height, 300);
-                canvasHeight = canvasWidth / ratio;
-            }
-
-            let content = editorElement.value.querySelector(".editor-content") as HTMLElement | undefined;
-            let element = content?.cloneNode(true) as HTMLElement | undefined;
-
-            if (!element || !content) return;
-
-            synchronizeCssStyles(content, element, true);
-
-            // Fix iframes
-            {
-                const iframes = element.querySelectorAll("iframe");
-
-                for (let iframe of iframes) {
-                    const newIframe = document.createElement("iframe");
-                    const contentIframe = content.querySelector(`iframe[data-id="${iframe.getAttribute("data-id")}"]`) as HTMLIFrameElement | null;
-
-                    if (!contentIframe) continue;
-
-                    iframe.replaceWith(newIframe);
-
-                    synchronizeCssStyles(contentIframe, newIframe, false);
-
-                    newIframe.addEventListener("load", () => {
-                        newIframe.contentDocument!.head.innerHTML = contentIframe.contentDocument!.head.innerHTML;
-                        newIframe.contentDocument!.body.innerHTML = contentIframe.contentDocument!.body.innerHTML;
-                    });
-                }
-            }
-
-            document.body.appendChild(element);
-            document.body.style.overflow = "hidden";
-
-            slide.thumbnail = await toJpeg(element as HTMLElement, {
-                backgroundColor: 'white',
-                width: slideSize.width,
-                height: slideSize.height,
-                canvasHeight: canvasHeight,
-                canvasWidth: canvasWidth,
-                quality: 0.5
-            }).then((dataUrl) => {
-                return dataUrl;
-            }).catch((e) => {
-                console.log("Failed to generate thumbnail");
-                console.error(e);
-                return undefined;
-            });
-
-            document.body.removeChild(element);
-            document.body.style.overflow = "auto";
-        } catch (e) {
-            const slide = getActiveSlide();
-
-            if (!slide) return;
-
-            slide.thumbnail = undefined;
-
-            console.log("[Editor] Failed to generate thumbnail, could be because of an not found image");
-            console.error(e);
-        }
-    }
+    // const saveCurrentSlideThumbnail = async () => {
+    //     try {
+    //
+    //         if (!editorElement.value) return;
+    //         if (!editor.value) return;
+    //
+    //         const slide = getActiveSlide();
+    //
+    //         if (!slide) return;
+    //
+    //         editor.value.getSelector().deselectAllBlocks();
+    //
+    //         const slideSize = slide.getSize();
+    //         const ratio = slideSize.width / slideSize.height;
+    //
+    //         let canvasHeight;
+    //         let canvasWidth;
+    //
+    //         if (ratio > 1) {
+    //             canvasHeight = Math.min(slideSize.width, 300);
+    //             canvasWidth = canvasHeight * ratio;
+    //         } else {
+    //             canvasWidth = Math.min(slideSize.height, 300);
+    //             canvasHeight = canvasWidth / ratio;
+    //         }
+    //
+    //         let content = editorElement.value.querySelector(".editor-content") as HTMLElement | undefined;
+    //         let element = content?.cloneNode(true) as HTMLElement | undefined;
+    //
+    //         if (!element || !content) return;
+    //
+    //         synchronizeCssStyles(content, element, true);
+    //
+    //         // Fix iframes
+    //         {
+    //             const iframes = element.querySelectorAll("iframe");
+    //
+    //             for (let iframe of iframes) {
+    //                 const newIframe = document.createElement("iframe");
+    //                 const contentIframe = content.querySelector(`iframe[data-id="${iframe.getAttribute("data-id")}"]`) as HTMLIFrameElement | null;
+    //
+    //                 if (!contentIframe) continue;
+    //
+    //                 iframe.replaceWith(newIframe);
+    //
+    //                 synchronizeCssStyles(contentIframe, newIframe, false);
+    //
+    //                 newIframe.addEventListener("load", () => {
+    //                     newIframe.contentDocument!.head.innerHTML = contentIframe.contentDocument!.head.innerHTML;
+    //                     newIframe.contentDocument!.body.innerHTML = contentIframe.contentDocument!.body.innerHTML;
+    //                 });
+    //             }
+    //         }
+    //
+    //         document.body.appendChild(element);
+    //         document.body.style.overflow = "hidden";
+    //
+    //         slide.thumbnail = await toJpeg(element as HTMLElement, {
+    //             backgroundColor: 'white',
+    //             width: slideSize.width,
+    //             height: slideSize.height,
+    //             canvasHeight: canvasHeight,
+    //             canvasWidth: canvasWidth,
+    //             quality: 0.5
+    //         }).then((dataUrl) => {
+    //             return dataUrl;
+    //         }).catch((e) => {
+    //             console.log("Failed to generate thumbnail");
+    //             console.error(e);
+    //             return undefined;
+    //         });
+    //
+    //         document.body.removeChild(element);
+    //         document.body.style.overflow = "auto";
+    //     } catch (e) {
+    //         const slide = getActiveSlide();
+    //
+    //         if (!slide) return;
+    //
+    //         slide.thumbnail = undefined;
+    //
+    //         console.log("[Editor] Failed to generate thumbnail, could be because of an not found image");
+    //         console.error(e);
+    //     }
+    // }
 
     const saveCurrentSlide = async (skipThumbnail = false) => {
         if (!editorElement.value) return;
@@ -218,7 +218,7 @@ export const useEditorStore = defineStore("editor", () => {
 
                 if (!skipThumbnail) {
                     // note(Matej): we need to skip the asynchronous thumbnail generation
-                    saveCurrentSlideThumbnail();
+                    // saveCurrentSlideThumbnail();
                 }
             }
         }
