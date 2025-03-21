@@ -14,7 +14,23 @@
                          class="slide"
                          @click="changeSlide(slide.id)">
                         <div class="image-container">
-                            <div :style="`background-image: url('${slide.thumbnail}')`" class="image"></div>
+                            <div :style="`background-image: url('${slide.thumbnail}')`" class="image">
+                                <span v-if="!slide.thumbnail" class="mdi mdi-loading mdi-spin"></span>
+                            </div>
+
+                            <div class="attendees">
+                                <div class="attendee"
+                                        v-for="attendee in attendees.find(a => a.slide === slide.id)?.attendees"
+                                        :key="attendee.id"
+                                        :style="{
+                                            '--color': attendee.color,
+                                        }"
+                                >
+                                    <span class="visualiser">
+                                        {{attendee.icon}}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="slide-meta">
@@ -52,8 +68,40 @@ import {useEditorStore} from "@/stores/editor";
 import {Slide} from "@/models/Material";
 import SlideSettings from "@/components/editor/panels/SlideSettings.vue";
 import {$t} from "../../../translation/Translation";
+import {communicator, EditorAttendee, EditorCommunicator} from "@/api/websockets";
 
 const slides = ref(true);
+
+let editorRoom: EditorCommunicator;
+
+const attendees = ref<{
+    slide: string,
+    attendees: EditorAttendee[]
+}[]>([]);
+onMounted(async() => {
+    editorRoom = communicator.getEditorRoom()!;
+    updateAttendees();
+    editorRoom.EVENTS.ATTENDEE_SLIDES_CHANGED.on(() => {
+        updateAttendees();
+    });
+    editorRoom.EVENTS.ATTENDEE_CHANGES.on(() => {
+        updateAttendees();
+    });
+});
+
+function updateAttendees() {
+    const current = editorRoom.getCurrent();
+    const attendeesCurrent = editorRoom.getAttendees();
+
+    attendees.value = [];
+
+    for (const slide of materialStore.getSlides()) {
+        attendees.value.push({
+            slide: slide.id,
+            attendees: attendeesCurrent.filter(a => a.slideId === slide.id).filter(a => a !== current)
+        });
+    }
+}
 
 const props = defineProps<{
     value: boolean;

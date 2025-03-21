@@ -621,6 +621,7 @@
             outline: 0px solid var(--color-primary);
             transition: outline-width 0.05s ease;
             box-shadow: var(--shadow-accent);
+            overflow: hidden;
 
             width: 100%;
 
@@ -629,6 +630,8 @@
             }
 
             > .image-container {
+                position: relative;
+
                 width: 100%;
                 //padding: 0.5em;
                 overflow: hidden;
@@ -653,6 +656,39 @@
 
                     &:not([src]) {
                         //opacity: 0;
+                    }
+
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    > .mdi {
+                        font-size: 3em;
+                        color: var(--color-text-subtle);
+                    }
+                }
+
+                .attendees {
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                    width: 100%;
+
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 0.5em;
+                    padding: 0.3em;
+
+                    .attendee {
+                        width: 2em;
+                        height: 2em;
+                        border-radius: 50%;
+                        background-color: var(--color);
+                        flex-shrink: 0;
+
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
                     }
                 }
             }
