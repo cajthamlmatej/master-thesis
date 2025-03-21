@@ -2,9 +2,9 @@ import {
     BadRequestException,
     Body,
     Controller,
-    Delete,
+    Delete, forwardRef,
     Get,
-    HttpCode,
+    HttpCode, Inject,
     Param,
     Patch,
     Post, Query,
@@ -24,12 +24,14 @@ import puppeteer from "puppeteer";
 import * as fs from "fs";
 import PDFMerger from "./../utils/pdfMerger.js";
 import {MaterialsExportService} from "./materialsExport.service";
+import {EventsGateway} from "../events/events.gateway";
 
 @Controller('')
 export class MaterialsController {
     constructor(
         private readonly materialsService: MaterialsService,
-        private readonly materialsExportService: MaterialsExportService
+        private readonly materialsExportService: MaterialsExportService,
+        @Inject(forwardRef(() => EventsGateway)) private readonly eventsGateway: EventsGateway,
     ) {
     }
 
@@ -56,7 +58,7 @@ export class MaterialsController {
     @Get('/material/:id')
     @UseGuards(OptionalAuthenticationGuard)
     async findOne(@Param('id') id: string, @Req() req: RequestWithUser, @Query('token') token: string | undefined) {
-        const material = await this.materialsService.findById(id);
+        let material = await this.materialsService.findById(id);
 
         if (!material) throw new Error("Material not found");
 
@@ -68,6 +70,11 @@ export class MaterialsController {
             } else if(token !== this.materialsExportService.getToken()) {
                 throw new UnauthorizedException('You are not allowed to access this resource');
             }
+        }
+
+        const editorRoom = this.eventsGateway.getEditorRoom(material.id);
+        if(editorRoom !== undefined){
+            material = editorRoom.getMaterial();
         }
 
         return {
