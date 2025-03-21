@@ -281,21 +281,29 @@ export abstract class EditorBlock {
 
     public setZIndex(zIndex: number) {
         this.zIndex = Math.max(0, Math.min(1000, zIndex));
+        this.editor.events.BLOCK_CHANGED.emit(this);
+
         this.synchronize();
     }
 
     public zIndexUp() {
         this.zIndex = Math.max(0, Math.min(1000, this.zIndex + 1));
+        this.editor.events.BLOCK_CHANGED.emit(this);
+
         this.synchronize();
     }
 
     public zIndexDown() {
         this.zIndex = Math.max(0, Math.min(1000, this.zIndex - 1));
+        this.editor.events.BLOCK_CHANGED.emit(this);
+
         this.synchronize();
     }
 
     public zIndexMaxDown() {
         const lowest = this.editor.getBlocks().filter(b => b.editorSupport().selection).reduce((acc, block) => Math.min(acc, block.zIndex), this.zIndex);
+
+        this.editor.events.BLOCK_CHANGED.emit(this);
 
         this.zIndex = Math.max(0, Math.min(1000, lowest - 1));
         this.synchronize();
@@ -303,6 +311,8 @@ export abstract class EditorBlock {
 
     public zIndexMaxUp() {
         const highest = this.editor.getBlocks().filter(b => b.editorSupport().selection).reduce((acc, block) => Math.max(acc, block.zIndex), this.zIndex);
+
+        this.editor.events.BLOCK_CHANGED.emit(this);
 
         this.zIndex = Math.max(0, Math.min(1000, highest + 1));
         this.synchronize();
