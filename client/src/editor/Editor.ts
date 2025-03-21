@@ -3,7 +3,7 @@ import {EditorSelector} from "@/editor/selector/EditorSelector";
 import {EditorContext} from "@/editor/context/EditorContext";
 import {EditorClipboard} from "@/editor/clipboard/EditorClipboard";
 import EditorEvents from "@/editor/EditorEvents";
-import EditorGroupAreaVisualiser from "@/editor/groups/EditorGroupAreaVisualiser";
+import EditorGroupAreaVisualiser from "@/editor/visualiser/EditorGroupAreaVisualiser";
 import EditorPreferences from "@/editor/EditorPreferences";
 import {EditorMode} from "@/editor/EditorMode";
 import type {MaterialOptions} from "@/editor/MaterialOptions";
@@ -12,6 +12,8 @@ import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {EditorKeybinds} from "@/editor/EditorKeybinds";
 import {EditorHistory} from "@/editor/history/EditorHistory";
 import {EditorPluginCommunicator} from "@/editor/EditorPluginCommunicator";
+import EditorAttendeeAreaVisualiser from "@/editor/visualiser/EditorAttendeeSelectedAreaVisualiser";
+import {communicator} from "@/api/websockets";
 
 export default class Editor {
     private static readonly DEFAULT_PADDING = 32;
@@ -43,6 +45,7 @@ export default class Editor {
         this.parseOptions(options);
         this.parsePreferences(preferences);
         this.setupEditor();
+        this.setupAttendee();
 
         this.context = new EditorContext(this);
         this.selector = new EditorSelector(this);
@@ -50,6 +53,7 @@ export default class Editor {
         this.history = new EditorHistory(this);
 
         new EditorGroupAreaVisualiser(this);
+        new EditorAttendeeAreaVisualiser(this);
 
         this.keybinds = new EditorKeybinds(this);
 
@@ -602,13 +606,17 @@ export default class Editor {
         //   This is a workaround because some blocks - respectively browsers
         //   randomly scrolls focused (for example input/contenteditable) elements
         //   so they are visible.
-        //   The editor content is oveflow: hidden, so the scroll is not visible,
+        //   The editor content is overflow: hidden, so the scroll is not visible,
         //   but the element can be still scrolled by the browser or/and the JS.
         const observer = new MutationObserver((mutations, observer) => {
             content.scrollTop = 0;
         });
 
         observer.observe(content, {attributes: true, childList: true, subtree: true});
+    }
+
+    public update() {
+        this.updateElement();
     }
 
     private updateElement() {
@@ -620,5 +628,40 @@ export default class Editor {
         this.editorElement.style.width = this.size.width + "px";
         this.editorElement.style.height = this.size.height + "px";
         this.editorElement.style.setProperty("--scale", this.scale.toString());
+    }
+
+    private setupAttendee() {
+        const room = communicator.getEditorRoom();
+
+        if(!room) {
+            return;
+        }
+
+        room.EVENTS.SYNCHRONIZE_BLOCK.on((blockData) => {
+            const parsed = JSON.parse(blockData);
+            const oldBlock = this.getBlockById(parsed.id);
+
+            if(oldBlock) {
+                for(let key in parsed) {
+                    (oldBlock as any)[key] = parsed[key as any];
+                }
+
+                oldBlock.processDataChange(parsed);
+            } else {
+                const obj = this.blockRegistry.deserializeEditor(parsed);
+
+                if(!obj) return;
+
+                this.addBlock(obj);
+            }
+        });
+
+        room.EVENTS.REMOVE_BLOCK.on((blockId) => {
+            const block = this.getBlockById(blockId);
+
+            if(block) {
+                this.removeBlock(block);
+            }
+        });
     }
 }
