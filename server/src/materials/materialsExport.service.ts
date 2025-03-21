@@ -1,7 +1,7 @@
 import {forwardRef, Inject, Injectable, Logger} from '@nestjs/common';
 import {Material} from "./material.schema";
 import {HydratedDocument} from "mongoose";
-import puppeteer from "puppeteer";
+import puppeteer, {Browser} from "puppeteer";
 import PDFMerger from "../utils/pdfMerger";
 import * as fs from "fs";
 import generateToken from "../utils/generateToken";
@@ -12,11 +12,28 @@ import {EventsGateway} from "../events/events.gateway";
 export class MaterialsExportService {
     private TOKEN: string = generateToken(64);
 
+    private browser: Browser;
+    private browserPromiseResolve: (value: Browser) => void;
+    private browserPromise: Promise<Browser> = new Promise((resolve) => {this.browserPromiseResolve = resolve;});
+
     constructor(
         private readonly materialsService: MaterialsService,
         @Inject(forwardRef(() => EventsGateway)) private readonly eventsGateway: EventsGateway,
     ) {
+        this.init();
+    }
 
+    private async init() {
+        console.log(this.browserPromise);
+        this.browser = await puppeteer.launch({
+            headless: true,
+            args: ['--no-sandbox']
+        });
+
+        // Open blank page so it never closes
+        await this.browser.newPage();
+
+        this.browserPromiseResolve(this.browser);
     }
 
     public getToken() {
@@ -43,14 +60,14 @@ export class MaterialsExportService {
 
     public async exportSlideThumbnails(material: HydratedDocument<Material>) {
         this.logger.log(`Exporting slide thumbnails for material ${material.id}`);
+        await this.browserPromise;
+
+        if(!this.browser) {
+            this.browser = await this.browserPromise;
+        }
 
         const outputFolder = `./temp/${material.id}/`;
         fs.mkdirSync(outputFolder, {recursive: true});
-
-        const browser = await puppeteer.launch({
-            headless: true,
-            args: ['--no-sandbox']
-        });
 
         for (let slide of material.slides) {
             const slideId = slide.id;
@@ -58,7 +75,7 @@ export class MaterialsExportService {
             const width = Number(slide.data.editor.size.width);
             const height = Number(slide.data.editor.size.height);
 
-            const page = await browser.newPage();
+            const page = await this.browser.newPage();
             await page.setViewport({width: width, height: height});
 
             // TODO: make this prettier
@@ -73,9 +90,16 @@ export class MaterialsExportService {
 
             const header = "data:image/jpeg;base64,";
             slide.thumbnail = header + fs.readFileSync(outputFile).toString('base64');
+
+            await page.close();
         }
 
-        await browser.close();
+        /**
+         * PLUGINY CHYBY KDYZ NENI PLUGIN NAINSTALOVAN
+         * PLUGINY NEJDE ODDELAT
+         * DISCONNECT KDYZ ODEJDE EDITOR
+         * SPUŠTĚNÍ NEFUNGUJE
+         */
 
         await this.materialsService.updateThumbnails(material);
 
@@ -90,11 +114,12 @@ export class MaterialsExportService {
     }
 
     private async exportToPDF(material: HydratedDocument<Material>, outputFolder: string) {
+        await this.browserPromise;
+        if(!this.browser) {
+            this.browser = await this.browserPromise;
+        }
+
         let output = `${outputFolder}/output-pdf.pdf`;
-        const browser = await puppeteer.launch({
-            headless: true,
-            args: ['--no-sandbox']
-        })
 
         for (let slide of material.slides) {
             const slideId = slide.id;
@@ -102,7 +127,7 @@ export class MaterialsExportService {
             const width = Number(slide.data.editor.size.width);
             const height = Number(slide.data.editor.size.height);
 
-            const page = await browser.newPage();
+            const page = await this.browser.newPage();
             await page.setViewport({width: width, height: height});
 
             // TODO: make this prettier
@@ -115,9 +140,8 @@ export class MaterialsExportService {
                 height: height,
                 printBackground: true
             });
+            await page.close();
         }
-
-        await browser.close();
 
         const merger = new PDFMerger();
 
