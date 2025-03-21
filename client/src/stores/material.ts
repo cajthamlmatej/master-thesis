@@ -6,6 +6,7 @@ import type Material from "@/models/Material";
 import MaterialMapper from "@/models/mappers/MaterialMapper";
 import {useEditorStore} from "@/stores/editor";
 import {$t} from "@/translation/Translation";
+import {communicator} from "@/api/websockets";
 
 export const useMaterialStore = defineStore("material", () => {
     const materials = ref<Material[]>([]);
@@ -196,7 +197,28 @@ export const useMaterialStore = defineStore("material", () => {
         return response.preferences;
     }
 
+    const synchronize = () => {
+        const material = currentMaterial.value;
+
+        if (!material) {
+            return;
+        }
+
+        communicator.getEditorRoom()?.synchronizeMaterial({
+            plugins: material.plugins.map((p) => ({
+                plugin: p.plugin,
+                release: p.release,
+            })),
+            name: material.name,
+            method: material.method,
+            automaticTime: material.automaticTime,
+            sizing: material.sizing,
+            visibility: material.visibility,
+        });
+    }
+
     return {
+        synchronize,
         materials,
         currentMaterial,
         load,

@@ -258,6 +258,8 @@ const save = async () => {
 
     dialog.value = false;
     saving.value = false;
+
+    materialStore.synchronize();
 };
 
 const exporting = ref(false);

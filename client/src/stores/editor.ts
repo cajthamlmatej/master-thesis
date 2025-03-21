@@ -5,13 +5,12 @@ import {generateUUID} from "@/utils/Generators";
 import {EditorDeserializer} from "@/editor/EditorDeserializer";
 import {EditorSerializer} from "@/editor/EditorSerializer";
 import {EditorProperty} from "@/editor/property/EditorProperty";
-import {toJpeg} from 'html-to-image';
 import {useMaterialStore} from "@/stores/material";
 import {Slide} from "@/models/Material";
-import {synchronizeCssStyles} from "@/utils/SynchronizeCssStyles";
 import {usePluginStore} from "@/stores/plugin";
 import {PluginManager} from "@/editor/plugin/PluginManager";
 import {EditorPluginCommunicator} from "@/editor/EditorPluginCommunicator";
+import {communicator} from "@/api/websockets";
 
 
 export const useEditorStore = defineStore("editor", () => {
@@ -32,6 +31,30 @@ export const useEditorStore = defineStore("editor", () => {
     });
 
     const activeSlide = ref<string | undefined>(undefined);
+
+    watch(() => activeSlide.value, (activeSlide) => {
+        // materialStore.save();
+
+        if (activeSlide) {
+            communicator.getEditorRoom()?.changeSlide(activeSlide);
+        }
+    })
+
+    const synchronizeSlide = () => {
+        const activeSlide = getActiveSlide();
+        const editor = getEditor();
+
+        if(!activeSlide || !editor) return;
+
+        communicator.getEditorRoom()?.synchronizeSlide({
+            slideId: activeSlide.id,
+            size: {
+                width: activeSlide.getSize().width,
+                height: activeSlide.getSize().height
+            },
+            color: activeSlide.getColor(),
+        })
+    }
 
     const requestEditor = async () => {
         if (!materialStore.currentMaterial) {
@@ -217,8 +240,9 @@ export const useEditorStore = defineStore("editor", () => {
                 }
 
                 if (!skipThumbnail) {
-                    // note(Matej): we need to skip the asynchronous thumbnail generation
-                    // saveCurrentSlideThumbnail();
+                    if(slide) {
+                        // slide.thumbnail = undefined;
+                    }
                 }
             }
         }
@@ -352,6 +376,7 @@ export const useEditorStore = defineStore("editor", () => {
         getEditorProperty,
         setEditorPropertyElement,
         saveCurrentSlide,
-        copySlide
+        copySlide,
+        synchronizeSlide
     }
 });

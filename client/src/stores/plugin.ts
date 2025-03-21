@@ -11,6 +11,7 @@ import Material, {MaterialPlugin} from "@/models/Material";
 import {PluginContext} from "@/editor/plugin/PluginContext";
 import {usePlayerStore} from "@/stores/player";
 import {useRouter} from "vue-router";
+import {communicator} from "@/api/websockets";
 
 export const usePluginStore = defineStore("plugin", () => {
     const plugins = ref([] as Plugin[]);
@@ -48,7 +49,8 @@ export const usePluginStore = defineStore("plugin", () => {
         plugins.value = response.plugins.map((p) => PluginMapper.fromPluginDTO(p));
     };
     const loadOne = async (id: string) => {
-        return (await loadMultiple([id]))?.[0];
+        (await loadMultiple([id]));
+        return plugins.value.find((p) => p.id === id);
     }
     const loadMultiple = async (ids: string[]) => {
         const response = await api.plugin.specific(ids);
@@ -150,9 +152,11 @@ export const usePluginStore = defineStore("plugin", () => {
 
         if (plugin.releases.length === 0) {
             // note(Matej): This will happened when the plugin is loaded just in "overview" mode
-            // We need to load the plugin in full of releases
+            //     We need to load the plugin in full of releases
 
             const foundPlugin = await loadOne(plugin.id);
+
+            console.log("Plugin", foundPlugin);
 
             if (!foundPlugin) {
                 console.error("Failed to load plugin");
@@ -175,6 +179,7 @@ export const usePluginStore = defineStore("plugin", () => {
 
         await getPanels();
 
+        materialStore.synchronize();
         return true;
     }
 
@@ -203,6 +208,7 @@ export const usePluginStore = defineStore("plugin", () => {
         plugins,
         loaded,
         load,
+        loadOne,
         tags,
         panels: pluginPanels,
         manager: pluginManager,
