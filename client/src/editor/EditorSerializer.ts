@@ -1,4 +1,5 @@
 import type Editor from "@/editor/Editor";
+import {SlideData} from "@/models/Material";
 
 export class EditorSerializer {
     private editor: Editor;
@@ -7,7 +8,7 @@ export class EditorSerializer {
         this.editor = editor;
     }
 
-    serialize(): string {
+    serialize(): SlideData {
         const blocksObjects = this.editor.getBlocks().map(block => block.serialize());
         const editorData = this.editor.serialize();
 
@@ -16,7 +17,7 @@ export class EditorSerializer {
             blocks: blocksObjects
         };
 
-        return JSON.stringify(data);
+        return data as SlideData;
     }
 
 }

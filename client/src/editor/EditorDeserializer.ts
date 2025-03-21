@@ -1,13 +1,13 @@
 import Editor from "@/editor/Editor";
 import type EditorPreferences from "@/editor/EditorPreferences";
 import {EditorPluginCommunicator} from "@/editor/EditorPluginCommunicator";
+import {SlideData} from "@/models/Material";
 
 export class EditorDeserializer {
 
-    deserialize(data: string, element: HTMLElement, preferences?: EditorPreferences, communicator?: EditorPluginCommunicator): Editor {
-        const parsedData = JSON.parse(data);
-        const editorData = parsedData.editor;
-        const blocksData = parsedData.blocks;
+    deserialize(data: SlideData, element: HTMLElement, preferences?: EditorPreferences, communicator?: EditorPluginCommunicator): Editor {
+        const editorData = data.editor;
+        const blocksData = data.blocks;
 
         const editor = new Editor(element, editorData, preferences);
 

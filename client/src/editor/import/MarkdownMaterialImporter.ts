@@ -2,6 +2,7 @@ import {MaterialImporter} from "@/editor/import/MaterialImporter";
 import Material, {Slide} from "@/models/Material";
 import {marked} from "marked";
 import {generateUUID} from "@/utils/Generators";
+import {SlideData as MaterialSlideData} from "@/models/Material";
 
 
 interface SlideData {
@@ -110,7 +111,16 @@ export class MarkdownMaterialImporter extends MaterialImporter {
                 interactivity: []
             });
 
-            let data = `{"editor":{"size":{"width":${width},"height":${height}}},"blocks":${JSON.stringify(blocks)}}`;
+            let data: MaterialSlideData = {
+                blocks: blocks,
+                editor: {
+                    size: {
+                        width: width,
+                        height: height
+                    },
+                    color: "#ffffff"
+                }
+            };
 
             correctSlides.push(new Slide(generateUUID(), data, undefined,0));
         })();
@@ -212,7 +222,16 @@ export class MarkdownMaterialImporter extends MaterialImporter {
                 }
             }
 
-            let data = `{"editor":{"size":{"width":${width},"height":${height}}},"blocks":${JSON.stringify(blocks)}}`;
+            let data: MaterialSlideData = {
+                blocks: blocks,
+                editor: {
+                    size: {
+                        width: width,
+                        height: height
+                    },
+                    color: "#ffffff"
+                }
+            };
 
             correctSlides.push(new Slide(generateUUID(), data, undefined, correctSlides.length));
         }

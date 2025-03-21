@@ -44,7 +44,7 @@ export const useEditorStore = defineStore("editor", () => {
         const activeSlide = getActiveSlide();
         const editor = getEditor();
 
-        if(!activeSlide || !editor) return;
+        if (!activeSlide || !editor) return;
 
         communicator.getEditorRoom()?.synchronizeSlide({
             slideId: activeSlide.id,
@@ -236,11 +236,10 @@ export const useEditorStore = defineStore("editor", () => {
 
                 if (slide) {
                     slide.data = data;
-                    slide.parseData();
                 }
 
                 if (!skipThumbnail) {
-                    if(slide) {
+                    if (slide) {
                         // slide.thumbnail = undefined;
                     }
                 }
@@ -304,18 +303,16 @@ export const useEditorStore = defineStore("editor", () => {
 
         addSlide(new Slide(
             generateUUID(),
-            JSON.stringify(
-                {
-                    editor: {
-                        size: {
-                            width: width,
-                            height: height
-                        },
-                        color: color
+            {
+                editor: {
+                    size: {
+                        width: width,
+                        height: height
                     },
-                    blocks: []
-                }
-            ),
+                    color: color
+                },
+                blocks: []
+            },
             undefined,
             slides.value.length
         ))

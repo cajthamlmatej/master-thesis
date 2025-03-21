@@ -1,5 +1,57 @@
-import {IsArray, IsDefined, IsIn, IsNumber, IsString, MaxLength, Min, MinLength, ValidateNested} from "class-validator";
+import {
+    IsArray,
+    IsDefined, IsHexColor,
+    IsIn,
+    IsNumber,
+    IsObject, IsPositive,
+    IsString,
+    MaxLength,
+    Min,
+    MinLength,
+    ValidateNested
+} from "class-validator";
 import {Type} from "class-transformer";
+
+export class SlideEditorSizeDataDTO {
+    @IsNumber()
+    @IsPositive()
+    width: number;
+    @IsNumber()
+    @IsPositive()
+    height: number;
+}
+
+export class SlideEditorDataDTO {
+    @IsDefined()
+    @IsObject()
+    @ValidateNested()
+    size: SlideEditorSizeDataDTO;
+    @IsString()
+    @IsHexColor()
+    color: string;
+}
+
+export class SlideBlockDTO {
+    @IsString()
+    id: string;
+    @IsString()
+    type: string;
+
+    // any other information
+    [key: string]: any;
+}
+
+export class SlideDataDTO {
+    @IsDefined()
+    @IsObject()
+    @ValidateNested()
+    editor: SlideEditorDataDTO;
+
+    @IsArray()
+    @ValidateNested()
+    @Type(() => SlideBlockDTO)
+    blocks: SlideBlockDTO[];
+}
 
 export class CreateSlideMaterialDTO {
     @IsString()
@@ -7,7 +59,8 @@ export class CreateSlideMaterialDTO {
     @MinLength(36)
     id: string;
     @IsString()
-    data: string;
+    @ValidateNested()
+    data: SlideDataDTO;
     @IsNumber()
     position: number;
 }

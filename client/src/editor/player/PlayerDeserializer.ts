@@ -3,13 +3,13 @@ import {PlayerPluginCommunicator} from "@/editor/player/PlayerPluginCommunicator
 import {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {BlockRegistry} from "@/editor/block/BlockRegistry";
 import {MaterialOptions} from "@/editor/MaterialOptions";
+import {SlideData} from "@/models/Material";
 
 export class PlayerDeserializer {
 
-    deserialize(data: string, element: HTMLElement, communicator: PlayerPluginCommunicator, rendering: boolean = false): Player {
-        const parsedData = JSON.parse(data);
-        const editorData = parsedData.editor as MaterialOptions;
-        const blocksData = parsedData.blocks;
+    deserialize(data: SlideData, element: HTMLElement, communicator: PlayerPluginCommunicator, rendering: boolean = false): Player {
+        const editorData = data.editor as MaterialOptions;
+        const blocksData = data.blocks;
 
         let blocks = [] as PlayerBlock[];
         const blockRegistry = new BlockRegistry();

@@ -1,41 +1,40 @@
 import moment from "moment";
 import {MaterialMethod, MaterialSizing, MaterialVisibility} from "../../lib/dto/material/MaterialEnums";
 
+export interface SlideData {
+    editor: {
+        size: {
+            width: number;
+            height: number;
+        };
+        color: string;
+    },
+    blocks: {
+        id: string;
+        type: string;
+        [key: string]: any;
+    }[]
+}
+
 export class Slide {
     id: string;
-    data: string;
+    data: SlideData;
     thumbnail: string | undefined;
     position: number;
 
-    private parsedData: {
-        editor: {
-            size: {
-                width: number;
-                height: number;
-            };
-            color: string;
-        };
-        blocks: any[];
-    }
-
-    constructor(id: string, data: string, thumbnail: string | undefined, position: number) {
+    constructor(id: string, data: SlideData, thumbnail: string | undefined, position: number) {
         this.id = id;
         this.data = data;
         this.thumbnail = thumbnail;
         this.position = position;
-        this.parseData();
-    }
-
-    parseData() {
-        this.parsedData = JSON.parse(this.data);
     }
 
     getSize() {
-        return this.parsedData.editor.size;
+        return this.data.editor.size;
     }
 
     getColor() {
-        return this.parsedData.editor.color;
+        return this.data.editor.color;
     }
 }
 
@@ -65,7 +64,7 @@ export default class Material {
 
     constructor(id: string, createdAt: Date, updatedAt: Date, name: string, slides: {
                     id: string;
-                    data: string;
+                    data: SlideData;
                     thumbnail: string | undefined;
                     position: number;
                 }[],
