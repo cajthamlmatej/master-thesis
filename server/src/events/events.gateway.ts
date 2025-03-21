@@ -186,10 +186,45 @@ export class EditorMaterialRoom {
         this.gateway.server.to(this.roomId).emit('synchronizeMaterial', data);
     }
 
-    public async synchronizeSlide(data: { slideId: string; size: { width: number; height: number }; color: string }) {
+    public async synchronizeSlide(data: { slideId: string; size: { width: number; height: number }; color: string; position: number }) {
         this.gateway.server.to(this.roomId).emit('synchronizeSlide', data);
 
+        let slide = this.getSlide(data.slideId);
+
+        if(!slide) {
+            const newSlide = {
+                id: data.slideId,
+                thumbnail: "",
+                position: data.position,
+                data: {
+                    editor: {
+                        size: data.size,
+                        color: data.color
+                    },
+                    blocks: []
+                }
+            }
+
+            this.material.slides.push(newSlide);
+            slide = newSlide;
+        }
+
+        slide.data.editor.size = data.size;
+        slide.data.editor.color = data.color;
+        slide.position = data.position;
+
         await this.saveSlide(data.slideId);
+    }
+
+    public async removeSlide({slideId}: {slideId: string}) {
+        this.material.slides = this.material.slides.filter(s => s.id !== slideId);
+
+        this.gateway.server.to(this.roomId).emit('removeSlide', {
+            slideId: slideId
+        });
+
+        this.material.markModified("slides");
+        this.saveMaterial();
     }
 
     public generateThumbnail() {
@@ -197,36 +232,51 @@ export class EditorMaterialRoom {
             clearTimeout(this.debounceThumbnail);
         }
 
-        this.debounceThumbnail = setTimeout(() => {
-            this.gateway.materialsExportService.exportSlideThumbnails(this.material);
+        this.debounceThumbnail = setTimeout(async() => {
+            await this.gateway.materialsExportService.exportSlideThumbnails(this.material);
+        }, 3000);
+    }
+
+    private debounceMaterial: NodeJS.Timeout;
+    private saveMaterial() {
+        if(this.debounceMaterial) {
+            clearTimeout(this.debounceMaterial);
+        }
+
+        this.debounceMaterial = setTimeout(async () => {
+            await this.material.save();
         }, 3000);
     }
 
     private async saveSlide(slideId: string) {
         this.generateThumbnail();
-
-        await this.material.save();
+        this.material.markModified("slides");
+        this.saveMaterial();
     }
 
-    private async getSlide(slideId: string) {
+    private getSlide(slideId: string) {
         const slide = this.material.slides.find(s => s.id === slideId);
 
         if(!slide) {
-            // TODO?
+            return undefined;
         }
 
         return slide;
     }
 
     private async removeSlideBlock(slideId: string, blockId: string) {
-        const slide = (await this.getSlide(slideId))!;
+        const slide = this.getSlide(slideId);
+
+        if(!slide) return;
 
         slide.data.blocks = slide.data.blocks.filter(b => b.id !== blockId);
     }
 
     private async synchronizeSlideBlock(slideId: string, blockData: any) {
-        const slide = (await this.getSlide(slideId))!;
+        const slide = this.getSlide(slideId)
         const block = JSON.parse(blockData);
+
+        if(!slide) return;
 
         const existingBlock = slide.data.blocks.find(b => b.id === block.id);
 
@@ -235,16 +285,11 @@ export class EditorMaterialRoom {
         } else {
             slide.data.blocks = slide.data.blocks.map(b => b.id === block.id ? block : b);
         }
-
-        this.material.markModified("slides");
     }
 
     /**
      * TODO:
-     *    - creating slides
      *    - syncing different slides?
-     *    - properties not syncing
-     *    - dissalow saving in parallel
      */
 }
 
@@ -367,6 +412,7 @@ export class EventsGateway  {
         slideId: string;
         size: { width: number; height: number };
         color: string;
+        position: number
     }, @ConnectedSocket() client: Socket) {
         const editorRoom = client.data.editorRoom as EditorMaterialRoom | undefined;
 
@@ -375,6 +421,17 @@ export class EventsGateway  {
         }
 
         editorRoom.synchronizeSlide(data);
+    }
+
+    @SubscribeMessage('removeSlide')
+    public async handleRemoveSlide(@MessageBody() {slideId}: { slideId: string }, @ConnectedSocket() client: Socket) {
+        const editorRoom = client.data.editorRoom as EditorMaterialRoom | undefined;
+
+        if(!editorRoom) {
+            throw new WsException("You are not in the editor room");
+        }
+
+        editorRoom.removeSlide({slideId});
     }
 
     // @SubscribeMessage('requestMaterialThumbnail')
