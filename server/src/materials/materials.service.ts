@@ -53,6 +53,10 @@ export class MaterialsService {
             }
         }));
 
-        await this.materialModel.bulkWrite(bulkOps);
+        try {
+            await this.materialModel.bulkWrite(bulkOps);
+        } catch (e) {
+            console.error("Unable to update thumbnails", e);
+        }
     }
 }

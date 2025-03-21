@@ -1,11 +1,12 @@
-import {Injectable} from '@nestjs/common';
+import {forwardRef, Inject, Injectable, Logger} from '@nestjs/common';
 import {Material} from "./material.schema";
-import {HydratedDocument, Model} from "mongoose";
+import {HydratedDocument} from "mongoose";
 import puppeteer from "puppeteer";
 import PDFMerger from "../utils/pdfMerger";
-import * as fs  from "fs";
+import * as fs from "fs";
 import generateToken from "../utils/generateToken";
 import {MaterialsService} from "./materials.service";
+import {EventsGateway} from "../events/events.gateway";
 
 @Injectable()
 export class MaterialsExportService {
@@ -13,6 +14,7 @@ export class MaterialsExportService {
 
     constructor(
         private readonly materialsService: MaterialsService,
+        @Inject(forwardRef(() => EventsGateway)) private readonly eventsGateway: EventsGateway,
     ) {
 
     }
@@ -23,7 +25,7 @@ export class MaterialsExportService {
 
     public async exportMaterial(material: HydratedDocument<Material>, format: string) {
         const outputFolder = `./temp/${material.id}/`;
-        fs.mkdirSync(outputFolder, { recursive: true });
+        fs.mkdirSync(outputFolder, {recursive: true});
 
         let path: string;
         if (format === 'pdf') {
@@ -37,9 +39,13 @@ export class MaterialsExportService {
         return fs.createReadStream(path);
     }
 
+    private readonly logger = new Logger(MaterialsExportService.name);
+
     public async exportSlideThumbnails(material: HydratedDocument<Material>) {
+        this.logger.log(`Exporting slide thumbnails for material ${material.id}`);
+
         const outputFolder = `./temp/${material.id}/`;
-        fs.mkdirSync(outputFolder, { recursive: true });
+        fs.mkdirSync(outputFolder, {recursive: true});
 
         const browser = await puppeteer.launch({
             headless: true,
@@ -70,7 +76,18 @@ export class MaterialsExportService {
             slide.thumbnail = header + fs.readFileSync(outputFile).toString('base64');
         }
 
+        await browser.close();
+
         await this.materialsService.updateThumbnails(material);
+
+        this.eventsGateway.getEditorRoom(material.id)?.announceNewThumbnails(material.slides.map(s => {
+            return {
+                id: s.id,
+                thumbnail: s.thumbnail,
+            }
+        }));
+
+        this.logger.log(`Finished exporting slide thumbnails for material ${material.id}`);
     }
 
     private async exportToPDF(material: HydratedDocument<Material>, outputFolder: string) {
