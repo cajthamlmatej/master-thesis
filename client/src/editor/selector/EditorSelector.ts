@@ -4,6 +4,7 @@ import {EditorSelectorContext} from "@/editor/selector/EditorSelectorContext";
 import EditorSelectorEvents from "@/editor/selector/EditorSelectorEvents";
 import EditorSelectorArea from "@/editor/selector/area/EditorSelectorArea";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
+import {communicator} from "@/api/websockets";
 
 
 export class EditorSelector {
@@ -74,6 +75,19 @@ export class EditorSelector {
             }
 
             block = blockData;
+        }
+
+        const room = communicator.getEditorRoom();
+        if(room) {
+            if (!room.canSelectBlock(block.id)) {
+                return;
+            }
+
+            const inGroup = this.editor.getBlocks().filter(b => b.group === block.group).map(b => b.id);
+
+            if (!inGroup.every(id => room.canSelectBlock(id))) {
+                return;
+            }
         }
 
         if (!addToSelection) {
