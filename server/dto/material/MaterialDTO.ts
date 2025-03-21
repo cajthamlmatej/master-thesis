@@ -14,7 +14,20 @@ export interface MaterialDTO {
     user: string;
     slides: {
         id: string;
-        data: string;
+        data: {
+            editor: {
+                size: {
+                    width: number;
+                    height: number;
+                },
+                color: string
+            },
+            blocks: {
+                id: string,
+                type: string,
+                [key: string]: any;
+            }[]
+        };
         thumbnail: string | undefined;
         position: number;
     }[];

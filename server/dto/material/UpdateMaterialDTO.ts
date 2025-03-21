@@ -1,7 +1,7 @@
 import {
     IsArray,
     IsIn,
-    IsNumber,
+    IsNumber, IsObject,
     IsOptional,
     IsString,
     MaxLength,
@@ -10,6 +10,7 @@ import {
     ValidateNested
 } from "class-validator";
 import {Type} from "class-transformer";
+import {SlideDataDTO} from "./CreateMaterialDTO";
 
 
 export class UpdateSlideMaterialDTO {
@@ -17,8 +18,9 @@ export class UpdateSlideMaterialDTO {
     @MaxLength(36)
     @MinLength(36)
     id: string;
-    @IsString()
-    data: string;
+    @IsObject()
+    @ValidateNested()
+    data: SlideDataDTO;
     @IsNumber()
     position: number;
 }

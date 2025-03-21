@@ -55,9 +55,8 @@ export class MaterialsExportService {
         for (let slide of material.slides) {
             const slideId = slide.id;
             const outputFile = `${outputFolder}/${slideId}.jpg`;
-            const data = JSON.parse(slide.data);
-            const width = Number(data.editor.size.width);
-            const height = Number(data.editor.size.height);
+            const width = Number(slide.data.editor.size.width);
+            const height = Number(slide.data.editor.size.height);
 
             const page = await browser.newPage();
             await page.setViewport({width: width, height: height});
@@ -100,9 +99,8 @@ export class MaterialsExportService {
         for (let slide of material.slides) {
             const slideId = slide.id;
             const outputFile = `${outputFolder}/${slideId}.pdf`;
-            const data = JSON.parse(slide.data);
-            const width = Number(data.editor.size.width);
-            const height = Number(data.editor.size.height);
+            const width = Number(slide.data.editor.size.width);
+            const height = Number(slide.data.editor.size.height);
 
             const page = await browser.newPage();
             await page.setViewport({width: width, height: height});

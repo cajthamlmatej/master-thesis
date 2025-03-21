@@ -28,7 +28,7 @@ export class EditorMaterialRoomAttendee {
 
     constructor(client: Socket, room: EditorMaterialRoom) {
         this.client = client;
-        this.slideId = room.getMaterial().slides[0].id ?? null;
+        this.slideId = room.getMaterial().slides[0]?.id ?? null;
         this.name = client.data.user?.name ?? 'Anonymous';
         this.color = "#" + generateToken(6, "0123456789ABCDEF");
     }
@@ -152,6 +152,7 @@ export class EditorMaterialRoom {
             author: client.id
         });
 
+        await this.synchronizeSlideBlock(slideId, block);
         await this.saveSlide(slideId);
     }
 
@@ -163,6 +164,7 @@ export class EditorMaterialRoom {
             blockId: blockId
         });
 
+        await this.removeSlideBlock(slideId, blockId);
         await this.saveSlide(slideId);
     }
 
@@ -174,6 +176,13 @@ export class EditorMaterialRoom {
         sizing: "FIT_TO_SCREEN" | "MOVEMENT";
         visibility: "PUBLIC" | "PRIVATE"
     }) {
+        this.material.name = data.name;
+        this.material.plugins = data.plugins as any;
+        this.material.method = data.method;
+        this.material.automaticTime = data.automaticTime;
+        this.material.sizing = data.sizing;
+        this.material.visibility = data.visibility;
+
         this.gateway.server.to(this.roomId).emit('synchronizeMaterial', data);
     }
 
@@ -194,9 +203,49 @@ export class EditorMaterialRoom {
     }
 
     private async saveSlide(slideId: string) {
-
         this.generateThumbnail();
+
+        await this.material.save();
     }
+
+    private async getSlide(slideId: string) {
+        const slide = this.material.slides.find(s => s.id === slideId);
+
+        if(!slide) {
+            // TODO?
+        }
+
+        return slide;
+    }
+
+    private async removeSlideBlock(slideId: string, blockId: string) {
+        const slide = (await this.getSlide(slideId))!;
+
+        slide.data.blocks = slide.data.blocks.filter(b => b.id !== blockId);
+    }
+
+    private async synchronizeSlideBlock(slideId: string, blockData: any) {
+        const slide = (await this.getSlide(slideId))!;
+        const block = JSON.parse(blockData);
+
+        const existingBlock = slide.data.blocks.find(b => b.id === block.id);
+
+        if(!existingBlock) {
+            slide.data.blocks.push(block);
+        } else {
+            slide.data.blocks = slide.data.blocks.map(b => b.id === block.id ? block : b);
+        }
+
+        this.material.markModified("slides");
+    }
+
+    /**
+     * TODO:
+     *    - creating slides
+     *    - syncing different slides?
+     *    - properties not syncing
+     *    - dissalow saving in parallel
+     */
 }
 
 @UseGuards(WSOptionalAuthenticationGuard)

@@ -7,6 +7,20 @@ import {MaterialMethod, MaterialSizing, MaterialVisibility} from "../../dto/mate
 import {Plugin} from "../plugin/plugin.schema";
 
 export type MaterialDocument = HydratedDocument<Material>;
+interface SlideData {
+    editor: {
+        size: {
+            width: number;
+            height: number;
+        };
+        color: string;
+    };
+    blocks: {
+        id: string;
+        type: string;
+        [key: string]: any;
+    }[];
+}
 
 class Slide {
     @Prop()
@@ -15,8 +29,8 @@ class Slide {
     thumbnail: string;
     @Prop()
     position: number;
-    @Prop()
-    data: string;
+    @Prop({ type: mongoose.Schema.Types.Map })
+    data: SlideData;
 }
 
 class MaterialPlugin {
