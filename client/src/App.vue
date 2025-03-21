@@ -15,6 +15,7 @@ import {useUserStore} from "@/stores/user";
 import {translation} from "@/translation/Translation";
 import {ref, watch} from "vue";
 import {useAuthenticationStore} from "@/stores/authentication";
+import {communicator} from "@/api/websockets";
 
 useHead({
     htmlAttrs: {
@@ -48,4 +49,6 @@ const route = useRoute();
 watch(() => route.params.lang, (lang) => {
     language.value = lang.toString();
 });
+
+communicator.initialize();
 </script>
