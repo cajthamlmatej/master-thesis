@@ -124,6 +124,7 @@ export class ShapeEditorBlock extends EditorBlock {
 
         this.synchronize();
         this.editor.events.HISTORY.emit();
+        this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
     }
 
     changeShape(value: string) {
@@ -141,5 +142,6 @@ export class ShapeEditorBlock extends EditorBlock {
 
         this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
         this.editor.events.HISTORY.emit();
+        this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
     }
 }
