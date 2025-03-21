@@ -62,6 +62,7 @@ export class TextEditorBlock extends EditorBlock {
                 FontSize
             ],
             content: this.content,
+            editable: false,
             onUpdate: ({editor}) => {
                 this.changeContent(editor.getHTML());
                 this.matchRenderedHeight();
