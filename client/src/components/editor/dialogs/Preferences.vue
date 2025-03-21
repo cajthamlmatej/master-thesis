@@ -101,39 +101,39 @@ const properties = [
             return typeof value === 'boolean';
         }]
     },
-    {
-        key: 'AUTOMATIC_SAVING',
-        type: 'boolean',
-        validator: [(value: any) => {
-            return typeof value === 'boolean';
-        }]
-    },
-    {
-        key: 'AUTOMATIC_SAVING_INTERVAL',
-        type: 'select',
-        options: [
-            {
-                name: $t('editor.preferences.AUTOMATIC_SAVING_INTERVAL.30-seconds'),
-                value: 30 * 1000
-            },
-            {
-                name: $t('editor.preferences.AUTOMATIC_SAVING_INTERVAL.1-minute'),
-                value: 60 * 1000
-            },
-            {
-                name: $t('editor.preferences.AUTOMATIC_SAVING_INTERVAL.2-minutes'),
-                value: 2 * 60 * 1000
-            },
-            {
-                name: $t('editor.preferences.AUTOMATIC_SAVING_INTERVAL.5-minutes'),
-                value: 5 * 60 * 1000
-            },
-            {
-                name: $t('editor.preferences.AUTOMATIC_SAVING_INTERVAL.10-minutes'),
-                value: 10 * 60 * 1000
-            }
-        ]
-    },
+    // {
+    //     key: 'AUTOMATIC_SAVING',
+    //     type: 'boolean',
+    //     validator: [(value: any) => {
+    //         return typeof value === 'boolean';
+    //     }]
+    // },
+    // {
+    //     key: 'AUTOMATIC_SAVING_INTERVAL',
+    //     type: 'select',
+    //     options: [
+    //         {
+    //             name: $t('editor.preferences.AUTOMATIC_SAVING_INTERVAL.30-seconds'),
+    //             value: 30 * 1000
+    //         },
+    //         {
+    //             name: $t('editor.preferences.AUTOMATIC_SAVING_INTERVAL.1-minute'),
+    //             value: 60 * 1000
+    //         },
+    //         {
+    //             name: $t('editor.preferences.AUTOMATIC_SAVING_INTERVAL.2-minutes'),
+    //             value: 2 * 60 * 1000
+    //         },
+    //         {
+    //             name: $t('editor.preferences.AUTOMATIC_SAVING_INTERVAL.5-minutes'),
+    //             value: 5 * 60 * 1000
+    //         },
+    //         {
+    //             name: $t('editor.preferences.AUTOMATIC_SAVING_INTERVAL.10-minutes'),
+    //             value: 10 * 60 * 1000
+    //         }
+    //     ]
+    // },
     {
         key: 'HISTORY_LIMIT',
         type: 'number',
@@ -201,17 +201,17 @@ const save = async () => {
     saving.value = false;
 };
 
-watch(() => editorStore.getEditor(), async (editor) => {
-    const preferences = await materialStore.getPreferences();
-
-    if (!preferences) return;
-
-    for (const property in preferences) {
-        values.value[property] = preferences[property as keyof EditorPreferences];
-    }
-
-    await save();
-});
+// watch(() => editorStore.getEditor(), async (editor) => {
+//     const preferences = await materialStore.getPreferences();
+//
+//     if (!preferences) return;
+//
+//     for (const property in preferences) {
+//         values.value[property] = preferences[property as keyof EditorPreferences];
+//     }
+//
+//     await save();
+// });
 </script>
 
 <style lang="scss" scoped>

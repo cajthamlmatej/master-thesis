@@ -20,17 +20,17 @@ export class UpdatePreferencesDTO {
     @Min(2)
     @Max(180)
     ROTATION_SNAPPING_COUNT: number;
-    @IsBoolean()
-    AUTOMATIC_SAVING: boolean;
-    @IsNumber()
-    @IsIn([
-        30 * 1000,
-        60 * 1000,
-        2 * 60 * 1000,
-        5 * 60 * 1000,
-        10 * 60 * 1000,
-    ])
-    AUTOMATIC_SAVING_INTERVAL: number;
+    // @IsBoolean()
+    // AUTOMATIC_SAVING: boolean;
+    // @IsNumber()
+    // @IsIn([
+    //     30 * 1000,
+    //     60 * 1000,
+    //     2 * 60 * 1000,
+    //     5 * 60 * 1000,
+    //     10 * 60 * 1000,
+    // ])
+    // AUTOMATIC_SAVING_INTERVAL: number;
     @IsNumber()
     @Min(5)
     @Max(1000)
