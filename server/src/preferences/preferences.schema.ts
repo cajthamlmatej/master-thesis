@@ -20,11 +20,11 @@ export class Preferences {
     @Prop()
     ROTATION_SNAPPING_COUNT: number;
 
-    @Prop()
-    AUTOMATIC_SAVING: boolean;
-
-    @Prop()
-    AUTOMATIC_SAVING_INTERVAL: number;
+    // @Prop()
+    // AUTOMATIC_SAVING: boolean;
+    //
+    // @Prop()
+    // AUTOMATIC_SAVING_INTERVAL: number;
 
     @Prop()
     HISTORY_LIMIT: number;

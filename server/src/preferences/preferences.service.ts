@@ -20,8 +20,8 @@ export class PreferencesService {
             KEEP_EDITOR_TO_FIT_PARENT: true,
             PER_OBJECT_TRANSFORMATION: true,
             ROTATION_SNAPPING_COUNT: 24,
-            AUTOMATIC_SAVING: true,
-            AUTOMATIC_SAVING_INTERVAL: 60000,
+            // AUTOMATIC_SAVING: true,
+            // AUTOMATIC_SAVING_INTERVAL: 60000,
             HISTORY_LIMIT: 100,
         });
 
