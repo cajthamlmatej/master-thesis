@@ -46,6 +46,7 @@ watch(() => blocksMenu.value, (value) => {
 
 watch(() => props.value, (value) => {
     blocksMenu.value = value;
+    editor.value = toRaw(materialStore.getEditor()) as Editor;
 });
 
 const materialStore = useEditorStore();
