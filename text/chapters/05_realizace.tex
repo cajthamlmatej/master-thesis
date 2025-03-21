@@ -74,20 +74,299 @@ Díky tomuto přístupu bylo možné zajistit vysokou kvalitu finální verze pl
 
 \subsection{Autentizace a autorizace}
 
-\section{Klientská část}
+\section{Klientská část}\label{text:realizace/klient}
 
-\subsection{Designový návrh}
+Klientská část aplikace byla vyvinuta jako webová aplikace v souladu s návrhem z kapitoly \ref{text:navrh/klient}. 
+Pro implementaci byl zvolen framework Vue spolu s nástrojem Vite, který umožňuje rychlý vývoj a stabilní správu závislostí.
+
+Pro usnadnění tvorby požadovaných funkcionalit bylo využito několik knihoven, které zajišťují specifické potřeby aplikace. 
+Mezi klíčové patří:
+
+\begin{description}
+    \item[floating-vue] Slouží k tvorbě vyskakovacích nápověd a kontextových menu.
+    \item[moment] Umožňuje snadnou správu a manipulaci s daty a časovými údaji.
+    \item[pinia] Poskytuje jednoduchý a efektivní způsob správy globálního stavu aplikace.
+    \item[vue-router] Umožňuje vytvoření více virtuálních stránek v rámci jedné aplikace.
+\end{description}
+
+Dále byly použity i další knihovny, které přispívají k lepší modularitě a efektivitě vývoje.
+O některých se budu dále zmiňovat v následujících kapitolách.
+
+
+% - dle navrhu z analyzy \ref{text:navrh/klient} vytvorena webová aplikace
+% - použit framewrok Vue s nástrojem Vite
+% - použita řada knihoven pro zlehceni tvorby pozadovanych funkcionalit, napriklad:
+%     - floating-vue pro tvorbu vyskakovacich tooltipů a menu
+%     - moment pro jednoduchou správu datumu a času
+%     - pinia pro jednoduchou správu data v globálních úložištích
+%     - vue-router pro vytvoření více viruálních stránek
+%     - a další
 
 \subsection{Komponenty}
 
-\subsection{Editor a přehrávač}
+V souladu s analýzou v kapitole \ref{text:navrh/design/komponenty} byly vytvořeny všechny potřebné komponenty. 
+Při jejich návrhu byl kladen důraz na znovupoužitelnost a udržitelnost kódu, přičemž značná část tvorby, inspirace a kódu pocházela z mé bakalářské práce~\cite{cajthaml_bp}.
+
+První iterace vývoje se zaměřovala na základní implementaci klíčových prvků a ověření jejich funkčnosti. 
+Hlavním cílem bylo zajistit, aby komponenty byly dobře udržovatelné a univerzálně použitelné v různých částech aplikace.
+
+Tyto komponenty sloužili především pro webovou stránku a uvnitř editoru (viz kapitola \ref{text:realizace/editor}) se nepoužívají.
+
+% - dle analýzy, kapitoly \ref{text:navrh/desgin/komponenty}, vytvořeny všechny komponenty
+% - reusing kodu komponent, hodne inspirace z me bakalarske prace
+% - obecne vytvareno prvni iterace 
+% - cilem udrzitelne a pouzitelne komponenty
+
+\subsection{Designový návrh}
+
+První verze designu aplikace využívala komponenty a vizuální prvky, které byly navrženy s důrazem na rychlost vývoje a demonstraci funkčnosti. 
+Tento přístup umožnil efektivní iteraci a testování uživatelského rozhraní v raných fázích vývoje.
+Komponenty vycházely z designu vytvořeného v rámci mé bakalářské práce, což přineslo nejen vizuální kontinuitu, ale i možnost znovupoužití ověřeného kódu.
+
+Postupem času bylo nutné design sjednotit a vytvořit konzistentní vizuální styl aplikace.
+Namísto pevně daného návrhu jsem pracoval iterativně -- upravoval jsem komponenty, barvy a jejich proměnné, dokud celek nepůsobil harmonicky a esteticky vyváženě. 
+Jako hlavní vizuální inspiraci jsem zvolil styl \texttt{glassmorphism}, který se vyznačuje průhlednými a rozmazanými prvky, čímž vytváří moderní a elegantní uživatelské rozhraní.
+Tento styl je populární v moderním UI/UX designu a využívají ho například operační systémy macOS a Windows~11 nebo některé mobilní aplikace.
+Součástí vizuální identity aplikace se stala fialová barva doplněná o gradienty, což přispívá k výraznému a zapamatovatelnému vzhledu.
+
+Hlavním cílem bylo vytvořit jednoduchý, ale vizuálně přitažlivý design, který bude snadno přizpůsobitelný. 
+Pro usnadnění budoucích úprav a možnou implementaci více barevných režimů byly ve stylování využity CSS proměnné.
+Tento přístup umožňuje nejen jednoduché změny barevných schémat, ale i potenciální rozšíření designu o tmavý nebo kontrastní režim podle preferencí uživatele.
+
+% - prvni iterace hodne inspirace z me bakalarske prace, reusing kodu komponent
+% - v pozdejsich fazich vytvoren jednotny styl
+% - hodne inspirace glassmorphismu, tedy pruhledne rozmazene interakce
+% - jednoduchy transparent
+% - vse konzistnetni a to i v editoru
+% - po vybrání designu vybrán název - Materalist, sjednocení anglického Material a Specialist, indikuje spoustu dalisch veci
+% - vytvoreno logo (+ obrazek), ktere simbolizuje platno a M jako material
+% - pouzivani promennych pro jednodusi styling v budoucnosti, pridani barevnych modu
+
+\subsection{Autentizace a autorizace}
+
+- všechny stránky až na přehrávač pouze pro přihlášení
+- token v localstorage
+- při expirování automaticky na login screen
+- autorizace: pokud nema pristup tak se hodi chyba
+
+\subsection{Šablony}\todo{není implementované}
+
+- procházení
+
+\subsection{Responzivita}
+
+\subsection{Překlady}
 
 \subsection{Optimalizace pro webové vyhledávače}
 
-\section{Sestavení a nasazení aplikace}
+\section{Editor a přehrávač}\label{text:realizace/editor}
+
+- součást klientské části
+- nejdůležitější část
+- samostatné vykreslování mimo Vue, vlastní řešení překreslování
+- oboje podobný kód, pracují s tzv. bloky
+- vždy instance pro jednu stránku
+
+\subsection{Materiál}
+
+- obsahuje několik stránek
+- jméno
+- nastavení zobrazování
+
+\subsection{Bloky}
+
+- reprezentuje uživatelem vytvořená data
+- např. text či obrázky
+- každý blok obsahuje základní data: pozici, velikost, otočení, průhlednost, skupinu, z-index a interaktivitu
+- z této třídy poté ostatní dědí
+
+\subsubsection{Serializace}
+
+- slouží k převedení bloku do JSON podoby, která se poté ukládá
+- každý blok má serialize metodu, která slouží pro nalezení věcí, které se mají uložit a uložení jich
+- vlastnosti v děděných třídách se anotují pomocí TS dekorátorů, které metoda čte
+
+\subsubsection{Události}
+- jednotlivé bloky dědící z hlavní třídy mohou používat eventy
+- tím se lze navázat například na to, kdy je blok vykreslen na stránku, vybrán v editoru, posunován a mnoho dalšího
+- pro toto používám TS dekorátory metod
+
+\subsection{Editor}
+
+- specifické věci pro editor následují
+- editor má dost nastavení a další API
+- editor má události, na které se může každý blok vázat
+
+\subsubsection{Transformace}
+
+- bloky je možné:
+  - označovat (i více)
+  - zvětšovat
+  - posouvat
+  - otáčet
+
+- dle nastavení mohou být operace zvětšování nastaveny na kolaborativní či jednotlivé transformace
+
+- každý blok může jednotlivé operace vypnout
+
+- tažení (select box)
+- blok může být uzamknut a není možné ho vybrat tažením
+
+\subsubsection{Akce}
+
+- kontextove (pravy klik)
+- select (nad označenými prvky)
+- updatuji se dle označenych prvků
+- např. seskupení, přesunutí do plátna, kopírování
+- každá akce může mít klávesové zkratky, které dovolují jednoduché akce s editorem
+
+- jaké byly implementované?\todo{todo}
+
+\subsubsection{Vlastnosti bloků}
+
+- podle vybraných bloků
+- stejné možné vlastnosti, které to podporují se mohou spojit do jedné
+- možnost upravovat skoro jakákoliv data
+- velké api agregací a typů vlastností
+- možnost změny pomocí dragování
+- panel se zdá zvětšovat i skrývat
+
+\subsubsection{Historie}
+\subsubsection{Schránka}
+\subsubsection{Nastavení}
+
+\subsection{Přehrávač}
+\subsubsection{Kreslení}
+
+\subsection{Interaktivita}
+
+\subsection{Multimédia}
+
+- vytvořené z fotobank/gifbank
+- uživatel má možnost nahrát vlastní obrázky
+
+\subsection{Kolaborace?}
+
+\section{Rozšíření}
+
+- plugin jmeno a popis
+- nekolik verzi, obshauje:
+  - manifest
+  - plugin kod
+  - editor kod
+- moznost pridavat pluginy v aplikaci pro prihlašeni a nahravat nove verze
+- system schvalovani\todo{neni}
+
+\subsection{Spouštění kódu}
+
+- viz navrh \ref{...}
+- tedy v JS, v emscriptu, zabezpečene
+- přistup k editoru a strance obecne pomoci api
+- mimo nema pristup, velmi omezene
+
+\subsection{Přístup k API}
+
+- globalni api:
+   - fetch
+   - cache
+   - plugin
+   - language
+   - log
+- bloky:
+   - bloky registruji api
+   - pristup vlastnosti jakymkoliv
+- editor api
+   - cteni bloku
+   - pridani bloku
+   - mody, velikosti platna
+- player api
+   - cteni bloku
+   - pridani bloku
+   - mody, velikosti platna
+
+\subsection{Vykreslované bloky}
+
+- plugin muze vytvorit blok, ktery vykresluje plugin
+- kdyz se ma blok vykreslit tak se vykresli pomoci volani rozsireni
+- vzajemna komunikace bloku a rozsireni
+
+\subsection{Panel}
+
+- kazdy plugin muze zaregistrovat panel
+- jednou vykresleni
+- vzajemna komunikace bloku a panelu
+- vymena dat, napr. pro nastaveni, vytvoreni bloku, editace a dalsi
+
+\section{Hlavní webová stránka}
+
+ Hlavní webová stránka byla vytvořena za účelem propagace aplikace.
+ Celý projekt a aplikace nese název \textbf{Materalist}.
+ Název vznikl spojením slov \textit{Material} a \textit{Specialist}, čímž odkazuje na zaměření aplikace na práci s různými specializovanými materiály.
+ Slouží jako výchozí bod pro návštěvníky, kteří se chtějí dozvědět více o aplikaci, jejích funkcích a možnostech využití. 
+ Stránka umožňuje přesměrování na samotnou aplikaci, přístup k dokumentaci a obsahuje přehled funkcionalit.
+
+Důležitou součástí webové prezentace je porovnání s ostatními aplikacemi v dané oblasti. 
+To pomáhá uživatelům lépe pochopit výhody a jedinečné vlastnosti aplikace. 
+Kromě toho webová stránka představuje dostupné pluginy, které rozšiřují základní funkcionalitu aplikace.
+
+Design webové stránky vychází z vizuálního stylu samotné aplikace (viz kapitola \ref{text:realizace/klient}). 
+Stránka je responzivní a optimalizovaná pro různé typy zařízení.
+
+Pro sjednocení vizuální identity bylo navrženo logo aplikace (viz obrázek \ref{fig:logo}), které symbolizuje kombinaci plátna a písmene \enquote{M}, což reflektuje jak materiálový aspekt, tak kreativní přístup k tvorbě obsahu.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.4\textwidth]{media/05_realizace/logo.png}
+    \caption{Logo aplikace Materalist}
+    \label{fig:logo}
+\end{figure}
+
 
 \section{Dokumentace}
 
-\section{Vytvořené bloky a rozšíření}
+- pomoci docosaurus
+...
+
+\section{Sestavení a nasazení aplikace}
+
+\section{Vytvořené bloky}
+
+- základní bloky přímo v aplikaci
+
+\subsection{Text}
+\subsection{Obrázek}
+\subsection{Interaktivní oblast}
+\subsection{Mermaid diagram}
+\subsection{Iframe okno}
+\subsection{Tvar}
+
+\section{Vytvořené rozšíření}
+
+- ukázka systému, vytvořeny nějaká rozšíření
+- ukázka a testování systému
+- více v testování
+
+\subsection{Centrist}
+
+- ukázka pouze modifikace v editoru (pomocník)
+- dovoluje zarovnávat na editoru
+
+\subsection{Dnešní svátek}
+
+- dovoluje vkládat jednoduché pole s dnešním svátkem
+- volání externí služby
+- využití cache
+
+\subsection{Fluid background}\todo{Actually ještě není vytvořené}
+
+- komplexní vykreslování
+- mnoho parametrů přímo v editoru
+
+\subsection{Page numberer}\todo{Actually ještě není vytvořené}
+
+- číslování slidů
 
 \section{Ukázkové materiály}
+
+- ukázka systému, možnost vytvořit komplexní prezentace do jdou v jiných aplikacích
+- více v testování
