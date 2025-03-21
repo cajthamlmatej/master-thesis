@@ -97,6 +97,8 @@ const save = () => {
     }
 
     editor.recolor(settings.value.color);
+    editorStore.saveCurrentSlide();
+    editorStore.synchronizeSlide();
 };
 
 const size = ref({
@@ -124,6 +126,8 @@ const resize = () => {
     editor.resize(size.value.width, size.value.height, resizeToFit.value);
 
     editorStore.changeSlide(props.slide.id);
+    editorStore.saveCurrentSlide();
+    editorStore.synchronizeSlide();
 };
 </script>
 
