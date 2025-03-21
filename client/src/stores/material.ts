@@ -111,7 +111,7 @@ export const useMaterialStore = defineStore("material", () => {
             method: currentMaterial.value.method,
             automaticTime: currentMaterial.value.automaticTime,
             sizing: currentMaterial.value.sizing,
-            slides: editorStore.getSlides()
+            slides: editorStore.slides
         });
 
         if (!response) {

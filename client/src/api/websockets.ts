@@ -1,8 +1,10 @@
 import {io, Socket} from "socket.io-client";
 import {useAuthenticationStore} from "@/stores/authentication";
-import Material from "@/models/Material";
+import Material, {Slide} from "@/models/Material";
 import Event from "@/utils/Event";
 import {EditorBlock} from "@/editor/block/EditorBlock";
+import {generateUUID} from "@/utils/Generators";
+import {toRaw} from "vue";
 
 export class EditorAttendee {
     public id: string;
@@ -30,8 +32,9 @@ export class EditorCommunicator {
         ATTENDEE_SLIDES_CHANGED: new Event<void>(),
         ATTENDEE_SELECTED_BLOCKS_CHANGED: new Event<void>(),
 
-        SYNCHRONIZE_BLOCK: new Event<string>(),
-        REMOVE_BLOCK: new Event<string>(),
+        BLOCK_CHANGED: new Event<void>(),
+        // SYNCHRONIZE_BLOCK: new Event<string>(),
+        // REMOVE_BLOCK: new Event<string>(),
     }
     private material: Material;
     private attendees: EditorAttendee[] = [];
@@ -67,23 +70,79 @@ export class EditorCommunicator {
             attendeeObj.selectedBlocks = selectedBlocks;
             this.EVENTS.ATTENDEE_SELECTED_BLOCKS_CHANGED.emit();
         });
-        communicator.socket.on("synchronizeBlock", ({slideId, author, block}) => {
-            if(this.getCurrent().slideId !== slideId) return;
+        communicator.socket.on("synchronizeBlock", async({slideId, author, block}) => {
             if(author === communicator.socket.id) return;
-
-            this.EVENTS.SYNCHRONIZE_BLOCK.emit(block);
-        });
-        communicator.socket.on("removeBlock", ({slideId, author, blockId}) => {
             if(this.getCurrent().slideId !== slideId) {
-                console.log("Slide mismatch", this.getCurrent().slideId, slideId);
+                const slide = this.material.slides.find((s) => s.id === slideId);
+
+                if(!slide) {
+                    return;
+                }
+
+                const newBlock = JSON.parse(block);
+                const oldBlock = slide.data.blocks.find((s) => s.id === newBlock.id);
+
+                if(oldBlock) {
+                    slide.data.blocks = slide.data.blocks.map((b) => b.id === newBlock.id ? newBlock : b);
+                } else {
+                    slide.data.blocks.push(newBlock);
+                }
                 return;
-            };
+            }
+
+            const editor = (await import("@/stores/editor")).useEditorStore().getEditor();
+
+            if (!editor) return;
+
+            const parsed = JSON.parse(block);
+            const oldBlock = editor.getBlockById(parsed.id);
+
+            if(oldBlock) {
+                for(let key in parsed) {
+                    (oldBlock as any)[key] = parsed[key as any];
+                }
+
+                oldBlock.processDataChange(parsed);
+            } else {
+                const obj = editor.blockRegistry.deserializeEditor(parsed);
+
+                if(!obj) return;
+
+                editor.addBlock(obj);
+            }
+
+            this.EVENTS.BLOCK_CHANGED.emit();
+        });
+        communicator.socket.on("removeBlock", async({slideId, author, blockId}) => {
             if(author === communicator.socket.id) {
                 console.log("Author mismatch", author, communicator.socket.id);
                 return;
             }
 
-            this.EVENTS.REMOVE_BLOCK.emit(blockId);
+            if(this.getCurrent().slideId !== slideId) {
+                const slide = this.material.slides.find((s) => s.id === slideId);
+
+                if(!slide) {
+                    return;
+                }
+
+                slide.data.blocks = slide.data.blocks.filter((b) => b !== blockId);
+                return;
+            }
+
+            const editor = (await import("@/stores/editor")).useEditorStore().getEditor();
+
+            if(!editor) {
+                console.error("Editor is not loaded");
+                return;
+            }
+
+            const block = editor.getBlockById(blockId);
+
+            if(block) {
+                editor.removeBlock(block);
+            }
+            this.EVENTS.BLOCK_CHANGED.emit();
         });
         communicator.socket.on("synchronizeMaterial", async({plugins, name, method, automaticTime, sizing, visibility}: {
             plugins: { plugin: string; release: string }[];
@@ -114,7 +173,6 @@ export class EditorCommunicator {
                     }
 
                     await pluginStore.addPluginToMaterial(plugin);
-                    continue;
                 }
 
                 // The plugin is already loaded
@@ -129,27 +187,67 @@ export class EditorCommunicator {
             }
         });
 
-        communicator.socket.on("synchronizeSlide", async({slideId, size, color}: {
+        communicator.socket.on("synchronizeSlide", async({position, slideId, size, color}: {
             slideId: string;
             size: { width: number; height: number };
             color: string;
+            position: number;
         }) => {
             const editorStore = (await import("@/stores/editor")).useEditorStore();
 
-            if(editorStore.getActiveSlide()?.id !== slideId) {
-                return;
+            let slide = editorStore.getSlideById(slideId);
+
+            if(!slide) {
+                slide = new Slide(
+                    generateUUID(),
+                    {
+                        editor: {
+                            size,
+                            color
+                        },
+                        blocks: []
+                    },
+                    undefined,
+                    position
+                );
+
+                this.material.slides.push(slide);
             }
 
-            const editor = editorStore.getEditor();
+            slide.data.editor.size = size;
+            slide.data.editor.color = color;
+            slide.position = position;
 
-            if(!editor) {
-                return;
+            if(editorStore.getActiveSlide()?.id === slideId) {
+                const editor = editorStore.getEditor();
+
+                if(!editor) {
+                    return;
+                }
+
+                (editor as any).size = size;
+                (editor as any).color = color;
+
+                editor.update();
             }
 
-            (editor as any).size = size;
-            (editor as any).color = color;
+            editorStore.synchronizeMaterialSlides();
+        });
 
-            editor.update();
+        communicator.socket.on("removeSlide", async({slideId}: {slideId: string}) => {
+            const editorStore = (await import("@/stores/editor")).useEditorStore();
+
+            this.material.slides = this.material.slides.filter((s) => s.id !== slideId);
+
+            if(editorStore.getActiveSlide()?.id === slideId) {
+                const slide = editorStore.getSlideById(this.material.slides[0].id);
+
+                if(slide) {
+                    editorStore.changeSlide(slide);
+                }
+            }
+
+            editorStore.synchronizeMaterialSlides();
         });
     }
 
@@ -178,6 +276,19 @@ export class EditorCommunicator {
         communicator.socket.emit("changeSelectedBlocks", {selectedBlocks});
     }
     public synchronizeBlock(block: EditorBlock) {
+        console.log("Syncing block", block, block.serialize());
+        const editor = (block).getEditor();
+
+        if(!editor) {
+            console.error("Block is not attached to an editor");
+            return;
+        }
+
+        if(!editor.getSelector().isSelected(block.id)) {
+            console.error("Block is not selected and trying to synchronize");
+            return;
+        }
+
         communicator.socket.emit("synchronizeBlock", {block: JSON.stringify(block.serialize())});
     }
     public removeBlock(block: EditorBlock) {
@@ -197,8 +308,14 @@ export class EditorCommunicator {
         slideId: string;
         size: { width: number; height: number };
         color: string;
+        position: number;
     }) {
         communicator.socket.emit("synchronizeSlide", data);
+    }
+    public removeSlide(data: {
+        slideId: string;
+    }) {
+        communicator.socket.emit("removeSlide", data);
     }
 
     public canSelectBlock(blockId: string) {

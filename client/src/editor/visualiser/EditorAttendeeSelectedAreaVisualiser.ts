@@ -32,8 +32,7 @@ export default class EditorAttendeeAreaVisualiser {
         communicator.getEditorRoom()?.EVENTS.ATTENDEE_SELECTED_BLOCKS_CHANGED.on(() => this.recalculate());
         communicator.getEditorRoom()?.EVENTS.ATTENDEE_SLIDES_CHANGED.on(() => this.recalculate());
         communicator.getEditorRoom()?.EVENTS.ATTENDEE_CHANGES.on(() => this.recalculate());
-        communicator.getEditorRoom()?.EVENTS.SYNCHRONIZE_BLOCK.on(() => this.recalculate());
-        communicator.getEditorRoom()?.EVENTS.REMOVE_BLOCK.on(() => this.recalculate());
+        communicator.getEditorRoom()?.EVENTS.BLOCK_CHANGED.on(() => this.recalculate());
 
         this.editor.events.BLOCK_CHANGED.on(() => this.recalculate());
         this.editor.events.BLOCK_ADDED.on(() => this.recalculate());

@@ -41,8 +41,9 @@ export class EditorSelector {
     /**
      * Deselects a block.
      * @param block to be deselected
+     * @param skipAnnouncement
      */
-    public deselectBlock(block: EditorBlock | string) {
+    public deselectBlock(block: EditorBlock | string, skipAnnouncement: boolean = false) {
         if (typeof block === "string") {
             let blockData = this.editor.getBlockById(block);
 
@@ -56,7 +57,10 @@ export class EditorSelector {
         this.selectedBlocks = this.selectedBlocks.filter(b => b !== block);
         block.processEvent(BlockEvent.DESELECTED);
         this.events.SELECTED_BLOCK_CHANGED.emit(this.selectedBlocks);
-        this.editor.events.BLOCK_CONTENT_CHANGED.emit(block);
+
+        if(!skipAnnouncement) {
+            this.editor.events.BLOCK_CONTENT_CHANGED.emit(block);
+        }
     }
 
     /**
@@ -84,7 +88,7 @@ export class EditorSelector {
                 return;
             }
 
-            const inGroup = this.editor.getBlocks().filter(b => b.group === block.group).map(b => b.id);
+            const inGroup = this.editor.getBlocks().filter(b => !!b.group).filter(b => b.group === block.group).map(b => b.id);
 
             if (!inGroup.every(id => room.canSelectBlock(id))) {
                 return;

@@ -4,7 +4,7 @@ import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 import {Property} from "@/editor/property/Property";
 import {Editor} from '@tiptap/core'
-import StarterKit from '@tiptap/starter-kit'
+import {StarterKit} from '@tiptap/starter-kit'
 import {Underline} from "@tiptap/extension-underline";
 import {Subscript} from '@tiptap/extension-subscript'
 import {Superscript} from '@tiptap/extension-superscript'
@@ -46,6 +46,21 @@ export class TextEditorBlock extends EditorBlock {
         content.classList.add("block-content");
         element.appendChild(content);
 
+        this.setupEditor(content);
+
+        return element;
+    }
+
+    private setupEditor(content: Element | undefined = undefined) {
+        if (this.textEditor) {
+            this.textEditor.destroy();
+        }
+        if (!content) {
+            content = this.element.querySelector(".block-content")! as HTMLElement;
+
+            if(!content) return;
+        }
+
         this.textEditor = new Editor({
             element: content,
             extensions: [
@@ -68,8 +83,12 @@ export class TextEditorBlock extends EditorBlock {
                 this.matchRenderedHeight();
             },
         });
+    }
 
-        return element;
+    public override processDataChange(data: any) {
+        super.processDataChange(data);
+
+        this.setupEditor();
     }
 
     override editorSupport() {
@@ -167,7 +186,7 @@ export class TextEditorBlock extends EditorBlock {
             event.preventDefault();
             event.stopPropagation();
             this.editable = false;
-            this.textEditor!.setOptions({
+            this.textEditor?.setOptions({
                 editable: false,
             });
 
@@ -178,7 +197,7 @@ export class TextEditorBlock extends EditorBlock {
 
     @BlockEventListener(BlockEvent.CLICKED)
     private onBlockClicked() {
-        this.textEditor!.setOptions({
+        this.textEditor?.setOptions({
             editable: true,
         });
         this.editable = true;

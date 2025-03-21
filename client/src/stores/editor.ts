@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {ref, toRaw, watch} from "vue";
+import {computed, ref, toRaw, watch} from "vue";
 import Editor from "@/editor/Editor";
 import {generateUUID} from "@/utils/Generators";
 import {EditorDeserializer} from "@/editor/EditorDeserializer";
@@ -27,8 +27,13 @@ export const useEditorStore = defineStore("editor", () => {
     watch(() => materialStore.currentMaterial, (material) => {
         if (!material) return;
 
-        slides.value = material.slides;
+        synchronizeMaterialSlides();
     });
+
+    const synchronizeMaterialSlides = () => {
+        slides.value = (materialStore.currentMaterial?.slides ?? [])
+            .sort((a, b) => a.position - b.position);
+    }
 
     const activeSlide = ref<string | undefined>(undefined);
 
@@ -40,8 +45,8 @@ export const useEditorStore = defineStore("editor", () => {
         }
     })
 
-    const synchronizeSlide = () => {
-        const activeSlide = getActiveSlide();
+    const synchronizeSlide = (slide: Slide | undefined) => {
+        const activeSlide = slide ?? getActiveSlide();
         const editor = getEditor();
 
         if (!activeSlide || !editor) return;
@@ -53,7 +58,8 @@ export const useEditorStore = defineStore("editor", () => {
                 height: activeSlide.getSize().height
             },
             color: activeSlide.getColor(),
-        })
+            position: activeSlide.position,
+        });
     }
 
     const requestEditor = async () => {
@@ -65,7 +71,7 @@ export const useEditorStore = defineStore("editor", () => {
             newSlide();
         }
 
-        await changeSlide(getSlides()[0] as Slide);
+        await changeSlide(slides.value[0] as Slide);
 
         return getEditor();
     }
@@ -132,7 +138,16 @@ export const useEditorStore = defineStore("editor", () => {
         });
 
         for (let slide of slidePositions) {
-            slide.slide.position = slidePositions.indexOf(slide);
+            let index = slidePositions.indexOf(slide);
+            let old = slide.slide.position;
+
+            slide.slide.position = index;
+        }
+
+        synchronizeMaterialSlides();
+
+        for(let slide of slides.value) {
+            synchronizeSlide(slide);
         }
     }
 
@@ -301,7 +316,7 @@ export const useEditorStore = defineStore("editor", () => {
             color = activeSlide.getColor();
         }
 
-        addSlide(new Slide(
+        const slide = new Slide(
             generateUUID(),
             {
                 editor: {
@@ -315,7 +330,9 @@ export const useEditorStore = defineStore("editor", () => {
             },
             undefined,
             slides.value.length
-        ))
+        );
+        addSlide(slide)
+        synchronizeSlide(slide);
     }
 
     const removeSlide = async (slide: Slide) => {
@@ -329,6 +346,8 @@ export const useEditorStore = defineStore("editor", () => {
         if (activeSlide.value === slide.id) {
             await changeSlide(slides.value[0] as Slide);
         }
+
+        communicator.getEditorRoom()?.removeSlide({ slideId: slide.id });
     }
 
     const copySlide = async (slide: Slide) => {
@@ -348,10 +367,6 @@ export const useEditorStore = defineStore("editor", () => {
         moveSlide(newSlide, 1);
     }
 
-    const getSlides = () => {
-        return slides.value.sort((a, b) => a.position - b.position);
-    }
-
     const getSlideById = (id: string) => {
         return slides.value.find(slide => slide.id === id);
     }
@@ -364,7 +379,7 @@ export const useEditorStore = defineStore("editor", () => {
         newSlide,
         moveSlide,
         removeSlide,
-        getSlides,
+        slides,
         getSlideById,
         requestEditor,
         changeSlide,
@@ -374,6 +389,7 @@ export const useEditorStore = defineStore("editor", () => {
         setEditorPropertyElement,
         saveCurrentSlide,
         copySlide,
-        synchronizeSlide
+        synchronizeSlide,
+        synchronizeMaterialSlides
     }
 });

@@ -229,7 +229,7 @@ export default class Editor {
 
         blockInstance.processEvent(BlockEvent.UNMOUNTED);
         if (this.selector.isSelected(blockInstance)) {
-            this.selector.deselectBlock(blockInstance);
+            this.selector.deselectBlock(blockInstance, true);
         }
 
         blockInstance.element.remove();
@@ -636,32 +636,36 @@ export default class Editor {
         if(!room) {
             return;
         }
+        //
+        // room.EVENTS.SYNCHRONIZE_BLOCK.on((blockData) => {
+        //     const parsed = JSON.parse(blockData);
+        //     const oldBlock = this.getBlockById(parsed.id);
+        //
+        //     console.log("Searching for a block with id", parsed);
+        //     console.log("Found block", oldBlock);
+        //     console.log("All blocks", this.blocks);
+        //
+        //     if(oldBlock) {
+        //         for(let key in parsed) {
+        //             (oldBlock as any)[key] = parsed[key as any];
+        //         }
+        //
+        //         oldBlock.processDataChange(parsed);
+        //     } else {
+        //         const obj = this.blockRegistry.deserializeEditor(parsed);
+        //
+        //         if(!obj) return;
+        //
+        //         this.addBlock(obj);
+        //     }
+        // });
 
-        room.EVENTS.SYNCHRONIZE_BLOCK.on((blockData) => {
-            const parsed = JSON.parse(blockData);
-            const oldBlock = this.getBlockById(parsed.id);
-
-            if(oldBlock) {
-                for(let key in parsed) {
-                    (oldBlock as any)[key] = parsed[key as any];
-                }
-
-                oldBlock.processDataChange(parsed);
-            } else {
-                const obj = this.blockRegistry.deserializeEditor(parsed);
-
-                if(!obj) return;
-
-                this.addBlock(obj);
-            }
-        });
-
-        room.EVENTS.REMOVE_BLOCK.on((blockId) => {
-            const block = this.getBlockById(blockId);
-
-            if(block) {
-                this.removeBlock(block);
-            }
-        });
+        // room.EVENTS.REMOVE_BLOCK.on((blockId) => {
+        //     const block = this.getBlockById(blockId);
+        //
+        //     if(block) {
+        //         this.removeBlock(block);
+        //     }
+        // });
     }
 }

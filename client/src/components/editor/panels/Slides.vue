@@ -9,7 +9,7 @@
                 </div>
 
                 <div class="slides">
-                    <div v-for="(slide, i) in materialStore.getSlides()"
+                    <div v-for="(slide, i) in materialStore.slides"
                          :class="{'slide--active': slide.id === materialStore.getActiveSlide()?.id}"
                          class="slide"
                          @click="changeSlide(slide.id)">
@@ -44,7 +44,7 @@
                                 <i v-tooltip="$t('editor.panel.slides.action.up')" :class="{disabled: i === 0}"
                                    class="mdi mdi-arrow-up" @click="materialStore.moveSlide(slide, -1)"/>
                                 <i v-tooltip="$t('editor.panel.slides.action.down')"
-                                   :class="{disabled: i === materialStore.getSlides().length - 1}"
+                                   :class="{disabled: i === materialStore.slides.length - 1}"
                                    class="mdi mdi-arrow-down"
                                    @click="materialStore.moveSlide(slide, 1)"/>
                                 <i v-tooltip="$t('editor.panel.slides.action.copy')" class="mdi mdi-content-copy"
@@ -95,7 +95,7 @@ function updateAttendees() {
 
     attendees.value = [];
 
-    for (const slide of materialStore.getSlides()) {
+    for (const slide of materialStore.slides) {
         attendees.value.push({
             slide: slide.id,
             attendees: attendeesCurrent.filter(a => a.slideId === slide.id).filter(a => a !== current)
@@ -130,7 +130,7 @@ const changeSlide = (id: string) => {
 }
 
 const canRemoveSlide = computed(() => {
-    return materialStore.getSlides().length <= 1;
+    return materialStore.slides.length <= 1;
 });
 const removeSlide = (slide: Slide) => {
     materialStore.removeSlide(slide);
