@@ -56,6 +56,7 @@ export class EditorSelector {
         this.selectedBlocks = this.selectedBlocks.filter(b => b !== block);
         block.processEvent(BlockEvent.DESELECTED);
         this.events.SELECTED_BLOCK_CHANGED.emit(this.selectedBlocks);
+        this.editor.events.BLOCK_CONTENT_CHANGED.emit(block);
     }
 
     /**

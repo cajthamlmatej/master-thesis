@@ -109,8 +109,6 @@ export class ImageEditorBlock extends EditorBlock {
         this.aspectRatio = aspectRatio;
         this.synchronize();
 
-        this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
-
         if (this.aspectRatio && this.imageElement) {
             const processSize = () => {
                 let newHeight = this.size.width / this.imageElement.naturalWidth * this.imageElement.naturalHeight;
