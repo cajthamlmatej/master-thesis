@@ -89,7 +89,7 @@ watch(() => materialStore.getEditor(), (value) => {
 onMounted(async () => {
     await mediaStore.load();
 
-
+    editor.value = materialStore.getEditor() as Editor;
     recalculateImages();
 });
 
@@ -174,8 +174,11 @@ const add = (event: MouseEvent, media: string) => {
         undefined,
         media
     );
-
     editorValue.addBlock(block);
+
+    // note(Matej): This forces the block to recalculate the aspect ratio
+    block.changeAspectRatio(true);
+
     block.move(startX, startY);
 
     const move = (event: MouseEvent) => {
@@ -190,11 +193,14 @@ const add = (event: MouseEvent, media: string) => {
         window.removeEventListener("mousemove", move);
         window.removeEventListener("mouseup", up);
 
+        block.changeAspectRatio(true);
+
         const diffX = block.position.x - startX;
         const diffY = block.position.y - startY;
 
         if (Math.abs(diffX) < 10 && Math.abs(diffY) < 10) {
             const canvasSize = editorValue.getSize();
+            // note(Matej): This forces the block to recalculate the aspect ratio
             const blockSize = block.size;
             block.move(canvasSize.width / 2 - blockSize.width / 2, canvasSize.height / 2 - blockSize.height / 2);
         }

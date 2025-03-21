@@ -112,11 +112,19 @@ export class ImageEditorBlock extends EditorBlock {
         this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
 
         if (this.aspectRatio && this.imageElement) {
-            let newHeight = this.size.width / this.imageElement.naturalWidth * this.imageElement.naturalHeight;
+            const processSize = () => {
+                let newHeight = this.size.width / this.imageElement.naturalWidth * this.imageElement.naturalHeight;
 
-            this.resize(this.size.width, newHeight);
+                this.resize(this.size.width, newHeight);
 
-            this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
+                this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
+            }
+
+            if(this.imageElement.complete) {
+                processSize();
+            } else {
+                this.imageElement.addEventListener("load", processSize);
+            }
         }
     }
 
