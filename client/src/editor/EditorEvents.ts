@@ -32,13 +32,13 @@ export default class EditorEvents {
             this.BLOCK_OPACITY_CHANGED,
         ].forEach((event) => {
             event.on((data) => {
-                if(Array.isArray(data) || (data as any).blocks) {
+                if (Array.isArray(data) || (data as any).blocks) {
                     const blocks = (Array.isArray(data) ? data : (data as any).blocks) as EditorBlock[];
-                    for(const b of blocks) {
+                    for (const b of blocks) {
                         this.tryToEmit(b);
                     }
                 } else {
-                    if(data instanceof EditorBlock) {
+                    if (data instanceof EditorBlock) {
                         this.tryToEmit(data);
                     } else {
                         const b = (data as any).block as EditorBlock;
@@ -49,15 +49,31 @@ export default class EditorEvents {
         })
     }
 
-    private blockDebounce: { [key: string]: number } = {}
+    private blockDebounce: {
+        [key: string]: {
+            createdAt: number,
+            timeout: NodeJS.Timeout
+        }
+    } = {}
+
     private tryToEmit(block: EditorBlock) {
-        if(this.blockDebounce[block.id]) {
-            clearTimeout(this.blockDebounce[block.id]);
+        if (this.blockDebounce[block.id]) {
+            const diff = Date.now() - this.blockDebounce[block.id].createdAt;
+
+            clearTimeout(this.blockDebounce[block.id].timeout);
+
+            if(diff > 300) {
+                this.BLOCK_CHANGED.emit(block);
+                delete this.blockDebounce[block.id];
+            }
         }
 
-        this.blockDebounce[block.id] = setTimeout(() => {
-            this.BLOCK_CHANGED.emit(block);
-            delete this.blockDebounce[block.id];
-        }, 250) as any;
+        this.blockDebounce[block.id] = {
+            timeout: setTimeout(() => {
+                this.BLOCK_CHANGED.emit(block);
+                delete this.blockDebounce[block.id];
+            }, 150) as any,
+            createdAt: this.blockDebounce[block.id] ? this.blockDebounce[block.id].createdAt : Date.now()
+        }
     }
 };
