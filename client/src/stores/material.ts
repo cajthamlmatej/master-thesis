@@ -7,6 +7,7 @@ import MaterialMapper from "@/models/mappers/MaterialMapper";
 import {useEditorStore} from "@/stores/editor";
 import {$t} from "@/translation/Translation";
 import {communicator} from "@/api/websockets";
+import {generateUUID} from "@/utils/Generators";
 
 export const useMaterialStore = defineStore("material", () => {
     const materials = ref<Material[]>([]);
@@ -64,7 +65,22 @@ export const useMaterialStore = defineStore("material", () => {
             method: "MANUAL",
             automaticTime: 60,
             sizing: "FIT_TO_SCREEN",
-            slides: []
+            slides: [
+                {
+                    id: generateUUID(),
+                    position: 0,
+                    data: {
+                        editor: {
+                            size: {
+                                width: 1920,
+                                height: 1080
+                            },
+                            color: "#ffffff"
+                        },
+                        blocks: []
+                    }
+                }
+            ]
         });
 
         if (!response) {
