@@ -72,8 +72,6 @@ export class EditorKeybinds {
             }
         }
 
-        console.log("Pressed key", event.key);
-
         for (let keybind of this.keybinds) {
             if (keybind.keybind.key === event.key) {
                 let process = true;
