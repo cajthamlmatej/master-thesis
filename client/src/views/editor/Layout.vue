@@ -1,7 +1,7 @@
 <template>
     <Header v-model:menu="data.menu">
         <template #logo>
-            <div class="flex flex-align-center">
+            <div class="flex flex-align-center" v-if="editor">
                 <div class="meta">
                     <span class="title">{{ materialStore.currentMaterial?.name }}</span>
 
@@ -9,7 +9,8 @@
                 </div>
 
                 <div class="flex gap-0-5">
-                    <Save @save="saved" @saving="saving" />
+<!--                    <Save @save="saved" @saving="saving" />-->
+                    <Attendees />
 
                     <NavigationButton :label="$t('editor.navigation.preview')"
                                       :to="{ name: 'Player', params: { material: $route.params.material } }"
@@ -29,7 +30,7 @@
             </div>
         </template>
 
-        <template #navigation>
+        <template #navigation v-if="editor">
             <History/>
 
             <Preferences/>
@@ -86,10 +87,10 @@
         </template>
     </Navigation>
 
-    <Slides v-model:value="slidesMenu"></Slides>
-    <Blocks v-model:value="blockMenu"></Blocks>
-    <Media v-model:value="mediaMenu"></Media>
-    <Content v-model:value="contentMenu"></Content>
+    <Slides v-if="editor" v-model:value="slidesMenu"></Slides>
+    <Blocks v-if="editor" v-model:value="blockMenu"></Blocks>
+    <Media v-if="editor" v-model:value="mediaMenu"></Media>
+    <Content v-if="editor" v-model:value="contentMenu"></Content>
 
     <Keybinds v-if="editor"></Keybinds>
     <Properties/>
@@ -104,7 +105,7 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
+import {onMounted, onUnmounted, reactive, ref, toRaw, watch} from "vue";
 import Slides from "@/components/editor/panels/Slides.vue";
 import Blocks from "@/components/editor/panels/Blocks.vue";
 import {useEditorStore} from "@/stores/editor";
@@ -126,6 +127,9 @@ import EditorPlugins from "@/components/plugin/EditorPlugins.vue";
 import {usePluginStore} from "@/stores/plugin";
 import moment from "moment";
 import {useSeoMeta} from "unhead";
+import {communicator, EditorCommunicator} from "@/api/websockets";
+import Material from "@/models/Material";
+import Attendees from "@/components/editor/Attendees.vue";
 
 const materialStore = useMaterialStore();
 
@@ -233,6 +237,7 @@ onMounted(async () => {
     });
 
     await pluginStore.loaded;
+    await communicator.setupEditorRoom(materialStore.currentMaterial! as Material);
 
     await editorStore.requestEditor();
 
@@ -262,6 +267,18 @@ watch(() => editorStore.getEditor(), (value) => {
 
     value.events.MODE_CHANGED.on(() => {
         mode.value = value.getMode();
+    });
+    value.getSelector().events.SELECTED_BLOCK_CHANGED.on((blocks) => {
+        communicator.getEditorRoom()?.changeSelectedBlocks(blocks.map(a => a.id));
+    });
+    value.events.BLOCK_CHANGED.on((block) => {
+        communicator.getEditorRoom()?.synchronizeBlock(block);
+    });
+    value.events.BLOCK_ADDED.on((slide) => {
+        communicator.getEditorRoom()?.synchronizeBlock(slide);
+    });
+    value.events.BLOCK_REMOVED.on((slide) => {
+        communicator.getEditorRoom()?.removeBlock(slide);
     });
 });
 
