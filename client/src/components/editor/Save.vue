@@ -37,21 +37,21 @@ onMounted(() => {
 });
 
 const setupSave = () => {
-    if (saveInterval) {
-        clearInterval(saveInterval);
-    }
+    // if (saveInterval) {
+    //     clearInterval(saveInterval);
+    // }
 
     const editor = editorStore.getEditor();
 
     if (!editor) {
         return;
     }
-
-    saveInterval = setInterval(() => {
-        if (editor.getPreferences().AUTOMATIC_SAVING) {
-            save();
-        }
-    }, editor.getPreferences().AUTOMATIC_SAVING_INTERVAL) as unknown as number;
+    //
+    // saveInterval = setInterval(() => {
+    //     if (editor.getPreferences().AUTOMATIC_SAVING) {
+    //         save();
+    //     }
+    // }, editor.getPreferences().AUTOMATIC_SAVING_INTERVAL) as unknown as number;
 }
 
 watch(() => editorStore.getEditor(), () => {
