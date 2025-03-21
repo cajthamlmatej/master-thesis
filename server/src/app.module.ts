@@ -9,6 +9,7 @@ import { EmailModule } from './email/email.module';
 import { PreferencesModule } from './preferences/preferences.module';
 import { MediaModule } from './media/media.module';
 import { PluginModule } from './plugin/plugin.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
     imports: [
@@ -20,7 +21,7 @@ import { PluginModule } from './plugin/plugin.module';
             }),
             inject: [ConfigService],
         }),
-        MaterialsModule, AuthModule, UsersModule, EmailModule, PreferencesModule, MediaModule, PluginModule],
+        MaterialsModule, AuthModule, UsersModule, EmailModule, PreferencesModule, MediaModule, PluginModule, EventsModule],
     providers: [EmailService],
 })
 export class AppModule {
