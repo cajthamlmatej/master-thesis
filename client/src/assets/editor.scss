@@ -637,8 +637,6 @@
             display: none;
             position: absolute;
             bottom: calc(-1 * 2 * 5 * var(--selector-size));
-            box-shadow: var(--shadow-accent);
-            outline: 0.25em solid rgba(255, 255, 255, 0.24);
             right: 50%;
             pointer-events: auto;
             cursor: grab;
@@ -648,8 +646,11 @@
             width: calc(4 * var(--selector-size));
             height: calc(4 * var(--selector-size));
 
-            background-color: rgba(0, 0, 0, 1);
             border-radius: 50%;
+
+            background-color: var(--color-primary-light);
+            box-shadow: var(--shadow-accent);
+            outline: calc(1 * var(--selector-size)) solid rgba(255, 255, 255, 0.24);
         }
 
         &--rotation {
