@@ -9,7 +9,6 @@ import {PluginPropertyFactory} from "@/editor/block/base/plugin/PluginPropertyFa
 import {RegisterEditorBlockApiFeature} from "@/editor/plugin/editor/RegisterEditorBlockApiFeature";
 import {SendMessageApiFeature} from "@/editor/block/base/plugin/api/editor/SendMessageApiFeature";
 import {RenderApiFeature} from "@/editor/block/base/plugin/api/editor/RenderApiFeature";
-import {BlockInteractiveProperty} from "@/editor/interactivity/BlockInteractivity";
 
 @RegisterEditorBlockApiFeature(SendMessageApiFeature)
 @RegisterEditorBlockApiFeature(RenderApiFeature)
@@ -44,6 +43,12 @@ export class PluginEditorBlock extends EditorBlock {
         element.appendChild(content);
 
         return element;
+    }
+
+    public processDataChange(data: any) {
+        super.processDataChange(data);
+
+        this.renderIframe();
     }
 
     public async renderIframe() {
@@ -110,6 +115,8 @@ export class PluginEditorBlock extends EditorBlock {
         this.data[key] = value;
 
         this.editor.getPluginCommunicator().processPropertyChange(this, key);
+
+        this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
     }
 
     public override getProperties(): Property<this>[] {

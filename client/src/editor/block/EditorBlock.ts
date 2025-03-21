@@ -489,6 +489,10 @@ export abstract class EditorBlock {
         return apiFeatures;
     }
 
+    public processDataChange(data: any) {
+        this.synchronize();
+    }
+
     protected getCloneBase(): BlockConstructor {
         return {
             id: generateUUID(),
