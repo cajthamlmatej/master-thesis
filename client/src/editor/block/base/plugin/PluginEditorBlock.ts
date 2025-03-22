@@ -9,6 +9,7 @@ import {PluginPropertyFactory} from "@/editor/block/base/plugin/PluginPropertyFa
 import {RegisterEditorBlockApiFeature} from "@/editor/plugin/editor/RegisterEditorBlockApiFeature";
 import {SendMessageApiFeature} from "@/editor/block/base/plugin/api/editor/SendMessageApiFeature";
 import {RenderApiFeature} from "@/editor/block/base/plugin/api/editor/RenderApiFeature";
+import {$t} from "@/translation/Translation";
 
 @RegisterEditorBlockApiFeature(SendMessageApiFeature)
 @RegisterEditorBlockApiFeature(RenderApiFeature)
@@ -54,9 +55,12 @@ export class PluginEditorBlock extends EditorBlock {
     public async renderIframe() {
         const content = (this.element.querySelector(".block-content")! as HTMLElement);
 
-        const render = await this.editor.getPluginCommunicator().render(this);
+        this.element.classList.remove("block--type-plugin--failed");
+        this.element.style.removeProperty("--text");
 
         try {
+            const render = await this.editor.getPluginCommunicator().render(this);
+
             content.removeAttribute("data-processed");
 
             content.innerHTML = "";
@@ -68,6 +72,9 @@ export class PluginEditorBlock extends EditorBlock {
             content.appendChild(iframe);
         } catch (e) {
             console.error(e);
+
+            this.element.classList.add("block--type-plugin--failed");
+            this.element.style.setProperty("--text", "'" + $t("blocks.plugin.failed", { plugin: this.plugin }) + "'");
         }
     }
 

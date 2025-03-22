@@ -526,6 +526,10 @@
         "iframe": {
             "name": "Iframe",
             "failed": "Failed to load iframe."
+        },
+        "plugin": {
+            "name": "Plugin",
+            "failed": "Failed to load content from plugin (%plugin%)."
         }
     },
     "property": {

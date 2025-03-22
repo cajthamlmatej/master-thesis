@@ -528,6 +528,10 @@
         },
         "iframe": {
             "name": "Webová stránka"
+        },
+        "plugin": {
+            "name": "Plugin",
+            "failed": "Načtení bloku pluginu (%plugin%) se nezdařilo."
         }
     },
     "property": {

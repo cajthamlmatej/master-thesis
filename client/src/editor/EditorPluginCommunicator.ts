@@ -13,7 +13,7 @@ export class EditorPluginCommunicator {
         const editorPlugin = this.getEditorPlugin(block.getPlugin());
 
         if (!editorPlugin) {
-            return "";
+            throw new Error("Plugin not found");
         }
 
         return await editorPlugin.renderBlock(block);
