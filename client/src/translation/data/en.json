@@ -470,6 +470,10 @@
                     "confirm": "Activate"
                 }
             }
+        },
+        "attendees": {
+            "title": "Attendees",
+            "current": "You"
         }
     },
     "blocks": {

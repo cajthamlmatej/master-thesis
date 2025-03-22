@@ -8,6 +8,8 @@
 <!--        :hideTriggers="['click', 'hover']"-->
         <NavigationButton
             :icon="attendees.length <= 1 ? 'account':'account-multiple'"
+            :tooltip-text="$t('editor.attendees.title')"
+            :tooltip-position="'bottom'"
         ></NavigationButton>
 
         <template #popper>
@@ -24,7 +26,7 @@
                         {{ attendee.attendee.name }}
                     </span>
                     <span class="current" v-if="attendee.current">
-                        (You)
+                        ({{ $t('editor.attendees.current') }})
                     </span>
                 </div>
             </div>
@@ -38,6 +40,8 @@ import {communicator, EditorAttendee, EditorCommunicator} from "@/api/websockets
 import Material from "@/models/Material";
 import {onMounted, ref} from "vue";
 import {useMaterialStore} from "@/stores/material";
+import {$t} from "@/translation/Translation";
+import NavigationButton from "@/components/design/navigation/NavigationButton.vue";
 
 const materialStore = useMaterialStore();
 

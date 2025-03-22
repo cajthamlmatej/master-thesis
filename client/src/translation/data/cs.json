@@ -473,6 +473,10 @@
                     "confirm": "Aktivovat"
                 }
             }
+        },
+        "attendees": {
+            "title": "Účastníci",
+            "current": "Vy"
         }
     },
     "blocks": {
