@@ -38,7 +38,7 @@ export const usePlayerStore = defineStore("player", () => {
         }
 
         if(!slideId) {
-            await changeSlide(slides[0]);
+            await changeSlide(slides.value[0]);
         } else {
             await changeSlide(slideId, rendering);
         }

@@ -94,13 +94,6 @@ export class MaterialsExportService {
             await page.close();
         }
 
-        /**
-         * PLUGINY CHYBY KDYZ NENI PLUGIN NAINSTALOVAN
-         * PLUGINY NEJDE ODDELAT
-         * DISCONNECT KDYZ ODEJDE EDITOR
-         * SPUŠTĚNÍ NEFUNGUJE
-         */
-
         await this.materialsService.updateThumbnails(material);
 
         this.eventsGateway.getEditorRoom(material.id)?.announceNewThumbnails(material.slides.map(s => {
