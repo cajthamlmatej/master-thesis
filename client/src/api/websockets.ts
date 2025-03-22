@@ -338,7 +338,7 @@ export class WebSocketCommunicator {
     }
 
     public initialize() {
-        this.socket = io("http://localhost:3000", {
+        this.socket = io("http://localhost:2020", {
             auth: {
                 Authorization: "Bearer " + useAuthenticationStore().token
             },
