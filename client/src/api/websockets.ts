@@ -384,11 +384,14 @@ export class WebSocketCommunicator {
         return this.editorRoom;
     }
 
-    //
-    // async requestMaterialThumbnail(materialId: string, slideId: string) {
-    //     await this.readyPromise;
-    //     this.socket.emit("requestMaterialThumbnail", {materialId, slideId});
-    // }
+    async leaveEditorRoom(material: Material) {
+        await this.readyPromise;
+
+        if(this.editorRoom) {
+            this.editorRoom.destroy();
+            this.editorRoom = undefined;
+        }
+    }
 }
 
 export const communicator = new WebSocketCommunicator();

@@ -244,6 +244,10 @@ onMounted(async () => {
     state.value = $t('editor.ui.state.last-save', {time: materialStore.currentMaterial?.updatedAt.fromNow() ?? ''});
 });
 
+onUnmounted(async () => {
+    await communicator.leaveEditorRoom(materialStore.currentMaterial! as Material);
+});
+
 const saved = () => {
     state.value = $t('editor.ui.state.last-save', {time: moment().fromNow()});
 }
