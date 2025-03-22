@@ -102,6 +102,12 @@ interface BlockInteractivityActionChangeVariable {
     changeVariableValue: string;
 }
 
+interface BlockInteractivityActionOpenLink {
+    action: 'OPEN_LINK';
+    link: string;
+}
+
+
 interface BlockInteractivityActionBase {
     id: string;
 }
@@ -112,7 +118,8 @@ export type BlockInteractivityAction =
         | BlockInteractivityActionResetProperty
         | BlockInteractivityActionChangeSlideRelative
         | BlockInteractivityActionChangeSlideAbsolute
-        | BlockInteractivityActionChangeVariable);
+        | BlockInteractivityActionChangeVariable
+        | BlockInteractivityActionOpenLink);
 
 type BlockInteractivityActions = {
     actions: BlockInteractivityAction[];

@@ -668,6 +668,14 @@ export abstract class PlayerBlock {
                     this.playerStore.variables[action.changeVariable] = action.changeVariableValue;
                     break;
                 }
+                case "OPEN_LINK": {
+                    const link = action.link;
+
+                    if (!link) break;
+
+                    window.open(link, "_blank");
+                    break;
+                }
             }
         }
     }

@@ -559,7 +559,8 @@
                 "CHANGE_PROPERTY": "Change property",
                 "RESET_PROPERTY": "Reset property",
                 "CHANGE_SLIDE": "Change slide",
-                "CHANGE_VARIABLE": "Change variable"
+                "CHANGE_VARIABLE": "Change variable",
+                "OPEN_LINK": "Open link"
             },
             "on": {
                 "label": "On",
@@ -606,6 +607,9 @@
                 "EQUALS": "Equals",
                 "NOT_EQUALS": "Not equals",
                 "value": "Value"
+            },
+            "link": {
+                "label": "Link"
             },
             "condition": {
                 "label": "Only if",

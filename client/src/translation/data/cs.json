@@ -561,7 +561,8 @@
                 "CHANGE_PROPERTY": "Změnit vlastnost",
                 "RESET_PROPERTY": "Resetovat vlastnost",
                 "CHANGE_SLIDE": "Změnit snímek",
-                "CHANGE_VARIABLE": "Změnit proměnnou"
+                "CHANGE_VARIABLE": "Změnit proměnnou",
+                "OPEN_LINK": "Otevřít odkaz"
             },
             "on": {
                 "label": "Na",
@@ -608,6 +609,9 @@
                 "EQUALS": "Rovná se",
                 "NOT_EQUALS": "Nerovná se",
                 "value": "Hodnota"
+            },
+            "link": {
+                "label": "Odkaz"
             },
             "condition": {
                 "label": "Pouze pokud",

@@ -158,6 +158,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                         <option value="RESET_PROPERTY">${$t("property.interactivity.action.RESET_PROPERTY")}</option>
                         <option value="CHANGE_SLIDE">${$t("property.interactivity.action.CHANGE_SLIDE")}</option>
                         <option value="CHANGE_VARIABLE">${$t("property.interactivity.action.CHANGE_VARIABLE")}</option>
+                        <option value="OPEN_LINK">${$t("property.interactivity.action.OPEN_LINK")}</option>
                     </select>
                 </div>
             </div>`;
@@ -214,6 +215,20 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                     <span class="label">${$t("property.interactivity.variable.value")}</span>
                     <div class="value">
                         <input type="text" data-property="changeVariableValue">
+                    </div>
+                </div>`;
+
+        return actionElement;
+    }
+
+    private renderInteractivityActionOpenLink(action: BlockInteractivityAction): HTMLElement {
+        const actionElement = document.createElement("div");
+
+        actionElement.innerHTML += `
+                <div class="field field--sub">
+                    <span class="label">${$t("property.interactivity.link.label")}</span>
+                    <div class="value">
+                        <input type="text" data-property="link">
                     </div>
                 </div>`;
 
@@ -414,6 +429,8 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             actionElement.appendChild(this.renderInteractivityActionSlide(action));
         } else if (action.action == 'CHANGE_VARIABLE') {
             actionElement.appendChild(this.renderInteractivityActionVariable(action));
+        } else if (action.action == 'OPEN_LINK') {
+            actionElement.appendChild(this.renderInteractivityActionOpenLink(action));
         }
 
         actionElement.appendChild(this.renderInteractivityActionFooter(action));
