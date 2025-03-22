@@ -434,22 +434,15 @@ export class EventsGateway  {
         editorRoom.removeSlide({slideId});
     }
 
-    // @SubscribeMessage('requestMaterialThumbnail')
-    // public async handleRequestMaterialThumbnail(@MessageBody() {materialId, slideId}: { materialId: string, slideId: string }, @ConnectedSocket() client: Socket) {
-    //     const room = this.getEditorRoom(materialId);
-    //
-    //     if (!room) {
-    //         throw new WsException("You are not in the editor room");
-    //     }
-    //
-    //     const material = await this.materialsService.findById(materialId);
-    //
-    //     if(!material) {
-    //         throw new WsException("Material not found");
-    //     }
-    //
-    //     this.materialsExportService.exportSlideThumbnail(material, slideId);
-    // }
+    @SubscribeMessage('leaveEditorMaterialRoom')
+    public async handleLeaveEditor(@ConnectedSocket() client: Socket) {
+        const room = client.data.editorRoom as EditorMaterialRoom | undefined;
+
+        if(room) {
+            room.removeListener(client);
+            client.data.editorRoom = null;
+        }
+    }
 
     public getEditorRoom(id: any) {
         return this.editorRooms.find(r => r.getMaterialId() === id);
