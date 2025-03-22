@@ -642,6 +642,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                 setValue(value);
 
                 this.render();
+                this.announceChange();
             });
         }
     }
@@ -652,6 +653,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         element.querySelector(".delete")?.addEventListener("click", () => {
             this.blocks[0].interactivity = this.blocks[0].interactivity.filter(i => i !== interactivity);
             this.render();
+            this.announceChange();
         });
         element.querySelector(".duplicate")?.addEventListener("click", () => {
             this.blocks[0].interactivity.push(JSON.parse(JSON.stringify({
@@ -659,6 +661,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                 id: Math.random().toString(36).substring(7)
             })));
             this.render();
+            this.announceChange();
         });
         element.querySelector(".move-up")?.addEventListener("click", () => {
             if (index == 0) return;
@@ -667,6 +670,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             this.blocks[0].interactivity.splice(index - 1, 0, interactivity);
 
             this.render();
+            this.announceChange();
         });
         element.querySelector(".move-down")?.addEventListener("click", () => {
             if (index == this.blocks[0].interactivity.length - 1) return;
@@ -675,6 +679,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             this.blocks[0].interactivity.splice(index + 1, 0, interactivity);
 
             this.render();
+            this.announceChange();
         });
     }
 
@@ -697,6 +702,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                 changeVariableValue: "",
             } as any);
             this.render();
+            this.announceChange();
         });
         element.querySelectorAll(".delete-action")?.forEach((button) => {
             const actionElement = button.closest(".action") as HTMLElement;
@@ -708,6 +714,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
             button.addEventListener("click", () => {
                 interactivity.actions = interactivity.actions.filter(a => a !== action);
                 this.render();
+                this.announceChange();
             });
         });
         element.querySelectorAll(".duplicate-action")?.forEach((button) => {
@@ -723,8 +730,13 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                     id: v4()
                 })));
                 this.render();
+                this.announceChange();
             });
         });
+    }
+
+    private announceChange() {
+        this.blocks[0].getEditor().events.BLOCK_CONTENT_CHANGED.emit(this.blocks[0]);
     }
 
     private renderInteractivity(interactivity: BlockInteractivity): HTMLElement {
