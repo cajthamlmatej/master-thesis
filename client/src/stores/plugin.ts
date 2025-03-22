@@ -200,6 +200,7 @@ export const usePluginStore = defineStore("plugin", () => {
         pluginManager.removePlugin(plugin.getId());
 
         pluginPanels.value = await pluginManager.getEditorPanels();
+        materialStore.synchronize();
 
         return true;
     }

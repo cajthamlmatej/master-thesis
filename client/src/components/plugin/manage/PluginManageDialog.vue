@@ -156,6 +156,7 @@ const removePlugin = async (plugin: PluginContext) => {
     loading.value = true;
     await pluginStore.removePluginFromMaterial(plugin);
     loading.value = false;
+    recalculate();
 };
 
 const manifestVersion = PluginManager.CURRENT_MANIFEST_VERSION;
