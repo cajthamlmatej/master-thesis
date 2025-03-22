@@ -45,7 +45,7 @@ export const useEditorStore = defineStore("editor", () => {
         }
     })
 
-    const synchronizeSlide = (slide: Slide | undefined) => {
+    const synchronizeSlide = (slide: Slide | undefined = undefined) => {
         const activeSlide = slide ?? getActiveSlide();
         const editor = getEditor();
 
