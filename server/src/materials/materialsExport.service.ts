@@ -7,6 +7,7 @@ import * as fs from "fs";
 import generateToken from "../utils/generateToken";
 import {MaterialsService} from "./materials.service";
 import {EventsGateway} from "../events/events.gateway";
+import {ConfigService} from "@nestjs/config";
 
 @Injectable()
 export class MaterialsExportService {
@@ -19,6 +20,7 @@ export class MaterialsExportService {
     constructor(
         private readonly materialsService: MaterialsService,
         @Inject(forwardRef(() => EventsGateway)) private readonly eventsGateway: EventsGateway,
+        private readonly configService: ConfigService
     ) {
         this.init();
     }
@@ -60,6 +62,9 @@ export class MaterialsExportService {
 
     public async exportSlideThumbnails(material: HydratedDocument<Material>) {
         this.logger.log(`Exporting slide thumbnails for material ${material.id}`);
+
+        const url = this.configService.get<string>("FRONTEND_DOMAIN")! + this.configService.get<string>("FRONTEND_DOMAIN_PLAYER")!;
+
         await this.browserPromise;
 
         if(!this.browser) {
@@ -78,9 +83,8 @@ export class MaterialsExportService {
             const page = await this.browser.newPage();
             await page.setViewport({width: width, height: height});
 
-            // TODO: make this prettier
             await page.goto(
-                `http://localhost:5173/en/player/${material.id}?slide=${slideId}&rendering=true&cookies=true&token=${this.getToken()}`, {waitUntil: 'networkidle2'});
+                `${url}/${material.id}?slide=${slideId}&rendering=true&cookies=true&token=${this.getToken()}`, {waitUntil: 'networkidle2'});
 
             await page.screenshot({
                 path: outputFile,
@@ -107,6 +111,8 @@ export class MaterialsExportService {
     }
 
     private async exportToPDF(material: HydratedDocument<Material>, outputFolder: string) {
+        const url = this.configService.get<string>("FRONTEND_DOMAIN")! + this.configService.get<string>("FRONTEND_DOMAIN_PLAYER")!;
+
         await this.browserPromise;
         if(!this.browser) {
             this.browser = await this.browserPromise;
@@ -123,9 +129,8 @@ export class MaterialsExportService {
             const page = await this.browser.newPage();
             await page.setViewport({width: width, height: height});
 
-            // TODO: make this prettier
             await page.goto(
-                `https://masterthesis.cajthaml.dev/cs/player/${material.id}?slide=${slideId}&rendering=true&cookies=true&token=${this.getToken()}`, {waitUntil: 'networkidle2'});
+                `${url}/${material.id}?slide=${slideId}&rendering=true&cookies=true&token=${this.getToken()}`, {waitUntil: 'networkidle2'});
 
             await page.pdf({
                 path: outputFile,
