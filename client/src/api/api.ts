@@ -21,8 +21,7 @@ class Api {
     public plugin: PluginRepository;
 
     constructor() {
-        this.base = import.meta.env.VITE_API_BASE || 'http://localhost:2020/';
-        // this.base = import.meta.env.VITE_API_BASE || 'https://api-masterthesis.cajthaml.dev/';
+        this.base = import.meta.env.VITE_API ?? "";
 
         this.auth = new AuthenticationRepository();
         this.user = new UserRepository();

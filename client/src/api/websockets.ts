@@ -338,7 +338,7 @@ export class WebSocketCommunicator {
     }
 
     public initialize() {
-        this.socket = io("http://localhost:2020", {
+        this.socket = io(import.meta.env.VITE_API ?? "", {
             auth: {
                 Authorization: "Bearer " + useAuthenticationStore().token
             },
