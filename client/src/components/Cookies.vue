@@ -1,7 +1,7 @@
 <template>
     <Dialog v-model:value="visible" persistent>
         <template #default>
-            <Card dialog>
+            <Card dialog data-cy="cookies">
                 <div class="flex flex-justify-space-between header">
                     <p v-t class="title">cookies.title</p>
 
@@ -19,7 +19,7 @@
                 <p v-t class="mb-1">cookies.not-accept</p>
 
                 <div class="flex flex-justify-end">
-                    <Button @click="accept"><span v-t>cookies.accept</span></Button>
+                    <Button @click="accept" data-cy="cookies-accept"><span v-t>cookies.accept</span></Button>
                 </div>
             </Card>
         </template>

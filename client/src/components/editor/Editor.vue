@@ -1,6 +1,6 @@
 <template>
     <article class="editor-view">
-        <div class="editor-container">
+        <div class="editor-container" data-cy="editor">
             <div v-once :key="'editor'" ref="editorElement" class="editor" v-html="''">
             </div>
         </div>

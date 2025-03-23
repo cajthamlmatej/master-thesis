@@ -8,7 +8,7 @@
 
                         <TransitionGroup :duration="40000" class="authentication-holder" name="authentication-fade"
                                          tag="div">
-                            <Form v-if="data.tab === 'EMAIL_PASSWORD'" :onSubmit="() => handle('EMAIL_PASSWORD')"
+                            <Form v-if="data.tab === 'EMAIL_PASSWORD'" data-cy=email-password-form :onSubmit="() => handle('EMAIL_PASSWORD')"
                                   class="form">
                                 <template #default="{ validationChange }">
                                     <Input v-model:value="data.email"
@@ -38,7 +38,7 @@
                                 </template>
                             </Form>
 
-                            <Form v-if="data.tab === 'EMAIL'" :onSubmit="() => handle('EMAIL')" class="form">
+                            <Form v-if="data.tab === 'EMAIL'" data-cy=email-form :onSubmit="() => handle('EMAIL')" class="form">
                                 <template #default="{ validationChange }">
                                     <Input v-model:value="data.email" :disabled="data.emailStage === 1"
                                            :label="$t('page.authentication.fields.email.label')"
@@ -91,7 +91,7 @@
                             </div>
 
                             <Button :icon-size="1.4" :to="{ name: 'Authentication/Register'}" class="mt-1"
-                                    fluid icon="account-plus-outline">
+                                    fluid icon="account-plus-outline" data-cy="create-account">
                                 <span v-t>page.authentication.create-account</span>
                             </Button>
                         </div>

@@ -1,125 +1,129 @@
 <template>
-    <Card fluid>
-        <div class="flex flex-justify-center flex-justify-sm-space-between flex-align-center flex-wrap gap-1">
-            <span v-t="{ name: userStore.user?.name ?? '' }" class="main-title">page.dashboard.title-welcome</span>
+    <div data-cy=dashboard>
+        <Card fluid>
+            <div class="flex flex-justify-center flex-justify-sm-space-between flex-align-center flex-wrap gap-1">
+                <span v-t="{ name: userStore.user?.name ?? '' }" class="main-title">page.dashboard.title-welcome</span>
 
-            <div class="flex flex-align-center gap-1">
-                <Dialog>
-                    <template #activator="{toggle}">
-                        <Button v-tooltip="$t('page.dashboard.new.tooltip')"
-                                color="primary"
-                                @click="toggle"
-                                icon="mdi mdi-plus"/>
-                    </template>
-                    <template #default="{toggle}">
-                        <Card dialog>
-                            <div class="import-buttons">
-                                <Dialog>
-                                    <template #activator="{toggle}">
-                                        <button @click="toggle">
-                                            <span class="icon mdi mdi-file-import-outline"></span>
-                                            <span class="text" v-t>page.dashboard.new.import.tooltip</span>
-                                        </button>
-                                    </template>
-                                    <template #default="{toggle}">
-                                        <Card dialog>
-                                            <p class="title" v-t>page.dashboard.new.import.title</p>
+                <div class="flex flex-align-center gap-1">
+                    <Dialog>
+                        <template #activator="{toggle}">
+                            <Button v-tooltip="$t('page.dashboard.new.tooltip')"
+                                    color="primary"
+                                    data-cy="new-material"
+                                    @click="toggle"
+                                    icon="plus"/>
+                        </template>
+                        <template #default="{toggle}">
+                            <Card dialog data-cy="new-material-modal">
+                                <div class="import-buttons">
+                                    <Dialog>
+                                        <template #activator="{toggle}">
+                                            <button @click="toggle" data-cy="import-material">
+                                                <span class="icon mdi mdi-file-import-outline"></span>
+                                                <span class="text" v-t>page.dashboard.new.import.tooltip</span>
+                                            </button>
+                                        </template>
+                                        <template #default="{toggle}">
+                                            <Card dialog>
+                                                <p class="title" v-t>page.dashboard.new.import.title</p>
 
-                                            <p v-t>page.dashboard.new.import.description</p>
+                                                <p v-t>page.dashboard.new.import.description</p>
 
-                                            <FileInput v-model:value="importFile" class="mt-1"/>
+                                                <FileInput v-model:value="importFile" class="mt-1"/>
 
-                                            <Alert type="error" v-if="importError" class="mt-1">
-                                                {{ importError }}
-                                            </Alert>
+                                                <Alert type="error" v-if="importError" class="mt-1">
+                                                    {{ importError }}
+                                                </Alert>
 
-                                            <div class="flex flex-justify-end mt-1">
-                                                <Button @click="() => processImport(toggle)" :disabled="importFile.length != 1">
-                                                    <span v-t>page.dashboard.new.import.process</span>
-                                                </Button>
-                                            </div>
-                                        </Card>
-                                    </template>
-                                </Dialog>
-                                <button @click="router.push({name: 'Editor', params: {material: 'new'}})">
-                                    <span class="icon mdi mdi-artboard"></span>
-                                    <span class="text" v-t>page.dashboard.new.empty</span>
-                                </button>
-                            </div>
-                        </Card>
-                    </template>
-                </Dialog>
+                                                <div class="flex flex-justify-end mt-1">
+                                                    <Button @click="() => processImport(toggle)" :disabled="importFile.length != 1">
+                                                        <span v-t>page.dashboard.new.import.process</span>
+                                                    </Button>
+                                                </div>
+                                            </Card>
+                                        </template>
+                                    </Dialog>
+                                    <button @click="router.push({name: 'Editor', params: {material: 'new'}})" data-cy="new-empty-material">
+                                        <span class="icon mdi mdi-artboard"></span>
+                                        <span class="text" v-t>page.dashboard.new.empty</span>
+                                    </button>
+                                </div>
+                            </Card>
+                        </template>
+                    </Dialog>
 
-                <Input v-model:value="search" :label="$t('page.dashboard.search')"
-                       :placeholder="$t('page.dashboard.search')" dense
-                       hide-error hide-label type="text"/>
+                    <Input v-model:value="search" :label="$t('page.dashboard.search')"
+                           data-cy="search-materials"
+                           :placeholder="$t('page.dashboard.search')" dense
+                           hide-error hide-label type="text"/>
+                </div>
             </div>
+        </Card>
+
+        <div class="flex flex-justify-center mt-2">
+            <Pagination v-model:page="page" :page-size="8" :total="Math.max(Math.ceil(materials.length/8), 1)"/>
         </div>
-    </Card>
 
-    <div class="flex flex-justify-center mt-2">
-        <Pagination v-model:page="page" :page-size="8" :total="Math.max(Math.ceil(materials.length/8), 1)"/>
-    </div>
+        <div v-if="materials.length === 0" class="mt-1">
+            <Alert type="warning">
+                <span v-t>page.dashboard.materials.not-found-by-criteria</span>
+            </Alert>
+        </div>
 
-    <div v-if="materials.length === 0" class="mt-1">
-        <Alert type="warning">
-            <span v-t>page.dashboard.materials.not-found-by-criteria</span>
-        </Alert>
-    </div>
-
-    <Row align="stretch" class="mt-1" :gap="1" wrap >
-        <Col v-for="material in materialsOnPage" :key="material.id" cols="12" lg="3" md="4" sm="6">
-            <article class="material" @click="router.push({name: 'Editor', params: {material: material.id}})">
-                <div class="image-holder">
-                    <img v-if="material.thumbnail"
-                         :src="material.thumbnail" alt="thumbnail" class="thumbnail">
-                    <div v-else class="placeholder"></div>
-                </div>
-
-                <div class="meta">
-                    <div class="state">
-                        <p class="title" v-tooltip="material.name">{{ material.name }}</p>
-
-                        <p class="time">
-                            <span v-t>page.dashboard.materials.modified</span> {{ material.updatedAt.fromNow() }}</p>
-                        <p class="time">
-                            <span v-t>page.dashboard.materials.created</span> {{ material.createdAt.fromNow() }}
-                        </p>
+        <Row align="stretch" class="mt-1" :gap="1" wrap data-cy="materials">
+            <Col v-for="material in materialsOnPage" :key="material.id" cols="12" lg="3" md="4" sm="6">
+                <article class="material" @click="router.push({name: 'Editor', params: {material: material.id}})">
+                    <div class="image-holder">
+                        <img v-if="material.thumbnail"
+                             :src="material.thumbnail" alt="thumbnail" class="thumbnail">
+                        <div v-else class="placeholder"></div>
                     </div>
 
-                    <div class="actions">
-                        <Dialog>
-                            <template #activator="{toggle}">
-                                <Button v-tooltip="$t('page.dashboard.materials.delete-tooltip')" :loading="processing"
-                                        color="transparent"
-                                        icon="mdi mdi-delete" @click.stop.capture="toggle"/>
-                            </template>
-                            <template #default="{toggle}">
-                                <Card class="delete-dialog" dialog>
-                                    <p v-t class="title">page.dashboard.materials.deletion.title</p>
+                    <div class="meta">
+                        <div class="state">
+                            <p class="title" v-tooltip="material.name">{{ material.name }}</p>
 
-                                    <p v-t>page.dashboard.materials.deletion.deletion</p>
+                            <p class="time">
+                                <span v-t>page.dashboard.materials.modified</span> {{ material.updatedAt.fromNow() }}</p>
+                            <p class="time">
+                                <span v-t>page.dashboard.materials.created</span> {{ material.createdAt.fromNow() }}
+                            </p>
+                        </div>
 
-                                    <p v-t>page.dashboard.materials.deletion.after</p>
+                        <div class="actions">
+                            <Dialog>
+                                <template #activator="{toggle}">
+                                    <Button v-tooltip="$t('page.dashboard.materials.delete-tooltip')" :loading="processing"
+                                            color="transparent"
+                                            icon="mdi mdi-delete" @click.stop.capture="toggle"/>
+                                </template>
+                                <template #default="{toggle}">
+                                    <Card class="delete-dialog" dialog>
+                                        <p v-t class="title">page.dashboard.materials.deletion.title</p>
 
-                                    <div class="flex flex-justify-end gap-1 mt-1">
-                                        <Button :loading="processing" color="neutral"
-                                                @click="deleteMaterial(material.id, toggle)"><span v-t>page.dashboard.materials.deletion.sure</span>
-                                        </Button>
-                                        <Button @click="toggle"><span
-                                            v-t>page.dashboard.materials.deletion.cancel</span></Button>
-                                    </div>
-                                </Card>
-                            </template>
-                        </Dialog>
-                        <Button v-tooltip="$t('page.dashboard.materials.copy-tooltip')" :loading="processing"
-                                color="transparent" icon="mdi mdi-content-copy"
-                                @click.stop.capture="copyMaterial(material.id)"/>
+                                        <p v-t>page.dashboard.materials.deletion.deletion</p>
+
+                                        <p v-t>page.dashboard.materials.deletion.after</p>
+
+                                        <div class="flex flex-justify-end gap-1 mt-1">
+                                            <Button :loading="processing" color="neutral"
+                                                    @click="deleteMaterial(material.id, toggle)"><span v-t>page.dashboard.materials.deletion.sure</span>
+                                            </Button>
+                                            <Button @click="toggle"><span
+                                                v-t>page.dashboard.materials.deletion.cancel</span></Button>
+                                        </div>
+                                    </Card>
+                                </template>
+                            </Dialog>
+                            <Button v-tooltip="$t('page.dashboard.materials.copy-tooltip')" :loading="processing"
+                                    color="transparent" icon="mdi mdi-content-copy"
+                                    @click.stop.capture="copyMaterial(material.id)"/>
+                        </div>
                     </div>
-                </div>
-            </article>
-        </Col>
-    </Row>
+                </article>
+            </Col>
+        </Row>
+    </div>
 </template>
 
 <script lang="ts" setup>
