@@ -2,13 +2,17 @@ import {
     BadRequestException,
     Body,
     Controller,
-    Delete, forwardRef,
+    Delete,
+    forwardRef,
     Get,
-    HttpCode, Inject,
+    HttpCode,
+    Inject,
     Param,
     Patch,
-    Post, Query,
-    Req, StreamableFile,
+    Post,
+    Query,
+    Req,
+    StreamableFile,
     UnauthorizedException,
     UseGuards
 } from '@nestjs/common';
@@ -20,9 +24,6 @@ import {OneMaterialSuccessDTO} from "../../dto/material/OneMaterialSuccessDTO";
 import {UpdateMaterialDTO} from "../../dto/material/UpdateMaterialDTO";
 import {CreateMaterialDTO} from "../../dto/material/CreateMaterialDTO";
 import {CreateMaterialSuccessDTO} from "../../dto/material/CreateMaterialSuccessDTO";
-import puppeteer from "puppeteer";
-import * as fs from "fs";
-import PDFMerger from "./../utils/pdfMerger.js";
 import {MaterialsExportService} from "./materialsExport.service";
 import {EventsGateway} from "../events/events.gateway";
 
@@ -65,15 +66,15 @@ export class MaterialsController {
         if (material.visibility === 'PRIVATE') {
             const user = req.user || {id: null};
 
-            if(!token) {
+            if (!token) {
                 if (material.user.toString() !== user.id) throw new UnauthorizedException('You are not allowed to access this resource');
-            } else if(token !== this.materialsExportService.getToken()) {
+            } else if (token !== this.materialsExportService.getToken()) {
                 throw new UnauthorizedException('You are not allowed to access this resource');
             }
         }
 
         const editorRoom = this.eventsGateway.getEditorRoom(material.id);
-        if(editorRoom !== undefined){
+        if (editorRoom !== undefined) {
             material = editorRoom.getMaterial();
         }
 

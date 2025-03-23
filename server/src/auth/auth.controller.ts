@@ -1,7 +1,6 @@
-import {BadRequestException, Body, Controller, Get, HttpCode, Post, Req, UseGuards} from '@nestjs/common';
+import {BadRequestException, Body, Controller, HttpCode, Post} from '@nestjs/common';
 import InAuthDTO from "../../dto/authentication/InAuthenticationDTO";
 import {UsersService} from "../users/users.service";
-import {User} from "../users/user.schema";
 import {EmailService} from "../email/email.service";
 import {AuthService} from "./auth.service";
 import {ConfigService} from "@nestjs/config";
@@ -35,7 +34,7 @@ export class AuthController {
                 if (!code) {
                     const hasRequest = await this.authService.hasUserValidRequest(user);
 
-                    if(hasRequest) throw new BadRequestException('User already has a valid request for email authentication.');
+                    if (hasRequest) throw new BadRequestException('User already has a valid request for email authentication.');
 
                     const request = await this.authService.createRequest(user);
                     const code = request.code;
@@ -50,9 +49,9 @@ export class AuthController {
 
                 const authenticationRequest = await this.authService.getValidByCode(code);
 
-                if(!authenticationRequest) throw new BadRequestException('Invalid code.');
+                if (!authenticationRequest) throw new BadRequestException('Invalid code.');
 
-                if(authenticationRequest.user.toString() !== user._id.toString()) throw new BadRequestException('Invalid code.');
+                if (authenticationRequest.user.toString() !== user._id.toString()) throw new BadRequestException('Invalid code.');
 
                 const token = await this.usersService.generateToken(user);
 
@@ -112,7 +111,7 @@ export class AuthController {
 
         if (!byToken) throw new BadRequestException('Invalid token.');
 
-        if(byToken.active) throw new BadRequestException('User is already activated.');
+        if (byToken.active) throw new BadRequestException('User is already activated.');
 
         await this.usersService.activate(byToken);
     }

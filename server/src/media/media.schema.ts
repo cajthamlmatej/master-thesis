@@ -1,14 +1,13 @@
-
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
-import * as mongoose from "mongoose";
-import {User, UserDocument} from "../users/user.schema";
+import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
+import {HydratedDocument} from 'mongoose';
+import {User} from "../users/user.schema";
 
 export type MediaDocument = HydratedDocument<Media>;
 
 @Schema()
 export class Media {
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'User'})
     user: User;
 
     @Prop()
@@ -20,7 +19,7 @@ export class Media {
     @Prop()
     size: number;
 
-    @Prop({ enum: ['LOCAL'] })
+    @Prop({enum: ['LOCAL']})
     location: string;
 
     @Prop()

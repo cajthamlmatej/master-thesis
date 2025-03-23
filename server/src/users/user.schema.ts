@@ -1,8 +1,5 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
-import {HydratedDocument, Model} from 'mongoose';
-import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
-import {ConfigService} from "@nestjs/config";
+import {HydratedDocument} from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 

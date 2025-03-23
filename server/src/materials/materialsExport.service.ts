@@ -15,7 +15,10 @@ export class MaterialsExportService {
 
     private browser: Browser;
     private browserPromiseResolve: (value: Browser) => void;
-    private browserPromise: Promise<Browser> = new Promise((resolve) => {this.browserPromiseResolve = resolve;});
+    private browserPromise: Promise<Browser> = new Promise((resolve) => {
+        this.browserPromiseResolve = resolve;
+    });
+    private readonly logger = new Logger(MaterialsExportService.name);
 
     constructor(
         private readonly materialsService: MaterialsService,
@@ -23,19 +26,6 @@ export class MaterialsExportService {
         private readonly configService: ConfigService
     ) {
         this.init();
-    }
-
-    private async init() {
-        console.log(this.browserPromise);
-        this.browser = await puppeteer.launch({
-            headless: true,
-            args: ['--no-sandbox']
-        });
-
-        // Open blank page so it never closes
-        await this.browser.newPage();
-
-        this.browserPromiseResolve(this.browser);
     }
 
     public getToken() {
@@ -58,8 +48,6 @@ export class MaterialsExportService {
         return fs.createReadStream(path);
     }
 
-    private readonly logger = new Logger(MaterialsExportService.name);
-
     public async exportSlideThumbnails(material: HydratedDocument<Material>) {
         this.logger.log(`Exporting slide thumbnails for material ${material.id}`);
 
@@ -67,7 +55,7 @@ export class MaterialsExportService {
 
         await this.browserPromise;
 
-        if(!this.browser) {
+        if (!this.browser) {
             this.browser = await this.browserPromise;
         }
 
@@ -110,11 +98,24 @@ export class MaterialsExportService {
         this.logger.log(`Finished exporting slide thumbnails for material ${material.id}`);
     }
 
+    private async init() {
+        console.log(this.browserPromise);
+        this.browser = await puppeteer.launch({
+            headless: true,
+            args: ['--no-sandbox']
+        });
+
+        // Open blank page so it never closes
+        await this.browser.newPage();
+
+        this.browserPromiseResolve(this.browser);
+    }
+
     private async exportToPDF(material: HydratedDocument<Material>, outputFolder: string) {
         const url = this.configService.get<string>("FRONTEND_DOMAIN")! + this.configService.get<string>("FRONTEND_DOMAIN_PLAYER")!;
 
         await this.browserPromise;
-        if(!this.browser) {
+        if (!this.browser) {
             this.browser = await this.browserPromise;
         }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import path from "path";
 import fs from "fs";
 import mjml2html from 'mjml';
@@ -8,6 +8,11 @@ import {EmailTemplate} from "./email.template";
 
 @Injectable()
 export class EmailService {
+    /**
+     * The transporter used to send emails.
+     */
+    private readonly transporter: nodemailer.Transporter;
+
     constructor(private configService: ConfigService) {
         // Validate environment variables.
         this.validateEnvironmentVariables();
@@ -22,11 +27,6 @@ export class EmailService {
             },
         });
     }
-
-    /**
-     * The transporter used to send emails.
-     */
-    private readonly transporter: nodemailer.Transporter;
 
     /**
      * Sends an email.

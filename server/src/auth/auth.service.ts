@@ -8,7 +8,8 @@ import moment from "moment";
 
 @Injectable()
 export class AuthService {
-    constructor(@InjectModel(AuthenticationRequest.name) private authenticationRequestModel: Model<AuthenticationRequest>) {}
+    constructor(@InjectModel(AuthenticationRequest.name) private authenticationRequestModel: Model<AuthenticationRequest>) {
+    }
 
     async hasUserValidRequest(user: HydratedDocument<User>): Promise<boolean> {
         return (await this.authenticationRequestModel.exists({

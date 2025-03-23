@@ -1,5 +1,4 @@
 import {Controller, Get, Param, Req} from '@nestjs/common';
-import {PreferencesService} from "../preferences/preferences.service";
 import {PluginService} from "./plugin.service";
 import {RequestWithUser} from "../types";
 import {AllPluginsSuccessDTO} from "../../dto/plugin/AllPluginsSuccessDTO";

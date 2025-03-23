@@ -47,9 +47,9 @@ export class MaterialsService {
     async updateThumbnails(material: HydratedDocument<Material>) {
         const bulkOps = material.slides.map((slide) => ({
             updateOne: {
-                filter: { _id: material.id, "slides.id": slide.id },
-                update: { $set: { "slides.$[elem].thumbnail": slide.thumbnail } },
-                arrayFilters: [{ "elem.id": slide.id }]
+                filter: {_id: material.id, "slides.id": slide.id},
+                update: {$set: {"slides.$[elem].thumbnail": slide.thumbnail}},
+                arrayFilters: [{"elem.id": slide.id}]
             }
         }));
 

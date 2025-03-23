@@ -7,7 +7,8 @@ import OneUserSuccessDTO from "../../dto/user/OneUserSuccessDTO";
 @Controller('user')
 export class UsersController {
     constructor(
-        private readonly usersService: UsersService) {}
+        private readonly usersService: UsersService) {
+    }
 
     @Get("/:id")
     @UseGuards(RequiresAuthenticationGuard)

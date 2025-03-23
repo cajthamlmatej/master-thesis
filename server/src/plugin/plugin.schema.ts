@@ -1,8 +1,7 @@
-
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
-import * as mongoose from "mongoose";
-import {User, UserDocument} from "../users/user.schema";
+import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
+import {HydratedDocument} from 'mongoose';
+import {User} from "../users/user.schema";
 
 export type PluginDocument = HydratedDocument<Plugin>;
 
@@ -10,7 +9,7 @@ class PluginRelease {
     @Prop()
     version: string;
 
-    @Prop({ default: () => new Date() })
+    @Prop({default: () => new Date()})
     date: Date;
 
     @Prop()
@@ -19,16 +18,16 @@ class PluginRelease {
     @Prop()
     manifest: string;
 
-    @Prop({ isRequired: false })
+    @Prop({isRequired: false})
     editorCode: string;
 
-    @Prop({ isRequired: false })
+    @Prop({isRequired: false})
     playerCode: string;
 }
 
 @Schema()
 export class Plugin {
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', isRequired: false })
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'User', isRequired: false})
     author: User;
 
     @Prop()

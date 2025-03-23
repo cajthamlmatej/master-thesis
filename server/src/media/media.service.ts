@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import {HydratedDocument, Model} from "mongoose";
 import {User} from "../users/user.schema";
 import {InjectModel} from "@nestjs/mongoose";
@@ -10,7 +10,7 @@ export class MediaService {
     }
 
     async findAllForUser(user: HydratedDocument<User>) {
-        return this.mediaModel.find({ user: user._id }).sort({
+        return this.mediaModel.find({user: user._id}).sort({
             _id: -1
         }).exec();
     }

@@ -86,9 +86,9 @@ export class MediaController {
     async findOne(@Param('id') id: string, @Req() req: RequestWithUser) {
         const material = await this.mediaService.findById(id);
 
-        if(!material) throw new Error("Material not found");
+        if (!material) throw new Error("Material not found");
 
-        if(material.location !== 'LOCAL') throw new Error("Cannot access non-local files");
+        if (material.location !== 'LOCAL') throw new Error("Cannot access non-local files");
 
         const path = material.path;
 

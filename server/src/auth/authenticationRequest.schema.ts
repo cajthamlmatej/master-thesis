@@ -1,14 +1,13 @@
-
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
-import * as mongoose from "mongoose";
-import {User, UserDocument} from "../users/user.schema";
+import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
+import {HydratedDocument} from 'mongoose';
+import {User} from "../users/user.schema";
 
 export type AuthenticationRequestDocument = HydratedDocument<AuthenticationRequest>;
 
 @Schema()
 export class AuthenticationRequest {
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'User'})
     user: User;
 
     @Prop()
@@ -17,7 +16,7 @@ export class AuthenticationRequest {
     @Prop()
     expiresAt: Date;
 
-    @Prop({ default: false })
+    @Prop({default: false})
     used: boolean;
 }
 

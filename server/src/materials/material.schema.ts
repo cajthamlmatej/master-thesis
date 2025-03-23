@@ -1,12 +1,12 @@
-
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
-import * as mongoose from "mongoose";
-import {User, UserDocument} from "../users/user.schema";
+import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
+import {HydratedDocument} from 'mongoose';
+import {User} from "../users/user.schema";
 import {MaterialMethod, MaterialSizing, MaterialVisibility} from "../../dto/material/MaterialEnums";
 import {Plugin} from "../plugin/plugin.schema";
 
 export type MaterialDocument = HydratedDocument<Material>;
+
 interface SlideData {
     editor: {
         size: {
@@ -29,12 +29,12 @@ class Slide {
     thumbnail: string;
     @Prop()
     position: number;
-    @Prop({ type: mongoose.Schema.Types.Map })
+    @Prop({type: mongoose.Schema.Types.Map})
     data: SlideData;
 }
 
 class MaterialPlugin {
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Plugin' })
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Plugin'})
     plugin: Plugin;
 
     @Prop()
@@ -43,7 +43,7 @@ class MaterialPlugin {
 
 @Schema()
 export class Material {
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'User'})
     user: User;
 
     @Prop()
@@ -64,10 +64,10 @@ export class Material {
     @Prop()
     sizing: MaterialSizing;
 
-    @Prop({ default: () => new Date() })
+    @Prop({default: () => new Date()})
     createdAt: Date;
 
-    @Prop({ default: () => new Date() })
+    @Prop({default: () => new Date()})
     updatedAt: Date;
 
     @Prop([Slide])

@@ -1,8 +1,8 @@
-import { PDFDocument } from 'pdf-lib'
+import {PDFDocument} from 'pdf-lib'
 import * as fs from "fs/promises"
 
 
-function parsePagesString (pages) {
+function parsePagesString(pages) {
     const throwError = () => {
         throw new Error([
             'Invalid parameter "pages".',
@@ -17,7 +17,7 @@ function parsePagesString (pages) {
 
     const parseRange = (rangeString) => {
         const [start, end] = rangeString.split(/-|to/).map(s => typeof s === 'string' ? parseInt(s.trim()) : s)
-        return Array.from({ length: end - start + 1 }, (_, i) => start + i)
+        return Array.from({length: end - start + 1}, (_, i) => start + i)
     }
 
     if (typeof pages !== 'string') {
@@ -71,7 +71,7 @@ class PDFMergerBase {
         ignoreEncryption: true
     }
 
-    constructor () {
+    constructor() {
         this.reset()
     }
 
@@ -80,7 +80,7 @@ class PDFMergerBase {
      *
      * @returns {void}
      */
-    reset () {
+    reset() {
         this._doc = undefined
     }
 
@@ -91,7 +91,7 @@ class PDFMergerBase {
      * @param {Metadata} metadata
      * @returns {Promise<void>}
      */
-    async setMetadata (metadata) {
+    async setMetadata(metadata) {
         await this._ensureDoc()
         if (metadata.producer) this._doc.setProducer(metadata.producer)
         if (metadata.author) this._doc.setAuthor(metadata.author)
@@ -107,7 +107,7 @@ class PDFMergerBase {
      * @param {string | string[] | number | number[] | undefined | null} [pages]
      * @returns {Promise<void>}
      */
-    async add (input, pages) {
+    async add(input, pages) {
         await this._ensureDoc()
         if (typeof pages === 'undefined' || pages === null || pages === 'all') {
             // of no pages are given, add the entire document
@@ -139,11 +139,11 @@ class PDFMergerBase {
      * @async
      * @returns {Promise<void>}
      */
-    async _ensureDoc () {
+    async _ensureDoc() {
         if (!this._doc) {
             this._doc = await PDFDocument.create()
-            this._doc.setProducer('Material Exporter') // TODO: name
-            this._doc.setCreator('Material Exporter')
+            this._doc.setProducer('Materalist')
+            this._doc.setCreator('Materalist')
             this._doc.setCreationDate(new Date())
         }
     }
@@ -155,7 +155,7 @@ class PDFMergerBase {
      * @protected
      * @returns {Promise<Uint8Array>}
      */
-    async _saveAsUint8Array () {
+    async _saveAsUint8Array() {
         await this._ensureDoc()
         return await this._doc.save()
     }
@@ -167,9 +167,9 @@ class PDFMergerBase {
      * @protected
      * @returns {Promise<string>}
      */
-    async _saveAsBase64 () {
+    async _saveAsBase64() {
         await this._ensureDoc()
-        return await this._doc.saveAsBase64({ dataUri: true })
+        return await this._doc.saveAsBase64({dataUri: true})
     }
 
     /**
@@ -181,7 +181,7 @@ class PDFMergerBase {
      * @param {PdfInput} input
      * @returns {Uint8Array}
      */
-    async _getInputAsUint8Array (input) {
+    async _getInputAsUint8Array(input) {
         // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array
         if (input instanceof Uint8Array) {
             return input
@@ -226,7 +226,7 @@ class PDFMergerBase {
      * @param {number[] | undefined} pages - array of page numbers to add (starts at 1)
      * @returns {Promise<void>}
      */
-    async _addPagesFromDocument (input, pages = undefined) {
+    async _addPagesFromDocument(input, pages = undefined) {
         const src = await this._getInputAsUint8Array(input)
         const srcDoc = await PDFDocument.load(src, this._loadOptions)
 
@@ -260,7 +260,7 @@ export default class PDFMerger extends PDFMergerBase {
      * @param {PdfInput} input
      * @returns {Uint8Array}
      */
-    async _getInputAsUint8Array (input) {
+    async _getInputAsUint8Array(input) {
         if (input instanceof Buffer) {
             return input
         }
@@ -290,7 +290,7 @@ export default class PDFMerger extends PDFMergerBase {
      * @async
      * @returns {Promise<Buffer>}
      */
-    async saveAsBuffer () {
+    async saveAsBuffer() {
         const uInt8Array = await this._saveAsUint8Array()
         return Buffer.from(uInt8Array)
     }
@@ -302,7 +302,7 @@ export default class PDFMerger extends PDFMergerBase {
      * @param {string | PathLike} fileName
      * @returns {Promise<void>}
      */
-    async save (fileName) {
+    async save(fileName) {
         const pdfBytes = await this._saveAsUint8Array()
         await fs.writeFile(fileName, pdfBytes)
     }

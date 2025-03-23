@@ -1,6 +1,6 @@
 import {
     ConnectedSocket,
-    MessageBody, OnGatewayInit,
+    MessageBody,
     SubscribeMessage,
     WebSocketGateway,
     WebSocketServer,
@@ -13,7 +13,6 @@ import {HydratedDocument} from "mongoose";
 import {Material} from "../materials/material.schema";
 import {MaterialsService} from "../materials/materials.service";
 import {MaterialsExportService} from "../materials/materialsExport.service";
-import {MaterialsModule} from "../materials/materials.module";
 import generateToken from "../utils/generateToken";
 
 export class EditorMaterialRoomAttendee {
@@ -46,6 +45,7 @@ export class EditorMaterialRoom {
     private debounceThumbnail: NodeJS.Timeout;
 
     private attendees: EditorMaterialRoomAttendee[] = [];
+    private debounceMaterial: NodeJS.Timeout;
 
     constructor(material: HydratedDocument<Material>, gateway: EventsGateway) {
         this.material = material;
@@ -96,6 +96,7 @@ export class EditorMaterialRoom {
     public getMaterialId() {
         return this.material.id;
     }
+
     public getMaterial() {
         return this.material;
     }
@@ -117,7 +118,7 @@ export class EditorMaterialRoom {
     public changeAttendeeSlide(client: Socket, slideId: string) {
         const attendee = this.getAttendee(client);
 
-        if(!attendee) {
+        if (!attendee) {
             throw new WsException("You are not in the editor room");
         }
 
@@ -132,7 +133,7 @@ export class EditorMaterialRoom {
     public changeAttendeeSelectedBlocks(client: Socket, selectedBlocks: string[]) {
         const attendee = this.getAttendee(client);
 
-        if(!attendee) {
+        if (!attendee) {
             throw new WsException("You are not in the editor room");
         }
 
@@ -186,12 +187,17 @@ export class EditorMaterialRoom {
         this.gateway.server.to(this.roomId).emit('synchronizeMaterial', data);
     }
 
-    public async synchronizeSlide(data: { slideId: string; size: { width: number; height: number }; color: string; position: number }) {
+    public async synchronizeSlide(data: {
+        slideId: string;
+        size: { width: number; height: number };
+        color: string;
+        position: number
+    }) {
         this.gateway.server.to(this.roomId).emit('synchronizeSlide', data);
 
         let slide = this.getSlide(data.slideId);
 
-        if(!slide) {
+        if (!slide) {
             const newSlide = {
                 id: data.slideId,
                 thumbnail: "",
@@ -216,7 +222,7 @@ export class EditorMaterialRoom {
         await this.saveSlide(data.slideId);
     }
 
-    public async removeSlide({slideId}: {slideId: string}) {
+    public async removeSlide({slideId}: { slideId: string }) {
         this.material.slides = this.material.slides.filter(s => s.id !== slideId);
 
         this.gateway.server.to(this.roomId).emit('removeSlide', {
@@ -228,18 +234,17 @@ export class EditorMaterialRoom {
     }
 
     public generateThumbnail() {
-        if(this.debounceThumbnail) {
+        if (this.debounceThumbnail) {
             clearTimeout(this.debounceThumbnail);
         }
 
-        this.debounceThumbnail = setTimeout(async() => {
+        this.debounceThumbnail = setTimeout(async () => {
             await this.gateway.materialsExportService.exportSlideThumbnails(this.material);
         }, 3000);
     }
 
-    private debounceMaterial: NodeJS.Timeout;
     private saveMaterial() {
-        if(this.debounceMaterial) {
+        if (this.debounceMaterial) {
             clearTimeout(this.debounceMaterial);
         }
 
@@ -257,7 +262,7 @@ export class EditorMaterialRoom {
     private getSlide(slideId: string) {
         const slide = this.material.slides.find(s => s.id === slideId);
 
-        if(!slide) {
+        if (!slide) {
             return undefined;
         }
 
@@ -267,7 +272,7 @@ export class EditorMaterialRoom {
     private async removeSlideBlock(slideId: string, blockId: string) {
         const slide = this.getSlide(slideId);
 
-        if(!slide) return;
+        if (!slide) return;
 
         slide.data.blocks = slide.data.blocks.filter(b => b.id !== blockId);
     }
@@ -276,21 +281,16 @@ export class EditorMaterialRoom {
         const slide = this.getSlide(slideId)
         const block = JSON.parse(blockData);
 
-        if(!slide) return;
+        if (!slide) return;
 
         const existingBlock = slide.data.blocks.find(b => b.id === block.id);
 
-        if(!existingBlock) {
+        if (!existingBlock) {
             slide.data.blocks.push(block);
         } else {
             slide.data.blocks = slide.data.blocks.map(b => b.id === block.id ? block : b);
         }
     }
-
-    /**
-     * TODO:
-     *    - syncing different slides?
-     */
 }
 
 @UseGuards(WSOptionalAuthenticationGuard)
@@ -302,16 +302,16 @@ export class EditorMaterialRoom {
     allowEIO3: false,
     serveClient: false,
 })
-export class EventsGateway  {
+export class EventsGateway {
     @WebSocketServer()
     server: Server;
+    private editorRooms: EditorMaterialRoom[] = [];
+
     constructor(
         public readonly materialsService: MaterialsService,
         @Inject(forwardRef(() => MaterialsExportService)) public readonly materialsExportService: MaterialsExportService,
     ) {
     }
-
-    private editorRooms: EditorMaterialRoom[] = [];
 
     @SubscribeMessage('joinEditorMaterialRoom')
     public async handleJoinEditor(@MessageBody() materialId: string, @ConnectedSocket() client: Socket) {
@@ -350,7 +350,7 @@ export class EventsGateway  {
     public async handleChangeSlide(@MessageBody() {slideId}: { slideId: string }, @ConnectedSocket() client: Socket) {
         const editorRoom = client.data.editorRoom as EditorMaterialRoom | undefined;
 
-        if(!editorRoom) {
+        if (!editorRoom) {
             throw new WsException("You are not in the editor room");
         }
 
@@ -358,10 +358,12 @@ export class EventsGateway  {
     }
 
     @SubscribeMessage('changeSelectedBlocks')
-    public async handleChangeSelectedBlocks(@MessageBody() {selectedBlocks}: { selectedBlocks: string[] }, @ConnectedSocket() client: Socket) {
+    public async handleChangeSelectedBlocks(@MessageBody() {selectedBlocks}: {
+        selectedBlocks: string[]
+    }, @ConnectedSocket() client: Socket) {
         const editorRoom = client.data.editorRoom as EditorMaterialRoom | undefined;
 
-        if(!editorRoom) {
+        if (!editorRoom) {
             throw new WsException("You are not in the editor room");
         }
 
@@ -372,7 +374,7 @@ export class EventsGateway  {
     public async handleSynchronizeBlock(@MessageBody() {block}: { block: any }, @ConnectedSocket() client: Socket) {
         const editorRoom = client.data.editorRoom as EditorMaterialRoom | undefined;
 
-        if(!editorRoom) {
+        if (!editorRoom) {
             throw new WsException("You are not in the editor room");
         }
 
@@ -383,7 +385,7 @@ export class EventsGateway  {
     public async handleRemoveBlock(@MessageBody() {blockId}: { blockId: string }, @ConnectedSocket() client: Socket) {
         const editorRoom = client.data.editorRoom as EditorMaterialRoom | undefined;
 
-        if(!editorRoom) {
+        if (!editorRoom) {
             throw new WsException("You are not in the editor room");
         }
 
@@ -397,10 +399,11 @@ export class EventsGateway  {
         method: "AUTOMATIC" | "MANUAL" | "INTERACTIVITY";
         automaticTime: number;
         sizing: "FIT_TO_SCREEN" | "MOVEMENT";
-        visibility: "PUBLIC" | "PRIVATE" }, @ConnectedSocket() client: Socket) {
+        visibility: "PUBLIC" | "PRIVATE"
+    }, @ConnectedSocket() client: Socket) {
         const editorRoom = client.data.editorRoom as EditorMaterialRoom | undefined;
 
-        if(!editorRoom) {
+        if (!editorRoom) {
             throw new WsException("You are not in the editor room");
         }
 
@@ -416,7 +419,7 @@ export class EventsGateway  {
     }, @ConnectedSocket() client: Socket) {
         const editorRoom = client.data.editorRoom as EditorMaterialRoom | undefined;
 
-        if(!editorRoom) {
+        if (!editorRoom) {
             throw new WsException("You are not in the editor room");
         }
 
@@ -427,7 +430,7 @@ export class EventsGateway  {
     public async handleRemoveSlide(@MessageBody() {slideId}: { slideId: string }, @ConnectedSocket() client: Socket) {
         const editorRoom = client.data.editorRoom as EditorMaterialRoom | undefined;
 
-        if(!editorRoom) {
+        if (!editorRoom) {
             throw new WsException("You are not in the editor room");
         }
 
@@ -438,7 +441,7 @@ export class EventsGateway  {
     public async handleLeaveEditor(@ConnectedSocket() client: Socket) {
         const room = client.data.editorRoom as EditorMaterialRoom | undefined;
 
-        if(room) {
+        if (room) {
             room.removeListener(client);
             client.data.editorRoom = null;
         }

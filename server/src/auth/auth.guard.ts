@@ -1,8 +1,6 @@
-import {CanActivate, ExecutionContext, Injectable, mixin, Type, UnauthorizedException} from '@nestjs/common';
-import {Observable} from 'rxjs';
+import {CanActivate, ExecutionContext, Injectable, UnauthorizedException} from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 import {UsersService} from "../users/users.service";
-import {Expression} from "mongoose";
 import {ConfigService} from "@nestjs/config";
 import {WsException} from "@nestjs/websockets";
 
@@ -11,7 +9,8 @@ export class RequiresAuthenticationGuard implements CanActivate {
     constructor(
         readonly usersService: UsersService,
         readonly configService: ConfigService
-    ) { }
+    ) {
+    }
 
     public async canActivate(
         context: ExecutionContext,
@@ -31,13 +30,13 @@ export class RequiresAuthenticationGuard implements CanActivate {
         try {
             const decoded = jwt.verify(token, this.configService.get<string>("JWT_SECRET")!.toString()) as any;
 
-            if(!decoded) throw new UnauthorizedException('Invalid token');
+            if (!decoded) throw new UnauthorizedException('Invalid token');
 
-            if(!('id' in decoded)) throw new UnauthorizedException('Invalid token');
+            if (!('id' in decoded)) throw new UnauthorizedException('Invalid token');
 
             const user = await this.usersService.getById(decoded.id);
 
-            if(!user) throw new UnauthorizedException('Invalid token');
+            if (!user) throw new UnauthorizedException('Invalid token');
 
             request.user = user;
         } catch (e) {
@@ -51,7 +50,8 @@ export class RequiresAuthenticationGuard implements CanActivate {
 @Injectable()
 export class OptionalAuthenticationGuard implements CanActivate {
     constructor(readonly usersService: UsersService,
-                readonly configService: ConfigService) { }
+                readonly configService: ConfigService) {
+    }
 
     async canActivate(
         context: ExecutionContext,
@@ -93,7 +93,8 @@ export class OptionalAuthenticationGuard implements CanActivate {
 export class WSOptionalAuthenticationGuard implements CanActivate {
 
     constructor(readonly usersService: UsersService,
-                readonly configService: ConfigService) { }
+                readonly configService: ConfigService) {
+    }
 
     async canActivate(
         context: ExecutionContext,

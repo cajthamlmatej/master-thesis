@@ -3,7 +3,6 @@ import {PreferencesService} from "./preferences.service";
 import {RequestWithUser} from "../types";
 import {RequiresAuthenticationGuard} from "../auth/auth.guard";
 import {OnePreferencesSuccessDTO} from "../../dto/preferences/OnePreferencesSuccessDTO";
-import {UpdateMaterialDTO} from "../../dto/material/UpdateMaterialDTO";
 import {UpdatePreferencesDTO} from "../../dto/preferences/UpdatePreferencesDTO";
 
 @Controller('')
