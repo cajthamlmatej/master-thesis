@@ -1,5 +1,6 @@
 describe('Base - Cookies', () => {
     beforeEach(() => {
+        localStorage.clear();
         cy.visit('/');
     });
     it('Cookies should appear', () => {
