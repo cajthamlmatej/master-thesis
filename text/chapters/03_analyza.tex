@@ -384,14 +384,14 @@ V rámci vykreslování obsahu na webu jsou k dispozici různé HTML prvky, kter
 S pomocí CSS je možné tyto prvky skoro nelimitovaně~\cite{uzayr2022frontend} stylovat a pozicovat.
 
 Použití tohoto způsobu je velmi jednoduché, protože je to v podstatě tvoření webové stránky.
-Problém bývá s interaktivitou~\cite{uzayr2022frontend}, že i mimo tohle potřebuje s prvky pracovat a díky Document Object Model (DOM) je toto možné provést.
-Kvůli častým změnám a závislostem proměnných na šablonách, resp. konkrétních prvků je často nutné vytvořit tzv. virtuální DOM.
-Virtuální DOM tvoří a emuluje to, co dělá DOM, jen s tím, že program má nad celým vykreslováním, závislostmi celou kontrolu.
+% Problém bývá s interaktivitou~\cite{uzayr2022frontend}, že i mimo tohle potř s prvky pracovat a díky Document Object Model (DOM) je toto možné provést.
+Kvůli častým změnám a závislostem proměnných na šablonách, resp. konkrétních prvcích je často nutné vytvořit tzv. virtuální DOM.
+Virtuální DOM tvoří a emuluje to, co dělá DOM, jen s tím rozdílem, že program má nad celým vykreslováním, závislostmi celou kontrolu.
 Virtuální DOM je klíčovou věcí pro skoro všechny moderní frameworky~\cite{uzayr2022frontend} na webových stránkách, jako React, Vue a tisíce dalších.
 
 HTML, CSS, JS a (virtuální) DOM je poté možným způsobem, jak vykreslovat skoro jakýkoliv obsah na webové stránce a zároveň nad tím mít kompletní kontrolu.
 Problémem bývá omezenost box-modelu a způsob pozicování, což může v některých případech limitovat flexibilitu při vytváření složitějších layoutů nebo interaktivních prvků. Box-model vychází z pevně dané šířky, výšky, okrajů, paddingu a okrajů okna pro prohlížeč, což může být komplikováno v případě, kdy je potřeba pracovat s dynamickým a variabilním obsahem. 
-I když CSS nabízí pokročilé metody jako flexbox nebo grid, které značně zlepšují~\cite{uzayr2022frontend} flexibilitu layoutu, stále existují případy, kdy HTML prvky samy o sobě nestačí k dosažení požadovaného chování bez použití komplexního skriptování a dalších technologií.
+I když CSS nabízí pokročilé metody, jako flexbox nebo grid, které značně zlepšují~\cite{uzayr2022frontend} flexibilitu layoutu, stále existují případy, kdy HTML prvky samy o sobě nestačí k dosažení požadovaného chování bez použití komplexního skriptování a dalších technologií.
 Vykreslování je často pomalé s velkým počtem prvků díky (ne)optimalizacím prohlížečů.
 
 Tento způsob používá velmi mnoho služeb a knihoven, jako ukázku uvádím například zmíněnou knihovnu RevealJS (viz kapitola \ref{text:revealjs}).
@@ -402,7 +402,7 @@ Canvas je prvek z HTML~\cite{canvashtml5, uzayr2022frontend}, který je sémanti
 Do Canvas se vykresluje pomocí JS (případně jiné jazyky, viz kapitola \ref{text:webassembly}) a to dovoluje měnit jednotlivé pixely, překreslovat je a tvořit animace.
 Klasické módy Canvas jsou však omezené a často se aplikace rozhodnou používat nástavbovou knihovnu WebGL~\cite{canvashtml5}, která místo nekomplexního systému kreslení pixelů dovoluje komunikovat s GPU.
 Dovoluje totiž definovat shadery~\cite{canvashtml5} pro GPU a spoustu dalších nastavení pro renderování obrazu.
-Můžeme tedy tvořit velmi komplexní věci, optimalizovat to a webovou stránku ovládat jako jakýkoliv jiný obsah. 
+Můžeme tedy tvořit velmi komplexní věci, optimalizovat je a webovou stránku ovládat jako jakýkoliv jiný obsah. 
 
 Nevýhodou však může být složitost implementace~\cite{canvashtml5} a potřeba znalosti programování pro shadery.
 V podstatě není nic dalšího definováno a i obyčejný okraj je nutné složitě naprogramovat.
@@ -411,27 +411,27 @@ Navíc takto komplexní výpočty potřebují silnější zařízení, na který
 
 I když je canvas sémanticky popsán~\cite{canvashtml5}, veškerý vykreslený obsah nikoliv a je tedy velmi těžké sémanticky určit, co se vlastně vykresluje.
 
-Kvůli náročnosti tento způsob používá méně služeb, o zmíněných uvádím ukázku například Figma (viz kapitola~\ref{text:figma_popis}).
+Kvůli náročnosti tento způsob používá méně služeb. Ze zmíněných uvádím jako ukázku například program Figma (viz kapitola~\ref{text:figma_popis}).
 Jejich způsob vykreslování je velmi kvalitní a je vidět, že do aplikace investovali velmi mnoho zdrojů.
 Jejím cílem je ale být grafický nástroj a přesnost všeho je pro jejich uživatele důležitá.
 
 \subsection{SVG}
 
-Scalable Vector Graphics (SVG) slouží k definování vektorových prvky~\cite{svg_css_html}, které se mohou jednoduše vykreslovat na webové stránce.
+Scalable Vector Graphics (SVG) slouží k definování vektorových prvků~\cite{svg_css_html}, které se mohou jednoduše vykreslovat na webové stránce.
 To dovoluje jednoduše používat daný vytvořený \enquote{obrázek} v jakémkoliv rozlišení.
 Moderní SVG dovolují dovnitř jako prvek vkládat i rastrové obrázky a další cizí objekty~\cite{svg_css_html, uzayr2022frontend}, které se poté poměrně jednoduše vykreslují.
 
-Veškeré prvky by se tedy pro vykreslování obsahu mohly definovat v jednom velkém SVG (kde by každá stránka či slide bylo jedno SVG), které by v sobě mělo jednotlivé prvky.
+Veškeré prvky by se tedy pro vykreslování obsahu mohly definovat v jednom velkém SVG, kde by každá stránka či snímek byl jedno SVG, které by v sobě mělo jednotlivé prvky.
 
-Mezi nevýhody tohoto systému je zejména problém s vykreslováním, protože rasterizace vektorového obrazu je drahá operace~\cite{svg_css_html}, a to zejména ve webovém prostředí.
+Mezi nevýhody tohoto systému patří zejména problém s vykreslováním, protože rasterizace vektorového obrazu je drahá operace~\cite{svg_css_html}, a to zejména ve webovém prostředí.
 Další omezení je i v tom, co s danými prvky poté jde dělat, protože tento způsob limituje to, co můžeme na dané prvky nastavit jako odchytávače události a respektive vůbec jaké události můžeme vkládat.
 Hodně to ubírá na možné interaktivitě.
-Dále se uvádějí~\cite{svg_css_html} nevýhody mezi kompatibilitou mezi prohlížeči.
+Dále se uvádějí~\cite{svg_css_html} nevýhody kompatibilitou mezi prohlížeči.
 
 Mezi výhody patří velké možnosti filtrů a definic, jednoduchý možný export a jednoduché transformace.
 Tyto věci však umí i jiné varianty a nic navíc tento způsob nepřináší.
 
-Toto vykreslování používá ze zmíněných služeb například Google služby, resp. Google Slides (viz kapitola~\ref{text:figma_popis}).
+Toto vykreslování používají ze zmíněných služeb například Google služby, resp. Google Slides (viz kapitola~\ref{text:figma_popis}).
 
 \section{Komunitní rozšíření}\label{text:community_plugins}
 
@@ -449,7 +449,7 @@ Aktivací se spustí řada skriptů, se kterými poté samotná aplikace Google 
 Tyto skripty mohou definovat~\cite{google_apps} například:
 
 \begin{description}
-    \item[API] Komunikovat s API Google Slides, tedy např. přidávat a modifikovat obsah jednotlivých snímku, přidávat snímky a nebo poskytnout přídavné okna s dalším obsahem.
+    \item[API] Komunikovat s API Google Slides, tedy např. přidávat a modifikovat obsah jednotlivých snímků, přidávat snímky a nebo poskytnout přídavná okna s dalším obsahem.
     \item[Události] Zachytávat se na události a reagovat na ně skrz výše uvedené API.
     \item[Menu] Vytvořit speciální položky v navigaci, které budou dělat konkrétní změny.
 \end{description}
@@ -472,18 +472,18 @@ Jejich platforma na skripty -- Apps Script je stále stejná~\cite{google_apps_s
 
 \subsection{RevealJS}
 
-RevealJS rozšíření, díky tomu, že správcem prezentace je přímo její programátor, nemusí až tak řešit.
+Bezpečnost rozšíření v RevealJS se nemusí až tak řešit, protože je jejím správce již programátor.
 Rozšíření se tvoří tak, že je vytvořen JS soubor, který se importuje při inicializaci prezentace pomocí RevealJS.
 Tento kód si poté knihovna zaháčkuje jak je potřeba a plugin odpovídá na vše, co je potřeba.
 Často knihovny dělají věci okolo tím, že vkládají obsah na stránku mimo vědomí knihovny, upravují jednotlivé funkce uvnitř a podobně.
 
 Mezi ukázky pluginů patří například napojení knihovny \texttt{mermaidjs} pro vykreslování grafů, přiblížení při kliknutí nebo například načítání externího kódu ze souboru pro zobrazení v prezentaci.
 
-Tyto rozšíření často nemají žádný důvod zneužít důvěry instalace a pokusit se napadnout prezentaci.
+Tato rozšíření často nemají žádný důvod zneužít důvěry instalace a pokusit se napadnout prezentaci.
 Často totiž není ani co za data vzít, protože jsou stránky hostované v nějakém hostingu, ve kterém se uživatel nepřihlašuje a nemá v něm žádná data.
 To, co uživatel do prezentace nainstaluje, je zcela na něm.
 
-K RevealJS patří služba Slides.com, která je postavena na dané knihovně od stejných autorů~\cite{slidescom}.
+K RevealJS patří služba Slides.com~\cite{slidescom} (viz kapitola~\ref{text:revealjs}.
 Tyto stránky již dovolují stránky sdílet, mají editor a vzhledem k tomu, že se již na stránce přihlašuje, sbírají se informace, je nutné, aby stránky omezily možná bezpečnostní rizika.
 Proto platforma implementuje veškeré věci pomocí vlastních zabezpečených pluginů~\cite{slidescom} a jakékoliv věci ze třetích stran není možné používat.
 Platforma ale implementuje řadu věcí a prezentace jsou použitelné.
@@ -491,7 +491,7 @@ Platforma ale implementuje řadu věcí a prezentace jsou použitelné.
 \subsection{Figma}\label{text:figma}
 
 Figma je velmi populární nástroj (viz kapitola \ref{text:figma}, který taktéž implementoval komunitní rozšíření~\cite{figma_website}.
-Jejich přístup ke komunitnímu rozšíření je velmi veřejný a díky jejímu blogu~\cite{figma_plugins_blog} je vidět řadu důvodů kvůli zvážení každé možnosti.
+Přístup vývojářů ke komunitnímu rozšíření je velmi veřejný a díky jejich blogu~\cite{figma_plugins_blog} je vidět řadu důvodů ke zvážení každé možnosti.
 Figma svými tzv. pluginy zajišťuje rozšiřitelnost platformy, resp. zjednodušení používání aplikace.
 Mezi ukázky takových pluginů patří například různé možnosti vkládání ikon, šablon, ale i komplexní systémy na práci uvnitř editoru, jako hlasování v návrzích.
 
@@ -505,7 +505,7 @@ To taktéž velmi rychle využili díky zranitelnosti Realms a i když volání 
 Jediná velká nevýhoda Realms je právě to, že daný kód běží ve stejném okně jako zbytek stránky a třeba i jeho zpomalení (nezáměrné i záměrné) může způsobit zaseknutí celé stránky.
 Pro lepší bezpečnost je obecně počítat s tím, že se ze systému, kde je kód uzavřen, může kód dostat.
 
-Mimo další platforma pro každou možnost zvažovala~\cite{figma_plugins_blog, figma_website} řadu kritérií a specifikací. 
+Mimo jiné platforma pro každou možnost zvažovala~\cite{figma_plugins_blog, figma_website} řadu kritérií a specifikací. 
 Níže je takový seznam, který může pomoci rozhodnout mezi správným přístupem:
 
 \begin{itemize}
@@ -522,7 +522,7 @@ Níže je takový seznam, který může pomoci rozhodnout mezi správným přís
 Z kapitoly \ref{text:community_plugins} je očividné, že pro funkční a komplexní možnosti rozšíření jakékoliv aplikace je nutné vytvořit skriptovací platformu, která bude dovolovat spouštění nedůvěryhodného kódu.
 Nedůvěryhodný kód jsou komunitní pluginy, které budou dovolovat programátorům upravovat stav aplikace a reagovat na možné události.
 
-Ze stejné kapitoly vyšlo najevo, že čím více se toto spouštění omezuje, tím menší je využití dané platformy rozšíření.
+Ze stejné kapitoly vyšlo najevo, že čím více se toto spouštění omezuje, tím menší je využitelnost rozšíření vytvořených pro danou platformu.
 Cílem této kapitoly je analyzovat možné způsoby spouštění nedůvěryhodného kódu a jejich výhody a nevýhody.
 
 \subsection{Základní přístupy}
@@ -542,7 +542,7 @@ Alternativou k \texttt{eval} je využití \texttt{Realms}, což je mechanismus p
 \texttt{Realms} umožňují vytvořit izolovaný běhový kontext, kde spuštěný kód nemá přímý přístup k objektům a funkcím globálního kontextu hlavní aplikace~\cite{shadowrealms_propsal, shadowrealms}.
 Každý Realm obsahuje svou vlastní kopii globálního objektu a základních vestavěných knihoven, což ztěžuje únik kódu mimo sandbox.
 Přestože se jedná o bezpečnější variantu oproti \texttt{eval}, má \texttt{Realms} své omezení, například v podobě složitosti při komunikaci mezi hlavním a izolovaným kontextem. 
-Problém mají taktéž s tím, že kód běží na jednom vlákně společně se zbytkem stránky a tak zásek v tomto kódu způsobí zaseknutí celé webové stránky.
+Další problém s \texttt{Realms} je ten, že kód běží na jednom vlákně společně se zbytkem stránky a tak zásek v tomto kódu způsobí zaseknutí celé webové stránky.
 
 Způsob pomocí \texttt{Realms} původně zvažoval a implementoval program Figma~\cite{figma_plugins_blog}.
 V kapitole \ref{text:figma} je popsán postupný vývoj této platformy a to, jak se rozhodla z Realms, kvůli svým kritickým chybám, přejít na WebAssembly.
@@ -550,15 +550,15 @@ V kapitole \ref{text:figma} je popsán postupný vývoj této platformy a to, ja
 \subsection{Iframe}
 
 Iframe je sémantický tag v HTML, který je určen pro vkládání stránky do stránky.
-Iframe je velmi zabezpečený, protože pokud nejsou stránky ze stejné domény~\cite{iframe, figma_plugins_blog}, tak nemohou spolu komunikovat.
+Iframe je velmi zabezpečený, protože pokud nejsou stránky ze stejné domény~\cite{iframe, figma_plugins_blog}, tak spolu nemohou komunikovat.
 Vnější a ani vnitřní stránka tedy nemůže přečíst obsah a jakákoliv jiná data z druhé stránky.
 Jediná možná komunikace je pomocí tzv. messagingu, kde si mezi sebou mohou stránky vyměňovat jednoduché textové zprávy.
 
 Iframe má taktéž kvůli zabezpečení tzv. nulový (\texttt{null}) origin pro CORS~\cite{iframe, figma_plugins_blog}.
 To omezuje, resp. neguje, nastavení webových stránek pro ochranu uživatelů.
 Zabezpečení je celkově ale velmi stabilní a to díky častým updatům prohlížečů.
-Z iframe se v podstatě nedá utéct, ale samozřejmě existovaly funkční pokusy o prolomení, např. se jedná o~\cite{iframe_vuln}.
-Jedná se ale obecně o velmi stabilní ochranu, které můžeme věřit kvůli skvělé práci skoro všech prohlížečů.
+Z iframe se v podstatě nedá utéct, ale samozřejmě existovaly funkční pokusy o prolomení, např. se jedná o chybu s protokolem prohlížeče~\cite{iframe_vuln}.
+Obecně se považuje za velmi stabilní ochranu, které můžeme věřit díky skvělé práci skoro všech prohlížečů.
 
 Iframe se nejčastěji používá na omezení nedůvěryhodného HTML kódu~\cite{iframe}.
 Bez omezení by vložený kód z rozšíření mohl utéci z daného přiřazeného prvku a taktéž volat jakýkoliv kód jako stránka.
@@ -576,7 +576,7 @@ Existují specializované knihovny, jako například \texttt{vm2} nebo \texttt{i
 Tyto knihovny však nejsou univerzálně použitelné, zejména v prostředí webových prohlížečů, kde nejsou podporovány. 
 Tím pádem nelze tento přístup nasadit v případech, kdy má být kód spuštěn přímo v uživatelském prohlížeči.
 
-Navíc v minulosti existovaly zranitelnosti, které mohly umožnit obejití těchto omezení, což může vést ke kompromitaci aplikace.
+Navíc v minulosti existovaly takové zranitelnosti, které mohly umožnit obejití těchto omezení, což může vést ke kompromitaci aplikace.
 A to je na serveru velmi nežádoucí.
 Je proto nezbytné pravidelně aktualizovat používané knihovny a sledovat nové bezpečnostní postupy.
 
@@ -602,15 +602,15 @@ Toto prostředí je velmi omezené, protože běží v jiném prostředí než o
 Dané programy bez konkrétní implementace nemají k dispozici DOM a v podstatě cokoliv spojené s prohlížečem.
 WebAssembly je samozřejmě možné spouštět i mimo webový prohlížeč, např. na serveru či desktopu v běhových prostředích jako je Node.js či Deno~\cite{webassembly}.
 
-Tento pseudo-assembly kód se dá vygenerovat v podstatě z jakéhokoliv jazyku, oficiálně jsou podporované základní jazyky jako například C++, C\#, Rust~\cite{webassembly} a mnoho dalších.
+Tento pseudo-assembly kód se dá vygenerovat v podstatě z jakéhokoliv jazyka, oficiálně jsou podporované základní jazyky jako například C++, C\#, Rust~\cite{webassembly} a mnoho dalších.
 Spuštěný kód v prohlížeči či v běhovém prostředí může komunikovat s předem připravenými funkcemi~\cite{webassembly}, které mohou již prohlížeč, resp. webovou stránku, modifikovat.
-Spuštěný kód může v lineární paměti ukládat všelijaké data, ze kterých poté webová stránka může číst či i zapisovat data.
+Spuštěný kód může v lineární paměti ukládat všelijaká data, ze kterých poté webová stránka může číst či zapisovat data.
 Samotný kód totiž může pracovat jenom s číselnými hodnotami a často je nutné je konvertovat z interních do externích typů.
 
 Nevýhodou WebAssembly je poměrně malý výkon~\cite{webassembly, figma_plugins_blog} a poměrně špatné možnosti debugování.
 
 Pro skriptování je to vhodnou alternativou díky možnostem jazyků. 
-Na druhou stranu je to taktéž velký problém, protože udržovat dokumentaci a funkční několik jazyků je přinejmenším pro účely této práce skoro nemožné.
+Na druhou stranu je to taktéž velký problém, protože udržovat dokumentaci a funkčních několik jazyků je přinejmenším pro účely této práce skoro nemožné.
 
 Pokud bych se rozhodl používat tento způsob skriptování, musel bych se zaměřit pouze na jeden jazyk.
 Nejlogičtější varianta na skriptování přídavných rozšíření by byl nějaký jazyk, který je již určen na skriptování.
@@ -618,7 +618,7 @@ Na webu pro většinu vývojářů bude jasná volba JavaScript.
 Pro spojení mezi WebAssembly a JS zajišťuje např. knihovna QuickJS~\cite{quickjs}, AssemblyScript~\cite{assemblyscript} a další.
 
 Tyto knihovny zabalují nějakou formu běhového prostředí (nejčastější je emscripten~\cite{assemblyscript, quickjs, figma_plugins_blog}, který například používá systém rozšíření ve Figma~\cite{figma_plugins_blog}) přes kterou poté kód spouští.
-Tyto knihovny avšak nepotřebují řešit jen spouštění, ale je nutné taktéž řešit již zmíněné předávání (resp. konverze) dat~\cite{assemblyscript} mezi spuštěným programem, spouštěčem a programem v prohlížeči.
+Tyto knihovny však nepotřebují řešit jen spouštění, ale je nutné taktéž řešit již zmíněné předávání (resp. konverze) dat~\cite{assemblyscript} mezi spuštěným programem, spouštěčem a programem v prohlížeči.
 
 \section{Požadavky}
 
@@ -646,7 +646,7 @@ Funkční požadavky vymezují konkrétní funkcionality~\cite{uml_2007}, které
     
     \item[F6 -- Rozšíření]
     Systém musí podporovat komunitní rozšíření pro rozšíření funkcionality editoru a přehrávače.
-    Schválená rozšíření budou k dispozici přímo v aplikace pro instalaci kýmkoliv.
+    Schválená rozšíření budou k dispozici přímo v aplikaci pro instalaci kýmkoliv.
     
     \item[F7 -- Import/Export]
     Systém musí umožnit importování a exportování materiálů do a z různých formátů.
@@ -664,7 +664,7 @@ Nefunkční požadavky~\cite{uml_2007} neurčují přímo funkčnost aplikace, a
     Aplikace musí být schopna efektivně pracovat i s velkými materiály bez znatelného zpomalení.
     
     \item[N2 -- Webová aplikace]
-    Výsledek musí být alespoň webová aplikace, která bude napsána ve validním HTML, CSS a JS.
+    Výsledek musí být webová aplikace, která bude napsána ve validním HTML, CSS a JS.
     
     \item[N3 -- Bezpečnost]
     Uživatelé musí být chráněni proti neoprávněnému přístupu k jejich datům pomocí ověřovacích mechanismů.
@@ -769,7 +769,7 @@ Níže jsou definovány všechny případy užití, které mají být implemento
 
     
     \item[UC13 -- Tvorba komunitního rozšíření]
-    Uživatel může vytvářet vlastní komunitní rozšíření pro editor a přehrávač materiálů. Tyto rozšíření se píší ve skriptovacím jazyce a dovolují uživateli poslouchat různé akce, vytvářet bloky a upravovat je.
+    Uživatel může vytvářet vlastní komunitní rozšíření pro editor a přehrávač materiálů. Tato rozšíření se píší ve skriptovacím jazyce a dovolují uživateli poslouchat různé akce, vytvářet bloky a upravovat je.
     
     \item[UC14 -- Importování materiálu]
     Uživatel může importovat externí soubory nebo formáty pro vytvoření materiálu.
@@ -839,7 +839,7 @@ Pro lepší porozumění vztahům mezi jednotlivými prvky v aplikaci je nutné 
     Určuje režim, ve kterém je materiál zobrazen nebo přehráván.
     
     \item[Snímek] 
-    Každý materiál obsahuje snímky, které představují jednotlivé části obsahu. Entita obsahuje náhledový obrázek a pozici v rámci materiálu. Obsahuje taktéž data, které udávají nastavení snímku, např. velikost a šířku, a dále obsahuje bloky materiálu.
+    Každý materiál obsahuje snímky, které představují jednotlivé části obsahu. Entita obsahuje náhledový obrázek a pozici v rámci materiálu. Obsahuje taktéž data, která udávají nastavení snímku, např. velikost a šířku, a dále obsahuje bloky materiálu.
     
     \item[Blok] 
     Základní stavební prvek snímku. Obsahuje atributy jako typ, pozici, velikost, rotaci, přiřazenou skupinu, vrstvu, stav zamknutí a interaktivitu. Má další specifické vlastnosti v závislosti na konkrétním typu bloku. Například se může jednat o text, obrázek či komplexní blok pro zobrazení kódu.

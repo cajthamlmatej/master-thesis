@@ -20,7 +20,7 @@ Základním prvkem architektury je definování odpovědností jednotlivých č�
 Vzhledem k požadavku na webovou aplikaci byl zvolen model klient-server. 
 Tento model je široce využíván, jelikož umožňuje vývoj multiplatformních aplikací, které lze používat na různých zařízeních. 
 Klient může být vyvíjen nezávisle na serveru, přičemž je klíčové jasně definovat rozhraní pro vzájemnou komunikaci. 
-V této aplikaci bude ke komunikaci používat zabezpečený protokol HTTPS.
+V této aplikaci se bude ke komunikaci používat zabezpečený protokol HTTPS.
 
 Klientská část zpravidla představuje uživatelské prostředí běžící na zařízení uživatele a závisí na serveru. 
 Serverová část zpracovává požadavky, odpovídá na ně a komunikuje s databází, externími službami nebo zajišťuje odesílání e-mailových zpráv. 
@@ -41,7 +41,7 @@ Webová stránka je vhodná, protože to dovolí rychlejší přístup ke všem 
 Instalace taktéž není vhodná kvůli velkému počtu používání materiálů studenty, kterým by toto stahování mohlo přijít nevhodné.
 Později by šlo z aplikace vytvořit nativní aplikaci na desktop či telefony pomocí enkapsulace webové stránky.
 
-Tato část bude pomocí REST API komunikovat se serverovou částí za pomocí protokolu HTTP, ze které bude získávat veškerá potřebná data.
+Tato část bude pomocí REST API komunikovat se serverovou částí za pomoci protokolu HTTP, ze které bude získávat veškerá potřebná data.
 Restful API je ve zkratce takové API, které pracuje se zdroji jako takovými a dovoluje nad nimi volat klasické akce jako čtení, přidání, smazání a změnu (CRUD).
 Mimo jiné definuje další standardizované chování, které by toto API mělo mít.
 Tento způsob dovoluje tvořit tzv. \enquote{thick klienty}, které vysvětlím a zdůvodním později.
@@ -50,10 +50,10 @@ Klient tedy poběží ve webovém prohlížeči uživatele.
 Díky tomu tedy musí být klient definován a stylován za pomocí HTML a CSS.
 Kontrola samotné stránky musí být ve skriptovacím jazyce JavaScript.
 Pro bezpečnější a udržitelnější kód však v této aplikaci použiji typovanou nástavbu TypeScript, která se kompiluje do čistého JavaScriptu.
-Klient bude tvořen v myšlence \enquote{thick klienta}, tedy většinu funkcionalit by měl implementovat klient za pomocí dat a služeb, které dostane (má k dispozici) od serveru.
+Klient bude tvořen v myšlence \enquote{thick klienta}, tedy většinu funkcionalit by měl implementovat klient za pomoci dat a služeb, které dostane (má k dispozici) od serveru.
 Toto dovoluje odlehčit server náročnými požadavky (překreslením HTML na serveru při každé akci a podobně) a soustředit se pouze na to důležité.
 Klient taktéž bude moci být používán s menší závislostí na serveru a při správném nastavení například i dále dovolovat čtení, i když uživatel nebude připojen k internetové síti.
-Nevýhodou je zátěž a dostupné funkcionality na zařízení, ve kterém webová stránka poběží, ale to by na dnešních zařízeních neměl být žádný problém.
+Nevýhodou je zátěž a dostupné funkcionality na zařízení, na kterém webová stránka poběží, ale to by na dnešních zařízeních neměl být žádný problém.
 
 V kapitole \ref{text:vykreslovani} zmiňuji různé způsoby vykreslování obsahu na webových stránkách.
 I když je analýza směřována zejména na obsah, tak podobné myšlenky, zejména z kapitoly \ref{text:vykreslovani/html} lze aplikovat i na zbytek webových stránek.
@@ -66,35 +66,35 @@ Pro komplexní \enquote{thick klient} webovou aplikaci je nutné v moderním sv�
     \item Modularizaci kódu pro lepší přehlednost a údržbu.
     \item Optimalizaci výkonu při práci s DOM (například virtualizaci seznamů).
     \item Zajištění kompatibility s různými zařízeními a prohlížeči.
-    \item Možnost snadného rozšíření o další funkcionality pomocí dostupných knihoven a ekosystému.
+    \item Možnost snadného rozšíření o další funkcionality pomocí dostupných knihoven a ekosystémů.
     \item Automatizaci testování a zajištění stability kódu.
     % \item Podporu pro server-side rendering (SSR) nebo static site generation (SSG), pokud je to potřeba.
 \end{itemize}
 
-Jako webový framework pro klient použiji knihovnu Vue, která je známá\todo{zdroj} pro svoji jednoduchost, stabilitu a komunitou.
+Jako webový framework pro klient použiji knihovnu Vue, která je známá\todo{zdroj} pro svoji jednoduchost, stabilitu a komunitu.
 Dobrou alternativou by byl například React, avšak s ním nemám tak velké zkušenosti a z výběru z těchto dvou nedostanu žádné benefity na více.
 Vue podporuje programování za pomocí TypeScript.
 
 \subsubsection{Vrstvy a zodpovědnosti}
 
-Klientská (a i serverová) část bude dále rozdělena na další části (tzv. vrstvy –- layers) pro zjednodušení celého systému zodpovědností v aplikaci.
+Klientská (a i serverová) část bude dále rozdělena na další části (tzv. vrstvy) pro zjednodušení celého systému zodpovědností v aplikaci.
 To povede k přehlednějšímu kódu a jednodušším změnám v celé aplikaci.
 V realizované aplikaci budou vrstvy pak dále děleny a bude vytvořena další abstrakce.
 Níže jsou naplánované veškeré vrstvy pro klientskou část.
 
 \begin{description}
-    \item[Komponenty] Které zajišťuji unifikované chování pro často opakující se prvky na stránce tak, aby jejich tvorba byla co nejrychlejší a dovolovala přehlednější kód. Komunikují se stránkami pomocí dvoucestných vazeb či událostí.
+    \item[Komponenty] Které zajišťují unifikované chování pro často opakující se prvky na stránce tak, aby jejich tvorba byla co nejrychlejší a dovolovala přehlednější kód. Komunikují se stránkami pomocí dvoucestných vazeb či událostí.
     \item[Stránky] Které seskupují komponenty a vlastní funkcionality do jednotlivých stránek aplikace. Předávají komponentám data a určují jim, jak se mají chovat či zobrazovat.
-    \item[Perzistence] Které jsou často nazývané ve webovém inženýrství jako obchody (stores), které globálně ukládají data pro celou aplikace, aby bylo jedno místo (či místa), kde je lze najít. Slouží k tomu, aby se o data nežádalo více, než je nutné (caching). Mohou dovolovat ukládat data zcela perzistentně i mezi načtením stránky pro rychlejší prvotní načtení. Komunikují se serverem pomocí další vrstvy.
+    \item[Perzistence] Které jsou často nazývané ve webovém inženýrství jako obchody (stores), které globálně ukládají data pro celou aplikaci, aby bylo jedno místo (či místa), kde je lze najít. Slouží k tomu, aby se o data nežádalo více, než je nutné (caching). Mohou dovolovat ukládat data zcela perzistentně i mezi načtením stránky pro rychlejší prvotní načtení. Komunikují se serverem pomocí další vrstvy.
     \item[Komunikace] Což zajišťuje komunikaci se serverem pomocí Restful API serveru. Určují a kontrolují jaká data od serveru přijdou, určují lokální rozhraní pro CRUD operace s danými zdroji a mapují je na lokální objekty.
 \end{description}
 
 \subsubsection{Editor a přehrávač}
 
 Nejklíčovější částí klienta je editor a přehrávač materiálů, které budou uživatelé tvořit.
-Editor i přehrávač jsou příliš komplexní a vzhledem k cíli práce vytvořit jednoduše rozšiřitelnou aplikaci (a to i díky komunitnímu rozšíření) a proto není vhodné pro tyto části webové aplikace použít zmíněný framework.
+Editor i přehrávač jsou příliš komplexní a vzhledem k cíli práce vytvořit jednoduše rozšiřitelnou aplikaci (a to i díky komunitnímu rozšíření) proto není vhodné pro tyto části webové aplikace použít zmíněný framework.
 Rozšiřování frameworku by bylo velmi zvláštní a nebylo by to příliš intuitivní.
-Hlavním problémem je však ztracení jakékoliv kontroly, jak a kdy se vykresluje daný obsah, co framework spravuje.
+Hlavním problémem je však ztracení jakékoliv kontroly, jak a kdy se vykresluje daný obsah, který framework spravuje.
 Z tohoto důvodu musí být takto komplexní komponenta, tedy editor a přehrávač, manuálně spravována.
 Naštěstí framework Vue dovoluje označit část kódu jako spravovanou někým jiným a tento prvek nebude překreslovat, pokud se nezmění jeho závislost (tedy pokud mu to kód neoznámí). 
 Takovéto fundamentální rozdělení taktéž dovolí, že editor se může velmi jednoduše přidat i do jiných projektů či komponent.
@@ -103,12 +103,12 @@ V pozdější kapitole \ref{text:navrh/editor_player} rozepíši, jak hodlám ř
 
 \subsection{Server}\label{text:navrh/server}
 
-Cílem serverové části je poskytovat data klientské části a to kvůli \enquote{thick klienta}. 
-Tyto data bude server získávat z dalších služeb a zejména z databáze, ve které budou data perzistentně uložena.
-O databázi budu rozepisovat v kapitole \ref{text:navrh/databaze}.
+Cílem serverové části je poskytovat data klientské části a to kvůli \enquote{thick klientu}. 
+Tato data bude server získávat z dalších služeb a zejména z databáze, ve které budou data perzistentně uložena.
+O databázi se budu dále rozepisovat v kapitole \ref{text:navrh/databaze}.
 Mezi další služby bude patřit e-mailový server či různá další externí API třetích služeb (například na získávání obrázků a tak dále).
 
-Poskytované API, což jsem zmínil v kapitole \ref{text:navrh/klient}, bude Restful a tedy bude pracovat jako se zdroji. 
+Poskytované API, což jsem zmínil v kapitole \ref{text:navrh/klient}, bude Restful a tedy bude dovolovat práci se zdroji. 
 Alternativní způsob designu API je například Simple Object Access Protocol (SOAP), který dovoluje volání akcí na serveru.
 Standard REST API, jakožto moderní způsob komunikace, ukládá za povinnost takové věci API, které se slučují s navrhovanou aplikací.
 SOAP by byl v tomto případě nevhodný a to zejména z důvodu, že server v tomto případě zejména slouží jakožto služba, která ukládá data.
@@ -123,7 +123,7 @@ Mělo by být možné velmi jednoduše změnit například na formát Extensible
 
 Serverová a klientská část by měly spolu sdílet rozhraní definující vstupní a výstupní data aplikace.
 Těmto objektům se říká Data Transfer Object (DTO).
-Tyto objekty dovolují jednoduše typovat data, které vstupují a vystupují do a respektive z REST API.
+Tyto objekty dovolují jednoduše typovat data, která vstupují a vystupují z REST API.
 
 Některé endpointy a zdroje API musí být zabezpečené pomocí autorizace a autentizace. 
 O zabezpečení budu mluvit v pozdější kapitole \ref{text:navrh/auth}.
@@ -148,11 +148,11 @@ Mezi nejvíce\todo{citace} oblíbené patří však NestJS a to zejména díky s
 NestJS řeší vše dříve uvedené a mnoho dalšího.
 Dovoluje rapidně tvořit udržitelné webové servery s HTTP API a podporuje řadu způsobů a knihoven návrhu.
 Jedná se např. o passport, Mongo, Prisma, fronty úkolů, volání úloh, CORS, verzování API a mnoho dalšího.
-Proto jsem se rozhodl NestJS s pomocí Express použít a to za pomoci TypeScriptu.
+Proto jsem se rozhodl NestJS s Express použít a to za pomoci TypeScriptu.
 
 Server nejspíše bude používat i řadu dalších knihoven, například na odesílání e-mailů, jejich formátování a například na generování přihlašovacích tokenů pomocí JWT (viz kapitola \ref{text:navrh/auth}).
 
-Výsledné API, které vznikne z této aplikace pokusí dodržovat vše, co uvádí standard REST.
+Výsledné API, které vznikne z této aplikace se pokusí dodržovat vše, co uvádí standard REST.
 To souvisí i s návrhem jednotlivých koncových bodů, které budou řádně uvádět stavové kódy, dodržovat metody komunikace a řadu dalšího.
 
 \subsubsection{Vrstvy a zodpovědnosti}
@@ -181,9 +181,9 @@ Tyto dvě databáze poskytují základní spektrum pro databáze a to jsou~\cite
 Aplikace jako celý cíl má stanovené to, že má být v budoucnu rozšiřitelná.
 Je možné si představit, že tato aplikace bude v budoucnu ukládat velmi mnoho dat a bude potřeba, aby databázový stroj podporoval horizontální i vertikální škálování.
 Podobně data, která budou v databázi uložena, nemají jasně stanovenou strukturu a obecně se bude jednat o velmi komplexní objekty.
-V této aplikaci je lepší ztratit konzistenci dat, které např. MongoDB negarantuje (resp. je v módu \enquote{někdy bude konzistentní}~\cite{irena2015big}), důležitá je dostupnost a odolnost k přerušení.
-I když budou na sebe data ukazovat (viz datový model v kapitole \ref{text:analyza/datovymodel}), jsou tyto propojení velmi triviální a spíše je vhodné dokumenty do sebe vnořovat.
-Proto nevidím důvod na použití relační databáze a to i díky struktuře dat.
+V této aplikaci je lepší ztratit konzistenci dat, která např. MongoDB negarantuje (resp. je v módu \enquote{někdy bude konzistentní}~\cite{irena2015big}), důležitá je dostupnost a odolnost k přerušení.
+I když budou na sebe data ukazovat (viz datový model v kapitole \ref{text:analyza/datovymodel}), jsou tato propojení velmi triviální a spíše je vhodné dokumenty do sebe vnořovat.
+Proto nevidím důvod na použití relační databáze a to i kvůli struktuře dat.
 
 Alternativou s podobnými vlastnostmi~\cite{irena2015big} jako MongoDB je CouchDB a Firebase Firestore. 
 CouchDB je dokumentová databáze, která využívá JSON pro ukládání dat, podporuje replikaci a je navržena pro distribuované systémy. 
@@ -196,7 +196,7 @@ Díky výběru knihovny Nest (viz kapitola \ref{text:navrh/server}) je vhodné p
 V základním rozpoložení umí Nest pracovat mimo jiné s drivery (resp. ODM/ORM) Mongoose a Prisma~\cite{nest_database}.
 S Mongoose mám velmi velké zkušenosti a používám ho i v projektech mimo Nest.
 Prisma je na druhou stranu velmi populární nejen pro MongoDB, ale i pro ostatní databázové stroje.
-Prisma má avšak velké problémy s MongoDB -- například se jedná o pomalejší dotazování\footnote{např. issue: \url{https://github.com/prisma/prisma/issues/16916}} či často je nutné velmi složitě nastavovat server~\cite{prisma_2025}.
+Prisma má však velké problémy s MongoDB -- například se jedná o pomalejší dotazování\footnote{např. issue: \url{https://github.com/prisma/prisma/issues/16916}} či často je nutné velmi složitě nastavovat server~\cite{prisma_2025}.
 Definice entit a jejich závislostí je taktéž velmi omezená.
 Proto jsem se rozhodl použít s MongoDB právě knihovnu ODM mongoose.
 
@@ -225,7 +225,7 @@ Každá entita obsahuje validaci, která definuje platné hodnoty, povinné atri
 
 \section{Designový systém}
 
-Uživatelské prostředí je klíčovou součástí každé aplikace, protože určuje, jak snadno a příjemně se s ní uživatelé budou schopni orientovat a pracovat. 
+Uživatelské prostředí je klíčovou součástí každé aplikace, protože určuje, jak snadno a příjemně se v ní uživatelé budou schopni orientovat a pracovat. 
 Je to nejen vizuální aspekt, ale i celková interakce mezi uživatelem a aplikací. Kvalitně navržené uživatelské prostředí může zlepšit uživatelský zážitek a zvýšit efektivitu používání aplikace.
 
 Při návrhu aplikace je dobré si dopředu rozhodnout, jak bude uživatelské prostředí vypadat, aby uživatelský zážitek z celé aplikace byl co nejlepší. 
@@ -241,7 +241,7 @@ Dále se používají například Apple Human Interface Guidelines, které jsou 
 CSS frameworky jsou v podstatě knihovny předpřipravených stylů a komponent, které usnadňují tvorbu konzistentního designu. 
 Mezi známé CSS frameworky patří Bootstrap, který je jedním z nejpopulárnějších frameworků díky své jednoduchosti a široké komunitě, Tailwind CSS, který umožňuje větší flexibilitu při stylingu, nebo Bulma, který je založen na flexboxu a poskytuje moderní a elegantní vzhled.
 
-Designové systémy a CSS frameworky jsou velmi dobrým nástrojem, který usnadní zejména vývojářům čas s vymýšlením prvků a designu, ale i zejména s funkcionalitou jednotlivých komponent. 
+Designové systémy a CSS frameworky jsou velmi dobrým nástrojem, který ušetří zejména vývojářům čas s vymýšlením prvků a designu, ale i zejména s funkcionalitou jednotlivých komponent. 
 Problémem bývá ale to, že upravovat design těchto komponent a celkovou interakci mezi nimi je skoro nemožné. 
 Proto často dovolují pouze změnit základní styly a třeba barvy jednotlivých stavů. 
 Stránky, které používají stejné designové systémy, často vypadají identicky, a například v případě Google (při dodržení všeho uvedeného) si spousta uživatelů může myslet, že daná aplikace je přímo od nich. 
@@ -261,10 +261,10 @@ Proto jsem se rozhodl nepoužívat žádný předpřipravený designový systém
 Designový systém budu zakládat na komponentách a jejich interakcích.
 Jednotlivým komponentám, ale i celé stránce, budu implementovat design.
 
-Ve své bakalářské práci~\cite{cajthaml_bp} ale i v jiných projektech jsem implementoval řadu designových systémů.
+Ve své bakalářské práci~\cite{cajthaml_bp}, ale i v jiných projektech, jsem implementoval řadu designových systémů.
 Dle mého názoru je důležité si rozhodnout zejména o typech komponent, které se budou využívat.
 
-Níže jsou uvedeny komponenty a jejich krátký popis, které bude zajisté nutné ve výsledné práci používat.
+Níže jsou uvedeny komponenty, které bude zajisté nutné ve výsledné práci používat, a jejich krátký popis.
 Celým seznamem se inspiruji zejména z již existujících projektů.
 Plánuji taktéž použít část kódu z již vytvořených komponent, které jsem vytvořil.
 Nějaké i z bakalářské práce, kterou jsem dále upravoval dle potřeb evoluce daného studijního informačního portálu. 
@@ -296,7 +296,7 @@ Funkčnost budu tvořit za pomocí interaktivního frameworku Vue.
 
 Pro jednoduché grafické úpravy barev, odsazení a celkovou konzistenci skrz celou aplikaci je nutné implementovat tyto hodnoty jako proměnné.
 Je možné je definovat jako nativní CSS proměnné či v nějakém CSS preprocesoru, jako je například Syntactically awesome style sheets (Sass).
-Obě možnosti by byly dobrým rozhodnutím pro budoucnost projektu a ze dřívějších zkušeností avšak musím pro proměnné použít nativní CSS proměnné.
+Obě možnosti by byly dobrým rozhodnutím pro budoucnost projektu a ze dřívějších zkušeností však musím pro proměnné použít nativní CSS proměnné.
 Ty jednodušeji dovolují měnit hodnoty za běhu a zároveň i dědičnost mezi prvky, což vytvoří systém, který reaguje na požadavky aplikace.
 To taktéž dovolí vytvořit systém motivů, který bude měnit jednotlivé barvy v proměnných do předpřipravených stylů, které bude moci uživatel vybírat.
 
@@ -357,12 +357,12 @@ Základní typy bloků mimo jiné zahrnují:
 \begin{description}
     \item[Textové bloky] Které dovolují formátování textu, což zahrnuje velikosti, barvy, fonty a další.
     \item[Obrazové a multimediální bloky] Dovolují vkládání a manipulaci s obrázky, videi a dalším interaktivním obsahem
-    \item[Tvarové bloky] Který umožňuje vložit předefinované tvary a jejich modifikaci.
-    \item[HTML blok] Umožňuje skoro neomezeně rozšiřovat funkcionality prezentace pomocí psaní si vlastního HTML kódu, který se bezpečné vykreslí pomocí tagu iframe.
+    \item[Tvarové bloky] Které umožňují vložit předdefinované tvary a jejich modifikaci.
+    \item[HTML blok] Umožňuje skoro neomezeně rozšiřovat funkcionality prezentace pomocí psaní si vlastního HTML kódu, který se bezpečně vykreslí pomocí tagu iframe.
 \end{description}
 
 Bloky mohou být mezi sebou uspořádávány, transformovány a jejich vlastnosti lze dynamicky měnit. 
-Každý blok může obsahovat specifické vlastnosti, která ovlivňují jeho chování a vizuální reprezentaci.
+Každý blok může obsahovat specifické vlastnosti, které ovlivňují jeho chování a vizuální reprezentaci.
 Mezi základní vlastnosti patří pozice, velikost, průhlednost, otočení a řada dalších.
 Dále je možné blokům nastavit různé stavy, které mohou sloužit jako vodítka pro editor při jejich správě, jako je například zamezení transformace a podobně.
 To se hodí, pokud bloky mají existovat pouze v nějakém určitém místě.
@@ -377,7 +377,7 @@ Hlavní funkce editoru zahrnují:
     \item[Práce s plátnem] Což dovoluje nastavovat velikost plátna, se kterým bude uživatel pracovat, dovoluje přibližovat a hýbat s ním.
     \item[Práce s bloky] Dovoluje již zmíněné transformace, změny vlastností, interakce a dalšího.
     \item[Správa pluginů] Která dovolí upravovat nainstalované a aktivní pluginy, jejich aktualizace a používání. Každý plugin v editoru bude mít své připravené místo na jeho ovládání, viz kapitola \ref{text:navrh/plugins}.
-    \item[Vkládání obsahu] Umožňuje vkládat obsah z veřejných knihoven (fotobanky a další) ale taktéž z uživatelský zdrojů, do kterých si uživatel může nahrát vlastní obsah.
+    \item[Vkládání obsahu] Umožňuje vkládat obsah z veřejných knihoven (fotobanky a další), ale taktéž z uživatelských zdrojů, do kterých si uživatel může nahrát vlastní obsah.
     \item[Nastavení] Dovolí nastavit viditelnost materiálů, způsob jeho průchodu a další.
     \item[Export] Dovolí uložit si kopie materiálu v různých formátech.
 \end{description}
@@ -403,17 +403,18 @@ Přehrávač je navržen tak, aby zajistil plynulou prezentaci obsahu a umožnil
 \subsection{Interakce v systému}
 
 Interaktivita je klíčovou vlastností platformy.
-Každý blok může obsahovat několik interaktivních nastavení, které reagují na různé akce. 
+Každý blok může obsahovat několik interaktivních nastavení, která reagují na různé akce. 
 
 Mezi podporované interakce patří například časovače (po nějaké době, opakovaně) a různé uživatelské akce (kliknutí, najetí kurzoru) a mnoho dalšího. 
 
-Po dané akci může interakce způsobit mnoho dalších akci, například se jedná o:
+Po dané akci může interakce způsobit mnoho dalších akcí, například se jedná o:
 
 \begin{itemize}
     \item Upravit vlastnosti sebe i cizích bloků.
     \item Změnit snímek.
     \item Resetování bloku či jeho vlastnosti.
     \item Změnu hodnoty proměnné. 
+    \item Přesměrovat stránku na jinou URL.
 \end{itemize}
 
 Interakce se mohou spustit za nastavených určitých podmínek, jako je například čas na snímku, hodnoty proměnné a další.
@@ -421,7 +422,6 @@ Interakce se mohou spustit za nastavených určitých podmínek, jako je napří
 Interakce jsou plně přizpůsobitelné a uživatelé mohou nastavit parametry, které určují jejich chování.
 Lze taktéž nastavit animaci mezi jednotlivými stavy interakce.
 
-\subsection{Kódový návrh}\todo{todo}
 
 % - blok
 %     - nejmensi jednotka v materialu
@@ -466,6 +466,56 @@ Lze taktéž nastavit animaci mezi jednotlivými stavy interakce.
 %     - omezeni a nastaveni vsech hodnot, napriklad kdy se tato interakce muze vubec spustit
 %     - animace pomoci interpolace hodnot
 
+\subsection{Kódový návrh}
+
+Návrh tříd editoru a přehrávače tvoří základ celého systému. 
+Promyšlená struktura těchto komponent je klíčová pro budoucí rozšiřování a udržovatelnost projektu.
+Obrázek \ref{fig:kodovyNavrhEditoruAPrehravace} ukazuje navržené jádro systému v hiearchii tříd.
+
+Centrálním bodem architektury je třída \texttt{Editor}, která spravuje bloky typu \texttt{EditorBlock}. 
+Tyto bloky pak mají jejich pozici, velikost a další vlastnosti jako neprůhlednost, uzamčení nebo například rotaci. 
+Uživatel může s jednotlivými bloky manipulovat, přičemž každá změna je reflektována pomocí metod jako \texttt{move}, \texttt{rotate} nebo \texttt{resize}.
+Kromě samotných bloků třída uchovává i informace o preferencích uživatele a selekci bloků prostřednictvím objektu \texttt{EditorSelector}.
+
+Přehrávač (\texttt{Player}) má podobnou strukturu jako editor, ale využívá objekty typu \texttt{PlayerBlock}. 
+Ty jsou zjednodušené a zaměřují se na vizualizaci a zpracování interaktivity. 
+Zatímco editor slouží ke konfiguraci a návrhu, přehrávač reprezentuje výsledné zobrazení.
+Bloky v editoru a v přehrávači mohou mít kompletně jiné funkcionality.
+
+Důležitou součástí návrhu je třída \texttt{BlockRegistry}, která funguje jako registr všech dostupných bloků. 
+Obsahuje záznamy (\texttt{BlockRegistryEntry}), jež propojují název bloku s jeho editační a přehrávací reprezentací a zároveň s deserializační logikou. 
+Tato struktura umožňuje přehledně spravovat různé typy bloků bez závislosti na jejich konkrétní implementaci.
+
+Serializace je řešena přímo v jednotlivých blocích.
+Každý blok se umí převést do strukturovaného formátu, ve výsledné aplikaci se bude nejspíše jednat o JSON.
+Opačný proces -- převod dat zpět do konkrétních instancí editorových či přehrávacích bloků -- zajišťuje třída \texttt{BlockDeserializer}, která je součástí každého záznamu registru.
+
+Pro práci s více funkcemi v editoru je navržena třída \texttt{EditorSelector}. 
+Toto je jedna z ukázkových tříd, které slouží na ukázání toho, že editor či přehrávač jsou tak velké komponenty, že je nutné je zmenšovat do samostatných modulů.
+Mezi další moduly se bude řadit například schránka (clipboard) nebo kontextové menu. 
+
+Je pravděpodobné, že výsledná implementace ještě zpřesní vztahy mezi jednotlivými třídami.
+Například závislosti mezi \texttt{BlockRegistry}, \texttt{Editor} a \texttt{Player} mohou být v realizaci více oddělené nebo řešené přes kompozici.
+
+TODO pluginy a diagram\todo{Chybí klíčové třídy, chybí typy, zkompaktnit, PLUGINY}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=1\textwidth]{media/04_navrh/kodovyNavrh.pdf}
+    \caption{Kódový návrh editoru, přehrávače a připojených tříd}
+    \label{fig:kodovyNavrhEditoruAPrehravace}
+\end{figure}
+
+% - promyslet to, jak budou vypadat třídy editoru je dle mého zásadní pro rozšiřitelný projekt.
+% - dle diagramu \ref{fig:kodovyNavrhEditoruAPrehravace}
+% - v diagramu chybi dědičnost a ukázkové bloky, nejspise bude vyresena lepe zavislost jednotlivych trid
+% - navrhnul jsem klicove tridy, zejmena editor, player, a system serializace
+% - serializace: kazdy blok se umi serializovat do nejakeho formatu, nejspise JSON
+% - existuje blockregistry, ktery obsahuje playerblock, editorblock a deserializer, ktery umi z dat serializovanych udelat player či editor blok konkretni instance
+% - editor selector predstavuje "modifikaci editoru", kterych bude nejspise vice (aktualne navrzen napriklad clipboard ci kontextove menu), ktere slouzi k rozdeleni komplexnich featur do mensich oddelenych instanci
+% - 
+
+
 \section{Návrh komunitního rozšíření}\label{text:navrh/plugins}
 
 Navrhovaná platforma bude podporovat komunitní rozšíření, což umožní uživatelům přizpůsobit si prostředí dle vlastních potřeb a vytvářet nové funkce nad základním jádrem aplikace.
@@ -477,13 +527,13 @@ Tento jazyk byl vybrán pro svou jednoduchost, širokou adopci a kompatibilitu s
 Skripty budou spouštěny pomocí knihovny QuickJS, která umožňuje běh JavaScriptu na straně klienta s minimalizovanými bezpečnostními riziky díky využítí WebAssembly.
 Aby byla zajištěna integrace s editorem a přehrávačem platformy, bude vytvořeno API, které umožní pluginům komunikaci s těmito komponentami. 
 Přímá abstrakce nad API nebude implementována, vzhledem k tomu, že zmenšení bezpečnosti QuickJS není pravděpodobné.
-Pokud by se stala knihovna QuickJS nebezpečnou tak, že by z ni mohli jednotlivé rozšíření uniknout, budou pravděpodobně nefunkční všechna další jiná řešení.
+Pokud by se stala knihovna QuickJS nebezpečnou tak, že by z ní mohla jednotlivá rozšíření uniknout, budou pravděpodobně nefunkční všechna další jiná řešení.
 
 Každý plugin bude sestávat z několika klíčových částí. 
 Základem je manifest, který bude obsahovat základní informace o pluginu, jeho verzi a další nastavení. 
 Další částí je samotný kód pluginu, který bude realizovat požadovanou funkcionalitu v přehrávači. 
 Třetí část tvoří kód pro editaci v rámci editoru. 
-V databázi platformy bude navíc uchovávána metadata, jako je název pluginu, jeho popis, informace o autorovi a jeho verze.
+V databázi platformy budou navíc uchovávána metadata, jako je název pluginu, jeho popis, informace o autorovi a jeho verze.
 
 Systém verzování bude umožňovat udržení kompatibility s předchozími verzemi platformy. 
 Nové verze pluginů budou vyžadovat aktualizovaný manifest, přičemž starší verze pluginů budou nadále funkční pro existující instalace. 
@@ -492,7 +542,7 @@ V rámci jedné instalace nebude možné mít aktivní více verzí jednoho plug
 
 Pro rozšíření funkcionality editoru i přehrávače bude možné registrovat API pro různé bloky a celý editor či plugin.
 Editor bude umožňovat modifikaci velikosti, vytváření a úpravy jednotlivých bloků, zatímco přehrávač nabídne možnosti manipulace s přehrávaným obsahem, včetně navigace mezi snímky.
-Mezi další API budou různé debugovací nástroje, posílání požadavků či třeba systém cache pro ukládání dočasných dat.
+Mezi dalšími API budou různé debugovací nástroje, posílání požadavků či třeba systém cache pro ukládání dočasných dat.
 Dále bude pro rozšíření možné registrovat panely přímo do uživatelského rozhraní, což umožní hlubší integraci pluginů.
 Panely budou implementovány s využitím iframe technologie, která zajistí izolaci kódu a zvýší bezpečnost systému.
 
@@ -501,19 +551,19 @@ To dovoluje si ukládat speciální data a vytvořit řadu dalších funkcionali
 Tyto bloky budou v podstatě již zmíněné HTML bloky, jen budou dovolovat ukládaní dalších dat, registraci vlastních vlastností a další věci.
 
 Rozšíření budou moci oběma směry komunikovat jak s pluginy, tak i s jednotlivými bloky.
-To dovolí řadu budoucích rozšíření, kdy například kliknutí v panelu vytvoří blok, který se může informovat plugin o tom, že se něco děje.
+To dovolí řadu budoucích rozšíření, kdy například kliknutí v panelu vytvoří blok, který může informovat plugin o tom, že se něco děje.
 
 Bezpečnostní aspekty budou klíčovým prvkem návrhu.
 Správné používání QuickJS je zásadní pro minimalizaci rizik spojených se spuštěním nedůvěryhodného kódu.
 Komunikace mezi pluginy a hlavní aplikací bude co nejjednodušší, přičemž veškerá data budou podrobena validaci v každém použití.
 Logování chyb a aktivit pluginů umožní lepší sledování a detekci potenciálních problémů.
 Omezena bude také funkcionalita pluginů z hlediska síťové komunikace, zejména co se týče možnosti provádět HTTP požadavky (pomocí funkce \texttt{fetch}), čímž se zamezí neoprávněné komunikaci se servery třetích stran.
-Uživatelé budou o speciálních povolení pluginů obeznámeni před instalací.
+Uživatelé budou o speciálních povoleních pluginů obeznámeni před instalací.
 
 Pro podporu komunitního rozšíření bude nutné zajistit i dokumentaci a nástroje, které usnadní vývoj pluginů. 
 Dokumentace bude pokrývat jak základy tvorby pluginů, tak možnosti rozšíření kódu samotné platformy. 
 Důraz bude kladen na snadnost implementace a přístupnost pro širší komunitu vývojářů.
-Nejvíce klíčové bude, aby pluginy měli jasně vytvořený systém typování, které dovolí kontrolu pluginu před během a pomocí IDE dovolí uživatelům prozkoumávat celé API.
+Nejvíce klíčové bude, aby pluginy měly jasně vytvořený systém typování, který dovolí kontrolu pluginu před během a pomocí IDE dovolí uživatelům prozkoumávat celé API.
 
 % - základní analýza dle kapitoly \ref{text:community_plugins}
 %     - jazykem bude JS, vzhledem k jednoduchosti a typingu
@@ -566,7 +616,7 @@ V rámci této práce se autentizace soustředí na dvě základní metody přih
 Po úspěšné autentizaci se vygeneruje JWT (JSON Web Token), který slouží k ověřování uživatele během jeho aktivity v systému.
 
 JWT token je podepsán na určitou dobu a obsahuje základní informace o uživateli, například jeho identifikátor a základní údaje pro rychlé vykreslení. 
-Tento token se následně posílá v hlavičce požadavků \texttt{Authorization} pod typem \texttt{Bearer}, čímž je umožněno bezpečné ověřování uživatele při komunikaci s serverovou částí systému.
+Tento token se následně posílá v hlavičce požadavků \texttt{Authorization} pod typem \texttt{Bearer}, čímž je umožněno bezpečné ověřování uživatele při komunikaci se serverovou částí systému.
 
 Uživatel si tento token ukládá lokálně, a to buď v cookies nebo v local storage prohlížeče, což mu umožňuje zůstat přihlášený i po uzavření okna prohlížeče. 
 Do budoucna je žádoucí rozšířit možnosti přihlašování například o autentizaci prostřednictvím OAuth, což by umožnilo přihlašování skrze služby třetích stran, jako je Google či Meta.

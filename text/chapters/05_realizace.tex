@@ -144,10 +144,33 @@ Tento přístup umožňuje nejen jednoduché změny barevných schémat, ale i p
 
 \subsection{Autentizace a autorizace}
 
-- všechny stránky až na přehrávač pouze pro přihlášení
-- token v localstorage
-- při expirování automaticky na login screen
-- autorizace: pokud nema pristup tak se hodi chyba
+Aplikace odděluje obsah určený pro veřejnost od částí přístupných pouze přihlášeným uživatelům. 
+Všechny stránky s výjimkou přehrávače jsou dostupné jen po přihlášení. 
+Autentizace probíhá pomocí tokenu, který se ukládá do localStorage. 
+Pokud token vyprší, uživatel je automaticky přesměrován na přihlašovací obrazovku.
+
+Autorizace se opírá o kontrolu přístupových práv při každém požadavku. 
+Při každém požadavku v hlavičce \texttt{Authorization} s typem \texttt{Bearer} nalezne řetězec kódu JWT.
+Kód obsahuje mimo jiné ID a jméno uživatele pro rychlejší přístup v aplikaci.
+
+Pokud uživatel nemá oprávnění k požadované akci nebo zdroji, server vrací chybu. 
+Klient správně reaguje na neúspěšné požadavky vyskakovacími okny, dialogy a jinými upozorněními.
+
+Každý materiál má svého vlastníka, který k němu má vždy plný přístup. 
+Vlastník materiálu může určit seznam spoluúčastníku, kteří mají přístup k editoru a přehrávání materiálu.
+
+Materiály dále rozlišují viditelnost pomocí příznaku \texttt{visibility}. 
+Pokud je nastavena hodnota \texttt{PUBLIC}, je materiál veřejně dostupný pro přehrávání přes přehrávač. 
+V opačném případě, tedy při hodnotě \texttt{PRIVATE}, je přístup omezený pouze na vlastníka a případně přidané spolupracovníky.
+
+
+% - všechny stránky až na přehrávač pouze pro přihlášené
+% - token v localstorage
+% - při expirování automaticky na login screen
+% - autorizace: pokud nema pristup tak se hodi chyba
+% - materiály mají majitele, který má přístu vždy
+% - materiál může mít nastavenou viditelnost (VISIBILITY) na PRIVATE vs PUBLIC, kdy PUBLIC dovolí to zobrazovat všem (player)
+% - materiál může mít přiřazené kolaborátory, kteří mají přístup k materiálu a přehrávání
 
 \subsection{Šablony}\todo{není implementované}
 
@@ -155,81 +178,234 @@ Tento přístup umožňuje nejen jednoduché změny barevných schémat, ale i p
 
 \subsection{Responzivita}
 
+
+Všechny stránky aplikace jsou přizpůsobené pro různá zařízení, jak je podrobněji uvedeno v kapitole \ref{text:testovani}. 
+Responzivita je zajištěna hlavně díky použití komponentového systému a systému gridu, přičemž konkrétně se využívá dvanácti sloupcové rozvržení. 
+Rozdělení do sloupců je řízeno pomocí CSS tříd a breakpointů, přičemž nejčastěji se používají pouze tři základní — \texttt{sm}, \texttt{md} a všechny vyšší velikosti.
+
+Většina rozvržení se přizpůsobuje právě přes tyto breakpointy. 
+Dále se využívají pomocné třídy pro nastavení okrajů (\texttt{margin}), vnitřních okrajů (\texttt{padding}), flexibilního rozmístění prvků (\texttt{flex}) a rozestupů (\texttt{gap}). 
+Tyto třídy také reagují na breakpointy, což umožňuje jemné doladění vzhledu jednotlivých částí rozhraní podle šířky obrazovky.
+
+Výjimku tvoří editor, který má z pohledu responzivity specifické chování. 
+Podrobnosti jeho řešení jsou popsány v kapitole \ref{text:realizace/editor}. 
+V jeho případě bylo nutné upravit některé části individuálně, protože běžné techniky nebyly dostačující.
+
+% - veskere stranky responzivni na urcite zarizeni, viz kapitola \ref{text:testovani}
+% - responzivita diky komponentam, @media queries, celkove skoro žádná, až na editor, viz kapitola \ref{text:realizace/editor}
+% - využití systému gridu, 12 sloupců, dělení pomocí columns, stejně jako komponenty, pomocí breakpointu
+% - sloupce pomocí breakpointu, v zásadě jen "sm", "md" a vše vyšší
+% - pomocné třídy pro padding, margin, flex, gapy a další, znovu breakpointy.
+
+
 \subsection{Překlady}
+
+Překlady v aplikaci probíhají pomocí vlastního systému, který vychází ze strukturovaného zápisu v jazyce JSON. 
+Každý překlad je identifikován unikátním klíčem, například \texttt{editor.action.delete.tooltip}, a uložen ve stromové struktuře jako je vyobrazen v kódu \ref{code:zapisPrekladu}.
+Tento přístup zajišťuje přehlednost a snadnou údržbu jednotlivých jazykových mutací.
+
+
+\begin{listing}[ht!]
+\caption{Ukázka zápisu překladů}\label{code:zapisPrekladu}
+\begin{minted}{json}
+{
+    "editor": {
+        "action": {
+            "delete": {
+                "tooltip": "Delete"
+            }
+        }
+    }
+}
+\end{minted}
+\end{listing}
+
+K překladu textů v rozhraní se využívají direktivy \texttt{v-t} a funkce \texttt{\$t}, které dovolují překlad.
+Taktéž umožňují vkládání proměnných přímo do přeložených řetězců. 
+Proměnné jsou nahrazovány pomocí syntaxe jako \texttt{\%test\%}, což umožňuje dynamickou práci s obsahem bez nutnosti duplicitních překladů.
+
+Aktuálně aplikace podporuje dva jazyky: češtinu a angličtinu. 
+Překlady se ukládají i do zkrácené podoby v URL, což umožňuje přímé sdílení konkrétní jazykové verze rozhraní. 
+Do budoucna lze očekávat problémy spojené se skloňováním, zejména v jazycích se složitou gramatikou, která vyžaduje flexibilitu podle kontextu. 
+Tento aspekt zatím systém neřeší a může být řešen později například pomocí rozšíření stávající logiky.
+
+% - vlastni system
+% - pouziti klicu (napr. editor.title), zapis v JSON (\{editor: \{title: "..."\}\})
+% - ulozeni zkratky v URL
+% - pouziti direktiv a funkce \$t pro preklad, jde vkladat promenne
+% - promenne nahrazovani pomoci \%test\%
+% - v aplikaci prozaitm CS a EN
+% - v budoucnu mozny problem se sklonovanim
 
 \subsection{Optimalizace pro webové vyhledávače}
 
 \section{Editor a přehrávač}\label{text:realizace/editor}
 
-- součást klientské části
-- nejdůležitější část
-- samostatné vykreslování mimo Vue, vlastní řešení překreslování
-- oboje podobný kód, pracují s tzv. bloky
-- vždy instance pro jednu stránku
+Editor a přehrávač tvoří jádro klientské části aplikace. 
+Jde o nejzásadnější komponentu, která přímo ovlivňuje práci s materiálem. 
+Obě části sdílí podobnou strukturu kódu a pracují s jednotným datovým modelem -- takzvanými bloky. 
+Každá instance editoru nebo přehrávače je vždy svázána s jedním konkrétním snímkem. 
+Vykreslování probíhá nezávisle na frameworku Vue a bylo nutné vytvořit vlastní mechanismus překreslování.
+
+Pro vykreslování využívám čisté DOM v JS prohlížeče.
+Každá komponenta editoru či přehrávače má na starosti práci se svým prvkem stránky a to včetně překreslování při změně dat.
 
 \subsection{Materiál}
 
-- obsahuje několik stránek
-- jméno
-- nastavení zobrazování
+Materiál představuje základní datovou jednotku editoru.
+Skládá se z několika snímků a nese název, který slouží pro identifikaci. 
+Snímek ukládá informace o velikosti plátna či barvě pozadí.
+Kromě obsahu materiálu jsou součástí také informace o způsobu jeho zobrazování, časovač, viditelnost či přístupnost pro jednotlivé uživatele.
 
 \subsection{Bloky}
 
-- reprezentuje uživatelem vytvořená data
-- např. text či obrázky
-- každý blok obsahuje základní data: pozici, velikost, otočení, průhlednost, skupinu, z-index a interaktivitu
-- z této třídy poté ostatní dědí
+Bloky reprezentují uživatelem vytvořená data, jako jsou texty, obrázky nebo jiné vizuální prvky. 
 
-\subsubsection{Serializace}
+Každý blok obsahuje základní sadu vlastností: 
 
-- slouží k převedení bloku do JSON podoby, která se poté ukládá
-- každý blok má serialize metodu, která slouží pro nalezení věcí, které se mají uložit a uložení jich
-- vlastnosti v děděných třídách se anotují pomocí TS dekorátorů, které metoda čte
+\begin{itemize}
+	\item pozici na snímku
+	\item velikost
+	\item otočení
+	\item průhlednost
+	\item skupina
+	\item z-index
+	\item informace o interaktivitě
+\end{itemize}
+
+Z této základní třídy vycházejí všechny konkrétní typy bloků, které rozšiřují funkčnost podle svého určení.
+Každý blok se řadí do konkrétnější třídy podle toho, zda je určen pro přehrávač či editor.
+Podle toho mají konkrétní funkcionality.
+
+\subsubsection{Serializace a deserializace}
+
+Editor má vytvořenou metodu \texttt{serialize}, která slouží k převodu stavu editoru do JSON formátu.
+
+Každý blok taktéž disponuje metodou \texttt{serialize}, která slouží k převodu interního stavu bloku do JSON formátu. 
+Výstup slouží k ukládání a pozdějšímu načtení dat. 
+Děděné třídy anotují vlastnosti, které se mají do serializace zahrnout, pomocí TypeScript dekorátorů. 
+Tato metoda zajišťuje, že se ukládají pouze relevantní informace a celý proces zůstává přehledný a konzistentní.
+
+Pro proces deserializace jsou vytvořeny pro každý jednotlivý blok třída, která slouží k jeho deserializaci a převedení do podoby instance určené pro editor či přehrávač.
+
+Pro deserializaci (a práci v celém editoru či přehrávači) je vytvořená třída \texttt{BlockRegistry}, do které si jde zaregistrovat právě soubor třídy pro editor, třídy pro přehrávač a deserializer. 
 
 \subsubsection{Události}
-- jednotlivé bloky dědící z hlavní třídy mohou používat eventy
-- tím se lze navázat například na to, kdy je blok vykreslen na stránku, vybrán v editoru, posunován a mnoho dalšího
-- pro toto používám TS dekorátory metod
+
+Bloky mohou reagovat na různé události, jako je vykreslení na stránku, výběr uživatelem, pohyb, změna velikosti a další interakce.
+Tyto události jsou implementovány jako metody s TypeScript dekorátory, které umožňují snadné napojení na jakoukoliv metodu a to i klidně vícekrát.
+Díky tomu mohou jednotlivé bloky flexibilně reagovat na dění v editoru i přehrávači.
 
 \subsection{Editor}
 
-- specifické věci pro editor následují
-- editor má dost nastavení a další API
-- editor má události, na které se může každý blok vázat
+Editor nadstavuje základní funkcionalitu bloků o nástroje určené pro jejich úpravu. 
+Nabízí bohaté možnosti nastavení, rozhraní pro interakci i další API, které využívají jak bloky, tak nadřazené části aplikace.
+Editor je navržen jako rozšiřitelný a jednotlivé bloky se mohou připojovat na jeho události.
 
 \subsubsection{Transformace}
 
-- bloky je možné:
-  - označovat (i více)
-  - zvětšovat
-  - posouvat
-  - otáčet
+Editor umožňuje s bloky manipulovat pomocí několika nástrojů. 
+Bloky lze označovat jednotlivě nebo hromadně, měnit jejich velikost, přesouvat je po ploše nebo je otáčet. 
+Způsob transformace lze přizpůsobit -- podle nastavení může být například změna velikosti sdílená jako jeden velký objekt či jednotlivě.
 
-- dle nastavení mohou být operace zvětšování nastaveny na kolaborativní či jednotlivé transformace
+Každý blok má možnost zakázat některé operace, například znemožnit otočení nebo změnu velikosti. 
+Bloky lze také uzamknout, což znemožní jejich výběr při tažení výběrovým rámečkem (select boxem). 
+Tato granularita nastavení zajišťuje přesné chování bloku podle kontextu použití.
 
-- každý blok může jednotlivé operace vypnout
+% \section{Editor a přehrávač}\label{text:realizace/editor}
 
-- tažení (select box)
-- blok může být uzamknut a není možné ho vybrat tažením
+% - součást klientské části
+% - nejdůležitější část
+% - samostatné vykreslování mimo Vue, vlastní řešení překreslování
+% - oboje podobný kód, pracují s tzv. bloky
+% - vždy instance pro jednu stránku
+
+% \subsection{Materiál}
+
+% - obsahuje několik stránek
+% - jméno
+% - nastavení zobrazování
+
+% \subsection{Bloky}
+
+% - reprezentuje uživatelem vytvořená data
+% - např. text či obrázky
+% - každý blok obsahuje základní data: pozici, velikost, otočení, průhlednost, skupinu, z-index a interaktivitu
+% - z této třídy poté ostatní dědí
+
+% \subsubsection{Serializace}
+
+% - slouží k převedení bloku do JSON podoby, která se poté ukládá
+% - každý blok má serialize metodu, která slouží pro nalezení věcí, které se mají uložit a uložení jich
+% - vlastnosti v děděných třídách se anotují pomocí TS dekorátorů, které metoda čte
+
+% \subsubsection{Události}
+% - jednotlivé bloky dědící z hlavní třídy mohou používat eventy
+% - tím se lze navázat například na to, kdy je blok vykreslen na stránku, vybrán v editoru, posunován a mnoho dalšího
+% - pro toto používám TS dekorátory metod
+
+% \subsection{Editor}
+
+% - specifické věci pro editor následují
+% - editor má dost nastavení a další API
+% - editor má události, na které se může každý blok vázat
+
+% \subsubsection{Transformace}
+
+% - bloky je možné:
+%   - označovat (i více)
+%   - zvětšovat
+%   - posouvat
+%   - otáčet
+
+% - dle nastavení mohou být operace zvětšování nastaveny na kolaborativní či jednotlivé transformace
+
+% - každý blok může jednotlivé operace vypnout
+
+% - tažení (select box)
+% - blok může být uzamknut a není možné ho vybrat tažením
 
 \subsubsection{Akce}
 
-- kontextove (pravy klik)
-- select (nad označenými prvky)
-- updatuji se dle označenych prvků
-- např. seskupení, přesunutí do plátna, kopírování
-- každá akce může mít klávesové zkratky, které dovolují jednoduché akce s editorem
+Editor podporuje množství kontextových akcí, které se dynamicky mění podle aktuálního výběru. 
+Tyto akce jsou dostupné buď v kontextovém menu (pravým kliknutím), nebo jako globální nástroj nad označenými bloky. 
+Rozhraní pro akce se aktualizuje podle typu a množství označených bloků.
 
-- jaké byly implementované?\todo{todo}
+Mezi běžné akce patří seskupování bloků, jejich oddělování, přesunutí do jiného snímku, kopírování nebo mazání. 
+Každá akce může mít definované klávesové zkratky, které umožňují efektivní práci i bez použití myši. 
+Základní sada akcí je definována jako rozšiřitelná a jednotlivé akce lze registrovat externě.
 
 \subsubsection{Vlastnosti bloků}
 
-- podle vybraných bloků
-- stejné možné vlastnosti, které to podporují se mohou spojit do jedné
-- možnost upravovat skoro jakákoliv data
-- velké api agregací a typů vlastností
-- možnost změny pomocí dragování
-- panel se zdá zvětšovat i skrývat
+Editor zobrazuje panel vlastností, který se mění v závislosti na výběru. 
+Při výběru více bloků se zobrazuje pouze podmnožina vlastností, které mají bloky společné a které lze hromadně upravit. 
+Například u více vybraných bloků tvaru je možné současně měnit průhlednost či barvu ale i tvar.
+
+Systém vlastností je navržen jako flexibilní API, které umožňuje definovat různé typy vstupů včetně posuvníků, barevných výběrů, zaškrtávacích polí a dalších. 
+Editor podporuje také přímé tahání u nadpisu vlastnosti pro efektivnější změnu hodnoty vlastnosti.
+
+Panel vlastností se může dynamicky měnit -- zmenšovat, skrývat nebo naopak rozšiřovat podle obsahu a typu vybraných bloků. 
+Díky tomu zůstává uživatelské rozhraní přehledné i při práci s komplexními scénami.
+
+
+% \subsubsection{Akce}
+
+% - kontextove (pravy klik)
+% - select (nad označenými prvky)
+% - updatuji se dle označenych prvků
+% - např. seskupení, přesunutí do plátna, kopírování
+% - každá akce může mít klávesové zkratky, které dovolují jednoduché akce s editorem
+
+% - jaké byly implementované?\todo{todo}
+
+% \subsubsection{Vlastnosti bloků}
+
+% - podle vybraných bloků
+% - stejné možné vlastnosti, které to podporují se mohou spojit do jedné
+% - možnost upravovat skoro jakákoliv data
+% - velké api agregací a typů vlastností
+% - možnost změny pomocí dragování
+% - panel se zdá zvětšovat i skrývat
 
 \subsubsection{Historie}
 \subsubsection{Schránka}
@@ -245,57 +421,105 @@ Tento přístup umožňuje nejen jednoduché změny barevných schémat, ale i p
 - vytvořené z fotobank/gifbank
 - uživatel má možnost nahrát vlastní obrázky
 
-\subsection{Kolaborace?}
+\subsection{Kolaborace}
 
 \section{Rozšíření}
 
-- plugin jmeno a popis
-- nekolik verzi, obshauje:
-  - manifest
-  - plugin kod
-  - editor kod
-- moznost pridavat pluginy v aplikaci pro prihlašeni a nahravat nove verze
-- system schvalovani\todo{neni}
+Platforma umožňuje přidávat nové funkcionality pomocí tzv. pluginů. 
+Každý plugin má své jedinečné jméno a krátký popis, který vysvětluje jeho účel a hlavní funkce. 
+Plugin může existovat v několika verzích, přičemž každá verze obsahuje manifest, kód pluginu a případně specifický kód pro editor.
+Manifest obsahuje informace o tom, pro jakou verzi aplikace bylo rozšíření napsáno a různé další data, jako je například nastavení přístupu k doménám či jiným pravomocem.
+
+Uživatelé, resp. vývojáři, mohou pluginy jednoduše přidávat přímo v aplikaci, pokud jsou přihlášeni, a také mají možnost nahrávat nové verze stávajících pluginů. 
+K zajištění bezpečnosti a kvality je implementován systém schvalování, který ověřuje, zda pluginy splňují stanovená kritéria před jejich zveřejněním.
 
 \subsection{Spouštění kódu}
 
-- viz navrh \ref{...}
-- tedy v JS, v emscriptu, zabezpečene
-- přistup k editoru a strance obecne pomoci api
-- mimo nema pristup, velmi omezene
+Spouštění kódu pluginů probíhá bezpečně v prostředí QuickJS, jak je uvedeno v návrhu v kapitole \ref{text:navrh/plugins}. 
+Kód pluginů má omezený přístup pouze k API editoru a obsahu stránky prostřednictvím definovaného rozhraní. 
+Přístup k jakýmkoliv dalším zdrojům mimo tento rámec není možný ze zabezpečení knihovny QuickJS a jejich systému.
 
 \subsection{Přístup k API}
 
-- globalni api:
-   - fetch
-   - cache
-   - plugin
-   - language
-   - log
-- bloky:
-   - bloky registruji api
-   - pristup vlastnosti jakymkoliv
-- editor api
-   - cteni bloku
-   - pridani bloku
-   - mody, velikosti platna
-- player api
-   - cteni bloku
-   - pridani bloku
-   - mody, velikosti platna
+Platforma poskytuje pluginům jasně definované globální API zahrnující funkce jako je:
+
+\begin{description}
+    \item[fetch] Který dovoluje volat požadavky přímo jako stránka editoru (tj. s CORS) na povolených doménách z manifestu.
+    \item[cache] Který dovoluje rozšíření si pamatovat věci skrz spuštění.
+    \item[plugin] Který dovoluje vědět, kdo je aktuálním spouštěčem skriptu.
+    \item[language] Který dovoluje zjistit v jakém jazyce je aktuálně vykreslována stránka.
+    \item[log] Který dovoluje vypisovat věci do konzole a logovacích souborů.
+\end{description}
+
+Dále mohou pluginy využívat API jednotlivých bloků, které umožňuje přístup k jejich vlastnostem a metodám.
+
+Dále rozšíření, podle toho, kde jsou spuštěny, dovolují přistupovat ke konkrétním API přehrávače či editoru.
+
+Editor API nabízí možnost číst bloky, přidávat nové bloky a nastavovat různé režimy a velikosti pracovního plátna. Podobně funguje i Player API, které rovněž umožňuje čtení a přidávání bloků spolu s nastavením režimů a velikostí.
+
+\subsection{Zachycení se k událostem}
 
 \subsection{Vykreslované bloky}
 
-- plugin muze vytvorit blok, ktery vykresluje plugin
-- kdyz se ma blok vykreslit tak se vykresli pomoci volani rozsireni
-- vzajemna komunikace bloku a rozsireni
+Pluginy mohou vytvářet vlastní bloky, které jsou vykreslovány při zobrazení materiálu. 
+Samotné vykreslení bloku provádí platforma voláním příslušného rozšíření. 
+Bloky a pluginy spolu mohou obousměrně komunikovat, což umožňuje dynamickou aktualizaci obsahu a interakci uživatelů s vykreslenými prvky.
+Překreslování pomocí volání pluginu (tj. vykreslování HTML) je prováděno sporadicky, zejména jen v době, kdy se vykresluje poprvé či se upravují vlastnosti bloku.
 
 \subsection{Panel}
 
-- kazdy plugin muze zaregistrovat panel
-- jednou vykresleni
-- vzajemna komunikace bloku a panelu
-- vymena dat, napr. pro nastaveni, vytvoreni bloku, editace a dalsi
+Každý plugin může registrovat svůj vlastní panel, který se jednorázově vykreslí v uživatelském rozhraní. 
+Tento panel umožňuje komunikaci mezi bloky a pluginy a slouží k výměně dat, například pro konfiguraci nastavení, vytváření nových bloků či editaci stávajících prvků.
+
+% \section{Rozšíření}
+
+% - plugin jmeno a popis
+% - nekolik verzi, obshauje:
+%   - manifest
+%   - plugin kod
+%   - editor kod
+% - moznost pridavat pluginy v aplikaci pro prihlašeni a nahravat nove verze
+% - system schvalovani\todo{neni}
+
+% \subsection{Spouštění kódu}
+
+% - viz navrh \ref{text:navrh/plugins}
+% - tedy v JS, v emscriptu, zabezpečene
+% - přistup k editoru a strance obecne pomoci api
+% - mimo nema pristup, velmi omezene
+
+% \subsection{Přístup k API}
+
+% - globalni api:
+%    - fetch
+%    - cache
+%    - plugin
+%    - language
+%    - log
+% - bloky:
+%    - bloky registruji api
+%    - pristup vlastnosti jakymkoliv
+% - editor api
+%    - cteni bloku
+%    - pridani bloku
+%    - mody, velikosti platna
+% - player api
+%    - cteni bloku
+%    - pridani bloku
+%    - mody, velikosti platna
+
+% \subsection{Vykreslované bloky}
+
+% - plugin muze vytvorit blok, ktery vykresluje plugin
+% - kdyz se ma blok vykreslit tak se vykresli pomoci volani rozsireni
+% - vzajemna komunikace bloku a rozsireni
+
+% \subsection{Panel}
+
+% - kazdy plugin muze zaregistrovat panel
+% - jednou vykresleni
+% - vzajemna komunikace bloku a panelu
+% - vymena dat, napr. pro nastaveni, vytvoreni bloku, editace a dalsi
 
 \section{Hlavní webová stránka}
 
