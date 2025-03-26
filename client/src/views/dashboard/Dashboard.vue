@@ -24,19 +24,19 @@
                                             </button>
                                         </template>
                                         <template #default="{toggle}">
-                                            <Card dialog>
+                                            <Card dialog data-cy="import-material-modal">
                                                 <p class="title" v-t>page.dashboard.new.import.title</p>
 
                                                 <p v-t>page.dashboard.new.import.description</p>
 
-                                                <FileInput v-model:value="importFile" class="mt-1"/>
+                                                <FileInput v-model:value="importFile" class="mt-1" data-cy="import-material-file"/>
 
-                                                <Alert type="error" v-if="importError" class="mt-1">
+                                                <Alert type="error" v-if="importError" class="mt-1" data-cy="import-material-error">
                                                     {{ importError }}
                                                 </Alert>
 
                                                 <div class="flex flex-justify-end mt-1">
-                                                    <Button @click="() => processImport(toggle)" :disabled="importFile.length != 1">
+                                                    <Button @click="() => processImport(toggle)" :disabled="importFile.length != 1" data-cy="import-material-process">
                                                         <span v-t>page.dashboard.new.import.process</span>
                                                     </Button>
                                                 </div>

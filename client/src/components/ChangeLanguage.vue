@@ -1,17 +1,19 @@
 <template>
     <Dialog>
         <template #activator="{ toggle }">
-            <NavigationButton :hide-mobile="props.header"
-                              :hide-desktop="!props.header" :label="language" icon="translate-variant"
+            <NavigationButton :hide-mobile="props.header && !props.neverHide"
+                              data-cy=translate-button
+                              :hide-desktop="!props.header && !props.neverHide" :label="language" icon="translate-variant"
                               tooltip-position="bottom" tooltip-text="Language" @click="toggle"></NavigationButton>
         </template>
         <template #default>
-            <Card dialog>
+            <Card dialog data-cy="translate-modal">
                 <p class="title">Change language</p>
 
                 <List>
                     <ListItem v-for="language in translation.getLanguages()"
                               :active="translation.getLanguage() == language.code"
+                              data-cy="language"
                               hover
                               @click="changeLanguage(language.code)">
                         {{ language.label }}
@@ -32,6 +34,10 @@ const props = defineProps({
     header: {
         type: Boolean,
         default: true,
+    },
+    neverHide: {
+        type: Boolean,
+        default: false,
     }
 })
 

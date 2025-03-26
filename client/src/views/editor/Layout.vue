@@ -3,7 +3,7 @@
         <template #logo>
             <div class="flex flex-align-center" v-if="editor">
                 <div class="meta">
-                    <span class="title">{{ materialStore.currentMaterial?.name }}</span>
+                    <span class="title" data-cy="editor-title">{{ materialStore.currentMaterial?.name }}</span>
 
                     <span class="state">{{ state }}</span>
                 </div>

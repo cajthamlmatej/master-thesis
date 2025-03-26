@@ -64,7 +64,7 @@ Cypress.Commands.add('clearMaterials', () => {
     const headers = {
         "Authorization": `Bearer ${window.localStorage.getItem('token')}`
     };
-    const userId = JSON.parse(atob(window.localStorage.getItem('token').split('.')[1])).id;
+    const userId = JSON.parse(atob(window.localStorage.getItem('token')?.split('.')[1])).id ?? '';
 
     cy.request({
         method: 'GET',

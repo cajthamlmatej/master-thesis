@@ -15,6 +15,7 @@
 
             <NavigationButton :label="$t('layout.base.logout')" :tooltip-text="$t('layout.base.logout')"
                               hide-mobile
+                              data-cy="logout"
                               icon="logout"
                               tag="li"
                               tooltip-position="bottom"
@@ -54,6 +55,7 @@
             </NavigationButton>
             <NavigationButton :label="$t('layout.base.logout')"
                               icon="logout"
+                              data-cy="logout-telephone"
                               tag="li"
                               @click="authenticationStore.logout()"></NavigationButton>
         </template>

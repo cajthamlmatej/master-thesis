@@ -124,7 +124,7 @@ export class Translation {
     }
 }
 
-export const translation = new Translation('cs');
+export const translation = new Translation('en');
 
 export const $t = (key: string, variables?: Record<string, string | (() => string)>): string => {
     return translation.get(key, variables);

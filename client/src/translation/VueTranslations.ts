@@ -38,6 +38,9 @@ export const setupTranslations = (Vue: App<Element>) => {
     const urlParts = url.split("/");
     const language = urlParts[3];
 
+    console.log("[Translation] Language: " + language);
+    console.log("[Translation] URL: " + url);
+
     if (!language) return;
 
     if (!translation.doesLanguageExist(language)) {
