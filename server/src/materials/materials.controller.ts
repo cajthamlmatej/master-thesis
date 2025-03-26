@@ -61,7 +61,7 @@ export class MaterialsController {
     async findOne(@Param('id') id: string, @Req() req: RequestWithUser, @Query('token') token: string | undefined) {
         let material = await this.materialsService.findById(id);
 
-        if (!material) throw new Error("Material not found");
+        if (!material) throw new BadRequestException("Material not found");
 
         if (material.visibility === 'PRIVATE') {
             const user = req.user || {id: null};
@@ -109,7 +109,7 @@ export class MaterialsController {
     async update(@Param('id') id: string, @Body() updateMaterialDto: UpdateMaterialDTO, @Req() req: RequestWithUser) {
         const material = await this.materialsService.findById(id);
 
-        if (!material) throw new Error("Material not found");
+        if (!material) throw new BadRequestException("Material not found");
         if (material.user.toString() !== req.user.id) throw new UnauthorizedException('You are not allowed to access this resource');
 
         // TODO: validate if release & plugin exists
@@ -156,7 +156,7 @@ export class MaterialsController {
     async remove(@Param('id') id: string, @Req() req: RequestWithUser) {
         const material = await this.materialsService.findById(id);
 
-        if (!material) throw new Error("Material not found");
+        if (!material) throw new BadRequestException("Material not found");
         if (material.user.toString() !== req.user.id) throw new UnauthorizedException('You are not allowed to access this resource');
 
         await this.materialsService.remove(material);
@@ -167,7 +167,7 @@ export class MaterialsController {
     async export(@Param('id') id: string, @Req() req: RequestWithUser, @Param('format') format: string) {
         const material = await this.materialsService.findById(id);
 
-        if (!material) throw new Error("Material not found");
+        if (!material) throw new BadRequestException("Material not found");
         if (material.user.toString() !== req.user.id) throw new UnauthorizedException('You are not allowed to access this resource');
 
         try {

@@ -1,4 +1,4 @@
-import {forwardRef, Inject, Injectable, Logger} from '@nestjs/common';
+import {BadRequestException, forwardRef, Inject, Injectable, Logger} from '@nestjs/common';
 import {Material} from "./material.schema";
 import {HydratedDocument} from "mongoose";
 import puppeteer, {Browser} from "puppeteer";
@@ -42,7 +42,7 @@ export class MaterialsExportService {
         } else if (format === 'json') {
             path = await this.exportToJSON(material, outputFolder);
         } else {
-            throw new Error("Unsupported format");
+            throw new BadRequestException("Unsupported format");
         }
 
         return fs.createReadStream(path);

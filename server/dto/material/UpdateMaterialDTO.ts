@@ -1,5 +1,5 @@
 import {
-    IsArray,
+    IsArray, IsDefined,
     IsIn,
     IsNumber, IsObject,
     IsOptional,
@@ -27,8 +27,10 @@ export class UpdateSlideMaterialDTO {
 
 export class UpdateMaterialPluginDTO {
     @IsString()
+    @IsDefined()
     plugin: string;
     @IsString()
+    @IsDefined()
     release: string;
 }
 

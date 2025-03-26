@@ -33,8 +33,10 @@ export class SlideEditorDataDTO {
 
 export class SlideBlockDTO {
     @IsString()
+    @IsDefined()
     id: string;
     @IsString()
+    @IsDefined()
     type: string;
 
     // any other information
