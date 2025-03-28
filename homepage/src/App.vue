@@ -6,19 +6,30 @@
                     <li><a href=""><span class="logo"></span></a></li>
                 </ul>
 
-                <ul>
+                <ul class="main">
                     <li><a href="">O Materalist</a></li>
                     <li><a href="">Porovnání</a></li>
-                    <li><a href="">XD</a></li>
+<!--                    <li><a href="">XD</a></li>-->
                     <li><a href="">Ukázkové materiály</a></li>
                 </ul>
 
                 <ul>
                     <li><a href="">Do aplikace</a></li>
+                    <li  id="menu-activator"><a  @click="menu = true"><img src="/icons/hamburger.svg"></a></li>
                 </ul>
             </nav>
         </div>
     </header>
+
+    <nav class="menu" :class="{ visible: menu }">
+        <div id="menu-deactivator"><a @click="menu = false"><img src="/icons/hamburger.svg"></a></div>
+        <ul>
+            <li><a href="">O Materalist</a></li>
+            <li><a href="">Porovnání</a></li>
+            <li><a href="">Ukázkové materiály</a></li>
+            <li><a href="">Do aplikace</a></li>
+        </ul>
+    </nav>
 
     <main>
         <section class="landing">
@@ -61,8 +72,13 @@
             </div>
         </section>
 
-        <section>
-
+        <section class="two-sides">
+            <div class="side">
+                <h2></h2>
+            </div>
+            <div class="side">
+                <img src="" alt="">
+            </div>
         </section>
     </main>
 
@@ -72,13 +88,15 @@
 <script setup lang="ts">
 import {RouterView} from 'vue-router'
 import {useScrollReact} from "@/composables/scrollReact.ts";
-import {ref} from "vue";
+import {ref, watch} from "vue";
 
 const scrollAmount = ref(0);
 
 useScrollReact((amount) => {
     scrollAmount.value = amount;
 });
+
+const menu = ref(false);
 </script>
 
 <style scoped lang="scss">
@@ -86,6 +104,18 @@ useScrollReact((amount) => {
     width: 1200px;
     margin: 0 auto;
     padding: 0 2em;
+
+    @media (max-width: 1200px) {
+        width: 100%;
+    }
+
+    @media (max-width: 768px) {
+        padding: 0 1em;
+    }
+
+    @media (max-width: 480px) {
+        padding: 0 0.5em;
+    }
 }
 
 header {
@@ -108,6 +138,8 @@ header {
 
             li {
                 display: block;
+                text-align: center;
+
                 a {
                     display: block;
                     color: white;
@@ -120,6 +152,11 @@ header {
                     &:hover {
                         background-color: rgba(255, 255, 255, 0.1);
                     }
+
+                    @media (max-width: 1200px) {
+                        padding: 0.4em 0.8em;
+                        font-size: 1rem;
+                    }
                 }
 
                 span.logo {
@@ -129,13 +166,137 @@ header {
                     background-image: url('/logo.png');
                     background-size: contain;
                     background-repeat: no-repeat;
+
+                    @media (max-width: 1200px) {
+                        width: 100px;
+                        height: 60px;
+                    }
                 }
+
+                &#menu-activator {
+                    display: none;
+
+                    a {
+                        img {
+                            width: 30px;
+                            height: 30px;
+                        }
+                    }
+
+                    @media (max-width: 768px) {
+                        display: flex;
+                    }
+                }
+            }
+
+            &.main {
+                @media (max-width: 768px) {
+                    display: none;
+                }
+            }
+
+            @media (max-width: 1200px) {
+                gap: 0.75em;
+            }
+
+            @media (max-width: 768px) {
+                gap: 0.5em;
+            }
+
+            @media (max-width: 480px) {
+                gap: 0.25em;
             }
         }
     }
 
     &.scrolled {
         background-color: rgba(89, 75, 93, 0.25);
+    }
+}
+
+nav.menu {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(89, 75, 93, 0.9);
+
+    visibility: hidden;
+    padding: 8em 0;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    touch-action: none;
+    user-select: none;
+    pointer-events: none;
+
+
+    &.visible {
+        visibility: visible;
+        opacity: 1;
+        touch-action: auto;
+        user-select: auto;
+        pointer-events: auto;
+    }
+
+    ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        justify-content: space-between;
+
+        list-style: none;
+
+        li a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            padding: 0.8em 1.5em;
+            border-radius: 0.5em;
+            transition: background-color 0.3s;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
+
+    #menu-deactivator {
+        position: absolute;
+        top: 1em;
+        right: 1em;
+
+        a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 0.8em 1.5em;
+            border-radius: 0.5em;
+            transition: background-color 0.3s;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            @media (max-width: 1200px) {
+                padding: 0.4em 0.8em;
+                font-size: 1rem;
+            }
+
+            img {
+                transform: rotate(90deg);
+                width: 30px;
+                height: 30px;
+            }
+        }
     }
 }
 
@@ -149,9 +310,17 @@ main {
             color: white;
             display: flex;
             align-items: center;
+            padding: 7em 0;
+            overflow: hidden;
 
             .container {
                 position: relative;
+
+                @media (max-width: 1200px) {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2em;
+                }
             }
 
             .container > .content {
@@ -175,10 +344,12 @@ main {
                         list-style: none;
                         display: flex;
                         align-content: center;
+                        flex-wrap: wrap;
                         gap: 1em;
 
                         li {
                             display: block;
+                            text-align: center;
 
                             a {
                                 border-radius: 0.5em;
@@ -203,6 +374,10 @@ main {
                         }
                     }
                 }
+
+                @media (max-width: 1200px) {
+                    max-width: 100%;
+                }
             }
 
             .star {
@@ -211,12 +386,13 @@ main {
                 left: -100px;
                 width: 400px;
                 height: 400px;
-                opacity: 0.2;
+                opacity: 0.4;
                 user-select: none;
 
                 img {
                     width: 100%;
                     height: 100%;
+                    backdrop-filter: blur(17px);
                 }
             }
 
@@ -227,13 +403,20 @@ main {
                 right: -50px;
                 width: 100px;
                 height: 200px;
-                opacity: 0.2;
+                opacity: 0.4;
                 user-select: none;
 
                 img {
                     width: 100%;
                     height: 100%;
                     object-fit: contain;
+                    backdrop-filter: blur(17px);
+                }
+
+                @media (max-width: 1200px) {
+                    top: -100px;
+                    right: 10%;
+                    transform: rotate(90deg);
                 }
             }
 
@@ -269,6 +452,28 @@ main {
                     padding: 1em;
                     border-bottom-left-radius: 1rem;
                     border-bottom-right-radius: 1rem;
+                }
+
+                @media (max-width: 1200px) {
+                    position: relative;
+                    width: 100%;
+                    top: 0;
+                    left: 0;
+                }
+
+                @media (max-height: 500px) {
+                    top: 10%;
+                    height: 90%;
+                }
+
+                @media (max-height: 800px) {
+                    top: 0%;
+                    height: 100%;
+                }
+
+                @media (max-height: 1000px) {
+                    top: -5%;
+                    height: 110%;
                 }
             }
         }
