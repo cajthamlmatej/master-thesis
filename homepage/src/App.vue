@@ -11,6 +11,7 @@
                     <li><a href="">Porovnání</a></li>
 <!--                    <li><a href="">XD</a></li>-->
                     <li><a href="">Ukázkové materiály</a></li>
+                    <li><a href="">Dokumentace</a></li>
                 </ul>
 
                 <ul>
@@ -27,6 +28,7 @@
             <li><a href="">O Materalist</a></li>
             <li><a href="">Porovnání</a></li>
             <li><a href="">Ukázkové materiály</a></li>
+            <li><a href="">Dokumentace</a></li>
             <li><a href="">Do aplikace</a></li>
         </ul>
     </nav>
@@ -133,7 +135,7 @@ header {
         ul {
             display: flex;
             align-items: center;
-            gap: 1.5em;
+            gap: 1em;
             list-style: none;
 
             li {
@@ -145,7 +147,7 @@ header {
                     color: white;
                     text-decoration: none;
                     font-size: 1.2rem;
-                    padding: 0.8em 1.5em;
+                    padding: 0.4em 0.8em;
                     border-radius: 0.5em;
                     transition: background-color 0.3s;
 
@@ -154,7 +156,7 @@ header {
                     }
 
                     @media (max-width: 1200px) {
-                        padding: 0.4em 0.8em;
+                        padding: 0.2em 0.6em;
                         font-size: 1rem;
                     }
                 }
@@ -196,15 +198,11 @@ header {
             }
 
             @media (max-width: 1200px) {
-                gap: 0.75em;
+                gap: 0.6em;
             }
 
-            @media (max-width: 768px) {
-                gap: 0.5em;
-            }
-
-            @media (max-width: 480px) {
-                gap: 0.25em;
+            @media (max-width: 900px) {
+                gap: 0.2em;
             }
         }
     }
