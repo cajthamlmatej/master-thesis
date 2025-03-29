@@ -638,7 +638,9 @@
                 "z-index": "Z-index",
                 "opacity": "Průhlednost",
                 "content": "Obsah",
-                "imageUrl": "Odkaz na obrázek"
+                "imageUrl": "Odkaz na obrázek",
+                "color": "Barva",
+                "shape": "Tvar"
             }
         },
         "opacity": {

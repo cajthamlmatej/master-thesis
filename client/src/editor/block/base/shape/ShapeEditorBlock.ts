@@ -107,12 +107,12 @@ export class ShapeEditorBlock extends EditorBlock {
         return [
             ...super.getInteractivityProperties(),
             {
-                label: "Color",
+                label: "color",
                 animate: true,
                 relative: false
             },
             {
-                label: "Shape",
+                label: "shape",
                 animate: false,
                 relative: false
             }

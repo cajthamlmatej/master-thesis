@@ -636,7 +636,9 @@
                 "z-index": "Z-Index",
                 "opacity": "Opacity",
                 "content": "Content",
-                "imageUrl": "Image URL"
+                "imageUrl": "Image URL",
+                "color": "Color",
+                "shape": "Shape"
             }
         },
         "opacity": {
