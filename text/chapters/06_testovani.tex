@@ -1,9 +1,337 @@
 \chapter{Testování}\label{text:testovani}
 
-TODO:
+
+\begin{chapterabstract}
+Tato kapitola ...
+\end{chapterabstract}
+
+\section{Průběžné testování}\label{text:testovani/prubezne}
+
+Vývoj platformy probíhal iterativně, viz sekce \ref{text:realizace/metodikaVyvoje}, s důrazem na časté testování již během samotné implementace.
+To umožnilo včasné odhalení problémů a zároveň zajištění vyšší kvality finální aplikace.
+
+\subsection{Při vývoji}
+
+Při vývoji klientské aplikace i hlavní webové stránky jsem využíval nástroj \texttt{Vite}, který, díky vlastnosti hot-reloading, umožňuje okamžité načítání změn v kódu bez nutnosti manuálního obnovování stránky.
+Tato funkcionalita výrazně zrychlila zpětnou vazbu během vývoje uživatelského rozhraní.
+
+Na straně backendu jsem používal nástroj \texttt{Nodemon}, který automaticky restartuje vývojový server při změně kódu. 
+Jelikož jsem využíval framework \texttt{NestJS}, vše bylo integrováno přímo v jeho ekosystému a vývoj backendu tak mohl probíhat bez zbytečných zdržení.
+
+Nové funkcionality jsem zpravidla nejdříve implementoval na serveru.
+Po přidání nové REST API cesty jsem její funkčnost ověřoval pomocí nástroje Postman, který umožňuje rychlé testování HTTP požadavků.
+Teprve po úspěšném ověření jsem přistoupil k implementaci odpovídajících částí v klientské aplikaci.
+
+Na straně klienta jsem během vývoje nových částí vždy testoval funkčnost přímo v rozhraní aplikace.
+Až později v rámci práce vznikly systematické automatizované testy, které popisuji v předchozí kapitole.
+
+\subsection{Tým testerů}
+
+Během vývoje vzniklo \textbf{X}\todo{Kolik?} verzí aplikace včetně prototypu. 
+Každá z těchto verzí byla nahrána na testovací prostředí, ke kterému měl přístup vedoucí práce a tým dobrovolných testerů -- především kolegové a přátelé z okolí.
+
+Tento způsob testování odpovídá tzv. neformálnímu uživatelskému testování, často označovanému jako beta testování či nehlídané uživatelské testování. 
+Cílem bylo získat zpětnou vazbu dříve, než bude aplikace přístupná širší veřejnosti a hlavně pravidelně.
+
+Ke každé nové verzi jsem připravil seznam změn a vyznačil klíčové oblasti, na které se měli testeři zaměřit. 
+Testování probíhalo bez pevného harmonogramu -- každý účastník testoval ve svém volném čase a zpětnou vazbu mi předával převážně prostřednictvím platformy Discord.
+
+Testeři pomohli odhalit celou řadu problémů, například nefunkčnost na specifických zařízeních, chyby v editoru a další technické i UX nedostatky. 
+Tyto poznatky jsem následně zapracoval do dalších verzí aplikace.
+
+Diskuse mezi členy testovací skupiny byly velmi přínosné.
+Probíhaly nejen mezi sebou, ale i přímo se mnou jako vývojářem. 
+Společně jsme řešili otázky spojené s prioritizací oprav a návrhem vylepšení.
+
+Na závěr vývoje jsem všechny účastníky testování požádal, aby se zamysleli nad tím, jaké funkce nebo úpravy by v aplikaci v budoucnu uvítali. 
+Tyto návrhy a postřehy jsou taktéž zahrnuty v kapitole \ref{text:diskuze}.
+
+% \section{Průběžné testování}\label{text:testovani/prubezne}
+
+% \subsection{Při vývoji}
+
+% - při vývoji klienta a hlavní webové stránky používán vite pro hot-reloading
+% - podobně pro backend využíváno sledování nodemon přímo v ekosystému nest
+
+% - při vytváření různých funkcionalit jsem požadované funkcionality implementoval prvne na serveru
+% - pozadavky na REST API jsem testoval pomoci aplikace postman
+% - pote implementace na klientovi
+% - tam jsem rovnou testoval funkcionality celkove, pozdeji testy, viz další sekce v této kapitole
+
+
+% \subsection{Tým testerů}
+
+% - pri vyvoji platformy a celkove teto prace vznikolo X verzi (a prototyp)
+% - kazdou verzi jsem vzdy nahraval na testovaci prostredi
+% - k tomuto prostredi mel pristup vedouci prace a tym testeru - kamaradi a další osoby
+% - casto se tomu rika nehlidane testovani uzivateli, beta skupina a podobně
+% - cil zjisti vazbu pred zverejnenim verejnosti
+% - ke kazde verzi byly zverejnen seznam zmen a klicove zmeny, na ktere se meli testeri zamerit
+% - dle sveho volenho casu aplikaci pouzivali, hodnotili a vraceli mi zpetnou vazbu
+% - zjistilo se napriklad: nefunkconst na konkretnich zarizenich, ruzne bugy s editorem a desitky dalsich problemu, ktere jsem se vzdy snazil do dalsi verze aplikace opravit
+% - probihalo na Discord
+% - často probihali mezi temito lidmi diskuze, i semnou, o aplikaci, na co se ma zamerit a podobne
+% - na konci vyvoje jsem pozadal vsechny ucastniky, aby se zamysleli nad tim, co by v aplikaci dale radi videli, to je mozne najit v kaapitole \ref{text:diskuze}.
+
+\section{Automatizované testování}
+
+Automatizované testování představuje způsob, jak ověřit funkčnost softwaru bez nutnosti manuálního zásahu.
+Testy provádí program, který simuluje uživatelské chování, a tím nahrazuje opakované ruční kontroly.\todo{citace}
+Pro vývojáře to znamená, že se nemusí neustále vracet k ověřování základní funkcionality a mohou se soustředit na samotný vývoj. 
+Automatizace zvyšuje udržitelnost aplikace a umožňuje testy pravidelně spouštět například v rámci verzovacích služeb, jako je například CI/CD či jiné.
+To může zajišťovat například to, že rozbitá aplikace (v takovém stavu, že ji nefunguje klíčová funkcionalita) nebude nahrána do produkce.
+
+Testování lze rozdělit do několika kategorií podle úrovně a rozsahu. 
+Mezi nejčastější typy patří unit testy, které ověřují jednotlivé funkce nebo komponenty, integrační testy sledující spolupráci více částí systému, a end-to-end (E2E) testy simulující reálné uživatelské scénáře. 
+V této práci je klíčové zaměřit se především na testování klientské části aplikace, protože je to nejdůležitější část celé práce.
+
+\subsection{Klientská část}
+
+Klientská aplikace byla testována pomocí E2E testů, které ověřují, zda se uživatel může přihlásit, pracovat s editorem, ovládat přehrávač a provádět další běžné interakce. 
+Při výběru nástroje jsem zvažoval různé možnosti, jako například Cypress nebo Playwright. 
+Zvolil jsem Cypress, a to kvůli jeho široké komunitě a jednoduchému nastavení.
+Nabízí i komponentové testy, ty však v rámci této práce nebyly využity.
+
+Testy se soustředí zejména na to, zda se prvky zobrazují podle očekávání, zda aplikace reaguje na kliknutí a jestli jednotlivé části fungují správně.
+Například se testuje, že po kliknutí na tlačítko dojde k přesměrování, nebo že po zadání údajů do formuláře se odešle požadavek na server.
+
+Důraz byl kladen na psaní udržitelných testů. 
+Testy jsou navrženy jako atomické, tedy nezávislé na předchozích stavech aplikace. 
+Prvky se vybírají pomocí jasných a stabilních selektorů, které se v budoucnu aplikace budou jednoduše měnit pouze na straně aplikace.
+Díky tomu lze testy snadno upravovat a jejich výstupy zůstávají spolehlivé i při úpravách UI.
+
+V některých případech bylo nutné testy izolovat od reálného backendu.
+Použil jsem proto mocking vybraných API volání, například při ověřování fetch požadavků, abych mohl otestovat pouze konkrétní chování bez závislosti na databázi nebo serveru.
+
+Testy jsou umístěny ve složce \texttt{cypress/}\todo{asi presnejsi lokace} v klientské části projektu. 
+V rámci této struktury jsem vytvořil několik pomocných funkcí, například pro přihlášení uživatele nebo potvrzení cookie banneru. 
+Díky tomu lze jednotlivé testy zapsat stručněji a přehledněji.
+Testovací skripty je možné spustit příkazem \verb|npx cypress run|.
+
+Celkem bylo vytvořeno \textbf{XXX}\todo{Kolik?} testovacích scénářů, které pokrývají většinu hlavních funkcionalit klientské aplikace. 
+Všechny testy aktuálně procházejí bez chyb a pomáhají zajišťovat stabilitu i při dalších změnách v kódu.
+
+\subsection{Serverová část}\todo{Dopsat}
+
+- rovnou v nest
+- zejména testování WS implementace, protože je to to nejdůležitější
+
+% \section{Automatizované testování}
+
+% - automatické testování provádí program za uživatele
+% - programátoři nemusí pořád zkoušet ty stejné operace
+% - obecně udržitelná aplikace
+% - můžeme spouštět v CI/CD
+% - lze obecně dělit do spoustu kategorií - např. unit testy, e2e a další
+% - v této aplikaci je klíčové zařídit testování klientské aplikace
+
+% \subsection{Klientská část}
+
+% - testování přihlášení, interakcí, editoru, přehrávače a dalších
+% - e2e
+% - možnost na výběr je cypress a napříkald DOPLŇ
+% - vypral jsem cypress (nabízí například komponentové testy, ty jsem ale nevyužil)
+% - testování zejména toho, zda je (či není) prvek vidět, po kliknutí aplikace funguje a podobně
+
+% - psani udržitelných testů: testy jsou atomické, nezávisí na stavech jiný, ze stránky prvky vybíráme pomocí jasných selektorů které se v budoucnu nemůžou těžce replikovat
+% - mockovani, testovani toho, zda se něco zavolalo, používáno třeba pro fetch
+% - testy se píší do šložky cypress/ v klientu, možné psát různé pomocné funkce
+% - například pomocná funkce pro přihlášení uživatele, potvrzení cookies a podobně
+% - testy je možné spustit pomocí příkazu npx cypress run
+
+% - celkově bylo napsáno XXX testů, všechny testy procházejí a testují velkou část aplikace
+
+\section{Uživatelské testování}
+
+Testování aplikace reálnými uživateli je jedním z nejdůležitějších kroků v rámci vývoje. 
+Vychází z předpokladu, že každý uživatel používá systém jinak a vývojář, byť dobře obeznámený s aplikací, nemusí odhalit některé zásadní nedostatky. 
+Uživatelské testování tak pomáhá identifikovat problémy, které by jinak zůstaly skryté. 
+Nejde přitom jen o kontrolu funkčnosti, ale především o pochopení toho, jak lidé s aplikací reálně pracují.
+
+Pro tento projekt jsem se rozhodl provést dvě formy testování.
+První z nich se zaměřuje na samotnou aplikaci a její uživatelské rozhraní prostřednictvím předem definovaných testovacích scénářů. 
+Druhá část ověřuje způsob použití rozšíření a byla zvolena méně formální metodou, která lépe odpovídá jejich otevřené a kreativní povaze.
+
+\subsection{Testování aplikace}
+
+Každé uživatelské testování by měl sledovat nezávislý pozorovatel. 
+Dobrým postupem je, když uživatel během testu nahlas komentuje, co právě dělá a proč. 
+Pozorovatel nesmí do průběhu testu aktivně zasahovat, aby nedošlo k ovlivnění výsledků. 
+Úkolem pozorovatele je sledovat průběh, zapisovat si poznámky a vyhodnocovat chování uživatele a výsledek testování. 
+Na konci každého testu může účastníkovi sdělit zpětnou vazbu nebo objasnit, proč některé věci nefungovaly tak, jak očekával.
+
+Před samotným testováním se definují konkrétní scénáře.
+Každý scénář obsahuje jasně stanovený cíl, popis a další. 
+Cílem těchto scénářů není prověřit znalosti uživatelů, ale odhalit problémy ve srozumitelnosti rozhraní nebo funkčnosti aplikace.
+
+\subsubsection{Testovací scénáře}
+
+Testovací scénáře popisují účel testu, očekávaný výsledek a konkrétní kroky, které má účastník vykonat.
+Každý scénář obsahuje také omezený časový rámec, definované podmínky před začátkem a očekávaný stav po skončení testu. 
+Aby se minimalizovalo riziko ovlivnění, pozorovatel by měl zachovat odstup a vyvarovat se odpovídání na dotazy během testu.
+
+Všechny scénáře vycházejí z uživatelských případů uvedených v kapitole \ref{chapter:analyza/uzivatelskePripady}.
+Ukázku konkrétního testovacího scénáře lze nalézt níže. 
+Kompletní seznam použitých scénářů je uveden v příloze \ref{appendix:testovaciScenare}.
+
+Celkem bylo vytvořeno \textbf{XXX} testovacích scénářů, které pokrývají hlavní oblasti používání aplikace.
+
+
+% \section{Uživatelské testování}
+
+% - testovani realnymi lidmi
+% - velmi caste
+% - nutne mit lidi, objektivni hodnoceni, zadny benefit delani toho
+% - bere v potaz normalni chovani lidi, kazdy je jiny, umi najit veci, ktere by vyvojare ani nenapadli
+% - pro tuto aplikaci jsem se rozhodl udelat testovani aplikace pomoci testovacich scenaru a taktez otestovat rozsireni pomoci mene tradicniho zpusobu
+
+% \subsection{Testování aplikace}
+
+% - kazde testovani by mel nekdo sledovat a evaulovat, dobrym practicem je, ze lidi nahlas rikaji co delaji
+% - kazdy test je predem znamy a pozorovatel vzdy uvede účastnika do toho, co má za úkol provést
+% - predem se definuji testovaci scenare, ktere prave popisuji cil, jak dlouho test ma maximalne trvat, jaky je postup ( v případe, ze se nepovede) a co je stav aplikace předem a potom
+% - behem testovani si pozorovatel zapisuje poznamky a po kazdem testu a na konci sděluje výsledky sledovanému uživateli, radi mu v pripade problemu a podobne
+
+
+% \subsubsection{Testovací scénáře}
+
+% - urcuje se jim: účle, časový limit, podmínky, kroky k realizaci, očekavaný výstup
+% - pozorovatel nesmí do akcí testujícího zasahovat, limitace kontaminace odpovídáním na otázky
+% - testovací scénaře se odkazují na uživatelské případy z sekce \ref{chapter:analyza/uzivatelskePripady}.
+% - nize je ukazka testovacího scénáře dle formátu, který budu využívat
+% - všechny scénáře jsou v příloze \ref{appendix:testovaciScenare}
+% - celkem vytvořeno XXX scénářů
+
+
+\vspace{1em}\noindent{\large\textbf{TC1 -- XXX}}
+
+\textbf{Cíl}: 
+
+\textbf{Časový limit}: do Y minut
+
+\textbf{Podmínky}: 
+
+\textbf{Kroky}:
+
+\begin{enumerate}[leftmargin=1.4cm]
+    \item .
+\end{enumerate}
+
+\textbf{Očekávané výsledky}:
+
+\begin{enumerate}[leftmargin=1.4cm]
+    \item .
+\end{enumerate}
+
+\subsubsection{Účastníci}
+
+Testování se zúčastnilo X\todo{kolik?} osob. 
+Někteří účastníci měli s aplikací předchozí zkušenost, jelikož se podíleli na jejím průběžném testování (viz sekce \ref{text:testovani/prubezne}). 
+U těchto osob je tato skutečnost v popisu výslovně uvedena. 
+Vybrané osobní údaje byly záměrně vynechány nebo anonymizovány, a to buď na žádost samotného účastníka, nebo z důvodu jejich nerelevance k průběhu testování.
+
+\begin{description}
+\item[Účastnice 1] Kristýna Dřevikovská, studentka SSPŠ, 18 let, členka týmu testerů.  TODO
+\item[Účastník 2] TODO
+\end{description}
+
+\subsubsection{Průchody účastníků}
+
+Každý účastník prošel všechny předem připravené scénáře.
+Během testování byl přítomen pozorovatel, který zaznamenával postup účastníka a hodnotil jeho úspěšnost v jednotlivých scénářích. 
+
+Pro hodnocení byla použita pětibodová škála, kde:
 
 \begin{itemize}
-    \item napsat unit testy
-    \item lidské testování s učiteli, studenty (jak tvorba tak i používání prezentací *a bloků*)
-    \item nechat někoho napsat nějaký plugin, zhodnocení
+      \item 1 znamená, že účastník dosáhl cíle bez problémů a samostatně,
+      \item 5 značí, že cíl nebyl splněn, postup byl neintuitivní a účastník potřeboval zásah pozorovatele.
 \end{itemize}
+
+Pozorovatelovo hodnocení má v tomto kontextu zásadní význam. 
+Uživatel mohl například úkol splnit jiným způsobem, než scénář předpokládal, nebo mohl přehlédnout některé možnosti rozhraní. 
+Hodnocení tak neodráží jen dosažení cíle, ale i způsob jeho naplnění.
+
+Před zahájením testování byl účastníkům stručně vysvětlen účel a průběh testování. 
+Každý scénář byl předem uveden vysvětlením cíle, kterého měl uživatel dosáhnout. 
+Následně bylo testování zahájeno.
+
+Aby bylo možné scénáře provádět za standardních podmínek, byla aplikace vždy uvedena do požadovaného výchozího stavu. 
+Tento krok provedl buď pozorovatel, nebo samotný účastník. 
+V případě, že se účastník dostal do situace, kdy nemohl dále pokračovat, byly mu podle potřeby postupně předány nápovědy vycházející z popisu scénáře, resp. kroků realizace.
+
+
+% \subsubsection{Účastnicí}
+
+% - pozval jsem X účastníků
+% - někteří účastníci (níže řádně označeny) mají s aplikací již zkušenosti, protože ji průběžně testovali, viz sekce \ref{text:testovani/prubezne}
+% - některé osobní údaje jsou skryty, protože nereflektují nic zásadního k testování nebo na žádost testovaného
+
+
+% \begin{description}
+% \item[Účastnice 1] Kristýna Dřevikovská, studentka SSPŠ, 18 let, členka týmu testerů. TODO...
+% \item[Účastník 2] TODO
+% \end{description}
+
+% \subsubsection{Průchody účastníků}
+
+% - provedeny pruchody vsech scenaru se vsemi učastniky
+% - vyhodnoceni ucastnikem tak pozorovatelem
+% - hodnoceni u kazdeho scenaru 1 až 5, kdy 1 je "cíl splněn, intuitivní postup, splněno samostatně" a 5 je "cíl nesplňěn, neintuitivní postup, nutný zásah pozorovatele"
+% - hodnoceni pozorovatele je klíčové, protože uživatel mohl například přehlédnout nějakou možnost aplikace či cíl splnit jiným způsobem
+
+% - při začátku testování jsem každému účastníkovi vysvětlil jak funguje toto testování
+% - před každým scénářem jsem účastníkovi vysvětlil cíl, co má udělat a on začal scénář naplňovat
+% - před každým scénářem byla aplikace převedena (účastníkem nebo pozorovatelem) do stavu, který daný scénář vyžaduje
+% - pokud účastník nemohl dále pokračovat, byly mu postupně ukázány cíle k vyřešení z definice scénáře
+
+\paragraph{Průchod účastnice 1}
+
+Testování účastnice 1 proběhlo dne X. Y. 2025 v XX.00. 
+Účastnice byla na testování připravena a seznámil jsem ji s průběhem testů a procesu hodnocení. 
+
+V tabulce~\ref{tab:hodnoceniPruchoduUcastnika1} lze nalézt jednotlivá hodnocení testovacích scénářů účastnice, které provedla po každém průchodu scénáře společně se hodnocením pozorovatele.
+
+\begin{table}[ht!]
+\centering
+    \caption{Hodnocení průchodu scénářů účastnice 1}\label{tab:hodnoceniPruchoduUcastnika1}
+    \begin{tabular}{r|c|c}
+        Scénář & Hodnocení účastnice & Hodnocení pozorovatele\\\hline\hline
+        TC1  & 1 & 1\\\hline
+        TCXX & 1 & 1\\\hline\hline
+        průměr & 1 & 1\\
+    \end{tabular}
+\end{table}
+
+\subsubsection{Shrnutí}
+
+\subsection{Testování rozšíření}
+
+- pozadal jsem kamaradku
+- zkusenosti se skriptovanim
+- v skupine testeru aplikace, rozšireni ale nepsalo
+- dobre vyzkouseni stavu dokumentace, api i aplikace samotne
+
+- zadani: volne vypracovat z dostupnych materialů jakekoliv rozšíření (či více)
+
+- zadal jsem to...
+
+
+\section{Přístupnost platformy}
+
+- po uzivatelskem testovani zkouska platformy jako celku vice obencne
+- otestovani lighthouse, co je to ligthouse
+- vysledky lighthouse, jak jsem je vyresil
+
+- zjisteny podporovane prohlizece (zjisteno od uzivatelskeho testovani) a testovani mnou na zarizenych mych, kamaradu a rodiny
+
+\section{Výkonnostní testování}
+
+- zkouska vykonnosti platformy, limit lidi na jednom dokumentu a tak dale
+
+% TODO:
+
+% \begin{itemize}
+%     \item napsat unit testy
+%     \item lidské testování s učiteli, studenty (jak tvorba tak i používání prezentací *a bloků*)
+%     \item nechat někoho napsat nějaký plugin, zhodnocení
+% \end{itemize}
