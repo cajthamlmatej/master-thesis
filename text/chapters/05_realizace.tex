@@ -70,7 +70,7 @@ Díky tomuto přístupu bylo možné zajistit vysokou kvalitu finální verze pl
 %     - opravit akutni chyby
 % - prepisovani a vyuziti refactoring
 
-\section{Serverová část}
+\section{Serverová část}\todo{dopsat}
 
 \subsection{Autentizace a autorizace}
 
@@ -172,9 +172,9 @@ V opačném případě, tedy při hodnotě \texttt{PRIVATE}, je přístup omezen
 % - materiál může mít nastavenou viditelnost (VISIBILITY) na PRIVATE vs PUBLIC, kdy PUBLIC dovolí to zobrazovat všem (player)
 % - materiál může mít přiřazené kolaborátory, kteří mají přístup k materiálu a přehrávání
 
-\subsection{Šablony}\todo{není implementované}
+% \subsection{Šablony}\todo{není implementované}
 
-- procházení
+% - procházení
 
 \subsection{Responzivita}
 
@@ -183,7 +183,7 @@ Všechny stránky aplikace jsou přizpůsobené pro různá zařízení, jak je 
 Responzivita je zajištěna hlavně díky použití komponentového systému a systému gridu, přičemž konkrétně se využívá dvanácti sloupcové rozvržení. 
 Rozdělení do sloupců je řízeno pomocí CSS tříd a breakpointů, přičemž nejčastěji se používají pouze tři základní — \texttt{sm}, \texttt{md} a všechny vyšší velikosti.
 
-Většina rozvržení se přizpůsobuje právě přes tyto breakpointy. 
+Většina rozvržení se přizpůsobuje právě přes tyto nastavené breakpointy. 
 Dále se využívají pomocné třídy pro nastavení okrajů (\texttt{margin}), vnitřních okrajů (\texttt{padding}), flexibilního rozmístění prvků (\texttt{flex}) a rozestupů (\texttt{gap}). 
 Tyto třídy také reagují na breakpointy, což umožňuje jemné doladění vzhledu jednotlivých částí rozhraní podle šířky obrazovky.
 
@@ -209,13 +209,13 @@ Tento přístup zajišťuje přehlednost a snadnou údržbu jednotlivých jazyko
 \caption{Ukázka zápisu překladů}\label{code:zapisPrekladu}
 \begin{minted}{json}
 {
-    "editor": {
-        "action": {
-            "delete": {
-                "tooltip": "Delete"
-            }
-        }
+  "editor": {
+    "action": {
+      "delete": {
+        "tooltip": "Delete"
+      }
     }
+  }
 }
 \end{minted}
 \end{listing}
@@ -264,13 +264,13 @@ Bloky reprezentují uživatelem vytvořená data, jako jsou texty, obrázky nebo
 Každý blok obsahuje základní sadu vlastností: 
 
 \begin{itemize}
-	\item pozici na snímku
-	\item velikost
-	\item otočení
-	\item průhlednost
-	\item skupina
-	\item z-index
-	\item informace o interaktivitě
+	\item Pozici na snímku
+	\item Velikost
+	\item Otočení
+	\item Průhlednost
+	\item Skupina
+	\item Z-index
+	\item Informace o interaktivitě
 \end{itemize}
 
 Z této základní třídy vycházejí všechny konkrétní typy bloků, které rozšiřují funkčnost podle svého určení.
@@ -298,7 +298,7 @@ Díky tomu mohou jednotlivé bloky flexibilně reagovat na dění v editoru i p�
 
 \subsection{Editor}
 
-Editor nadstavuje základní funkcionalitu bloků o nástroje určené pro jejich úpravu. 
+Editor staví základní funkcionalitu bloků o nástroje určené pro jejich úpravu. 
 Nabízí bohaté možnosti nastavení, rozhraní pro interakci i další API, které využívají jak bloky, tak nadřazené části aplikace.
 Editor je navržen jako rozšiřitelný a jednotlivé bloky se mohou připojovat na jeho události.
 
@@ -407,21 +407,240 @@ Díky tomu zůstává uživatelské rozhraní přehledné i při práci s komple
 % - možnost změny pomocí dragování
 % - panel se zdá zvětšovat i skrývat
 
+
 \subsubsection{Historie}
+
+Editor průběžně zaznamenává veškeré důležité události, které se v jeho prostředí odehrávají. 
+Při každé takové události se uloží celý stav editoru, což umožňuje následnou práci s historií změn. 
+Uživatel se může pohybovat zpět nebo vpřed pomocí klasických operací typu \enquote{Zpět} a \enquote{Znovu}. Tento mechanismus využívá princip podobný návrhovému vzoru \emph{memento}~\todo{citace}, kdy se každá změna zaznamenává jako izolovaný snímek stavu editoru.
+
+Velikost uchovávané historie je konfigurovatelná podle preferencí uživatele, aby bylo možné optimalizovat výkon při práci s rozsáhlými materiály. 
+Kromě standardních událostí, které editor sám rozpoznává, existuje i speciální událost.
+Tuto událost mohou vyvolat jiné části systému, například při importu dat nebo externích úpravách, na které není možné se v editoru běžně zaregistrovat.
+
 \subsubsection{Schránka}
+
+Součástí editoru je vlastní implementace schránky, která umožňuje uživatelům kopírovat a vkládat bloky. 
+Tyto operace fungují napříč stránkami jednoho otevřeného dokumentu, ale také mezi různými materiály, které má uživatel současně otevřené. 
+Schránka zachovává obsah mezi jednotlivými návštěvami editoru, což zajišťuje plynulost práce i při opuštění nebo obnově relace.
+
+Kopírování respektuje vnitřní strukturu bloků a umožňuje jejich vkládání bez ztráty informací. 
+To je užitečné zejména při vytváření šablon, duplikování opakujících se částí obsahu nebo přenášení obsahu mezi různými snímky.
+
 \subsubsection{Nastavení}
 
+Uživatel má možnost upravit široké spektrum nastavení, která ovlivňují chování editoru. 
+Kromě základních preferencí lze definovat například maximální velikost historie změn, počet kroků při otáčení objektů nebo způsob provádění transformací.
+
+Editor nabízí několik režimů transformace a různé možnosti chování při zarovnávání či počet bodů přichytávání při rotaci objektů. 
+Díky těmto volbám si může každý uživatel přizpůsobit prostředí svým potřebám -- ať už preferuje jakoukoliv práci.
+
+Všechna nastavení se ukládají do profilu uživatele, takže při každém otevření editoru jsou znovu automaticky načtena.
+
+
+% \subsubsection{Historie}
+
+% - zaregistrovává se k různým událostem, které se dějí v editoru
+% - při každé události si uloží stav celého editoru
+% - pomocí akcí zpět a dopředu se lze v této historii hýbat
+% - omezení velikosti historie dle preferencí uživatele
+% - samotné aplikování a ukládání stavu podobné jako v návrhovém vzoru memento\cite{abbc}
+% - existuje speciální událost, kterou mohou volat ostatní části systému, na které se v editoru nedá registrovat
+
+% \subsubsection{Schránka}
+
+% - dovoluje kopírovat bloky a vkládat je pomocí operací
+% - je mozne kopirovat skrz stránky (otevrené i najednou)
+% - taktéž je možné kopírovat skrz snímky jednoho materiálu
+% - ukládá se skrz poslední návštěvu
+
+% \subsubsection{Nastavení}
+
+% - nastavení anebo preference
+% - uživatel si nastaví jak chce, aby s ním editor komunikoval
+% - muže nastavit např. zmíněnou velikost historie
+% - nebo nastavit například počet snapnutí otáčení, způsob transformace a další
+
 \subsection{Přehrávač}
-\subsubsection{Kreslení}
+
+Přehrávač sdílí mnoho společných rysů s editorem, avšak přináší několik klíčových odlišností. 
+Stejně jako editor využívá systém bloků a vlastní způsob vykreslování, ale je navržen primárně pro konzumaci a interakci s výukovým materiálem, nikoliv jeho úpravu.
+
+Zásadním rozšířením přehrávače oproti editoru je přidání režimu kreslení. 
+Tento režim umožňuje uživateli vybírat barvu, nastavovat tloušťku čáry, úroveň průhlednosti nebo aktivovat stabilizaci tahu. 
+K dispozici jsou i akce jako mazání jednotlivých tahů, skrytí či smazání celé kresby.
+
+Uživatelské rozhraní přehrávače umožňuje přepínat mezi snímky buď pomocí tlačítek, nebo kliknutím na samotné plátno.
+Interakce se snímky tak zůstává plynulá a intuitivní. 
+Samotné bloky mohou reagovat na uživatelské vstupy díky systému interaktivity a speciálním blokům z rozšíření.
 
 \subsection{Interaktivita}
 
+Každý blok může mít přidělenu neomezeně mnoho instancí interaktivit, která určují jeho chování při specifických událostech. 
+Každá interaktivita definuje událost spuštění interakce a podmínku spuštění.
+Všechny další vlastnosti se mění dle vybraných možností.
+
+Události spuštění:
+\begin{description}
+  \item[CLICK] Aktivace po kliknutí na blok.
+  \item[HOVER START] Aktivace při najetí kurzorem.
+  \item[HOVER END] Aktivace při odjetí kurzoru.
+  \item[SLIDE LOAD] Aktivace při načtení snímku, bez ohledu na blok.
+  \item[TIMER] Spuštění po určitém čase, jednorázově nebo opakovaně.
+\end{description}
+
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{media/05_realizace/interaktivita.png}
+    \caption{Ukázka interaktivity na bloku v Editoru}
+    \label{fig:interaktivita}
+\end{figure}
+
+
+Podmínky spuštění:
+\begin{description}
+  \item[ALWAYS] Akce se spustí vždy.
+  \item[TIME PASSED] Po uplynutí určitého času od načtení snímku nebo zapnutí celého materiálu.
+  \item[VARIABLE] Na základě hodnoty specifické proměnné.
+\end{description}
+
+Interaktivita může obsahovat libovolné množství akcí. Mezi základní akce patří:
+
+\begin{description}
+  \item[CHANGE PROPERTY] Změní zaregistrovanou vlastnost bloku.
+  \item[RESET PROPERTY] Vrátí vlastnost do původního stavu.
+  \item[CHANGE SLIDE] Přejde na jiný snímek – konkrétní, relativní, nebo náhodný.
+  \item[CHANGE VARIABLE] Upraví hodnotu proměnné.
+  \item[OPEN LINK] Otevře externí odkaz.
+\end{description}
+
+Akce se mohou vztahovat na konkrétní bloky, všechny bloky na snímku, nebo aktuální blok. 
+Systém podporuje interpolaci pro plynulé přechody hodnot a možnost zadávat relativní změny.
+Vlastnosti, které lze měnit, si každý blok definuje samostatně pomocí rozhraní v kódu (viz kód \ref{code:zapisVlastnostiEditor} a \ref{code:zapisVlastnostiPrehravac}).
+
+Ukázka nastavené interaktivity na bloku lze vidět na obrázku \ref{fig:interaktivita}.
+
+\begin{listing}[ht!]
+\caption[Ukázka zápisu registrace vlastnosti bloku tvaru pro editor]{Ukázka zápisu registrace vlastnosti bloku tvaru pro editor, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:zapisVlastnostiEditor}
+\begin{minted}{javascript}
+public override getInteractivityProperties() {
+  return [
+    ...super.getInteractivityProperties(),
+    {
+      label: "Color",
+      animate: true,
+      relative: false
+    }
+  ];
+}
+\end{minted}
+\end{listing}
+
+
+
+\begin{listing}[ht!]
+\caption[Ukázka zápisu registrace vlastnosti bloku tvaru pro přehrávač]{Ukázka zápisu registrace vlastnosti bloku tvaru pro přehrávač, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:zapisVlastnostiPrehravac}
+\begin{minted}{javascript}
+public override getInteractivityProperties() {
+  return [
+    ...super.getInteractivityProperties(),
+    {
+      label: "Color",
+      change: (value: string, relative: boolean, ...) => {
+        // Validace
+        if (animate) {
+          // Interpolace podle dalších předaných hodnot.
+          // Často využívána funkce requestAnimationFrame
+          //    pro plynulé volání změn.
+        } else {
+          this.color = value;
+          this.synchronize();
+        }
+      },
+      // Pro reset vlastnosti
+      getBaseValue: () => this.blockBaseValues.color
+    }
+  ]
+}
+\end{minted}
+\end{listing}
+
+Tyto interaktivity jsou zpracovávány přímo přehrávačem a mohou být snadno laděny pomocí ladícího režimu, který zobrazuje stav proměnných. 
+Pro jednodušší práci s interaktivitou byl vytvořen i speciální blok -- a to interaktivní oblast.
+Tento blok umožňuje definovat akce, které nejsou navázané na žádný konkrétní vizuální prvek, ale slouží jako neviditelný spouštěč událostí.
+
+
+% \subsection{Přehrávač}
+
+% - podobné fungování jako editor
+% - vlastní bloky, vlastní vykreslování
+% - jiné módy => přidáno kreslení
+% - kreslení: dovoluje vyber barvy, velikost čáry, průhlednost, stabilizace, akce mazání, smazání všeho,
+% - UI dovoluje přepínání snímku tlačítky či mačkání na "plátno"
+% - interakce s bloky pomocí interaktivity a speciálních bloků rozšíření
+
+% \subsection{Interaktivita}
+
+% - každému bloku lze přidat interaktivity
+% - ty určují jak se blok bude chovat v různých situacích
+% - každá interaktivita má povinně určenou událost a podmínku volání
+% - události:
+%   - CLICK, při kliknutí na daný blok
+%   - HOVER START, při najetí na daný blok
+%   - HOVER END, při ukončení najetí (odjetí) z daného bloku
+%   - SLIDE LOAD, při načtení snímku (bez závislosti na bloku)
+%   - TIMER, který dovoluje spuštění po nějaké době či opakovaně
+% - podmínky:
+%   - ALWAYS, akce se provedou vždy
+%   - TIME PASSED, po nějaké době od otevření materiálu či konkrétního snímku, na kterém je blok (tato interakce)
+%   - VARIABLE, po tom, zda se hodnota nějaké podmínky rovná či nerovná zadané hodnotě
+% - poté může interaktivita obsahovat neomezeně mnoho akcí
+% - akce:
+%   - CHANGE PROPERTY, která dovolí změnit zaregistrované vlastnosti bloku
+%   - RESET PROPERTY, která dovolí resetovat zaregistrované vlastnosti bloku do původního stavu
+%   - ^ u nich jde vybrat jaké bloky (všechny na snímku, aktuální či konkrétní) se budou změny aplikovat 
+%   - ^ taky je možné použít interpolace pro přechod a či relativní hodnoty, které upravují aktuální stav
+%   - každý blok si registruje tyto vlastnosti sám, viz kód \ref{code:zapisVlastnosti}
+%   - CHANGE SLIDE, změna snímku, podle indexu či relativní (+, -, náhodný, NEXT, PREVIOUS, FIRST, LAST)
+%   - CHANGE VARIABLE, dovolí změnit hodnotu proměnné na jinou 
+%   - OPEN LINK, dovolí otevřit jinou stránku
+% - tyto interaktivity se poté zpracovávají v přehrávači při daných událostech
+% - proměnné si lze zobrazit v přehrávači v tzv. debugovacím módu
+% - pouze pro interaktivitu vytvořen speciální blok - interaktivní oblast.
+
 \subsection{Multimédia}
 
-- vytvořené z fotobank/gifbank
-- uživatel má možnost nahrát vlastní obrázky
+Součástí editoru je možnost vkládat multimediální obsah, zejména obrázky a animované gify.
+Uživatel má k dispozici dvě základní cesty: buď využije integrované knihovny, nebo nahraje vlastní soubory. 
+V obou případech lze multimédia vložit přímo do výukového materiálu jednoduchým kliknutím.
+
+Pro vyhledávání fotografií slouží napojení na fotobanku Pexels. 
+Uživatel může zadat libovolný dotaz a zároveň má možnost vybírat z aktuálně populárních obrázků. 
+U animovaných gifů je použita služba Tenor, která je přístupná skrze Google API. 
+Vyhledávání zde probíhá na základě klíčových slov nebo výběrem z předdefinovaných kategorií.
+
+Nahrané soubory se ukládají do uživatelova účtu a lze je použít opakovaně napříč různými výukovými materiály.
+V případě většího množství nahraných souborů je procházení optimalizováno pomocí tzv. lazy-loading, což znamená, že se obsah načítá postupně podle potřeby, a nezatěžuje tak prohlížeč ani připojení zbytečnými daty.
+
+Kromě fotobanky a gifů má uživatel možnost vložit jakýkoli externí odkaz na obrázek.
+Tento způsob je vhodný zejména tehdy, pokud uživatel nechce daný obrázek ukládat do systému, ale chce jej pouze referencovat. 
+O způsobu vložení externího odkazu a respektive o bloku obrázku pojednává detailně sekce \ref{text:realizace/vytvoreneBloky}.
+
+% \subsection{Multimédia}
+
+% - vytvořené z fotobank/gifbank
+% - uživatel má možnost nahrát vlastní obrázky
+% - vlastní obrázky lze používat vícekrát v různých materiálech
+% - vlastní procházení všech variant pomocí lazy-loading
+% - fotobanka: Pexels, kde jde vyhledávat \& "populární obrázky"
+% - gifová banka: Tenor v Google APIs, vyhledávání pomocí kategorií a co uživatel zadá
+% - po kliku se dané multimédium přidá do materiálu
+% - uživatel může zadat jakýkoliv odkaz do bloku obrázku viz sekce \ref{text:realizace/vytvoreneBloky}
 
 \subsection{Kolaborace}
+
+- 
 
 \section{Rozšíření}
 
@@ -459,6 +678,52 @@ Editor API nabízí možnost číst bloky, přidávat nové bloky a nastavovat r
 
 \subsection{Zachycení se k událostem}
 
+Každému rozšíření začíná životní cyklus voláním globální exportované funkce se jménem \texttt{initEditor} v spuštění v editoru, případně \texttt{initPlayer} v přehrávači.
+V této metodě může rozšíření spouštět řadu věcí a již interagovat s API.
+Základně v této metodě se budou programátoři rozšíření zejména připojovat k událostem, které způsobí to, že když daná událost nastane, tak se zavolá i příslušná funkce k této události od tohoto rozšíření. Ukázka zachycení k události a prvotního načtení je vyobrazena v kódu \ref{code:registraceUdalosti}.
+
+Pro editor a přehrávač (ne nutně pro oba) existují následující události:
+
+\begin{description}
+    \item[pluginBlockRender] Tato událost se volá tehdy, když je blok typu \texttt{plugin} vykreslován. Událost se volá jen pro rozšíření, který blok vlastní. Volá se sporadicky, zejména jenom při prvotním načtení editoru či přehrávače. 
+    \item[panelRegister] Tato událost se volá tehdy, když je uživatelské rozhraní připraveno získat informace o tom, jaký plugin požaduje jaké panely v rozhraní editoru. Na událost musí funkce vracet HTML, které se vykreslí v iframe. O bezpečnosti této metody viz kapitola \ref{text:vykreslovani}.
+    \item[panelMessage] Událost se volá tehdy, když panel přiřazen tomuto rozšíření chce předat zprávu rozšíření. Předávaná data jsou vždy v textovém řetězci.
+    \item[pluginBlockMessage] Tuto událost volá konkrétní blok v editoru či přehrávači právě tehdy, když chce předat zprávu rozšíření. Předávaná data jsou taktéž v textovém řetězci.
+    \item[pluginBlockPropertyChange] Tato událost se volá tehdy, když v uživatelském rozhraní editoru uživatel změní konkrétnímu bloku vlastnost. Rozšíření pomocí parametrů ví jaká konkrétní vlastnost se změnila a na jakém bloku.
+\end{description}
+
+\begin{listing}[ht!]
+\caption[Ukázkový zápis rozšíření a registrace na událost]{Ukázkový zápis rozšíření a registrace na událost, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:registraceUdalosti}
+\begin{minted}{javascript}
+export const onPanelMessage = (message) => {
+  if (message !== "clicked") return;
+
+  // Zde se provádí akce po kliknutí na tlačítko
+  api.editor.addBlock({
+    type: "text",
+    // ... další vlastnosti bloku
+  });
+}
+
+export const initEditor = function () {
+  api.editor.on("panelMessage", onPanelMessage);
+  api.editor.on("panelRegister", () => {
+    // Zavolání např. api.fetch
+    return `<button>Click me</button>
+      <script>
+      document.querySelector("button").addEventListener("click", 
+        () => {
+            window.parent.postMessage({
+                target: "script", message: "clicked"
+            }, "*");
+        });
+      </script>`;
+  });
+}
+\end{minted}
+\end{listing}
+
+
 \subsection{Vykreslované bloky}
 
 Pluginy mohou vytvářet vlastní bloky, které jsou vykreslovány při zobrazení materiálu. 
@@ -469,7 +734,8 @@ Překreslování pomocí volání pluginu (tj. vykreslování HTML) je provádě
 \subsection{Panel}
 
 Každý plugin může registrovat svůj vlastní panel, který se jednorázově vykreslí v uživatelském rozhraní. 
-Tento panel umožňuje komunikaci mezi bloky a pluginy a slouží k výměně dat, například pro konfiguraci nastavení, vytváření nových bloků či editaci stávajících prvků.
+Tento panel umožňuje komunikaci mezi bloky a pluginy a slouží k výměně dat, například pro konfiguraci nastavení, vytváření nových bloků či editaci stávajících prvků. 
+Ukázka komunikace mezi iframe pomocí API prohlížeče \texttt{postMessage} a tedy i v API aplikace je viditelný v kódu \ref{code:registraceUdalosti}.
 
 % \section{Rozšíření}
 
@@ -523,13 +789,13 @@ Tento panel umožňuje komunikaci mezi bloky a pluginy a slouží k výměně da
 
 \section{Hlavní webová stránka}
 
- Hlavní webová stránka byla vytvořena za účelem propagace aplikace.
- Celý projekt a aplikace nese název \textbf{Materalist}.
- Název vznikl spojením slov \textit{Material} a \textit{Specialist}, čímž odkazuje na zaměření aplikace na práci s různými specializovanými materiály.
- Slouží jako výchozí bod pro návštěvníky, kteří se chtějí dozvědět více o aplikaci, jejích funkcích a možnostech využití. 
- Stránka umožňuje přesměrování na samotnou aplikaci, přístup k dokumentaci a obsahuje přehled funkcionalit.
+Hlavní webová stránka byla vytvořena za účelem propagace aplikace.
+Celý projekt a aplikace nese název \textbf{Materalist}.
+Název vznikl spojením slov \textit{Material} a \textit{Specialist}, čímž odkazuje na zaměření aplikace na práci s různými specializovanými materiály.
+Slouží jako výchozí bod pro návštěvníky, kteří se chtějí dozvědět více o aplikaci, jejích funkcích a možnostech využití. 
+Stránka umožňuje přesměrování na samotnou aplikaci, přístup k dokumentaci a obsahuje přehled funkcionalit.
 
-Důležitou součástí webové prezentace je porovnání s ostatními aplikacemi v dané oblasti. 
+Důležitou součástí webové prezentace je porovnání s ostatními aplikacemi v daných oblastech. 
 To pomáhá uživatelům lépe pochopit výhody a jedinečné vlastnosti aplikace. 
 Kromě toho webová stránka představuje dostupné pluginy, které rozšiřují základní funkcionalitu aplikace.
 
@@ -545,6 +811,8 @@ Pro sjednocení vizuální identity bylo navrženo logo aplikace (viz obrázek \
     \label{fig:logo}
 \end{figure}
 
+Hlavní webová stránka byla tvořena taktéž ve webovém frameworku Vue, ze stejných důvodů jako hlavní aplikace.
+Hlavním konceptem je velká jednostránková webová stránka, která obsahuje všechny důležité informace a odkazuje na dokumentaci a samostatnou aplikaci.
 
 \section{Dokumentace}
 
@@ -553,44 +821,190 @@ Pro sjednocení vizuální identity bylo navrženo logo aplikace (viz obrázek \
 
 \section{Sestavení a nasazení aplikace}
 
-\section{Vytvořené bloky}
+\section{Vytvořené bloky}\label{text:realizace/vytvoreneBloky}
 
-- základní bloky přímo v aplikaci
+Pro účely demonstrace schopností platformy a testování její flexibility byla implementována základní sada bloků.
+Tyto bloky jsou přímo dostupné v rámci editoru a byly navrženy tak, aby pokrývaly široké spektrum typických potřeb při tvorbě vzdělávacích materiálů. 
+Bloky reagují na nastavení v panelu vlastností a mění se podle toho, jaké možnosti autor obsahu zvolí. 
+Některé bloky se po kliknutí přepnou do editačního režimu a umožní přímou úpravu svého obsahu, například textu nebo kódu. 
 
 \subsection{Text}
+
+Textový blok slouží pro vkládání formátovaného textu. 
+Uživatel může upravit styl písma, jeho velikost a barvu, použít tučné, kurzívní, podtržené nebo přeškrtnuté písmo. 
+Dále lze nastavit zarovnání textu (vlevo, vpravo, na střed i do bloku), font, horní a dolní index a také vytvářet seznamy. 
+
+Po kliknutí na blok se aktivuje textový editor, ve kterém lze přímo označovat a upravovat text. 
+Veškeré změny jsou zároveň reflektovány v panelu vlastností, odkud lze pohodlně ovlivnit celkové formátování. 
+Vnitřně se text ukládá jako HTML, ale pro vykreslení se používá knihovna \texttt{sanitize-html}, která omezuje vykreslení jen na bezpečné a povolené značky a atributy.
+
 \subsection{Obrázek}
+
+Obrázkový blok umožňuje vkládání obrázků pomocí URL adresy. 
+Je využíván především v obsahových menu, kde lze vybírat z fotobank, gifů nebo vlastních multimedií. 
+Pro přesnější práci s obrázky je k dispozici funkce pro uzamčení poměru stran. 
+Pokud je aktivní, obrázek se při změně velikosti bloku přizpůsobuje původnímu poměru. 
+
+V opačném případě dochází k tzv. překrytí -- obrázek si ponechává původní rozměry a v případě menšího prostoru se jeho část ořízne.
+Pokud se obrázek nepodaří načíst, editor zobrazí varování, přehrávač však zůstává tichý.
+
 \subsection{Interaktivní oblast}
+
+Tento blok je viditelný pouze v editoru, nikoli v přehrávači.
+Slouží jako neviditelná vrstva, která umožňuje překrýt více prvků a zajistit, že se jejich interaktivita nebude vzájemně ovlivňovat.
+Jde o užitečný nástroj především pro složitější kompozice.
+
 \subsection{Mermaid diagram}
+
+Pro tvorbu různých typů diagramů je využita knihovna \texttt{mermaid}. 
+Umožňuje kreslit UML diagramy, grafy a další pomocné vizualizace. 
+Uživatel může po kliknutí na blok upravit zdrojový kód diagramu. 
+Mimo editační režim se automaticky vykresluje výsledný diagram.
+
+Pokud kód obsahuje chybu, editor zobrazí varování a místo náhledu diagramu vykreslí hlášení.
+V přehrávači se chybové bloky neobjevují. 
+Vzhledem ke známým bezpečnostním rizikům (XSS zranitelnosti) a komplikacím při interakci byla implementace řešena pomocí \texttt{iframe}.
+
 \subsection{Iframe okno}
+
+Iframe blok slouží pro pokročilé uživatele, kteří chtějí do editoru vložit vlastní HTML, CSS nebo JavaScript. 
+Blok umožňuje spustit libovolný kód v izolovaném prostředí a zobrazit jeho výsledek přímo v editoru.
+
+Editace probíhá kliknutím na blok, kdy se otevře rozhraní pro úpravu kódu. 
+Výstup se mimo editační režim vykreslí automaticky. 
+Kvůli bezpečnostním rizikům a nemožnosti opustit iframe z vnitřního prostředí je nutné tento způsob používat obezřetně, viz kapitola \ref{text:anaylza/spousteniNeduveryhodnehoKodu}.
+
 \subsection{Tvar}
 
-\section{Vytvořené rozšíření}
+Tvarové bloky poskytují jednoduchý způsob, jak do materiálu přidat vizuální strukturu. 
+Obsahují základní předdefinované tvary jako obdélník, hvězda nebo elipsa. Uživatel může upravit barvu tvaru.
 
-- ukázka systému, vytvořeny nějaká rozšíření
-- ukázka a testování systému
-- více v testování
+Některé tvary se dokážou přizpůsobit velikosti bloku -- typickým příkladem je šipka, která natahuje svůj střed dle aktuálních rozměrů.
+Tyto bloky slouží jako doplňkový vizuální prvek, který zvyšuje čitelnost a srozumitelnost obsahu.
+
+
+
+% \section{Vytvořené bloky}\label{text:realizace/vytvoreneBloky}
+
+% - pro testování a ukázku schopnosti, ohebnosti systemu
+% - základní bloky přímo v aplikaci
+% - připraveno na leccos
+% - bloky reaguji na vlastnosti v panelu vlastnosti
+% - nektere bloky se pretransformuji/zmeni/dovoli editovat právě při kliku na vybrany blok (tj. treba kod ci text se zapisuje přímo do bloku v editoru)
+
+% \subsection{Text}
+
+% - dovoluje vkladat formatovany text
+% - moznost menit barvu, velikost, bold, italics, underline, přeskrtnutí, zarovnani (vlevo, vpravo, doprostred, do bloku), font, suptext, subtext a taky lze vytvorit listy
+% - po kliku na blok se otevre prave moznost oznacovat a psat text, ktery se poté v panelu vlastností upravuje
+% - ciste teoreticky se uklada html, vykresluje se ale jen povolene mnozstvi tagů a atributu, na to se používá knihovna \texttt{sanitize-html}
+
+% \subsection{Obrázek}
+
+% - lze vkládat odkaz na obrázek
+% - používají ho obsahové menu (foto/gif banky a vlastní uživatelské multimédia)
+% - možnost zapnout tzv. zamknutí poměru stran, které nastaví možnost obrázek nastavit jen v původním poměru
+% - v připradě vypnutného zapnutí se při zvětšování/zmenšování bloku se obrázek nastavuje na "překrytí", tj. obrázek je vždy v původním poměru, jen se ne vždy celý vejde (cropne se)
+% - pokud se obrazek nepovede nacist, v editoru upozorneni, v prehravaci nic
+
+% \subsection{Interaktivní oblast}
+
+% - v editoru viditelna, v prehravaci nikoliv
+% - dovoluje mit na sobe interaktivitu
+% - hodi se napriklad na prekrytivi vice prvku, aby se zvlastne nekopirovala interakvita
+
+% \subsection{Mermaid diagram}
+
+% - vykresluje pomoci knihovny \texttt{mermaid} různé diagramy
+% - mermaid dovoluje tvorit UML diagramy, grafy, matematicke grafy a různe další pomocné věci
+% - editace pomoci kliku, tam se pise kód, mimo editaci se vykresluje
+% - pokud je kod spatny, vykresli se chyba v editoru, v prehravaci nic
+% - problem s klikanim, nutne pouzit znovu iframe, mermaid znamy s XSS chybami
+
+% \subsection{Iframe okno}
+
+% - dovoluje psat jakekoliv HTML (tedy i CSS, JS), ktere se spusti v oddelenem okne
+% - editace pomoci kliku, tam pise kod, mimo editaci se vykresluje
+% - hodi se pro zkusene lidi
+% - nejde se z toho dostat, viz \ref{text:anaylza/spousteniNeduveryhodnehoKodu}
+
+% \subsection{Tvar}
+
+% - pouzivani preddefinovanych tvaru
+% - napr. obdelnik, hvezda, elipsa
+% - moznost nastavit barvu
+% - nektere specialni, daji se natahovat a oni se adaptuji, jako napr. sipka - prostredek se natahne dle velikosti
+
+\section{Vytvořené rozšíření}\label{text:realizace/vytvoreneRozsireni}
+
+Součástí návrhu platformy byla i možnost komunitního rozšiřování funkcionality prostřednictvím pluginů. 
+Tato sekce představuje několik ukázkových rozšíření, která byla v rámci vývoje vytvořena. 
+Slouží jako demonstrace možností systému, jeho flexibility a využití připraveného API. 
+Rozšíření vytvořena (či testována) i dalšími uživateli, kteří se na vývoji platformy nepodíleli, jsou popsány v kapitole \ref{text:testovani}.
+To umožnilo získat nezávislou zpětnou vazbu, podrobněji popsanou v kapitole o testování. Všechna rozšíření jsou dostupná v přiložené aplikaci a taktéž jako příloha práce.
+Rozšíření jsou dostupná v příloze ve složce SLOŽKA\todo{CESTA K PLUGINŮM}.
 
 \subsection{Centrist}
 
-- ukázka pouze modifikace v editoru (pomocník)
-- dovoluje zarovnávat na editoru
+Centrist je jednoduché rozšíření, které slouží jako pomocník při práci v editoru.
+Jeho funkcionalita se omezuje pouze na editor a nijak nezasahuje do přehrávače (neobsahuje žádný vykonávaný kód).
+Rozšíření vytváří uživatelské rozhraní pro úpravu zarovnání jednotlivých bloků.
+
+Po aktivaci se v editoru zobrazí postranní panel, který umožňuje upravovat pozici vybraných bloků. 
+Uživatel může snadno provést zarovnání do středu plátna, rozložit více bloků rovnoměrně, nebo je k sobě přiblížit v horizontálním či vertikálním směru. 
+Toto rozšíření je ukázkou, jak lze bez většího zásahu do systému vytvořit užitečný nástroj, který zlepšuje komfort práce s obsahem.
 
 \subsection{Dnešní svátek}
 
-- dovoluje vkládat jednoduché pole s dnešním svátkem
-- volání externí služby
-- využití cache
+Rozšíření \enquote{Dnešní svátek} poskytuje možnost vložit do materiálu jednoduchý prvek zobrazující svátek aktuálního dne. 
+Data jsou získávána z veřejně dostupného API služby \texttt{svatkyapi.cz}.
 
-\subsection{Fluid background}\todo{Actually ještě není vytvořené}
+Aby se předešlo opakovanému volání externí služby, využívá se v rámci rozšíření jednoduchá cache. 
+Po načtení dat je výsledek uložen na dobu platnosti, čímž se výrazně snižuje zatížení rozhraní a eliminuje se problém s případným omezením počtu požadavků (rate limiting).
+V manifestu rozšíření je zároveň explicitně uvedeno, že je povoleno připojení na danou doménu API, aby nebyly porušeny bezpečnostní zásady platformy.
 
-- komplexní vykreslování
-- mnoho parametrů přímo v editoru
+\subsection{Fluid background}
 
-\subsection{Page numberer}\todo{Actually ještě není vytvořené}
+Fluid background je vizuálně výrazné a technicky náročnější rozšíření, které demonstruje pokročilé možnosti práce s vykreslováním pomocí WebGL.
+Uživatel může pomocí panelu v editoru upravovat různé parametry shaderu, jako jsou barvy, amplitudy, rychlosti pohybu a další vizuální efekty.
 
-- číslování slidů
+Tato ukázka slouží jako příklad toho, jakým způsobem lze vytvářet složitější a zároveň efektivní vizuální bloky, které mohou obohatit prezentaci nebo jiný výukový materiál. 
+Současně bylo potřeba řešit i technické aspekty, jako je správné překreslování bloku při změně parametrů, protože každá úprava musí vést k aktualizaci vykreslení.
 
-\section{Ukázkové materiály}
+Rozšíření také ukazuje využití API editoru a jeho schopnost reagovat na změny uživatelského vstupu v reálném čase.
+
+% \section{Vytvořené rozšíření}\label{text:realizace/vytvoreneRozsireni}
+
+% - ukázka systému, vytvořeny nějaká rozšíření
+% - ukázka a testování systému
+% - více v testování od lidi, co platformu nevyvijeli pro lepši zhodnoceni
+% - všechny pluginy jsou k dispozici v nahrané aplikaci a v příloze \todo{CESTA K PLUGINŮM}
+
+% \subsection{Centrist}
+
+% - ukázka pouze modifikace v editoru (pomocník), nedělá nic v přehrávači, nemá žádný kód
+% - dovoluje zarovnávat na editoru
+% - panel ve kterém lze modifikovat označené bloky
+% - rozložení do prostřed, rozdělit rovnoměrně, přiblížit k sobě v obou osách
+
+% \subsection{Dnešní svátek}
+
+% - dovoluje vkládat jednoduché pole s dnešním svátkem
+% - volání externí služby - svatkyapi.cz
+% - využití cache pro ukládání svátku kvůli omezení API (rate limiting)
+% - manifest pro dovolení fetch na dané doméně API
+
+% \subsection{Fluid background}
+
+% - komplexní vykreslování shaderu webgl
+% - mnoho parametrů přímo v editoru (ukazka API bloku)
+% - nutne resit prekreslovani bloku
+
+% \subsection{Page numberer}\todo{Actually ještě není vytvořené}
+
+% - číslování slidů
+
+\section{Ukázkové materiály}\label{text:realizace/vytvoreneMaterialy}
 
 - ukázka systému, možnost vytvořit komplexní prezentace do jdou v jiných aplikacích
 - více v testování
