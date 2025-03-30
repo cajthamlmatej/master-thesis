@@ -1,7 +1,11 @@
 \chapter{Realizace}
 
 \begin{chapterabstract}
-Tato kapitola ...
+Tato kapitola popisuje jednotlivé fáze vývoje aplikace, která slouží k tvorbě interaktivních vzdělávacích materiálů. 
+Nejprve je představen iterativní přístup, který umožnil průběžné testování a úpravy na základě zpětné vazby. 
+Dále jsou rozebrány technické aspekty realizace -- od struktury klientské a serverové části, přes návrh a implementaci editoru a přehrávače, až po možnosti lokalizace, responzivity a zabezpečení. 
+Kapitola se rovněž věnuje systémům rozšíření, multimédií a uživatelských interakcí, které tvoří základ pro škálovatelnost a budoucí rozvoj platformy. 
+Nakonec kapitola ukazuje nasazení platformy společně s tím, co se pro platformu vytvořilo a co je možné s pomocí aplikace vytvořit za materiály.
 \end{chapterabstract}
 
 \section{Tvorba prototypu}
@@ -59,6 +63,19 @@ Starší části aplikace byly pravidelně přepisovány a optimalizovány s cí
 Tento iterativní proces vývoje umožnil nejen průběžné zdokonalování aplikace, ale také pružně reagovat na nové požadavky a potřeby uživatelů. 
 Díky tomuto přístupu bylo možné zajistit vysokou kvalitu finální verze platformy a její snadnou škálovatelnost pro budoucí rozšíření.
 
+Vývoj platformy probíhal v prostředí verzovací služby GitLab, která sloužila jako hlavní nástroj pro správu kódu. 
+Zároveň jsem využíval GitHub pro synchronizaci a zálohu repozitáře. 
+Projekt byl veden jako monorepozitář, což umožnilo jednoduchou provázanost všech součástí systému, které spolu úzce souvisí. 
+Tento přístup se ukázal jako výhodný pro počáteční vývoj, nicméně do budoucna by bylo vhodné jednotlivé části oddělit do samostatných repozitářů s jasně definovaným rozhraním.
+
+Pro lepší orientaci v historii změn jsem používal semantické zprávy při commitech. 
+Každá zpráva jasně popisuje, co se změnilo a v jaké části systému, což usnadňuje zpětné dohledávání konkrétních úprav. 
+V rámci vývoje vzniklo XXX\todo{kolik?} samostatných balíčků změn (commit), které pokrývají vývoj nových funkcí, opravy chyb i refaktoring.
+
+Plánování probíhalo mimo samotné verzovací nástroje, především prostřednictvím služby ClickUp. 
+Tento nástroj sloužil ke správě úkolů, revizí a sledování pokroku ve vývoji. 
+Pomáhal mi tak udržet přehled o jednotlivých krocích, přestože jsem pracoval většinou samostatně.
+
 
 % - po zakladnim navrhu a analyze (viz kapitoly \ref{text:navrh} a \ref{text:analyza})
 % - iterativni zpusob prace
@@ -69,10 +86,6 @@ Díky tomuto přístupu bylo možné zajistit vysokou kvalitu finální verze pl
 %     - ulozit si feedback, issues
 %     - opravit akutni chyby
 % - prepisovani a vyuziti refactoring
-
-\section{Serverová část}\todo{dopsat}
-
-\subsection{Autentizace a autorizace}
 
 \section{Klientská část}\label{text:realizace/klient}
 
@@ -133,15 +146,6 @@ Hlavním cílem bylo vytvořit jednoduchý, ale vizuálně přitažlivý design,
 Pro usnadnění budoucích úprav a možnou implementaci více barevných režimů byly ve stylování využity CSS proměnné.
 Tento přístup umožňuje nejen jednoduché změny barevných schémat, ale i potenciální rozšíření designu o tmavý nebo kontrastní režim podle preferencí uživatele.
 
-% - prvni iterace hodne inspirace z me bakalarske prace, reusing kodu komponent
-% - v pozdejsich fazich vytvoren jednotny styl
-% - hodne inspirace glassmorphismu, tedy pruhledne rozmazene interakce
-% - jednoduchy transparent
-% - vse konzistnetni a to i v editoru
-% - po vybrání designu vybrán název - Materalist, sjednocení anglického Material a Specialist, indikuje spoustu dalisch veci
-% - vytvoreno logo (+ obrazek), ktere simbolizuje platno a M jako material
-% - pouzivani promennych pro jednodusi styling v budoucnosti, pridani barevnych modu
-
 \subsection{Autentizace a autorizace}
 
 Aplikace odděluje obsah určený pro veřejnost od částí přístupných pouze přihlášeným uživatelům. 
@@ -176,7 +180,7 @@ V opačném případě, tedy při hodnotě \texttt{PRIVATE}, je přístup omezen
 
 % - procházení
 
-\subsection{Responzivita}
+\subsection{Responzivita}\label{text:realizace/responzivita}
 
 
 Všechny stránky aplikace jsou přizpůsobené pro různá zařízení, jak je podrobněji uvedeno v kapitole \ref{text:testovani}. 
@@ -238,6 +242,134 @@ Tento aspekt zatím systém neřeší a může být řešen později například
 % - v budoucnu mozny problem se sklonovanim
 
 \subsection{Optimalizace pro webové vyhledávače}
+
+Klientská část platformy je postavena jako SPA pomocí frameworku Vue. 
+Tento přístup přináší některé výhody z hlediska vývoje a uživatelského zážitku, ale současně komplikuje indexaci obsažených stránek vyhledávacími nástroji. 
+Problém spočívá v tom, že většina obsahu se vykresluje až po načtení skriptů, což někteří roboti vyhledávačů nezohlední.
+
+Tento problém byl vyřešen pomocí techniky \textit{prerendering}.
+Při detekci specifického \textit{user-agenta} (typicky pro vyhledávací roboty) je požadavek přesměrován na službu \texttt{prerender}, která spustí virtuální prohlížeč, vykreslí cílovou stránku a vrátí její výsledný HTML výstup.
+Výsledkem je obsah, který lze snadno indexovat bez ohledu na způsob zobrazení na straně klienta.
+
+Z hlediska obsahu je pro SEO zásadní zejména přehrávač, který obsahuje samotné výukové materiály, a přihlašovací stránka. 
+Prerendering je nasazen také pro hlavní stránku platformy, jak je popsáno v kapitole~\ref{text:realizace/hlavniStranka}. 
+Samotné nasazení této služby je detailně popsáno v kapitole~\ref{text:realizace/nasazeni}.
+
+Pro zlepšení optimalizace na straně klienta se používá knihovna \texttt{unhead}, která umožňuje dynamicky upravovat nadpisy stránek a další SEO metadata. 
+V kombinaci s prerenderingem tak vzniká systém, který je pro vyhledávače čitelný a současně neomezuje funkčnost platformy. 
+Stránky jsou navíc přístupné a plně responzivní, jak rozvádím v kapitole~\ref{text:realizace/responzivita}.
+
+Alternativa k tomuto by byla použít vykreslování na serveru pomocí nějakého frameworku, třeba Nuxt.
+Vzhledem k tomu, že stránky nejsou takovým velkým cílem SEO, se mi zdála tato možnost jako nevhodná a proto jsem ji nezvolil.
+
+% \subsection{Optimalizace pro webové vyhledávače}
+
+% - vue je SPA, problem s vykreslovanim pro vyhledavace
+% - hlavni problem - vykresleni - reseno pomoci tzv. prerender
+% - predkresleni stranky pro urcite lidi s danym user-agent
+% - sluzba prerender, spousti virtualni prohlizec, vraci vykreslene HTML
+% - pro klientskou cast je klicove jen prihlasovaci stranka a prehravac, ktery nese dalsi obsah
+% - nasazeni reseno v sekci \ref{text:realizace/nasazeni}
+% - v klientske casti reseni pomoci unhead nadpis stranky a dalsi seo
+% - stranka je taktez pristupna, viz \ref{text:realizace/responzivita}
+% - prerender se pouziva i na hlavni stranku viz sekce \ref{text:realizace/hlavniStranka}
+
+\section{Serverová část}\label{text:realizace/server}
+
+Serverová část aplikace byla implementována v souladu s návrhem popsaným v kapitole~\ref{text:navrh/server}. 
+Hlavní jazykem byl TypeScript a vývoj probíhal s využitím frameworku Nest. 
+
+Pro jednotlivé funkce byly použity následující balíčky:
+
+\begin{description}
+    \item[bcrypt] Kvalitní hashovací funkce, pro ochranu hesel.
+    \item[class-validator] Pro validaci příchozích dat.
+    \item[mjml] Pro formátování e-mailových šablon
+    \item[puppeteer] Pro spouštění virtuálního prohlížeče pro generování náhledových obrázků a exporty materiálů.
+    \item[nodemailer] Pro odesílání e-mailů.
+    \item[socket.io] Pro správu WebSocketů, tedy real-time komunikace.
+\end{description}
+
+Nest framework je ve výchozím stavu postaven na knihovně Express a s tím jsem počítal i v návrhu aplikace.
+V tomto projektu byl ale nakonec nahrazen za Fastify, protože Nest podporuje přepnutí serverového enginu nativně. 
+Změna nevyžadovala větší úpravy a přinesla drobné výhody z hlediska výkonu a např. nahrávání souborů.
+
+V porovnání s klientskou částí byla implementace serveru časově méně náročná.
+Nejvíce úsilí vyžadovala klientská část, respektive vývoj editoru a přehrávače, jejichž návrh i funkcionalita byly složitější.
+
+\subsection{Moduly}
+
+Nest klade důraz na modularitu. Každá část aplikace je definována jako samostatný modul. V projektu byly vytvořeny tyto moduly:
+
+\begin{description}
+    \item[materials] -- správa výukových materiálů a jejich export.
+    \item[auth] -- registrace, přihlašování a správa autentizace.
+    \item[email] -- odesílání e-mailů a jejich šablonování.
+    \item[events] -- real-time komunikace a kolaborace na materiálech.
+    \item[media] -- správa mediálního obsahu uživatelů. 
+    \item[preferences] správa uživatelského nastavení a personalizace.
+    \item[users] -- uživatelské účty a jejich metadata.
+\end{description}
+
+Moduly \texttt{media}, \texttt{users}, \texttt{preferences} a \texttt{materials} využívají knihovnu Mongoose pro práci s databází MongoDB. 
+Schémata jednotlivých entit jsou definována ve složce XXX\todo{složka}, v implementaci byly zjištěny různé nedostatky s původním návrhem a bylo nutné nějaké entity změnit.
+
+\subsection{Autentizace a autorizace}
+
+Autentizační logika využívá tzv. \emph{guardy}, které Nest nabízí jako mechanismus pro kontrolu přístupu.
+Guardy se aktivují pomocí TS dekorátorů a lze jimi snadno řídit, které části systému vyžadují přihlášení a jakým způsobem. 
+Použity byly různé varianty guardů -- pro běžné API volání, volitelnou autentizaci a také specifické guardy pro websocketové připojení.
+
+Autorizace není centralizovaná, ale probíhá na úrovni jednotlivých endpointů. 
+V každém případě se ověřuje, zda má uživatel přístup k danému materiálu -- buď je veřejný, nebo je uživatel jeho vlastníkem, případně účastníkem kolaborace.
+
+\subsection{Přenos a výměna dat}
+
+Komunikace mezi serverem a klientem probíhá pomocí formátu JSON.
+Pro strukturovaný přenos dat byly vytvořeny DTO třídy, které definují, jaká data se mají mezi klientem a serverem přenášet. 
+Tyto DTO se využívají jak v serverové, tak klientské části aplikace, což vyžadovalo častou synchronizaci během vývoje.
+
+Validace těchto objektů probíhá pomocí knihovny \texttt{class-validator}, která umožňuje definovat validační pravidla přímo v kódu tříd. 
+To přispívá ke konzistenci a zajišťuje, že na server se nikdy nedostanou nevalidní data přímo z klientské části.
+
+
+% \section{Serverová část}\label{text:realizace/server}
+
+% - serverová část aplikace byla vyvinuta v souladu s návrhem z kapitoly \ref{text:navrh/server}.
+% - použití TS a Nest knihovny
+% - další balíčky byly použity:
+%     - bcrypt na hashovani hesel
+%     - class-validator pro validovani prijmanych trid
+%     - mjml pro formatovani emailu
+%     - puppeteer na generaci nahledovych obrazku a export
+% - misto express jsem nakonec pouzil fastify, protoze to za me knihovna resilo a nezdalo se to jako zadny problem, jen zlepseni
+
+% - celkove server mene prace, nez jsem ze zacatku ocekaval, klientska cast, zejmena editor a prehravac byla nejvetsi programovaci cast
+
+% \subsection{Moduly}
+
+% - nest deli veci na moduly
+% - vytvoril jsem tyto moduly:
+%      - materials které spravují materiály a jejich export
+%      - auth zajistuje prihlasovani a registraci
+%      - email posilani emailu a jejich formatovani
+%      - events pro kolaboraci a realtime komunikaci
+%      - media pro spravu obsahu uzivatelů
+%      - preferences pro nastaveni uzivatelů
+%      - users sprava uzivatelu
+%  - modul media, users, preferences, material obsahuji napojeni na mongoose, ODM pro mongo, schema jednotlivych entit ve finalnim zpracovani je mozne ve slozce XXXXXX
+
+% \subsection{Autentizace a autorizace}
+
+% - v nest pouzivam guardy (ktere se pak zapínají přes TS dekorátory)
+% - guardů existuje mnoho, existuji varianty na povinne prihlaseni, nepovinne a prihlaseni do WS
+% - autorizaci si řeší každý endpoint sam, kontroluje se, zda ma uživatel přístup k materiálu (je veřejný, je majitelem, je účastníkem)
+
+% \subsection{Přenos a výměna dat}
+
+% - probiha pomoci JSON
+% - vytvořeny DTO, viz slozka YYYYYY, jsou stejne pro server i klient, casta synchronizace pri vyvoji
+% - pouzivam class-validator pro validaci techto entit
 
 \section{Editor a přehrávač}\label{text:realizace/editor}
 
@@ -637,10 +769,114 @@ O způsobu vložení externího odkazu a respektive o bloku obrázku pojednává
 % - gifová banka: Tenor v Google APIs, vyhledávání pomocí kategorií a co uživatel zadá
 % - po kliku se dané multimédium přidá do materiálu
 % - uživatel může zadat jakýkoliv odkaz do bloku obrázku viz sekce \ref{text:realizace/vytvoreneBloky}
-
 \subsection{Kolaborace}
 
-- 
+Možnost víceuživatelské kolaborace nad jedním výukovým materiálem je jedním ze stěžejních rysů celé platformy.
+Bez její existence by bylo možné pracovat na materiálu pouze z jednoho zařízení, případně by bylo nutné implementovat zamykání souboru a koordinovat přístupy mezi jednotlivými uživateli. 
+To by významně omezilo plynulou spolupráci a editaci v reálném čase.
+
+Cílem bylo umožnit současnou úpravu jednoho materiálu více uživateli. 
+Typickým příkladem je práce z více zařízení jedním uživatelem nebo kooperace více učitelů. 
+Tím, že je kolaborace zajištěna přímo na úrovni serveru (viz kapitola~\ref{text:realizace/server}), není nutné řešit tradiční formy zamykání dokumentu.
+
+Při zahájení editace materiálu se na serveru příslušný materiál označí jako \enquote{aktivní} a jeho obsah je načten do paměti. 
+Od tohoto momentu není změna ihned uložena do databáze, ale uchovává se dočasně a průběžně se ukládá s využitím techniky \textit{debounce} -- tedy až ve chvíli, kdy se tři sekundy nic nemění. 
+V případě dlouhodobé editace se změny ukládají nejpozději po třiceti sekundách.
+
+Editace probíhá ve speciální místnosti (\textit{material editor room}), do které se mohou připojit všichni uživatelé s přístupem k danému materiálu. 
+Server v této místnosti sleduje aktivitu jednotlivých účastníků -- na kterém snímku se nacházejí, jaké bloky mají označené, jejich jméno a barvu. 
+Pouze majitel daného materiálu může nastavit, kteří uživatelé mají k editaci materiálu přístup.
+
+Složité by bylo synchronizovat úpravy jednoho bloku více lidmi současně.
+Z tohoto důvodu je na úrovni klienta i serveru zaveden mechanismus pro zamykání jednotlivých bloků.
+V jeden moment může daný blok upravovat pouze jeden uživatel.
+
+Při každé změně -- ať už jde o přepnutí snímku, označení bloku nebo jeho úpravu -- klient informuje server. 
+Server změnu přepošle všem ostatním připojeným účastníkům, čímž je zajištěna konzistence mezi jednotlivými instancemi editoru.
+V materiálu u klienta je v UI vidět, kdo je k materiálu připojen, jak se jmenuje a na jakém snímku se aktuálně nachází.
+Na daném snímku se poté vykresluje speciální obdélník okolo bloků, které má označené (a které tedy nelze označovat).
+
+Server neplní pouze roli zprostředkovatele komunikace. 
+Zajišťuje také generování náhledových snímků, správu práv a samotné ukládání dat.
+Náhledové snímky se generují pomocí knihovny \texttt{puppeteer} na straně serveru. 
+Server v takovém případě spustí virtuální prohlížeč a kontaktuje speciální stránku na klientovi, která po ověření vykreslí požadovaný snímek bez uživatelského rozhraní, a prohlížeč tuto stránku zachytí. 
+Tento vykreslený náhled je poté odeslán zpět a uložen do databáze. 
+Výsledkem je velmi přesná vizualizace reálného vzhledu snímku bez závislosti na rozšířeních nebo výkonu zařízení klienta.
+Stejně jako u ukládání probíhá generování náhledů pomocí \textit{debounce} se stejnými časovými limity.
+
+Nad rámec synchronizace samotného obsahu se mezi klienty přenášejí také další informace o materiálu -- jeho název, nastavení sdílení nebo vlastnosti přehrávání.
+Synchronizují se i případná rozšíření a další metadata, čímž se zajišťuje, že všichni účastníci mají vždy aktuální stav.
+
+% \subsection{Kolaborace}
+
+% - práce na jednom materiálu by bez tohoto byla možná jen na jednom počítači
+% - pokud by neexistovala, bylo by nutné soubor uzamykat a nebyla by možnost spolupracovat v jeden moment
+% - zejména serverová věc, implementace v kapitole \ref{text:realizace/server}
+
+% - hlavním cilem bylo to, aby v jeden moment mohl upravovat jeden material vice lidi, pr. jeden clovek z vice zarizeni
+% - neni nutne resit zamykani souboru
+
+% - pokud nekdo zacne editovat material, na serveru se takto material oznaci a misto klasickeho ulozeni v db je ulozen v pameti a casto ukladan
+% - existuje mistnost (room) pro editaci konkretniho materialu, do ktere se mohou připojit lidi, kteri maji pristup do materialu
+% - v tomto modu si server pamatuje o kazdem ucastnikovi: na jakem snimku se nachazi, jake bloky ma oznaceny, jmeno a barvu
+
+% - klient i server vytvari system zamykani jednotlivych bloku na snimku, protoze jejich synchronizace by byla slozita. v jeden moment tedy muze mit jeden blok oznacen jen jeden clovek
+% - pri zmene (bloku, oznaceni bloků, snimku) klient oznamuje zmenu serveru, ten ji preposila dalsim ucastniku
+% - v klientske casti je videt kdo je k materialu pripojen, kdo je na jakem slidu a jake bloky ma kdo oznacene
+% - server se mimo rizeni komunikace a povolovani toho, co kdo muze, stara i o dalsi veci, jako je napriklad generovani nahledovych snimku ci ukladani
+% - ukladani probiha 1x za 3 sekundy prave tehdy, pokud nekdo neco zmenit pomoci tzv. debounce, tedy ulozi se az po 3 sekundach prestane prace (zmena bloku), pripadne po 30 i se zmenami
+% - generovani nahledovych snimku jsem resil tim zpusobem, ze misto generace na klientovi (zavislost na rozsirenich, pomale, rusive pro klienta) se generuji na serveru pomoci virtualniho prohlizece (knihovny puppeteer), tim, ze server kontaktuje specialni stranku na klienta, kde se verifikuje specialnim kodem, a bez UI vykresli v prehravaci dany snimek (ci snimky), ktere se pote odesilaji klientům a ukládají se do db
+% - generovani na serveru taktez znamena velmi presne zobrazeni toho, co tam realne je
+% - generovani je taktez tvoreno pomoci debounce se stejnymi intervaly jako ukladani
+% - mezi klienty se synchronizují taktéž dalši data o materiálu (např. jméno, nastavení sdílení a přehrávání) a například rozšíření
+
+\subsection{Importování a exportování}
+
+Přestože jsou výukové materiály na platformě koncipovány jako interaktivní, existují případy, kdy je potřeba je převést do statické podoby.
+Typicky jde například o tisk, archivaci nebo tvorbu plakátu. 
+Zároveň je důležité, aby měl uživatel možnost uchovávat lokální zálohy materiálů, a tím zvýšit bezpečnost dat mimo samotný server.
+
+Systém proto podporuje jak import, tak export materiálů. 
+Architektura je rozdělena mezi klienta a server. Import zajišťuje klientská část, která ze zadaného vstupu vytvoří nový materiál včetně odpovídajících bloků. 
+Export naopak probíhá na serveru.
+
+Při exportu odešle klient požadavek na konkrétní formát, aktuálně podporované jsou \texttt{JSON} a \texttt{PDF}. 
+Export do JSON vrací kompletní strukturu materiálu, respektive jednotlivých snímků, včetně všech vlastností. 
+Tento formát je vhodný pro zálohování nebo pozdější import. 
+Export do PDF funguje tak, že server pomocí nástroje \texttt{puppeteer} vykreslí každý snímek zvlášť jako náhled -- obdobně jako v případě kolaborace. 
+Výsledkem je soubor obsahující jednotlivé stránky, které reflektují vzhled snímků tak, jak je vidí uživatel.
+Jelikož mohou mít jednotlivé snímky odlišné rozměry, je nezbytné generovat je po jednom a teprve následně spojit do jednoho PDF dokumentu.
+
+Import podporuje klient ze dvou formátů: \texttt{JSON} a \texttt{Markdown}. 
+Při importu JSON dojde ke znovuvytvoření materiálu přesně podle předchozí struktury. 
+Markdown je zpracován pomocí knihovny \texttt{marked}, která na klientovi vrací stromovou reprezentaci dokumentu. 
+Klient následně přečte jednotlivé nadpisy a obsahové bloky mezi nimi a rozdělí je do odpovídajících snímků. 
+První nadpis se použije jako název materiálu a titulní strana.
+
+Markdown import podporuje běžné textové struktury jako nadpisy, tučný a kurzívní text, odkazy nebo seznamy. 
+Díky tomu je možné rychle vytvořit základní kostru prezentace bez nutnosti ručního zadávání každého bloku.
+
+% \subsection{Importování a exportování}
+
+% - materialy jsou sice interaktivni, ale nekdo si naprikald muze chtit material vytisknout, nebo v tom opravdu delat treba nejaky plakát
+% - system musi dovolovat lokalni zalohy pro bezpecnost
+
+% - implementovan system, kdy importovani dela klient, ktery vytvori material s danymi bloky
+% - export dela server
+
+% - exportovani: na server se posle pozadavek, ktery zacne export daneho typu
+% - aktualne JSON a PDF
+% - json vrati reprezentaci celeho materialu (resp. snimku)
+% - pdf vygeneruje kazdy snimek do PDF
+% - pro pdf se vyuziva puppeteer, ktery stejně jako kolaborace udělá obrázek stránky pomocí volání dotazu pro kazdý snímek
+% - jelikoz stranky mohou mit ruzne velikosti, je nutne generovat po snimkach a potom je spojit do velkeho pdf
+
+% - importovani: klient umi zpracovat a vytvořit materialu z JSON a markdown
+% - markdown se na klientovi zparsuje pomoci knihovny marked, ktera umi vratit stromovou reprezentaci dat v textu
+% - klient z toho přečte jednotive nadpisy a po nadpisech veskery obsah, ktery vloží na danou stranku s danym formatovanim
+% - nadpis jedna je nazev materialu a titulni strany
+% - umi zpracovat text, bold, italic, odkaz, listy
+% - dovoluje to jednodusjei vytvorit kostru prezentace
 
 \section{Rozšíření}
 
@@ -787,7 +1023,7 @@ Ukázka komunikace mezi iframe pomocí API prohlížeče \texttt{postMessage} a 
 % - vzajemna komunikace bloku a panelu
 % - vymena dat, napr. pro nastaveni, vytvoreni bloku, editace a dalsi
 
-\section{Hlavní webová stránka}
+\section{Hlavní webová stránka}\label{text:realizace/hlavniStranka}
 
 Hlavní webová stránka byla vytvořena za účelem propagace aplikace.
 Celý projekt a aplikace nese název \textbf{Materalist}.
@@ -819,7 +1055,7 @@ Hlavním konceptem je velká jednostránková webová stránka, která obsahuje 
 - pomoci docosaurus
 ...
 
-\section{Sestavení a nasazení aplikace}
+\section{Sestavení a nasazení aplikace}\label{text:realizace/nasazeni}
 
 \section{Vytvořené bloky}\label{text:realizace/vytvoreneBloky}
 
