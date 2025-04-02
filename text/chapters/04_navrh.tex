@@ -24,15 +24,16 @@ V této aplikaci se bude ke komunikaci používat zabezpečený protokol HTTPS.
 
 Klientská část zpravidla představuje uživatelské prostředí běžící na zařízení uživatele a závisí na serveru. 
 Serverová část zpracovává požadavky, odpovídá na ně a komunikuje s databází, externími službami nebo zajišťuje odesílání e-mailových zpráv. 
+Hlavní stránka slouží k reprezentaci projektu.
 Následující části textu se věnují podrobnostem o struktuře jednotlivých komponent, použitých technologiích a způsobu jejich rozdělení. 
 Diagram návrhu architektury je vyobrazen v obrázku~\ref{fig:architektura}.
 
-% \begin{figure}[ht!]
-%     \centering
-%     \includegraphics[width=0.85\textwidth]{chapters/navrh/architektura.pdf}
-%     \caption{Diagram architektury aplikace}\label{fig:architektura}
-% \end{figure}
-
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.85\textwidth]{media/04_navrh/architektura.pdf}
+    \caption{Diagram architektury aplikace}\label{fig:architektura}
+\end{figure}
+ 
 \subsection{Klient}\label{text:navrh/klient}
 
 Klientem celé aplikace bude webová stránka, ve které budou uživatelé vytvářet, přehrávat a procházet materiály. 
@@ -40,9 +41,12 @@ Obecně na této části budou uživatelé ovládat celou aplikaci.
 Webová stránka je vhodná, protože to dovolí rychlejší přístup ke všem funkcionalitám bez nutnosti cokoliv instalovat.
 Instalace taktéž není vhodná kvůli velkému počtu používání materiálů studenty, kterým by toto stahování mohlo přijít nevhodné.
 Později by šlo z aplikace vytvořit nativní aplikaci na desktop či telefony pomocí enkapsulace webové stránky.
+Dále je vhodné vyřešit, jestli aplikace bude \enquote{single page application} či \enquote{multi page application}.
+Použiji SPA oproti alternativě a to z důvodu, že obnovení stránky není na takto velké aplikaci vhodné.
+Hlavním cílem stránky je editor, což je zcela klientská komponenta, která by při alternativě nebyla dobře stvořitelná.
 
 Tato část bude pomocí REST API komunikovat se serverovou částí za pomoci protokolu HTTP, ze které bude získávat veškerá potřebná data.
-Restful API je ve zkratce takové API, které pracuje se zdroji jako takovými a dovoluje nad nimi volat klasické akce jako čtení, přidání, smazání a změnu (CRUD).
+RESTful API je ve zkratce takové API, které pracuje se zdroji jako takovými a dovoluje nad nimi volat klasické akce jako čtení, přidání, smazání a změnu (CRUD).
 Mimo jiné definuje další standardizované chování, které by toto API mělo mít.
 Tento způsob dovoluje tvořit tzv. \enquote{thick klienty}, které vysvětlím a zdůvodním později.
 
@@ -83,10 +87,10 @@ V realizované aplikaci budou vrstvy pak dále děleny a bude vytvořena další
 Níže jsou naplánované veškeré vrstvy pro klientskou část.
 
 \begin{description}
-    \item[Komponenty] Které zajišťují unifikované chování pro často opakující se prvky na stránce tak, aby jejich tvorba byla co nejrychlejší a dovolovala přehlednější kód. Komunikují se stránkami pomocí dvoucestných vazeb či událostí.
-    \item[Stránky] Které seskupují komponenty a vlastní funkcionality do jednotlivých stránek aplikace. Předávají komponentám data a určují jim, jak se mají chovat či zobrazovat.
-    \item[Perzistence] Které jsou často nazývané ve webovém inženýrství jako obchody (stores), které globálně ukládají data pro celou aplikaci, aby bylo jedno místo (či místa), kde je lze najít. Slouží k tomu, aby se o data nežádalo více, než je nutné (caching). Mohou dovolovat ukládat data zcela perzistentně i mezi načtením stránky pro rychlejší prvotní načtení. Komunikují se serverem pomocí další vrstvy.
-    \item[Komunikace] Což zajišťuje komunikaci se serverem pomocí Restful API serveru. Určují a kontrolují jaká data od serveru přijdou, určují lokální rozhraní pro CRUD operace s danými zdroji a mapují je na lokální objekty.
+    \item[Komponenty] které zajišťují unifikované chování pro často opakující se prvky na stránce tak, aby jejich tvorba byla co nejrychlejší a dovolovala přehlednější kód. Komunikují se stránkami pomocí dvoucestných vazeb či událostí.
+    \item[Stránky] které seskupují komponenty a vlastní funkcionality do jednotlivých stránek aplikace. Předávají komponentám data a určují jim, jak se mají chovat či zobrazovat.
+    \item[Perzistence] které jsou často nazývané ve webovém inženýrství jako obchody (stores), které globálně ukládají data pro celou aplikaci, aby bylo jedno místo (či místa), kde je lze najít. Slouží k tomu, aby se o data nežádalo více, než je nutné (caching). Mohou dovolovat ukládat data zcela perzistentně i mezi načtením stránky pro rychlejší prvotní načtení. Komunikují se serverem pomocí další vrstvy.
+    \item[Komunikace] zajišťuje komunikaci se serverem pomocí RESTful API serveru. Určují a kontrolují jaká data od serveru přijdou, určují lokální rozhraní pro CRUD operace s danými zdroji a mapují je na lokální objekty.
 \end{description}
 
 \subsubsection{Editor a přehrávač}
@@ -108,7 +112,7 @@ Tato data bude server získávat z dalších služeb a zejména z databáze, ve 
 O databázi se budu dále rozepisovat v kapitole \ref{text:navrh/databaze}.
 Mezi další služby bude patřit e-mailový server či různá další externí API třetích služeb (například na získávání obrázků a tak dále).
 
-Poskytované API, což jsem zmínil v kapitole \ref{text:navrh/klient}, bude Restful a tedy bude dovolovat práci se zdroji. 
+Poskytované API, což jsem zmínil v kapitole \ref{text:navrh/klient}, bude RESTful a tedy bude dovolovat práci se zdroji. 
 Alternativní způsob designu API je například Simple Object Access Protocol (SOAP), který dovoluje volání akcí na serveru.
 Standard REST API, jakožto moderní způsob komunikace, ukládá za povinnost takové věci API, které se slučují s navrhovanou aplikací.
 SOAP by byl v tomto případě nevhodný a to zejména z důvodu, že server v tomto případě zejména slouží jakožto služba, která ukládá data.
@@ -130,8 +134,8 @@ O zabezpečení budu mluvit v pozdější kapitole \ref{text:navrh/auth}.
 Některé endpointy musí být limitované i rate-limitery, tedy že omezí počet volání daného endpointu pro konkrétního uživatele či globálně.
 Jedná se např. o stránku s registrací.
 
-Samotná serverová část bude tvořena v jazyce TS.
-Volba TS je stejná jako v klientské části (viz kapitola \ref{text:navrh/klient}) a to tedy, že nutí programátora psát udržitelný kód, který je staticky typově kontrolován.
+Samotná serverová část bude tvořena v jazyce TypeScript.
+Volba TS je stejná jako v klientské části (viz kapitola \ref{text:navrh/klient}) a to tedy, že nutí programátora psát udržitelný kód, který je staticky typově zajištěn.
 
 Implementace komunikačního uzlu je možná přes řadu způsobů a knihoven.
 V JS, resp. TS ekosystému patří mezi nejoblíbenější backendový rámec knihovna Express.js (často taktéž Express).
@@ -151,6 +155,14 @@ Jedná se např. o passport, Mongo, Prisma, fronty úkolů, volání úloh, CORS
 Proto jsem se rozhodl NestJS s Express použít a to za pomoci TypeScriptu.
 
 Server nejspíše bude používat i řadu dalších knihoven, například na odesílání e-mailů, jejich formátování a například na generování přihlašovacích tokenů pomocí JWT (viz kapitola \ref{text:navrh/auth}).
+Tyto knihovny budu zajišťovat během vývoje aplikace.
+
+V aplikaci plánuji vytvořit kolaboraci v editoru materiálu a další real-time komunikaci a proto je potřeba zajistit tento mechanismus.
+Možné je používat např. metody polling, long polling, server-sent events a další~\todo{cite}, které běží přímo za pomoci protokolu HTTP.
+Vhodnější je dle mého použít protokol WebSocket, který je přesně pro real-time oboustrannou komunikaci určen~\todo{cite}.
+Na serveru lze používat různé knihovny.
+Mezi nejznámější~\todo{cite} patří např. \verb|ws| či \verb|socket.io|.
+Právě \verb|socket.io| jsem si vybral z důvodu, že umí například řešit nepřístupnost WS či umí rozdělovat uživatele do skupin, ve kterých se odděleně komunikuje.
 
 Výsledné API, které vznikne z této aplikace se pokusí dodržovat vše, co uvádí standard REST.
 To souvisí i s návrhem jednotlivých koncových bodů, které budou řádně uvádět stavové kódy, dodržovat metody komunikace a řadu dalšího.
@@ -212,7 +224,7 @@ V kontextu MongoDB a JavaScriptu to znamená, že hodnota může být buď expli
 
 Entity v databázovém schématu odpovídají těm v doménovém modelu, avšak jejich názvy, atributy a další části byly přeloženy do angličtiny pro snadnější implementaci. 
 Do návrhu byly doplněny další entity, dle provedeného návrhu aplikace, a také dekompozice vazeb typu \texttt{M:N}. 
-Schéma je uvedeno v diagramu v obrázku \ref{fig:databazoveSchema}
+Schéma je uvedeno v diagramu v obrázku \ref{fig:databazoveSchema}.
 
 Kompletní definice schématu jsou dostupné v kódové příloze ve složce \todo{složka}. 
 Každá entita obsahuje validaci, která definuje platné hodnoty, povinné atributy, unikátnost či požadovanou délku.
@@ -256,7 +268,7 @@ Výsledná aplikace je sice nástroj, ale reálně by měla být použita a být
 Chtěl bych, aby aplikaci ihned kdokoliv poznal. 
 Proto jsem se rozhodl nepoužívat žádný předpřipravený designový systém a vytvořit pro tuto aplikaci speciální, který bude plně odpovídat požadavkům a unikátně reflektovat její funkčnost a estetiku.
 
-\subsection{Komponenty a styly}\label{text:navrh/desgin/komponenty}
+\subsection{Komponenty a styly}\label{text:navrh/desgin/komponenty}\label{text:navrh/design/komponenty}
 
 Designový systém budu zakládat na komponentách a jejich interakcích.
 Jednotlivým komponentám, ale i celé stránce, budu implementovat design.
@@ -317,7 +329,7 @@ Stránka bude responzivní na výšku automaticky díky nepoužívání relativn
 Wireframy (také označované jako návrhové obrazovky) slouží k rychlému náhledu uspořádání prvků a obsahu v připravované aplikaci. 
 Oproti detailnějším prototypům či mockupům se u nich klade důraz především na pozici a význam prvků, nikoliv na finální grafické zpracování či prokliky mezi obrazovkami.
 
-Vytváření návrhů pro tuto aplikaci probíhalo v nástroji Uizard2. 
+Vytváření návrhů pro tuto aplikaci probíhalo v nástroji Figma. 
 
 Během práce jsem se inspiroval zejména svými již dříve vytvořenými uživatelskými prostředími a obecně z nástrojů, které jsem analyzoval v kapitolách \ref{text:analyza/prezentace}, \ref{text:analyza/grafika} a \ref{text:analyza/materialy}.
 
@@ -326,18 +338,26 @@ Více o testování a zpětné vazbě při tvorbě aplikace je k dispozici v kap
 Každá z vytvořených obrazovek proto odráží aktuální požadavky na funkčnost i strukturu aplikace.
 
 
-Celkem vzniklo X návrhových obrazovek, jejichž ukázky jsou uvedeny v obrázcích Y a Z, zatímco úplný přehled všech návrhů lze nalézt v příloze \ref{appendix:navrhoveObrazovky}.
+Celkem vzniklo 22\todo{Zkontrolovat} návrhových obrazovek, jejichž ukázky jsou uvedeny v obrázcích \ref{fig:navrhovaObrazovkaRozsireni} a \ref{fig:navrhovaObrazovkaEmailAKod}, zatímco úplný přehled všech návrhů lze nalézt v příloze \ref{appendix:navrhoveObrazovky}.
 Mezi ně patří:
 
 \begin{itemize}
-    \item přihlášení, registraci
-    \item TODO
+    \item přihlášení, vytvoření účtu
+    \item hlavní stránka, vytvoření, import materiálu
+    \item editor, nastavení, rozšíření, práce s bloky
+    \item přehrávač, malování
 \end{itemize}
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.9\textwidth]{chapters/navrh/navrhovaObrazovkaEditace.pdf}
-    \caption{Návrhová obrazovka administrační části upozornění}\label{fig:navrhovaObrazovkaEditaceAdministrace}
+    \includegraphics[width=0.95\textwidth,page=21]{media/04_navrh/navhoveObrazovky.pdf}
+    \caption{Návrhová obrazovka editoru s otevřeným vyskakovacím oknem s aktivními rozšířeními}\label{fig:navrhovaObrazovkaRozsireni}
+\end{figure}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.95\textwidth,page=12]{media/04_navrh/navhoveObrazovky.pdf}
+    \caption{Návrhová obrazovka přihlašovací stránky v záložce \enquote{E-mail s potvrzením} po odeslání žádosti}\label{fig:navrhovaObrazovkaEmailAKod}
 \end{figure}
 
 
@@ -346,7 +366,7 @@ Mezi ně patří:
 Při návrhu platformy bylo nutné definovat základní komponenty systému, které umožní tvorbu, editaci a následné přehrávání interaktivních výukových materiálů. 
 Klíčovými prvky jsou bloky jako nejmenší jednotky obsahu, editor sloužící k jejich úpravám a přehrávač, který umožňuje interakci s uživateli.
 
-\subsection{Bloky jako stavební prvky}
+\subsection{Bloky}
 
 Základním konstrukčním prvkem v navrhovaném systému je blok. 
 Každý blok představuje samostatnou jednotku obsahu, která může nabývat různých podob. 
@@ -356,7 +376,7 @@ Základní typy bloků mimo jiné zahrnují:
 
 \begin{description}
     \item[Textové bloky] Které dovolují formátování textu, což zahrnuje velikosti, barvy, fonty a další.
-    \item[Obrazové a multimediální bloky] Dovolují vkládání a manipulaci s obrázky, videi a dalším interaktivním obsahem
+    \item[Obrazové a multimediální bloky] Dovolují vkládání a různou manipulaci s obrázky, videi a dalším interaktivním obsahem
     \item[Tvarové bloky] Které umožňují vložit předdefinované tvary a jejich modifikaci.
     \item[HTML blok] Umožňuje skoro neomezeně rozšiřovat funkcionality prezentace pomocí psaní si vlastního HTML kódu, který se bezpečně vykreslí pomocí tagu iframe.
 \end{description}
@@ -466,7 +486,7 @@ Lze taktéž nastavit animaci mezi jednotlivými stavy interakce.
 %     - omezeni a nastaveni vsech hodnot, napriklad kdy se tato interakce muze vubec spustit
 %     - animace pomoci interpolace hodnot
 
-\subsection{Kódový návrh}
+\subsection{Architektura jádra}
 
 Návrh tříd editoru a přehrávače tvoří základ celého systému. 
 Promyšlená struktura těchto komponent je klíčová pro budoucí rozšiřování a udržovatelnost projektu.
