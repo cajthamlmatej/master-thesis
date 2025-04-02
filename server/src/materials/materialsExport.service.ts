@@ -15,9 +15,7 @@ export class MaterialsExportService {
 
     private browser: Browser;
     private browserPromiseResolve: (value: Browser) => void;
-    private browserPromise: Promise<Browser> = new Promise((resolve) => {
-        this.browserPromiseResolve = resolve;
-    });
+    private browserPromise: Promise<Browser> | null = null;
     private readonly logger = new Logger(MaterialsExportService.name);
 
     constructor(
@@ -25,11 +23,46 @@ export class MaterialsExportService {
         @Inject(forwardRef(() => EventsGateway)) private readonly eventsGateway: EventsGateway,
         private readonly configService: ConfigService
     ) {
-        this.init();
+        this.getBrowser();
     }
 
     public getToken() {
         return this.TOKEN;
+    }
+
+    private async getBrowser(): Promise<Browser> {
+        if(this.browser) {
+            return this.browser;
+        }
+
+        let hasToRegenerate = false;
+
+        if(!this.browserPromise) {
+            hasToRegenerate = true;
+        }
+
+        let awaited = await this.browserPromise;
+
+        if(!(awaited)) {
+            hasToRegenerate = true;
+        }
+
+        if(!hasToRegenerate && awaited) {
+            return awaited;
+        }
+
+        this.browserPromise = new Promise(async (resolve) => {
+            this.browserPromiseResolve = resolve;
+        });
+
+        this.browser = await puppeteer.launch({
+            headless: true,
+            args: ['--no-sandbox']
+        });
+
+        this.browserPromiseResolve(this.browser);
+
+        return this.browser;
     }
 
     public async exportMaterial(material: HydratedDocument<Material>, format: string) {
@@ -53,71 +86,51 @@ export class MaterialsExportService {
 
         const url = this.configService.get<string>("FRONTEND_DOMAIN")! + this.configService.get<string>("FRONTEND_DOMAIN_PLAYER")!;
 
-        await this.browserPromise;
-
-        if (!this.browser) {
-            this.browser = await this.browserPromise;
-        }
-
         const outputFolder = `./temp/${material.id}/`;
         fs.mkdirSync(outputFolder, {recursive: true});
 
-        for (let slide of material.slides) {
-            const slideId = slide.id;
-            const outputFile = `${outputFolder}/${slideId}.jpg`;
-            const width = Number(slide.data.editor.size.width);
-            const height = Number(slide.data.editor.size.height);
+        try {
+            for (let slide of material.slides) {
+                const slideId = slide.id;
+                const outputFile = `${outputFolder}/${slideId}.jpg`;
+                const width = Number(slide.data.editor.size.width);
+                const height = Number(slide.data.editor.size.height);
 
-            const page = await this.browser.newPage();
-            await page.setViewport({width: width, height: height});
+                const page = await (await this.getBrowser()).newPage();
+                await page.setViewport({width: width, height: height});
 
-            await page.goto(
-                `${url}/${material.id}?slide=${slideId}&rendering=true&cookies=true&token=${this.getToken()}`, {waitUntil: 'networkidle2'});
+                await page.goto(
+                    `${url}/${material.id}?slide=${slideId}&rendering=true&cookies=true&token=${this.getToken()}`, {waitUntil: 'networkidle2'});
 
-            await page.screenshot({
-                path: outputFile,
-                type: "jpeg",
-                quality: 80,
-            })
+                await page.screenshot({
+                    path: outputFile,
+                    type: "jpeg",
+                    quality: 80,
+                })
 
-            const header = "data:image/jpeg;base64,";
-            slide.thumbnail = header + fs.readFileSync(outputFile).toString('base64');
+                const header = "data:image/jpeg;base64,";
+                slide.thumbnail = header + fs.readFileSync(outputFile).toString('base64');
 
-            await page.close();
-        }
-
-        await this.materialsService.updateThumbnails(material);
-
-        this.eventsGateway.getEditorRoom(material.id)?.announceNewThumbnails(material.slides.map(s => {
-            return {
-                id: s.id,
-                thumbnail: s.thumbnail,
+                await page.close();
             }
-        }));
 
-        this.logger.log(`Finished exporting slide thumbnails for material ${material.id}`);
-    }
+            await this.materialsService.updateThumbnails(material);
 
-    private async init() {
-        console.log(this.browserPromise);
-        this.browser = await puppeteer.launch({
-            headless: true,
-            args: ['--no-sandbox']
-        });
+            this.eventsGateway.getEditorRoom(material.id)?.announceNewThumbnails(material.slides.map(s => {
+                return {
+                    id: s.id,
+                    thumbnail: s.thumbnail,
+                }
+            }));
 
-        // Open blank page so it never closes
-        await this.browser.newPage();
-
-        this.browserPromiseResolve(this.browser);
+            this.logger.log(`Finished exporting slide thumbnails for material ${material.id}`);
+        } catch (e) {
+            this.logger.error(`Error exporting slide thumbnails for material ${material.id}: ${e}`);
+        }
     }
 
     private async exportToPDF(material: HydratedDocument<Material>, outputFolder: string) {
         const url = this.configService.get<string>("FRONTEND_DOMAIN")! + this.configService.get<string>("FRONTEND_DOMAIN_PLAYER")!;
-
-        await this.browserPromise;
-        if (!this.browser) {
-            this.browser = await this.browserPromise;
-        }
 
         let output = `${outputFolder}/output-pdf.pdf`;
 
@@ -127,7 +140,7 @@ export class MaterialsExportService {
             const width = Number(slide.data.editor.size.width);
             const height = Number(slide.data.editor.size.height);
 
-            const page = await this.browser.newPage();
+            const page = await (await this.getBrowser()).newPage();
             await page.setViewport({width: width, height: height});
 
             await page.goto(
