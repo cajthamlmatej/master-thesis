@@ -192,13 +192,38 @@
             "leave": "Opustit materiál",
             "automatic-stop": "Zastavit automatické procházení",
             "automatic-play": "Zapnout automatické procházení",
-            "focus": "Zvětšit do obrazovky"
+            "focus": "Zvětšit do obrazovky",
+            "share": "Sdílení a sledování",
+            "watch": "Sledovat"
         },
         "loading": "Načítání materiálu...",
         "not-found": {
             "title": "Materiál nenalezen",
             "message": "Materiál, který se snažíte otevřít, nebyl nalezen. Zkontrolujte prosím odkaz či kontaktujte autora materiálu.",
             "dashboard": "Zpět na ovládací panel"
+        },
+        "share": {
+            "share-link": {
+                "title": "Sdílení odkazu",
+                "description": "Sdílejte tento odkaz s ostatními, aby si ho mohli kdykoliv prohlédnout samostatně ve vámi určeném režimu z nastavení v editoru."
+            },
+            "watch-link": {
+                "title": "Sdílení odkazu pro sledování",
+                "description": "Sdílejte tento odkaz s ostatními, aby se nyní mohli připojit a sledovat vás průchod materiálem. Tento odkaz je platný pouze pro aktuální zobrazení a po opuštění materiálu již nebude funkční."
+            },
+            "watch": {
+                "failed": {
+                    "title": "Započatí sledování se nezdařilo",
+                    "description": "Zadaný kód pro sledování je neplatný. Ujistěte se, že jste zadali správný kód a zkuste to znovu. Nyní budete přesměrován na stránku materiálu, kde můžete sledování znovu zahájit.",
+                    "button": "Přejít na materiál"
+                }
+            },
+            "join": {
+                "title": "Připojit se k sledování",
+                "description": "Zadejte kód pro sledování, který vám dal někdo jiný, abyste se mohli připojit k sledování materiálu. Tento kód je platný pouze pro aktuální zobrazení a po opuštění materiálu již nebude funkční.",
+                "code": "Kód pro sledování",
+                "join": "Připojit se"
+            }
         }
     },
     "editor": {

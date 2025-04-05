@@ -194,13 +194,38 @@
             "leave": "Leave material",
             "automatic-stop": "Stop automatic playback",
             "automatic-play": "Start automatic playback",
-            "focus": "Fit to screen"
+            "focus": "Fit to screen",
+            "share": "Sharing and Watching",
+            "watch": "Watch"
         },
         "loading": "Loading...",
         "not-found": {
             "title": "Not found",
             "message": "This material does not exist or you don't have access to it. Ask the owner to share it with you or check the URL.",
             "dashboard": "Go to dashboard"
+        },
+        "share": {
+            "share-link": {
+                "title": "Share Link",
+                "description": "Share this link with others so they can view it independently at any time in the mode you set in the editor settings."
+            },
+            "watch-link": {
+                "title": "Share Watch Link",
+                "description": "Share this link with others so they can join now and watch your progress through the material. This link is valid only for the current session and will no longer work once you leave the material."
+            },
+            "watch": {
+                "failed": {
+                    "title": "Failed to Start Watching",
+                    "description": "The provided watch code is invalid. Please make sure you entered the correct code and try again. You will now be redirected to the material page where you can try to start watching again.",
+                    "button": "Go to Material"
+                }
+            },
+            "join": {
+                "title": "Join Watching",
+                "description": "Enter the watch code provided by someone else to join and watch the material. This code is valid only for the current session and will no longer work once you leave the material.",
+                "code": "Watch Code",
+                "join": "Join"
+            }
         }
     },
     "editor": {

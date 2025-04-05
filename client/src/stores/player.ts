@@ -30,6 +30,17 @@ export const usePlayerStore = defineStore("player", () => {
         drawData.value = [];
     });
 
+    const synchronizeDrawData = (slideId: string, data: string) => {
+        let instance = drawData.value.find(d => d.slide.id === slideId);
+
+        if (!instance) {
+            instance = {slide: getSlideById(slideId) as Slide, data: ""};
+            drawData.value.push(instance);
+        }
+
+        instance.data = data;
+    };
+
     const activeSlide = ref<string | undefined>(undefined);
 
     const requestPlayer = async (slideId: string | undefined, rendering: boolean) => {
@@ -144,5 +155,6 @@ export const usePlayerStore = defineStore("player", () => {
         playerTime,
         slideTime,
         variables,
+        synchronizeDrawData
     }
 });

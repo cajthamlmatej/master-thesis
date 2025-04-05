@@ -365,13 +365,17 @@ export default class Player {
         }
     }
 
+    public getPosition() {
+        return this.position;
+    }
+
     private usageResizeEvent() {
         if (this.mode === PlayerMode.MOVE) return;
 
         this.fitToParent();
     }
 
-    private updateElement() {
+    public updateElement() {
         this.element.style.backgroundColor = this.color;
         this.element.style.left = this.position.x + "px";
         this.element.style.top = this.position.y + "px";
@@ -385,4 +389,12 @@ export default class Player {
         this.element.innerHTML = `<div class="player-content"></div>`
     }
 
+    // setPosition(x: number, y: number) {
+    //     this.position.x = x;
+    //     this.position.y = y;
+    // }
+    //
+    // setScale(scale: number) {
+    //     this.scale = scale;
+    // }
 }

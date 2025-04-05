@@ -6,15 +6,122 @@
                     <span class="name">{{ material.name }}</span>
 
                     <span v-t="{start: timeFromStart, slide: timeFromSlide}" class="time">player.timer</span>
-                    <span v-t="{start: timeFromStart, slide: timeFromSlide}" class="time-short">player.timer-short</span>
+                    <span v-t="{start: timeFromStart, slide: timeFromSlide}"
+                          class="time-short">player.timer-short</span>
                 </div>
             </template>
             <template #navigation>
                 <div class="flex gap-0-5">
                     <ChangeLanguage/>
 
+                    <Dialog
+                        v-if="!watching && canStartWatch">
+                        <template #activator={toggle}>
+                            <NavigationButton
+                                :label="$t('player.control.share')"
+                                :tooltip-text="$t('player.control.share')"
+                                icon="share-variant"
+                                tooltip-position="bottom"
+                                @click.stop="toggle"
+                            />
+                        </template>
+                        <template #default>
+                            <Card dialog>
+                                <Tabs
+                                    v-model:selected="shareType"
+                                    fluid
+                                    :items="[
+                                    {
+                                        text: $t('player.share.share-link.title'),
+                                        value: 'SHARE_LINK'
+                                    },
+                                    {
+                                        text: $t('player.share.watch-link.title'),
+                                        value: 'WATCH_LINK'
+                                    }
+                                ]"
+                                ></Tabs>
+
+                                <div v-if="shareType === 'SHARE_LINK'">
+                                    <p class="description" v-t>player.share.share-link.description</p>
+                                </div>
+                                <div v-else>
+                                    <p class="description" v-t>player.share.watch-link.description</p>
+
+                                    <div class="flex flex-justify-center  pt-1" v-if="link">
+                                        <qrcode-vue :margin="3" :size="200" :value="link"
+                                                    background="white"
+                                                    foreground="black"
+                                                    level="H"
+                                                    render-as="svg"
+                                        ></qrcode-vue>
+                                    </div>
+
+                                    <p class="code">
+                                        {{ watchCode }}
+                                    </p>
+                                </div>
+
+                                <div
+                                    v-if="link"
+                                    class="flex flex-justify-space-between flex-align-center gap-2 pt-1">
+                                    <div class="flex-grow">
+                                        <Input v-model:value="link" :readonly="true" hide-error
+                                               hide-label></Input>
+                                    </div>
+
+                                    <div>
+                                        <Button
+                                            color="primary"
+                                            icon="content-copy"
+                                            @click="copyLink"
+                                        ></Button>
+                                    </div>
+                                </div>
+                            </Card>
+                        </template>
+                    </Dialog>
+
+                    <Dialog
+                        v-if="!watching && !canStartWatch">
+                        <template #activator={toggle}>
+                            <NavigationButton
+                                :label="$t('player.control.watch')"
+                                :tooltip-text="$t('player.control.watch')"
+                                icon="share-variant"
+                                tooltip-position="bottom"
+                                @click.stop="toggle"
+                            />
+                        </template>
+                        <template #default="{toggle}">
+                            <Card dialog>
+                                <p class="title" v-t>player.share.join.title</p>
+
+                                <p v-t>player.share.join.description</p>
+
+                                <Input v-model:value="watchCode"
+                                       class="mt-1"
+                                       :label="$t('player.share.join.code')"
+                                       :validators="[
+                                            (value: string) => value.length === 9 || $t('player.share.join.code.error')
+                                       ]"
+                                ></Input>
+
+                                <div class="flex flex-justify-end mt-1">
+                                    <Button
+                                        color="primary"
+                                        icon="transit-connection-variant"
+                                        :disabled="watchCode?.length !== 9"
+                                        @click="() => {joinWithCode(); toggle()}">
+                                        <span v-t>player.share.join.join</span>
+                                    </Button>
+                                </div>
+                            </Card>
+                        </template>
+                    </Dialog>
+
                     <NavigationButton
-                        v-if="material.method === 'MANUAL'"
+                        v-if="material.method === 'MANUAL' && !watching"
                         :disabled="!hasPreviousSlide"
                         :label="$t('player.control.previous-slide')"
                         :tooltip-text="$t('player.control.previous-slide')"
@@ -23,7 +130,7 @@
                         @click.stop="previousSlide"
                     />
                     <NavigationButton
-                        v-if="material.method === 'MANUAL'"
+                        v-if="material.method === 'MANUAL' && !watching"
                         :disabled="!hasNextSlide"
                         :label="$t('player.control.next-slide')"
                         :tooltip-text="$t('player.control.next-slide')"
@@ -34,7 +141,7 @@
 
 
                     <NavigationButton
-                        v-if="material.method === 'AUTOMATIC'"
+                        v-if="material.method === 'AUTOMATIC' && !watching"
                         :icon="automaticMovement ? 'stop-circle-outline' : 'play-circle-outline'"
                         :label="automaticMovement ? $t('player.control.automatic-stop') : $t('player.control.automatic-play')"
                         :tooltip-text="automaticMovement ? $t('player.control.automatic-stop') : $t('player.control.automatic-play')"
@@ -44,7 +151,7 @@
                     />
 
                     <NavigationButton
-                        v-if="material.sizing === 'MOVEMENT'"
+                        v-if="material.sizing === 'MOVEMENT' && !watching"
                         :label="$t('player.control.focus')"
                         :tooltip-text="$t('player.control.focus')"
                         hide-mobile
@@ -63,6 +170,7 @@
                     />
 
                     <NavigationButton
+                        v-if="!watching"
                         :label="player?.getMode() !== PlayerMode.DRAW ? $t('player.control.enable-draw') : $t('player.control.disable-draw')"
                         :tooltip-text="player?.getMode() !== PlayerMode.DRAW ? $t('player.control.enable-draw') : $t('player.control.disable-draw')"
                         hide-mobile
@@ -72,7 +180,7 @@
                     />
 
                     <NavigationButton
-                        v-if="material.user === userStore.user?.id"
+                        v-if="material.user === userStore.user?.id && !watching"
                         :label="$t('player.control.edit')"
                         :to="{name: 'Editor', params: {material: route.params.material}}"
                         :tooltip-text="$t('player.control.edit')"
@@ -86,7 +194,8 @@
                                 <p v-t class="title">player.variables.title</p>
 
                                 <List>
-                                    <ListItem v-for="variable in Object.keys(playerStore.variables) ?? []" :key="variable">
+                                    <ListItem v-for="variable in Object.keys(playerStore.variables) ?? []"
+                                              :key="variable">
                                         <span>{{ variable }}</span>
                                         <pre><code>{{ playerStore.variables[variable] }}</code></pre>
                                     </ListItem>
@@ -126,7 +235,7 @@
                 <ChangeLanguage :header="false"/>
 
                 <NavigationButton
-                    v-if="material && material.method === 'AUTOMATIC'"
+                    v-if="material && material.method === 'AUTOMATIC' && !watching"
                     :icon="automaticMovement ? 'stop-circle-outline' : 'play-circle-outline'"
                     :label="automaticMovement ? $t('player.control.automatic-stop') : $t('player.control.automatic-play')"
                     :tooltip-text="automaticMovement ? $t('player.control.automatic-stop') : $t('player.control.automatic-play')"
@@ -135,7 +244,7 @@
                 />
 
                 <NavigationButton
-                    v-if="material && material.sizing === 'MOVEMENT'"
+                    v-if="material && material.sizing === 'MOVEMENT' && !watching"
                     :label="$t('player.control.focus')"
                     :tooltip-text="$t('player.control.focus')"
                     icon="fit-to-screen-outline"
@@ -152,6 +261,7 @@
                 />
 
                 <NavigationButton
+                    v-if="!watching"
                     :label="player?.getMode() !== PlayerMode.DRAW ? $t('player.control.enable-draw') : $t('player.control.disable-draw')"
                     :tooltip-text="player?.getMode() !== PlayerMode.DRAW ? $t('player.control.enable-draw') : $t('player.control.disable-draw')"
                     icon="draw-pen"
@@ -160,7 +270,7 @@
                 />
             </template>
             <template #secondary>
-                <Dialog v-if="debugging">
+                <Dialog v-if="debugging && !watching">
                     <template #default>
                         <Card dialog>
                             <p v-t class="title">player.variables.title</p>
@@ -189,7 +299,7 @@
                 </Dialog>
 
                 <NavigationButton
-                    v-if="material && material.user === userStore.user?.id"
+                    v-if="material && material.user === userStore.user?.id && !watching"
                     :label="$t('player.control.edit')"
                     :to="{name: 'Editor', params: {material: route.params.material}}"
                     :tooltip-text="$t('player.control.edit')"
@@ -208,6 +318,17 @@
         </Navigation>
 
         <router-view/>
+
+        <Dialog v-model:value="watchFailed" persistent>
+            <Card dialog>
+                <p class="title" v-t>player.share.watch.failed.title</p>
+                <p v-t>player.share.watch.failed.description</p>
+
+                <Button @click="tryWithoutCode" class="mt-1">
+                    <span v-t>player.share.watch.failed.button</span>
+                </Button>
+            </Card>
+        </Dialog>
     </div>
 </template>
 
@@ -220,13 +341,17 @@ import type Player from "@/editor/player/Player";
 import Header from "@/components/design/header/Header.vue";
 import NavigationButton from "@/components/design/navigation/NavigationButton.vue";
 import ListItem from "@/components/design/list/ListItem.vue";
-import {$t} from "@/translation/Translation";
+import {$t, translation} from "@/translation/Translation";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
 import {useUserStore} from "@/stores/user";
 
 import {PlayerMode} from "@/editor/player/PlayerMode";
 import {usePluginStore} from "@/stores/plugin";
 import {useSeoMeta} from "unhead";
+import {generateToken} from "@/utils/Generators";
+import QrcodeVue from 'qrcode.vue'
+import {communicator} from "@/api/websockets";
+import Card from "@/components/design/card/Card.vue";
 
 const materialStore = useMaterialStore();
 const playerStore = usePlayerStore();
@@ -239,6 +364,52 @@ const route = useRoute();
 const rendering = ref(route.query.rendering === 'true');
 const debugging = computed(() => route.query.debug === 'true');
 
+const joining = ref(false);
+
+const watching = ref(false);
+const watchCode = ref<string | null>(null);
+const watchFailed = ref(false);
+const shareType = ref<string>('SHARE_LINK');
+const canStartWatch = computed(() => {
+    return materialStore.currentMaterial?.user === userStore.user?.id;
+});
+
+const link = computed(() => {
+    if (!watchCode.value) {
+        return undefined;
+    }
+
+    const domain = window.location.origin;
+    if (shareType.value === 'SHARE_LINK') {
+        const url = router.resolve({
+            name: "Player",
+            params: {
+                material: materialStore.currentMaterial?.id,
+                language: translation.getLanguage(),
+            },
+            // TODO: add password?
+        })
+
+        return new URL(url.href, domain).href
+    } else {
+        const url = router.resolve({
+            name: "Player",
+            params: {
+                material: materialStore.currentMaterial?.id,
+                language: translation.getLanguage(),
+            },
+            query: {
+                watch: watchCode.value,
+            }
+        });
+
+        return new URL(url.href, domain).href
+    }
+})
+const copyLink = () => {
+    navigator.clipboard.writeText(link.value ?? '');
+};
+
 const menu = ref<boolean>(false);
 
 const player = ref<Player | null>(null);
@@ -248,7 +419,7 @@ watch(() => playerStore.getPlayer(), (value) => {
 
     if (!material) return;
 
-    if(rendering) {
+    if (rendering) {
         player.value.changeMode(PlayerMode.PLAY);
 
         return;
@@ -262,6 +433,7 @@ watch(() => playerStore.getPlayer(), (value) => {
 
 const material = computed(() => materialStore.currentMaterial!);
 
+const isPresenter = ref<boolean>(false);
 onMounted(async () => {
     await materialStore.load();
     await pluginStore.load();
@@ -292,7 +464,66 @@ onMounted(async () => {
     window.addEventListener("click", click);
     window.addEventListener("keydown", keydown);
     window.addEventListener("mousemove", mousemove);
+
+    isPresenter.value = !!(userStore.user && userStore.user?.id && materialStore.currentMaterial!.user === userStore.user?.id);
+
+    if (route.query.watch) {
+        watching.value = true;
+        watchCode.value = route.query.watch as string;
+        isPresenter.value = false;
+    } else {
+        if (userStore.user && userStore.user?.id && materialStore.currentMaterial!.user === userStore.user?.id) {
+            watchCode.value = generateToken(9, "123456789ABCDEFGHKMNPQRSTUVWXYZ");
+        }
+    }
+
+    if (!watchCode.value) {
+        return;
+    }
+
+    joinWatch();
 });
+
+const joinWatch = async() => {
+    joining.value = true;
+
+    if(!isPresenter.value) {
+        setTimeout(() => {
+            if (joining.value) {
+                watchFailed.value = true;
+            }
+        }, 3000);
+    }
+
+
+    await communicator.setupPlayerRoom(material.value, watchCode.value!, isPresenter.value, playerStore.getActiveSlide()!.id);
+    await communicator.getPlayerRoom()?.joined;
+
+    joining.value = false;
+}
+
+const tryWithoutCode = async () => {
+    const url = router.resolve({
+        name: 'Player',
+        params: {material: materialStore.currentMaterial?.id, language: translation.getLanguage()}
+    });
+
+    // Force redirect to the player refresh, using just dom
+    window.location.href = url.href;
+};
+const joinWithCode = async () => {
+    if (!watchCode.value) {
+        return;
+    }
+
+    isPresenter.value = false;
+    router.push({
+        name: 'Player',
+        params: {material: materialStore.currentMaterial?.id, language: translation.getLanguage()},
+        query: {watch: watchCode.value}
+    });
+    joinWatch();
+};
 
 onUnmounted(() => {
     if (cursorTimeout) clearTimeout(cursorTimeout);
@@ -342,6 +573,10 @@ const nextSlide = () => {
 
     hasNextSlide.value = !!playerStore.getSlides().find(s => s.position > next!.position);
     hasPreviousSlide.value = true;
+
+    if (!watching.value) {
+        communicator.getPlayerRoom()?.changeSlide(next.id);
+    }
 };
 const previousSlide = () => {
     const current = playerStore.getActiveSlide();
@@ -353,6 +588,10 @@ const previousSlide = () => {
 
     hasPreviousSlide.value = !!playerStore.getSlides().reverse().find(s => s.position < prev!.position);
     hasNextSlide.value = true;
+
+    if (!watching.value) {
+        communicator.getPlayerRoom()?.changeSlide(prev.id);
+    }
 };
 
 const keydown = (e: KeyboardEvent) => {
@@ -527,6 +766,7 @@ watch(() => playerStore.getActiveSlide(), (value) => {
             display: none;
         }
     }
+
     .time-short {
         font-size: 0.8em;
         display: none;
@@ -535,5 +775,12 @@ watch(() => playerStore.getActiveSlide(), (value) => {
             display: block;
         }
     }
+}
+
+.code {
+    font-size: 2.8em;
+    color: var(--color-text);
+    text-align: center;
+    margin-top: 1rem;
 }
 </style>

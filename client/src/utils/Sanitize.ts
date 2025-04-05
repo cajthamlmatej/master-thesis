@@ -13,3 +13,14 @@ export const sanitizeHtmlContent = (content: string) => {
         allowedAttributes: {}
     });
 }
+
+export const sanitizeSvg = (svg: string) => {
+    return sanitizeHtml(svg, {
+        allowedTags: ['svg', 'path', 'rect', 'circle', 'ellipse', 'line', 'polyline', 'polygon', 'g'],
+        allowedAttributes: {
+            '*': ['style', 'class'],
+            'svg': ['width', 'height', 'viewBox', 'xmlns', 'xmlns:xlink'],
+            'path': ['d', 'fill', 'stroke', 'stroke-width', 'stroke-opacity', 'stroke-linecap']
+        }
+    });
+}

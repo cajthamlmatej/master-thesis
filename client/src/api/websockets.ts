@@ -151,7 +151,8 @@ export class EditorCommunicator {
             automaticTime: number;
             sizing: "FIT_TO_SCREEN" | "MOVEMENT";
             visibility: "PUBLIC" | "PRIVATE"
-        }) => {
+        }) =>
+        {
             this.material.name = name;
             this.material.method = method;
             this.material.automaticTime = automaticTime;
@@ -192,7 +193,8 @@ export class EditorCommunicator {
             size: { width: number; height: number };
             color: string;
             position: number;
-        }) => {
+        }) =>
+        {
             const editorStore = (await import("@/stores/editor")).useEditorStore();
 
             let slide = editorStore.getSlideById(slideId);
@@ -234,7 +236,8 @@ export class EditorCommunicator {
             editorStore.synchronizeMaterialSlides();
         });
 
-        communicator.socket.on("removeSlide", async({slideId}: {slideId: string}) => {
+        communicator.socket.on("removeSlide", async({slideId}: {slideId: string}) =>
+        {
             const editorStore = (await import("@/stores/editor")).useEditorStore();
 
             this.material.slides = this.material.slides.filter((s) => s.id !== slideId);
@@ -276,7 +279,6 @@ export class EditorCommunicator {
         communicator.socket.emit("changeSelectedBlocks", {selectedBlocks});
     }
     public synchronizeBlock(block: EditorBlock) {
-        console.log("Syncing block", block, block.serialize());
         const editor = (block).getEditor();
 
         if(!editor) {
@@ -329,6 +331,90 @@ export class EditorCommunicator {
     }
 }
 
+export class PlayerCommunicator {
+    private material: Material;
+    private isPresenter: boolean;
+
+    private joinedResolve: () => void;
+    public readonly joined: Promise<void> = new Promise<void>((resolve) => this.joinedResolve = resolve);
+
+    constructor(material: Material, code: string, isPresenter: boolean, slideId: string) {
+        this.material = material;
+        this.isPresenter = isPresenter;
+
+        communicator.socket.emit("joinPlayerMaterialRoom", {
+            materialId: material.id,
+            code,
+            slideId,
+        });
+
+        communicator.socket.on("changeSlide", async({slideId}: {slideId: string}) => {
+            if(isPresenter) {
+                return;
+            }
+
+            const playerStore = (await import("@/stores/player")).usePlayerStore();
+
+            const slide = this.material.slides.find((s) => s.id === slideId);
+
+            if(!slide) {
+                return;
+            }
+
+            await playerStore.changeSlide(slide);
+        });
+        // communicator.socket.on("changeCanvas", async({position, scale}: {position: {x: number; y: number}; scale: number}) => {
+        //     const playerStore = (await import("@/stores/player")).usePlayerStore();
+        //     const player = playerStore.getPlayer()!;
+        //
+        //     player.setPosition(position.x, position.y);
+        //     player.setScale(scale);
+        //     player.updateElement();
+        // });
+        communicator.socket.on("presenterDisconnected", () => {
+            // TODO: Handle presenter disconnected
+        });
+        communicator.socket.on("synchronizeDraw", async({content, slideId}: {content: string, slideId: string}) => {
+            const playerStore = (await import("@/stores/player")).usePlayerStore();
+            const player = playerStore.getPlayer();
+
+            if(!player) {
+                return;
+            }
+
+            if(isPresenter) {
+                return;
+            }
+
+            if(slideId === playerStore.getActiveSlide()?.id) {
+                player.getDraw().applyData(content);
+                return;
+            }
+
+            playerStore.synchronizeDrawData(slideId, content);
+        });
+        communicator.socket.on("joinedPlayerRoom", () => {
+            this.joinedResolve();
+        });
+    }
+
+    public changeSlide(slideId: string) {
+        communicator.socket.emit("changeSlide", {slideId});
+    }
+
+    public destroy() {
+        communicator.socket.emit("leavePlayerMaterialRoom", this.material.id);
+    }
+
+    public synchronizeDraw(content: string) {
+        communicator.socket.emit("synchronizeDraw", {content});
+    }
+
+    // changeCanvas(param: { position: { x: number; y: number }; scale: number }) {
+    //     communicator.socket.emit("changeCanvas", param);
+    // }
+}
+
 export class WebSocketCommunicator {
     public socket: Socket;
     private resolveReadyPromise: () => void;
@@ -338,9 +424,12 @@ export class WebSocketCommunicator {
     }
 
     public initialize() {
+        const token = useAuthenticationStore().token;
+        const shouldSkipAuth = !token || token === "null" || token === "undefined" || token === null;
+
         this.socket = io(import.meta.env.VITE_API ?? "", {
             auth: {
-                Authorization: "Bearer " + useAuthenticationStore().token
+                Authorization: shouldSkipAuth ? undefined : `Bearer ${token}`,
             },
             transports: ['websocket'],
         });
@@ -391,6 +480,25 @@ export class WebSocketCommunicator {
             this.editorRoom.destroy();
             this.editorRoom = undefined;
         }
+    }
+
+    private playerRoom: PlayerCommunicator | undefined;
+
+    async setupPlayerRoom(material: Material, code: string, isPresenter: boolean, slideId: string) {
+        await this.readyPromise;
+
+        if(this.playerRoom) {
+            this.playerRoom.destroy();
+            this.playerRoom = undefined;
+        }
+
+        this.playerRoom = new PlayerCommunicator(material, code, isPresenter, slideId);
+
+        return this.playerRoom;
+    }
+
+    public getPlayerRoom() {
+        return this.playerRoom;
     }
 }
 

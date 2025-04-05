@@ -1,6 +1,8 @@
 import Player from "@/editor/player/Player";
 import {PlayerMode} from "@/editor/player/PlayerMode";
 import type EditorSelectorArea from "@/editor/selector/area/EditorSelectorArea";
+import {communicator} from "@/api/websockets";
+import {sanitizeSvg} from "@/utils/Sanitize";
 
 enum DrawMode {
     DRAW = "draw",
@@ -41,7 +43,8 @@ export class PlayerDraw {
 
     public applyData(data: string) {
         const canvas = this.element.querySelector(".player-draw-canvas") as HTMLElement;
-        canvas.innerHTML = data;
+
+        canvas.innerHTML = sanitizeSvg(data);
     }
 
     private init() {
@@ -354,6 +357,7 @@ export class PlayerDraw {
                 strPath += " L" + (point.x + 1) + " " + (point.y);
                 path.setAttribute("d", strPath);
             }
+            this.synchronizeAttendees();
         }
 
         window.addEventListener("mousemove", handleMove);
@@ -372,6 +376,7 @@ export class PlayerDraw {
             const cursorPoint = this.getPositionFromEvent(event);
 
             paths.forEach(path => {
+                let announce = false;
                 const pathLength = path.getTotalLength();
                 for (let i = 0; i < pathLength; i += 5) { // Check every few points along the path
                     const point = path.getPointAtLength(i);
@@ -381,8 +386,13 @@ export class PlayerDraw {
 
                     if (distance < 10) {
                         path.remove();
+                        announce = true;
                         break;
                     }
+                }
+
+                if(announce) {
+                    this.synchronizeAttendees();
                 }
             });
         };
@@ -405,5 +415,13 @@ export class PlayerDraw {
         window.addEventListener("touchmove", handleMove);
         window.addEventListener("touchend", handleUp);
         window.addEventListener("touchcancel", handleUp);
+    }
+
+    private synchronizeAttendees() {
+        const canvas = this.element.querySelector(".player-draw-canvas") as HTMLElement;
+
+        const content = canvas.innerHTML;
+
+        communicator.getPlayerRoom()?.synchronizeDraw(content);
     }
 }
