@@ -293,6 +293,102 @@ export class EditorMaterialRoom {
     }
 }
 
+export class PlayerMaterialRoom {
+    private material: HydratedDocument<Material>;
+    private readonly roomId: string;
+    private readonly gateway: EventsGateway;
+    private readonly code: string;
+    private readonly presenter: Socket;
+    private slideId: string;
+    // private position: { x: number; y: number } = { x: 0, y: 0 };
+    // private scale: number = 1;
+
+    constructor(material: HydratedDocument<Material>, gateway: EventsGateway, code: string, presenter: Socket) {
+        this.material = material;
+        this.gateway = gateway;
+        this.roomId = `player-material-${material.id}-${code}`;
+        this.code = code;
+        this.presenter = presenter;
+
+        presenter.join(this.roomId);
+        presenter.on('disconnect', () => {
+            this.removeListener(presenter);
+        });
+    }
+
+    public addListener(listener: Socket) {
+        listener.join(this.roomId);
+        listener.on('disconnect', () => {
+            this.removeListener(listener);
+        })
+        listener.emit('joinedPlayerRoom');
+        listener.emit('changeSlide', {
+            slideId: this.slideId,
+        });
+        for(let drawing of this.drawings.keys()) {
+            listener.emit('synchronizeDraw', {
+                slideId: drawing,
+                content: this.drawings.get(drawing)
+            });
+        }
+    }
+
+    public removeListener(client: Socket) {
+        client.leave(this.roomId);
+
+        if(this.presenter === client) {
+            this.gateway.server.to(this.roomId).emit('presenterDisconnected');
+            this.gateway.removePlayerMaterialRoom(this);
+        }
+    }
+
+    getCode() {
+        return this.code;
+    }
+
+    getMaterialId() {
+        return this.material.id;
+    }
+
+    isPresenter(socket: Socket) {
+        return this.presenter === socket;
+    }
+
+    changeSlide(slideId: string) {
+        const slide = this.material.slides.find(s => s.id === slideId);
+
+        if(!slide) {
+            throw new WsException("Slide not found");
+        }
+
+        this.slideId = slideId;
+
+        this.gateway.server.to(this.roomId).emit('changeSlide', {
+            slideId: slideId,
+        });
+
+        // this.changeCanvas({x: 0, y: 0}, 1);
+    }
+
+    // changeCanvas(position: { x: number; y: number }, scale: number ) {
+    //     this.position = position;
+    //     this.scale = scale;
+    //     this.gateway.server.to(this.roomId).emit('changeCanvas', {
+    //         position: position,
+    //         scale: scale
+    //     });
+    // }
+
+    private drawings: Map<string, string> = new Map();
+    synchronizeDraw(content: string) {
+        this.drawings.set(this.slideId, content);
+        this.gateway.server.to(this.roomId).emit('synchronizeDraw', {
+            slideId: this.slideId,
+            content: content
+        });
+    }
+}
+
 @UseGuards(WSOptionalAuthenticationGuard)
 @WebSocketGateway({
     cors: {
@@ -306,6 +402,7 @@ export class EventsGateway {
     @WebSocketServer()
     server: Server;
     private editorRooms: EditorMaterialRoom[] = [];
+    private playerRooms: PlayerMaterialRoom[] = [];
 
     constructor(
         public readonly materialsService: MaterialsService,
@@ -349,6 +446,14 @@ export class EventsGateway {
     @SubscribeMessage('changeSlide')
     public async handleChangeSlide(@MessageBody() {slideId}: { slideId: string }, @ConnectedSocket() client: Socket) {
         const editorRoom = client.data.editorRoom as EditorMaterialRoom | undefined;
+        const playerRoom = client.data.playerRoom as PlayerMaterialRoom | undefined;
+
+        if (playerRoom) {
+            if (playerRoom.isPresenter(client)) {
+                playerRoom.changeSlide(slideId);
+                return;
+            }
+        }
 
         if (!editorRoom) {
             throw new WsException("You are not in the editor room");
@@ -416,7 +521,8 @@ export class EventsGateway {
         size: { width: number; height: number };
         color: string;
         position: number
-    }, @ConnectedSocket() client: Socket) {
+    }, @ConnectedSocket() client: Socket)
+    {
         const editorRoom = client.data.editorRoom as EditorMaterialRoom | undefined;
 
         if (!editorRoom) {
@@ -449,5 +555,76 @@ export class EventsGateway {
 
     public getEditorRoom(id: any) {
         return this.editorRooms.find(r => r.getMaterialId() === id);
+    }
+
+    @SubscribeMessage('joinPlayerMaterialRoom')
+    public async handleJoinPlayer(@MessageBody() {materialId, code, slideId}: {materialId: string, code: string, slideId: string}, @ConnectedSocket() client: Socket) {
+        let room = this.playerRooms.find((r) => r.getCode() === code && r.getMaterialId() === materialId);
+
+        if (client.data.playerRoom !== null) {
+            const oldRoom = client.data.editorRoom as EditorMaterialRoom;
+
+            if (oldRoom) {
+                oldRoom.removeListener(client);
+            }
+        }
+
+        if (!room) {
+            const material = await this.materialsService.findById(materialId);
+
+            if (!material) {
+                throw new WsException("Material not found");
+            }
+
+            // TODO: Has access?
+            if(material.user.toString() !== client.data.user?._id.toString()) {
+                throw new WsException("You cannot start watch in this material");
+            }
+
+            const newRoom = new PlayerMaterialRoom(material, this, code, client);
+            this.playerRooms.push(newRoom);
+            newRoom.changeSlide(slideId);
+            room = newRoom;
+        } else {
+            room.addListener(client);
+        }
+
+        client.data.playerRoom = room;
+        console.log(`Client ${client.id} joined player room ${materialId}`);
+    }
+
+    @SubscribeMessage('synchronizeDraw')
+    public async handleSynchronizeDraw(@MessageBody() {content}: {content: string}, @ConnectedSocket() client: Socket) {
+        const playerRoom = client.data.playerRoom as PlayerMaterialRoom | undefined;
+
+        if (!playerRoom) {
+            throw new WsException("You are not in the player room");
+        }
+
+        if (!playerRoom.isPresenter(client)) {
+            throw new WsException("You are not the presenter");
+        }
+
+        playerRoom.synchronizeDraw(content);
+    }
+
+    //
+    // @SubscribeMessage('changeCanvas')
+    // public async handleChangeCanvas(@MessageBody() {position, scale}: {position: {x: number, y: number}, scale: number}, @ConnectedSocket() client: Socket) {
+    //     const playerRoom = client.data.playerRoom as PlayerMaterialRoom | undefined;
+    //
+    //     if (!playerRoom) {
+    //         throw new WsException("You are not in the player room");
+    //     }
+    //
+    //     if (!playerRoom.isPresenter(client)) {
+    //         throw new WsException("You are not the presenter");
+    //     }
+    //
+    //     playerRoom.changeCanvas(position, scale);
+    // }
+
+    removePlayerMaterialRoom(param: PlayerMaterialRoom) {
+        this.playerRooms = this.playerRooms.filter(r => r !== param);
     }
 }
