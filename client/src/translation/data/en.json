@@ -225,6 +225,10 @@
                 "description": "Enter the watch code provided by someone else to join and watch the material. This code is valid only for the current session and will no longer work once you leave the material.",
                 "code": "Watch Code",
                 "join": "Join"
+            },
+            "notPublic": {
+                "title": "Material is Not Public",
+                "description": "This material is not public and therefore cannot be shared with anyone except the authors. If you want it to be public, go to the editor and change the visibility settings."
             }
         }
     },

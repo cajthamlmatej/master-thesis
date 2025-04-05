@@ -223,6 +223,10 @@
                 "description": "Zadejte kód pro sledování, který vám dal někdo jiný, abyste se mohli připojit k sledování materiálu. Tento kód je platný pouze pro aktuální zobrazení a po opuštění materiálu již nebude funkční.",
                 "code": "Kód pro sledování",
                 "join": "Připojit se"
+            },
+            "notPublic": {
+                "title": "Materiál není veřejný",
+                "description": "Tento materiál není veřejný a tedy ho nemůžete sdílet s nikým jiným než s autory. Pokud chcete, aby byl veřejný, přejděte do editoru a změňte nastavení viditelnosti."
             }
         }
     },

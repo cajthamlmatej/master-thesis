@@ -26,7 +26,7 @@
                             />
                         </template>
                         <template #default>
-                            <Card dialog>
+                            <Card dialog v-if="material.visibility === 'PUBLIC'">
                                 <Tabs
                                     v-model:selected="shareType"
                                     fluid
@@ -78,6 +78,10 @@
                                         ></Button>
                                     </div>
                                 </div>
+                            </Card>
+                            <Card dialog v-else>
+                                <p class="title" v-t>player.share.notPublic.title</p>
+                                <p v-t>player.share.notPublic.description</p>
                             </Card>
                         </template>
                     </Dialog>
