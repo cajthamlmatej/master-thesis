@@ -61,6 +61,10 @@ export default class Material {
     slides: Slide[];
     user: string;
     thumbnail?: string;
+    attendees: ({
+        id: string;
+        name: string;
+    } | string)[]
 
     constructor(id: string, createdAt: Date, updatedAt: Date, name: string, slides: {
                     id: string;
@@ -73,6 +77,10 @@ export default class Material {
                     release: string;
                 }[],
                 visibility: MaterialVisibility, method: MaterialMethod, automaticTime: number, sizing: MaterialSizing,
+                attendees?: ({
+                    id: string;
+                    name: string;
+                } | string)[],
                 user?: string,
                 thumbnail?: string) {
         this.id = id;
@@ -83,6 +91,7 @@ export default class Material {
         this.method = method;
         this.automaticTime = automaticTime;
         this.sizing = sizing;
+        this.attendees = attendees || [];
         this.user = user || "";
         this.slides = slides.map(slide => new Slide(slide.id, slide.data, slide.thumbnail, slide.position));
         this.plugins = plugins.map(plugin => new MaterialPlugin(plugin.plugin, plugin.release));
@@ -99,4 +108,17 @@ export default class Material {
         }
     }
 
+    public serializeAttendees(): string[] {
+        let attendees = [];
+
+        for(const attendee of this.attendees) {
+            if (typeof attendee === 'string') {
+                attendees.push(attendee);
+            } else {
+                attendees.push(attendee.id);
+            }
+        }
+
+        return attendees;
+    }
 }

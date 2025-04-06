@@ -18,6 +18,7 @@
                         <template #activator="{toggle}">
                             <ListItem hover @click="toggle">
                                 <span v-t>editor.sharing.share.title</span>
+                                <span class="mdi mdi-file-settings-outline"></span>
                             </ListItem>
                         </template>
                         <template #default>
@@ -133,6 +134,7 @@
                         <template #activator="{toggle}">
                             <ListItem hover @click="toggle">
                                 <span v-t>editor.sharing.export.title</span>
+                                <span class="mdi mdi-file-export-outline"></span>
                             </ListItem>
                         </template>
                         <template #default>
@@ -172,6 +174,84 @@
                             </Card>
                         </template>
                     </Dialog>
+                    <Dialog>
+                        <template #activator="{toggle}">
+                            <ListItem hover @click="toggle">
+                                <span v-t>editor.sharing.attendees.title</span>
+                                <span class="mdi mdi-account-group-outline"></span>
+                            </ListItem>
+                        </template>
+                        <template #default>
+                            <Card dialog>
+                                <p v-t class="title">editor.sharing.attendees.title</p>
+
+                                <p v-t class="description mb-1">editor.sharing.attendees.description</p>
+
+
+                                <div class="flex flex-justify-end mb-1">
+                                    <Dialog>
+                                        <template #activator="{toggle}">
+                                            <Button
+                                                color="primary"
+                                                icon="plus"
+                                                class="mt-1"
+                                                @click="toggle">
+                                                <span v-t>editor.sharing.attendees.add.title</span>
+                                            </Button>
+                                        </template>
+                                        <template #default="{toggle}">
+                                            <Card dialog>
+                                                <p class="title" v-t>editor.sharing.attendees.add.title</p>
+
+                                                <p class="description mb-1" v-t>editor.sharing.attendees.add.description</p>
+
+                                                <Input
+                                                    v-model:value="newAttendee"
+                                                    :label="$t('editor.sharing.attendees.add.input')"></Input>
+
+                                                <div class="flex flex-justify-end">
+                                                    <Button
+                                                        color="primary"
+                                                        @click="() => {addToAttendees(); toggle()}"
+                                                    >
+                                                        <span v-t>editor.sharing.attendees.add.add</span>
+                                                    </Button>
+                                                </div>
+                                            </Card>
+                                        </template>
+                                    </Dialog>
+                                </div>
+                                <List>
+                                    <ListItem v-for="(attendee, i) in data.attendees" :key="i" hover class="flex-align-center">
+                                        <span v-if="typeof attendee === 'object'">
+                                            {{attendee.name}}
+                                        </span>
+                                        <span v-else>
+                                            {{attendee}}
+                                        </span>
+
+                                        <div>
+                                            <Button
+                                                icon="delete-outline"
+                                                v-tooltip="$t('editor.attendee.remove')"
+                                                @click="removeAttendee(attendee)"
+                                            />
+                                        </div>
+                                    </ListItem>
+
+                                    <ListItem v-if="data.attendees.length == 0">
+                                        <span v-t>editor.sharing.attendees.empty</span>
+                                    </ListItem>
+                                </List>
+
+                                <div class="flex flex-justify-end mt-1">
+                                    <Button :loading="saving" color="primary" @click="save">
+                                        <span v-t>editor.sharing.share.save</span>
+                                    </Button>
+                                </div>
+                            </Card>
+                        </template>
+                    </Dialog>
                 </List>
             </Card>
         </template>
@@ -192,6 +272,7 @@ import Card from "@/components/design/card/Card.vue";
 import List from "@/components/design/list/List.vue";
 import {api} from "@/api/api";
 import fileSaver from "file-saver";
+import Button from "@/components/design/button/Button.vue";
 
 const materialStore = useMaterialStore();
 
@@ -202,7 +283,11 @@ let data = ref({
     visibility: "PUBLIC",
     method: "AUTOMATIC",
     automaticTime: 0,
-    sizing: "FIT_TO_SCREEN"
+    sizing: "FIT_TO_SCREEN",
+    attendees: [] as ({
+        id: string;
+        name: string;
+    } | string)[]
 });
 
 const link = ref("");
@@ -219,6 +304,7 @@ const load = () => {
     data.value.method = material.method ?? "MANUAL";
     data.value.automaticTime = material.automaticTime ?? 0;
     data.value.sizing = material.sizing ?? "FIT_TO_SCREEN";
+    data.value.attendees = material.attendees ?? [];
 
     const domain = window.location.origin;
     const player = router.resolve({name: 'Player', params: {material: material.id}}).href;
@@ -253,6 +339,7 @@ const save = async () => {
     material.method = data.value.method as MaterialMethod;
     material.automaticTime = Number(data.value.automaticTime);
     material.sizing = data.value.sizing as MaterialSizing;
+    material.attendees = data.value.attendees;
 
     await materialStore.save();
 
@@ -286,6 +373,25 @@ const exportFile = async (type: string) => {
     fileSaver.saveAs(response.blob, name);
     exporting.value = false;
 }
+
+const newAttendee = ref("");
+const addToAttendees = () => {
+    if (!newAttendee.value) {
+        return;
+    }
+
+    data.value.attendees.push(newAttendee.value);
+
+    newAttendee.value = "";
+};
+
+const removeAttendee = (attendee: string | { id: string; name: string }) => {
+    const index = data.value.attendees.indexOf(attendee);
+
+    if (index > -1) {
+        data.value.attendees.splice(index, 1);
+    }
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,7 +1,7 @@
 import {
-    IsArray,
+    IsArray, IsDefined,
     IsIn,
-    IsNumber,
+    IsNumber, IsObject,
     IsOptional,
     IsString,
     MaxLength,
@@ -18,7 +18,7 @@ export class UpdateSlideMaterialDTO {
     @MaxLength(36)
     @MinLength(36)
     id: string;
-    @IsString()
+    @IsObject()
     @ValidateNested()
     data: SlideDataDTO;
     @IsNumber()
@@ -27,8 +27,10 @@ export class UpdateSlideMaterialDTO {
 
 export class UpdateMaterialPluginDTO {
     @IsString()
+    @IsDefined()
     plugin: string;
     @IsString()
+    @IsDefined()
     release: string;
 }
 
@@ -69,4 +71,9 @@ export class UpdateMaterialDTO {
     @ValidateNested()
     @Type(() => UpdateSlideMaterialDTO)
     slides?: UpdateSlideMaterialDTO[];
+
+    @IsArray()
+    @IsOptional()
+    @Type(() => String)
+    attendees: string[];
 }

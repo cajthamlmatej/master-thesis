@@ -33,8 +33,10 @@ export class SlideEditorDataDTO {
 
 export class SlideBlockDTO {
     @IsString()
+    @IsDefined()
     id: string;
     @IsString()
+    @IsDefined()
     type: string;
 
     // any other information
@@ -58,7 +60,7 @@ export class CreateSlideMaterialDTO {
     @MaxLength(36)
     @MinLength(36)
     id: string;
-    @IsString()
+    @IsObject()
     @ValidateNested()
     data: SlideDataDTO;
     @IsNumber()

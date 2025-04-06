@@ -111,7 +111,8 @@ export const useMaterialStore = defineStore("material", () => {
             method: currentMaterial.value.method,
             automaticTime: currentMaterial.value.automaticTime,
             sizing: currentMaterial.value.sizing,
-            slides: editorStore.slides
+            slides: editorStore.slides,
+            attendees: currentMaterial.value.serializeAttendees()
         });
 
         if (!response) {
@@ -134,7 +135,8 @@ export const useMaterialStore = defineStore("material", () => {
                 id: slide.id,
                 data: slide.data,
                 position: slide.position
-            }))
+            })),
+            attendees: material.serializeAttendees()
         });
 
         if (!response) {
