@@ -55,7 +55,8 @@ export class MaterialsController {
                 name: m.name,
                 createdAt: m.createdAt,
                 updatedAt: m.updatedAt,
-                thumbnail: m.slides[0]?.thumbnail
+                thumbnail: m.slides[0]?.thumbnail,
+                user: m.user.toString(),
             }))
         } as AllMaterialSuccessDTO;
     }
@@ -71,7 +72,15 @@ export class MaterialsController {
             const user = req.user || {id: null};
 
             if (!token) {
-                if (material.user.toString() !== user.id) throw new UnauthorizedException('You are not allowed to access this resource');
+                if(!user || !user.id) {
+                    throw new UnauthorizedException('You are not allowed to access this resource');
+                }
+
+                if (material.user.toString() !== user.id) {
+                    if(!material.attendees.map(a => a.toString()).includes(user.id.toString())) {
+                        throw new UnauthorizedException('You are not allowed to access this resource');
+                    }
+                }
             } else if (token !== this.materialsExportService.getToken()) {
                 throw new UnauthorizedException('You are not allowed to access this resource');
             }
@@ -123,8 +132,12 @@ export class MaterialsController {
         const material = await this.materialsService.findById(id);
 
         if (!material) throw new BadRequestException("Material not found");
-        if (material.user.toString() !== req.user.id) throw new UnauthorizedException('You are not allowed to access this resource');
 
+        if (material.user.toString() !== req.user.id) {
+            if(!material.attendees.map(a => a.toString()).includes(req.user.id.toString())) {
+                throw new UnauthorizedException('You are not allowed to access this resource');
+            }
+        }
         // TODO: validate if release & plugin exists
 
         if(material.user.toString() === req.user.id) {
@@ -195,6 +208,7 @@ export class MaterialsController {
         const material = await this.materialsService.findById(id);
 
         if (!material) throw new BadRequestException("Material not found");
+        // Only the owner of the material can delete it
         if (material.user.toString() !== req.user.id) throw new UnauthorizedException('You are not allowed to access this resource');
 
         await this.materialsService.remove(material);
@@ -206,7 +220,11 @@ export class MaterialsController {
         const material = await this.materialsService.findById(id);
 
         if (!material) throw new BadRequestException("Material not found");
-        if (material.user.toString() !== req.user.id) throw new UnauthorizedException('You are not allowed to access this resource');
+        if (material.user.toString() !== req.user.id) {
+            if(!material.attendees.map(a => a.toString()).includes(req.user.id.toString())) {
+                throw new UnauthorizedException('You are not allowed to access this resource');
+            }
+        }
 
         try {
             const stream = await this.materialsExportService.exportMaterial(material, format);
