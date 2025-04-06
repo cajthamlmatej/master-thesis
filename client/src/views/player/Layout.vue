@@ -187,6 +187,7 @@
                         v-if="canStartWatch && !watching"
                         :label="$t('player.control.edit')"
                         :to="{name: 'Editor', params: {material: route.params.material}}"
+                        @click="communicator.getPlayerRoom()?.destroy()"
                         :tooltip-text="$t('player.control.edit')"
                         hide-mobile
                         icon="square-edit-outline"
@@ -227,6 +228,7 @@
                         :label="$t('player.control.leave')"
                         :to="{name: 'Dashboard'}"
                         :tooltip-text="$t('player.control.leave')"
+                        @click="communicator.getPlayerRoom()?.destroy()"
                         hide-mobile
                         icon="exit-to-app"
                         tooltip-position="bottom"
@@ -306,6 +308,7 @@
                     v-if="material && canStartWatch && !watching"
                     :label="$t('player.control.edit')"
                     :to="{name: 'Editor', params: {material: route.params.material}}"
+                    @click="communicator.getPlayerRoom()?.destroy()"
                     :tooltip-text="$t('player.control.edit')"
                     icon="square-edit-outline"
                     tooltip-position="bottom"
@@ -314,6 +317,7 @@
                 <NavigationButton
                     :label="$t('player.control.leave')"
                     :to="{name: 'Dashboard'}"
+                    @click="communicator.getPlayerRoom()?.destroy()"
                     :tooltip-text="$t('player.control.leave')"
                     icon="exit-to-app"
                     tooltip-position="bottom"
@@ -330,6 +334,17 @@
 
                 <Button @click="tryWithoutCode" class="mt-1">
                     <span v-t>player.share.watch.failed.button</span>
+                </Button>
+            </Card>
+        </Dialog>
+
+        <Dialog v-model:value="playerStore.watchEnded" persistent>
+            <Card dialog>
+                <p class="title" v-t>player.share.watch.ended.title</p>
+                <p v-t>player.share.watch.ended.description</p>
+
+                <Button @click="tryWithoutCode" class="mt-1">
+                    <span v-t>player.share.watch.ended.button</span>
                 </Button>
             </Card>
         </Dialog>

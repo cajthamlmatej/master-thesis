@@ -36,12 +36,14 @@
 
 <script setup lang="ts">
 
-import {communicator, EditorAttendee, EditorCommunicator} from "@/api/websockets";
+import {communicator} from "@/api/websockets";
 import Material from "@/models/Material";
 import {onMounted, ref} from "vue";
 import {useMaterialStore} from "@/stores/material";
 import {$t} from "@/translation/Translation";
 import NavigationButton from "@/components/design/navigation/NavigationButton.vue";
+import {EditorCommunicator} from "@/api/editorCommunicator";
+import {EditorAttendee} from "@/api/editorAttendee";
 
 const materialStore = useMaterialStore();
 

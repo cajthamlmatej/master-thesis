@@ -68,7 +68,9 @@ import {useEditorStore} from "@/stores/editor";
 import {Slide} from "@/models/Material";
 import SlideSettings from "@/components/editor/panels/SlideSettings.vue";
 import {$t} from "../../../translation/Translation";
-import {communicator, EditorAttendee, EditorCommunicator} from "@/api/websockets";
+import {communicator} from "@/api/websockets";
+import {EditorCommunicator} from "@/api/editorCommunicator";
+import {EditorAttendee} from "@/api/editorAttendee";
 
 const slides = ref(true);
 

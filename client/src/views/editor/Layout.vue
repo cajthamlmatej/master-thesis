@@ -127,9 +127,10 @@ import EditorPlugins from "@/components/plugin/EditorPlugins.vue";
 import {usePluginStore} from "@/stores/plugin";
 import moment from "moment";
 import {useSeoMeta} from "unhead";
-import {communicator, EditorCommunicator} from "@/api/websockets";
+import {communicator} from "@/api/websockets";
 import Material from "@/models/Material";
 import Attendees from "@/components/editor/Attendees.vue";
+import {EditorCommunicator} from "@/api/editorCommunicator";
 
 const materialStore = useMaterialStore();
 
