@@ -102,6 +102,10 @@ export class AuthController {
             name: user.name,
             link: this.configService.get<string>("FRONTEND_DOMAIN") + this.configService.get<string>("FRONTEND_DOMAIN_AUTHENTICATION_VALIDATE")!.replace('{{token}}', user.token as string)
         });
+
+        return {
+            success: true,
+        };
     }
 
     @Post('/activate')
@@ -114,6 +118,10 @@ export class AuthController {
         if (byToken.active) throw new BadRequestException('User is already activated.');
 
         await this.usersService.activate(byToken);
+
+        return {
+            success: true,
+        };
     }
 
 }
