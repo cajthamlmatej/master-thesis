@@ -12,6 +12,7 @@ export interface MaterialDTO {
     automaticTime: number;
     sizing: string;
     user: string;
+    attendees: string[];
     slides: {
         id: string;
         data: {

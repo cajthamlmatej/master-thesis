@@ -71,4 +71,9 @@ export class UpdateMaterialDTO {
     @ValidateNested()
     @Type(() => UpdateSlideMaterialDTO)
     slides?: UpdateSlideMaterialDTO[];
+
+    @IsArray()
+    @IsOptional()
+    @Type(() => String)
+    attendees: string[];
 }

@@ -26,12 +26,16 @@ import {CreateMaterialDTO} from "../../dto/material/CreateMaterialDTO";
 import {CreateMaterialSuccessDTO} from "../../dto/material/CreateMaterialSuccessDTO";
 import {MaterialsExportService} from "./materialsExport.service";
 import {EventsGateway} from "../events/events.gateway";
+import {UsersService} from "../users/users.service";
+import {HydratedDocument} from "mongoose";
+import {User} from "../users/user.schema";
 
 @Controller('')
 export class MaterialsController {
     constructor(
         private readonly materialsService: MaterialsService,
         private readonly materialsExportService: MaterialsExportService,
+        private readonly userService: UsersService,
         @Inject(forwardRef(() => EventsGateway)) private readonly eventsGateway: EventsGateway,
     ) {
     }
@@ -78,6 +82,11 @@ export class MaterialsController {
             material = editorRoom.getMaterial();
         }
 
+
+        const materialWithAttendees = await (await this.materialsService.findById(id))?.populate("attendees");
+
+        if(!materialWithAttendees) throw new BadRequestException("Material not found");
+
         return {
             material: {
                 id: material.id,
@@ -98,7 +107,11 @@ export class MaterialsController {
                     thumbnail: slide.thumbnail,
                     position: slide.position,
                     data: slide.data
-                }))
+                })),
+                attendees: materialWithAttendees.attendees.map((attendee => ({
+                    id: (attendee as any).id,
+                    name: attendee.name,
+                })))
             }
         } as OneMaterialSuccessDTO;
     }
@@ -114,7 +127,32 @@ export class MaterialsController {
 
         // TODO: validate if release & plugin exists
 
-        await this.materialsService.update(material, updateMaterialDto);
+        if(material.user.toString() === req.user.id) {
+            const attendees = updateMaterialDto.attendees || material.attendees;
+            let newAttendees = [] as HydratedDocument<User>[];
+
+            for (const attendee of attendees) {
+                const isObjectId = attendee.match(/^[0-9a-fA-F]{24}$/);
+
+                if (isObjectId) {
+                    const user = await this.userService.getById(attendee);
+                    if (user) {
+                        newAttendees.push(user.id);
+                    }
+                } else {
+                    const user = await this.userService.getByEmail(attendee);
+                    if (user) {
+                        newAttendees.push(user.id);
+                    }
+                }
+            }
+
+            newAttendees = newAttendees.filter((attendee) => attendee.id !== req.user.id.toString());
+
+            await this.materialsService.update(material, {...updateMaterialDto, attendees: newAttendees});
+        } else {
+            await this.materialsService.update(material, updateMaterialDto);
+        }
     }
 
 

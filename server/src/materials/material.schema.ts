@@ -64,6 +64,9 @@ export class Material {
     @Prop()
     sizing: MaterialSizing;
 
+    @Prop({type: [mongoose.Schema.Types.ObjectId], ref: 'User'})
+    attendees: User[];
+
     @Prop({default: () => new Date()})
     createdAt: Date;
 

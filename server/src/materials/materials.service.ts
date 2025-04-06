@@ -12,14 +12,23 @@ export class MaterialsService {
     }
 
     findAllForUser(user: HydratedDocument<User>) {
-        return this.materialModel.find({user: user.id}).exec();
+        return this.materialModel.find({
+            $or: [
+                {
+                    user: user._id
+                },
+                {
+                    attendees: user._id
+                }
+            ]
+        });
     }
 
     findById(id: string) {
         return this.materialModel.findById(id).exec();
     }
 
-    async update(material: HydratedDocument<Material>, updateMaterialDto: UpdateMaterialDTO) {
+    async update(material: HydratedDocument<Material>, updateMaterialDto: UpdateMaterialDTO | Omit<UpdateMaterialDTO, "attendees"> & {attendees?: HydratedDocument<User>[]}) {
         await this.materialModel.findByIdAndUpdate(material._id, {
             $set: {
                 ...updateMaterialDto,
