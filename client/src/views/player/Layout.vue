@@ -184,7 +184,7 @@
                     />
 
                     <NavigationButton
-                        v-if="material.user === userStore.user?.id && !watching"
+                        v-if="canStartWatch && !watching"
                         :label="$t('player.control.edit')"
                         :to="{name: 'Editor', params: {material: route.params.material}}"
                         :tooltip-text="$t('player.control.edit')"
@@ -211,7 +211,7 @@
                         </template>
                         <template #activator="{toggle}">
                             <NavigationButton
-                                v-if="material.user === userStore.user?.id"
+                                v-if="canStartWatch"
                                 :label="$t('player.debug')"
                                 :tooltip-text="$t('player.debug')"
                                 hide-mobile
@@ -303,7 +303,7 @@
                 </Dialog>
 
                 <NavigationButton
-                    v-if="material && material.user === userStore.user?.id && !watching"
+                    v-if="material && canStartWatch && !watching"
                     :label="$t('player.control.edit')"
                     :to="{name: 'Editor', params: {material: route.params.material}}"
                     :tooltip-text="$t('player.control.edit')"
@@ -375,7 +375,7 @@ const watchCode = ref<string | null>(null);
 const watchFailed = ref(false);
 const shareType = ref<string>('SHARE_LINK');
 const canStartWatch = computed(() => {
-    return materialStore.currentMaterial?.user === userStore.user?.id;
+    return materialStore.currentMaterial?.user === userStore.user?.id || materialStore.currentMaterial?.attendees.find(a => typeof a == "object" ? a.id === userStore.user?.id : false) !== undefined;
 });
 
 const link = computed(() => {
@@ -469,14 +469,14 @@ onMounted(async () => {
     window.addEventListener("keydown", keydown);
     window.addEventListener("mousemove", mousemove);
 
-    isPresenter.value = !!(userStore.user && userStore.user?.id && materialStore.currentMaterial!.user === userStore.user?.id);
+    isPresenter.value = !!(canStartWatch);
 
     if (route.query.watch) {
         watching.value = true;
         watchCode.value = route.query.watch as string;
         isPresenter.value = false;
     } else {
-        if (userStore.user && userStore.user?.id && materialStore.currentMaterial!.user === userStore.user?.id) {
+        if (userStore.user && canStartWatch) {
             watchCode.value = generateToken(9, "123456789ABCDEFGHKMNPQRSTUVWXYZ");
         }
     }
