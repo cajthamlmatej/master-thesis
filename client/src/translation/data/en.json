@@ -65,7 +65,9 @@
                     "cancel": "Cancel"
                 },
                 "delete-tooltip": "Delete material",
-                "copy-tooltip": "Copy material"
+                "copy-tooltip": "Copy material",
+                "own": "Created by me",
+                "shared": "Shared with me"
             },
 
             "new": {

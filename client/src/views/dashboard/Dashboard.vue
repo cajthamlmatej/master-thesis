@@ -1,6 +1,6 @@
 <template>
     <div data-cy=dashboard>
-        <Card fluid>
+        <Card fluid class="mb-1">
             <div class="flex flex-justify-center flex-justify-sm-space-between flex-align-center flex-wrap gap-1">
                 <span v-t="{ name: userStore.user?.name ?? '' }" class="main-title">page.dashboard.title-welcome</span>
 
@@ -60,69 +60,82 @@
             </div>
         </Card>
 
-        <div class="flex flex-justify-center mt-2">
-            <Pagination v-model:page="page" :page-size="8" :total="Math.max(Math.ceil(materials.length/8), 1)"/>
-        </div>
+        <Tabs fluid v-model:selected="selected" :items="[
+            {
+                value: 'OWN',
+                text: $t('page.dashboard.materials.own')
+            },
+            {
+                value: 'SHARED',
+                text: $t('page.dashboard.materials.shared')
+            }
+        ]"></Tabs>
 
-        <div v-if="materials.length === 0" class="mt-1">
-            <Alert type="warning">
-                <span v-t>page.dashboard.materials.not-found-by-criteria</span>
-            </Alert>
-        </div>
+        <Card fluid>
+            <div class="flex flex-justify-center">
+                <Pagination v-model:page="page" :page-size="8" :total="Math.max(Math.ceil(materials.length/8), 1)"/>
+            </div>
 
-        <Row align="stretch" class="mt-1" :gap="1" wrap data-cy="materials">
-            <Col v-for="material in materialsOnPage" :key="material.id" cols="12" lg="3" md="4" sm="6">
-                <article class="material" @click="router.push({name: 'Editor', params: {material: material.id}})">
-                    <div class="image-holder">
-                        <img v-if="material.thumbnail"
-                             :src="material.thumbnail" alt="thumbnail" class="thumbnail">
-                        <div v-else class="placeholder"></div>
-                    </div>
+            <div v-if="materials.length === 0" class="mt-1">
+                <Alert type="info">
+                    <span v-t>page.dashboard.materials.not-found-by-criteria</span>
+                </Alert>
+            </div>
 
-                    <div class="meta">
-                        <div class="state">
-                            <p class="title" v-tooltip="material.name">{{ material.name }}</p>
-
-                            <p class="time">
-                                <span v-t>page.dashboard.materials.modified</span> {{ material.updatedAt.fromNow() }}</p>
-                            <p class="time">
-                                <span v-t>page.dashboard.materials.created</span> {{ material.createdAt.fromNow() }}
-                            </p>
+            <Row align="stretch" class="mt-1" :gap="1" wrap data-cy="materials" v-if="materialsOnPage.length > 0">
+                <Col v-for="material in materialsOnPage" :key="material.id" cols="12" lg="4" md="4" sm="6">
+                    <article class="material" @click="router.push({name: 'Editor', params: {material: material.id}})">
+                        <div class="image-holder">
+                            <img v-if="material.thumbnail"
+                                 :src="material.thumbnail" alt="thumbnail" class="thumbnail">
+                            <div v-else class="placeholder"></div>
                         </div>
 
-                        <div class="actions">
-                            <Dialog>
-                                <template #activator="{toggle}">
-                                    <Button v-tooltip="$t('page.dashboard.materials.delete-tooltip')" :loading="processing"
-                                            color="transparent"
-                                            icon="mdi mdi-delete" @click.stop.capture="toggle"/>
-                                </template>
-                                <template #default="{toggle}">
-                                    <Card class="delete-dialog" dialog>
-                                        <p v-t class="title">page.dashboard.materials.deletion.title</p>
+                        <div class="meta">
+                            <div class="state">
+                                <p class="title" v-tooltip="material.name">{{ material.name }}</p>
 
-                                        <p v-t>page.dashboard.materials.deletion.deletion</p>
+                                <p class="time">
+                                    <span v-t>page.dashboard.materials.modified</span> {{ material.updatedAt.fromNow() }}</p>
+                                <p class="time">
+                                    <span v-t>page.dashboard.materials.created</span> {{ material.createdAt.fromNow() }}
+                                </p>
+                            </div>
 
-                                        <p v-t>page.dashboard.materials.deletion.after</p>
+                            <div class="actions">
+                                <Dialog v-if="selected === 'OWN'">
+                                    <template #activator="{toggle}">
+                                        <Button v-tooltip="$t('page.dashboard.materials.delete-tooltip')" :loading="processing"
+                                                color="transparent"
+                                                icon="mdi mdi-delete" @click.stop.capture="toggle"/>
+                                    </template>
+                                    <template #default="{toggle}">
+                                        <Card class="delete-dialog" dialog>
+                                            <p v-t class="title">page.dashboard.materials.deletion.title</p>
 
-                                        <div class="flex flex-justify-end gap-1 mt-1">
-                                            <Button :loading="processing" color="neutral"
-                                                    @click="deleteMaterial(material.id, toggle)"><span v-t>page.dashboard.materials.deletion.sure</span>
-                                            </Button>
-                                            <Button @click="toggle"><span
-                                                v-t>page.dashboard.materials.deletion.cancel</span></Button>
-                                        </div>
-                                    </Card>
-                                </template>
-                            </Dialog>
-                            <Button v-tooltip="$t('page.dashboard.materials.copy-tooltip')" :loading="processing"
-                                    color="transparent" icon="mdi mdi-content-copy"
-                                    @click.stop.capture="copyMaterial(material.id)"/>
+                                            <p v-t>page.dashboard.materials.deletion.deletion</p>
+
+                                            <p v-t>page.dashboard.materials.deletion.after</p>
+
+                                            <div class="flex flex-justify-end gap-1 mt-1">
+                                                <Button :loading="processing" color="neutral"
+                                                        @click="deleteMaterial(material.id, toggle)"><span v-t>page.dashboard.materials.deletion.sure</span>
+                                                </Button>
+                                                <Button @click="toggle"><span
+                                                    v-t>page.dashboard.materials.deletion.cancel</span></Button>
+                                            </div>
+                                        </Card>
+                                    </template>
+                                </Dialog >
+                                <Button v-tooltip="$t('page.dashboard.materials.copy-tooltip')" :loading="processing"
+                                        color="transparent" icon="mdi mdi-content-copy"
+                                        @click.stop.capture="copyMaterial(material.id)"/>
+                            </div>
                         </div>
-                    </div>
-                </article>
-            </Col>
-        </Row>
+                    </article>
+                </Col>
+            </Row>
+        </Card>
     </div>
 </template>
 
@@ -163,11 +176,19 @@ watch(search, () => {
 });
 
 const materials = computed(() => {
-    if (search.value.trim().length === 0) {
-        return materialStore.materials;
+    let materials = materialStore.materials;
+
+    if(selected.value === 'OWN') {
+        materials = materials.filter(material => material.user === userStore.user?.id);
+    } else if (selected.value === 'SHARED') {
+        materials = materials.filter(material => material.user !== userStore.user?.id);
     }
 
-    return materialStore.materials.filter(material => material.name.toLowerCase().includes(search.value.toLowerCase()));
+    if (search.value.trim().length === 0) {
+        return materials;
+    }
+
+    return materials.filter(material => material.name.toLowerCase().includes(search.value.toLowerCase()));
 });
 
 const materialsOnPage = computed(() => {
@@ -250,6 +271,12 @@ const processImport = (toggle: () => void) => {
 
     reader.readAsText(file);
 }
+
+const selected = ref('OWN');
+
+watch(() => selected.value, () => {
+    page.value = 1;
+})
 </script>
 
 <style lang="scss" scoped>

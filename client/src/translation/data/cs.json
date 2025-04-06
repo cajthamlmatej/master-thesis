@@ -65,7 +65,9 @@
                     "cancel": "Zrušit"
                 },
                 "delete-tooltip": "Smazat materiál",
-                "copy-tooltip": "Kopírovat materiál"
+                "copy-tooltip": "Kopírovat materiál",
+                "own": "Vytvořeno mnou",
+                "shared": "Sdíleno se mnou"
             },
             "new": {
                 "tooltip": "Vytvořit nový materiál",

@@ -159,19 +159,27 @@ export const useMaterialStore = defineStore("material", () => {
     }
 
     const copyMaterial = async (id: string) => {
-        const original = materials.value.find((material) => material.id === id);
+        const originalSaved = materials.value.find((material) => material.id === id);
 
-        if (!original) {
+        if (!originalSaved) {
+            throw new Error("Material not found");
+        }
+
+
+        const responseMaterial = await api.material.one(id, undefined);
+        const original = MaterialMapper.fromMaterialDTO(responseMaterial!.material);
+
+        if(!original) {
             throw new Error("Material not found");
         }
 
         const response = await api.material.create({
             name: original.name,
             plugins: original.plugins,
-            visibility: original.visibility,
-            method: original.method,
-            automaticTime: original.automaticTime,
-            sizing: original.sizing,
+            visibility: original.visibility ?? "PRIVATE",
+            method: original.method ?? "MANUAL",
+            automaticTime: original.automaticTime ?? 0,
+            sizing: original.sizing ?? "FIT_TO_SCREEN",
             slides: original.slides.map((slide) => ({
                 id: slide.id,
                 data: slide.data,
@@ -232,6 +240,7 @@ export const useMaterialStore = defineStore("material", () => {
             automaticTime: material.automaticTime,
             sizing: material.sizing,
             visibility: material.visibility,
+            // TODO: ATTENDEES
         });
     }
 
