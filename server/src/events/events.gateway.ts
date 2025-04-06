@@ -249,6 +249,7 @@ export class EditorMaterialRoom {
         }
 
         this.debounceMaterial = setTimeout(async () => {
+            this.material.updatedAt = new Date();
             await this.material.save();
         }, 3000);
     }
