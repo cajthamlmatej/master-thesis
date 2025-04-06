@@ -264,7 +264,6 @@ section.tabs {
         flex: 1;
 
         display: flex;
-        justify-content: center;
         align-items: stretch;
         gap: 0.5em;
 

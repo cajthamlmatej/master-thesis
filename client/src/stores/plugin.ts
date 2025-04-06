@@ -11,7 +11,7 @@ import Material, {MaterialPlugin} from "@/models/Material";
 import {PluginContext} from "@/editor/plugin/PluginContext";
 import {usePlayerStore} from "@/stores/player";
 import {useRouter} from "vue-router";
-import {communicator} from "@/api/websockets";
+import {useUserStore} from "@/stores/user";
 
 export const usePluginStore = defineStore("plugin", () => {
     const plugins = ref([] as Plugin[]);
@@ -25,6 +25,7 @@ export const usePluginStore = defineStore("plugin", () => {
     const editorStore = useEditorStore();
     const playerStore = usePlayerStore();
     const materialStore = useMaterialStore();
+    const userStore = useUserStore();
 
     const tags = [
         "WIDGETS",
@@ -75,6 +76,25 @@ export const usePluginStore = defineStore("plugin", () => {
             if (!foundPlugin) {
                 plugins.value.push(PluginMapper.fromPluginDTO(plugin));
             }
+        }
+    }
+    const loadForUser = async () => {
+        const user = userStore.user?.id;
+
+        if (!user) {
+            return;
+        }
+
+        const response = await api.plugin.forUser(user);
+
+        if (response === undefined) {
+            return;
+        }
+
+        plugins.value = [];
+
+        for (const plugin of response.plugins) {
+            plugins.value.push(PluginMapper.fromPluginDTO(plugin));
         }
     }
 
@@ -205,6 +225,22 @@ export const usePluginStore = defineStore("plugin", () => {
         return true;
     }
 
+    const createPluginRelease = async(plugin: Plugin, release: {
+        version: string,
+        changelog: string,
+        manifest: string,
+        editorCode: string,
+        playerCode: string
+    }) => {
+        const response = await api.plugin.createRelease(plugin.id, release);
+
+        if (response === undefined) {
+            return;
+        }
+
+        await loadForUser();
+    }
+
     return {
         plugins,
         loaded,
@@ -215,5 +251,7 @@ export const usePluginStore = defineStore("plugin", () => {
         manager: pluginManager,
         addPluginToMaterial,
         removePluginFromMaterial,
+        loadForUser,
+        createPluginRelease
     }
 });

@@ -8,7 +8,7 @@ import "moment/dist/locale/cs";
 export const setupTranslations = (Vue: App<Element>) => {
     Vue.directive("t", {
         beforeMount(el, binding, vnode) {
-            let key = el.innerHTML;
+            let key = el.innerHTML.trim();
 
             // Save key so it can be used in updated hook
             el.dataset.key = key;

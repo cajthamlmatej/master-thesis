@@ -174,6 +174,32 @@
         },
         "player": {
             "title": "Přehrávač %name% materiál"
+        },
+        "plugins": {
+            "title": "Pluginy",
+            "search": "Hledat pluginy...",
+            "new": {
+                "tooltip": "Nový plugin"
+            },
+            "list-releases": "Seznam verzí",
+            "remove": "Odebrat plugin",
+            "active": "Aktivní verze",
+            "last-version": "Poslední verze: %lastVersion%",
+            "new-release": {
+                "title": "Vytvořit novou"
+            },
+            "release": {
+                "date": "Datum vydání",
+                "manifest": "Manifest",
+                "info": {
+                    "base": "Základní informace",
+                    "changelog": "Změny",
+                    "editor": "Kód editoru",
+                    "player": "Kód přehrávače",
+                    "summary": "Přehled a odeslání",
+                    "no-code": "Žádný kód nenahrán."
+                }
+            }
         }
     },
     "player": {

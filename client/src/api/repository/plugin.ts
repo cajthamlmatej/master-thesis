@@ -1,6 +1,7 @@
 import {Repository} from "../repository";
 import {AllPluginsSuccessDTO} from "../../../lib/dto/plugin/AllPluginsSuccessDTO";
 import {SpecificPluginsSuccessDTO} from "../../../lib/dto/plugin/SpecificPluginsSuccessDTO";
+import {CreatePluginReleaseDTO} from "../../../lib/dto/plugin/CreatePluginReleaseDTO";
 
 export class PluginRepository extends Repository {
 
@@ -17,6 +18,21 @@ export class PluginRepository extends Repository {
         return await this.makeRequest<SpecificPluginsSuccessDTO>(
             `plugin/${ids}`,
             "GET"
+        );
+    }
+
+    async forUser(user: string) {
+        return await this.makeRequest<AllPluginsSuccessDTO>(
+            `user/${user}/plugin`,
+            "GET"
+        );
+    }
+
+    async createRelease(id: string, release: CreatePluginReleaseDTO) {
+        return await this.makeRequest(
+            `plugin/${id}/release`,
+            "POST",
+            release
         );
     }
 }
