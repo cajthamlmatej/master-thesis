@@ -82,7 +82,7 @@
                 </Alert>
             </div>
 
-            <Row align="stretch" class="mt-1" :gap="1" wrap data-cy="materials" v-if="materialsOnPage.length > 0">
+            <Row align="stretch" :gap="1" wrap :class="{'mt-1': materialsOnPage.length > 0}" data-cy="materials">
                 <Col v-for="material in materialsOnPage" :key="material.id" cols="12" lg="4" md="4" sm="6">
                     <article class="material" @click="router.push({name: 'Editor', params: {material: material.id}})">
                         <div class="image-holder">

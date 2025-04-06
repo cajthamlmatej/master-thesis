@@ -14,8 +14,8 @@ describe('Language', () => {
     });
 
     it('translate button should open modal', () => {
-        cy.wait(500);
-        cy.get('[data-cy=translate-button]').click();
+        cy.wait(1000);
+        cy.get('[data-cy=translate-button]').first().click();
         cy.get('[data-cy=translate-modal]').should('be.visible');
 
         const languages = cy.get('[data-cy=translate-modal] [data-cy=language]');
@@ -29,8 +29,8 @@ describe('Language', () => {
     })
 
     it('changing language should change the page', () => {
-        cy.wait(500);
-        cy.get('[data-cy=translate-button]').click();
+        cy.wait(1000);
+        cy.get('[data-cy=translate-button]').first().click();
 
         cy.get('[data-cy=translate-modal] [data-cy=language]').contains('Česky').click();
 
@@ -38,14 +38,14 @@ describe('Language', () => {
     });
 
     it('changing language several times should work', () => {
-        cy.wait(500);
-        cy.get('[data-cy=translate-button]').click();
+        cy.wait(1000);
+        cy.get('[data-cy=translate-button]').first().click();
 
         cy.get('[data-cy=translate-modal] [data-cy=language]').contains('Česky').click();
 
         cy.url().should('contain', '/cs');
 
-        cy.get('[data-cy=translate-button]').click();
+        cy.get('[data-cy=translate-button]').first().click();
 
         cy.get('[data-cy=translate-modal] [data-cy=language]').contains('English').click();
 
