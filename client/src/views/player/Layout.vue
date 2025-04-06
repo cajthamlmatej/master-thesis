@@ -563,6 +563,7 @@ watch(() => active.value, (value) => {
 const click = (e: MouseEvent) => {
     if (material.value.method !== 'MANUAL') return;
     if (player.value?.getMode() === PlayerMode.DRAW) return;
+    if (watching.value) return;
 
     const target = e.target as HTMLElement;
     if (!target.classList.contains("player-container") && !target.classList.contains("player-content")) {
@@ -583,6 +584,8 @@ const hasNextSlide = ref<boolean>(false);
 const hasPreviousSlide = ref<boolean>(false);
 
 const nextSlide = () => {
+    if (watching.value) return;
+
     const current = playerStore.getActiveSlide();
     const next = playerStore.getSlides().find(s => s.position > current!.position);
 
@@ -598,6 +601,8 @@ const nextSlide = () => {
     }
 };
 const previousSlide = () => {
+    if (watching.value) return;
+
     const current = playerStore.getActiveSlide();
     const prev = playerStore.getSlides().reverse().find(s => s.position < current!.position);
 
@@ -614,6 +619,8 @@ const previousSlide = () => {
 };
 
 const keydown = (e: KeyboardEvent) => {
+    if (watching.value) return;
+
     const current = playerStore.getActiveSlide();
 
     if (!current) return;
@@ -661,6 +668,8 @@ const timeFromSlide = ref<string>("00:00");
 let timeInterval = undefined as undefined | number;
 onMounted(() => {
     timeInterval = setInterval(() => {
+        if (watching.value) return;
+
         {
             const time = playerStore.playerTime;
 
@@ -718,6 +727,8 @@ onMounted(() => {
             return;
         }
 
+        if (watching.value) return;
+
         const diff = Date.now() - lastTime;
 
         if (diff > material.value.automaticTime * 1000) {
@@ -737,6 +748,7 @@ watch(drawing, (value) => {
     const player = playerStore.getPlayer() as Player | undefined;
 
     if (!player) return;
+    if (watching.value) return;
 
     if (value) {
         player.changeMode(PlayerMode.DRAW);
