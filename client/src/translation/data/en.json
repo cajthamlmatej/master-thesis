@@ -220,6 +220,11 @@
                     "title": "Failed to Start Watching",
                     "description": "The provided watch code is invalid. Please make sure you entered the correct code and try again. You will now be redirected to the material page where you can try to start watching again.",
                     "button": "Go to Material"
+                },
+                "ended": {
+                    "title": "Watching Ended",
+                    "description": "The watching session has ended. You will now be redirected to the material page where you can either start watching again or go through the material on your own.",
+                    "button": "Go to Material"
                 }
             },
             "join": {

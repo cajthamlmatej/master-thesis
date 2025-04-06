@@ -218,6 +218,11 @@
                     "title": "Započatí sledování se nezdařilo",
                     "description": "Zadaný kód pro sledování je neplatný. Ujistěte se, že jste zadali správný kód a zkuste to znovu. Nyní budete přesměrován na stránku materiálu, kde můžete sledování znovu zahájit.",
                     "button": "Přejít na materiál"
+                },
+                "ended": {
+                    "title": "Sledování skončilo",
+                    "description": "Sledování materiálu skončilo. Nyní budete přesměrován na stránku materiálu, kde můžete sledování znovu zahájit či si projít materiál samostatně.",
+                    "button": "Přejít na materiál"
                 }
             },
             "join": {

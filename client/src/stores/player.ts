@@ -23,6 +23,8 @@ export const usePlayerStore = defineStore("player", () => {
     const slides = ref<Slide[]>([]);
     const drawData = ref<{ slide: Slide, data: string }[]>([]);
 
+    const watchEnded = ref(false);
+
     watch(() => materialStore.currentMaterial, (material) => {
         if (!material) return;
 
@@ -144,6 +146,7 @@ export const usePlayerStore = defineStore("player", () => {
     }
 
     return {
+        watchEnded,
         requestPlayer,
         getPlayer,
         setPlayer,
