@@ -327,6 +327,19 @@
             "exporting": {
                 "title": "Material is being exported",
                 "description": "The material is being exported to the format. This operation may take several minutes. Once completed, the file will be automatically downloaded."
+            },
+            "attendees": {
+                "title": "Co-authors",
+                "description": "Add co-authors (attendees) to your material. They will be able to edit the material and present it to others. They cannot delete the material.",
+                "add": {
+                    "title": "Add co-author",
+                    "description": "To add a co-author, enter their e-mail address. They will be able to see the material in their dashboard and edit it.",
+                    "input": "E-mail address",
+                    "add": "Add"
+                },
+                "remove": "Remove co-author",
+                "empty": "No co-authors added yet.",
+                "save": "Save"
             }
         },
         "ui": {

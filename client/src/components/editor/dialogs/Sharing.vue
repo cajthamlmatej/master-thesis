@@ -233,7 +233,7 @@
                                         <div>
                                             <Button
                                                 icon="delete-outline"
-                                                v-tooltip="$t('editor.attendee.remove')"
+                                                v-tooltip="$t('editor.sharing.attendees.remove')"
                                                 @click="removeAttendee(attendee)"
                                             />
                                         </div>
@@ -246,7 +246,7 @@
 
                                 <div class="flex flex-justify-end mt-1">
                                     <Button :loading="saving" color="primary" @click="save">
-                                        <span v-t>editor.sharing.share.save</span>
+                                        <span v-t>editor.sharing.attendees.save</span>
                                     </Button>
                                 </div>
                             </Card>

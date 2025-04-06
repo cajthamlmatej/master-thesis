@@ -5,7 +5,7 @@
                 <div class="meta">
                     <span class="title" data-cy="editor-title">{{ materialStore.currentMaterial?.name }}</span>
 
-                    <span class="state">{{ state }}</span>
+<!--                    <span class="state">{{ state }}</span>-->
                 </div>
 
                 <div class="flex gap-0-5">

@@ -326,6 +326,19 @@
             "exporting": {
                 "title": "Materiál se exportuje",
                 "description": "Materiál se exportuje do formátu. Tato operace může trvat několik minut. Po dokončení bude soubor automaticky stáhnut."
+            },
+            "attendees": {
+                "title": "Spoluautoři",
+                "description": "Přidejte ke svému materiálu spoluautory (účastníky). Budou moci materiál upravovat a prezentovat jej ostatním. Materiál však nemohou smazat.",
+                "add": {
+                    "title": "Přidat spoluautora",
+                    "description": "Pro přidání spoluautora zadejte jeho e-mailovou adresu. Materiál se mu zobrazí na ovládacím panelu a bude jej moci upravovat.",
+                    "input": "E-mailová adresa",
+                    "add": "Přidat"
+                },
+                "remove": "Odebrat spoluautora",
+                "empty": "Zatím nebyli přidáni žádní spoluautoři.",
+                "save": "Uložit"
             }
         },
         "ui": {

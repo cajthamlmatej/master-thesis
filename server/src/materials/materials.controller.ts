@@ -140,6 +140,7 @@ export class MaterialsController {
         }
         // TODO: validate if release & plugin exists
 
+        // Just the owner of the material can update the attendees
         if(material.user.toString() === req.user.id) {
             const attendees = updateMaterialDto.attendees || material.attendees;
             let newAttendees = [] as HydratedDocument<User>[];
