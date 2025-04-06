@@ -422,16 +422,18 @@ export class EventsGateway {
                 oldRoom.removeListener(client);
             }
         }
+        
+        const material = await this.materialsService.findById(materialId);
+
+        if (!material) {
+            throw new WsException("Material not found");
+        }
+
+        if(material.user.toString() !== client.data.user?._id.toString() && !material.attendees.map(a => a.toString()).includes(client.data.user?._id.toString())) {
+            throw new WsException("You cannot start edit this material");
+        }
 
         if (!room) {
-            const material = await this.materialsService.findById(materialId);
-
-            if (!material) {
-                throw new WsException("Material not found");
-            }
-
-            // TODO: Has access?
-
             const newRoom = new EditorMaterialRoom(material, this);
             newRoom.addListener(client);
             this.editorRooms.push(newRoom);
@@ -577,8 +579,7 @@ export class EventsGateway {
                 throw new WsException("Material not found");
             }
 
-            // TODO: Has access?
-            if(material.user.toString() !== client.data.user?._id.toString()) {
+            if(material.user.toString() !== client.data.user?._id.toString() && !material.attendees.map(a => a.toString()).includes(client.data.user?._id.toString())) {
                 throw new WsException("You cannot start watch in this material");
             }
 
