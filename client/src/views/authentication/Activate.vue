@@ -4,13 +4,13 @@
             <Card fluid>
                 <p v-t class="title">page.activate.activation</p>
 
-                <p v-if="success" v-t>page.activation.success</p>
-                <p v-else-if="loading" v-t>page.activation.loading</p>
-                <p v-else-if="!success" v-t>page.activation.fail</p>
+                <p v-if="success" v-t>page.activate.success</p>
+                <p v-else-if="loading" v-t>page.activate.loading</p>
+                <p v-else-if="!success" v-t>page.activate.fail</p>
 
                 <Button :disabled="loading ? false : !success" :loading="loading" :to="{name: 'Authentication'}"
                         align="center" class="mt-1" fluid>
-                    <span v-t>page.activation.sign-in</span>
+                    <span v-t>page.activate.sign-in</span>
                 </Button>
             </Card>
         </Col>
