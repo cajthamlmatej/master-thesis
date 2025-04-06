@@ -174,7 +174,7 @@
                             </Card>
                         </template>
                     </Dialog>
-                    <Dialog>
+                    <Dialog v-if="isOwner">
                         <template #activator="{toggle}">
                             <ListItem hover @click="toggle">
                                 <span v-t>editor.sharing.attendees.title</span>
@@ -261,7 +261,7 @@
 <script lang="ts" setup>
 
 import NavigationButton from "@/components/design/navigation/NavigationButton.vue";
-import {onMounted, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {$t} from "@/translation/Translation";
 import {useMaterialStore} from "@/stores/material";
 import Select from "@/components/design/select/Select.vue";
@@ -273,6 +273,7 @@ import List from "@/components/design/list/List.vue";
 import {api} from "@/api/api";
 import fileSaver from "file-saver";
 import Button from "@/components/design/button/Button.vue";
+import {useAuthenticationStore} from "@/stores/authentication";
 
 const materialStore = useMaterialStore();
 
@@ -311,6 +312,11 @@ const load = () => {
 
     link.value = `${domain}${player}`;
 };
+
+const authenticationStore = useAuthenticationStore();
+const isOwner = computed(() => {
+    return materialStore.currentMaterial && materialStore.currentMaterial.user === authenticationStore.parsed?.id
+});
 
 const copyLink = () => {
     navigator.clipboard.writeText(link.value);
