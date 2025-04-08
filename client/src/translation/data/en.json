@@ -176,6 +176,60 @@
         },
         "player": {
             "title": "Player %name% material"
+        },
+        "plugins": {
+            "title": "Plugins",
+            "search": "Search plugins...",
+            "new": {
+                "tooltip": "New plugin"
+            },
+            "list-releases": "List of versions",
+            "remove": "Remove plugin",
+            "active": "Active version",
+            "last-version": "Last version: %lastVersion%",
+            "new-release": {
+                "title": "Create New",
+                "help": "In the following sections in the top navigation, fill in all the required information about the new plugin version. Once you are finished, click the 'Create New Version' button on the Overview and Submission page. Some errors in the form may only appear in the final step. For more information, visit the documentation.",
+                "info": {
+                    "version": {
+                        "label": "Version code",
+                        "error": "The code must be filled in."
+                    },
+                    "manifest": {
+                        "label": "Manifest",
+                        "error": "The manifest must be valid JSON.",
+                        "required": "Manifest is required.",
+                        "number": "Manifest version must be filled in and must be a number.",
+                        "allowedOrigins": "Allowed domains must be an array containing only URL strings (only protocol and domain, without path)."
+                    },
+                    "changelog": {
+                        "label": "Changes",
+                        "error": "Changes must be filled in."
+                    },
+                    "editor": {
+                        "label": "Editor code"
+                    },
+                    "player": {
+                        "label": "Player code"
+                    }
+                },
+                "summary": {
+                    "help": "Submitting a new plugin version will immediately create a new version. This version will be recommended to all users of this plugin. Versions can only be deleted by contacting the support team. To submit, at least one code (editor or player) must be filled in.",
+                    "button": "Create New Version"
+                }
+            },
+            "release": {
+                "date": "Release date",
+                "manifest": "Manifest",
+                "info": {
+                    "base": "Basic Information",
+                    "changelog": "Changes",
+                    "editor": "Editor Code",
+                    "player": "Player Code",
+                    "summary": "Overview and Submission",
+                    "no-code": "No code uploaded."
+                }
+            }
         }
     },
     "player": {

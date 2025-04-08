@@ -40,7 +40,7 @@
                     (value: string) => isValidJSON(value) || $t('page.plugins.new-release.info.manifest.error'),
                     (value: string) => !!JSON.parse(value).manifest || $t('page.plugins.new-release.info.manifest.error.manifest.required'),
                     (value: string) => (typeof JSON.parse(value).manifest == 'number' && Math.round(Number(JSON.parse(value).manifest)) === JSON.parse(value).manifest && !isNaN(Number(JSON.parse(value).manifest))) || $t('page.plugins.release.info.manifest.error.manifest.number'),
-                    (value: string) => !JSON.parse(value).allowedOrigins ? true : ((Array.isArray(JSON.parse(value).allowedOrigins) && JSON.parse(value).allowedOrigins.every((a: any) => typeof a === 'string' && !!a.match(/^https?:\/\/[a-z]+.[a-z]+$/))) || $t('page.plugins.release.info.manifest.error.allowedOrigins.string')),
+                    (value: string) => !JSON.parse(value).allowedOrigins ? true : ((Array.isArray(JSON.parse(value).allowedOrigins) && JSON.parse(value).allowedOrigins.every((a: any) => typeof a === 'string' && !!a.match(/^https?:\/\/[a-z]+.[a-z]+$/))) || $t('page.plugins.release.info.manifest.error.allowedOrigins')),
                ]"
         />
     </div>
@@ -54,12 +54,12 @@
     </div>
     <div v-else-if="releaseInfo == 'EDITOR'">
         <Input type="textarea" v-model:value="data.editor"
-               :label="$t('page.plugins.release.new-release.editor.label')"
+               :label="$t('page.plugins.new-release.info.editor.label')"
         />
     </div>
     <div v-else-if="releaseInfo == 'PLAYER'">
         <Input type="textarea" v-model:value="data.player"
-               :label="$t('page.plugins.release.new-release.player.label')"
+               :label="$t('page.plugins.new-release.info.player.label')"
         />
     </div>
     <div v-else-if="releaseInfo == 'SUMMARY'">
@@ -71,7 +71,7 @@
                 :loading="creating"
                 @click="send"
             >
-                <span v-t>page.plugins.release.info.summary.button</span>
+                <span v-t>page.plugins.new-release.summary.button</span>
             </Button>
         </div>
     </div>

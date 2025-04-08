@@ -186,7 +186,35 @@
             "active": "Aktivní verze",
             "last-version": "Poslední verze: %lastVersion%",
             "new-release": {
-                "title": "Vytvořit novou"
+                "title": "Vytvořit novou",
+                "help": "V následujcích sekcích v horní navigaci vyplňte všechny potřebné informace o nové verzi pluginu. Jakmile budete hotovi, klikněte na tlačítko „Vytvořit novou verzi“ v stránce Přehled a odeslání. Nějaké chyby ve vyplní se mohou zobrazit až v posledním kroku. Pro více informací navštivte dokumentaci.",
+                "info": {
+                    "version": {
+                        "label": "Kód verze",
+                        "error": "Kód musí být vyplněn."
+                    },
+                    "manifest": {
+                        "label": "Manifest",
+                        "error": "Manifest musí být platný JSON.",
+                        "required": "Manifest je povinný.",
+                        "number": "Verze manifestu musí být vyplněna a musí být číslo.",
+                        "allowedOrigins": "Povolené domény musí být pole a obsahovat pouze řetězce URL (pouze protokol a doména, bez cesty)."
+                    },
+                    "changelog": {
+                        "label": "Změny",
+                        "error": "Změny musí být vyplněny."
+                    },
+                    "editor": {
+                        "label": "Kód editoru"
+                    },
+                    "player": {
+                        "label": "Kód přehrávače"
+                    }
+                },
+                "summary": {
+                    "help": "Odesláním nové verze pluginu se okamžitě vytvoří nová verze. Tato verze se bude doporučovat všem, co tento plugin používají. Verze lze smazat jen pomocí kontaktu s týmem podpory. Pro odeslání je nutné, aby alespoň jeden kód (editoru či přehrávače) musí být vyplněn.",
+                    "button": "Vytvořit novou verzi"
+                }
             },
             "release": {
                 "date": "Datum vydání",
