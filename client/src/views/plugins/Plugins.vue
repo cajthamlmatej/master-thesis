@@ -42,6 +42,10 @@
         <div class="plugins">
             <article class="plugin" v-for="plugin in pluginsOnPage" :key="plugin.id">
                 <div class="meta">
+                    <div class="icon">
+                        <span :class="`mdi mdi-` + plugin.icon"></span>
+                    </div>
+
                     <div class="state">
                         <p class="title" v-tooltip="plugin.name">{{ plugin.name }}</p>
 
@@ -254,10 +258,17 @@ const releaseInfo = ref('BASE');
             display: flex;
             overflow: hidden;
 
+            .icon {
+                flex-shrink: 0;
+                width: 1.5em;
+                font-size: 3em;
+            }
+
             .state {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
+                flex-grow: 1;
             }
 
             .title {
@@ -271,6 +282,8 @@ const releaseInfo = ref('BASE');
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                
+                max-width: 300px;
             }
 
             @media (max-width: 768px) {
@@ -290,6 +303,10 @@ const releaseInfo = ref('BASE');
             :deep(.button) {
                 font-size: 0.85em;
                 padding: 0.4em 1em;
+            }
+
+            @media (max-width: 768px) {
+                align-items: center;
             }
         }
     }
