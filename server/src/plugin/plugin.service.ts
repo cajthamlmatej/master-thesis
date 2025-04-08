@@ -5,6 +5,7 @@ import {Plugin} from "./plugin.schema";
 import {User} from "../users/user.schema";
 import {CreatePluginReleaseDTO} from "../../dto/plugin/CreatePluginReleaseDTO";
 import {CreatePluginDTO} from "../../dto/plugin/CreatePluginDTO";
+import {UpdatePluginDTO} from "../../dto/plugin/UpdatePluginDTO";
 
 @Injectable()
 export class PluginService {
@@ -57,5 +58,14 @@ export class PluginService {
         });
 
         await plugin.save();
+    }
+
+    async update(plugin: HydratedDocument<Plugin>, body: UpdatePluginDTO) {
+        await this.pluginModel.findByIdAndUpdate(plugin._id, {
+            $set: {
+                ...body,
+                updatedAt: new Date()
+            }
+        }).exec();
     }
 }

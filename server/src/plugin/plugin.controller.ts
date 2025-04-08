@@ -1,4 +1,15 @@
-import {Body, Controller, Get, Param, Post, Req, UnauthorizedException, UseGuards} from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    HttpCode,
+    Param,
+    Patch,
+    Post,
+    Req,
+    UnauthorizedException,
+    UseGuards
+} from '@nestjs/common';
 import {PluginService} from "./plugin.service";
 import {RequestWithUser} from "../types";
 import {AllPluginsSuccessDTO} from "../../dto/plugin/AllPluginsSuccessDTO";
@@ -6,6 +17,7 @@ import {SpecificPluginsSuccessDTO} from "../../dto/plugin/SpecificPluginsSuccess
 import {RequiresAuthenticationGuard} from "../auth/auth.guard";
 import {CreatePluginReleaseDTO} from "../../dto/plugin/CreatePluginReleaseDTO";
 import {CreatePluginDTO} from "../../dto/plugin/CreatePluginDTO";
+import {UpdatePluginDTO} from "../../dto/plugin/UpdatePluginDTO";
 
 @Controller('')
 export class PluginController {
@@ -34,6 +46,27 @@ export class PluginController {
     @UseGuards(RequiresAuthenticationGuard)
     public async createPlugin(@Body() body: CreatePluginDTO, @Req() req: RequestWithUser) {
         await this.pluginService.createPlugin(body, req.user);
+
+        return {
+            success: true
+        }
+    }
+
+    @Patch('/plugin/:id')
+    @UseGuards(RequiresAuthenticationGuard)
+    @HttpCode(204)
+    public async updatePlugin(@Param('id') id: string, @Body() body: UpdatePluginDTO, @Req() req: RequestWithUser) {
+        const plugin = await this.pluginService.getPluginById(id);
+
+        if (!plugin) {
+            throw new UnauthorizedException('Plugin not found');
+        }
+
+        if (plugin.author.toString() !== req.user.id.toString()) {
+            throw new UnauthorizedException('You are not allowed to access this resource');
+        }
+
+        await this.pluginService.update(plugin, body);
 
         return {
             success: true
