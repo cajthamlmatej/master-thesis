@@ -33,8 +33,36 @@ export default class Plugin {
         this.tags = tags;
         this.releases = releases;
 
-        this.lastManifest = JSON.parse(lastManifest ? lastManifest : this.sortedReleases()[0].manifest);
-        this.lastReleaseDate = lastReleaseDate ? moment(lastReleaseDate) : this.sortedReleases()[0].date;
+        if(lastManifest) {
+            try {
+                this.lastManifest = JSON.parse(lastManifest);
+            } catch (e) {
+                this.lastManifest = {
+                    manifest: "",
+                    allowedOrigins: []
+                };
+            }
+        } else {
+            if(this.releases.length === 0) {
+                this.lastManifest = {
+                    manifest: "",
+                    allowedOrigins: []
+                };
+            }  else {
+                this.lastManifest = JSON.parse(this.releases[0].manifest);
+            }
+        }
+
+
+        if(this.lastReleaseDate) {
+            this.lastReleaseDate = moment(lastReleaseDate);
+        } else {
+            if(this.releases.length === 0) {
+                this.lastReleaseDate = moment();
+            } else {
+                this.lastReleaseDate = this.releases[0].date;
+            }
+        }
     }
 
     sortedReleases() {
@@ -42,6 +70,10 @@ export default class Plugin {
     }
 
     lastRelease() {
+        if(this.releases.length === 0) {
+            return undefined;
+        }
+
         return this.sortedReleases()[0];
     }
 

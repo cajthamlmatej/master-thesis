@@ -185,6 +185,25 @@
             "remove": "Odebrat plugin",
             "active": "Aktivní verze",
             "last-version": "Poslední verze: %lastVersion%",
+            "no-releases": "Žádné verze pluginu nebyly nalezeny.",
+            "new-plugin": {
+                "title": "Tvorba pluginu",
+                "name":{
+                    "label": "Název pluginu",
+                    "error": "Název pluginu musí být vyplněn."
+                },
+                "icon": {
+                    "label": "Ikona pluginu"
+                },
+                "description": {
+                    "label": "Popis pluginu",
+                    "error": "Popis pluginu musí být vyplněn."
+                },
+                "tags": {
+                    "label": "Tagy pluginu"
+                },
+                "submit": "Vytvořit plugin"
+            },
             "new-release": {
                 "title": "Vytvořit novou",
                 "help": "V následujcích sekcích v horní navigaci vyplňte všechny potřebné informace o nové verzi pluginu. Jakmile budete hotovi, klikněte na tlačítko „Vytvořit novou verzi“ v stránce Přehled a odeslání. Nějaké chyby ve vyplní se mohou zobrazit až v posledním kroku. Pro více informací navštivte dokumentaci.",

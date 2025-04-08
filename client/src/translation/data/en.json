@@ -187,6 +187,25 @@
             "remove": "Remove plugin",
             "active": "Active version",
             "last-version": "Last version: %lastVersion%",
+            "no-releases": "No plugin versions found.",
+            "new-plugin": {
+                "title": "Create Plugin",
+                "name": {
+                    "label": "Plugin Name",
+                    "error": "Plugin name must be filled in."
+                },
+                "icon": {
+                    "label": "Plugin Icon"
+                },
+                "description": {
+                    "label": "Plugin Description",
+                    "error": "Plugin description must be filled in."
+                },
+                "tags": {
+                    "label": "Plugin Tags"
+                },
+                "submit": "Create Plugin"
+            },
             "new-release": {
                 "title": "Create New",
                 "help": "In the following sections in the top navigation, fill in all the required information about the new plugin version. Once you are finished, click the 'Create New Version' button on the Overview and Submission page. Some errors in the form may only appear in the final step. For more information, visit the documentation.",

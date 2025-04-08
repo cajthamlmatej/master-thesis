@@ -2,6 +2,7 @@ import {Repository} from "../repository";
 import {AllPluginsSuccessDTO} from "../../../lib/dto/plugin/AllPluginsSuccessDTO";
 import {SpecificPluginsSuccessDTO} from "../../../lib/dto/plugin/SpecificPluginsSuccessDTO";
 import {CreatePluginReleaseDTO} from "../../../lib/dto/plugin/CreatePluginReleaseDTO";
+import {CreatePluginDTO} from "../../../lib/dto/plugin/CreatePluginDTO";
 
 export class PluginRepository extends Repository {
 
@@ -33,6 +34,14 @@ export class PluginRepository extends Repository {
             `plugin/${id}/release`,
             "POST",
             release
+        );
+    }
+
+    async create(data:CreatePluginDTO) {
+        return await this.makeRequest(
+            `plugin`,
+            "POST",
+            data
         );
     }
 }

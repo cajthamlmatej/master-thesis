@@ -5,13 +5,21 @@
             <span class="main-title" v-t>page.plugins.title</span>
 
             <div class="flex flex-align-center gap-1">
-                <Button v-tooltip="$t('page.plugins.new.tooltip')"
-                        color="primary"
-                        data-cy="new-material"
-                        icon="plus"/>
+                <Dialog>
+                    <template #activator="{toggle}">
+                        <Button v-tooltip="$t('page.plugins.new.tooltip')"
+                                color="primary"
+                                @click="toggle"
+                                icon="plus" />
+                    </template>
+                    <template #default="{toggle}">
+                        <Card dialog>
+                            <CreatePlugin @close="toggle"/>
+                        </Card>
+                    </template>
+                </Dialog>
 
                 <Input v-model:value="search" :label="$t('page.plugins.search')"
-                       data-cy="search-materials"
                        :placeholder="$t('page.plugins.search')" dense
                        hide-error hide-label type="text"/>
             </div>
@@ -38,7 +46,7 @@
                         <p class="title" v-tooltip="plugin.name">{{ plugin.name }}</p>
 
                         <div class="description">
-                            <p v-t="{lastVersion: plugin.lastRelease().version}">page.plugins.last-version</p>
+                            <p v-t="{lastVersion: plugin.lastRelease()?.version ?? 'N/A'}">page.plugins.last-version</p>
                         </div>
                     </div>
 
@@ -52,6 +60,10 @@
                             <template #default>
                                 <Card dialog>
                                     <List>
+                                        <ListItem v-if="plugin.releases.length === 0" class="release">
+                                            <span v-t>page.plugins.no-releases</span>
+                                        </ListItem>
+
                                         <ListItem v-for="(release, i) in plugin.sortedReleases()" :key="release.version" class="release">
                                             <span class="meta">
                                                 <span>{{release.version}}</span>
@@ -93,14 +105,14 @@
                                                                 <p class="code">{{ JSON.stringify(JSON.parse(release.manifest), null, 4) }}</p>
                                                             </div>
                                                             <div v-else-if="releaseInfo == 'CHANGELOG'">
-                                                                <p class="code"><pre>{{ release.changelog }}</pre></p>
+                                                                <pre class="code">{{ release.changelog }}</pre>
                                                             </div>
                                                             <div v-else-if="releaseInfo == 'EDITOR'">
-                                                                <p class="code" v-if="release.editorCode"><pre>{{ release.editorCode }}</pre></p>
+                                                                <pre class="code" v-if="release.editorCode">{{ release.editorCode }}</pre>
                                                                 <p v-else v-t>page.plugins.release.info.no-code</p>
                                                             </div>
                                                             <div v-else-if="releaseInfo == 'PLAYER'">
-                                                                <p class="code" v-if="release.playerCode"><pre>{{ release.playerCode }}</pre></p>
+                                                                <pre class="code" v-if="release.playerCode">{{ release.playerCode }}</pre>
                                                                 <p v-else v-t>page.plugins.release.info.no-code</p>
                                                             </div>
                                                         </Card>
@@ -120,7 +132,7 @@
                                                     <span v-t>page.plugins.new-release.title</span>
                                                 </Button>
                                             </template>
-                                            <template #default>
+                                            <template #default="{toggle}">
                                                 <Card dialog>
                                                     <CreatePluginRelease :plugin="plugin" @close="toggle"/>
                                                 </Card>
@@ -130,13 +142,13 @@
                                 </Card>
                             </template>
                         </Dialog>
-                        <Dialog>
-                            <template #activator="{toggle}">
-                                <Button @click="toggle" color="primary" icon="trash-can-outline">
-                                    <span v-t>page.plugins.remove</span>
-                                </Button>
-                            </template>
-                        </Dialog>
+<!--                        <Dialog>-->
+<!--                            <template #activator="{toggle}">-->
+<!--                                <Button @click="toggle" color="primary" icon="trash-can-outline">-->
+<!--                                    <span v-t>page.plugins.remove</span>-->
+<!--                                </Button>-->
+<!--                            </template>-->
+<!--                        </Dialog>-->
                     </div>
                 </div>
             </article>
@@ -159,6 +171,7 @@ import ListItem from "@/components/design/list/ListItem.vue";
 import List from "@/components/design/list/List.vue";
 import Tabs from "@/components/design/tabs/Tabs.vue";
 import CreatePluginRelease from "@/components/plugin/CreatePluginRelease.vue";
+import CreatePlugin from "@/components/plugin/CreatePlugin.vue";
 
 const router = useRouter();
 
@@ -245,6 +258,12 @@ const releaseInfo = ref('BASE');
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+            }
+
+            @media (max-width: 768px) {
+                flex-direction: column;
+                gap: 1em;
+                text-align: center;
             }
         }
 
