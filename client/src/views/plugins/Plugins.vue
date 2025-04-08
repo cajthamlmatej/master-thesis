@@ -142,6 +142,18 @@
                                 </Card>
                             </template>
                         </Dialog>
+                        <Dialog>
+                            <template #activator="{toggle}">
+                                <Button @click="toggle" color="primary" icon="text-box-edit-outline">
+                                    <span v-t>page.plugins.edit</span>
+                                </Button>
+                            </template>
+                            <template #default="{toggle}">
+                                <Card dialog>
+                                    <EditPlugin :plugin="plugin" @close="toggle"/>
+                                </Card>
+                            </template>
+                        </Dialog>
 <!--                        <Dialog>-->
 <!--                            <template #activator="{toggle}">-->
 <!--                                <Button @click="toggle" color="primary" icon="trash-can-outline">-->
@@ -172,6 +184,7 @@ import List from "@/components/design/list/List.vue";
 import Tabs from "@/components/design/tabs/Tabs.vue";
 import CreatePluginRelease from "@/components/plugin/CreatePluginRelease.vue";
 import CreatePlugin from "@/components/plugin/CreatePlugin.vue";
+import EditPlugin from "@/components/plugin/EditPlugin.vue";
 
 const router = useRouter();
 

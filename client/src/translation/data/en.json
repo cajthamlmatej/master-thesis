@@ -186,6 +186,7 @@
             "list-releases": "List of versions",
             "remove": "Remove plugin",
             "active": "Active version",
+            "edit": "Edit plugin",
             "last-version": "Last version: %lastVersion%",
             "no-releases": "No plugin versions found.",
             "new-plugin": {
@@ -205,6 +206,24 @@
                     "label": "Plugin Tags"
                 },
                 "submit": "Create Plugin"
+            },
+            "edit-plugin": {
+                "title": "Edit Plugin",
+                "name": {
+                    "label": "Plugin Name",
+                    "error": "Plugin name must be filled in."
+                },
+                "icon": {
+                    "label": "Plugin Icon"
+                },
+                "description": {
+                    "label": "Plugin Description",
+                    "error": "Plugin description must be filled in."
+                },
+                "tags": {
+                    "label": "Plugin Tags"
+                },
+                "submit": "Update Plugin"
             },
             "new-release": {
                 "title": "Create New",

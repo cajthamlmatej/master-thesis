@@ -3,6 +3,7 @@ import {AllPluginsSuccessDTO} from "../../../lib/dto/plugin/AllPluginsSuccessDTO
 import {SpecificPluginsSuccessDTO} from "../../../lib/dto/plugin/SpecificPluginsSuccessDTO";
 import {CreatePluginReleaseDTO} from "../../../lib/dto/plugin/CreatePluginReleaseDTO";
 import {CreatePluginDTO} from "../../../lib/dto/plugin/CreatePluginDTO";
+import {UpdatePluginDTO} from "../../../lib/dto/plugin/UpdatePluginDTO";
 
 export class PluginRepository extends Repository {
 
@@ -41,6 +42,14 @@ export class PluginRepository extends Repository {
         return await this.makeRequest(
             `plugin`,
             "POST",
+            data
+        );
+    }
+
+    async update(id: string, data: UpdatePluginDTO) {
+        return await this.makeRequest(
+            `plugin/${id}`,
+            "PATCH",
             data
         );
     }

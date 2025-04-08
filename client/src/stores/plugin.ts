@@ -256,6 +256,20 @@ export const usePluginStore = defineStore("plugin", () => {
         await loadForUser();
     }
 
+    const updatePlugin = async(plugin: Plugin, data: {
+        name?: string;
+        icon?: string;
+        description?: string;
+        tags?: string[];
+    }) => {
+        const response = await api.plugin.update(plugin.id, data);
+
+        if (response === undefined) {
+            return;
+        }
+
+        await loadForUser();
+    }
 
     return {
         plugins,
@@ -270,5 +284,6 @@ export const usePluginStore = defineStore("plugin", () => {
         loadForUser,
         createPluginRelease,
         createPlugin,
+        updatePlugin
     }
 });

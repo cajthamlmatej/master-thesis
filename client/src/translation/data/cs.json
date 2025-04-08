@@ -184,6 +184,7 @@
             "list-releases": "Seznam verzí",
             "remove": "Odebrat plugin",
             "active": "Aktivní verze",
+            "edit": "Upravit plugin",
             "last-version": "Poslední verze: %lastVersion%",
             "no-releases": "Žádné verze pluginu nebyly nalezeny.",
             "new-plugin": {
@@ -203,6 +204,24 @@
                     "label": "Tagy pluginu"
                 },
                 "submit": "Vytvořit plugin"
+            },
+            "edit-plugin": {
+                "title": "Úprava pluginu",
+                "name":{
+                    "label": "Název pluginu",
+                    "error": "Název pluginu musí být vyplněn."
+                },
+                "icon": {
+                    "label": "Ikona pluginu"
+                },
+                "description": {
+                    "label": "Popis pluginu",
+                    "error": "Popis pluginu musí být vyplněn."
+                },
+                "tags": {
+                    "label": "Tagy pluginu"
+                },
+                "submit": "Upravit plugin"
             },
             "new-release": {
                 "title": "Vytvořit novou",
