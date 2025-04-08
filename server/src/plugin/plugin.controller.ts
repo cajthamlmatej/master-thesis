@@ -5,6 +5,7 @@ import {AllPluginsSuccessDTO} from "../../dto/plugin/AllPluginsSuccessDTO";
 import {SpecificPluginsSuccessDTO} from "../../dto/plugin/SpecificPluginsSuccessDTO";
 import {RequiresAuthenticationGuard} from "../auth/auth.guard";
 import {CreatePluginReleaseDTO} from "../../dto/plugin/CreatePluginReleaseDTO";
+import {CreatePluginDTO} from "../../dto/plugin/CreatePluginDTO";
 
 @Controller('')
 export class PluginController {
@@ -23,12 +24,21 @@ export class PluginController {
                 icon: p.icon,
                 description: p.description,
                 tags: p.tags,
-                lastReleaseDate: p.releases[0].date.toISOString(),
-                lastManifest: p.releases[0].manifest
+                lastReleaseDate: p.releases[0]?.date.toISOString(),
+                lastManifest: p.releases[0]?.manifest
             }))
         } as AllPluginsSuccessDTO;
     }
 
+    @Post('/plugin/')
+    @UseGuards(RequiresAuthenticationGuard)
+    public async createPlugin(@Body() body: CreatePluginDTO, @Req() req: RequestWithUser) {
+        await this.pluginService.createPlugin(body, req.user);
+
+        return {
+            success: true
+        }
+    }
 
     @Get("/user/:user/plugin")
     @UseGuards(RequiresAuthenticationGuard)

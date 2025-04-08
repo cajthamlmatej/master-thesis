@@ -4,6 +4,7 @@ import {HydratedDocument, Model} from "mongoose";
 import {Plugin} from "./plugin.schema";
 import {User} from "../users/user.schema";
 import {CreatePluginReleaseDTO} from "../../dto/plugin/CreatePluginReleaseDTO";
+import {CreatePluginDTO} from "../../dto/plugin/CreatePluginDTO";
 
 @Injectable()
 export class PluginService {
@@ -40,6 +41,19 @@ export class PluginService {
             manifest: body.manifest,
             editorCode: body.editorCode,
             playerCode: body.playerCode
+        });
+
+        await plugin.save();
+    }
+
+    async createPlugin(body: CreatePluginDTO, user: HydratedDocument<User>) {
+        const plugin = new this.pluginModel({
+            name: body.name,
+            icon: body.icon,
+            description: body.description,
+            tags: body.tags,
+            author: user._id,
+            releases: []
         });
 
         await plugin.save();
