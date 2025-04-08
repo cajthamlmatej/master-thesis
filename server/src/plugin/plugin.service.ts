@@ -13,7 +13,7 @@ export class PluginService {
     }
 
     async getPlugins() {
-        return this.pluginModel.find().exec();
+        return this.pluginModel.find().populate("author").exec();
     }
 
     async getPluginsByIds(pluginIds: string[]) {
@@ -21,7 +21,7 @@ export class PluginService {
             _id: {
                 $in: pluginIds
             }
-        }).exec();
+        }).populate("author").exec();
     }
 
     async findAllForUser(authenticatedUser: HydratedDocument<User>) {
