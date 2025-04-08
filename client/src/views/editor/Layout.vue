@@ -279,6 +279,13 @@ watch(() => editorStore.getEditor(), (value) => {
     value.events.BLOCK_CHANGED.on((block) => {
         communicator.getEditorRoom()?.synchronizeBlock(block);
     });
+    value.events.HISTORY_JUMP.on(() => {
+        setTimeout(() => {
+            for(let block of (editor.value?.getBlocks() ?? [])) {
+                communicator.getEditorRoom()?.synchronizeBlock(block);
+            }
+        }, 400);
+    });
     value.events.BLOCK_ADDED.on((slide) => {
         communicator.getEditorRoom()?.synchronizeBlock(slide);
     });
@@ -357,7 +364,10 @@ main {
         }
     }
     @media (max-width: 768px) {
-        width: 100%;
+        max-width: 400px;
+    }
+    @media (max-width: 468px) {
+        max-width: 100px;
     }
 }
 </style>

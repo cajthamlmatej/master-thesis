@@ -51,6 +51,7 @@ export class EditorCommunicator {
         });
         communicator.socket.on("synchronizeBlock", async ({slideId, author, block}) => {
             if (author === communicator.socket.id) return;
+
             if (this.getCurrent().slideId !== slideId) {
                 const slide = this.material.slides.find((s) => s.id === slideId);
 
@@ -274,8 +275,8 @@ export class EditorCommunicator {
             return;
         }
 
-        if (!editor.getSelector().isSelected(block.id)) {
-            console.error("Block is not selected and trying to synchronize");
+        if(this.attendees.some(a => a.selectedBlocks.includes(block.id) && a.id !== communicator.socket.id)) {
+            console.error("Block is selected by someone else and trying to synchronize");
             return;
         }
 
