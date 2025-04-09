@@ -2,7 +2,7 @@
     <header :class="{ scrolled: scrollAmount > 0 }">
         <div class="container">
             <nav>
-                <ul>
+                <ul class="logo">
                     <li><a href=""><span class="logo"></span></a></li>
                 </ul>
 
@@ -16,14 +16,14 @@
 
                 <ul>
                     <li><a href="">Do aplikace</a></li>
-                    <li  id="menu-activator"><a  @click="menu = true"><img src="/icons/hamburger.svg"></a></li>
+                    <li  id="menu-activator" :class="{'active': menu }"><a  @click="menu = true"><img src="/icons/hamburger.svg"></a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
     <nav class="menu" :class="{ visible: menu }">
-        <div id="menu-deactivator"><a @click="menu = false"><img src="/icons/hamburger.svg"></a></div>
+        <div id="menu-deactivator"><a @click="menu = false"><img src="/icons/times.svg"></a></div>
         <ul>
             <li><a href="">O Materalist</a></li>
             <li><a href="">Porovnání</a></li>
@@ -74,15 +74,273 @@
             </div>
         </section>
 
-        <section class="two-sides">
-            <div class="side">
-                <h2></h2>
+        <section class="">
+            <div class="container">
+
+                <p class="subtitle">Proč Materalist</p>
+                <h2>Vaše prezentace, naše priorita</h2>
+
+                <div class="two-sides">
+                    <div class="side">
+<!--                        <img src="/img/using.webp" alt="Učitel používající Materalist k výuce, studenti používají počítače a své telefony ke sledování a odpovědím" class="cover">-->
+                        <img src="/img/join.webp" alt="TODO" class="cover">
+                    </div>
+                    <div class="side">
+                        <div class="keypoints">
+                            <div class="point">
+                                <h3>Interaktivita na prvním místě</h3>
+
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores facilis numquam tenetur ullam?</p>
+                            </div>
+                            <div class="point">
+                                <h3>Interaktivita na prvním místě</h3>
+
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores facilis numquam tenetur ullam?</p>
+                            </div>
+                            <div class="point">
+                                <h3>Interaktivita na prvním místě</h3>
+
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores facilis numquam tenetur ullam?</p>
+                            </div>
+                            <div class="point">
+                                <h3>Interaktivita na prvním místě</h3>
+
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores facilis numquam tenetur ullam?</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="side">
-                <img src="" alt="">
+        </section>
+
+        <section class="">
+            <div class="container">
+                <div class="two-sides">
+                    <div class="side">
+                        <p class="subtitle">O nás</p>
+                        <h2>Co vedlo k tomuto projektu</h2>
+
+                        <div class="about">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi nobis, provident? At commodi cupiditate debitis dolores eius eos fuga fugit harum iusto laboriosam magni, maiores molestias nulla possimus ratione sequi!</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores eos harum illo neque nisi nobis nulla quidem quisquam ullam vel. Fugit harum magnam sapiente! Eveniet expedita magnam ratione similique tempore.</p>
+                            <p>Lorem lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum deserunt doloribus enim eum impedit itaque iure maiores minima natus nisi obcaecati officiis reiciendis, repellendus, sint vel veritatis voluptate voluptatum. Veritatis.</p>
+                            <p>A tak vzniknul Materalist, jak ho znáte.</p>
+                        </div>
+                    </div>
+                    <div class="side">
+                        <img src="/img/us.webp" alt="Portrét učitelky před tabulí, úmělecky zpracované" class="cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="join">
+            <div class="container">
+                <div class="callToAction">
+                    <h2>Připoj se k nám</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur deleniti et excepturi odio pariatur ratione recusandae repudiandae! Ad, omnis, quae? Animi dolores excepturi ipsam laboriosam numquam obcaecati reprehenderit temporibus unde?</p>
+
+                    <a href="" class="button">
+                        <span>Začít vytvářet</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <p class="subtitle">Ukázkové materiály</p>
+                <h2>Co Materalist zvládne</h2>
+
+                <Slider :items="[
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                ]" />
+
+                <Slider :items="
+                [
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                    {
+                        author: 'Matěj Cajthaml',
+                        name: 'Animace',
+                        thumbnail: '/img/using.webp',
+                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+                    },
+                ]"
+                        start-direction="right"
+                />
             </div>
         </section>
     </main>
+
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; 2025 Materalist. Všechna práva vyhrazena.</p>
+                <p>Vytvořeno s láskou a vášní pro vzdělávání.</p>
+            </div>
+            <div class="links">
+                <ul>
+                    <li><a href="" class="education"></a></li>
+                    <li><a href="" class="blackboard"></a></li>
+                    <li><a href="" class="discord"></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 
     <RouterView/>
 </template>
@@ -91,6 +349,7 @@
 import {RouterView} from 'vue-router'
 import {useScrollReact} from "@/composables/scrollReact.ts";
 import {ref, watch} from "vue";
+import Slider from "@/components/Slider.vue";
 
 const scrollAmount = ref(0);
 
@@ -177,6 +436,7 @@ header {
 
                 &#menu-activator {
                     display: none;
+                    transition: opacity 0.3s;
 
                     a {
                         img {
@@ -187,6 +447,10 @@ header {
 
                     @media (max-width: 768px) {
                         display: flex;
+                    }
+
+                    &.active {
+                        opacity: 0;
                     }
                 }
             }
@@ -205,10 +469,91 @@ header {
                 gap: 0.2em;
             }
         }
+
+        ul.logo {
+            li {
+                a {
+                    &:hover {
+                        background-color: transparent;
+                    }
+                }
+            }
+        }
     }
 
     &.scrolled {
-        background-color: rgba(89, 75, 93, 0.25);
+        background-color: rgba(136, 70, 217, 0.25);
+    }
+}
+
+footer {
+    background-color: #7b57c4;
+    padding: 1em 0;
+    color: white;
+
+    > .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .copyright {
+        line-height: 1.5;
+    }
+
+    .links {
+        ul {
+            display: flex;
+            justify-content: center;
+            gap: 1em;
+            list-style: none;
+
+            li {
+                display: block;
+                text-align: center;
+
+                a {
+                    display: block;
+                    color: white;
+                    text-decoration: none;
+
+                    width: 40px;
+                    height: 40px;
+
+                    background-color: #f2eefc;
+                    mask-repeat: no-repeat;
+                    mask-size: contain;
+
+                    transition: transform 0.3s ease, background-color 0.3s ease;
+
+                    &.blackboard {
+                        mask-image: url("/icons/blackboard.svg");
+                    }
+                    &.education {
+                        mask-image: url("/icons/education.svg");
+                    }
+                    &.discord {
+                        mask-image: url("/icons/discord.svg");
+                    }
+
+                    &:hover {
+                        transform: scale(1.1);
+                        background-color: #c3b7e0;
+                    }
+                }
+            }
+        }
+    }
+
+    @media (max-width: 1200px) {
+        padding: 1em 0.5em;
+        text-align: center;
+
+        > .container {
+            flex-direction: column;
+            align-items: center;
+            gap: 1em;
+        }
     }
 }
 
@@ -301,6 +646,13 @@ nav.menu {
 main {
     section {
         min-height: 100vh;
+        padding: 5em 0;
+        display: flex;
+        align-items: center;
+
+        &:nth-child(2n) {
+            background-color: #f5f5f5;
+        }
 
         &.landing {
             background-color: #907eb3;
@@ -472,6 +824,193 @@ main {
                 @media (max-height: 1000px) {
                     top: -5%;
                     height: 110%;
+                }
+            }
+        }
+        &.join {
+            position: relative;
+            &:before {
+                position: absolute;
+                content: '';
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: url("/img/start.webp") no-repeat center;
+                background-size: cover;
+            }
+
+            .callToAction {
+                position: relative;
+                top: 3rem;
+                z-index: 10;
+                gap: 1em;
+                background-color: rgba(110, 79, 169, 0.69);
+                border-radius: 1rem;
+                backdrop-filter: blur(17px);
+                padding: 4em 2em;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+
+                h2 {
+                    font-size: 3rem;
+                    margin-bottom: 1em;
+                    text-align: center;
+                    color: white;
+                }
+
+                p {
+                    font-size: 1.5rem;
+                    text-align: center;
+                    color: white;
+                    max-width: 80%;
+                    margin-bottom: 2em;
+                }
+
+                a.button {
+                    display: block;
+                    color: #7b57c4;
+                    background-color: white;
+                    text-decoration: none;
+                    font-size: 1.2rem;
+                    padding: 0.4em 0.8em;
+                    border-radius: 0.5em;
+                    transition: background-color 0.3s;
+
+                    &:hover {
+                        background-color: rgba(255, 255, 255, 0.8);
+                    }
+
+                    @media (max-width: 1200px) {
+                        padding: 0.2em 0.6em;
+                        font-size: 1rem;
+                    }
+                }
+
+                @media (max-width: 1200px) {
+                    padding: 2em 1em;
+                    top: 0;
+
+                    h2 {
+                        font-size: 2.5rem;
+                    }
+                    p {
+                        font-size: 1.2rem;
+                        max-width: 100%;
+                    }
+                }
+            }
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: black;
+        }
+        .subtitle {
+            font-size: 1.5rem;
+            text-align: center;
+            color: #7b57c4;
+            margin-top: 1em;
+        }
+
+        .two-sides {
+            display: flex;
+            align-items: stretch;
+            justify-content: space-between;
+            gap: 4em;
+            padding: 1em 0;
+
+            .side {
+                width: 50%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                img.cover {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: 1rem;
+                }
+
+                .keypoints {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1em;
+                    width: 100%;
+
+                    .point {
+                        padding-left: 5rem;
+                        position: relative;
+
+                        &:before {
+                            content: '';
+                            position: absolute;
+                            left: 0;
+                            top: 0rem;
+
+                            width: 4rem;
+                            height: 4rem;
+
+                            mask-image: url("/icons/approve.svg");
+                            background-color: #7b57c4;
+                            mask-repeat: no-repeat;
+                            mask-size: contain;
+                        }
+
+                        h3 {
+                            font-size: 2rem;
+                            margin-bottom: 1rem;
+                            line-height: 1;
+                        }
+
+                        p {
+                            font-size: 1.2rem;
+                            margin-bottom: 0.5em;
+                        }
+
+                        @media (max-width: 1200px) {
+                            padding-left: 0;
+                            padding-top: 4em;
+                            text-align: center;
+
+                            &:before {
+                                top: 0em;
+                                left: 50%;
+                                transform: translateX(-50%);
+                            }
+                        }
+                    }
+                }
+
+                .about {
+                    p {
+                        font-size: 1.2rem;
+                        margin-bottom: 1em;
+                    }
+
+                    @media (max-width: 1000px) {
+                        text-align: center;
+                    }
+                }
+            }
+
+            @media (max-width: 1200px) {
+                flex-direction: column;
+                gap: 2em;
+
+                .side {
+                    width: 100%;
+
+                    img.cover {
+                        width: 100%;
+                        height: auto;
+                    }
                 }
             }
         }
