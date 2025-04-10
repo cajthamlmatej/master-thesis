@@ -9,7 +9,7 @@ Welcome to the **MASTERTHESIS** documentation!
 This documentation is intended to provide a comprehensive guide to the **MASTERTHESIS** project. It is divided into
 several sections, each of which covers a different aspect of the project. The sections are as follows:
 
-- [Introduction](./intro.md): An overview of the project, its goals, objectives and the origins of the project.
+- [Introduction](intro.md): An overview of the project, its goals, objectives and the origins of the project.
 - [Installation](./installation.md): Instructions on how to install the project on your local machine.
 - [Project Structure](./project-structure.md): An overview of the project's structure and the various components that make up the project.
   - [Client](./client.md): An overview of the client-side code and how it interacts with the server.
