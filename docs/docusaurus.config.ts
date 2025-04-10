@@ -8,6 +8,7 @@ const config: Config = {
   title: 'Materalist Documentation',
   tagline: 'Not every presentation is material, but yours is definitely worth presenting!',
   favicon: 'img/favicon.ico?r=2',
+  staticDirectories: ['static'],
 
   url: 'https://docs.materalist.com',
   baseUrl: '/',
