@@ -4,12 +4,9 @@
     box-sizing: border-box;
 }
 
-:root {
-    font-family: "Funnel Sans", serif;
+body {
+    font-family: "Funnel Sans", serif !important;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
-}
-
-body {
 }

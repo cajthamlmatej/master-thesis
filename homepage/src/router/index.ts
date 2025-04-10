@@ -6,6 +6,16 @@ const router = createRouter({
     routes: [
         {
             path: '/',
+            redirect: {
+                name: 'home',
+                params: {
+                    lang: 'en'
+                }
+            }
+        },
+
+        {
+            path: '/:lang/',
             name: 'home',
             component: HomeView,
         },

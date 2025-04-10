@@ -1,0 +1,67 @@
+{
+    "web": {
+        "name": "Materalist"
+    },
+    "navigation": {
+        "why-use": "Proč Materalist?",
+        "about-us": "O nás",
+        "join": "Připojit se",
+        "examples": "Ukázkové materiály",
+        "documentation": "Dokumentace",
+        "application": "Do aplikace"
+    },
+    "landing": {
+        "title": "Tvoření materiálů s jasným cílem",
+        "about": "Každý vytvořený materiál pro výuku je důležitý.\nS Materalistem tvoříte prezentace a studijní materiály, které nejsou jen krásné, ale hlavně efektivní. Naším cílem je usnadnit vám tvorbu a pomoci studentům pochopit látku co nejlépe – ať už během výuky, nebo při samostudiu.\nZačněte tvořit ještě dnes a staňte se součástí komunity, která mění způsob, jakým se učíme a učíme ostatní.",
+        "start": "Začít vytvářet",
+        "why-use": "Proč Materalist",
+        "label": "Ukázka použití"
+    },
+    "why-use": {
+        "subtitle": "Proč Materalist",
+        "title": "Vaše prezentace, naše priorita",
+        "image-label": "TODO",
+        "keypoints": [
+            {
+                "title": "Editor, který vás nebude brzdit",
+                "description": "Rychlé a intuitivní rozhraní vám umožní plně se soustředit na obsah. Zapomeňte na zbytečné nastavování – tvořte rovnou."
+            },
+            {
+                "title": "Interaktivita bez hranic",
+                "description": "Díky rozšířením od komunity můžete vytvářet materiály, které nejsou jen pasivní, ale vtáhnou studenty přímo do děje."
+            },
+            {
+                "title": "Pro prezentaci i samostudium",
+                "description": "Materalist není jen o tom něco ukázat – je o tom látku skutečně pochopit. Studenti si materiály snadno projdou i sami, vlastním tempem."
+            },
+            {
+                "title": "Otevřenost a spolupráce",
+                "description": "Zdarma, bez skrytých poplatků. Platforma roste s vámi a díky vám – přispějte vlastním rozšířením nebo nápady."
+            }
+        ]
+    },
+    "about-us": {
+        "subtitle": "O nás",
+        "title": "Co vedlo k tomuto projektu",
+        "text": [
+            "Jmenuji se Matěj Cajthaml a jsem mladý vyučující technických oborů. Už od začátku své učitelské praxe jsem cítil, že klasické způsoby prezentování látky studenty příliš nezaujmou. Statické slajdy plné textu nedokážou předat složitější technická témata způsobem, který by opravdu podpořil pochopení a aktivní zapojení.\n\n",
+            "Během let jsem vyzkoušel mnoho různých nástrojů – od tradičních prezentací přes různé interaktivní platformy až po specializované výukové systémy. Každý měl své výhody, ale zároveň i limity. Některé byly příliš složité, jiné zase moc uzavřené a nepřizpůsobivé. Neustále jsem hledal něco, co by spojovalo jednoduchost, interaktivitu a volnost tvorby.\n\n",
+            "Z těchto zkušeností a z neustálé snahy o zlepšování výuky vznikl nápad vytvořit vlastní platformu. Tento nápad se stal základem mé diplomové práce, kde jsem začal budovat první verzi aplikace, která umožní snadno tvořit moderní vzdělávací materiály přístupné všem.\n\n",
+            "Cílem nebylo vytvořit další obyčejný nástroj na prezentace. Chtěl jsem vybudovat platformu, která podporuje kreativitu, učení a sdílení mezi vyučujícími i studenty. Platformu, která roste společně s komunitou a díky komunitě.\n A tak vzniknul Materalist, jak ho znáte."
+        ],
+        "image-label": "Portrét učitelky před tabulí, úmělecky zpracované"
+    },
+    "join": {
+        "title": "Připoj se k nám",
+        "text": "Připojit se k Materalistu znamená být součástí komunity, která věří v lepší vzdělávání. Ať už chcete tvořit vlastní materiály, inspirovat se jinými, nebo rozšiřovat platformu novými nápady, u nás máte dveře otevřené.\n\n Materalist je zcela zdarma a vždy bude. Věříme, že vzdělávací nástroje by měly být dostupné pro všechny, bez kompromisů. Přidejte se, tvořte a měňte s námi standardy vzdělávání!\n\n",
+        "start": "Začít vytvářet"
+    },
+    "examples": {
+        "subtitle": "Ukázkové materiály",
+        "title": "Co Materalist umí a zvládne"
+    },
+    "footer": {
+        "copyright": "Copyright © %year% Materalist. Všechna práva vyhrazena.",
+        "love": "Vytvořeno s láskou a vášní pro vzdělávání."
+    }
+}

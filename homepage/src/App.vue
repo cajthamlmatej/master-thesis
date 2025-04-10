@@ -7,16 +7,15 @@
                 </ul>
 
                 <ul class="main">
-                    <li><a href="#why-use">Proč Materalist</a></li>
-                    <li><a href="#about-us">O Nás</a></li>
-<!--                    <li><a href="">XD</a></li>-->
-                    <li><a href="#join">Připojit se</a></li>
-                    <li><a href="#examples">Ukázkové materiály</a></li>
-                    <li><a href="">Dokumentace</a></li>
+                    <li><a href="#why-use" v-t>navigation.why-use</a></li>
+                    <li><a href="#about-us" v-t>navigation.about-us</a></li>
+                    <li><a href="#join" v-t>navigation.join</a></li>
+                    <li><a href="#examples" v-t>navigation.examples</a></li>
                 </ul>
 
                 <ul>
-                    <li><a href="">Do aplikace</a></li>
+                    <change-language></change-language>
+                    <li><a href="" v-t>navigation.application</a></li>
                     <li  id="menu-activator" :class="{'active': menu }"><a  @click="menu = true"><img src="/icons/hamburger.svg"></a></li>
                 </ul>
             </nav>
@@ -26,11 +25,11 @@
     <nav class="menu" :class="{ visible: menu }">
         <div id="menu-deactivator"><a @click="menu = false"><img src="/icons/times.svg"></a></div>
         <ul>
-            <li><a href="">O Materalist</a></li>
-            <li><a href="">Porovnání</a></li>
-            <li><a href="">Ukázkové materiály</a></li>
-            <li><a href="">Dokumentace</a></li>
-            <li><a href="">Do aplikace</a></li>
+            <li><a href="#why-use" v-t>navigation.why-use</a></li>
+            <li><a href="#about-us" v-t>navigation.about-us</a></li>
+            <li><a href="#join" v-t>navigation.join</a></li>
+            <li><a href="#examples" v-t>navigation.examples</a></li>
+            <li><a href="" v-t>navigation.application</a></li>
         </ul>
     </nav>
 
@@ -38,14 +37,14 @@
         <section class="landing">
             <div class="container">
                 <div class="content">
-                    <h1>Tvoření materiálů s jasným cílem</h1>
+                    <h1 v-t>landing.title</h1>
 
-                    <p>Každý vytvořený materiál pro výuku je důležitý. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam consequatur delectus, deleniti ducimus enim eos esse est fugiat fugit incidunt nulla quas quis quod reiciendis, repellat sint suscipit tenetur vero.</p>
+                    <p v-t>landing.about</p>
 
                     <nav class="buttons">
                         <ul>
-                            <li><a href="" class="button primary">Začít vytvářet</a></li>
-                            <li><a href="" class="button">Proč Materalist</a></li>
+                            <li><a href="" class="button primary" v-t>landing.start</a></li>
+                            <li><a href="#why-use" class="button" v-t>landing.why-use</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -63,9 +62,7 @@
                            playsinline
                     ></video>
 
-                    <div class="content">
-                        Editor v akci
-                    </div>
+                    <div class="content" v-t>landing.label</div>
 
                     <div class="dots">
                         <img src="/icons/dots.svg" alt="" :style="{
@@ -78,35 +75,20 @@
         <section class="" id="why-use">
             <div class="container">
 
-                <p class="subtitle">Proč Materalist</p>
-                <h2>Vaše prezentace, naše priorita</h2>
+                <p class="subtitle" v-t>why-use.subtitle</p>
+                <h2 v-t>why-use.title</h2>
 
                 <div class="two-sides">
                     <div class="side">
 <!--                        <img src="/img/using.webp" alt="Učitel používající Materalist k výuce, studenti používají počítače a své telefony ke sledování a odpovědím" class="cover">-->
-                        <img src="/img/join.webp" alt="TODO" class="cover">
+                        <img src="/img/join.webp" :alt="$t('why-use.image-label')" class="cover">
                     </div>
                     <div class="side">
                         <div class="keypoints">
-                            <div class="point">
-                                <h3>Interaktivita na prvním místě</h3>
+                            <div class="point" v-for="i in 4">
+                                <h3 v-t>why-use.keypoints.{{i-1}}.title</h3>
 
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores facilis numquam tenetur ullam?</p>
-                            </div>
-                            <div class="point">
-                                <h3>Interaktivita na prvním místě</h3>
-
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores facilis numquam tenetur ullam?</p>
-                            </div>
-                            <div class="point">
-                                <h3>Interaktivita na prvním místě</h3>
-
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores facilis numquam tenetur ullam?</p>
-                            </div>
-                            <div class="point">
-                                <h3>Interaktivita na prvním místě</h3>
-
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores facilis numquam tenetur ullam?</p>
+                                <p v-t>why-use.keypoints.{{i-1}}.description</p>
                             </div>
                         </div>
                     </div>
@@ -118,18 +100,15 @@
             <div class="container">
                 <div class="two-sides">
                     <div class="side">
-                        <p class="subtitle">O nás</p>
-                        <h2>Co vedlo k tomuto projektu</h2>
+                        <p class="subtitle" v-t>about-us.subtitle</p>
+                        <h2 v-t>about-us.title</h2>
 
                         <div class="about">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi nobis, provident? At commodi cupiditate debitis dolores eius eos fuga fugit harum iusto laboriosam magni, maiores molestias nulla possimus ratione sequi!</p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores eos harum illo neque nisi nobis nulla quidem quisquam ullam vel. Fugit harum magnam sapiente! Eveniet expedita magnam ratione similique tempore.</p>
-                            <p>Lorem lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum deserunt doloribus enim eum impedit itaque iure maiores minima natus nisi obcaecati officiis reiciendis, repellendus, sint vel veritatis voluptate voluptatum. Veritatis.</p>
-                            <p>A tak vzniknul Materalist, jak ho znáte.</p>
+                            <p v-for="i in 4" v-t>about-us.text.{{i-1}}</p>
                         </div>
                     </div>
                     <div class="side">
-                        <img src="/img/us.webp" alt="Portrét učitelky před tabulí, úmělecky zpracované" class="cover">
+                        <img src="/img/us.webp" :alt="$t('about-us.image-label')" class="cover">
                     </div>
                 </div>
             </div>
@@ -138,11 +117,11 @@
         <section class="join" id="join">
             <div class="container">
                 <div class="callToAction">
-                    <h2>Připoj se k nám</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur deleniti et excepturi odio pariatur ratione recusandae repudiandae! Ad, omnis, quae? Animi dolores excepturi ipsam laboriosam numquam obcaecati reprehenderit temporibus unde?</p>
+                    <h2 v-t>join.title</h2>
+                    <p v-t>join.text</p>
 
                     <a href="" class="button">
-                        <span>Začít vytvářet</span>
+                        <span v-t>join.start</span>
                     </a>
                 </div>
             </div>
@@ -150,179 +129,12 @@
 
         <section id="examples">
             <div class="container">
-                <p class="subtitle">Ukázkové materiály</p>
-                <h2>Co Materalist zvládne</h2>
+                <p class="subtitle" v-t>examples.subtitle</p>
+                <h2 v-t>examples.title</h2>
 
-                <Slider :items="[
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                ]" />
+                <Slider :items="items[0]" />
 
-                <Slider :items="
-                [
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                    {
-                        author: 'Matěj Cajthaml',
-                        name: 'Animace',
-                        thumbnail: '/img/using.webp',
-                        link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
-                    },
-                ]"
-                        start-direction="right"
-                />
+                <Slider :items="items[1]" start-direction="right" />
             </div>
         </section>
     </main>
@@ -330,8 +142,8 @@
     <footer>
         <div class="container">
             <div class="copyright">
-                <p>&copy; 2025 Materalist. Všechna práva vyhrazena.</p>
-                <p>Vytvořeno s láskou a vášní pro vzdělávání.</p>
+                <p v-t="{year: 2025}">footer.copyright</p>
+                <p v-t>footer.love</p>
             </div>
             <div class="links">
                 <ul>
@@ -342,15 +154,14 @@
             </div>
         </div>
     </footer>
-
-    <RouterView/>
 </template>
 
 <script setup lang="ts">
-import {RouterView} from 'vue-router'
 import {useScrollReact} from "@/composables/scrollReact.ts";
-import {onMounted, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import Slider from "@/components/Slider.vue";
+import {$t} from "@/translation/Translation.ts";
+import ChangeLanguage from "@/components/ChangeLanguage.vue";
 
 const scrollAmount = ref(0);
 
@@ -372,6 +183,99 @@ onMounted(() => {
             }
         });
     }
+});
+
+const items = computed(() => {
+    return [
+        [
+            {
+                author: 'Matěj Cajthaml',
+                name: 'Animace',
+                thumbnail: '/img/using.webp',
+                link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+            },
+            {
+                author: 'Matěj Cajthaml',
+                name: 'Animace',
+                thumbnail: '/img/using.webp',
+                link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+            },
+            {
+                author: 'Matěj Cajthaml',
+                name: 'Animace',
+                thumbnail: '/img/using.webp',
+                link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+            },
+            {
+                author: 'Matěj Cajthaml',
+                name: 'Animace',
+                thumbnail: '/img/using.webp',
+                link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+            },
+            {
+                author: 'Matěj Cajthaml',
+                name: 'Animace',
+                thumbnail: '/img/using.webp',
+                link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+            },
+            {
+                author: 'Matěj Cajthaml',
+                name: 'Animace',
+                thumbnail: '/img/using.webp',
+                link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+            },
+            {
+                author: 'Matěj Cajthaml',
+                name: 'Animace',
+                thumbnail: '/img/using.webp',
+                link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+            },
+        ],
+        [
+            {
+                author: 'Matěj Cajthaml',
+                name: 'Animace',
+                thumbnail: '/img/using.webp',
+                link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+            },
+            {
+                author: 'Matěj Cajthaml',
+                name: 'Animace',
+                thumbnail: '/img/using.webp',
+                link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+            },
+            {
+                author: 'Matěj Cajthaml',
+                name: 'Animace',
+                thumbnail: '/img/using.webp',
+                link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+            },
+            {
+                author: 'Matěj Cajthaml',
+                name: 'Animace',
+                thumbnail: '/img/using.webp',
+                link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+            },
+            {
+                author: 'Matěj Cajthaml',
+                name: 'Animace',
+                thumbnail: '/img/using.webp',
+                link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+            },
+            {
+                author: 'Matěj Cajthaml',
+                name: 'Animace',
+                thumbnail: '/img/using.webp',
+                link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+            },
+            {
+                author: 'Matěj Cajthaml',
+                name: 'Animace',
+                thumbnail: '/img/using.webp',
+                link: 'http://localhost:5173/en/player/67e1c6a01dbba4be0ce7ca47?slide=9a4f79be-2105-44af-9d71-6dc03dde414f'
+            },
+        ]
+    ]
 })
 </script>
 
@@ -434,7 +338,7 @@ header {
                         font-size: 1rem;
                     }
 
-                    @media (max-width: 900px) {
+                    @media (max-width: 950px) {
                         padding: 0.4em 0.8em;
                         font-size: 0.8rem;
                     }
@@ -584,13 +488,14 @@ nav.menu {
     left: 0;
 
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     background-color: rgba(89, 75, 93, 0.9);
 
     visibility: hidden;
     padding: 8em 0;
     text-align: center;
     align-items: center;
+    display: flex;
     justify-content: center;
     opacity: 0;
     transition: opacity 0.3s;
@@ -598,6 +503,13 @@ nav.menu {
     user-select: none;
     pointer-events: none;
 
+    @media (max-height: 600px) {
+        padding: 4em 0;
+    }
+
+    @media (max-height: 400px) {
+        padding: 2em 0;
+    }
 
     &.visible {
         visibility: visible;
@@ -637,6 +549,7 @@ nav.menu {
         right: 1em;
 
         a {
+            line-height: 0;
             display: block;
             color: white;
             text-decoration: none;
@@ -820,8 +733,8 @@ main {
                     font-size: 1.5rem;
                     line-height: 1em;
                     padding: 1em;
-                    border-bottom-left-radius: 1rem;
-                    border-bottom-right-radius: 1rem;
+                    border-bottom-left-radius: 0.6rem;
+                    border-bottom-right-radius: 0.6rem;
                 }
 
                 @media (max-width: 1200px) {
