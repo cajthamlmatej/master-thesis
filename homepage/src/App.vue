@@ -11,11 +11,12 @@
                     <li><a href="#about-us" v-t>navigation.about-us</a></li>
                     <li><a href="#join" v-t>navigation.join</a></li>
                     <li><a href="#examples" v-t>navigation.examples</a></li>
+                    <li><a href="https://docs.materalist.com" v-t>navigation.documentation</a></li>
                 </ul>
 
                 <ul>
                     <change-language></change-language>
-                    <li><a href="" v-t>navigation.application</a></li>
+                    <li><a href="https://app.materalist.com" v-t>navigation.application</a></li>
                     <li  id="menu-activator" :class="{'active': menu }"><a  @click="menu = true"><img src="/icons/hamburger.svg"></a></li>
                 </ul>
             </nav>
@@ -29,7 +30,8 @@
             <li><a href="#about-us" v-t>navigation.about-us</a></li>
             <li><a href="#join" v-t>navigation.join</a></li>
             <li><a href="#examples" v-t>navigation.examples</a></li>
-            <li><a href="" v-t>navigation.application</a></li>
+            <li><a href="https://docs.materalist.com" v-t>navigation.documentation</a></li>
+            <li><a href="https://app.materalist.com" v-t>navigation.application</a></li>
         </ul>
     </nav>
 
@@ -43,7 +45,7 @@
 
                     <nav class="buttons">
                         <ul>
-                            <li><a href="" class="button primary" v-t>landing.start</a></li>
+                            <li><a href="https://app.materalist.com" class="button primary" v-t>landing.start</a></li>
                             <li><a href="#why-use" class="button" v-t>landing.why-use</a></li>
                         </ul>
                     </nav>
@@ -120,7 +122,7 @@
                     <h2 v-t>join.title</h2>
                     <p v-t>join.text</p>
 
-                    <a href="" class="button">
+                    <a href="https://app.materalist.com"  class="button">
                         <span v-t>join.start</span>
                     </a>
                 </div>
@@ -147,9 +149,9 @@
             </div>
             <div class="links">
                 <ul>
-                    <li><a href="" class="education"></a></li>
-                    <li><a href="" class="blackboard"></a></li>
-                    <li><a href="" class="discord"></a></li>
+                    <li><a href="https://docs.materalist.com" class="education"></a></li>
+                    <li><a href="https://app.materalist.com" class="blackboard"></a></li>
+                    <li><a href="https://discord.gg/YRxt4yex4G" class="discord"></a></li>
                 </ul>
             </div>
         </div>
