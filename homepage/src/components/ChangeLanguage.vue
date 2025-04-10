@@ -1,9 +1,7 @@
 <template>
     <Dialog>
         <template #activator="{ toggle }">
-            <button @click="toggle">
-                <span class="ml-2">Change language</span>
-            </button>
+            <button @click="toggle">Change language</button>
 <!--            <NavigationButton :hide-mobile="props.header && !props.neverHide"-->
 <!--                              data-cy="translate-button"-->
 <!--                              :hide-desktop="!props.header && !props.neverHide" :label="language" icon="translate-variant"-->
@@ -72,25 +70,8 @@ button  {
     display: block;
     color: white;
     text-decoration: none;
-    font-size: 1.2rem;
-    padding: 0.4em 0.8em;
-    border-radius: 0.5em;
     background-color: transparent;
     transition: background-color 0.3s;
     cursor: pointer;
-
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    @media (max-width: 1200px) {
-        padding: 0.2em 0.6em;
-        font-size: 1rem;
-    }
-
-    @media (max-width: 950px) {
-        padding: 0.4em 0.8em;
-        font-size: 0.8rem;
-    }
 }
 </style>

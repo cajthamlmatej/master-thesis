@@ -315,36 +315,49 @@ header {
         ul {
             display: flex;
             align-items: center;
-            gap: 1em;
+            gap: 0.5em;
             list-style: none;
+
+            @media (max-width: 1000px) {
+                gap: 0.2em;
+            }
+
+            a, ::v-deep(button) {
+                display: block;
+                color: white;
+                text-decoration: none;
+                font-size: 1rem;
+                padding: 0.4em 0.8em;
+                border-radius: 0.5em;
+                transition: background-color 0.3s;
+
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.1);
+                }
+
+                @media (max-width: 1400px) {
+                    padding: 0.2em 0.6em;
+                    font-size: 0.9rem;
+                }
+
+                @media (max-width: 1000px) {
+                    padding: 0.2em 0.6em;
+                    font-size: 0.75rem;
+                }
+                @media (max-width: 850px) {
+                    padding: 0.2em 0.4em;
+                    font-size: 0.7rem;
+                }
+                @media (max-width: 768px) {
+                    padding: 0.4em 0.8em;
+                    font-size: 1rem;
+                }
+
+            }
 
             li {
                 display: block;
                 text-align: center;
-
-                a {
-                    display: block;
-                    color: white;
-                    text-decoration: none;
-                    font-size: 1.2rem;
-                    padding: 0.4em 0.8em;
-                    border-radius: 0.5em;
-                    transition: background-color 0.3s;
-
-                    &:hover {
-                        background-color: rgba(255, 255, 255, 0.1);
-                    }
-
-                    @media (max-width: 1200px) {
-                        padding: 0.2em 0.6em;
-                        font-size: 1rem;
-                    }
-
-                    @media (max-width: 950px) {
-                        padding: 0.4em 0.8em;
-                        font-size: 0.8rem;
-                    }
-                }
 
                 span.logo {
                     display: block;
