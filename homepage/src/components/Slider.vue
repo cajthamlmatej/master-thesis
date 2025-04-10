@@ -117,14 +117,17 @@ onMounted(() => {
                 lastX = currentX;
 
                 const oldTransform = Number(content.style.transform.split('(')[1].split('px')[0]);
+                
+                if(oldTransform- deltaX >= 0) {
+                    content.style.transform = `translateX(0px)`;
+                    return;
+                } else if(oldTransform- deltaX <= -((content.scrollWidth - (sliderElement.value?.clientWidth??0) + 25))) {
+                    content.style.transform = `translateX(-${(content.scrollWidth - (sliderElement.value?.clientWidth??0)) +25}px)`;
+                    return;
+                }
+                
                 if (Math.abs(deltaX) > 0) {
                     content.style.transform = `translateX(${oldTransform - deltaX}px)`;
-                }
-
-                if(oldTransform > 0) {
-                    content.style.transform = `translateX(0px)`;
-                } else if(oldTransform < -((content.scrollWidth - (sliderElement.value?.clientWidth??0) + 25))) {
-                    content.style.transform = `translateX(-${(content.scrollWidth - (sliderElement.value?.clientWidth??0)) +25}px)`;
                 }
             };
 
@@ -184,19 +187,19 @@ onMounted(() => {
         .item {
             flex: 0 0 auto;
             width: 12em;
-            height: 100%;
+            height: fit-content;
+            gap: 0.5em;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             position: relative;
             border-radius: 1rem;
-            gap: 0.5em;
             transition: background-color 0.3s ease, transform 0.3s ease;
 
             img {
                 width: 100%;
-                height: 70%;
+                aspect-ratio: 1/1;
                 object-fit: cover;
                 border-radius: 1rem;
 

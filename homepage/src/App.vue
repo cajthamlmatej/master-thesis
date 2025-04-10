@@ -7,10 +7,11 @@
                 </ul>
 
                 <ul class="main">
-                    <li><a href="">O Materalist</a></li>
-                    <li><a href="">Porovnání</a></li>
+                    <li><a href="#why-use">Proč Materalist</a></li>
+                    <li><a href="#about-us">O Nás</a></li>
 <!--                    <li><a href="">XD</a></li>-->
-                    <li><a href="">Ukázkové materiály</a></li>
+                    <li><a href="#join">Připojit se</a></li>
+                    <li><a href="#examples">Ukázkové materiály</a></li>
                     <li><a href="">Dokumentace</a></li>
                 </ul>
 
@@ -68,13 +69,13 @@
 
                     <div class="dots">
                         <img src="/icons/dots.svg" alt="" :style="{
-                    transform: `rotate(${0 + scrollAmount*-0.05}deg)`
+                    transform: `rotate(${19 + scrollAmount*-0.45}deg)`
                 }"></div>
                 </div>
             </div>
         </section>
 
-        <section class="">
+        <section class="" id="why-use">
             <div class="container">
 
                 <p class="subtitle">Proč Materalist</p>
@@ -113,7 +114,7 @@
             </div>
         </section>
 
-        <section class="">
+        <section class="" id="about-us">
             <div class="container">
                 <div class="two-sides">
                     <div class="side">
@@ -134,7 +135,7 @@
             </div>
         </section>
 
-        <section class="join">
+        <section class="join" id="join">
             <div class="container">
                 <div class="callToAction">
                     <h2>Připoj se k nám</h2>
@@ -147,7 +148,7 @@
             </div>
         </section>
 
-        <section>
+        <section id="examples">
             <div class="container">
                 <p class="subtitle">Ukázkové materiály</p>
                 <h2>Co Materalist zvládne</h2>
@@ -348,7 +349,7 @@
 <script setup lang="ts">
 import {RouterView} from 'vue-router'
 import {useScrollReact} from "@/composables/scrollReact.ts";
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import Slider from "@/components/Slider.vue";
 
 const scrollAmount = ref(0);
@@ -358,6 +359,20 @@ useScrollReact((amount) => {
 });
 
 const menu = ref(false);
+
+onMounted(() => {
+    const hrefs = document.querySelectorAll("a[href^='#']");
+
+    for(const href of [...hrefs]) {
+        href.addEventListener("click", (e) => {
+            e.preventDefault();
+            const target = document.querySelector(href.getAttribute("href") || "") as HTMLElement;
+            if (target) {
+                target.scrollIntoView({behavior: "smooth"});
+            }
+        });
+    }
+})
 </script>
 
 <style scoped lang="scss">
@@ -417,6 +432,11 @@ header {
                     @media (max-width: 1200px) {
                         padding: 0.2em 0.6em;
                         font-size: 1rem;
+                    }
+
+                    @media (max-width: 900px) {
+                        padding: 0.4em 0.8em;
+                        font-size: 0.8rem;
                     }
                 }
 
