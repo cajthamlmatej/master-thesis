@@ -1,8 +1,13 @@
+---
+sidebar_position: -1
+---
+
 # First steps
 
 Before you can do anything with plugins in Materalist, you need to learn a few things:
 
-- [Materalist](../../usage/index), which explains how to use Materalist and what it is. You should be familiar with the basics of Materalist before you start creating plugins.
+- You have to have a Materalist account and be logged in to use and develop plugins.
+- [Materalist](../../usage/), which explains how to use Materalist and what it is. You should be familiar with the basics of Materalist before you start creating plugins.
 - [Plugin philosophy](./philosophy), which explains how plugins work and what they are, what you can do and what you can't do.
 - [Plugin security](./security), which explains how **we make** sure that plugins are safe to use.
 

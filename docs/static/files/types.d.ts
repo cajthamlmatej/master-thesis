@@ -267,8 +267,25 @@ interface FetchOptions {
 }
 
 interface ApiCache {
+    /**
+     * Get a value from the cache. Returns null if the key does not exist.
+     * @param key The key to get the value for.
+     * @return The value for the key, or null if the key does not exist.
+     */
     get(key: string): string | null;
+    
+    /**
+     * Set a value in the cache. If the key already exists, the value will be overwritten.
+     * The value is not persisted and can be deleted at any time.
+     * @param key The key to set the value for.
+     * @param value The value to set for the key.
+     */
     set(key: string, value: string): void;
+
+    /**
+     * Remove a value from the cache. If the key does not exist, nothing happens.
+     * @param key The key to remove from the cache.
+     */
     remove(key: string): void;
 }
 
@@ -320,9 +337,6 @@ interface Api {
      * Contains the current plugin id.
      */
     plugin: string;
-
-    // TODO:
-    // material - way to create & read slides
 }
 
 declare global {
