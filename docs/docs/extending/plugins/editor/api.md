@@ -9,6 +9,7 @@ The API is available in the `api` object in property `api.editor` which is injec
 **Signature**: `getBlocks(): EditorBlock[]`
 
 Returns an array of all blocks in the editor (slide).
+Consult the [Block API](../block) for more details about the block types, their properties and methods.
 
 ## `addBlock`
 
@@ -18,7 +19,7 @@ Create a specific block in the current slide.
 You can create any type of block. 
 Consult the [Block API](../block) for more details about the block types, their properties and methods.
 
-`**: The ID of the created block.
+**Returns**: The ID of the created block.
 
 ## `removeBlock`
 

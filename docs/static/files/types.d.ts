@@ -244,8 +244,8 @@ interface ApiPlayer {
     removeBlock(id: string): void;
     addBlock(block: CreatePlayerBlock): string;
 
-    getMode(): 'select' | 'move';
-    setMode(mode: 'select' | 'move'): void;
+    getMode(): 'play' | 'move' | 'draw';
+    setMode(mode: 'play' | 'move' | 'draw'): void;
     
     on(eventName: 'pluginBlockMessage', callback: (block: FullPlayerBlock, message: string) => void): void;
     on(eventName: 'pluginBlockRender', callback: (block: FullPlayerBlock) => string): void;
