@@ -38,9 +38,9 @@ const config: Config = {
   themeConfig: {
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'Materalist',
+      title: 'Materalist Documentation',
       logo: {
-        alt: 'Materalist',
+        alt: 'Materalist Documentation',
         src: 'img/logo.png',
       },
       items: [
