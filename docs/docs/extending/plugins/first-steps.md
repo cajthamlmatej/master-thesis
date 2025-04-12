@@ -113,13 +113,37 @@ The file may look like follows:
 
 ### 4. Testing and publishing
 
-For testing purposes you can use a local server of the application.
-How to do that is explained in the [Setup](../../usage/setup) documentation.
+
+The best way to test is to use the "import local plugin" feature of Materalist.
+In editor, when you open the plugins tab, you can see a button "Import local plugin".
+When you click on it, you can select a ZIP containing:
+
+- `manifest.json`
+- `editor.js` (optional, but one of the files must be present)
+- `player.js` (optional, but one of the files must be present)
+
+Then you can import the plugin and it will be available in the editor for the current instance of the application.
+Changing to a player you need to import the plugin again (in plugin you need to enable debugging mode, see [Client](../../extending/source/client) documentation).
+Then you can import it using debug tab.
+
+You can have one "locally" imported plugin.
+If you need to install new one or remove it, you just need to refresh the page.
+
+Some blocks, if they are already added in the material, and are custom for that plugin, may need you to switch slides to see the changes.
+
+---
+
+:::danger
+
+The following ways are not recommended.
+
+:::
+
+Also, for testing purposes you can use a local server of the application.
+How to do that is explained in the [Setup](../../extending/source/setup) documentation.
 
 But you can really make a test version and publish it and test it on live version.
 Then you can use the [Publishing](./publishing) documentation to learn how to publish your plugin.
-
-[//]: # (You can mark the plugin as `unlisted` so it will not be visible to other users.)
 
 ## Prepared plugin base
 

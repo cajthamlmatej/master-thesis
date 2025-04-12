@@ -6,7 +6,7 @@ This document will cover the basics of publishing plugins and how to do it in Ma
 
 Publishing a plugin is a process where you make your plugin available to other users.
 The development of plugins can be done in production mode, but it is recommended to use a local server for testing purposes.
-How to create a local server is explained in the [Setup](../../usage/setup) documentation.
+How to create a local server is explained in the [Setup](../source/setup) documentation.
 
 Once you are ready to publish your plugin, you can follow these steps:
 
