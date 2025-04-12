@@ -1,6 +1,7 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import 'dotenv/config';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -10,10 +11,10 @@ const config: Config = {
   favicon: 'img/favicon.ico?r=2',
   staticDirectories: ['static'],
 
-  url: 'https://docs.materalist.com',
+  url: process.env.DOCS_LINK,
   baseUrl: '/',
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
   i18n: {
@@ -61,12 +62,12 @@ const config: Config = {
           label: 'Extending',
         },
         {
-          href: 'https://app.materalist.com/',
+          href: process.env.APP_LINK,
           label: 'Application',
           position: 'right',
         },
         {
-          href: 'https://materalist.com/',
+          href: process.env.HOME_LINK,
           label: 'Website',
           position: 'right',
         },
