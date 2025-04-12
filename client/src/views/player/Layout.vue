@@ -193,29 +193,46 @@
                         icon="square-edit-outline"
                         tooltip-position="bottom"
                     />
-                    <Dialog v-if="debugging">
+                    <Dialog v-if="debugging && !watching">
                         <template #default>
                             <Card dialog>
-                                <p v-t class="title">player.variables.title</p>
+                                <p v-t class="title">player.debug.variables.title</p>
 
-                                <List>
-                                    <ListItem v-for="variable in Object.keys(playerStore.variables) ?? []"
-                                              :key="variable">
+                                <List class="mb-2">
+                                    <ListItem v-for="variable in Object.keys(playerStore.variables) ?? []" :key="variable">
                                         <span>{{ variable }}</span>
                                         <pre><code>{{ playerStore.variables[variable] }}</code></pre>
                                     </ListItem>
                                     <ListItem v-if="Object.keys(playerStore.variables).length === 0">
-                                        <span v-t>player.variables.not-found</span>
+                                        <span v-t>player.debug.variables.not-found</span>
                                     </ListItem>
                                 </List>
+
+                                <p v-t class="title">player.debug.plugin.title</p>
+
+                                <Dialog>
+                                    <template #default="{toggle}">
+                                        <Card dialog>
+                                            <PluginLocalImport @done="() => {toggle(); refresh();}" />
+                                        </Card>
+                                    </template>
+                                    <template #activator="{toggle}">
+                                        <Button
+                                            @click="toggle"
+                                            icon="package-variant-plus"
+                                            class="mt-1"
+                                        >
+                                            <span v-t>player.debug.plugin.addLocal</span>
+                                        </Button>
+                                    </template>
+                                </Dialog>
                             </Card>
                         </template>
                         <template #activator="{toggle}">
                             <NavigationButton
-                                v-if="canStartWatch"
-                                :label="$t('player.debug')"
-                                :tooltip-text="$t('player.debug')"
-                                hide-mobile
+                                v-if="material && material.user === userStore.user?.id"
+                                :label="$t('player.debug.title')"
+                                :tooltip-text="$t('player.debug.title')"
                                 icon="bug"
                                 tooltip-position="bottom"
                                 @click.stop="toggle"
@@ -291,6 +308,24 @@
                                 </ListItem>
                             </List>
                         </Card>
+
+
+                        <Dialog>
+                            <template #default>
+                                <Card dialog>
+                                    <PluginLocalImport />
+                                </Card>
+                            </template>
+                            <template #activator="{toggle}">
+                                <Button
+                                    @click="toggle"
+                                    icon="package-variant-plus"
+                                    class="mt-1"
+                                >
+                                    <span v-t>upload</span>
+                                </Button>
+                            </template>
+                        </Dialog>
                     </template>
                     <template #activator="{toggle}">
                         <NavigationButton
@@ -371,6 +406,7 @@ import {generateToken} from "@/utils/Generators";
 import QrcodeVue from 'qrcode.vue'
 import {communicator} from "@/api/websockets";
 import Card from "@/components/design/card/Card.vue";
+import PluginLocalImport from "@/components/plugin/manage/PluginLocalImport.vue";
 
 const materialStore = useMaterialStore();
 const playerStore = usePlayerStore();
@@ -763,6 +799,10 @@ watch(drawing, (value) => {
 watch(() => playerStore.getActiveSlide(), (value) => {
     router.push({query: {...route.query, slide: value?.id}});
 });
+
+const refresh = () => {
+    playerStore.changeSlide(playerStore.getActiveSlide()!);
+};
 </script>
 
 <style lang="scss" scoped>

@@ -30,6 +30,7 @@
     "file-saver": "^2.0.5",
     "floating-vue": "^5.2.2",
     "jsonwebtoken": "^9.0.2",
+    "jszip": "^3.10.1",
     "marked": "^15.0.7",
     "mermaid": "^11.4.1",
     "moment": "^2.30.1",

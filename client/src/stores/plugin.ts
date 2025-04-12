@@ -284,6 +284,7 @@ export const usePluginStore = defineStore("plugin", () => {
         loadForUser,
         createPluginRelease,
         createPlugin,
-        updatePlugin
+        updatePlugin,
+        getPanels
     }
 });

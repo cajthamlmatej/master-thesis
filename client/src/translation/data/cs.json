@@ -269,13 +269,28 @@
         }
     },
     "player": {
-        "variables": {
-            "title": "Proměnné v materiálu",
-            "not-found": "Žádné proměnné nebyly nalezeny."
+        "debug": {
+            "title": "Debug",
+            "variables": {
+                "title": "Proměnné v materiálu",
+                "not-found": "Žádné proměnné nebyly nalezeny."
+            },
+            "plugin": {
+                "title": "Pluginy",
+                "addLocal": "Přidat lokální plugin",
+                "import": "Importovat plugin",
+                "error": {
+                    "localPluginAlreadyExists": "Lokální plugin již existuje. Pro smazání přenačtěte stránku.",
+                    "missingFile": "Chybí soubor.",
+                    "noManifest": "Chybí manifest.json soubor v ZIP archivu.",
+                    "noCode": "Plugin musí mít alespoň jeden kód (editor.js nebo player.js).",
+                    "readingFile": "Nepodařilo se přečíst soubor.",
+                    "zipError": "Chyba při rozbalování ZIP archivu."
+                }
+            }
         },
         "timer": "%start% (čas na snímku: %slide%)",
         "timer-short": "%start% (%slide%)",
-        "debug": "Debug",
         "control": {
             "previous-slide": "Předchozí snímek",
             "next-slide": "Další snímek",

@@ -1,12 +1,12 @@
 import moment from "moment";
 
-export class PluginRelease {
+export interface PluginRelease {
     version: string;
     date: moment.Moment;
     changelog: string;
     manifest: string;
-    editorCode: string;
-    playerCode: string;
+    editorCode?: string;
+    playerCode?: string;
 }
 
 export default class Plugin {

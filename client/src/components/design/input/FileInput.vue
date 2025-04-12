@@ -44,7 +44,7 @@ const props = defineProps({
         default: '',
     },
     validators: {
-        type: Array as PropType<((value: any) => boolean)[]>,
+        type: Array as PropType<((value: any) => boolean | string)[]>,
         default: () => [],
     },
     multiple: {

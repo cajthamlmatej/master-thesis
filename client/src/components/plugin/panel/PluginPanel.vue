@@ -60,7 +60,7 @@ watch(() => iframe.value, (value) => {
             return;
         }
 
-        if (event.source !== iframe.value!.contentWindow) {
+        if (event.source !== iframe.value?.contentWindow) {
             plugin.log("Invalid source received from parent: " + data);
             return;
         }

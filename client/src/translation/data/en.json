@@ -271,13 +271,28 @@
         }
     },
     "player": {
-        "variables": {
-            "title": "Material variables",
-            "not-found": "No variables found in this material."
+        "debug": {
+            "title": "Debug",
+            "variables": {
+                "title": "Material variables",
+                "not-found": "No variables found in this material."
+            },
+            "plugin": {
+                "title": "Plugins",
+                "addLocal": "Add local plugin",
+                "import": "Import plugin",
+                "error": {
+                    "localPluginAlreadyExists": "Local plugin already exists. Reload the page to delete it.",
+                    "missingFile": "Missing file.",
+                    "noManifest": "Missing manifest.json file in the ZIP archive.",
+                    "noCode": "The plugin must have at least one code file (editor.js or player.js).",
+                    "readingFile": "Failed to read the file.",
+                    "zipError": "Error while extracting the ZIP archive."
+                }
+            }
         },
         "timer": "%start% (time on slide: %slide%)",
         "timer-short": "%start% (%slide%)",
-        "debug": "Debug",
         "control": {
             "previous-slide": "Previous slide",
             "next-slide": "Next slide",

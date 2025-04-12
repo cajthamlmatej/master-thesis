@@ -86,6 +86,23 @@
                             </div>
                         </ListItem>
                     </List>
+
+                    <Dialog>
+                        <template #activator="{toggle}">
+                            <Button
+                                @click="toggle"
+                                icon="package-variant-plus"
+                                class="mt-1"
+                            >
+                                <span v-t>player.debug.plugin.addLocal</span>
+                            </Button>
+                        </template>
+                        <template #default="{toggle}">
+                            <Card dialog>
+                                <PluginLocalImport @done="toggle" />
+                            </Card>
+                        </template>
+                    </Dialog>
                 </div>
                 <div v-else-if="selected == 'browse'">
                     <PluginBrowse/>
@@ -106,6 +123,8 @@ import PluginBrowse from "@/components/plugin/manage/PluginBrowse.vue";
 import {usePluginStore} from "@/stores/plugin";
 import {PluginManager} from "@/editor/plugin/PluginManager";
 import Card from "@/components/design/card/Card.vue";
+import FileInput from "@/components/design/input/FileInput.vue";
+import PluginLocalImport from "@/components/plugin/manage/PluginLocalImport.vue";
 
 const selected = ref('active');
 
@@ -128,7 +147,14 @@ watch(() => pluginStore.manager, () => {
 
 const recalculate = () => {
     plugins.value = pluginStore.manager.getPlugins().map(p => {
-        const plugin = pluginStore.plugins.find(pl => pl.id == p.getId())!;
+        const plugin = pluginStore.plugins.find(pl => pl.id == p.getId());
+
+        if(!plugin) {
+            return {
+                plugin: p,
+                newVersion: false
+            }
+        }
 
         const latestVersion = [...plugin.releases].sort((a, b) => a.date.diff(b.date)).pop();
         if (!latestVersion) {
