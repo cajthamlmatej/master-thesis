@@ -181,6 +181,7 @@
             "new": {
                 "tooltip": "Nový plugin"
             },
+            "not-found-by-criteria": "Žádné pluginy nebyly nalezeny podle zadaných kritérií.",
             "list-releases": "Seznam verzí",
             "remove": "Odebrat plugin",
             "active": "Aktivní verze",

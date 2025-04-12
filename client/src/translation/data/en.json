@@ -183,6 +183,7 @@
             "new": {
                 "tooltip": "New plugin"
             },
+            "not-found-by-criteria": "No plugins found with the given search criteria.",
             "list-releases": "List of versions",
             "remove": "Remove plugin",
             "active": "Active version",
