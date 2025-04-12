@@ -136,3 +136,7 @@ But sometimes you will need to make use of
 to make the animation smooth by yourself.
 
 Good practice is to change the value after the animation is finished and then synchronize the block.
+
+## Serverside
+
+You dont have to do anything on the server side.
