@@ -20,7 +20,7 @@ deploy:
     - echo "$SERVER_IP"
     - echo "$SERVER_USER"
     - echo "Testing SSH connection..."
-    - ssh -vvv $SERVER_USER@$SERVER_IP "echo 'SSH OK!'"
+    - ssh -i ~/.ssh/id_rsa -vvv $SERVER_USER@$SERVER_IP "echo 'SSH OK!'"
     - echo "Starting rsync..."
     - rsync -avz --delete -e "ssh -v" ./ $SERVER_USER@$SERVER_IP:/home/materalist
     - ssh -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_IP "
