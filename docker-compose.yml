@@ -11,7 +11,7 @@ services:
         APP_DOMAIN: ${APP_DOMAIN}
         HOMEPAGE_DOMAIN: ${HOMEPAGE_DOMAIN}
     image: materalist-client
-    container_name: client
+    container_name: materalist-client
     ports:
       - "4000:80"
     restart: unless-stopped
@@ -26,7 +26,7 @@ services:
         APP_DOMAIN: ${APP_DOMAIN}
         HOMEPAGE_DOMAIN: ${HOMEPAGE_DOMAIN}
     image: materalist-homepage
-    container_name: homepage
+    container_name: materalist-homepage
     ports:
       - "4001:80"
     restart: unless-stopped
@@ -41,7 +41,7 @@ services:
         APP_DOMAIN: ${APP_DOMAIN}
         HOMEPAGE_DOMAIN: ${HOMEPAGE_DOMAIN}
     image: materalist-docs
-    container_name: docs
+    container_name: materalist-docs
     ports:
       - "4002:80"
     restart: unless-stopped
@@ -56,7 +56,7 @@ services:
         APP_DOMAIN: ${APP_DOMAIN}
         HOMEPAGE_DOMAIN: ${HOMEPAGE_DOMAIN}
     image: materalist-server
-    container_name: server
+    container_name: materalist-server
     ports:
       - "4003:2020"
     environment:
@@ -65,17 +65,17 @@ services:
       - mongo
     restart: unless-stopped
     volumes:
-      - server-data:/app/upload
+      - materalist-server-data:/app/upload
 
   mongo:
     image: mongo
-    container_name: mongo
+    container_name: materalist-mongo
     ports:
       - "27017:27017"
     volumes:
-      - mongo-data:/data/db
+      - materalist-mongo-data:/data/db
     restart: unless-stopped
 
 volumes:
-  mongo-data:
-  server-data:
+  materalist-mongo-data:
+  materalist-server-data:
