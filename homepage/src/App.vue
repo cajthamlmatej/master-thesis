@@ -187,6 +187,8 @@ onMounted(() => {
             if (target) {
                 target.scrollIntoView({behavior: "smooth"});
             }
+
+            menu.value = false;
         });
     }
 });
