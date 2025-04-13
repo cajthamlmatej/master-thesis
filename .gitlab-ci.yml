@@ -1,0 +1,23 @@
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh rsync
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H "$SERVER_IP" >> ~/.ssh/known_hosts
+  script:
+    - rsync -avz --delete ./ $SERVER_USER@$SERVER_IP:/home/materalist
+    - ssh $SERVER_USER@$SERVER_IP "
+        cd /home/materalist &&
+        rm .env &&
+        mv .env.production .env &&
+        docker-compose pull &&
+        docker-compose up -d --build
+      "
+  only:
+    - main
