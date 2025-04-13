@@ -11,7 +11,7 @@ const config: Config = {
   favicon: 'img/favicon.ico?r=2',
   staticDirectories: ['static'],
 
-  url: process.env.DOCS_LINK,
+  url: process.env.DOCS_LINK ?? 'https://materalist.com',
   baseUrl: '/',
 
   onBrokenLinks: 'warn',
@@ -62,12 +62,12 @@ const config: Config = {
           label: 'Extending',
         },
         {
-          href: process.env.APP_LINK,
+          href: process.env.APP_LINK ?? `http://localhost:5173`,
           label: 'Application',
           position: 'right',
         },
         {
-          href: process.env.HOME_LINK,
+          href: process.env.HOME_LINK ?? `http://localhost:5174`,
           label: 'Website',
           position: 'right',
         },
