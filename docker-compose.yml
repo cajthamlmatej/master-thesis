@@ -70,8 +70,6 @@ services:
   mongo:
     image: mongo
     container_name: materalist-mongo
-    ports:
-      - "27017:27017"
     volumes:
       - materalist-mongo-data:/data/db
     restart: unless-stopped
