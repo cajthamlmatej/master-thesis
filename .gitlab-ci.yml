@@ -23,7 +23,7 @@ deploy:
     - ssh -vvv $SERVER_USER@$SERVER_IP "echo 'SSH OK!'"
     - echo "Starting rsync..."
     - rsync -avz --delete -e "ssh -v" ./ $SERVER_USER@$SERVER_IP:/home/materalist
-    - ssh $SERVER_USER@$SERVER_IP "
+    - ssh -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_IP "
         cd /home/materalist &&
         rm .env &&
         mv .env.production .env &&
