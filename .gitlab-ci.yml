@@ -22,9 +22,9 @@ deploy:
     - echo "Testing SSH connection..."
     - ssh -i ~/.ssh/id_rsa -vvv $SERVER_USER@$SERVER_IP "echo 'SSH OK!'"
     - echo "Starting rsync..."
-    - rsync -avz --delete -e "ssh -v" ./ $SERVER_USER@$SERVER_IP:/home/materalist
+    - rsync -avz -e "ssh -v" ./ $SERVER_USER@$SERVER_IP:/home/materalist/project
     - ssh -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_IP "
-        cd /home/materalist &&
+        cd /home/materalist/project &&
         rm .env &&
         mv .env.production .env &&
         docker-compose pull &&
