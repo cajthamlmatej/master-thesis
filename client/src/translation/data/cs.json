@@ -192,14 +192,14 @@
                 "title": "Tvorba pluginu",
                 "name":{
                     "label": "Název pluginu",
-                    "error": "Název pluginu musí být vyplněn."
+                    "error": "Název pluginu musí být vyplněn a být kratší než 255 znaků."
                 },
                 "icon": {
                     "label": "Ikona pluginu"
                 },
                 "description": {
                     "label": "Popis pluginu",
-                    "error": "Popis pluginu musí být vyplněn."
+                    "error": "Popis pluginu musí být vyplněn a být kratší než 255 znaků."
                 },
                 "tags": {
                     "label": "Tagy pluginu"
@@ -230,24 +230,27 @@
                 "info": {
                     "version": {
                         "label": "Kód verze",
-                        "error": "Kód musí být vyplněn."
+                        "error": "Kód musí být vyplněn a být kratší než 255 znaků."
                     },
                     "manifest": {
                         "label": "Manifest",
                         "error": "Manifest musí být platný JSON.",
+                        "length": "Manifest musí být kratší než 32768 znaků.",
                         "required": "Manifest je povinný.",
                         "number": "Verze manifestu musí být vyplněna a musí být číslo.",
                         "allowedOrigins": "Povolené domény musí být pole a obsahovat pouze řetězce URL (pouze protokol a doména, bez cesty)."
                     },
                     "changelog": {
                         "label": "Změny",
-                        "error": "Změny musí být vyplněny."
+                        "error": "Změny musí být vyplněny a musí být kratší než 32768 znaků."
                     },
                     "editor": {
-                        "label": "Kód editoru"
+                        "label": "Kód editoru",
+                        "error": "Kód editoru musí být kratší jak 131072 znaků."
                     },
                     "player": {
-                        "label": "Kód přehrávače"
+                        "label": "Kód přehrávače",
+                        "error": "Kód přehrávače musí být kratší jak 131072 znaků."
                     }
                 },
                 "summary": {

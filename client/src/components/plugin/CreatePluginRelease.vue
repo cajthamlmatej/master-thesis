@@ -32,6 +32,7 @@
            :label="$t('page.plugins.new-release.info.version.label')"
                :validators="[
                     (value: string) => value.length > 0 || $t('page.plugins.release.new-release.version.error'),
+                    (value: string) => value.length <= 255 || $t('page.plugins.release.new-release.version.error'),
                ]"
         />
         <Input type="textarea" v-model:value="data.manifest"
@@ -41,6 +42,7 @@
                     (value: string) => !!JSON.parse(value).manifest || $t('page.plugins.new-release.info.manifest.error.manifest.required'),
                     (value: string) => (typeof JSON.parse(value).manifest == 'number' && Math.round(Number(JSON.parse(value).manifest)) === JSON.parse(value).manifest && !isNaN(Number(JSON.parse(value).manifest))) || $t('page.plugins.release.info.manifest.error.manifest.number'),
                     (value: string) => !JSON.parse(value).allowedOrigins ? true : ((Array.isArray(JSON.parse(value).allowedOrigins) && JSON.parse(value).allowedOrigins.every((a: any) => typeof a === 'string' && !!a.match(/^https?:\/\/[a-z]+.[a-z]+$/))) || $t('page.plugins.release.info.manifest.error.allowedOrigins')),
+                    (value: string) => value.length <= 32768 || $t('page.plugins.release.info.manifest.error.length'),
                ]"
         />
     </div>
@@ -49,17 +51,24 @@
                :label="$t('page.plugins.new-release.info.changelog.label')"
                :validators="[
                     (value: string) => value.length > 0 || $t('page.plugins.release.new-release.changelog.error'),
+                    (value: string) => value.length <= 32768 || $t('page.plugins.release.new-release.changelog.error'),
                ]"
         />
     </div>
     <div v-else-if="releaseInfo == 'EDITOR'">
         <Input type="textarea" v-model:value="data.editor"
                :label="$t('page.plugins.new-release.info.editor.label')"
+               :validators="[
+                   (value: string) => value.length <= 131072 || $t('page.plugins.release.new-release.editor.error'),
+               ]"
         />
     </div>
     <div v-else-if="releaseInfo == 'PLAYER'">
         <Input type="textarea" v-model:value="data.player"
                :label="$t('page.plugins.new-release.info.player.label')"
+               :validators="[
+                   (value: string) => value.length <= 131072 || $t('page.plugins.release.new-release.player.error'),
+               ]"
         />
     </div>
     <div v-else-if="releaseInfo == 'SUMMARY'">

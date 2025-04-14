@@ -194,14 +194,14 @@
                 "title": "Create Plugin",
                 "name": {
                     "label": "Plugin Name",
-                    "error": "Plugin name must be filled in."
+                    "error": "Plugin name must be filled in and have to be shorter than 255 characters."
                 },
                 "icon": {
                     "label": "Plugin Icon"
                 },
                 "description": {
                     "label": "Plugin Description",
-                    "error": "Plugin description must be filled in."
+                    "error": "Plugin description must be filled in and have to be shorter than 255 characters."
                 },
                 "tags": {
                     "label": "Plugin Tags"
@@ -232,24 +232,27 @@
                 "info": {
                     "version": {
                         "label": "Version code",
-                        "error": "The code must be filled in."
+                        "error": "The code must be filled in and have to be shorter than 255 characters."
                     },
                     "manifest": {
                         "label": "Manifest",
                         "error": "The manifest must be valid JSON.",
+                        "length": "The manifest has to be shorter than 32768 characters.",
                         "required": "Manifest is required.",
                         "number": "Manifest version must be filled in and must be a number.",
                         "allowedOrigins": "Allowed domains must be an array containing only URL strings (only protocol and domain, without path)."
                     },
                     "changelog": {
                         "label": "Changes",
-                        "error": "Changes must be filled in."
+                        "error": "Changes must be filled in and have to be shorter than 32768 characters."
                     },
                     "editor": {
-                        "label": "Editor code"
+                        "label": "Editor code",
+                        "error": "Editor code have to be shorter than 131072 characters."
                     },
                     "player": {
-                        "label": "Player code"
+                        "label": "Player code",
+                        "error": "Player code have to be shorter than 131072 characters."
                     }
                 },
                 "summary": {

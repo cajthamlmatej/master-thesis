@@ -4,6 +4,7 @@
     <Input v-model:value="data.name" :label="$t('page.plugins.new-plugin.name.label')"
         :validators="[
             (value: string) => value.length > 0 || $t('page.plugins.new-plugin.name.error'),
+            (value: string) => value.length <= 255 || $t('page.plugins.new-plugin.name.error')
         ]"
     ></Input>
 
@@ -16,6 +17,7 @@
     <Input v-model:value="data.description" :label="$t('page.plugins.new-plugin.description.label')"
            :validators="[
             (value: string) => value.length > 0 || $t('page.plugins.new-plugin.description.error'),
+            (value: string) => value.length <= 255 || $t('page.plugins.new-plugin.description.error')
         ]"></Input>
 
     <Select  :label="$t('page.plugins.new-plugin.tags.label')" v-model:value="data.tags" :choices="tags" multiple></Select>
