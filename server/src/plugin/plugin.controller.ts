@@ -1,4 +1,5 @@
 import {
+    BadRequestException,
     Body,
     Controller,
     Get,
@@ -139,6 +140,11 @@ export class PluginController {
 
         if (plugin.author.toString() !== req.user.id.toString()) {
             throw new UnauthorizedException('You are not allowed to access this resource');
+        }
+
+        // Check if one of the code is provided
+        if(!body.editorCode && !body.playerCode) {
+            throw new BadRequestException('You must provide at least one code');
         }
 
         await this.pluginService.createPluginRelease(plugin, body);

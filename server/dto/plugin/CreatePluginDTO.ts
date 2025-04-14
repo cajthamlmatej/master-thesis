@@ -3,7 +3,7 @@ import {
     IsDefined, IsEnum, IsHexColor,
     IsIn,
     IsNumber,
-    IsObject, IsPositive,
+    IsObject, IsOptional, IsPositive,
     IsString,
     MaxLength,
     Min,
