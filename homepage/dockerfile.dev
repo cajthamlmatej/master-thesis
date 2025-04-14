@@ -1,0 +1,15 @@
+FROM node:20
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+
+
+ARG HOMEPAGE_DOMAIN
+RUN echo "\nVITE_HOME=${HOMEPAGE_DOMAIN}" >> .env
+ARG DOCS_DOMAIN
+RUN echo "\nVITE_DOCS=${DOCS_DOMAIN}" >> .env
+ARG API_DOMAIN
+RUN echo "\nVITE_API=${API_DOMAIN}" >> .env
+
+
+CMD ["npm", "run", "local:dev"]

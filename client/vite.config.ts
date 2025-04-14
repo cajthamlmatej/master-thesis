@@ -9,6 +9,11 @@ import {nodePolyfills} from "vite-plugin-node-polyfills";
 process.env.VITE_APP_VERSION = require('./package.json').version
 
 export default defineConfig({
+    server: {
+        watch: {
+            usePolling: true,
+        }
+    },
     plugins: [
         nodePolyfills({
             include: ['util', 'buffer', 'stream', 'crypto'],

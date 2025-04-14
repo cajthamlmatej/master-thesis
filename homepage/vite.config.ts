@@ -11,7 +11,10 @@ export default defineConfig({
         vueDevTools(),
     ],
     server: {
-        port: 4021
+        port: 4021,
+        watch: {
+          usePolling: true,
+        }
     },
     resolve: {
         alias: {

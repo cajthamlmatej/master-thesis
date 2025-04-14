@@ -6,8 +6,6 @@ import multipart from "@fastify/multipart";
 import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
-    console.log(`Application loading...`);
-
     const app = await NestFactory.create<NestFastifyApplication>(
         AppModule,
         new FastifyAdapter()
@@ -17,6 +15,7 @@ async function bootstrap() {
 
     app.useGlobalPipes(new ValidationPipe());
     app.enableCors();
+    app.enableShutdownHooks();
 
     await app.listen(2020, "0.0.0.0");
     

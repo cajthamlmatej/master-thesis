@@ -5,7 +5,6 @@
                 <Row align="stretch" wrap>
                     <Col :cols="12" :md="7">
                         <Tabs v-model:selected="data.tab" :items="data.tabs" fluid></Tabs>
-
                         <TransitionGroup :duration="40000" class="authentication-holder" name="authentication-fade"
                                          tag="div">
                             <Form v-if="data.tab === 'EMAIL_PASSWORD'" data-cy=email-password-form :onSubmit="() => handle('EMAIL_PASSWORD')"
