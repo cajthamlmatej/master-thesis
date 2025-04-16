@@ -37,7 +37,7 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/logo.png',
     navbar: {
       title: 'Materalist Documentation',
       logo: {
@@ -81,6 +81,28 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
+    metadata: [
+      {
+        name: 'keywords',
+        content: 'Materalist, documentation, presentation, materials, school work, study, interactive materials, interactive presentation, interactive study, interactive school work, interactive materials',
+      },
+      {
+        name: 'description',
+        content: 'Materalist is a presentation tool that allows you to create interactive materials for school work, study, and presentations.',
+      },
+      {
+        name: 'og:image',
+        content: 'https://materalist.com/img/logo.png',
+      },
+      {
+        name: 'og:title',
+        content: 'Materalist Documentation',
+      },
+      {
+        name: 'og:description',
+        content: 'Materalist is a presentation tool that allows you to create interactive materials for school work, study, and presentations.',
+      }
+    ]
   } satisfies Preset.ThemeConfig,
 };
 
