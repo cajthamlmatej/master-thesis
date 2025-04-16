@@ -35,7 +35,7 @@ We support that the plugins can do following things:
 - Create new types of blocks (see [Custom blocks](./editor/custom-blocks)) which can be used in the editor and in the player. For example a new diagram, a new type of quiz, a new type of text, etc.
 - Make life of the user easier by adding new features and tools to the editor, which can make the process of creating materials faster and or productive. For example a new way of positioning of blocks, repeated actions and more.
 - Creating interactive things in the player. For example a new way of displaying the material, going through the material and more.
-- Creating a new way of importing and exporting materials. For example a new way of importing and exporting materials to and from other applications.
+- Creating a new way of importing and exporting materials. For example importing materials to and from other applications, formats and more.
 
 ## What plugins can't do
 

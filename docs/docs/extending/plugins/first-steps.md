@@ -15,7 +15,7 @@ Then you can start creating your first plugin. This documentation will help you 
 
 ## Creating a new plugin
 
-All plugins can have a [Editor code](./editor) or/and a [Player code](./player) code.
+All plugins can have a [Editor code](./editor) and/or a [Player code](./player).
 The Editor code is the code that runs in the editor and can be used to create and edit the content of the material.
 The Player code is the code that runs in the player while the material is being played (watched, presented, etc.).
 You can create a plugin that only has one of them, or both of them.
@@ -24,7 +24,7 @@ You can create a plugin that only has one of them, or both of them.
 
 :::info
 
-This is very beginner-friendly guide to creating a plugin.
+This is a very beginner-friendly guide to creating a plugin.
 It will help you understand how to create a plugin from scratch and what each part of the plugin does.
 If you are already familiar with creating files, you can go to [Prepared plugin base](#prepared-plugin-base) and start creating your plugin from there.
 
@@ -36,7 +36,7 @@ In some folder of your computer, create a new folder with some name, for example
 
 ### 2. Create a new files
 
-In the folder you just created, create a new files:
+In the folder you just created, create new files:
 
 - `manifest.json`
 - `editor.js`
@@ -44,9 +44,9 @@ In the folder you just created, create a new files:
 
 #### 2.1. `manifest.json`
 
-This file contains the metadata of the plugin which modifies what Materalist does with the plugin and what plugin can do.
+This file contains the metadata of the plugin which modifies what Materalist does with the plugin and what the plugin can do.
 Current version of the metadata format is `1`.
-To learn what you can do with the metadata, check the [Plugin metadata](./metadata) documentation.
+To learn what you can do with the metadata, check the [Plugin manifest](./manifest) documentation.
 
 The base of the file could look like this:
 
@@ -115,19 +115,21 @@ The file may look like follows:
 
 
 The best way to test is to use the "import local plugin" feature of Materalist.
-In editor, when you open the plugins tab, you can see a button "Import local plugin".
+In the editor, when you open the plugins tab, you can see a button "Import local plugin".
 When you click on it, you can select a ZIP containing:
 
 - `manifest.json`
 - `editor.js` (optional, but one of the files must be present)
-- `player.js` (optional, but one of the files must be present)
+- `player.js` (optional, but one of the files must be present)+
 
-Then you can import the plugin and it will be available in the editor for the current instance of the application.
-Changing to a player you need to import the plugin again (in plugin you need to enable debugging mode, see [Client](../../extending/source/client) documentation).
-Then you can import it using debug tab.
+Once the plugin is imported, it becomes available in the editor for the current instance of the application.
+If you switch to a different editor or to the player, you'll need to re-import the plugin.
 
-You can have one "locally" imported plugin.
-If you need to install new one or remove it, you just need to refresh the page.
+For importing plugin inside the player, make sure debugging mode is enabled (refer to the [Client documentation](../../extending/source/client) for details).
+After that, you can import the plugin using the Debug tab..
+
+You can only have one "locally" imported plugin.
+If you need to install a new one or remove it, you just need to refresh the page.
 
 Some blocks, if they are already added in the material, and are custom for that plugin, may need you to switch slides to see the changes.
 
@@ -142,8 +144,12 @@ The following ways are not recommended.
 Also, for testing purposes you can use a local server of the application.
 How to do that is explained in the [Setup](../../extending/source/setup) documentation.
 
-But you can really make a test version and publish it and test it on live version.
-Then you can use the [Publishing](./publishing) documentation to learn how to publish your plugin.
+Also its possible to make a test version of the plugin and publish it.
+Then you can test it on live version.
+
+---
+
+Once you are ready to publish your plugin, continue with the [Publishing](./publishing) documentation.
 
 ## Prepared plugin base
 

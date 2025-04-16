@@ -10,8 +10,8 @@ This documentation is intended to provide a comprehensive guide to the **Materal
 It is divided into several sections, each of which covers a different aspect of the project. 
 The sections are as follows:
 
-- [Using Materalist](./usage): Instructions on how to use the application and its various features.
-- [Extending Materalist](./extending): Instructions on how to extend the application and its various features.
+- [Using Materalist](./usage/): Instructions on how to use the application and its various features.
+- [Extending Materalist](./extending/): Instructions on how to extend the application and its various features.
 
 If you didn't find what you were looking for, please check the [FAQ](./faq) section or [Contact us](./contact).
 
