@@ -270,6 +270,23 @@
                     "no-code": "Žádný kód nenahrán."
                 }
             }
+        },
+        "user-settings": {
+            "user": {
+                "title": "Nastavení účtu",
+                "new-password": "Nové heslo",
+                "name": "Nové jméno",
+                "current": "Aktuální heslo",
+                "change": "Změnit údaje",
+                "error": "Údaje se nepodařilo změnit. Zkontrolujte, zda jste zadali správné heslo."
+            },
+            "export": {
+                "title": "Export osobních údajů",
+                "exported": "Osobní údaje byly vyexportovány. Níže si je můžete stáhnout do %date%. Poté budou data smazána.",
+                "download": "Stáhnout",
+                "process": "Zažádat o export",
+                "recent": "Žádost byla zaznamenána a data se právě exportují. Jakmile budou data připravena, obdržíte e-mail a zde si je budete moci stáhnout."
+            }
         }
     },
     "player": {

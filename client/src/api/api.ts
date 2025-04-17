@@ -5,6 +5,7 @@ import {MaterialRepository} from "@/api/repository/material";
 import {PreferencesRepository} from "@/api/repository/preferences";
 import {MediaRepository} from "@/api/repository/media";
 import {PluginRepository} from "@/api/repository/plugin";
+import {DataExportRepository} from "@/api/repository/data-export";
 
 
 /**
@@ -19,6 +20,7 @@ class Api {
     public preferences: PreferencesRepository;
     public media: MediaRepository;
     public plugin: PluginRepository;
+    public dataExport: DataExportRepository
 
     constructor() {
         this.base = import.meta.env.VITE_API ?? "";
@@ -29,6 +31,7 @@ class Api {
         this.preferences = new PreferencesRepository();
         this.media = new MediaRepository();
         this.plugin = new PluginRepository();
+        this.dataExport = new DataExportRepository();
     }
 
     /**

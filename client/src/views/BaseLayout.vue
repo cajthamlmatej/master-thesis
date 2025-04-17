@@ -4,12 +4,12 @@
         </template>
 
         <template #navigation>
-            <NavigationButton :disabled="true"
+            <NavigationButton icon="cog-outline"
+                              :to="{name: 'UserSettings'}"  
                               hide-mobile
-                              icon="account-cog"
-                              label="Settings"
-                              tooltip-position="bottom"></NavigationButton>
-
+                              tooltip-position="bottom"
+                              :label="$t('layout.base.settings')"
+                              :tooltip-text="$t('layout.base.settings')"></NavigationButton>
 
             <ChangeLanguage></ChangeLanguage>
 
@@ -50,8 +50,9 @@
         </template>
 
         <template #secondary>
-            <NavigationButton :disabled="true" icon="cog-outline"
-                              label="Settings">
+            <NavigationButton icon="cog-outline"
+                              :to="{name: 'UserSettings'}"  
+                              :label="$t('layout.base.settings')">
             </NavigationButton>
             <NavigationButton :label="$t('layout.base.logout')"
                               icon="logout"

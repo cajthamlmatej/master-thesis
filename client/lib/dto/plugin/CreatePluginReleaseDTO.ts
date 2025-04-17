@@ -3,7 +3,7 @@ import {
     IsDefined, IsHexColor,
     IsIn,
     IsNumber,
-    IsObject, IsPositive,
+    IsObject, IsOptional, IsPositive,
     IsString,
     MaxLength,
     Min,
@@ -29,12 +29,12 @@ export class CreatePluginReleaseDTO {
     manifest: string;
 
     @IsString()
-    @MinLength(1)
+    @IsOptional()
     @MaxLength(131072)
     editorCode: string;
 
     @IsString()
-    @MinLength(1)
+    @IsOptional()
     @MaxLength(131072)
     playerCode: string;
 }

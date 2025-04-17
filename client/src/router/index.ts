@@ -91,6 +91,19 @@ const router = createRouter({
             ]
         },
 
+        {
+            path: '/:lang/user/settings',
+            component: () => import('../views/settings/Layout.vue'),
+
+            children: [
+                {
+                    path: '',
+                    name: 'UserSettings',
+                    component: () => import('../views/settings/Base.vue'),
+                }
+            ]
+        },
+
         // Not found
         {
             path: "/:pathMatch(.*)*",

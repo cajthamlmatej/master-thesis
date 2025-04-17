@@ -1,5 +1,6 @@
 import {Repository} from "../repository";
 import OneUserSuccessDTO from "../../../lib/dto/user/OneUserSuccessDTO";
+import UpdateUserDTO from "../../../lib/dto/user/UpdateUserDTO";
 
 export class UserRepository extends Repository {
     /**
@@ -28,4 +29,11 @@ export class UserRepository extends Repository {
     //         {password: newPassword}
     //     );
     // }
+    async update(id: string, data: UpdateUserDTO) {
+        return await this.makeRequest(
+            `user/${id}`,
+            "PATCH",
+            data
+        );
+    }
 }
