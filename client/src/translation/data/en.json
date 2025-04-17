@@ -287,7 +287,8 @@
                 "exported": "Personal data has been exported. You can download it below until %date%. After that, the data will be deleted.",
                 "download": "Download",
                 "process": "Request Export",
-                "recent": "The request has been recorded and the data is currently being exported. Once the data is ready, you will receive an email and will be able to download it here."
+                "recent": "The request has been recorded and the data is currently being exported. Once the data is ready, you will receive an email and will be able to download it here.",
+                "description": "Here you can export the personal data we have about you. This data includes all your materials, plugins, and other information we have collected during your use of the application. The exported data will be in JSON format and will contain all the personal data we have about you."
             }
         }
     },

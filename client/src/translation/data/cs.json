@@ -285,7 +285,8 @@
                 "exported": "Osobní údaje byly vyexportovány. Níže si je můžete stáhnout do %date%. Poté budou data smazána.",
                 "download": "Stáhnout",
                 "process": "Zažádat o export",
-                "recent": "Žádost byla zaznamenána a data se právě exportují. Jakmile budou data připravena, obdržíte e-mail a zde si je budete moci stáhnout."
+                "recent": "Žádost byla zaznamenána a data se právě exportují. Jakmile budou data připravena, obdržíte e-mail a zde si je budete moci stáhnout.",
+                "description": "Zde můžete exportovat osobní údaje, které o vás máme. Tyto údaje zahrnují všechny vaše materiály, pluginy a další informace, které jsme shromáždili během používání aplikace. Vyexportované údaje budou ve formátu JSON a budou obsahovat všechny vaše osobní údaje, které máme."
             }
         }
     },
