@@ -44,7 +44,9 @@ export class AuthController {
                         name: user.name,
                         link: this.configService.get<string>("FRONTEND_DOMAIN")! + this.configService.get<string>("FRONTEND_DOMAIN_AUTHENTICATION")!
                     });
-                    return;
+                    return {
+                        success: true,
+                    }
                 }
 
                 const authenticationRequest = await this.authService.getValidByCode(code);

@@ -4,7 +4,7 @@ import {HydratedDocument, Model} from "mongoose";
 import {AuthenticationRequest} from "./authenticationRequest.schema";
 import {User} from "../users/user.schema";
 import generateToken from "../utils/generateToken";
-import moment from "moment";
+import * as moment from "moment";
 
 @Injectable()
 export class AuthService {
