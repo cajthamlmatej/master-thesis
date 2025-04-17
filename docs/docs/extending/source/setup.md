@@ -30,7 +30,7 @@ SMTP_PASSWORD=""
 SMTP_FROM="Materalist"
 
 ## FRONTEND
-FRONTEND_DOMAIN="<http://localhost:5173/ or will be provided by docker-compose>"
+FRONTEND_DOMAIN="<http://host.docker.internal:4000/ or will be provided by docker-compose>"
 FRONTEND_DOMAIN_AUTHENTICATION="en/authentication"
 FRONTEND_DOMAIN_AUTHENTICATION_VALIDATE="en/authentication/activate/{{token}}"
 FRONTEND_DOMAIN_PLAYER="en/player"
@@ -58,12 +58,12 @@ For uploading and just using the application you dont have to do much.
     - [http://localhost:4001](http://localhost:4001) - the homepage
     - [http://localhost:4002](http://localhost:4002) - the documentation
     - [http://localhost:4003](http://localhost:4003) - the server (backend)
-
+<!-- 
 :::warning
 
 Thumbnail generation doesnt work in local dev mode, only in production mode (uploaded to real domain).
 
-:::
+::: -->
 
 ### Uploading the application
 
