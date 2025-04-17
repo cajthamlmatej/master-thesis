@@ -80,9 +80,6 @@
 </template>
 
 <script setup lang="ts">
-</script>
-
-<script setup lang="ts">
 import {useScrollReact} from "@/composables/scrollReact.ts";
 import {computed, onMounted, ref, watch} from "vue";
 import Slider from "@/components/Slider.vue";
