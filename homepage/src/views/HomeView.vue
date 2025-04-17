@@ -3,7 +3,7 @@
         <div class="container">
             <nav>
                 <ul class="logo">
-                    <li><a href=""><span class="logo"></span></a></li>
+                    <li><a href="/"><span class="logo"></span></a></li>
                 </ul>
 
                 <ul class="main">

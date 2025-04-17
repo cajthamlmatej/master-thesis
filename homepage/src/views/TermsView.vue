@@ -6,9 +6,12 @@
                     <li><a href="/"><span class="logo"></span></a></li>
                 </ul>
 
+                <ul class="main">
+                    <li><a href="/" v-t>navigation.home</a></li>
+                </ul>
+
                 <ul>
                     <change-language></change-language>
-                    <li><a href="/" v-t>navigation.home</a></li>
                     <li><a :href="APP_LINK" v-t>navigation.application</a></li>
                     <li id="menu-activator" :class="{ 'active': menu }"><a @click="menu = true"><img
                                 src="/icons/hamburger.svg"></a></li>
