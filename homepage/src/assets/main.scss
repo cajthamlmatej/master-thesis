@@ -164,6 +164,10 @@ footer {
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        > * {
+            flex: 1;
+        }
     }
 
     .copyright {
@@ -182,18 +186,26 @@ footer {
                 text-align: center;
 
                 a {
-                    display: block;
+                    &.icon {
+                        display: block;
+
+                        width: 40px;
+                        height: 40px;
+    
+                        background-color: #f2eefc;         
+
+                        &:hover {
+                            transform: scale(1.1);
+                            background-color: #c3b7e0;
+                        }               
+                    }
+
                     color: white;
                     text-decoration: none;
-
-                    width: 40px;
-                    height: 40px;
-
-                    background-color: #f2eefc;
                     mask-repeat: no-repeat;
                     mask-size: contain;
 
-                    transition: transform 0.3s ease, background-color 0.3s ease;
+                    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 
                     &.blackboard {
                         mask-image: url("/icons/blackboard.svg");
@@ -206,10 +218,16 @@ footer {
                     }
 
                     &:hover {
-                        transform: scale(1.1);
-                        background-color: #c3b7e0;
+                        color: #d1cade;
                     }
                 }
+            }
+        }
+
+        &:last-child {
+            ul {
+                text-align: right;
+                justify-content: end;
             }
         }
     }
@@ -589,6 +607,10 @@ main {
                 padding: 4em 2em;
                 color: white;
                 margin-bottom: 3em;
+            }
+
+            .subtitle {
+                margin-top: 4em;
             }
 
             h3 {

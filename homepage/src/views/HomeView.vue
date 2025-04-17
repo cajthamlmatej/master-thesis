@@ -205,8 +205,6 @@ onMounted(async() => {
         itemsParsed.push(itemsParsed[Math.floor(Math.random() * itemsParsed.length)]);
     }
 
-    console.log(itemsParsed);
-
     items.value = [
         itemsParsed.slice(0, 10),
         itemsParsed.slice(10, 20)

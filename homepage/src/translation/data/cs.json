@@ -64,5 +64,15 @@
     "footer": {
         "copyright": "Copyright © %year% Materalist. Všechna práva vyhrazena.",
         "love": "Vytvořeno s láskou a vášní pro vzdělávání."
+    },
+    "terms": {
+        "title": "Podmínky služby",
+        "subtitle": "Co byste měli vědět",
+        "warning": "Tyto podmínky jsou dostupné pouze v angličtině. Pokud jim nerozumíte, kontaktujte nás prosím pro pomoc."
+    },
+    "privacy": {
+        "title": "Zásady ochrany osobních údajů",
+        "subtitle": "Jak nakládáme s vašimi daty",
+        "warning": "Tyto podmínky jsou dostupné pouze v angličtině. Pokud jim nerozumíte, kontaktujte nás prosím pro pomoc."
     }
 }

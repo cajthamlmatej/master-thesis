@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
@@ -25,7 +25,7 @@ const router = createRouter({
             name: 'terms-of-service',
             component: () => import('../views/TermsView.vue'),
         },
-        
+
 
         {
             path: '/:lang/privacy-policy',
@@ -33,6 +33,6 @@ const router = createRouter({
             component: () => import('../views/PrivacyView.vue'),
         }
     ],
-})
+});
 
 export default router
