@@ -10,6 +10,7 @@ import {PreferencesModule} from './preferences/preferences.module';
 import {MediaModule} from './media/media.module';
 import {PluginModule} from './plugin/plugin.module';
 import {EventsModule} from './events/events.module';
+import { DataExportModule } from './data-export/data-export.module';
 
 @Module({
     imports: [
@@ -21,7 +22,7 @@ import {EventsModule} from './events/events.module';
             }),
             inject: [ConfigService],
         }),
-        MaterialsModule, AuthModule, UsersModule, EmailModule, PreferencesModule, MediaModule, PluginModule, EventsModule],
+        MaterialsModule, AuthModule, UsersModule, EmailModule, PreferencesModule, MediaModule, PluginModule, EventsModule, DataExportModule],
     providers: [EmailService],
 })
 export class AppModule {

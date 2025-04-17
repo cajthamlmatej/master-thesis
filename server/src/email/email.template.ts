@@ -36,14 +36,15 @@ export class EmailTemplates {
         name: string;
         link: string;
     }>;
+    //
+    // static PASSWORD_CHANGED = {
+    //     subject: 'Password changed',
+    //     filename: 'password-changed.html',
+    //     preprocessor: 'MJML'
+    // } as EmailTemplate<{
+    //     name: string;
+    // }>;
 
-    static PASSWORD_CHANGED = {
-        subject: 'Password changed',
-        filename: 'password-changed.html',
-        preprocessor: 'MJML'
-    } as EmailTemplate<{
-        name: string;
-    }>;
     static DATA_EXPORT_FINISHED = {
         subject: 'Data export finished',
         filename: 'data-export-finished.html',

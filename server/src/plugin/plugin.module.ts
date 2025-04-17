@@ -13,7 +13,8 @@ import {Plugin, PluginSchema} from "./plugin.schema";
         ConfigModule.forRoot()
     ],
     providers: [PluginService],
-    controllers: [PluginController]
+    controllers: [PluginController],
+    exports: [PluginService]
 })
 export class PluginModule {
 }

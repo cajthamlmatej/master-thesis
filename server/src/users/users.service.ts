@@ -69,4 +69,16 @@ export class UsersService {
     public async hashPassword(password: string) {
         return await bcrypt.hash(password, 10);
     }
+
+    public async updateUser(id: string, data: { password: string | undefined; name: string | undefined; }) {
+        const toChange = {
+            password: data.password,
+            name: data.name,
+            lastPasswordChange: data.password ? new Date() : undefined
+        };
+
+        const user = await this.userModel.findByIdAndUpdate(id, {
+            $set: toChange
+        }).exec();
+    }
 }

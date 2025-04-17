@@ -13,7 +13,8 @@ import {EmailModule} from "../email/email.module";
         ConfigModule.forRoot(), UsersModule,
         EmailModule],
     providers: [AuthService],
-    controllers: [AuthController]
+    controllers: [AuthController],
+    exports: [AuthService],
 })
 export class AuthModule {
 }

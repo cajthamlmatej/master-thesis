@@ -59,4 +59,10 @@ export class AuthService {
         authenticationRequest.used = true;
         await authenticationRequest.save();
     }
+
+    async getAllRequests(user: HydratedDocument<User>) {
+        return this.authenticationRequestModel.find({
+            user: user._id,
+        });
+    }
 }

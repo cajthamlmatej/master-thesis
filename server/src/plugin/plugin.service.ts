@@ -68,4 +68,10 @@ export class PluginService {
             }
         }).exec();
     }
+
+    async getAllForUser(user: HydratedDocument<User>) {
+        return this.pluginModel.find({
+            author: user
+        });
+    }
 }

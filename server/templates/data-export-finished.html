@@ -12,28 +12,26 @@
                 </mj-text>
                 <mj-text>
                     on {{date}} you requested to export personal data from the TODO web portal. We have
-                    processed the data and after logging into the system it is ready on the settings page or at the
-                    following address:
+                    processed the data and after logging into the system it is ready on the settings page.
                 </mj-text>
                 <mj-button background-color="#E0A648" font-weight="800" font-size="18px" href="{{link}}">
-                    Settings
+                    Link
                 </mj-button>
             </mj-column>
         </mj-section>
         <mj-section background-color="white">
             <mj-column width="400px">
                 <mj-text>
-                    The archive is in ZIP format and contains files in CSV format (or files uploaded by you).
-                    It is possible that it does not contain all the information. If any are missing, this is indicated
-                    in the <code>README.txt</code> file.
-                    In this file you will also find a short description of the individual data.
+                    The archive is in ZIP format and contains files in JSOn format (and files uploaded by you).
+                    It is possible that it does not contain all the information - some information would risk security of
+                    your account. For example, the password is not included in the export.
                 </mj-text>
                 <mj-text>
-                    The exported data is valid for three days after sending this email. After this time, they will be
-                    removed from our system.
+                    The exported data is valid for seven days after sending this email.
+                    After this time, they will be removed from our system.
                 </mj-text>
                 <mj-text>
-                    You can reapply 30 days from the last export request.
+                    After expiration, you can request a new export of your data.
                 </mj-text>
             </mj-column>
         </mj-section>

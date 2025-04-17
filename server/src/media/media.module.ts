@@ -30,7 +30,8 @@ import {extname} from 'path';
         ConfigModule.forRoot()
     ],
     controllers: [MediaController],
-    providers: [MediaService]
+    providers: [MediaService],
+    exports: [MediaService],
 })
 export class MediaModule {
 }

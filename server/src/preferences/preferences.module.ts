@@ -13,6 +13,7 @@ import {Preferences, PreferencesSchema} from "./preferences.schema";
         ConfigModule.forRoot()],
     controllers: [PreferencesController],
     providers: [PreferencesService],
+    exports: [PreferencesService]
 })
 export class PreferencesModule {
 }
