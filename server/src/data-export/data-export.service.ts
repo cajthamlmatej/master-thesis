@@ -70,14 +70,11 @@ export class DataExportService {
 
             {
                 const media = await this.mediaService.findAllForUser(dataExport.user as HydratedDocument<User>);
-                const folder = zip.folder("media");
-
-                if(!folder) return;
 
                 for(const file of media) {
                     const data = fs.readFileSync(file.path);
 
-                    folder.file(file.path, data);
+                    zip.file(file.path, data);
                 }
             }
 
@@ -145,11 +142,13 @@ export class DataExportService {
                 {
                     expiresAt: {
                         $gt: new Date()
-                    }
+                    },
+                    user: user
                 },
                 {
                     completedAt: {$exists: false},
-                    expiresAt: {$exists: false}
+                    expiresAt: {$exists: false},
+                    user: user
                 }
             ]
         });
