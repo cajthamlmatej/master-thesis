@@ -10,6 +10,7 @@ ARG DOCS_DOMAIN
 RUN echo "\nVITE_DOCS=${DOCS_DOMAIN}" >> .env
 ARG API_DOMAIN
 RUN echo "\nVITE_API=${API_DOMAIN}" >> .env
-
+ARG APP_DOMAIN
+RUN echo "\nVITE_APP=${APP_DOMAIN}" >> .env
 
 CMD ["npm", "run", "local:dev"]

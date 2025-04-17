@@ -196,6 +196,7 @@ onMounted(() => {
             position: relative;
             border-radius: 1rem;
             transition: background-color 0.3s ease, transform 0.3s ease;
+            border: 2px solid rgba(144, 126, 179, 0.372);
 
             img {
                 width: 100%;
