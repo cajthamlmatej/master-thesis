@@ -1,9 +1,9 @@
 <template>
     <Row justify="center">
-        <Col :cols="12" :lg="8" :md="10" :sm="11" :xl="8">
+        <Col :cols="12" :lg="10" :md="12" :sm="12" :xl="10">
             <Card fluid>
                 <Row align="stretch" wrap>
-                    <Col :cols="12" :md="7">
+                    <Col :cols="12" :md="6">
                         <Tabs v-model:selected="data.tab" :items="data.tabs" fluid></Tabs>
                         <TransitionGroup :duration="40000" class="authentication-holder" name="authentication-fade"
                                          tag="div">
@@ -69,26 +69,25 @@
                         </TransitionGroup>
                     </Col>
 
-                    <Col :cols="12" :md="5" class="flex mt-2 mt-md-0">
+                    <Col :cols="12" :md="6" class="flex mt-2 mt-md-0">
                         <Divider class="d-none d-md-block" vertical></Divider>
 
                         <div class="flex flex-column flex-justify-space-between">
                             <div>
                                 <h2 v-t>web.name</h2>
 
-                                <p class="mb-1">
-                                    ...
-                                </p>
-                                <p class="mb-1">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aspernatur aut
-                                    culpa dolore doloremque earum eos eveniet, ex impedit maxime modi officiis pariatur
-                                    praesentium quas recusandae sint temporibus tenetur vel?
-                                </p>
-                                <p>
-                                    TODO: <a href="#">here</a>.<!-- TODO: Add link -->
-                                </p>
+                                <p class="mb-1" v-t>page.authentication.about.0</p>
+                                <p class="mb-1" v-t>page.authentication.about.1</p>
+                                <p class="mb-1" v-t>page.authentication.about.2</p>
+                                <p class="mb-1" v-t>page.authentication.about.3</p>
                             </div>
 
+                            <Button :icon-size="1.4"
+                                    :href="homepage"
+                                    class="mt-1"
+                                    fluid icon="home" data-cy="create-account">
+                                <span v-t>page.authentication.homepage</span>
+                            </Button>
                             <Button :icon-size="1.4" :to="{ name: 'Authentication/Register'}" class="mt-1"
                                     fluid icon="account-plus-outline" data-cy="create-account">
                                 <span v-t>page.authentication.create-account</span>
@@ -112,6 +111,8 @@ import {$t} from "@/translation/Translation";
 useHead({
     title: $t("page.authentication.title")
 });
+
+const homepage = import.meta.env.VITE_HOME;
 
 const data = reactive({
     tab: "EMAIL_PASSWORD",

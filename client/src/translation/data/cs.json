@@ -97,6 +97,13 @@
                 "email-password": "E-mail a heslo",
                 "email": "E-mail"
             },
+            "about": [
+                "Materalist je moderní platforma pro tvorbu a sdílení interaktivních vzdělávacích materiálů, která nachází uplatnění nejen ve školství, ale i v pracovním prostředí. Umožňuje vytvářet prezentace, skripta, plakáty, kvízy nebo další kreativní formy výuky — vše v jednom přehledném prostředí.",
+                "Pro plnohodnotné používání aplikace je potřeba si vytvořit účet. Díky registraci budete moci spravovat své materiály, tvořit nové, nebo se zapojit do komunity autorů.",
+                "Pokud jste zde jen jako účastník prezentace (například student nebo posluchač), stačí naskenovat QR kód nebo otevřít odkaz, který vám předal prezentující. Není potřeba se registrovat.",
+                "Chcete se o aplikaci dozvědět víc? Podívejte se na naši hlavní stránku, kde najdete ukázky, funkce i důvody, proč si Materalist zamilujete."
+            ],
+            "homepage": "Hlavní stránka",
             "fields": {
                 "email": {
                     "required": "E-mail je povinný",

@@ -99,6 +99,13 @@
                 "email-password": "E-mail and password",
                 "email": "E-mail"
             },
+            "about": [
+                "Materalist is a modern platform for creating and sharing interactive educational materials, suitable not only for schools but also for professional environments. It allows you to create presentations, scripts, posters, quizzes, and other creative teaching formats — all in one clear and accessible interface.",
+                "To fully use the application, you need to create an account. With registration, you’ll be able to manage your materials, create new ones, and engage with the authoring community.",
+                "If you’re here just as a presentation participant (for example, a student or attendee), simply scan the QR code or open the link shared by the presenter. No registration is required.",
+                "Want to learn more about the application? Visit our homepage to explore examples, features, and reasons why you’ll love Materalist."
+            ],
+            "homepage": "Homepage",
             "fields": {
                 "email": {
                     "required": "E-mail is required",
