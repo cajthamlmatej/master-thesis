@@ -27,7 +27,8 @@
         "base": {
             "logout": "Odhlásit se",
             "dashboard": "Ovládací panel",
-            "featured": "Ukázkové materiály"
+            "featured": "Ukázkové materiály",
+            "settings": "Nastavení"
         },
         "auth": {
             "home": "Home"

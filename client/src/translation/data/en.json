@@ -27,7 +27,8 @@
         "base": {
             "logout": "Logout",
             "dashboard": "Dashboard",
-            "featured": "Featured materials"
+            "featured": "Featured materials",
+            "settings": "Settings"
         },
         "auth": {
             "home": "Home"
