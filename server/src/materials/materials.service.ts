@@ -6,9 +6,58 @@ import {User} from "../users/user.schema";
 import {UpdateMaterialDTO} from "../../dto/material/UpdateMaterialDTO";
 import {CreateMaterialDTO} from "../../dto/material/CreateMaterialDTO";
 
+interface FeaturedMaterial {
+    id: string;
+    user: string;
+    thumbnail: string;
+    name: string;
+}
+
 @Injectable()
 export class MaterialsService {
+    private featured: FeaturedMaterial[] = [];
     constructor(@InjectModel(Material.name) private materialModel: Model<Material>) {
+        this.getFeatured();
+
+        setInterval(() => {
+            this.getFeatured();
+        }, 1000 * 60 * 60);
+    }
+
+    private async getFeatured() {
+        const aggregate = await this.materialModel.aggregate([
+            { $match: { featured: true, visibility: "PUBLIC" } },
+            { $sample: { size: 20 } },
+            {
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    user: 1,
+                    'slides': { $slice: ['$slides', 1] },
+                }
+            },
+            {
+                $addFields: {
+                    thumbnail: { $arrayElemAt: ['$slides.thumbnail', 0] }
+                }
+            },
+            {
+                $project: {
+                    slides: 0
+                }
+            }
+        ]).exec();
+
+        await this.materialModel.populate(aggregate, { path: "user", select: { name: 1 } });
+
+        this.featured = aggregate.map(featured => {
+            return {
+                id: featured._id.toString(),
+                user: featured.user.name.toString(),
+                thumbnail: featured.thumbnail,
+                name: featured.name
+            }
+        })
     }
 
     findAllForUser(user: HydratedDocument<User>) {
@@ -39,6 +88,7 @@ export class MaterialsService {
 
     async create(param: CreateMaterialDTO, user: HydratedDocument<User>) {
         const material = new this.materialModel({
+            featured: false,
             ...param,
             user: user._id
         });
@@ -67,5 +117,13 @@ export class MaterialsService {
         } catch (e) {
             console.error("Unable to update thumbnails", e);
         }
+    }
+
+    async getFeaturedMaterials() {
+        return this.featured;
+    }
+
+    updateFeatured() {
+        this.getFeatured();
     }
 }

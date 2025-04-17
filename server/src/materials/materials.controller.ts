@@ -29,6 +29,7 @@ import {EventsGateway} from "../events/events.gateway";
 import {UsersService} from "../users/users.service";
 import {HydratedDocument} from "mongoose";
 import {User} from "../users/user.schema";
+import FeaturedMaterialsSuccessDTO from "../../dto/material/FeaturedMaterialsSuccessDTO";
 
 @Controller('')
 export class MaterialsController {
@@ -38,6 +39,21 @@ export class MaterialsController {
         private readonly userService: UsersService,
         @Inject(forwardRef(() => EventsGateway)) private readonly eventsGateway: EventsGateway,
     ) {
+    }
+
+
+    @Get("/material/featured")
+    async featured(@Param('user') user: string, @Req() req: RequestWithUser) {
+        const materials = await this.materialsService.getFeaturedMaterials();
+
+        return {
+            materials: materials.map((m) => ({
+                id: m.id,
+                name: m.name,
+                user: m.user,
+                thumbnail: m.thumbnail,
+            }))
+        } as FeaturedMaterialsSuccessDTO;
     }
 
     @Get("/user/:user/material")
@@ -57,6 +73,7 @@ export class MaterialsController {
                 updatedAt: m.updatedAt,
                 thumbnail: m.slides[0]?.thumbnail,
                 user: m.user.toString(),
+                featured: m.featured,
             }))
         } as AllMaterialSuccessDTO;
     }
@@ -120,7 +137,8 @@ export class MaterialsController {
                 attendees: materialWithAttendees.attendees.map((attendee => ({
                     id: (attendee as any).id,
                     name: attendee.name,
-                })))
+                }))),
+                featured: material.featured,
             }
         } as OneMaterialSuccessDTO;
     }
@@ -146,15 +164,15 @@ export class MaterialsController {
             let newAttendees = [] as HydratedDocument<User>[];
 
             for (const attendee of attendees) {
-                const isObjectId = attendee.match(/^[0-9a-fA-F]{24}$/);
+                const isObjectId = attendee.toString().match(/^[0-9a-fA-F]{24}$/);
 
                 if (isObjectId) {
-                    const user = await this.userService.getById(attendee);
+                    const user = await this.userService.getById(attendee.toString());
                     if (user) {
                         newAttendees.push(user.id);
                     }
                 } else {
-                    const user = await this.userService.getByEmail(attendee);
+                    const user = await this.userService.getByEmail(attendee.toString());
                     if (user) {
                         newAttendees.push(user.id);
                     }
@@ -167,7 +185,12 @@ export class MaterialsController {
         } else {
             await this.materialsService.update(material, updateMaterialDto);
         }
+
+        if(updateMaterialDto.featured !== undefined && (await this.materialsService.getFeaturedMaterials()).length < 20) {
+            this.materialsService.updateFeatured();
+        }
     }
+
 
 
     @Post('/material')
@@ -197,7 +220,8 @@ export class MaterialsController {
                     thumbnail: slide.thumbnail,
                     position: slide.position,
                     data: slide.data
-                }))
+                })),
+                featured: material.featured,
             }
         } as CreateMaterialSuccessDTO;
     }

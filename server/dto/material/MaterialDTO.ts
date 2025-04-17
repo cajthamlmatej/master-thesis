@@ -32,4 +32,5 @@ export interface MaterialDTO {
         thumbnail: string | undefined;
         position: number;
     }[];
+    featured: boolean;
 }

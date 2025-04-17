@@ -1,5 +1,5 @@
 import {
-    IsArray, IsDefined,
+    IsArray, IsBoolean, IsDefined,
     IsIn,
     IsNumber, IsObject,
     IsOptional,
@@ -75,5 +75,9 @@ export class UpdateMaterialDTO {
     @IsArray()
     @IsOptional()
     @Type(() => String)
-    attendees: string[];
+    attendees?: string[];
+
+    @IsBoolean()
+    @IsOptional()
+    featured?: boolean;
 }
