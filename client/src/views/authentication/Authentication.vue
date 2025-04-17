@@ -82,16 +82,23 @@
                                 <p class="mb-1" v-t>page.authentication.about.3</p>
                             </div>
 
-                            <Button :icon-size="1.4"
-                                    :href="homepage"
-                                    class="mt-1"
-                                    fluid icon="home" data-cy="create-account">
-                                <span v-t>page.authentication.homepage</span>
-                            </Button>
                             <Button :icon-size="1.4" :to="{ name: 'Authentication/Register'}" class="mt-1"
                                     fluid icon="account-plus-outline" data-cy="create-account">
                                 <span v-t>page.authentication.create-account</span>
                             </Button>
+
+
+                            <div class="flex flex-justify-center gap-1 flex-wrap mt-1">
+                                <Button :href="homepage" target="_blank">
+                                    <span v-t>page.authentication.homepage</span>
+                                </Button>
+                                <Button :href="`${homepage}${route.params.lang}/terms-of-service`" target="_blank">
+                                    <span v-t>page.register.terms-of-service</span>
+                                </Button>
+                                <Button :href="`${homepage}${route.params.lang}/privacy-policy`" target="_blank">
+                                    <span v-t>page.register.privacy-policy</span>
+                                </Button>
+                            </div>
                         </div>
                     </Col>
                 </Row>
@@ -107,12 +114,14 @@ import {reactive} from "vue";
 import Button from "@/components/design/button/Button.vue";
 import {useHead} from "unhead";
 import {$t} from "@/translation/Translation";
+import {useRoute} from "vue-router";
 
 useHead({
     title: $t("page.authentication.title")
 });
 
 const homepage = import.meta.env.VITE_HOME;
+const route = useRoute();
 
 const data = reactive({
     tab: "EMAIL_PASSWORD",

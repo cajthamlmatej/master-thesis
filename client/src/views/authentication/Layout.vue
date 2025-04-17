@@ -3,8 +3,7 @@
         <template #navigation>
             <ChangeLanguage :header="false" never-hide />
 
-            <!-- TODO: Link to mainpage on diff domain -->
-            <NavigationButton :label="$t('layout.auth.home')" icon="home-outline"/>
+            <NavigationButton :label="$t('layout.auth.home')" @click="redirect" icon="home-outline"/>
         </template>
     </Header>
 
@@ -23,10 +22,17 @@ import ChangeLanguage from "@/components/ChangeLanguage.vue";
 const authenticationStore = useAuthenticationStore();
 const router = useRouter();
 
+
+const homepage = import.meta.env.VITE_HOME;
+
 onMounted(() => {
     // If user is logged in, redirect to dashboard
     if (authenticationStore.isLogged) {
         router.push({name: 'Dashboard'});
     }
 });
+
+const redirect = () => {
+    window.location.href = homepage;
+};
 </script>

@@ -28,7 +28,18 @@
             "logout": "Logout",
             "dashboard": "Dashboard",
             "featured": "Featured materials",
-            "settings": "Settings"
+            "settings": "Settings",
+            "plugins": "Plugins",
+            "info": {
+                "tooltip": "About the application",
+                "title": "About the Application",
+                "version": "Version",
+                "description": "Materalist is a modern platform for creating and sharing interactive educational materials. Below you’ll find the most important links and information about the application.",
+                "homepage": "Homepage",
+                "docs": "Documentation",
+                "terms-of-service": "Terms of Service",
+                "privacy-policy": "Privacy Policy"
+            }
         },
         "auth": {
             "home": "Home"
@@ -160,7 +171,7 @@
             },
             "register": "Register",
             "after-register": "After registration, you will be asked to confirm your registration using the link in the entered e-mail.",
-            "by-registering": "By registering you agree to conditions of use and privacy policy.",
+            "by-registering": "By registering you agree to terms of use and privacy policy.",
             "already-account": "Already have an account?",
             "sign-in": "Sign in here.",
             "success": {
@@ -170,7 +181,9 @@
             },
             "fail": {
                 "failed": "Registration failed. An account with this e-mail probably already exists. Try different e-mail."
-            }
+            },
+            "terms-of-service": "Terms of use",
+            "privacy-policy": "Privacy policy"
         },
         "activate": {
             "title": "Account activation",

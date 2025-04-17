@@ -28,7 +28,18 @@
             "logout": "Odhlásit se",
             "dashboard": "Ovládací panel",
             "featured": "Ukázkové materiály",
-            "settings": "Nastavení"
+            "settings": "Nastavení",
+            "plugins": "Pluginy",
+            "info": {
+                "tooltip": "Informace o aplikaci",
+                "title": "Informace o aplikaci",
+                "version": "Verze",
+                "description": "Materalist je moderní platforma pro tvorbu a sdílení interaktivních vzdělávacích materiálů. Níže najdete nejdůležitější odkazy a informace o aplikaci.",
+                "homepage": "Hlavní stránka",
+                "docs": "Dokumentace",
+                "terms-of-service": "Podmínky používání",
+                "privacy-policy": "Zásady ochrany osobních údajů"
+            }
         },
         "auth": {
             "home": "Home"
@@ -168,7 +179,9 @@
             },
             "fail": {
                 "failed": "Registrace se nezdařila. Účet s tímto e-mailem již pravděpodobně existuje. Zkuste jiný e-mail."
-            }
+            },
+            "terms-of-service": "Podmínky používání",
+            "privacy-policy": "Zásady ochrany osobních údajů"
         },
         "activate": {
             "title": "Aktivace účtu",

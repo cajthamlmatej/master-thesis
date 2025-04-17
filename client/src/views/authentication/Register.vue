@@ -62,7 +62,15 @@
                             <p v-t class="text-center">page.register.after-register</p>
 
                             <p v-t class="text-center mt-1">page.register.by-registering</p>
-                            <!-- TODO: Add links to conditions of use and privacy policy -->
+
+                            <div class="flex flex-justify-center gap-1 flex-wrap mt-1">
+                                <Button :href="`${homepage}${route.params.lang}/terms-of-service`" target="_blank">
+                                    <span v-t>page.register.terms-of-service</span>
+                                </Button>
+                                <Button :href="`${homepage}${route.params.lang}/privacy-policy`" target="_blank">
+                                    <span v-t>page.register.privacy-policy</span>
+                                </Button>
+                            </div>
 
                             <p class="text-center mt-1">
                                 <span v-t>page.register.already-account</span>
@@ -94,10 +102,15 @@ import {useAuthenticationStore} from "@/stores/authentication";
 import Card from "@/components/design/card/Card.vue";
 import {useHead} from "unhead";
 import {$t} from "@/translation/Translation";
+import {useRoute} from "vue-router";
 
 useHead({
     title: $t("page.register.title")
 });
+
+const homepage = import.meta.env.VITE_HOME;
+
+const route = useRoute();
 
 const data = reactive({
     name: '',
