@@ -9,8 +9,8 @@
             </div>
             <div class="links">
                 <ul>
-                    <li><router-link :to="{name: 'privacy-policy'}">Privacy policy</router-link></li>
-                    <li><router-link :to="{name: 'terms-of-service'}">Terms of service</router-link></li>
+                    <li><router-link :to="{name: 'privacy-policy'}"><span v-t>privacy.title</span></router-link></li>
+                    <li><router-link :to="{name: 'terms-of-service'}"><span v-t>terms.title</span></router-link></li>
                 </ul>
             </div>
             <div class="links">
