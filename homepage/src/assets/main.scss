@@ -151,7 +151,7 @@ header {
     }
 
     &.scrolled {
-        background-color: rgba(136, 70, 217, 0.25);
+        background-color: rgba(136, 70, 217, 0.474);
     }
 }
 
@@ -579,6 +579,29 @@ main {
                         max-width: 100%;
                     }
                 }
+            }
+        }
+        &.terms {
+            .warning {
+                border-radius: 1rem;
+                background-color: rgba(110, 79, 169, 0.69);
+                backdrop-filter: blur(17px);
+                padding: 4em 2em;
+                color: white;
+                margin-bottom: 3em;
+            }
+
+            h3 {
+                margin-top: 2em;
+                margin-bottom: 1em;
+            }
+
+            a {
+                color: #7b57c4;
+            }
+
+            .date {
+                margin-bottom: 1em;
             }
         }
 

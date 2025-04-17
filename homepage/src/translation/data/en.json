@@ -8,7 +8,8 @@
         "join": "Join Us",
         "examples": "Sample Materials",
         "documentation": "Documentation",
-        "application": "Go to App"
+        "application": "Go to App",
+        "home": "Home"
     },
     "landing": {
         "title": "Creating Materials with a Clear Purpose",
@@ -63,5 +64,15 @@
     "footer": {
         "copyright": "Copyright © %year% Materalist. All rights reserved.",
         "love": "Created with love and passion for education."
+    },
+    "terms": {
+        "title": "Terms of Service",
+        "subtitle": "What you need to know",
+        "warning": "These terms are available in English only. If you don't understand them, please contact us for help."
+    },
+    "policy": {
+        "title": "Privacy Policy",
+        "subtitle": "How we handle your data",
+        "warning": "These terms are available in English only. If you don't understand them, please contact us for help."
     }
 }
