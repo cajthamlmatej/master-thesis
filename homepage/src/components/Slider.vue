@@ -24,7 +24,7 @@ type Item = {
 
 const props = defineProps({
     items: {
-        type: Array as () => Item[],
+        type: Array,
         default: () => []
     },
     startDirection: {
@@ -33,7 +33,7 @@ const props = defineProps({
     },
 });
 
-const currentItems = ref(props.items);
+const currentItems = ref(props.items as Item[]);
 
 const sliderElement = ref<HTMLElement | null>(null);
 const hover = ref(false);
@@ -151,7 +151,7 @@ onMounted(() => {
                     if(item) {
                         const index = Array.from(sliderElement.value?.querySelectorAll('.item') as NodeListOf<HTMLElement>).indexOf(item);
                         const itemData = props.items[index];
-                        open(itemData);
+                        open(itemData as Item);
                     }
 
                     return;

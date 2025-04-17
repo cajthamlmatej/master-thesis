@@ -208,5 +208,10 @@ onMounted(async() => {
     ];
 }) 
 
-const items = ref([]);
+const items = ref([] as ({
+    author: string,
+    name: string,
+    thumbnail: string | undefined,
+    link: string
+}[])[]);
 </script>
