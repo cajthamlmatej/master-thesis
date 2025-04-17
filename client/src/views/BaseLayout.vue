@@ -5,7 +5,7 @@
 
         <template #navigation>
             <NavigationButton icon="cog-outline"
-                              :to="{name: 'UserSettings'}"  
+                              :to="{name: 'UserSettings'}"
                               hide-mobile
                               tooltip-position="bottom"
                               :label="$t('layout.base.settings')"
@@ -30,17 +30,17 @@
                               :tooltip-text="$t('layout.base.dashboard')"
                               icon="solar-panel"></NavigationButton>
 
-            <NavigationButton disabled
+            <NavigationButton :to="{name: 'Featured'}"
                               icon="book-open-outline"
-                              label="Browse materials"
-                              tooltip-text="Browse materials"
-            ></NavigationButton>
+                              :label="$t('layout.base.featured')"
+                              :tooltip-text="$t('layout.base.featured')">
+            </NavigationButton>
 
-            <NavigationButton disabled
-                              icon="border-radius"
-                              label="Browse templates"
-                              tooltip-text="Browse templates"
-            ></NavigationButton>
+<!--            <NavigationButton disabled-->
+<!--                              icon="border-radius"-->
+<!--                              label="Browse templates"-->
+<!--                              tooltip-text="Browse templates"-->
+<!--            ></NavigationButton>-->
 
             <NavigationButton :to="{name: 'Plugins'}"
                               icon="package-variant"
@@ -51,7 +51,7 @@
 
         <template #secondary>
             <NavigationButton icon="cog-outline"
-                              :to="{name: 'UserSettings'}"  
+                              :to="{name: 'UserSettings'}"
                               :label="$t('layout.base.settings')">
             </NavigationButton>
             <NavigationButton :label="$t('layout.base.logout')"
@@ -84,6 +84,7 @@ import {useAuthenticationStore} from "@/stores/authentication";
 import {useUserStore} from "@/stores/user";
 import {$t} from "@/translation/Translation";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
+import Navigation from "@/components/design/navigation/Navigation.vue";
 
 const data = reactive({
     menu: true

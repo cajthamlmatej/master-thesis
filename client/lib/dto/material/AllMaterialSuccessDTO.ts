@@ -10,5 +10,6 @@ export interface AllMaterialSuccessDTO {
         sizing: string;
         name: string;
         thumbnail: string | undefined;
+        featured: boolean;
     }[];
 }

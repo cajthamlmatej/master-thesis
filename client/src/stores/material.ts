@@ -112,7 +112,8 @@ export const useMaterialStore = defineStore("material", () => {
             automaticTime: currentMaterial.value.automaticTime,
             sizing: currentMaterial.value.sizing,
             slides: editorStore.slides,
-            attendees: currentMaterial.value.serializeAttendees()
+            attendees: currentMaterial.value.serializeAttendees(),
+            featured: currentMaterial.value.featured
         });
 
         if (!response) {
@@ -123,20 +124,31 @@ export const useMaterialStore = defineStore("material", () => {
     const updateMaterial = async (material: Material) => {
         const response = await api.material.update(material.id, {
             name: material.name,
-            plugins: material.plugins.map((plugin) => ({
+            plugins: material.plugins ? material.plugins.map((plugin) => ({
                 plugin: plugin.plugin,
                 release: plugin.release
-            }), []),
+            }), []) : undefined,
             visibility: material.visibility,
             method: material.method,
             automaticTime: material.automaticTime,
             sizing: material.sizing,
-            slides: material.slides.map((slide) => ({
+            slides: material.slides ? material.slides.map((slide) => ({
                 id: slide.id,
                 data: slide.data,
                 position: slide.position
-            })),
-            attendees: material.serializeAttendees()
+            })) : undefined,
+            attendees: material.attendees ? material.serializeAttendees() : undefined,
+            featured: material.featured
+        });
+
+        if (!response) {
+            throw new Error("Failed to save material");
+        }
+    }
+
+    const updateMaterialFeatured = async (material: Material, featured: boolean) => {
+        const response = await api.material.update(material.id, {
+            featured: featured
         });
 
         if (!response) {
@@ -244,6 +256,22 @@ export const useMaterialStore = defineStore("material", () => {
         });
     }
 
+    const featured = ref<{
+        id: string;
+        user: string;
+        thumbnail: string | undefined;
+        name: string;
+    }[]>([]);
+    const loadFeatured = async () => {
+        const response = await api.material.featured();
+
+        if (!response) {
+            throw new Error("Failed to load featured materials");
+        }
+
+        featured.value = response.materials;
+    }
+
     return {
         synchronize,
         materials,
@@ -257,6 +285,10 @@ export const useMaterialStore = defineStore("material", () => {
         deleteMaterial,
         copyMaterial,
         savePreferences,
-        getPreferences
+        getPreferences,
+
+        featured,
+        loadFeatured,
+        updateMaterialFeatured
     }
 });

@@ -4,6 +4,7 @@ import {CreateMaterialDTO} from "../../../lib/dto/material/CreateMaterialDTO";
 import {CreateMaterialSuccessDTO} from "../../../lib/dto/material/CreateMaterialSuccessDTO";
 import {UpdateMaterialDTO} from "../../../lib/dto/material/UpdateMaterialDTO";
 import {OneMaterialSuccessDTO} from "../../../lib/dto/material/OneMaterialSuccessDTO";
+import FeaturedMaterialsSuccessDTO from "../../../lib/dto/material/FeaturedMaterialsSuccessDTO";
 
 export class MaterialRepository extends Repository {
     public async forUser(user: string) {
@@ -46,6 +47,13 @@ export class MaterialRepository extends Repository {
     async export(id: string, type: string) {
         return this.makeRequestRaw(
             `material/${id}/export/${type}`,
+            "GET"
+        );
+    }
+
+    async featured() {
+        return await this.makeRequest<FeaturedMaterialsSuccessDTO>(
+            `material/featured`,
             "GET"
         );
     }

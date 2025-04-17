@@ -26,7 +26,8 @@
     "layout": {
         "base": {
             "logout": "Odhlásit se",
-            "dashboard": "Ovládací panel"
+            "dashboard": "Ovládací panel",
+            "featured": "Ukázkové materiály"
         },
         "auth": {
             "home": "Home"
@@ -294,6 +295,22 @@
                 "process": "Zažádat o export",
                 "recent": "Žádost byla zaznamenána a data se právě exportují. Jakmile budou data připravena, obdržíte e-mail a zde si je budete moci stáhnout.",
                 "description": "Zde můžete exportovat osobní údaje, které o vás máme. Tyto údaje zahrnují všechny vaše materiály, pluginy a další informace, které jsme shromáždili během používání aplikace. Vyexportované údaje budou ve formátu JSON a budou obsahovat všechny vaše osobní údaje, které máme."
+            }
+        },
+        "featured": {
+            "title": "Ukázkové materiály",
+            "empty": "Prozatím nebyly přidány žádné ukázkové materiály.",
+            "new": {
+                "tooltip": "Přidat ukázkový materiál",
+                "title": "Přidat ukázkový materiál",
+                "description": "Zde můžete označit nějaký svůj materiál jako ukázkový. Ukázkové materiály se zobrazí na hlavní stránce a budou dostupné pro všechny uživatele. Jen materiály, které jsou nastaveny jako veřejné se nakonec zobrazí ostatním. Nezneužívejte tuto funkci a přidávejte sem pouze materiály, které chcete sdílet s ostatními uživateli.",
+                "add": "Přidat"
+            },
+            "remove": {
+                "tooltip": "Odebrat ukázkový materiál",
+                "title": "Odebrat ukázkový materiál",
+                "description": "Odebráním ukázkového materiálu se materiál již nebude zobrazovat na hlavní stránce a nebude dostupný pro ostatní uživatele. Materiál však zůstane dostupný pro lidi, kteří již odkaz mají a pokud je materiál označen jako veřejný. Odstranění může trvat několik hodin.",
+                "remove": "Odebrat"
             }
         }
     },

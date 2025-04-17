@@ -65,6 +65,7 @@ export default class Material {
         id: string;
         name: string;
     } | string)[]
+    featured: boolean = false;
 
     constructor(id: string, createdAt: Date, updatedAt: Date, name: string, slides: {
                     id: string;
@@ -77,6 +78,7 @@ export default class Material {
                     release: string;
                 }[],
                 visibility: MaterialVisibility, method: MaterialMethod, automaticTime: number, sizing: MaterialSizing,
+                featured: boolean,
                 attendees?: ({
                     id: string;
                     name: string;
@@ -91,6 +93,7 @@ export default class Material {
         this.method = method;
         this.automaticTime = automaticTime;
         this.sizing = sizing;
+        this.featured = featured;
         this.attendees = attendees || [];
         this.user = user || "";
         this.slides = slides.map(slide => new Slide(slide.id, slide.data, slide.thumbnail, slide.position));

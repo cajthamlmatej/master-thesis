@@ -26,7 +26,8 @@
     "layout": {
         "base": {
             "logout": "Logout",
-            "dashboard": "Dashboard"
+            "dashboard": "Dashboard",
+            "featured": "Featured materials"
         },
         "auth": {
             "home": "Home"
@@ -296,6 +297,22 @@
                 "process": "Request Export",
                 "recent": "The request has been recorded and the data is currently being exported. Once the data is ready, you will receive an email and will be able to download it here.",
                 "description": "Here you can export the personal data we have about you. This data includes all your materials, plugins, and other information we have collected during your use of the application. The exported data will be in JSON format and will contain all the personal data we have about you."
+            }
+        },
+        "featured": {
+            "title": "Featured Materials",
+            "empty": "No featured materials have been added yet.",
+            "new": {
+                "tooltip": "Add featured material",
+                "title": "Add Featured Material",
+                "description": "Here you can mark one of your materials as featured. Featured materials will be shown on the homepage and will be accessible to all users. Only materials marked as public will be visible to others. Please use this feature responsibly and only share materials you truly want to make public.",
+                "add": "Add"
+            },
+            "remove": {
+                "tooltip": "Remove featured material",
+                "title": "Remove Featured Material",
+                "description": "Removing a featured material will hide it from the homepage and make it unavailable to other users. However, the material will still be accessible to people who already have the link and if it is marked as public. Removal may take several hours to take effect.",
+                "remove": "Remove"
             }
         }
     },

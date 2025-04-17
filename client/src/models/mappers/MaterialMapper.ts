@@ -12,6 +12,7 @@ export default class MaterialMapper {
             'slides' in dto ? dto.slides : [],
             'plugins' in dto ? dto.plugins : [],
             dto.visibility as MaterialVisibility, dto.method as MaterialMethod, dto.automaticTime, dto.sizing as MaterialSizing,
+            dto.featured,
             dto.attendees,
             dto.user,
             'thumbnail' in dto ? dto.thumbnail : undefined);

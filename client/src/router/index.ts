@@ -34,6 +34,11 @@ const router = createRouter({
                     path: 'plugins',
                     name: 'Plugins',
                     component: () => import('../views/plugins/Plugins.vue'),
+                },
+                {
+                    path: 'featured',
+                    name: 'Featured',
+                    component: () => import('../views/featured/Featured.vue'),
                 }
             ]
         },
