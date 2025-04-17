@@ -36,7 +36,10 @@ export class EmailService {
      */
     public async sendEmail<T extends Object>(to: string, template: EmailTemplate<T>, data: T) {
         const content = await this.getTemplateContent(template);
-        const replacedContent = this.replace(content, data);
+        const replacedContent = this.replace(content, {
+            FRONTEND_DOMAIN: this.configService.get<string>("FRONTEND_DOMAIN")!,
+            ...data
+        });
 
         let afterPreprocess = replacedContent;
 
