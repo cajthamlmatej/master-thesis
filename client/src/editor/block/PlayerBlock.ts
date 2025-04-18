@@ -16,6 +16,7 @@ import {
     SerializeEntry,
     SERIALIZER_METADATA_KEY
 } from "@/editor/block/serialization/BlockPropertySerialize";
+import {communicator} from "@/api/websockets";
 
 export abstract class PlayerBlock {
     @BlockSerialize("id")
@@ -678,5 +679,33 @@ export abstract class PlayerBlock {
                 }
             }
         }
+    }
+
+    public sendMessage(message: string) {
+        const room = communicator.getPlayerRoom();
+
+        if(!room) return;
+
+        room.sendBlockMessage(message, this.id);
+    }
+
+    public async isInPlayerRoom() {
+        await this.loaded;
+        await communicator.readyPromise;
+        const room = communicator.getPlayerRoom();
+
+        console.log("isInPlayerRoom", room);
+        if(!room) return false;
+
+        await room.joined;
+        return true;
+    }
+
+    public isPresenter() {
+        const room = communicator.getPlayerRoom();
+
+        if(!room) return false
+
+        return room.isPresenter;
     }
 }

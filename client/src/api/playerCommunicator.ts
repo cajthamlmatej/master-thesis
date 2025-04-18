@@ -1,9 +1,10 @@
 import Material from "@/models/Material";
 import {communicator} from "@/api/websockets";
+import {BlockEvent} from "@/editor/block/events/BlockEvent";
 
 export class PlayerCommunicator {
     private material: Material;
-    private isPresenter: boolean;
+    isPresenter: boolean;
 
     private joinedResolve: () => void;
     public readonly joined: Promise<void> = new Promise<void>((resolve) => this.joinedResolve = resolve);
@@ -67,6 +68,25 @@ export class PlayerCommunicator {
         communicator.socket.on("joinedPlayerRoom", () => {
             this.joinedResolve();
         });
+        communicator.socket.on("blockMessage", async({message, blockId, clientId}: { message: string, blockId: string, clientId?: string }) => {
+            console.log("blockMessage", message, blockId, clientId);
+            const player = (await import("@/stores/player")).usePlayerStore().getPlayer();
+
+            if (!player) {
+                return;
+            }
+
+            const block = player.getBlockById(blockId);
+
+            if (!block) {
+                return;
+            }
+
+            block.processEvent(BlockEvent.MESSAGE, {
+                message,
+                clientId
+            });
+        });
     }
 
     public changeSlide(slideId: string) {
@@ -79,6 +99,20 @@ export class PlayerCommunicator {
 
     public synchronizeDraw(content: string) {
         communicator.socket.emit("synchronizeDraw", {content});
+    }
+
+    public sendBlockMessage(message: string, blockId: string) {
+        if(this.isPresenter) {
+            communicator.socket.emit("sendBlockMessageToAttendees", {
+                message,
+                blockId
+            });
+        } else {
+            communicator.socket.emit("sendBlockMessage", {
+                message,
+                blockId
+            });
+        }
     }
 
     // changeCanvas(param: { position: { x: number; y: number }; scale: number }) {

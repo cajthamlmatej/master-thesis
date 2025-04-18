@@ -7,7 +7,7 @@ import {PlayerCommunicator} from "@/api/playerCommunicator";
 export class WebSocketCommunicator {
     public socket: Socket;
     private resolveReadyPromise: () => void;
-    private readyPromise: Promise<void> = new Promise<void>((resolve) => this.resolveReadyPromise = resolve);
+    public readyPromise: Promise<void> = new Promise<void>((resolve) => this.resolveReadyPromise = resolve);
 
     constructor() {
     }

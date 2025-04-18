@@ -68,5 +68,12 @@ export enum BlockEvent {
      * Called when the block is deselected.
      * Parameters: none
      */
-    DESELECTED
+    DESELECTED,
+    /**
+     * Called when the block received a message from the presenter or attendee.
+     * Parameters:
+     * - `message: string` - The message received.
+     * - `clientId: string | undefined` - The id of the client that sent the message. `undefined` if the message was sent by the presenter.
+     */
+    MESSAGE
 }

@@ -163,6 +163,16 @@ export default class Player {
         return this.blocks;
     }
 
+    public getBlockById(blockId: string) {
+        const block = this.blocks.find(block => block.id === blockId);
+
+        if (!block) {
+            return undefined;
+        }
+
+        return block;
+    }
+
     public destroy() {
         console.log("[Player] Destroying player");
         window.removeEventListener("resize", this.resizeEvent);
@@ -388,13 +398,4 @@ export default class Player {
     private setupPlayer() {
         this.element.innerHTML = `<div class="player-content"></div>`
     }
-
-    // setPosition(x: number, y: number) {
-    //     this.position.x = x;
-    //     this.position.y = y;
-    // }
-    //
-    // setScale(scale: number) {
-    //     this.scale = scale;
-    // }
 }
