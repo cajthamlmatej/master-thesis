@@ -99,4 +99,20 @@ export class PlayerMaterialRoom {
             content: content
         });
     }
+
+
+    sendBlockMessage(client: Socket, message: string, blockId: string) {
+        this.presenter.emit('blockMessage', {
+            message: message,
+            blockId: blockId,
+            clientId: client.id
+        });
+    }
+
+    sendBlockMessageToAttendees(client: Socket, message: string, blockId: string) {
+        client.to(this.roomId).emit('blockMessage', {
+            message: message,
+            blockId: blockId
+        });
+    }
 }

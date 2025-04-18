@@ -35,6 +35,13 @@ export class EventsGateway {
     ) {
     }
 
+    public getEditorRoom(id: any) {
+        return this.editorRooms.find(r => r.getMaterialId() === id);
+    }
+    public removePlayerMaterialRoom(param: PlayerMaterialRoom) {
+        this.playerRooms = this.playerRooms.filter(r => r !== param);
+    }
+
     @SubscribeMessage('joinEditorMaterialRoom')
     public async handleJoinEditor(@MessageBody() materialId: string, @ConnectedSocket() client: Socket) {
         let room = this.editorRooms.find(r => r.getMaterialId() === materialId);
@@ -180,9 +187,6 @@ export class EventsGateway {
         }
     }
 
-    public getEditorRoom(id: any) {
-        return this.editorRooms.find(r => r.getMaterialId() === id);
-    }
 
     @SubscribeMessage('joinPlayerMaterialRoom')
     public async handleJoinPlayer(@MessageBody() {materialId, code, slideId}: {materialId: string, code: string, slideId: string}, @ConnectedSocket() client: Socket) {
@@ -234,22 +238,6 @@ export class EventsGateway {
         playerRoom.synchronizeDraw(content);
     }
 
-    //
-    // @SubscribeMessage('changeCanvas')
-    // public async handleChangeCanvas(@MessageBody() {position, scale}: {position: {x: number, y: number}, scale: number}, @ConnectedSocket() client: Socket) {
-    //     const playerRoom = client.data.playerRoom as PlayerMaterialRoom | undefined;
-    //
-    //     if (!playerRoom) {
-    //         throw new WsException("You are not in the player room");
-    //     }
-    //
-    //     if (!playerRoom.isPresenter(client)) {
-    //         throw new WsException("You are not the presenter");
-    //     }
-    //
-    //     playerRoom.changeCanvas(position, scale);
-    // }
-
     @SubscribeMessage('leavePlayerMaterialRoom')
     public async handleLeavePlayer(@ConnectedSocket() client: Socket) {
         const room = client.data.playerRoom as PlayerMaterialRoom | undefined;
@@ -260,7 +248,39 @@ export class EventsGateway {
         }
     }
 
-    removePlayerMaterialRoom(param: PlayerMaterialRoom) {
-        this.playerRooms = this.playerRooms.filter(r => r !== param);
+    /**
+     * Client (not a presenter) send a message to the presenter.
+     */
+    @SubscribeMessage('sendBlockMessage')
+    public async handleSendBlockMessage(@MessageBody() {message, blockId}: { message: string, blockId: string }, @ConnectedSocket() client: Socket) {
+        const playerRoom = client.data.playerRoom as PlayerMaterialRoom | undefined;
+
+        if (!playerRoom) {
+            throw new WsException("You are not in the player room");
+        }
+
+        if (playerRoom.isPresenter(client)) {
+            throw new WsException("You are the presenter");
+        }
+
+        playerRoom.sendBlockMessage(client, message, blockId);
+    }
+
+    /**
+     * Presenter send a message to the clients (attendees).
+     */
+    @SubscribeMessage('sendBlockMessageToAttendees')
+    public async handleSendBlockMessageToAttendees(@MessageBody() {message, blockId}: { message: string, blockId: string }, @ConnectedSocket() client: Socket) {
+        const playerRoom = client.data.playerRoom as PlayerMaterialRoom | undefined;
+
+        if (!playerRoom) {
+            throw new WsException("You are not in the player room");
+        }
+
+        if (!playerRoom.isPresenter(client)) {
+            throw new WsException("You are not the presenter");
+        }
+
+        playerRoom.sendBlockMessageToAttendees(client, message, blockId);
     }
 }
