@@ -24,7 +24,9 @@ export class PlayerPlugin {
     });
 
     private callbacks: Record<PlayerPluginEvent, QuickJSHandle | undefined> = {
-        pluginBlockRender: undefined, pluginBlockMessage: undefined
+        [PlayerPluginEvent.PLUGIN_BLOCK_RENDER]: undefined,
+        [PlayerPluginEvent.PLUGIN_BLOCK_MESSAGE]: undefined,
+        [PlayerPluginEvent.PLUGIN_REMOTE_MESSAGE]: undefined
     };
     private api: PlayerPluginApi = new PlayerPluginApi();
 
@@ -209,5 +211,24 @@ export class PlayerPlugin {
         }
 
         return;
+    }
+
+    async processRemoteMessage(block: PluginPlayerBlock, message: string, clientId: string | undefined) {
+        await this.loadedPromise;
+        const serializedBlock = this.serializeBlock(block);
+
+        try {
+            const result = await this.callEvent(PlayerPluginEvent.PLUGIN_REMOTE_MESSAGE,
+                serializedBlock,
+                this.context!.newString(message),
+                clientId ? this.context!.newString(clientId) : this.context!.undefined);
+
+            if (!result) return "";
+
+            return this.context!.dump(result.unwrap());
+        } catch (e) {
+            console.error(e);
+            return undefined;
+        }
     }
 }

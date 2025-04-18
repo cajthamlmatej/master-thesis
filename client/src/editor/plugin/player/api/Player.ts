@@ -7,6 +7,7 @@ import {GetBlocksApiFeature} from "@/editor/plugin/player/api/player/GetBlocks";
 import {SetModeApiFeature} from "@/editor/plugin/player/api/player/SetMode";
 import {RemoveBlockApiFeature} from "@/editor/plugin/player/api/player/RemoveBlock";
 import {GetModeApiFeature} from "@/editor/plugin/player/api/player/GetMode";
+import {IsPresenterApiFeature} from "@/editor/plugin/player/api/player/IsPresenter";
 
 export class PlayerApiFeature extends PlayerPluginApiFeature {
     register(obj: QuickJSHandle, data: PlayerPluginApiData): void {
@@ -22,6 +23,8 @@ export class PlayerApiFeature extends PlayerPluginApiFeature {
         (new GetModeApiFeature()).register(playerObj, data);
 
         (new EventsApiFeature()).register(playerObj, data);
+
+        (new IsPresenterApiFeature()).register(playerObj, data);
 
         context.setProp(obj, "player", playerObj);
     }

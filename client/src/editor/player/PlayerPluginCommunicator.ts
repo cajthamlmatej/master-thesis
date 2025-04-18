@@ -29,6 +29,16 @@ export class PlayerPluginCommunicator {
         await playerPlugin.processBlockMessage(block, message);
     }
 
+    public async processRemoteMessage(param: PluginPlayerBlock, message: string, clientId: string | undefined) {
+        const playerPlugin = this.getPlayerPlugin(param.getPlugin());
+
+        if (!playerPlugin) {
+            return "";
+        }
+
+        await playerPlugin.processRemoteMessage(param, message, clientId);
+    }
+
     private getPlayerPlugin(pluginId: string) {
         const plugin = this.pluginManager.getPlugin(pluginId);
 

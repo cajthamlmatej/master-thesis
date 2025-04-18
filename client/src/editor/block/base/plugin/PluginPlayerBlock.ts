@@ -7,9 +7,11 @@ import {RenderApiFeature} from "@/editor/block/base/plugin/api/player/RenderApiF
 import {RegisterPlayerBlockApiFeature} from "@/editor/plugin/player/RegisterPlayerBlockApiFeature";
 import {SendMessageApiFeature} from "@/editor/block/base/plugin/api/player/SendMessageApiFeature";
 import {BlockInteractiveProperty} from "@/editor/interactivity/BlockInteractivity";
+import {SendRemoteMessageApiFeature} from "@/editor/block/base/plugin/api/player/SendRemoteMessageApiFeature";
 
 @RegisterPlayerBlockApiFeature(RenderApiFeature)
 @RegisterPlayerBlockApiFeature(SendMessageApiFeature)
+@RegisterPlayerBlockApiFeature(SendRemoteMessageApiFeature)
 export class PluginPlayerBlock extends PlayerBlock {
     @BlockSerialize("plugin")
     private plugin: string;
@@ -87,7 +89,7 @@ export class PluginPlayerBlock extends PlayerBlock {
         });
     }
 
-    public sendMessage(message: string) {
+    public sendMessageToIframe(message: string) {
         const content = (this.element.querySelector(".block-content")! as HTMLElement);
         const iframe = content.querySelector("iframe");
 
@@ -97,6 +99,16 @@ export class PluginPlayerBlock extends PlayerBlock {
                 message: message,
             }, "*");
         }
+    }
+
+    @BlockEventListener(BlockEvent.MESSAGE)
+    private async onMessage(data: { message: string, clientId?: string }) {
+        const pluginCommunicator = await this.player.getPluginCommunicator();
+        if (!pluginCommunicator) {
+            return;
+        }
+
+        await pluginCommunicator.processRemoteMessage(this, data.message, data.clientId);
     }
 
     getPlugin() {

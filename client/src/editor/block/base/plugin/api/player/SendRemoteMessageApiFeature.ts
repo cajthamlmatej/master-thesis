@@ -3,14 +3,15 @@ import {PlayerBlockApiFeature} from "@/editor/plugin/player/PlayerBlockApiFeatur
 import {PlayerPluginApiData} from "@/editor/plugin/player/PlayerPluginApi";
 import {PluginPlayerBlock} from "@/editor/block/base/plugin/PluginPlayerBlock";
 
-export class SendMessageApiFeature extends PlayerBlockApiFeature {
+export class SendRemoteMessageApiFeature extends PlayerBlockApiFeature {
     register(obj: QuickJSHandle, data: PlayerPluginApiData, block: PluginPlayerBlock): void {
         const context = data.context;
 
-        context.setProp(obj, "sendMessage", context.newFunction("sendMessage", (messageRaw) => {
+        context.setProp(obj, "sendRemoteMessage", context.newFunction("sendRemoteMessage", (messageRaw: QuickJSHandle) => {
             const message = context.getString(messageRaw);
 
-            block.sendMessageToIframe(message);
+            block.sendMessage(message);
+            
             return context.undefined;
         }));
     }
