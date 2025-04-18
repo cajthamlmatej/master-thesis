@@ -1,7 +1,7 @@
 <template>
     <FileInput v-model:value="files"
                :validators="[
-                   (file: File[]) => file && file.length > 0 && file[0].name?.endsWith('.zip') || $t('error')
+                   (file: File[]) => file && file.length > 0 && file[0].name?.endsWith('.zip') || ''
                ]" />
 
     <Alert v-if="error" class="mt-2" type="error">
