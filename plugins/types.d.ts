@@ -67,6 +67,12 @@ interface PluginEditorBlockActions {
     sendMessage(message: string): void;
     /** Requests the plugin block to re-render itself. */
     render(): void;
+    /** 
+     * Sends a message to the remote client plugin block.
+     * If is presenter, the message will be sent to all clients.
+     * If is viewer, the message will be sent to the presenter.
+     */
+    sendRemoteMessage(message: string): void;
 }
 
 interface IframeEditorBlock {
@@ -399,6 +405,13 @@ interface ApiPlayer {
      * @param mode The mode to set. Can be 'play', 'move' or 'draw'.
      */
     setMode(mode: 'play' | 'move' | 'draw'): void;
+
+    /**
+     * Checks if the current client is the presenter.
+     * @returns True if the current client is the presenter, false otherwise.
+     */
+    isPresenter(): boolean;
+
     /**
      * Calls the callback when this plugin's block sends a message to the plugin.
      *
@@ -418,6 +431,17 @@ interface ApiPlayer {
      * @param callback The returned string should be the HTML content of the block.
      */
     on(eventName: 'pluginBlockRender', callback: (block: FullPlayerBlock) => string): void;
+
+    /**
+     * Calls the callback when the player wants the plugin to know that it recieved a message from the block on other client.
+     * Other client can be presenter or a viewer. The client ID is present only for the viewer.
+     * You can check if this is a presenter by using the `isPresenter` method.
+     * You can react to this message by using other methods
+     * 
+     * @param eventName 'pluginRemoteMessage'
+     * @param callback Received message from the block and the block itself and the client ID (presenter do not send the client ID).
+     */
+    on(eventName: 'pluginRemoteMessage', callback: (block: FullPlayerBlock, message: string, clientId: string | undefined) => void): void;
 }
 
 interface FetchOptions {
