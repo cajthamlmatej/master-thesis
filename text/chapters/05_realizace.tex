@@ -830,6 +830,10 @@ Synchronizují se i případná rozšíření a další metadata, čímž se zaj
 % - generovani je taktez tvoreno pomoci debounce se stejnymi intervaly jako ukladani
 % - mezi klienty se synchronizují taktéž dalši data o materiálu (např. jméno, nastavení sdílení a přehrávání) a například rozšíření
 
+\subsection{Prezentování}
+
+SOLO + WATCH + KOMUNIKACE PLUGINŮ
+
 \subsection{Importování a exportování}
 
 Přestože jsou výukové materiály na platformě koncipovány jako interaktivní, existují případy, kdy je potřeba je převést do statické podoby.
@@ -926,6 +930,7 @@ Pro editor a přehrávač (ne nutně pro oba) existují následující události
     \item[panelMessage] Událost se volá tehdy, když panel přiřazen tomuto rozšíření chce předat zprávu rozšíření. Předávaná data jsou vždy v textovém řetězci.
     \item[pluginBlockMessage] Tuto událost volá konkrétní blok v editoru či přehrávači právě tehdy, když chce předat zprávu rozšíření. Předávaná data jsou taktéž v textovém řetězci.
     \item[pluginBlockPropertyChange] Tato událost se volá tehdy, když v uživatelském rozhraní editoru uživatel změní konkrétnímu bloku vlastnost. Rozšíření pomocí parametrů ví jaká konkrétní vlastnost se změnila a na jakém bloku.
+    \item REMOTE
 \end{description}
 
 \begin{listing}[ht!]
@@ -972,6 +977,10 @@ Překreslování pomocí volání pluginu (tj. vykreslování HTML) je provádě
 Každý plugin může registrovat svůj vlastní panel, který se jednorázově vykreslí v uživatelském rozhraní. 
 Tento panel umožňuje komunikaci mezi bloky a pluginy a slouží k výměně dat, například pro konfiguraci nastavení, vytváření nových bloků či editaci stávajících prvků. 
 Ukázka komunikace mezi iframe pomocí API prohlížeče \texttt{postMessage} a tedy i v API aplikace je viditelný v kódu \ref{code:registraceUdalosti}.
+
+\subsection{Vzdálená komunikace}
+
+TODO
 
 % \section{Rozšíření}
 
@@ -1118,6 +1127,9 @@ Obsahují základní předdefinované tvary jako obdélník, hvězda nebo elipsa
 Některé tvary se dokážou přizpůsobit velikosti bloku -- typickým příkladem je šipka, která natahuje svůj střed dle aktuálních rozměrů.
 Tyto bloky slouží jako doplňkový vizuální prvek, který zvyšuje čitelnost a srozumitelnost obsahu.
 
+\subsection{Chat}
+
+TODO
 
 
 % \section{Vytvořené bloky}\label{text:realizace/vytvoreneBloky}
@@ -1208,6 +1220,10 @@ Tato ukázka slouží jako příklad toho, jakým způsobem lze vytvářet slož
 Současně bylo potřeba řešit i technické aspekty, jako je správné překreslování bloku při změně parametrů, protože každá úprava musí vést k aktualizaci vykreslení.
 
 Rozšíření také ukazuje využití API editoru a jeho schopnost reagovat na změny uživatelského vstupu v reálném čase.
+
+\subsection{Slovní stěna}
+
+TODO
 
 % \section{Vytvořené rozšíření}\label{text:realizace/vytvoreneRozsireni}
 
