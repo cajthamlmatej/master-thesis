@@ -25,6 +25,7 @@ export class PlayerMaterialRoom {
         presenter.on('disconnect', () => {
             this.removeListener(presenter);
         });
+        presenter.emit('joinedPlayerRoom');
     }
 
     public addListener(listener: Socket) {
