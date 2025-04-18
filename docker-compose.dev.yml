@@ -91,6 +91,8 @@ services:
     volumes:
       - materalist-dev-mongo-data:/data/db
     restart: unless-stopped
+    ports:
+      - "4004:27017"
 
 volumes:
   materalist-dev-mongo-data:
