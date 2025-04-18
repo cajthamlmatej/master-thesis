@@ -750,6 +750,15 @@
         "plugin": {
             "name": "Plugin",
             "failed": "Failed to load content from plugin (%plugin%)."
+        },
+        "chat": {
+            "name": "Chat",
+            "title": "Chat",
+            "name-placeholder": "Your nickname",
+            "send": "Send",
+            "presenter": "Presenter",
+            "message-example": "Messages will appear here.",
+            "loading": "Loading..."
         }
     },
     "property": {

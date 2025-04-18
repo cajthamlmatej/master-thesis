@@ -26,6 +26,9 @@ import {IframeBlockDeserializer} from "@/editor/block/base/iframe/IframeBlockDes
 import {PluginEditorBlock} from "@/editor/block/base/plugin/PluginEditorBlock";
 import {PluginPlayerBlock} from "@/editor/block/base/plugin/PluginPlayerBlock";
 import {PluginBlockDeserializer} from "@/editor/block/base/plugin/PluginBlockDeserializer";
+import {ChatEditorBlock} from "@/editor/block/base/chat/ChatEditorBlock";
+import {ChatPlayerBlock} from "@/editor/block/base/chat/ChatPlayerBlock";
+import {ChatBlockDeserializer} from "@/editor/block/base/chat/ChatBlockDeserializer";
 // $ADD_BLOCK_REGISTRY_IMPORT
 
 // note(Matej): dont remove $ADD_BLOCK_REGISTRY_* comments, it is used by the generator
@@ -49,6 +52,7 @@ export class BlockRegistry {
         this.register("mermaid", MermaidEditorBlock, MermaidPlayerBlock, MermaidBlockDeserializer);
         this.register("iframe", IframeEditorBlock, IframePlayerBlock, IframeBlockDeserializer);
         this.register("plugin", PluginEditorBlock, PluginPlayerBlock, PluginBlockDeserializer);
+        this.register("chat", ChatEditorBlock, ChatPlayerBlock, ChatBlockDeserializer);
         // $ADD_BLOCK_REGISTRY_ENTRY
     }
 

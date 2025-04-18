@@ -27,6 +27,7 @@ import Editor from "@/editor/Editor";
 import {InteractiveAreaEditorBlock} from "@/editor/block/base/interactiveArea/InteractiveAreaEditorBlock";
 import {MermaidEditorBlock} from "@/editor/block/base/mermaid/MermaidEditorBlock";
 import {IframeEditorBlock} from "@/editor/block/base/iframe/IframeEditorBlock";
+import {ChatEditorBlock} from "@/editor/block/base/chat/ChatEditorBlock";
 
 const blocksMenu = ref(true);
 
@@ -160,6 +161,20 @@ const blocks: CreateBlockData[] = [
                     zIndex: 0,
                 },
                 "<p><b>Example</b> iframe</p>");
+        }
+    },
+    {
+        icon: "chat-processing-outline",
+        type: "chat",
+        create: (x, y, width, height, smaller) => {
+            return new ChatEditorBlock(
+                {
+                    id: generateUUID(),
+                    position: {x: -100, y: -100},
+                    size: {width: smaller / 4, height: smaller / 4},
+                    rotation: 0,
+                    zIndex: 0,
+                });
         }
     }
 ]

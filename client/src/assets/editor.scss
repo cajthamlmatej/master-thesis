@@ -454,6 +454,125 @@
                     }
                 }
             }
+
+            &--type-chat {
+                overflow: hidden;
+
+                display: flex;
+                flex-direction: column;
+                gap: 1em;
+
+                background-color: #f3f3f3;
+                border-radius: 1em;
+                box-shadow: var(--shadow-accent);
+
+                .header {
+                    padding: 0.5em 1em;
+                    background-color: var(--color-primary);
+
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    span {
+                        font-weight: 900;
+                        font-size: 2em;
+                        color: white;
+                    }
+
+                    input {
+                        border: 0;
+                        border-radius: 1em;
+                        padding: 0.5em;
+                        background-color: #fff;
+                        box-shadow: var(--shadow-accent);
+                        font-size: 1em;
+                        width: 100%;
+                    }
+
+                    .actions {
+                        display: flex;
+                        align-content: center;
+                        gap: 1em;
+                    }
+
+                    .button {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 3rem;
+                        height: 3rem;
+                        color: white;
+                        font-size: 1.8em;
+                        background-color: transparent;
+                        border: 0;
+                        border-radius: 1em;
+                        transition: background-color 0.2s, color 0.2s;
+                        cursor: not-allowed;
+                    }
+                }
+
+                .chat {
+                    padding: 0.5em;
+                    flex-grow: 1;
+                    max-width: 100%;
+
+                    overflow-y: auto;
+
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5em;
+
+                    .message {
+                        background-color: #fff;
+                        border-radius: 1em;
+                        padding: 0.5em;
+
+                        .message-content {
+                            border-radius: 1em;
+                            margin: 0;
+                            font-size: 1em;
+                        }
+
+                        .message-author {
+                            font-weight: 900;
+                            font-size: 0.8em;
+                        }
+                    }
+                }
+                .send {
+                    padding: 0.5em;
+                    display: flex;
+                    gap: 1em;
+
+                    > * {
+                        flex-grow: 1;
+                    }
+
+                    input {
+                        border: 0;
+                        border-radius: 1em;
+                        padding: 0.5em;
+                        background-color: #fff;
+                        box-shadow: var(--shadow-accent);
+                        font-size: 1em;
+                        width: 100%;
+                    }
+
+                    button {
+                        border: 0;
+                        border-radius: 1em;
+                        padding: 0.5em 1em;
+                        background-color: var(--color-primary);
+                        color: white;
+                        box-shadow: var(--shadow-accent);
+                        font-size: 1em;
+                        transition: background-color 0.2s;
+                        cursor: not-allowed;
+
+                    }
+                }
+            }
         }
     }
 

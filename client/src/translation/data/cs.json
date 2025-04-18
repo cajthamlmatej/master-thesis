@@ -752,6 +752,15 @@
         "plugin": {
             "name": "Plugin",
             "failed": "Načtení bloku pluginu (%plugin%) se nezdařilo."
+        },
+        "chat": {
+            "name": "Chat",
+            "title": "Chat",
+            "name-placeholder": "Vaše přezdívka",
+            "send": "Odeslat",
+            "presenter": "Prezentující",
+            "message-example": "Zde uvidíte zprávy.",
+            "loading": "Načítání..."
         }
     },
     "property": {
