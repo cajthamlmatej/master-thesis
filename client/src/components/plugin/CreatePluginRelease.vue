@@ -39,10 +39,10 @@
            :label="$t('page.plugins.new-release.info.manifest.label')"
                :validators="[
                     (value: string) => isValidJSON(value) || $t('page.plugins.new-release.info.manifest.error'),
-                    (value: string) => !!JSON.parse(value).manifest || $t('page.plugins.new-release.info.manifest.error.manifest.required'),
-                    (value: string) => (typeof JSON.parse(value).manifest == 'number' && Math.round(Number(JSON.parse(value).manifest)) === JSON.parse(value).manifest && !isNaN(Number(JSON.parse(value).manifest))) || $t('page.plugins.release.info.manifest.error.manifest.number'),
-                    (value: string) => !JSON.parse(value).allowedOrigins ? true : ((Array.isArray(JSON.parse(value).allowedOrigins) && JSON.parse(value).allowedOrigins.every((a: any) => typeof a === 'string' && !!a.match(/^https?:\/\/[a-z]+.[a-z]+$/))) || $t('page.plugins.release.info.manifest.error.allowedOrigins')),
-                    (value: string) => value.length <= 32768 || $t('page.plugins.release.info.manifest.error.length'),
+                    (value: string) => !!JSON.parse(value).manifest || $t('page.plugins.new-release.info.manifest.required'),
+                    (value: string) => (typeof JSON.parse(value).manifest == 'number' && Math.round(Number(JSON.parse(value).manifest)) === JSON.parse(value).manifest && !isNaN(Number(JSON.parse(value).manifest))) || $t('page.plugins.release.info.manifest..number'),
+                    (value: string) => !JSON.parse(value).allowedOrigins ? true : ((Array.isArray(JSON.parse(value).allowedOrigins) && JSON.parse(value).allowedOrigins.every((a: any) => typeof a === 'string' && !!a.match(/^https?:\/\/[a-z]+.[a-z]+$/))) || $t('page.plugins.release.info.manifest.allowedOrigins')),
+                    (value: string) => value.length <= 32768 || $t('page.plugins.release.info.manifest.length'),
                ]"
         />
     </div>
