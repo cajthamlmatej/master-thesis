@@ -95,6 +95,7 @@ console.log(`Plugin identifier: ${api.plugin}`);
 Object for caching API.
 All saved values are stored temporarily in memory and are not persistent across sessions and sometimes not even across any two calls of the plugin.
 This is useful for caching data that is expensive to fetch or compute, such as API responses or complex calculations.
+Many cases also involve using it to store data across slide changes.
 
 ### `cache.get`
 

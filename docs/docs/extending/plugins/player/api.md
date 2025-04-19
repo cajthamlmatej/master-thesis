@@ -44,6 +44,12 @@ The mode can be either `play`, `move` or `draw`.
 
 Change the current mode of the player.
 
+## `isPresenter`
+
+**Signature**: `isPresenter(): boolean`
+
+Checks if this instance of player is a presenter.
+
 ## `on`
 
 **Signature**: `on(eventName: string, callback: any): void`
@@ -78,3 +84,13 @@ The callback is called when this plugin block requests a message to be sent to t
 This is the main communication channel between the plugin and the block.
 
 For more information about custom blocks, visit the [Custom block documentation](../custom-blocks).
+
+
+### `pluginRemoteMessage`
+
+**Signature**: `on('pluginRemoteMessage', (block: PlayerBlock, message: string, clientId: string | undefined) => void): void`
+
+The callback is called when this plugin block recieved message from some remote block with same id.
+The clientId is undefined if this instance of player is a viewer.
+
+For more information about remote communication, visit the [Remote communication documentation](../remote).
