@@ -297,7 +297,7 @@ Změna nevyžadovala větší úpravy a přinesla drobné výhody z hlediska vý
 V porovnání s klientskou částí byla implementace serveru časově méně náročná.
 Nejvíce úsilí vyžadovala klientská část, respektive vývoj editoru a přehrávače, jejichž návrh i funkcionalita byly složitější.
 
-\subsection{Moduly}
+\subsection{Moduly}\todo{chybi nejake}
 
 Nest klade důraz na modularitu. Každá část aplikace je definována jako samostatný modul. V projektu byly vytvořeny tyto moduly:
 
@@ -316,7 +316,7 @@ Schémata jednotlivých entit jsou definována ve složce XXX\todo{složka}, v i
 
 \subsection{Autentizace a autorizace}
 
-Autentizační logika využívá tzv. \emph{guardy}, které Nest nabízí jako mechanismus pro kontrolu přístupu.
+Autentizační logika využívá tzv. \emph{guards}, které Nest nabízí jako mechanismus pro kontrolu přístupu.
 Guardy se aktivují pomocí TS dekorátorů a lze jimi snadno řídit, které části systému vyžadují přihlášení a jakým způsobem. 
 Použity byly různé varianty guardů -- pro běžné API volání, volitelnou autentizaci a také specifické guardy pro websocketové připojení.
 
@@ -558,6 +558,8 @@ Schránka zachovává obsah mezi jednotlivými návštěvami editoru, což zaji�
 
 Kopírování respektuje vnitřní strukturu bloků a umožňuje jejich vkládání bez ztráty informací. 
 To je užitečné zejména při vytváření šablon, duplikování opakujících se částí obsahu nebo přenášení obsahu mezi různými snímky.
+
+\todo{neafektuje moznost uzivatele vklada to text. pole napr.}
 
 \subsubsection{Nastavení}
 
@@ -898,7 +900,7 @@ Spouštění kódu pluginů probíhá bezpečně v prostředí QuickJS, jak je u
 Kód pluginů má omezený přístup pouze k API editoru a obsahu stránky prostřednictvím definovaného rozhraní. 
 Přístup k jakýmkoliv dalším zdrojům mimo tento rámec není možný ze zabezpečení knihovny QuickJS a jejich systému.
 
-\subsection{Přístup k API}
+\subsection{Přístup k API}\todo{asi mnohem vice rozepsat}
 
 Platforma poskytuje pluginům jasně definované globální API zahrnující funkce jako je:
 
@@ -965,7 +967,7 @@ export const initEditor = function () {
 \end{listing}
 
 
-\subsection{Vykreslované bloky}
+\subsection{Vykreslované bloky}\todo{vice popsat}
 
 Pluginy mohou vytvářet vlastní bloky, které jsou vykreslovány při zobrazení materiálu. 
 Samotné vykreslení bloku provádí platforma voláním příslušného rozšíření. 
@@ -1061,10 +1063,46 @@ Hlavním konceptem je velká jednostránková webová stránka, která obsahuje 
 
 \section{Dokumentace}
 
+
+
 - pomoci docosaurus
-...
+- dve casti: pouziti a rozsirovani
+- pouziti: ui aplikace, rozdeleni, ruzne funkcionality
+- rozsirovani: rozsirovani kodu a pomoci pluginu, lokalni instalace, pluginy a jejich api, dokumentace, postup tvorby pluginu postupne
+- psani v markdownu, hodne propojeni pro prehlednost
+- psano v anglictine
 
 \section{Sestavení a nasazení aplikace}\label{text:realizace/nasazeni}
+
+V této sekci popisuji jak lze výslednou aplikaci sestavit a jak jsem ji nasadil do produkce.
+Taktéž popisuji jak lze nadále jednoduše vyvíjet aplikaci pomocí jednoduchého nasazení. 
+
+\subsection{Sestavení}
+
+Každou část aplikace lze sestavit samostatně pomocí sestavovacích skriptů \verb|build| v \verb|npm| projektu.
+Takové sestavení však potřebuje správné nastavení proměnných systémů aby došlo ke správnému propojení nahraných aplikací.
+O celkovém sestavení si lze přečíst v dokumentaci aplikace.
+
+Výsledné části poté jde hostovat jako statické stránky, tedy se jedná o projekty hlavní stránky, aplikace, dokumentace.
+Výslednou část serveru je nutné hostovat jako Node.js aplikaci na serveru.
+K tomu je potřeba mít nasazenou databázi typu MongoDB.
+
+Obecně tento způsob není vhodný pro jednoduché nasazení a vyžadoval by velké zkušenosti s aplikací tak s propojením.
+
+\subsection{Nasazení pomocí služby docker}
+
+- docker compose easy
+
+\subsection{Nasazení na produkci}
+
+- koupena domena
+- vlastni server kde vse hostuji
+
+\subsection{Vývoj}
+
+- dockerc ompose easy
+- nemountuje se, jen ma nodemodules
+- staci spustit a vse jede
 
 \section{Vytvořené bloky}\label{text:realizace/vytvoreneBloky}
 
