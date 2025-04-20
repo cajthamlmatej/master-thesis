@@ -27,7 +27,7 @@ Až později v rámci práce vznikly systematické automatizované testy, které
 
 \subsection{Tým testerů}
 
-Během vývoje vzniklo \textbf{X}\todo{Kolik?} verzí aplikace včetně prototypu. 
+Během vývoje vzniklo \textbf{19}\todo{Kolik?} verzí aplikace včetně prototypu. 
 Každá z těchto verzí byla nahrána na testovací prostředí, ke kterému měl přístup vedoucí práce a tým dobrovolných testerů -- především kolegové a přátelé z okolí.
 
 Tento způsob testování odpovídá tzv. neformálnímu uživatelskému testování, často označovanému jako beta testování či nehlídané uživatelské testování. 
@@ -108,12 +108,13 @@ V rámci této struktury jsem vytvořil několik pomocných funkcí, například
 Díky tomu lze jednotlivé testy zapsat stručněji a přehledněji.
 Testovací skripty je možné spustit příkazem \verb|npx cypress run|.
 
-Celkem bylo vytvořeno \textbf{XXX}\todo{Kolik?} testovacích scénářů, které pokrývají většinu hlavních funkcionalit klientské aplikace. 
+Celkem bylo vytvořeno \textbf{x}\todo{Kolik?} testovacích scénářů, které pokrývají většinu hlavních funkcionalit klientské aplikace. 
 Všechny testy aktuálně procházejí bez chyb a pomáhají zajišťovat stabilitu i při dalších změnách v kódu.
 
 \subsection{Serverová část}\todo{Dopsat}
 
 - rovnou v nest
+
 - zejména testování WS implementace, protože je to to nejdůležitější
 
 % \section{Automatizované testování}
@@ -171,10 +172,17 @@ Každý scénář obsahuje také omezený časový rámec, definované podmínky
 Aby se minimalizovalo riziko ovlivnění, pozorovatel by měl zachovat odstup a vyvarovat se odpovídání na dotazy během testu.
 
 Všechny scénáře vycházejí z uživatelských případů uvedených v kapitole \ref{chapter:analyza/uzivatelskePripady}.
-Ukázku konkrétního testovacího scénáře lze nalézt níže. 
+Ukázku konkrétního testovacího scénáře TC-U-6 lze nalézt níže. 
 Kompletní seznam použitých scénářů je uveden v příloze \ref{appendix:testovaciScenare}.
 
-Celkem bylo vytvořeno \textbf{XXX} testovacích scénářů, které pokrývají hlavní oblasti používání aplikace.
+Celkem bylo vytvořeno \textbf{27} testovacích scénářů, které pokrývají hlavní oblasti používání aplikace.
+Testovací scénáře jsem rozdělil do tří kategorií:
+
+\begin{description}
+    \item[TC-U] Uživatelské testovací scénáře, které se zaměřuji na aplikaci jako takovou. 
+    \item[TC-E] Uživatelské testovací scénáře, které se zaměřují na části editoru, tvorby, exportu a importu materiálů.
+    \item[TC-P] Uživatelské testovací scénáře, které se zaměřují na části přehrávače, sdílení, interaktivity.
+\end{description}
 
 
 % \section{Uživatelské testování}
@@ -203,25 +211,40 @@ Celkem bylo vytvořeno \textbf{XXX} testovacích scénářů, které pokrývají
 % - celkem vytvořeno XXX scénářů
 
 
-\vspace{1em}\noindent{\large\textbf{TC1 -- XXX}}
 
-\textbf{Cíl}: 
+\vspace{1em}\noindent{\large\textbf{TC-U-6 -- Exportování dat}}
 
-\textbf{Časový limit}: do Y minut
+\textbf{Cíl}: Uživatel si požádá o exportování osobních údajů a dat z aplikace a ty obdrží na e-mail.
 
-\textbf{Podmínky}: 
+\textbf{Časový limit}: do 5 minut
+
+\textbf{Podmínky}: Uživatel je v aplikaci přihlášen a nachází se na hlavní stránce. Uživatel v nedávné době o export osobních údajů nežádal.
 
 \textbf{Kroky}:
 
 \begin{enumerate}[leftmargin=1.4cm]
-    \item .
+    \item Uživatel nalezne tlačítko \verb|Nastavení| v horní navigaci.
+    \item Uživatel tlačítko zmáčkne a ve formuláři pro export si přečte informace.
+    \item Potom požádá o export osobních údajů a dat stiskem na tlačítko \verb|Zažádat o export|.
+    \item Uživatel počká na zpracování a čeká ve své e-mailové schránce.
+    \item Uživatel přistoupí na stejnou stránku a pomocí tlačítka \verb|Stáhnout| obdrží archív s osobními údaji.
+    \item Uživatel si na počítači archív otevře a prozkoumá jejich obsah.
 \end{enumerate}
 
 \textbf{Očekávané výsledky}:
 
 \begin{enumerate}[leftmargin=1.4cm]
-    \item .
+    \item Aplikace požadavek zpracuje a odešle e-mail.
+    \item Stáhnutý archív bude obsahovat minimálně dva soubory  \verb|user.json| a \verb|preferences.json| s údaji uživatele z aplikace.
 \end{enumerate}
+
+\textbf{Poznámky}:
+
+\begin{itemize}[leftmargin=1.4cm]
+    \item Aplikace nemusí stihnout v reálném čase požadavek zpracovat, testovací verze aplikace musí mít vypnutý zpomalovač požadavků a případně tomuto exportu dát větší prioritu.
+\end{itemize}
+
+
 
 \subsubsection{Účastníci}
 
@@ -231,8 +254,13 @@ U těchto osob je tato skutečnost v popisu výslovně uvedena.
 Vybrané osobní údaje byly záměrně vynechány nebo anonymizovány, a to buď na žádost samotného účastníka, nebo z důvodu jejich nerelevance k průběhu testování.
 
 \begin{description}
-\item[Účastnice 1] Kristýna Dřevikovská, studentka SSPŠ, 18 let, členka týmu testerů.  TODO
-\item[Účastník 2] TODO
+\item[Účastnice 1] Kristýna Dřevikovská, studentka SSPŠ, 18 let, členka týmu testerů. Mezi zájmy patří knihy, sport a informační technologie. Ovládá počítačové programy na vysoké úrovni.
+\item[Účastník 2] Denis Lenger DiS., učitel na VOŠ, G, SPŠ a SOŠ Podskalská, student na FIŠ VŠE, 24 let. Mezi zájmy patří informační technologie, s aplikací se nesetkal, velká znalost informačních systémů a tvorby materiálů.
+\item[Účastnice 3] Ava Špráchalů, studentka SSPŠ, 19 let, členka týmu testerů. Mezi zájmy patří programování, umění, skriptování, tvorba video her. Ovládá počítačové programy na vysoké úrovni.
+\item[Účastník 4] Kryštof Bruthans, student SSPŠ, 18 let, člen týmu testerů. ...
+\item[Účastník 5] Kryštof Křemeček, student SSPŠ, 18 let. Mezi zájmy patří právo, humanistické vědy, informační technologie a muzika.
+\item[Účastník 6] Lukáš Andrýsek, student SSPŠ, 18 let. ...
+\item[Účastník 7] Učitel technických předmětů na SSPŠ, 27 let. Ke koníčkům patří programování, auta a procházky. Ovládá počítačové programy a internet na vysoké úrovni. S aplikací se nesetkal, velká znalost informačních systémů a tvorby materiálů.
 \end{description}
 
 \subsubsection{Průchody účastníků}
@@ -304,16 +332,57 @@ V tabulce~\ref{tab:hodnoceniPruchoduUcastnika1} lze nalézt jednotlivá hodnocen
 
 \subsubsection{Shrnutí}
 
+- globalni hodnoceni
+
+- co se nepovedlo a povedlo
+
+- ze jsem to opravil
+
+- globalni problemy a co za ne nejspise muze
+
+- dalsi testovani
+
 \subsection{Testování rozšíření}
 
-- pozadal jsem kamaradku
-- zkusenosti se skriptovanim
-- v skupine testeru aplikace, rozšireni ale nepsalo
-- dobre vyzkouseni stavu dokumentace, api i aplikace samotne
+Pro testování rozšíření jsem požádal svojí kamarádku Avu Špráchalů o testování skriptovací platformy pro rozšíření.
+Slečna Špráchalů má velmi dobré zkušeností se skriptování a obecně s programováním v těchto jazycích a poměrně omezených prostředích.
+Nejvíce však v skriptovacím jazyce Lua.
 
-- zadani: volne vypracovat z dostupnych materialů jakekoliv rozšíření (či více)
+Skriptovací platforma aplikace vyžaduje znalost programovacího jazyku JavaScript, který avšak slečna Špráchalů umí.
 
-- zadal jsem to...
+Dne 14. 4. 2025 jsem slečně Špráchalů předal informace o testování aplikace.
+Předal jsem jí odkaz na nahranou verzi aplikace (viz sekce \ref{text:realizace/nasazeni}) a hlavně dokumentaci.
+Jediným stanoveným cílem bylo vytvořit nějaké rozšíření, které by se pro tuto platformu dalo využít.
+Společně jsme se pouze bavili o tom, jaké rozšíření je vhodné a dohodli jsme se, ze vytvoří rozšíření \textbf{časovače}.
+
+Termín k dokončení nebyl stanoven a jediné, o co jsem poté žádal bylo o vytvořený kód a zpětnou vazbu k dokumentaci, platformě a jejího pocitu ze skriptování.
+
+Mimo jiné jsem tímto testoval integritu všech části dohromady, které mohlo uživatelské testování přehlédnout.
+V rámci uživatelského testování nebylo testováno vytváření rozšíření v aplikaci, ani samotná platforma skriptování než-li instalace rozšíření a jeho odebrání.
+
+\subsubsection{Vytvořené rozšíření}
+
+Dne XX. 4. 2025 jsem obdržel zprávu od slečny Špráchalů, že rozšíření bylo úspěšně dokončeno.
+Během této doby...
+
+Vytvořené rozšíření je...
+
+\subsubsection{Zpětná vazba}
+
+Už během tvorby rozšíření mě slečna Špráchalů informovala o různých gramatických problémů v dokumentaci a já je postupně během těchto termínů opravoval.
+
+Na konci mi slečna Špráchalů platformu následně zhodnotila:
+
+\textit{\enquote{TODOTO TO DO TOTOT DO TOD TODO}}
+
+% - pozadal jsem kamaradku
+% - zkusenosti se skriptovanim
+% - v skupine testeru aplikace, rozšireni ale nepsalo
+% - dobre vyzkouseni stavu dokumentace, api i aplikace samotne
+
+% - zadani: volne vypracovat z dostupnych materialů jakekoliv rozšíření (či více)
+
+% - zadal jsem to...
 
 
 \section{Přístupnost platformy}
@@ -327,6 +396,8 @@ V tabulce~\ref{tab:hodnoceniPruchoduUcastnika1} lze nalézt jednotlivá hodnocen
 \section{Výkonnostní testování}
 
 - zkouska vykonnosti platformy, limit lidi na jednom dokumentu a tak dale
+
+\section{Přínos pro výuku}
 
 % TODO:
 
