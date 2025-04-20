@@ -94,6 +94,7 @@ Currently supported events are:
 - `HOVER_ENDED`
 - `SELECTED`
 - `DESELECTED`
+- `MESSAGE`
 
 For each event you can get specified parameters.
 Refer to the `BlockEvent` enum class for more information.
@@ -136,6 +137,11 @@ But sometimes you will need to make use of
 to make the animation smooth by yourself.
 
 Good practice is to change the value after the animation is finished and then synchronize the block.
+
+### Remote communication
+
+Player block can also communicate with the same block in other players instance while presenting.
+Refer to [Remote communication](../plugins/player/remote) for more information.
 
 ## Serverside
 

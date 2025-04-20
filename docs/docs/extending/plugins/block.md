@@ -103,6 +103,11 @@ A way to send a message to the plugin block from the plugin.
 
 Forces the block to re-render, so essentially caling the callback on the block again.
 
+### `sendRemoteMessage`
+
+**Signature**: `sendRemoteMessage(message: string): void`
+
+Sends message to a remote block. If is a presenter, it is send to all clients. If not, its send just to the presenter.
 
 ## Iframe block
 
