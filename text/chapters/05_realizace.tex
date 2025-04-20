@@ -142,9 +142,20 @@ Jako hlavní vizuální inspiraci jsem zvolil styl \texttt{glassmorphism}, kter�
 Tento styl je populární v moderním UI/UX designu a využívají ho například operační systémy macOS a Windows~11 nebo některé mobilní aplikace.
 Součástí vizuální identity aplikace se stala fialová barva doplněná o gradienty, což přispívá k výraznému a zapamatovatelnému vzhledu.
 
-Hlavním cílem bylo vytvořit jednoduchý, ale vizuálně přitažlivý design, který bude snadno přizpůsobitelný. 
+Hlavním cílem bylo vytvořit jednoduchý, ale vizuálně přitažlivý design, který bude snadno přizpůsobitelný.
+Na obrázku \ref{fig:realizace/design} je možné vidět ukázku implementovaných komponent a jejich designu.
 Pro usnadnění budoucích úprav a možnou implementaci více barevných režimů byly ve stylování využity CSS proměnné.
 Tento přístup umožňuje nejen jednoduché změny barevných schémat, ale i potenciální rozšíření designu o tmavý nebo kontrastní režim podle preferencí uživatele.
+
+
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{media/05_realizace/design.png}
+    \caption{Ukázka prvků v implementovaném designu aplikace}
+    \label{fig:realizace/design}
+\end{figure}
+
 
 \subsection{Autentizace a autorizace}
 
@@ -205,7 +216,8 @@ V jeho případě bylo nutné upravit některé části individuálně, protože
 \subsection{Překlady}
 
 Překlady v aplikaci probíhají pomocí vlastního systému, který vychází ze strukturovaného zápisu v jazyce JSON. 
-Každý překlad je identifikován unikátním klíčem, například \texttt{editor.action.delete.tooltip}, a uložen ve stromové struktuře jako je vyobrazen v kódu \ref{code:zapisPrekladu}.
+Každý překlad je identifikován unikátním klíčem, například \texttt{editor.action.delete.tooltip}, a může být uložen ve stromové struktuře. 
+V kódu \ref{code:zapisPrekladu} jsou vyobrazeny zápisy překladů.
 Tento přístup zajišťuje přehlednost a snadnou údržbu jednotlivých jazykových mutací.
 
 
@@ -217,7 +229,8 @@ Tento přístup zajišťuje přehlednost a snadnou údržbu jednotlivých jazyko
     "action": {
       "delete": {
         "tooltip": "Delete"
-      }
+      },
+      "add.tooltip": "Add"
     }
   }
 }
@@ -256,7 +269,7 @@ Prerendering je nasazen také pro hlavní stránku platformy, jak je popsáno v 
 Samotné nasazení této služby je detailně popsáno v kapitole~\ref{text:realizace/nasazeni}.
 
 Pro zlepšení optimalizace na straně klienta se používá knihovna \texttt{unhead}, která umožňuje dynamicky upravovat nadpisy stránek a další SEO metadata. 
-V kombinaci s prerenderingem tak vzniká systém, který je pro vyhledávače čitelný a současně neomezuje funkčnost platformy. 
+V kombinaci s prerendering tak vzniká systém, který je pro vyhledávače čitelný a současně neomezuje funkčnost platformy. 
 Stránky jsou navíc přístupné a plně responzivní, jak rozvádím v kapitole~\ref{text:realizace/responzivita}.
 
 Alternativa k tomuto by byla použít vykreslování na serveru pomocí nějakého frameworku, třeba Nuxt.
@@ -297,7 +310,7 @@ Změna nevyžadovala větší úpravy a přinesla drobné výhody z hlediska vý
 V porovnání s klientskou částí byla implementace serveru časově méně náročná.
 Nejvíce úsilí vyžadovala klientská část, respektive vývoj editoru a přehrávače, jejichž návrh i funkcionalita byly složitější.
 
-\subsection{Moduly}\todo{chybi nejake}
+\subsection{Moduly}
 
 Nest klade důraz na modularitu. Každá část aplikace je definována jako samostatný modul. V projektu byly vytvořeny tyto moduly:
 
@@ -305,20 +318,22 @@ Nest klade důraz na modularitu. Každá část aplikace je definována jako sam
     \item[materials] -- správa výukových materiálů a jejich export.
     \item[auth] -- registrace, přihlašování a správa autentizace.
     \item[email] -- odesílání e-mailů a jejich šablonování.
-    \item[events] -- real-time komunikace a kolaborace na materiálech.
+    \item[data-export] -- zpracování a přijímání požadavků pro vygenerování balíčku osobních dat z projektu.
+    \item[events] -- real-time komunikace, kolaborace na materiálech a sledování materiálů.
+    \item[plugin] -- správa rozšíření a jejich verzí.
     \item[media] -- správa mediálního obsahu uživatelů. 
     \item[preferences] správa uživatelského nastavení a personalizace.
     \item[users] -- uživatelské účty a jejich metadata.
 \end{description}
 
-Moduly \texttt{media}, \texttt{users}, \texttt{preferences} a \texttt{materials} využívají knihovnu Mongoose pro práci s databází MongoDB. 
+Moduly \texttt{media}, \texttt{users}, \texttt{preferences} a další využívají knihovnu Mongoose pro práci s databází MongoDB. 
 Schémata jednotlivých entit jsou definována ve složce XXX\todo{složka}, v implementaci byly zjištěny různé nedostatky s původním návrhem a bylo nutné nějaké entity změnit.
 
 \subsection{Autentizace a autorizace}
 
 Autentizační logika využívá tzv. \emph{guards}, které Nest nabízí jako mechanismus pro kontrolu přístupu.
 Guardy se aktivují pomocí TS dekorátorů a lze jimi snadno řídit, které části systému vyžadují přihlášení a jakým způsobem. 
-Použity byly různé varianty guardů -- pro běžné API volání, volitelnou autentizaci a také specifické guardy pro websocketové připojení.
+Použity byly různé varianty guard -- pro běžné API volání, volitelnou autentizaci a také specifické guard pro připojení WebSocket.
 
 Autorizace není centralizovaná, ale probíhá na úrovni jednotlivých endpointů. 
 V každém případě se ověřuje, zda má uživatel přístup k danému materiálu -- buď je veřejný, nebo je uživatel jeho vlastníkem, případně účastníkem kolaborace.
@@ -329,8 +344,37 @@ Komunikace mezi serverem a klientem probíhá pomocí formátu JSON.
 Pro strukturovaný přenos dat byly vytvořeny DTO třídy, které definují, jaká data se mají mezi klientem a serverem přenášet. 
 Tyto DTO se využívají jak v serverové, tak klientské části aplikace, což vyžadovalo častou synchronizaci během vývoje.
 
-Validace těchto objektů probíhá pomocí knihovny \texttt{class-validator}, která umožňuje definovat validační pravidla přímo v kódu tříd. 
+Validace těchto objektů probíhá pomocí knihovny \texttt{class-validator}, která umožňuje definovat validační pravidla přímo v kódu tříd.
+V kódu \ref{code:realizace/dto} je ukázka DTO s validací.
 To přispívá ke konzistenci a zajišťuje, že na server se nikdy nedostanou nevalidní data přímo z klientské části.
+
+
+\begin{listing}[ht!]
+\caption[DTO s validací pro přihlášení]{DTO s validací pro přihlášení, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:realizace/dto}
+\begin{minted}{typescript}
+export default class InAuthDTO {
+    @IsIn(['EMAIL_PASSWORD', 'EMAIL'])
+    type: 'EMAIL_PASSWORD' | 'EMAIL';
+    /**
+     * The email address of the user.
+     */
+    @IsString()
+    email: string;
+    /**
+     * The password of the user.
+     */
+    @IsOptional()
+    @IsString()
+    password?: string;
+    /**
+     * The code used to authenticate the user.
+     */
+    @IsOptional()
+    @IsString()
+    code?: string;
+}
+\end{minted}
+\end{listing}
 
 
 % \section{Serverová část}\label{text:realizace/server}
@@ -507,17 +551,29 @@ Mezi běžné akce patří seskupování bloků, jejich oddělování, přesunut
 Každá akce může mít definované klávesové zkratky, které umožňují efektivní práci i bez použití myši. 
 Základní sada akcí je definována jako rozšiřitelná a jednotlivé akce lze registrovat externě.
 
+Na obrázku \ref{fig:realizace/vlastnosti} je k vidění jedna kontextová akce pro uzamknutí bloku.
+
+
 \subsubsection{Vlastnosti bloků}
 
 Editor zobrazuje panel vlastností, který se mění v závislosti na výběru. 
 Při výběru více bloků se zobrazuje pouze podmnožina vlastností, které mají bloky společné a které lze hromadně upravit. 
 Například u více vybraných bloků tvaru je možné současně měnit průhlednost či barvu ale i tvar.
+Na obrázku \ref{fig:realizace/vlastnosti} je k vidění panel vlastností pro blok textu.
 
 Systém vlastností je navržen jako flexibilní API, které umožňuje definovat různé typy vstupů včetně posuvníků, barevných výběrů, zaškrtávacích polí a dalších. 
 Editor podporuje také přímé tahání u nadpisu vlastnosti pro efektivnější změnu hodnoty vlastnosti.
 
 Panel vlastností se může dynamicky měnit -- zmenšovat, skrývat nebo naopak rozšiřovat podle obsahu a typu vybraných bloků. 
 Díky tomu zůstává uživatelské rozhraní přehledné i při práci s komplexními scénami.
+
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{media/05_realizace/vlastnosti.png}
+    \caption{Panel vlastnosti v editoru pro blok textu}
+    \label{fig:realizace/vlastnosti}
+\end{figure}
 
 
 % \subsubsection{Akce}
@@ -559,7 +615,8 @@ Schránka zachovává obsah mezi jednotlivými návštěvami editoru, což zaji�
 Kopírování respektuje vnitřní strukturu bloků a umožňuje jejich vkládání bez ztráty informací. 
 To je užitečné zejména při vytváření šablon, duplikování opakujících se částí obsahu nebo přenášení obsahu mezi různými snímky.
 
-\todo{neafektuje moznost uzivatele vklada to text. pole napr.}
+Uživatel přesto může kopírovat obsah z jiných částí počítače a vkládat ho například do textových bloků.
+Uživatelova schránka manipuluje pouze tehdy, když uživatel nic neexistuje a kliká na plátno v editoru.
 
 \subsubsection{Nastavení}
 
@@ -797,6 +854,17 @@ Při každé změně -- ať už jde o přepnutí snímku, označení bloku nebo 
 Server změnu přepošle všem ostatním připojeným účastníkům, čímž je zajištěna konzistence mezi jednotlivými instancemi editoru.
 V materiálu u klienta je v UI vidět, kdo je k materiálu připojen, jak se jmenuje a na jakém snímku se aktuálně nachází.
 Na daném snímku se poté vykresluje speciální obdélník okolo bloků, které má označené (a které tedy nelze označovat).
+Na obrázku \ref{fig:realizace/kolaborace} lze vidět takto označený blok a seznam účastníků editování.
+
+
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{media/05_realizace/kolaborace.png}
+    \caption{Kolaborace v editoru, označený blok jiným účastníkem a seznam účastníků}
+    \label{fig:realizace/kolaborace}
+\end{figure}
+
 
 Server neplní pouze roli zprostředkovatele komunikace. 
 Zajišťuje také generování náhledových snímků, správu práv a samotné ukládání dat.
@@ -834,7 +902,38 @@ Synchronizují se i případná rozšíření a další metadata, čímž se zaj
 
 \subsection{Prezentování}
 
-SOLO + WATCH + KOMUNIKACE PLUGINŮ
+
+Režim prezentování je klíčovou součástí přehrávače. 
+Po jeho spuštění se aplikace nachází vždy v základním režimu prezentace. 
+Tento režim je navržen tak, aby umožnil plynulou vizualizaci výukového materiálu, ať už v rámci výkladu před třídou, nebo při sdílené distanční výuce.
+
+V editoru lze upravit několik parametrů, které ovlivňují chování přehrávače.
+Prvním z nich je způsob průchodu snímky -- prezentaci lze nastavit tak, aby probíhala automaticky s časovačem, ručně klikáním, nebo aby byla ovládána výhradně interaktivními prvky.
+Další důležitou možností je volba režimu zobrazení.
+Snímky lze buď rozprostřít na celou stránku bez možnosti manipulace, nebo ponechat uživateli kontrolu nad pohybem v rámci plátna (včetně například přiblížení).
+
+Po přechodu do takzvaného \enquote{sledovacího módu} prezentace se chování aplikace změní. 
+Prezentující získá jedinečný odkaz, QR kód a textový kód, které může sdílet s publikem. 
+Připojení účastníci potom sledují prezentaci v synchronizovaném režimu. 
+Nemají možnost samostatného pohybu mezi snímky ani úprav obsahu. 
+Interagují výhradně skrze interaktivní bloky, které byly do prezentace vloženy v editoru.
+
+Přehrávač zajišťuje, aby byl aktuální snímek synchronizovaný mezi všemi sledujícími.
+Rovněž je synchronizována i funkce kreslení, kterou může prezentující využít k doplňování výkladu během prezentace.
+
+Tento režim prezentování je připraven na použití vzdálené komunikace (viz sekce \ref{text:realizace/vzdalenaKomunikace}).
+Díky tomu lze rozšířit výuku o plně interaktivní prvky, jako je chat, hlasování, nebo různé typy kvízů. 
+To zajišťuje, že i při pasivním sledování prezentace mohou studenti aktivně reagovat a zapojit se do výukového procesu.
+
+% - v editoru lze nastavit nastaveni mimo jine:
+%  - průchod: automaticky (po case na snimku), rucne a nebo pouze interaktivitou
+%  - zobrazeni: vzdy roztahle na stranku, nemoznost manipulace a nebo moznost hybat s platnem
+% - po zapnuti přehravače je vždy v základním rezimu prezentovani
+% - prezentovnani lze potom zapnout do modu sledovani
+% - prezentujici dostane odkaz, kod a QR kod, ktery muze sdilet ostatnim
+% - ostatni se mohou pripojit, s materialem interaguji jen pomoci bloku, pohyb v snimku nejde
+% - potom se synchronizuje aktualni snimek a kresleni
+% - lze pouzit vzdalenou komunikaci, viz pozdejsi sekce \ref{text:realizace/vzdalenaKomunikace}, a tedy lze vytvorit zcela interaktivni prvky, jako chat ci ruzne kvizy
 
 \subsection{Importování a exportování}
 
@@ -892,7 +991,41 @@ Plugin může existovat v několika verzích, přičemž každá verze obsahuje 
 Manifest obsahuje informace o tom, pro jakou verzi aplikace bylo rozšíření napsáno a různé další data, jako je například nastavení přístupu k doménám či jiným pravomocem.
 
 Uživatelé, resp. vývojáři, mohou pluginy jednoduše přidávat přímo v aplikaci, pokud jsou přihlášeni, a také mají možnost nahrávat nové verze stávajících pluginů. 
-K zajištění bezpečnosti a kvality je implementován systém schvalování, který ověřuje, zda pluginy splňují stanovená kritéria před jejich zveřejněním.
+% K zajištění bezpečnosti a kvality je implementován systém schvalování, který ověřuje, zda pluginy splňují stanovená kritéria před jejich zveřejněním.
+
+Rozšíření a jejich API jsou dokumentována v dokumentaci platformy.
+Pro lepší vývoj byly vytvořeny typy, které lze používat i v programování v jazyce JS.
+Ty napovídají v moderních vývojových prostředích vývojářům rozšíření s tím, co mohou za věci ve vytvořeném API používat.
+Ukázku typů lze najít v kódu \ref{code:realizace/typy}, celý soubor typů lze najít ve složce \verb|/plugins/types.d.ts|\todo{ověřit}.
+
+
+\begin{listing}[ht!]
+\caption[Ukázka vytvořených typů pro platformu rozšíření]{Ukázka vytvořených typů pro platformu rozšíření, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:realizace/typy}
+\begin{minted}{typescript}
+interface ApiPlayer {
+    /**
+     * Returns all blocks in the player slide.
+     * @returns An array of blocks in the player slide.
+     */
+    getBlocks(): PlayerBlock[];
+    /**
+     * Removes a block from the player. The block will be removed 
+     * from the player and the player will be updated.
+     * If the block is not found, nothing happens.
+     * @param id The ID of the block to remove.
+     */
+    removeBlock(id: string): void;
+    /**
+     * Add a new block to the player. The supplied data has to be
+     * in the correct format for the block type.
+     * @param block The block data to add to the player.
+     * @returns The ID of the newly added block.
+     */
+    addBlock(block: CreatePlayerBlock): string;
+    // ...
+}
+\end{minted}
+\end{listing}
 
 \subsection{Spouštění kódu}
 
@@ -900,23 +1033,25 @@ Spouštění kódu pluginů probíhá bezpečně v prostředí QuickJS, jak je u
 Kód pluginů má omezený přístup pouze k API editoru a obsahu stránky prostřednictvím definovaného rozhraní. 
 Přístup k jakýmkoliv dalším zdrojům mimo tento rámec není možný ze zabezpečení knihovny QuickJS a jejich systému.
 
-\subsection{Přístup k API}\todo{asi mnohem vice rozepsat}
+\subsection{Přístup k API}
 
 Platforma poskytuje pluginům jasně definované globální API zahrnující funkce jako je:
 
 \begin{description}
-    \item[fetch] Který dovoluje volat požadavky přímo jako stránka editoru (tj. s CORS) na povolených doménách z manifestu.
-    \item[cache] Který dovoluje rozšíření si pamatovat věci skrz spuštění.
-    \item[plugin] Který dovoluje vědět, kdo je aktuálním spouštěčem skriptu.
-    \item[language] Který dovoluje zjistit v jakém jazyce je aktuálně vykreslována stránka.
-    \item[log] Který dovoluje vypisovat věci do konzole a logovacích souborů.
+    \item[fetch] která dovoluje volat požadavky přímo jako stránka editoru (tj. s CORS) na povolených doménách z manifestu.
+    \item[cache] která dovoluje rozšíření si pamatovat věci skrz spuštění.
+    \item[plugin] krerá dovoluje vědět, kdo je aktuálním spouštěčem skriptu.
+    \item[language] která dovoluje zjistit v jakém jazyce je aktuálně vykreslována stránka.
+    \item[log] krerá dovoluje vypisovat věci do konzole pro lepší vývoj.
 \end{description}
 
 Dále mohou pluginy využívat API jednotlivých bloků, které umožňuje přístup k jejich vlastnostem a metodám.
+Například se jedná o funkce jako manipulaci bloku, změnu obsahu a dalšího.
 
 Dále rozšíření, podle toho, kde jsou spuštěny, dovolují přistupovat ke konkrétním API přehrávače či editoru.
 
-Editor API nabízí možnost číst bloky, přidávat nové bloky a nastavovat různé režimy a velikosti pracovního plátna. Podobně funguje i Player API, které rovněž umožňuje čtení a přidávání bloků spolu s nastavením režimů a velikostí.
+Editor API nabízí možnost číst bloky, přidávat nové bloky a nastavovat různé režimy a velikosti pracovního plátna. 
+Podobně funguje i Player API, které rovněž umožňuje čtení a přidávání bloků spolu s nastavením režimů, velikostí a aktuálního snímku.
 
 \subsection{Zachycení se k událostem}
 
@@ -932,7 +1067,7 @@ Pro editor a přehrávač (ne nutně pro oba) existují následující události
     \item[panelMessage] Událost se volá tehdy, když panel přiřazen tomuto rozšíření chce předat zprávu rozšíření. Předávaná data jsou vždy v textovém řetězci.
     \item[pluginBlockMessage] Tuto událost volá konkrétní blok v editoru či přehrávači právě tehdy, když chce předat zprávu rozšíření. Předávaná data jsou taktéž v textovém řetězci.
     \item[pluginBlockPropertyChange] Tato událost se volá tehdy, když v uživatelském rozhraní editoru uživatel změní konkrétnímu bloku vlastnost. Rozšíření pomocí parametrů ví jaká konkrétní vlastnost se změnila a na jakém bloku.
-    \item REMOTE
+    \item[pluginRemoteMessage] Tato událost se volá tehdy, když blok vlastněný tímto rozšířením obdrží zprávu od vzdáleného bloku stejné instance. Více se o vzdálené komunikaci zmiňuji v sekci \ref{text:realizace/vzdalenaKomunikace}. 
 \end{description}
 
 \begin{listing}[ht!]
@@ -967,22 +1102,106 @@ export const initEditor = function () {
 \end{listing}
 
 
-\subsection{Vykreslované bloky}\todo{vice popsat}
+\subsection{Vykreslované bloky}
 
-Pluginy mohou vytvářet vlastní bloky, které jsou vykreslovány při zobrazení materiálu. 
-Samotné vykreslení bloku provádí platforma voláním příslušného rozšíření. 
-Bloky a pluginy spolu mohou obousměrně komunikovat, což umožňuje dynamickou aktualizaci obsahu a interakci uživatelů s vykreslenými prvky.
-Překreslování pomocí volání pluginu (tj. vykreslování HTML) je prováděno sporadicky, zejména jen v době, kdy se vykresluje poprvé či se upravují vlastnosti bloku.
+% Pluginy mohou vytvářet vlastní bloky, které jsou vykreslovány při zobrazení materiálu. 
+% Samotné vykreslení bloku provádí platforma voláním příslušného rozšíření. 
+% Bloky a pluginy spolu mohou obousměrně komunikovat, což umožňuje dynamickou aktualizaci obsahu a interakci uživatelů s vykreslenými prvky.
+% Překreslování pomocí volání pluginu (tj. vykreslování HTML) je prováděno sporadicky, zejména jen v době, kdy se vykresluje poprvé či se upravují vlastnosti bloku.
+
+Platforma poskytuje pluginům možnost definovat a vykreslovat vlastní bloky, které jsou součástí vizuální reprezentace materiálů.
+Tyto bloky mohou sloužit k rozšíření funkcionality uživatelského rozhraní, například formou interaktivních ovládacích prvků, vizualizací nebo jako prostředek pro zobrazení dynamického obsahu.
+
+Každý blok je definován prostřednictvím příslušného pluginu, který specifikuje jeho identifikátor, vykreslovací logiku a případné konfigurační parametry. 
+Vykreslování samotného bloku pak zajišťuje platforma voláním odpovídající vykreslovací funkce, kterou plugin poskytuje. 
+
+Bloky mohou být navrženy tak, aby podporovaly obousměrnou komunikaci s pluginem, který je spravuje. 
+To znamená, že blok může přijímat data a instrukce ze svého pluginu a současně do něj zasílat zpětné informace, typicky ve formě událostí nebo změn stavu. 
+Tento princip umožňuje tvorbu dynamických a interaktivních komponent, které se mohou automaticky aktualizovat na základě vstupu od uživatele nebo změn v aplikační logice.
+
+Překreslování bloků je platformou optimalizováno s cílem minimalizovat výkonnostní dopad. 
+Nedochází k němu při každé drobné změně, ale spíše jen ve chvílích, kdy je to nezbytné pro zachování konzistence zobrazeného obsahu -- tedy zejména při inicializaci nebo po zásadní změně konfigurace.
+
+Definice a registrace vlastních bloků probíhá prostřednictvím rozhraní poskytovaného platformou, přičemž vývojář pluginu má plnou kontrolu nad tím, jaký obsah blok zobrazuje a jak reaguje na různé typy vstupů. 
+V dokumentaci systému jsou uvedeny konkrétní příklady definice bloků, včetně popisu příslušných metod a událostí.
+
 
 \subsection{Panel}
 
-Každý plugin může registrovat svůj vlastní panel, který se jednorázově vykreslí v uživatelském rozhraní. 
-Tento panel umožňuje komunikaci mezi bloky a pluginy a slouží k výměně dat, například pro konfiguraci nastavení, vytváření nových bloků či editaci stávajících prvků. 
-Ukázka komunikace mezi iframe pomocí API prohlížeče \texttt{postMessage} a tedy i v API aplikace je viditelný v kódu \ref{code:registraceUdalosti}.
+Pluginy v systému mají možnost registrovat vlastní uživatelské panely, které se vykreslují jednorázově jako součást rozhraní aplikace. 
+Tyto panely poskytují prostor pro interaktivní prvky, sloužící primárně k řízení chování pluginu a jeho propojení s dalšími částmi systému, zejména s vykreslovanými bloky.
 
-\subsection{Vzdálená komunikace}
+Panel je typicky využíván k implementaci rozhraní pro konfiguraci, správu uživatelských vstupů nebo jako nástroj pro zprostředkování výměny dat mezi jednotlivými komponentami pluginu. 
+Běžným příkladem je vytvoření formuláře pro zadávání parametrů nového bloku, editace existujících prvků či zobrazení informací relevantních pro daný plugin.
 
-TODO
+Z technického hlediska je panel realizován jako samostatný iframe, jehož obsah je řízen pluginem. 
+Komunikace mezi tímto panelem a ostatními částmi systému (např. hlavní aplikací nebo vykreslenými bloky) probíhá prostřednictvím rozhraní postaveného na standardu \texttt{postMessage}, které je součástí webového API moderních prohlížečů. 
+To umožňuje bezpečnou a efektivní výměnu zpráv mezi oddělenými kontexty, přičemž každá zpráva je jednoznačně identifikována a zpracována příslušnou částí systému.
+
+V rámci vývoje pluginu je nezbytné definovat způsob, jakým panel odesílá a přijímá zprávy. 
+Aplikace poskytuje vlastní API, které nad rámec běžného \texttt{postMessage} rozšiřuje funkcionalitu o specifické události, zpracování chyb nebo obsluhu odpovědí. 
+Ukázka takové komunikace je uvedena v kódu \ref{code:registraceUdalosti}, kde je demonstrována registrace obsluhy zpráv přicházejících z panelu.
+
+Z pohledu uživatele je panel obvykle přístupný prostřednictvím uživatelského rozhraní materiálu v podobě postranní navigace. 
+Její obsah je zcela v kompetenci pluginu, což umožňuje značnou míru přizpůsobení vzhledu i chování dle konkrétních potřeb.
+
+Ukázka panelu z ukázkového pluginu lze vidět na obrázku \ref{fig:realizace/panel}.
+
+
+
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{media/05_realizace/panel.png}
+    \caption{Ukázka panelu v aplikaci}
+    \label{fig:realizace/panel}
+\end{figure}
+
+
+% Každý plugin může registrovat svůj vlastní panel, který se jednorázově vykreslí v uživatelském rozhraní. 
+% Tento panel umožňuje komunikaci mezi bloky a pluginy a slouží k výměně dat, například pro konfiguraci nastavení, vytváření nových bloků či editaci stávajících prvků. 
+% Ukázka komunikace mezi iframe pomocí API prohlížeče \texttt{postMessage} a tedy i v API aplikace je viditelný v kódu \ref{code:registraceUdalosti}.
+
+\subsection{Vzdálená komunikace}\label{text:realizace/vzdalenaKomunikace}
+
+Pro možnost tvořit interaktivní materiály jsem v práci vytvořil systém vzdálené komunikace.
+Vzdálená komunikace v tomto případě znamená komunikaci v reálném čase mezi bloky.
+Tento systém dovoluje výměnu zpráv mezi jedním blokem v různých instancí přehrávače na různých počítačích.
+
+Pokud přednášející či učitel zapne materiál ke sledování, každý blok může přijímat testové zprávy.
+Aplikace se v tomto případě chová jako zprostředkovatel zpráv a určuje, kdo komu může odeslat zprávy.
+Každý blok si validuje zprávy sám.
+
+Jediné dvě možné cesty komunikace jsou:
+
+\begin{itemize}
+    \item Od prezentujícího všem sledujícím.
+    \item Od sledujícího prezentujícímu.
+\end{itemize}
+
+Tento systém dovoluje různorodost bloků, které závisí na prezentujícím.
+Tyto směry jsem navrhl tak, že blok prezentujícího slouží jako hlavní správce komunikace.
+Tento blok se může rozhodnout zda zprávy někomu zašle.
+Systému mu předá zprávu a identifikátor vzdáleného propojení v protokolu WebSockets.
+Tento systém dovoluje řadu způsobu komunikace, níže uvádím dle mého dva nejdůležitější.
+
+\begin{description}
+    \item[Přeposílání] -- kde blok prezentujícího okamžitě odešle zprávu po obdržení všem připojeným sledujícím. Způsob lze použít např. na okamžité odpovědi, chat a další.
+    \item[Udržování] -- kde blok prezentujícího obdržené zprávy ponechává a odešle je najednou např. po časovém limitu. Tento způsob lze použít například na kvízy či na \enquote{čas pro přemýšlení}.
+\end{description}
+
+Komunikaci mohou používat všechny bloky a to dokonce i bloky vytvořené pro rozšíření.
+Místo toho, aby komunikaci spravoval blok, spravuje ho pro tyto bloky rozšíření, které se může zachytit na událost \verb|pluginRemoteMessage|.
+Rozšíření tuto zprávu může zpracovat a odeslat ostatním podle svých možností. 
+Znovu je možné použít komunikaci s blokem pro vykreslení obsahu uvnitř bloku.
+Tato komunikace je poté složitější a ukázka toho, jak vypadá, je na obrázku \ref{fig:realizace/vzdalenaKomunikace}.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=1\textwidth]{media/05_realizace/vzdalenaKomunikace.pdf}
+    \caption{Diagram vzdálené komunikace bloků}\label{fig:realizace/vzdalenaKomunikace}
+\end{figure}
+ 
 
 % \section{Rozšíření}
 
@@ -1063,14 +1282,27 @@ Hlavním konceptem je velká jednostránková webová stránka, která obsahuje 
 
 \section{Dokumentace}
 
+Pro dokumentaci projektu byl použit nástroj Docusaurus. 
+Zvolil jsem ho kvůli podpoře psaní ve formátu Markdown, jednoduché správě obsahu a možnosti rychlého nasazení. 
+Dokumentace je strukturovaná do dvou hlavních částí: použití a rozšiřování.
 
+První část, zaměřená na použití, slouží jako uživatelská příručka k webové aplikaci. 
+Obsahuje přehled uživatelského rozhraní, popis jednotlivých sekcí aplikace a vysvětlení dostupných funkcí. 
 
-- pomoci docosaurus
-- dve casti: pouziti a rozsirovani
-- pouziti: ui aplikace, rozdeleni, ruzne funkcionality
-- rozsirovani: rozsirovani kodu a pomoci pluginu, lokalni instalace, pluginy a jejich api, dokumentace, postup tvorby pluginu postupne
-- psani v markdownu, hodne propojeni pro prehlednost
-- psano v anglictine
+Druhá část je určena vývojářům, kteří chtějí projekt rozšiřovat. 
+Pokrývá možnosti úprav kódu i práci s pluginy. 
+Podrobně popisuje postup při lokální instalaci, strukturu a API dostupných pluginů i způsob, jakým lze vytvářet vlastní. 
+Vývoj pluginů je vysvětlen krok za krokem, včetně propojení s existujícími typy z TS pro jejich tvorbu.
+
+Celý obsah je psaný v angličtině, aby byl přístupný širší komunitě. 
+Text je doplněn odkazy mezi jednotlivými stránkami, což umožňuje snadnou orientaci.
+
+% - pomoci docosaurus
+% - dve casti: pouziti a rozsirovani
+% - pouziti: ui aplikace, rozdeleni, ruzne funkcionality
+% - rozsirovani: rozsirovani kodu a pomoci pluginu, lokalni instalace, pluginy a jejich api, dokumentace, postup tvorby pluginu postupne
+% - psani v markdownu, hodne propojeni pro prehlednost
+% - psano v anglictine
 
 \section{Sestavení a nasazení aplikace}\label{text:realizace/nasazeni}
 
@@ -1087,22 +1319,72 @@ Výsledné části poté jde hostovat jako statické stránky, tedy se jedná o 
 Výslednou část serveru je nutné hostovat jako Node.js aplikaci na serveru.
 K tomu je potřeba mít nasazenou databázi typu MongoDB.
 
-Obecně tento způsob není vhodný pro jednoduché nasazení a vyžadoval by velké zkušenosti s aplikací tak s propojením.
+Obecně tento způsob není vhodný pro jednoduché nasazení a vyžadoval by velké zkušenosti s aplikací tak s propojením jednotlivých častí. 
 
 \subsection{Nasazení pomocí služby docker}
 
-- docker compose easy
+Celý systém je kontejnerizovaný pomocí služby Docker.
+V kořenovém adresáři repozitáře se nachází soubor \texttt{docker-compose.yml}, který zajišťuje spuštění všech částí aplikace. 
+Každá komponenta má svůj vlastní \texttt{Dockerfile}, ve kterém je definováno její specifické prostředí a závislosti.
+
+Pro sjednocení konfigurace je využit globální soubor \texttt{.env}, ve kterém jsou definované klíčové proměnné. 
+Tento soubor slouží jako centrální místo pro předávání informací do jednotlivých částí systému. 
+Služba \texttt{docker-compose} tyto proměnné předává dál a zároveň přidává vlastní proměnné pro vzájemné propojení mezi kontejnery. 
+Tímto způsobem je možné jednoduše konfigurovat běh celého systému z jednoho místa.
 
 \subsection{Nasazení na produkci}
 
-- koupena domena
-- vlastni server kde vse hostuji
+Pro produkční nasazení jsem zaregistroval vlastní doménu \href{https://materalist.com}{materalist.com}, na které běží všechny části systému.  
+Níže jsou uvedeny odkazy pro nahrané části aplikace.
+
+\begin{description}
+    \item[Hlavní stránka] \href{https://materalist.com}{https://materalist.com}
+    \item[Dokumentace] \href{https://docs.materalist.com}{https://docs.materalist.com}
+    \item[Aplikace] \href{https://app.materalist.com}{https://app.materalist.com}
+    \item[Server] \href{https://api.materalist.com}{https://api.materalist.com}
+\end{description}
+
+DNS záznamy spravuji pomocí služby Cloudflare, která zároveň zajišťuje automatické vydávání certifikátů pro HTTPS a end-to-end šifrování. 
+Veškerý provoz tak probíhá šifrovaně a zabezpečeně.
+
+Celý systém běží na vlastním serveru. 
+Na serveru je nastavená reverzní proxy pro připojení různých domén na jednom portu.
+Pro nasazení využívám opět Docker Compose ve stejné struktuře jako ve vývojovém prostředí.
+Nové verze se nahrávají automaticky pomocí GitLab Actions. 
+K nasazení používám nástroj \texttt{rsync} přes SSH. 
+Sestavení obrazů probíhá až na serveru, což minimalizuje přenos dat a zjednodušuje ladění. 
+Nasazení je navrženo tak, aby probíhalo bez výpadků. 
+Citlivé proměnné jsou v repozitáři maskované a server je k nim přistupuje přes zabezpečené prostředí.
 
 \subsection{Vývoj}
 
-- dockerc ompose easy
-- nemountuje se, jen ma nodemodules
-- staci spustit a vse jede
+Vývojové prostředí využívá upravené varianty \texttt{Dockerfile} a \texttt{docker-compose} souborů. Pro každou část systému existuje vlastní vývojová konfigurace, která umožňuje rychlé spuštění.
+
+Na rozdíl od produkce se při vývoji nepoužívá \texttt{volume} pro mount celého projektu, ale jen pro adresáře mimo \texttt{node\_modules}, kontejner pak otevře projekt v módu \texttt{live-reload}.
+Vývojáři tak mohou spustit celý systém jedním příkazem, bez nutnosti dalších úprav a vyvíjet platformu.
+
+% \subsection{Nasazení pomocí služby docker}
+
+% - docker compose easy
+% - docker compose v rootu
+% - kazda cast ma svuj dockerfile
+% - propojeni klicovych promennych pomoci globalniho .env
+% - compose predava kazde casti tyto promenne a pridava sve na propojeni mezi castmi
+
+% \subsection{Nasazení na produkci}
+
+% - koupena domena
+% - vlastni server kde vse hostuji
+% - docker-compose
+% - automaticke nahrani pomoci gitlab actions, pouzivam ssh s rsync, na serveru se zbuilduje
+% - nasazeni bez vypadku
+% - masked promenne, bezpecne
+
+% \subsection{Vývoj}
+
+% - specialni docker compose a specialni dockerfile pro kazdou casti 
+% - nemountuje se, jen na nodemodules,  
+% - staci spustit a vse jede
 
 \section{Vytvořené bloky}\label{text:realizace/vytvoreneBloky}
 
@@ -1167,8 +1449,12 @@ Tyto bloky slouží jako doplňkový vizuální prvek, který zvyšuje čitelnos
 
 \subsection{Chat}
 
-TODO
+Blok chatu dovoluje komunikaci při době prezentování materiálu mezi sledujícími.
+Blok používá vzdálenou komunikaci (viz sekce \ref{text:realizace/vzdalenaKomunikace}).
+Prezentujícímu se ukazuje box se zprávami a může se do konverzace zapojovat.
+Jako prezentující taktéž může posílání zprav pozastavit.
 
+Sledující si v chatu může vybrat jméno nebo bez něj bude používat identifikátor připojení WebSocket.
 
 % \section{Vytvořené bloky}\label{text:realizace/vytvoreneBloky}
 
@@ -1261,8 +1547,20 @@ Rozšíření také ukazuje využití API editoru a jeho schopnost reagovat na z
 
 \subsection{Slovní stěna}
 
-TODO
 
+Rozšíření Slovní stěna vytváří v materiálech interaktivní prvek, do kterého mohou sledující zapisovat slova a věty. 
+Ty se v reálném čase zobrazují přímo v materiálu prezentujícího.
+
+To lze použít při výuce pro rychlé sbírání odpovědí, postřehů nebo asociací bez nutnosti přerušovat výklad. 
+Studenti se mohou zapojit anonymně a spontánně, což podporuje otevřenost i u méně aktivních účastníků. 
+Učitel zároveň vidí, jaké pojmy se nejčastěji objevují, a může na ně bezprostředně reagovat.
+
+Slovní stěna se hodí i jako zahřívací aktivita, například při brainstormingu nebo úvodu do nového tématu. 
+Vzhledem k jednoduchému formátu není třeba dlouhé vysvětlování a aktivitu lze spustit kdykoliv během hodiny.
+
+Rozšíření prezentuje komplexní možnosti rozšíření a to využití API v přehrávači, které dovoluje vzdálenou komunikaci (viz sekce \ref{text:realizace/vzdalenaKomunikace}).
+Mimo komunikaci jsou data dále předávána do bloku pro vykreslení.
+V bloku se vykreslují nejčastější slova s určitou velikosti podle frekvence.
 % \section{Vytvořené rozšíření}\label{text:realizace/vytvoreneRozsireni}
 
 % - ukázka systému, vytvořeny nějaká rozšíření
@@ -1297,4 +1595,4 @@ TODO
 \section{Ukázkové materiály}\label{text:realizace/vytvoreneMaterialy}
 
 - ukázka systému, možnost vytvořit komplexní prezentace do jdou v jiných aplikacích
-- více v testování
+- více v testování\todo{dopsat}

@@ -26,11 +26,11 @@ Klientská část zpravidla představuje uživatelské prostředí běžící na
 Serverová část zpracovává požadavky, odpovídá na ně a komunikuje s databází, externími službami nebo zajišťuje odesílání e-mailových zpráv. 
 Hlavní stránka slouží k reprezentaci projektu.
 Následující části textu se věnují podrobnostem o struktuře jednotlivých komponent, použitých technologiích a způsobu jejich rozdělení. 
-Diagram návrhu architektury je vyobrazen v obrázku~\ref{fig:architektura}.\todo{dokumentace, e-mail service}
+Diagram návrhu architektury je vyobrazen na obrázku~\ref{fig:architektura}.
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.85\textwidth]{media/04_navrh/architektura.pdf}
+    \includegraphics[width=1\textwidth]{media/04_navrh/architektura.pdf}
     \caption{Diagram architektury aplikace}\label{fig:architektura}
 \end{figure}
  
@@ -43,7 +43,7 @@ Instalace taktéž není vhodná kvůli velkému počtu používání materiál�
 Později by šlo z aplikace vytvořit nativní aplikaci na desktop či telefony pomocí enkapsulace webové stránky.
 Dále je vhodné vyřešit, jestli aplikace bude \enquote{single page application} či \enquote{multi page application}.
 Použiji SPA oproti alternativě a to z důvodu, že obnovení stránky není na takto velké aplikaci vhodné.
-Hlavním cílem stránky je editor, což je zcela klientská komponenta, která by při alternativě nebyla dobře stvořitelná.
+Hlavním cílem stránky je editor, což je zcela klientská komponenta, která by při alternativě nebyla dobře stvořitelná.  
 
 Tato část bude pomocí REST API komunikovat se serverovou částí za pomoci protokolu HTTP, ze které bude získávat veškerá potřebná data.
 RESTful API je ve zkratce takové API, které pracuje se zdroji jako takovými a dovoluje nad nimi volat klasické akce jako čtení, přidání, smazání a změnu (CRUD).
@@ -177,7 +177,7 @@ Níže jsou naplánované veškeré vrstvy pro serverovou část.
 
 \begin{description}
     \item[Moduly] Ty sumarizují následující vrstvy do jednotlivých balíčků, se kterými se dá jednoduše pracovat. Definují co se má exportovat a importovat v rámci DI.
-    \item[Služby] Ty sumarizují společné funkcionality do jednoo balíčku, aby se kód nemusel opakovat. Vztahují závislosti a agregují další služby a modely. Dají se sem počítat i tzv. Guardy, které kontrolují zda bude požadavek potvrzen a v aplikaci dále předáván do funkcí kontroleru.
+    \item[Služby] Ty sumarizují společné funkcionality do jednoho balíčku, aby se kód nemusel opakovat. Vztahují závislosti a agregují další služby a modely. Dají se sem počítat i tzv. Guardy, které kontrolují zda bude požadavek potvrzen a v aplikaci dále předáván do funkcí kontroleru.
     \item[Kontroléry] Ty tvoří REST API, volají funkce služeb, určují vstupní a výstupní data včetně návratových kódů.
     \item[Modely] Ty definují schéma databáze, respektive jednotlivých entit uvnitř.
 \end{description}
@@ -652,8 +652,9 @@ Dále jsou v systému prvky s nastavitelnou viditelností.
 Například materiál může být označen jako veřejný, což znamená, že si jej může prohlédnout kdokoliv. 
 Podobně jsou některé části systému, například rozšíření (pluginy), standardně dostupné všem uživatelům.
 
-V současné fázi vývoje platforma neobsahuje roli administrátora\todo{Bude potřeba, bude implementována?}, což znamená, že neexistuje centrální správa uživatelů či jejich oprávnění. 
+V současné fázi vývoje platforma neobsahuje roli administrátora, což znamená, že neexistuje centrální správa uživatelů či jejich oprávnění. 
 Toto rozhodnutí bylo učiněno s ohledem na jednoduchost návrhu, avšak do budoucna je možné uvažovat o zavedení administrativních funkcí pro efektivnější moderaci obsahu.
+Dále se o administračním prostředí budu bavit v kapitole \ref{text:diskuze}.
 
 
 % - definice autentizace a autorizace
