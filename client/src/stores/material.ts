@@ -111,7 +111,11 @@ export const useMaterialStore = defineStore("material", () => {
             method: currentMaterial.value.method,
             automaticTime: currentMaterial.value.automaticTime,
             sizing: currentMaterial.value.sizing,
-            slides: editorStore.slides,
+            slides: editorStore.slides.map((slide) => ({
+                id: slide.id,
+                data: slide.data,
+                position: slide.position
+            })),
             attendees: currentMaterial.value.serializeAttendees(),
             featured: currentMaterial.value.featured
         });
