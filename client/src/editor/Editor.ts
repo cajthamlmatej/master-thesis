@@ -14,6 +14,7 @@ import {EditorHistory} from "@/editor/history/EditorHistory";
 import {EditorPluginCommunicator} from "@/editor/EditorPluginCommunicator";
 import EditorAttendeeAreaVisualiser from "@/editor/visualiser/EditorAttendeeSelectedAreaVisualiser";
 import {communicator} from "@/api/websockets";
+import EditorSnappingVisualiser from "@/editor/visualiser/EditorSnappingVisualiser";
 
 export default class Editor {
     private static readonly DEFAULT_PADDING = 32;
@@ -35,6 +36,7 @@ export default class Editor {
     private readonly clipboard: EditorClipboard;
     private readonly keybinds: EditorKeybinds;
     private readonly history: EditorHistory;
+    private readonly snapping: EditorSnappingVisualiser;
 
     private pluginCommunicator: EditorPluginCommunicator;
 
@@ -54,6 +56,7 @@ export default class Editor {
 
         new EditorGroupAreaVisualiser(this);
         new EditorAttendeeAreaVisualiser(this);
+        this.snapping = new EditorSnappingVisualiser(this);
 
         this.keybinds = new EditorKeybinds(this);
 
@@ -311,6 +314,10 @@ export default class Editor {
 
     public getKeybinds() {
         return this.keybinds;
+    }
+
+    public getSnapping() {
+        return this.snapping;
     }
 
     public getHistory() {

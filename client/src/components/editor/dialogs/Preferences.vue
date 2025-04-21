@@ -95,6 +95,19 @@ const properties = [
         }]
     },
     {
+        key: 'MOVEMENT_SNAPPING_DISTANCE',
+        type: 'number',
+        validator: [(value: any) => {
+            if (!value || value === '') return $t('editor.preferences.validation.required');
+
+            const parsed = parseInt(value);
+
+            if (isNaN(parsed)) return $t('editor.preferences.validation.number');
+
+            return (parsed && parsed >= 0 && parsed <= 1000) || $t('editor.preferences.MOVEMENT_SNAPPING_DISTANCE.range');
+        }]
+    },
+    {
         key: 'PER_OBJECT_TRANSFORMATION',
         type: 'boolean',
         validator: [(value: any) => {
@@ -201,17 +214,17 @@ const save = async () => {
     saving.value = false;
 };
 
-// watch(() => editorStore.getEditor(), async (editor) => {
-//     const preferences = await materialStore.getPreferences();
-//
-//     if (!preferences) return;
-//
-//     for (const property in preferences) {
-//         values.value[property] = preferences[property as keyof EditorPreferences];
-//     }
-//
-//     await save();
-// });
+watch(() => editorStore.getEditor(), async (editor) => {
+    const preferences = await materialStore.getPreferences();
+
+    if (!preferences) return;
+
+    for (const property in preferences) {
+        values.value[property] = preferences[property as keyof EditorPreferences];
+    }
+
+    await save();
+});
 </script>
 
 <style lang="scss" scoped>

@@ -552,6 +552,11 @@
                 "description": "Počet přichytávacích bodů při otáčení objektu (pomocí SHIFT při otáčení).",
                 "range": "Hodnota by měla být mezi 2 a 180"
             },
+            "MOVEMENT_SNAPPING_DISTANCE": {
+                "label": "Vzdálenost přichytávání při pohybu",
+                "description": "Minimální vzdálenost pro přichytávání objektu při pohybu. Pokud je povoleno, editor přichytí objekt k mřížce z ostatních prvků v uvedené vzdálenosti.",
+                "range": "Hodnota by měla být mezi 1 a 1000"
+            },
             "PER_OBJECT_TRANSFORMATION": {
                 "label": "Transformace pro každý objekt",
                 "description": "Pokud je povoleno, transformace (otáčení a změna měřítka) bude aplikována na jednotlivé objekty místo na vybranou skupinu."
@@ -648,6 +653,9 @@
             },
             "fit-canvas-to-parent": {
                 "label": "Přizpůsobit plátno rodiči"
+            },
+            "snap-movement": {
+                "label": "Přichytávání při pohybu"
             }
         },
         "plugin": {

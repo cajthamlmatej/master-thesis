@@ -553,6 +553,11 @@
                 "description": "The count of the snapping while rotating the object (using SHIFT while rotating).",
                 "range": "The value should be between 2 and 180"
             },
+            "MOVEMENT_SNAPPING_DISTANCE": {
+                "label": "Snap Distance on Move",
+                "description": "The minimum distance for snapping an object while moving. If enabled, the editor will snap the object to the grid or other elements within the specified distance.",
+                "range": "The value should be between 1 and 1000"
+            },
             "PER_OBJECT_TRANSFORMATION": {
                 "label": "Per object transformation",
                 "description": "When enabled, the transformation (rotate and scale) will be applied per object instead of the selected objects (group)."
@@ -645,6 +650,9 @@
             },
             "fit-canvas-to-parent": {
                 "label": "Fit canvas to parent"
+            },
+            "snap-movement": {
+                "label": "Snap on Move"
             }
         },
         "plugin": {

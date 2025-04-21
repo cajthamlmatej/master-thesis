@@ -20,6 +20,10 @@ export class UpdatePreferencesDTO {
     @Min(2)
     @Max(180)
     ROTATION_SNAPPING_COUNT: number;
+    @IsNumber()
+    @Min(1)
+    @Max(1000)
+    MOVEMENT_SNAPPING_DISTANCE: number;
     // @IsBoolean()
     // AUTOMATIC_SAVING: boolean;
     // @IsNumber()

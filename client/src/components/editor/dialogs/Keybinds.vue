@@ -123,6 +123,11 @@ const recalculate = () => {
         });
     }
 
+    keybinds.push({
+        key: ["Shift"],
+        action: $t('editor.action.snap-movement.label')
+    })
+
     keybindings.value = keybinds;
 };
 </script>
