@@ -8,7 +8,7 @@ import { Logger } from '@nestjs/common';
 async function bootstrap() {
     const app = await NestFactory.create<NestFastifyApplication>(
         AppModule,
-        new FastifyAdapter()
+        new FastifyAdapter({ bodyLimit: 50048576 })
     );
 
     await app.register(multipart);
