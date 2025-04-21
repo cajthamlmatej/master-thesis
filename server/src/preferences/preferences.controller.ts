@@ -29,6 +29,7 @@ export class PreferencesController {
                 KEEP_EDITOR_TO_FIT_PARENT: preferences.KEEP_EDITOR_TO_FIT_PARENT,
                 PER_OBJECT_TRANSFORMATION: preferences.PER_OBJECT_TRANSFORMATION,
                 ROTATION_SNAPPING_COUNT: preferences.ROTATION_SNAPPING_COUNT,
+                MOVEMENT_SNAPPING_DISTANCE: preferences.MOVEMENT_SNAPPING_DISTANCE,
                 // AUTOMATIC_SAVING: preferences.AUTOMATIC_SAVING,
                 // AUTOMATIC_SAVING_INTERVAL: preferences.AUTOMATIC_SAVING_INTERVAL,
                 HISTORY_LIMIT: preferences.HISTORY_LIMIT,

@@ -19,6 +19,9 @@ export class Preferences {
     @Prop()
     ROTATION_SNAPPING_COUNT: number;
 
+    @Prop()
+    MOVEMENT_SNAPPING_DISTANCE: number;
+
     // @Prop()
     // AUTOMATIC_SAVING: boolean;
     //
