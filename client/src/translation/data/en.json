@@ -651,8 +651,8 @@
             "fit-canvas-to-parent": {
                 "label": "Fit canvas to parent"
             },
-            "snap-movement": {
-                "label": "Snap on Move"
+            "snap": {
+                "label": "Snap on Move or Rotate"
             }
         },
         "plugin": {

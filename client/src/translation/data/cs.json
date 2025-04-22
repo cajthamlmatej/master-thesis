@@ -654,8 +654,8 @@
             "fit-canvas-to-parent": {
                 "label": "Přizpůsobit plátno rodiči"
             },
-            "snap-movement": {
-                "label": "Přichytávání při pohybu"
+            "snap": {
+                "label": "Přichytávání při pohybu a rotaci"
             }
         },
         "plugin": {

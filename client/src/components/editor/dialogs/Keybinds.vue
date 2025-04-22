@@ -125,7 +125,7 @@ const recalculate = () => {
 
     keybinds.push({
         key: ["Shift"],
-        action: $t('editor.action.snap-movement.label')
+        action: $t('editor.action.snap.label')
     })
 
     keybindings.value = keybinds;
