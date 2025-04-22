@@ -373,6 +373,16 @@
             </Card>
         </Dialog>
 
+        <Dialog :value="joining && !watchFailed" persistent>
+            <Card dialog>
+                <p class="title" v-t>player.share.watch.loading.title</p>
+
+                <div class="flex flex-justify-center loader">
+                    <span class="mdi mdi-loading mdi-spin"></span>
+                </div>
+            </Card>
+        </Dialog>
+
         <Dialog v-model:value="playerStore.watchEnded" persistent>
             <Card dialog>
                 <p class="title" v-t>player.share.watch.ended.title</p>
@@ -808,6 +818,10 @@ const refresh = () => {
 <style lang="scss" scoped>
 .player-header {
     background-color: var(--color-background-accent);
+}
+
+.loader {
+    font-size: 2em;
 }
 
 .underlay {

@@ -390,6 +390,9 @@
                     "title": "Sledování skončilo",
                     "description": "Sledování materiálu skončilo. Nyní budete přesměrován na stránku materiálu, kde můžete sledování znovu zahájit či si projít materiál samostatně.",
                     "button": "Přejít na materiál"
+                },
+                "loading": {
+                    "title": "Připojování se k sledování..."
                 }
             },
             "join": {

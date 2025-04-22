@@ -392,6 +392,9 @@
                     "title": "Watching Ended",
                     "description": "The watching session has ended. You will now be redirected to the material page where you can either start watching again or go through the material on your own.",
                     "button": "Go to Material"
+                },
+                "loading": {
+                    "title": "Joining Watching..."
                 }
             },
             "join": {
