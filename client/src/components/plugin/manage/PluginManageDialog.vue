@@ -125,6 +125,8 @@ import {PluginManager} from "@/editor/plugin/PluginManager";
 import Card from "@/components/design/card/Card.vue";
 import FileInput from "@/components/design/input/FileInput.vue";
 import PluginLocalImport from "@/components/plugin/manage/PluginLocalImport.vue";
+import {useEditorStore} from "@/stores/editor";
+import {PluginEditorBlock} from "@/editor/block/base/plugin/PluginEditorBlock";
 
 const selected = ref('active');
 
@@ -181,6 +183,13 @@ const loading = ref(false);
 const removePlugin = async (plugin: PluginContext) => {
     loading.value = true;
     await pluginStore.removePluginFromMaterial(plugin);
+
+    const editor = useEditorStore().getEditor();
+
+    if(editor) {
+        editor.redrawBlocks();
+    }
+
     loading.value = false;
     recalculate();
 };

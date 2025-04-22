@@ -417,6 +417,7 @@ import QrcodeVue from 'qrcode.vue'
 import {communicator} from "@/api/websockets";
 import Card from "@/components/design/card/Card.vue";
 import PluginLocalImport from "@/components/plugin/manage/PluginLocalImport.vue";
+import {useEditorStore} from "@/stores/editor";
 
 const materialStore = useMaterialStore();
 const playerStore = usePlayerStore();
@@ -499,7 +500,15 @@ watch(() => playerStore.getPlayer(), (value) => {
 const material = computed(() => materialStore.currentMaterial!);
 
 const isPresenter = ref<boolean>(false);
+
+const editorStore = useEditorStore();
 onMounted(async () => {
+    if(editorStore.getEditor()) {
+        // Reload the page
+        window.location.reload();
+        return;
+    }
+
     await materialStore.load();
     await pluginStore.load();
 
@@ -519,7 +528,6 @@ onMounted(async () => {
         })
     });
 
-    await pluginStore.loaded;
     await router.isReady();
 
     await playerStore.requestPlayer(route.query.slide as string, rendering.value);

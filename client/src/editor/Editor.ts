@@ -15,6 +15,7 @@ import {EditorPluginCommunicator} from "@/editor/EditorPluginCommunicator";
 import EditorAttendeeAreaVisualiser from "@/editor/visualiser/EditorAttendeeSelectedAreaVisualiser";
 import {communicator} from "@/api/websockets";
 import EditorSnappingVisualiser from "@/editor/visualiser/EditorSnappingVisualiser";
+import {PluginEditorBlock} from "@/editor/block/base/plugin/PluginEditorBlock";
 
 export default class Editor {
     private static readonly DEFAULT_PADDING = 32;
@@ -674,5 +675,11 @@ export default class Editor {
         //         this.removeBlock(block);
         //     }
         // });
+    }
+
+    public redrawBlocks() {
+        this.getBlocks().filter(b => b instanceof PluginEditorBlock).forEach((block: PluginEditorBlock) => {
+            block.renderIframe();
+        });
     }
 }

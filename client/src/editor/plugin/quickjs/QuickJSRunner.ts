@@ -5,6 +5,8 @@ const variant = newVariant(RELEASE_SYNC, {
     wasmLocation,
 })
 
+const wasmModule = newQuickJSWASMModuleFromVariant(variant)
+
 export async function load() {
-    return await newQuickJSWASMModuleFromVariant(variant)
+    return wasmModule;
 }

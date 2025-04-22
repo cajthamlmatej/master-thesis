@@ -15,8 +15,7 @@ import {useUserStore} from "@/stores/user";
 
 export const usePluginStore = defineStore("plugin", () => {
     const plugins = ref([] as Plugin[]);
-    let loadedResolve = (val?: any) => {
-    };
+    let loadedResolve = (val?: any) => {};
     let loaded = new Promise((r) => loadedResolve = r);
 
     let pluginManager = new PluginManager();
@@ -102,27 +101,23 @@ export const usePluginStore = defineStore("plugin", () => {
         pluginPanels.value = await pluginManager.getEditorPanels();
     }
 
-    watch(() => editorStore.getEditor(), async () => {
-        const editor = editorStore.getEditor();
-        if (!editor) return;
-
-        await pluginManager.changeEditor(editor);
-
-        await getPanels();
-
-        // TODO: maybe notify the plugins that the editor has changed
+    watch(() => editorStore.getEditor(), async (value) => {
+        loadPlugins();
     });
     watch(() => playerStore.getPlayer(), async () => {
-        const player = playerStore.getPlayer();
-        if (!player) return;
-
-        await pluginManager.changePlayer(player);
+        loadPlugins();
     });
 
-    watch(() => materialStore.currentMaterial, async () => {
-        // loaded = new Promise((r) => loadedResolve = r);
+    const loadPlugins = async () => {
+        const editor = toRaw(editorStore.getEditor());
+        const player = toRaw(playerStore.getPlayer());
+
+        loaded = new Promise((r) => loadedResolve = r);
+
         const material = toRaw(materialStore.currentMaterial) as Material | undefined;
         if (!material) return;
+
+        pluginManager.clear();
 
         const toLoadPlugins = (material.plugins
             .filter((p) => !pluginManager.isActive(p.plugin))
@@ -152,18 +147,24 @@ export const usePluginStore = defineStore("plugin", () => {
                 continue;
             }
 
-            const pluginContext = new PluginContext(pluginObject, release, editorStore.getEditor()!, playerStore.getPlayer()!);
+            const pluginContext = new PluginContext(pluginObject, release, editor, player);
 
             await pluginManager.loadPlugin(pluginContext);
         }
         loadedResolve();
 
         await getPanels();
-    });
+        editor?.redrawBlocks();
+        player?.redrawBlocks();
+    }
+
+    // watch(() => materialStore.currentMaterial, async () => {
+    //     loadPlugins();
+    // });
 
     const addPluginToMaterial = async (plugin: Plugin) => {
         const material = toRaw(materialStore.currentMaterial) as Material | undefined;
-        if (!material) return;
+        if (!material) return false;
 
         // Does it already have the plugin?
         if (material.plugins.find((p) => p.plugin === plugin.id)) {
@@ -175,8 +176,6 @@ export const usePluginStore = defineStore("plugin", () => {
             //     We need to load the plugin in full of releases
 
             const foundPlugin = await loadOne(plugin.id);
-
-            console.log("Plugin", foundPlugin);
 
             if (!foundPlugin) {
                 console.error("Failed to load plugin");

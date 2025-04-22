@@ -84,6 +84,7 @@ import Plugin from "@/models/Plugin";
 import {usePluginStore} from "@/stores/plugin";
 import {PluginManager} from "@/editor/plugin/PluginManager";
 import ListItem from "@/components/design/list/ListItem.vue";
+import {useEditorStore} from "@/stores/editor";
 
 const props = defineProps({
     plugin: {
@@ -111,12 +112,24 @@ const loading = ref(false);
 const activate = async () => {
     error.value = null;
     loading.value = true;
-    const result = await pluginStore.addPluginToMaterial(plugin.value);
 
+    let result;
+
+    try {
+        result = await pluginStore.addPluginToMaterial(plugin.value);
+        const editor = useEditorStore().getEditor();
+
+        if(editor) {
+            editor.redrawBlocks();
+        }
+    } catch(e) {
+        result = undefined
+    }
 
     if (!result) {
         error.value = $t('editor.plugin.manage.activate.error');
     }
+
     loading.value = false;
     emits('activate');
 };

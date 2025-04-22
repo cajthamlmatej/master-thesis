@@ -8,6 +8,8 @@ import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {EditorMode} from "@/editor/EditorMode";
 import type {MaterialOptions} from "@/editor/MaterialOptions";
+import {PluginEditorBlock} from "@/editor/block/base/plugin/PluginEditorBlock";
+import {PluginPlayerBlock} from "@/editor/block/base/plugin/PluginPlayerBlock";
 
 export default class Player {
     private static readonly DEFAULT_PADDING = 32;
@@ -397,5 +399,11 @@ export default class Player {
 
     private setupPlayer() {
         this.element.innerHTML = `<div class="player-content"></div>`
+    }
+
+    public redrawBlocks() {
+        this.getBlocks().filter(b => b instanceof PluginPlayerBlock).forEach((block: PluginPlayerBlock) => {
+            block.renderIframe();
+        });
     }
 }

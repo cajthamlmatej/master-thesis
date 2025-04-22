@@ -8,7 +8,7 @@ import Player from "@/editor/player/Player";
 export class PluginManager {
     public static readonly CURRENT_MANIFEST_VERSION = 1;
     public PLUGIN_LOADED = new Event();
-    public readonly cache = new PluginCache();
+    public cache = new PluginCache();
     private plugins: PluginContext[] = [];
     private disabledPlugins: PluginContext[] = [];
 
@@ -38,26 +38,6 @@ export class PluginManager {
 
     public getPlugins() {
         return this.plugins;
-    }
-
-    public async changeEditor(editor: Editor) {
-        for (const plugin of this.plugins) {
-            const editorPlugin = plugin.getEditorPlugin();
-
-            if (editorPlugin) {
-                await editorPlugin.loadForEditor(editor);
-            }
-        }
-    }
-
-    public async changePlayer(player: Player) {
-        for (const plugin of this.plugins) {
-            const playerPlugin = plugin.getPlayerPlugin();
-
-            if (playerPlugin) {
-                await playerPlugin.loadForPlayer(player);
-            }
-        }
     }
 
     public async getEditorPanels() {
@@ -102,5 +82,11 @@ export class PluginManager {
 
     getDisabledPlugins() {
         return this.disabledPlugins;
+    }
+
+    clear() {
+        this.plugins = [];
+        this.disabledPlugins = [];
+        this.cache.clear();
     }
 }

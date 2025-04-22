@@ -170,6 +170,7 @@ export class PlayerPlugin {
         this.setupContext();
         await this.callFunctionIfExists("initPlayer");
         this.loadedResolve();
+        this.player?.redrawBlocks();
     }
 
     private setupContext() {

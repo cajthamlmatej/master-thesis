@@ -61,6 +61,10 @@ export class PluginEditorBlock extends EditorBlock {
         try {
             const render = await this.editor.getPluginCommunicator().render(this);
 
+            if(render == "") {
+                throw new Error("Empty render");
+            }
+
             content.removeAttribute("data-processed");
 
             content.innerHTML = "";
@@ -72,6 +76,7 @@ export class PluginEditorBlock extends EditorBlock {
             content.appendChild(iframe);
         } catch (e) {
             console.error(e);
+            content.innerHTML = "";
 
             this.element.classList.add("block--type-plugin--failed");
             this.element.style.setProperty("--text", "'" + $t("blocks.plugin.failed", { plugin: this.plugin }) + "'");

@@ -59,6 +59,7 @@ export class EditorPlugin {
 
     public async callEvent(name: EditorPluginEvent, ...args: QuickJSHandle[]) {
         if (!this.context) throw new Error("Context not ready");
+        await this.loadedPromise;
 
         const fnc = this.callbacks[name];
 
@@ -126,13 +127,6 @@ export class EditorPlugin {
         this.pluginMessageCallback = fnc;
     }
 
-    public async loadForEditor(editor: Editor) {
-        this.editor = editor;
-        this.setupContext();
-
-        this.plugin.log(`Successfully loaded for editor`);
-    }
-
     public async processMessageFromPanel(message: string) {
         console.log("Processing message from panel");
         const args = this.context!.newString(message);
@@ -150,7 +144,10 @@ export class EditorPlugin {
         console.log("Calling render block event");
         const result = await this.callEvent(EditorPluginEvent.PLUGIN_BLOCK_RENDER, serializedBlock);
 
-        if (!result) return "";
+        if (!result) {
+            console.error("Error while rendering block");
+            return "";
+        }
 
         return this.context!.dump(result.unwrap());
     }
@@ -187,8 +184,13 @@ export class EditorPlugin {
         this.baseEvaluation = this.context.unwrapResult(result);
 
         this.setupContext();
-        await this.callFunctionIfExists("initEditor");
+        if(!(await this.callFunctionIfExists("initEditor"))) {
+            console.error("Error while calling initEditor");
+            return;
+        }
+
         this.loadedResolve();
+        this.editor?.redrawBlocks();
     }
 
     private setupContext() {
@@ -214,21 +216,22 @@ export class EditorPlugin {
         const fnc = this.context.getProp(this.baseEvaluation, name);
 
         if (!fnc) {
-            return;
+            return false;
         }
 
         const dump = this.context.dump(fnc);
 
         if (!dump) {
-            return;
+            return false;
         }
 
         try {
             return this.context.callFunction(fnc, this.context.undefined, ...args);
         } catch (e) {
             this.plugin.log(`Error while calling function ${name}: ${e}`);
+            return false;
         }
 
-        return;
+        return true;
     }
 }

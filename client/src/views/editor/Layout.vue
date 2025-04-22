@@ -131,6 +131,7 @@ import {communicator} from "@/api/websockets";
 import Material from "@/models/Material";
 import Attendees from "@/components/editor/Attendees.vue";
 import {EditorCommunicator} from "@/api/editorCommunicator";
+import {usePlayerStore} from "@/stores/player";
 
 const materialStore = useMaterialStore();
 
@@ -212,7 +213,13 @@ const handleClick = (event: MouseEvent) => {
 const route = useRoute();
 const router = useRouter();
 
+const playerStore = usePlayerStore();
 onMounted(async () => {
+    if(playerStore.getPlayer()) {
+        // Reload the page
+        window.location.reload();
+        return;
+    }
     window.addEventListener("click", handleClick);
 
     await materialStore.load();
@@ -237,9 +244,7 @@ onMounted(async () => {
         })
     });
 
-    await pluginStore.loaded;
     await communicator.setupEditorRoom(materialStore.currentMaterial! as Material);
-
     await editorStore.requestEditor();
 
     state.value = $t('editor.ui.state.last-save', {time: materialStore.currentMaterial?.updatedAt.fromNow() ?? ''});

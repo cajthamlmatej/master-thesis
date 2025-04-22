@@ -24,4 +24,8 @@ export class PluginCache {
 
         return this.plugins[pluginId];
     }
+
+    clear() {
+        this.plugins = {};
+    }
 }
