@@ -257,6 +257,7 @@ const processImport = (toggle: () => void) => {
             } catch (e) {
                 console.error(e);
                 importError.value = $t(`page.dashboard.new.import.${extension == "md" ? "markdown" : "json"}.error`);
+                await materialStore.deleteMaterial(materialId);
                 return;
             }
 
