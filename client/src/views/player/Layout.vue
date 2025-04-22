@@ -561,7 +561,7 @@ const joinWatch = async() => {
     }
 
 
-    await communicator.setupPlayerRoom(material.value, watchCode.value!, isPresenter.value, playerStore.getActiveSlide()!.id);
+    await communicator.setupPlayerRoom(material.value, watchCode.value!.toUpperCase(), isPresenter.value, playerStore.getActiveSlide()!.id);
     await communicator.getPlayerRoom()?.joined;
 
     joining.value = false;
