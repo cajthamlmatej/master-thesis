@@ -396,7 +396,8 @@
                 "title": "Připojit se k sledování",
                 "description": "Zadejte kód pro sledování, který vám dal někdo jiný, abyste se mohli připojit k sledování materiálu. Tento kód je platný pouze pro aktuální zobrazení a po opuštění materiálu již nebude funkční.",
                 "code": "Kód pro sledování",
-                "join": "Připojit se"
+                "join": "Připojit se",
+                "error": "Kód musí být vyplněn a mít 9 znaků."
             },
             "notPublic": {
                 "title": "Materiál není veřejný",

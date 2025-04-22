@@ -398,7 +398,8 @@
                 "title": "Join Watching",
                 "description": "Enter the watch code provided by someone else to join and watch the material. This code is valid only for the current session and will no longer work once you leave the material.",
                 "code": "Watch Code",
-                "join": "Join"
+                "join": "Join",
+                "error": "Kód musí být vyplněn a mít 9 znaků."
             },
             "notPublic": {
                 "title": "Material is Not Public",

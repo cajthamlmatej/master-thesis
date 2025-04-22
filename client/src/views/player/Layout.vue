@@ -107,7 +107,7 @@
                                        class="mt-1"
                                        :label="$t('player.share.join.code')"
                                        :validators="[
-                                            (value: string) => value.length === 9 || $t('player.share.join.code.error')
+                                            (value: string) => value.length === 9 || $t('player.share.join.error')
                                        ]"
                                 ></Input>
 
