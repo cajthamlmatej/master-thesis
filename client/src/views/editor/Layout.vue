@@ -102,6 +102,8 @@
             </main>
         </transition>
     </router-view>
+
+    <MediaHandler />
 </template>
 
 <script lang="ts" setup>
@@ -132,6 +134,7 @@ import Material from "@/models/Material";
 import Attendees from "@/components/editor/Attendees.vue";
 import {EditorCommunicator} from "@/api/editorCommunicator";
 import {usePlayerStore} from "@/stores/player";
+import MediaHandler from "@/components/editor/MediaHandler.vue";
 
 const materialStore = useMaterialStore();
 

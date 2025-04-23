@@ -27,9 +27,7 @@ export const useMediaStore = defineStore("media", () => {
     }
 
     const upload = async (file: File) => {
-        const response = await api.media.create(file);
-
-        return response !== undefined;
+        return await api.media.create(file);
     }
 
     return {
