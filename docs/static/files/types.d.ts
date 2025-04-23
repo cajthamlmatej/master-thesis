@@ -413,6 +413,26 @@ interface ApiPlayer {
     isPresenter(): boolean;
 
     /**
+     * Returns the current count of viewers in the presentation.
+     * If not in a watcher mode, the count will be 0.
+     * @returns The number of viewers in the presentation.
+     */
+    getWatcherCount(): number;
+
+    /**
+     * Changes the current slide in the player. The slide will be changed and the player will be updated.
+     * If the slide is not found, nothing happens.
+     * @param slideId The ID of the slide to change to.
+     */
+    changeCurrentSlide(slideId: string): void;
+
+    /**
+     * Returns the current slide in the player.
+     * @returns The ID of the current slide.
+     */
+    getCurrentSlide(): string;
+
+    /**
      * Calls the callback when this plugin's block sends a message to the plugin.
      *
      * **Calling this function multiple times will overwrite the previous callback.**
@@ -482,6 +502,24 @@ interface ApiCache {
     remove(key: string): void;
 }
 
+interface Slide {
+    /** Unique ID of the slide. */
+    id: string;
+    /** Position of the slide. */
+    position: number;
+    /** Data of the slide. */
+    data: {
+        editor: {
+            size: {
+                width: number;
+                height: number;
+            },
+            color: string;
+        },
+        blocks: (EditorBlock | PlayerBlock)[];
+    }
+}
+
 interface Api {
     /**
      * Represents the current editor instance. Use this to interact with the editor.
@@ -530,6 +568,11 @@ interface Api {
      * Contains the current plugin id.
      */
     plugin: string;
+
+    /**
+     * Returns all slides in current material.
+     */
+    getSlides(): Slide[];
 }
 
 declare global {

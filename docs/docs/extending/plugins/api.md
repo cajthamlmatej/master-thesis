@@ -148,3 +148,9 @@ console.log(`Value cached: ${api.cache.get('myKey')}`);
 api.cache.remove('myKey');
 console.log(`Value after removal: ${api.cache.get('myKey')}`);
 ```
+
+## `getSlides`
+
+**Signature**: `getSlides(): Slide[]`
+
+Returns an array of all slides in the current material. This is useful for iterating over slides and performing actions on them.

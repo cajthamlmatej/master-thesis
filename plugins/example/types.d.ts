@@ -427,6 +427,12 @@ interface ApiPlayer {
     changeCurrentSlide(slideId: string): void;
 
     /**
+     * Returns the current slide in the player.
+     * @returns The ID of the current slide.
+     */
+    getCurrentSlide(): string;
+
+    /**
      * Calls the callback when this plugin's block sends a message to the plugin.
      *
      * **Calling this function multiple times will overwrite the previous callback.**

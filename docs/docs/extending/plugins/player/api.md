@@ -50,6 +50,13 @@ Change the current mode of the player.
 
 Checks if this instance of player is a presenter.
 
+## `getWatcherCount`
+
+**Signature**: `getWatcherCount(): number`
+
+Returns the number of viewers connected to this instance of player.
+Returns `0` if this instance of player is a viewer or if there are no viewers connected.
+
 ## `on`
 
 **Signature**: `on(eventName: string, callback: any): void`
@@ -94,3 +101,16 @@ The callback is called when this plugin block recieved message from some remote 
 The clientId is undefined if this instance of player is a viewer.
 
 For more information about remote communication, visit the [Remote communication documentation](../remote).
+
+## `getCurrentSlide`
+
+**Signature**: `getCurrentSlide(): string`
+
+Return the ID of the current slide.
+
+## `changeCurrentSlide`
+
+**Signature**: `changeCurrentSlide(slideId: string): void`
+
+Change the current slide to the specified slide ID.
+If the slide ID is not found, nothing happens.
