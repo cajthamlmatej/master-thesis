@@ -234,4 +234,19 @@ export class EditorPlugin {
 
         return true;
     }
+
+
+    public serializeObject(value: any, object?: QuickJSHandle): QuickJSHandle {
+        if (!this.context) throw new Error("Context not ready");
+
+        if (!object) {
+            object = this.context.newObject();
+        }
+
+        for (const key in value) {
+            this.context.setProp(object, key, this.serializeAny(value[key]));
+        }
+
+        return object;
+    }
 }

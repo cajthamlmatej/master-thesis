@@ -9,6 +9,7 @@ import {CacheApiFeature} from "@/editor/plugin/player/api/Cache";
 import {LanguageApiFeature} from "@/editor/plugin/player/api/Language";
 import {PluginApiFeature} from "@/editor/plugin/player/api/Plugin";
 import {PlayerApiFeature} from "@/editor/plugin/player/api/Player";
+import {GetSlidesApiFeature} from "@/editor/plugin/player/api/GetSlides";
 
 export interface PlayerPluginApiData {
     context: QuickJSContext;
@@ -32,6 +33,8 @@ export class PlayerPluginApi {
         (new PluginApiFeature()).register(api, data);
 
         (new PlayerApiFeature()).register(api, data);
+
+        (new GetSlidesApiFeature()).register(api, data);
 
         context.setProp(context.global, "api", api);
     }

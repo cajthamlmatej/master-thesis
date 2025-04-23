@@ -9,6 +9,8 @@ export class PlayerCommunicator {
     private joinedResolve: () => void;
     public readonly joined: Promise<void> = new Promise<void>((resolve) => this.joinedResolve = resolve);
 
+    private count: number = 0;
+
     constructor(material: Material, code: string, isPresenter: boolean, slideId: string) {
         this.material = material;
         this.isPresenter = isPresenter;
@@ -87,6 +89,16 @@ export class PlayerCommunicator {
                 clientId
             });
         });
+        communicator.socket.on("watcherJoinedPlayerRoom", () => {
+            this.count++;
+        });
+        communicator.socket.on("watcherLeftPlayerRoom", () => {
+            this.count--;
+        });
+    }
+
+    public getWatcherCount() {
+        return this.count;
     }
 
     public changeSlide(slideId: string) {
