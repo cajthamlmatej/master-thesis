@@ -10,6 +10,7 @@ import {GetModeApiFeature} from "@/editor/plugin/player/api/player/GetMode";
 import {IsPresenterApiFeature} from "@/editor/plugin/player/api/player/IsPresenter";
 import {ChangeCurrentSlideApiFeature} from "@/editor/plugin/player/api/player/ChangeCurrentSlide";
 import {WatcherCountApiFeature} from "@/editor/plugin/player/api/player/WatcherCount";
+import {GetCurrentSlideApiFeature} from "@/editor/plugin/player/api/player/GetCurrentSlide";
 
 export class PlayerApiFeature extends PlayerPluginApiFeature {
     register(obj: QuickJSHandle, data: PlayerPluginApiData): void {
@@ -30,6 +31,7 @@ export class PlayerApiFeature extends PlayerPluginApiFeature {
         (new WatcherCountApiFeature()).register(playerObj, data);
 
         (new ChangeCurrentSlideApiFeature()).register(playerObj, data);
+        (new GetCurrentSlideApiFeature()).register(playerObj, data);
 
         context.setProp(obj, "player", playerObj);
     }
