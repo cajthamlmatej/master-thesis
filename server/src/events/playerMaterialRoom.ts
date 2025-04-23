@@ -43,10 +43,13 @@ export class PlayerMaterialRoom {
                 content: this.drawings.get(drawing)
             });
         }
+
+        this.presenter.emit("watcherJoinedPlayerRoom", listener.id);
     }
 
     public removeListener(client: Socket) {
         client.leave(this.roomId);
+        this.presenter.emit("watcherLeftPlayerRoom", client.id);
 
         if (this.presenter === client) {
             this.gateway.server.to(this.roomId).emit('presenterDisconnected');
