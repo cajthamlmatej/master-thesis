@@ -2,7 +2,7 @@
 
 In editor you can do following things:
 
-- [See the user interface](./ui)
-- [Present it](./preseting)
-- [Watch it](./watching)
-- [Use settings](./settings)
+- [See the user interface](ui.md)
+- [Present it](presenting.md)
+- [Watch it](watching.md)
+- [Use settings](settings.md)

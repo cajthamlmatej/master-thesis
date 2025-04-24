@@ -26,4 +26,4 @@ The drawing tools are:
 Here you can also share the presentation with other users.
 They can access the presentation if they have the link to the presentation and the material is set to be public.
 
-You can also enable watching mode. Refer to the [Watching](./watching) section for more information.
+You can also enable watching mode. Refer to the [Watching](watching.md) section for more information.

@@ -1,4 +1,4 @@
-# About
+# Plugins
 
 Plugins are a way to extend the functionality of Materalist. 
 They are small pieces of code that can be added to the application to provide additional features or functionality.
@@ -25,4 +25,4 @@ Refer to the specific plugin documentation for more details how to use it.
 You can also create your own plugins.
 Any additions are welcome.
 
-Refer to the [Plugins documentation](../extending/) for more details on how to create your own plugins.
+Refer to the [Plugins documentation](../extending/index.md) for more details on how to create your own plugins.

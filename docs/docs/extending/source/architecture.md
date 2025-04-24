@@ -9,7 +9,7 @@ The homepage is a simple static website for promoting the project.
 It communicates with [Server](#server) to get the example materials.
 It's build with [Vue.js](https://vuejs.org/) and [Vite](https://vitejs.dev/).
 
-You can extend the homepage by adding [new language](./adding-language.md) or changing the content.
+You can extend the homepage by adding [new language](adding-language.md) or changing the content.
 
 ## Documentation
 
@@ -31,7 +31,7 @@ It uses [MongoDB](https://www.mongodb.com/) as the database.
 The server is responsible for managing the materials, users, and their permissions.
 It also provides the API for the client to export the materials.
 
-For more information about extending the server, see [Extending the server](./server.md).
+For more information about extending the server, see [Extending the server](server.md).
 
 ## Client
 
@@ -45,4 +45,4 @@ It is written in [Vue.js](https://vuejs.org/) and [Vite](https://vitejs.dev/).
 The main part of the application is its editor and player for the materials.
 The editor has complex rendering and allows to make the materials interactive.
 
-For more information about extending the client, see [Extending the client](./client.md).
+For more information about extending the client, see [Extending the client](client.md).

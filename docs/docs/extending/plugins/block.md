@@ -62,7 +62,7 @@ Rotates the block to the specified angle. The angle is in degrees.
 
 ## Plugin block
 
-Represents a custom block that is rendered by a plugin. For more information about creating custom blocks read the [Custom blocks documentation](./editor/custom-blocks).
+Represents a custom block that is rendered by a plugin. For more information about creating custom blocks read the [Custom blocks documentation](editor/custom-blocks.md).
 
 :::warning
 

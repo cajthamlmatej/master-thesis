@@ -17,7 +17,7 @@ Has to be a number.
 
 A list of allowed origins for the plugin. 
 This is used to restrict access to the plugin from other origins.
-This is checked in [Fetch API](./api#fetch).
+This is checked in [Fetch API](api.md#fetch).
 Has to be a list of strings, where the string is valid origin.
 Valid origin is a string that starts with `http://` or `https://` and ends with a valid domain name.
 

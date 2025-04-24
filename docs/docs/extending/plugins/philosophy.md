@@ -1,7 +1,7 @@
 # Philosophy
 
 This document will cover the basics of plugins and how they work in Materalist.
-For security, see the [Security document](./security).
+For security, see the [Security document](security.md).
 
 Plugins are a way to extend the functionality of Materalist and add new features to it.
 They are a way to customize the application and make it your own.
@@ -24,7 +24,7 @@ Some users may not want to create interactive materials, but they would like to 
 And they can do that by creating a plugin for it.
 
 We were also sceptical about the idea what harm could a plugin do to the application.
-The side of security is addressed in the [Security document](./security).
+The side of security is addressed in the [Security document](security.md).
 
 The following chapters will cover what we vision as a good plugin and what we think is a bad plugin.
 
@@ -32,7 +32,7 @@ The following chapters will cover what we vision as a good plugin and what we th
 
 We support that the plugins can do following things:
 
-- Create new types of blocks (see [Custom blocks](./editor/custom-blocks)) which can be used in the editor and in the player. For example a new diagram, a new type of quiz, a new type of text, etc.
+- Create new types of blocks (see [Custom blocks](editor/custom-blocks.md)) which can be used in the editor and in the player. For example a new diagram, a new type of quiz, a new type of text, etc.
 - Make life of the user easier by adding new features and tools to the editor, which can make the process of creating materials faster and or productive. For example a new way of positioning of blocks, repeated actions and more.
 - Creating interactive things in the player. For example a new way of displaying the material, going through the material and more.
 - Creating a new way of importing and exporting materials. For example importing materials to and from other applications, formats and more.

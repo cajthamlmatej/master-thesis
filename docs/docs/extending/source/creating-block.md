@@ -141,7 +141,7 @@ Good practice is to change the value after the animation is finished and then sy
 ### Remote communication
 
 Player block can also communicate with the same block in other players instance while presenting.
-Refer to [Remote communication](../plugins/player/remote) for more information.
+Refer to [Remote communication](../plugins/player/remote.md) for more information.
 
 ## Serverside
 

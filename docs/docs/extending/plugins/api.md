@@ -2,13 +2,13 @@
 
 This section describes available API methods for plugins.
 Specific code for specific area is not covered here, but rather in the respective sections.
-See the [Editor API](./editor/api) for the editor API.
-See the [Plugin API](./player/api) for the plugin API.
+See the [Editor API](editor/api.md) for the editor API.
+See the [Plugin API](player/api.md) for the plugin API.
 
 The following API are available for all plugins in all contexts.
 You can find all API and their documentation in the [Types](pathname:///files/types.d.ts).
 
-All API are available in the `api` object which is injected by the code runner (see [Security](./security) for more details).
+All API are available in the `api` object which is injected by the code runner (see [Security](security.md) for more details).
 
 ## `log`
 
@@ -32,7 +32,7 @@ This will log "Hello, world!" to the console.
 
 Fetch a resource from the given URL. This is useful for loading external resources such as images, scripts, or data files.
 To be able to call this function on specific origin, you need to add the origin to the `allowedOrigins` in the plugin manifest. 
-See [Plugin Manifest](./manifest) for more details.
+See [Plugin Manifest](manifest.md) for more details.
 
 **Arguments**:
 - `url` (string): The URL of the resource to fetch.

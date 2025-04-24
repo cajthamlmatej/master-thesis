@@ -2,14 +2,14 @@
 
 This section describes available API methods for plugins during the player context.
 
-The API is available in the `api` object in property `api.player` which is injected by the code runner (see [Security](./security) for more details).
+The API is available in the `api` object in property `api.player` which is injected by the code runner (see [Security](../security) for more details).
 
 ## `getBlocks`
 
 **Signature**: `getBlocks(): PlayerBlock[]`
 
 Returns an array of all blocks in the player (slide).
-Consult the [Block API](../block) for more details about the block types, their properties and methods.
+Consult the [Block API](../block.md) for more details about the block types, their properties and methods.
 
 ## `addBlock`
 
@@ -17,7 +17,7 @@ Consult the [Block API](../block) for more details about the block types, their 
 
 Create a specific block in the current slide.
 You can create any type of block. 
-Consult the [Block API](../block) for more details about the block types, their properties and methods.
+Consult the [Block API](../block.md) for more details about the block types, their properties and methods.
 
 **Returns**: The ID of the created block.
 
@@ -90,7 +90,7 @@ This HTML content will be used to render the block in the player.
 The callback is called when this plugin block requests a message to be sent to the plugin.
 This is the main communication channel between the plugin and the block.
 
-For more information about custom blocks, visit the [Custom block documentation](../custom-blocks).
+For more information about custom blocks, visit the [Custom block documentation](../editor/custom-blocks.md).
 
 
 ### `pluginRemoteMessage`
@@ -100,7 +100,7 @@ For more information about custom blocks, visit the [Custom block documentation]
 The callback is called when this plugin block recieved message from some remote block with same id.
 The clientId is undefined if this instance of player is a viewer.
 
-For more information about remote communication, visit the [Remote communication documentation](../remote).
+For more information about remote communication, visit the [Remote communication documentation](remote.md).
 
 ## `getCurrentSlide`
 

@@ -1,6 +1,6 @@
 # Remote communication
 
-When the material is presented and [shared with other](../../../usage/player/watching) the player blocks can communicate across the platform.
+When the material is presented and [shared with other](../../../usage/player/watching.md) the player blocks can communicate across the platform.
 Result of it is a way to share data with the presenter which can send more information to others.
 
 :::warning

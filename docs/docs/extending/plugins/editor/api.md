@@ -2,14 +2,14 @@
 
 This section describes available API methods for plugins during the editor context.
 
-The API is available in the `api` object in property `api.editor` which is injected by the code runner (see [Security](./security) for more details).
+The API is available in the `api` object in property `api.editor` which is injected by the code runner (see [Security](../security.md) for more details).
 
 ## `getBlocks`
 
 **Signature**: `getBlocks(): EditorBlock[]`
 
 Returns an array of all blocks in the editor (slide).
-Consult the [Block API](../block) for more details about the block types, their properties and methods.
+Consult the [Block API](../block.md) for more details about the block types, their properties and methods.
 
 ## `addBlock`
 
@@ -17,7 +17,7 @@ Consult the [Block API](../block) for more details about the block types, their 
 
 Create a specific block in the current slide.
 You can create any type of block. 
-Consult the [Block API](../block) for more details about the block types, their properties and methods.
+Consult the [Block API](../block.md) for more details about the block types, their properties and methods.
 
 **Returns**: The ID of the created block.
 
@@ -118,7 +118,7 @@ The callback is called when the editor requests a panel to be rendered for this 
 The callback should return a string that represents the HTML content of the panel.
 This HTML content will be used to render the panel in the editor.
 
-For more panel information, see [Panel documentation](./panel).
+For more panel information, see [Panel documentation](panel.md).
 
 ### `panelMessage`
 
@@ -127,7 +127,7 @@ For more panel information, see [Panel documentation](./panel).
 The callback is called when this plugin panel requests a message to be sent to the plugin.
 This is the main communication channel between the plugin and the panel.
 
-For more panel information, see [Panel documentation](./panel).
+For more panel information, see [Panel documentation](panel.md).
 
 ### `pluginBlockMessage`
 
@@ -136,7 +136,7 @@ For more panel information, see [Panel documentation](./panel).
 The callback is called when this plugin block requests a message to be sent to the plugin.
 This is the main communication channel between the plugin and the block.
 
-For more information about custom blocks, visit the [Custom block documentation](../custom-blocks).
+For more information about custom blocks, visit the [Custom block documentation](custom-blocks.md).
 
 
 ### `pluginBlockPropertyChange`
@@ -146,7 +146,7 @@ For more information about custom blocks, visit the [Custom block documentation]
 The callback is called when this plugin block's property is changed.
 The `property` argument is the name of the property that was changed.
 
-For more information about custom blocks, visit the [Custom block documentation](../custom-blocks).
+For more information about custom blocks, visit the [Custom block documentation](custom-blocks.md).
 
 ## `sendPanelMessage`
 
@@ -155,4 +155,4 @@ For more information about custom blocks, visit the [Custom block documentation]
 Sends a message to the plugin panel.
 
 
-For more panel information, see [Panel documentation](./panel).
+For more panel information, see [Panel documentation](panel.md).

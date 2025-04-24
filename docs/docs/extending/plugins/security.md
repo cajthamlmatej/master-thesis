@@ -10,7 +10,7 @@ Even with that, we have to limit what the plugins can do.
 
 The first defense against untrusted code is to run it in a separate process.
 We do it in several ways.
-The [Philosophy](./philosophy) of Materalist's plugins is to run them in a browser.
+The [Philosophy](philosophy.md) of Materalist's plugins is to run them in a browser.
 Because plugins are just pieces of JavaScript code we took the approach of running them in a separate context.
 
 ## Running untrusted code
@@ -27,7 +27,7 @@ Using this we can also limit to what Browser APIs the plugins can access and wha
 Because the code from WebAssembly is running in a separate context, the calculation is done in a separate thread and the main thread is not blocked.
 Thus the application is always responsive and the plugins can do their own thing.
 
-For all available API, consult the [API documentation](./api).
+For all available API, consult the [API documentation](api.md).
 
 ## Iframe sandboxing
 
@@ -45,4 +45,4 @@ One major downfall is that this approach has problems with CORS and the same-ori
 Defaultly the iframe has `null` origin.
 Which is not a problem for majority of the plugins.
 
-For example we use this approach for the [Editor panel](./editor/panel) or for [Custom blocks](./editor/custom-blocks).
+For example we use this approach for the [Editor panel](editor/panel.md) or for [Custom blocks](editor/custom-blocks.md).

@@ -2,7 +2,7 @@
 
 In editor you can do following things:
 
-- [See the user interface](./ui)
-- [Collaborate](./collaboration)
-- [Export](./export)
-- [Update preferences](./preferences)
+- [See the user interface](ui.md)
+- [Collaborate](collaboration.md)
+- [Export](export.md)
+- [Update preferences](preferences.md)

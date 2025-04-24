@@ -11,6 +11,6 @@ export const initPlayer = function () {
 };
 ```
 
-After that you can access all APIs and methods of [the player](./api) and [global API](../api).
+After that you can access all APIs and methods of [the player](api.md) and [global API](../api.md).
 
-Mainly you will create a rendering for [custom blocks](./custom-blocks).
+Mainly you will create a rendering for [custom blocks](custom-blocks.md).

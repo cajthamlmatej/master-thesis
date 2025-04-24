@@ -3,10 +3,10 @@
 If the pre-defined blocks do not meet your needs, you can create your own custom blocks. 
 This is done by creating a new block of type plugin which your plugin will render.
 
-Pre-defined blocks can be [found here](../block).
+Pre-defined blocks can be [found here](../block.md).
 
 For custom block to render you need to implement similiar process for player.
-Consult [Player documentation](../player) for more information.
+Consult [Player documentation](../player/index.md) for more information.
 
 ## Creating a custom block
 

@@ -11,8 +11,6 @@ const config: Config = {
   favicon: 'img/favicon.ico?r=2',
   staticDirectories: ['static'],
 
-  trailingSlash: false,
-
   url: process.env.DOCS_LINK ?? 'https://materalist.com',
   baseUrl: '/',
 

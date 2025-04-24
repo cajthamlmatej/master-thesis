@@ -8,17 +8,17 @@ Material is a key concept in Materalist, representing some content that can be e
 It can be a presentation, game, worksheet, poster or any other type of content.
 
 Material is always created by one user and can be shared with other users with specific permissions.
-It can be edited by multiple users at the same time thanks to [Collaboration](./editor/collaboration).
+It can be edited by multiple users at the same time thanks to [Collaboration](editor/collaboration.md).
 
 It cna be presented in real-time to other users and it can allow them to interact with it.
-Refer to [Watching documentation](./player/watching) for more details.
+Refer to [Watching documentation](player/watching.md) for more details.
 
 ## Settings
 
 The material has a name.
 It can be Public or Private.
 It also can have set a way of presenting and/or manipulating the content.
-Please refer to [Settings documentation](./player/settings) for more details.
+Please refer to [Settings documentation](player/settings.md) for more details.
 
 ## Featured
 

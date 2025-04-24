@@ -7,15 +7,15 @@ sidebar_position: -1
 Before you can do anything with plugins in Materalist, you need to learn a few things:
 
 - You have to have a Materalist account and be logged in to use and develop plugins.
-- [Materalist](../../usage/), which explains how to use Materalist and what it is. You should be familiar with the basics of Materalist before you start creating plugins.
-- [Plugin philosophy](./philosophy), which explains how plugins work and what they are, what you can do and what you can't do.
-- [Plugin security](./security), which explains how **we make** sure that plugins are safe to use.
+- [Materalist](../../usage/index.md), which explains how to use Materalist and what it is. You should be familiar with the basics of Materalist before you start creating plugins.
+- [Plugin philosophy](philosophy.md), which explains how plugins work and what they are, what you can do and what you can't do.
+- [Plugin security](security.md), which explains how **we make** sure that plugins are safe to use.
 
 Then you can start creating your first plugin. This documentation will help you understand how to do that.
 
 ## Creating a new plugin
 
-All plugins can have a [Editor code](./editor) and/or a [Player code](./player).
+All plugins can have a [Editor code](editor/index.md) and/or a [Player code](player/index.md).
 The Editor code is the code that runs in the editor and can be used to create and edit the content of the material.
 The Player code is the code that runs in the player while the material is being played (watched, presented, etc.).
 You can create a plugin that only has one of them, or both of them.
@@ -46,7 +46,7 @@ In the folder you just created, create new files:
 
 This file contains the metadata of the plugin which modifies what Materalist does with the plugin and what the plugin can do.
 Current version of the metadata format is `1`.
-To learn what you can do with the metadata, check the [Plugin manifest](./manifest) documentation.
+To learn what you can do with the metadata, check the [Plugin manifest](manifest.md) documentation.
 
 The base of the file could look like this:
 
@@ -125,7 +125,7 @@ When you click on it, you can select a ZIP containing:
 Once the plugin is imported, it becomes available in the editor for the current instance of the application.
 If you switch to a different editor or to the player, you'll need to re-import the plugin.
 
-For importing plugin inside the player, make sure debugging mode is enabled (refer to the [Client documentation](../../extending/source/client) for details).
+For importing plugin inside the player, make sure debugging mode is enabled (refer to the [Client documentation](../../extending/source/client.md) for details).
 After that, you can import the plugin using the Debug tab..
 
 You can only have one "locally" imported plugin.
@@ -149,7 +149,7 @@ Then you can test it on live version.
 
 ---
 
-Once you are ready to publish your plugin, continue with the [Publishing](./publishing) documentation.
+Once you are ready to publish your plugin, continue with the [Publishing](publishing.md) documentation.
 
 ## Prepared plugin base
 
@@ -159,11 +159,11 @@ You can download it [here](pathname:///files/plugin-base.zip).
 ## Next steps
 
 After you got your first plugin working (seeing the logs in the console), you can start creating more complex plugins.
-For player side, you can see the [Player code](./player) documentation.
-For editor side, you can see the [Editor code](./editor) documentation.
+For player side, you can see the [Player code](player/index.md) documentation.
+For editor side, you can see the [Editor code](editor/index.md) documentation.
 
-In the code you can access plugin API which is explained in the [Plugin API](./api) documentation.
+In the code you can access plugin API which is explained in the [Plugin API](api.md) documentation.
 
 ## Examples
 
-You can find some examples of plugins in the [Examples](./examples) documentation.
+You can find some examples of plugins in the [Examples](examples.md) documentation.

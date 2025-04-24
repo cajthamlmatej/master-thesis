@@ -6,8 +6,8 @@ sidebar_position: 1
 
 You can extend Materalist in several ways:
 
-- [Creating a new plugin](./plugins/first-steps)
-- [Editing the source code](./source/first-steps)
+- [Creating a new plugin](plugins/first-steps.md)
+- [Editing the source code](source/first-steps.md)
 
 This documentation will help you understand how to do both.
 

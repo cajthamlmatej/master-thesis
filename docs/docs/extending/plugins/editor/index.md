@@ -11,6 +11,6 @@ export const initEditor = function () {
 };
 ```
 
-After that you can access all APIs and methods of [the editor](./api) and [global API](../api).
+After that you can access all APIs and methods of [the editor](api.md) and [global API](../api.md).
 
-Mainly you will create a [panel](./panel) and [custom blocks](./custom-blocks) for the editor.
+Mainly you will create a [panel](panel.md) and [custom blocks](custom-blocks.md) for the editor.

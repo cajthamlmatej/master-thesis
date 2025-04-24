@@ -11,9 +11,9 @@ It contains the following parts.
 
 You can access:
 
-- [Sharing and settings](../player/settings).
-- [Exporting](./export).
-- [Authors of collaboration](./collaboration).
+- [Sharing and settings](../player/settings.md).
+- [Exporting](export.md).
+- [Authors of collaboration](collaboration.md).
 - See the connected users of collaboration.
 - Link to dashboard.
 
@@ -22,7 +22,7 @@ You can access:
 You can access:
 
 - Undo and redo buttons.
-- [Preferences](./preferences) of the editor.
+- [Preferences](preferences.md) of the editor.
 - Language settings.
 
 ## Sidebar
@@ -63,7 +63,7 @@ You can add them by dragging them to the canvas or clicking on them.
 ### Plugins
 
 Plugin managment and their panels.
-For more information, refer to [Plugins](./plugins).
+For more information, refer to [Plugins](../plugins.md).
 
 ### Editor manipulation
 
