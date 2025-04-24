@@ -12,7 +12,7 @@ It is rendered as an iframe (for more information see [Security](../security)).
 ## Communication with plugin
 
 The panel can communicate with the plugin using the [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) API.
-The pllugin can use [sendPanelMessage](./api#sendpanelmessage) to send a message to the panel.
+The plugin can use [sendPanelMessage](./api#sendpanelmessage) to send a message to the panel.
 
 The following example shows how to send a message to the plugin from the panel:
 
@@ -30,8 +30,9 @@ document
 ```
 
 The message in the `postMessage` function is an string that will be sent to the plugin.
+Target is currently only `script`.
 
-The plugin can listen for the message using the `window.addEventListener` function.
+The panel can listen for the message using the `window.addEventListener` function.
 
 ```javascript
 window.addEventListener("message", function(event) {

@@ -26,4 +26,4 @@ Same as in the editor, you can communicate with the plugin (and other way around
 See [Communication](../editor/custom-blocks#communication) for more details.
 
 The player **does not have** something like `pluginBlockPropertyChange` event.
-This means that if you change the properties of the block in the editor, you need to communicate the changes to the player using the communication channel. 
+This means that if you change the properties of the block in the player, you need to communicate the changes to the player using the communication channel. 
