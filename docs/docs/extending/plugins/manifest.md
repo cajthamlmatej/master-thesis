@@ -7,7 +7,7 @@ Some capabilities are marked as critical and for user to be able to use the plug
 
 ## Fields
 
-### `version`
+### `manifest`
 
 The current version of the manifest is `1`.
 In future the version will be different and this documentation will be updated accordingly.
@@ -25,7 +25,7 @@ Valid origin is a string that starts with `http://` or `https://` and ends with 
 
 ```json
 {
-  "version": 1,
+  "manifest": 1,
   "allowedOrigins": [
     "http://localhost:3000",
     "https://example.com"
