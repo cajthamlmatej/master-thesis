@@ -105,8 +105,10 @@ export class MaterialsExportService {
                 await page.screenshot({
                     path: outputFile,
                     type: "jpeg",
-                    quality: 80,
-                })
+                    quality: 10,
+                });
+
+                // TODO: downscale?
 
                 const header = "data:image/jpeg;base64,";
                 slide.thumbnail = header + fs.readFileSync(outputFile).toString('base64');

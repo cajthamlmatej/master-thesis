@@ -30,6 +30,7 @@ import {UsersService} from "../users/users.service";
 import {HydratedDocument} from "mongoose";
 import {User} from "../users/user.schema";
 import FeaturedMaterialsSuccessDTO from "../../dto/material/FeaturedMaterialsSuccessDTO";
+import { normalizeString } from 'src/utils/normalize';
 
 @Controller('')
 export class MaterialsController {
@@ -255,7 +256,7 @@ export class MaterialsController {
             const stream = await this.materialsExportService.exportMaterial(material, format);
 
             return new StreamableFile(stream, {
-                disposition: 'inline; filename="' + material.name + '"; filename*=UTF-8\'\'' + encodeURIComponent(material.name) + '\'\;',
+                disposition: 'inline; filename="' + normalizeString(material.name) + '"; filename*=UTF-8\'\'' + normalizeString(encodeURIComponent(material.name)) + '\'\;',
             });
         } catch (e) {
             console.log(e);
