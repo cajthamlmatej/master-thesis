@@ -148,6 +148,28 @@
 \chapter{Uživatelské rozhraní}\label{appendix:uzivatelskeRozhrani}
 
 
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=1\textwidth,page=9]{text/uzivatelskeProstredi.pdf}
+    \caption{Uživatelské rozhraní hlavní stránky v tmavém režimu}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\begin{minipage}{.4\textwidth}
+  \centering
+    \includegraphics[width=1\textwidth,page=10]{text/uzivatelskeProstredi.pdf}
+    \captionof{figure}{Uživatelské rozhraní hlavní stránky na telefonním zařízení}
+\end{minipage}%
+\hspace{0.1\textwidth}
+\begin{minipage}{.4\textwidth}
+  \centering
+    \includegraphics[width=1\textwidth,page=11]{text/uzivatelskeProstredi.pdf}
+    \captionof{figure}[Uživatelské rozhraní hlavní stránky s otevřenou navigací]{Uživatelské rozhraní hlavní stránky na telefonním zařízení s otevřenou navigací}
+\end{minipage}
+\end{figure}
+
 \chapter{Testovací scénáře}\label{appendix:testovaciScenare}
 
 % TC-U: uživatel (user)
@@ -839,6 +861,35 @@
 
 
 
+\vspace{1em}\noindent{\large\textbf{TC-E-17 -- Přidání spoluúčastníka editace}}
+
+\textbf{Cíl}: Uživatel si v aplikaci přidá do svého materiálu spoluúčastníka editace.
+
+\textbf{Časový limit}: do 5 minut
+
+\textbf{Podmínky}:  Uživatel je v aplikaci přihlášen a nachází se na hlavní stránce.  Uživatel má vytvořený materiál s nějakým obsahem, stejně jako například po TC-E-5. V aplikaci existuje další účet, který lze do materiálu přidat (a ten pozorovatel testování předloží účastníkovi).
+
+\textbf{Kroky}:
+
+\begin{enumerate}[leftmargin=1.4cm]
+    \item Účastník na hlavní stránce otevře materiál klikem na jeho kartičku.
+    \item Účastník v horní navigaci vybere možnosti nastavení.
+    \item Ve vyskakovacím okně vybere možnost editace spolu účastníku editace.
+    \item Účastník zadá e-mail, který mu poskytne pozorovatel testování.
+    \item Pozorovatel se připojí a zkusí práci s editorem.
+\end{enumerate}
+
+\textbf{Očekávané výsledky}:
+
+\begin{enumerate}[leftmargin=1.4cm]
+    \item Do materiálu se dostane testovací účet a může editovat jednotlivé snímky.
+\end{enumerate}
+
+
+
+
+
+
 \vspace{1em}\noindent{\large\textbf{TC-P-1 -- Procházení materiálu}}
 
 \textbf{Cíl}: Uživatel si v aplikaci otevře materiál a bude ho procházet.
@@ -979,4 +1030,34 @@
     \item Účastníkovi se zkopíroval odkaz pro sdílení se sledováním.
     \item Účastník v anonymním režimu v prohlížeči funguje zobrazení materiálu.
     \item Procházení snímku a kresba se synchronizuje od prezentujícího.
+\end{enumerate}
+
+
+
+
+\vspace{1em}\noindent{\large\textbf{TC-P-6 -- Připojení se k sledování}}
+
+\textbf{Cíl}: Uživatel se pomocí odkazu od pozorovatele testování připojí ke sledování a zkouší funkcionality módu sledujícího.
+
+\textbf{Časový limit}: do 5 minut
+
+\textbf{Podmínky}:  V aplikaci existuje testovací účet, ke kterému má přistup pozorovatel a pro tento účet existuje ukázkový materiál. 
+
+\textbf{Kroky}:
+
+\begin{enumerate}[leftmargin=1.4cm]
+    \item Pozorovatel zapne prezentování materiálu.
+    \item Pozorovatel zkopíruje či ukáže kód na připojení účastníkovi.
+    \item Účastník odkaz otevře a případně zadá kód.
+    \item Pozorovatel v materiálu používá různé funkcionality, jako např. kreslení, průchod snímky a podobně.
+    \item Účastník zkusí změnu jazyka, interakci s prvky a další funkcionality.
+\end{enumerate}
+
+\textbf{Očekávané výsledky}:
+
+\begin{enumerate}[leftmargin=1.4cm]
+    \item Materiál je v módu prezentace pro pozorovatele.
+    \item Účastník se připojí ke sledování materiálu.
+    \item Průchod snímky a kreslení se synchronizuje mezi zařízeními.
+    \item S interaktivními prvky materiálu můžou interagovat obě zařízení.
 \end{enumerate}

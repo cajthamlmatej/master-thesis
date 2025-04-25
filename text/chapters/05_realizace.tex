@@ -187,7 +187,7 @@ V opačném případě, tedy při hodnotě \texttt{PRIVATE}, je přístup omezen
 % - materiál může mít nastavenou viditelnost (VISIBILITY) na PRIVATE vs PUBLIC, kdy PUBLIC dovolí to zobrazovat všem (player)
 % - materiál může mít přiřazené kolaborátory, kteří mají přístup k materiálu a přehrávání
 
-% \subsection{Šablony}\todo{není implementované}
+% \subsection{Šablony}
 
 % - procházení
 
@@ -584,7 +584,7 @@ Díky tomu zůstává uživatelské rozhraní přehledné i při práci s komple
 % - např. seskupení, přesunutí do plátna, kopírování
 % - každá akce může mít klávesové zkratky, které dovolují jednoduché akce s editorem
 
-% - jaké byly implementované?\todo{todo}
+% - jaké byly implementované?
 
 % \subsubsection{Vlastnosti bloků}
 
@@ -600,7 +600,7 @@ Díky tomu zůstává uživatelské rozhraní přehledné i při práci s komple
 
 Editor průběžně zaznamenává veškeré důležité události, které se v jeho prostředí odehrávají. 
 Při každé takové události se uloží celý stav editoru, což umožňuje následnou práci s historií změn. 
-Uživatel se může pohybovat zpět nebo vpřed pomocí klasických operací typu \enquote{Zpět} a \enquote{Znovu}. Tento mechanismus využívá princip podobný návrhovému vzoru \emph{memento}~\todo{citace}, kdy se každá změna zaznamenává jako izolovaný snímek stavu editoru.
+Uživatel se může pohybovat zpět nebo vpřed pomocí klasických operací typu \enquote{Zpět} a \enquote{Znovu}. Tento mechanismus využívá princip podobný návrhovému vzoru \emph{memento}~\cite{kerievsky_2004}, kdy se každá změna zaznamenává jako izolovaný snímek stavu editoru.
 
 Velikost uchovávané historie je konfigurovatelná podle preferencí uživatele, aby bylo možné optimalizovat výkon při práci s rozsáhlými materiály. 
 Kromě standardních událostí, které editor sám rozpoznává, existuje i speciální událost.
@@ -1120,7 +1120,7 @@ To znamená, že blok může přijímat data a instrukce ze svého pluginu a sou
 Tento princip umožňuje tvorbu dynamických a interaktivních komponent, které se mohou automaticky aktualizovat na základě vstupu od uživatele nebo změn v aplikační logice.
 
 Překreslování bloků je platformou optimalizováno s cílem minimalizovat výkonnostní dopad. 
-Nedochází k němu při každé drobné změně, ale spíše jen ve chvílích, kdy je to nezbytné pro zachování konzistence zobrazeného obsahu -- tedy zejména při inicializaci nebo po zásadní změně konfigurace.
+Nedochází k němu při každé drobné změně, ale spíše jen ve chvílích, kdy je to nezbytné pro zachování konzistence zobrazeného obsahu~--~tedy zejména při inicializaci nebo po zásadní změně konfigurace.
 
 Definice a registrace vlastních bloků probíhá prostřednictvím rozhraní poskytovaného platformou, přičemž vývojář pluginu má plnou kontrolu nad tím, jaký obsah blok zobrazuje a jak reaguje na různé typy vstupů. 
 V dokumentaci systému jsou uvedeny konkrétní příklady definice bloků, včetně popisu příslušných metod a událostí.
@@ -1516,9 +1516,9 @@ Rozšíření vytvořena (či testována) i dalšími uživateli, kteří se na 
 To umožnilo získat nezávislou zpětnou vazbu, podrobněji popsanou v kapitole o testování. Všechna rozšíření jsou dostupná v přiložené aplikaci a taktéž jako příloha práce.
 Rozšíření jsou dostupná v příloze ve složce SLOŽKA\todo{CESTA K PLUGINŮM}.
 
-\subsection{Centrist}
+\subsection{Zarovnávač}
 
-Centrist je jednoduché rozšíření, které slouží jako pomocník při práci v editoru.
+Zarovnávač (\enquote{Centrist}) je jednoduché rozšíření, které slouží jako pomocník při práci v editoru.
 Jeho funkcionalita se omezuje pouze na editor a nijak nezasahuje do přehrávače (neobsahuje žádný vykonávaný kód).
 Rozšíření vytváří uživatelské rozhraní pro úpravu zarovnání jednotlivých bloků.
 
@@ -1528,16 +1528,16 @@ Toto rozšíření je ukázkou, jak lze bez většího zásahu do systému vytvo
 
 \subsection{Dnešní svátek}
 
-Rozšíření \enquote{Dnešní svátek} poskytuje možnost vložit do materiálu jednoduchý prvek zobrazující svátek aktuálního dne. 
+Rozšíření Dnešní svátek poskytuje možnost vložit do materiálu jednoduchý prvek zobrazující svátek aktuálního dne. 
 Data jsou získávána z veřejně dostupného API služby \texttt{svatkyapi.cz}.
 
 Aby se předešlo opakovanému volání externí služby, využívá se v rámci rozšíření jednoduchá cache. 
 Po načtení dat je výsledek uložen na dobu platnosti, čímž se výrazně snižuje zatížení rozhraní a eliminuje se problém s případným omezením počtu požadavků (rate limiting).
 V manifestu rozšíření je zároveň explicitně uvedeno, že je povoleno připojení na danou doménu API, aby nebyly porušeny bezpečnostní zásady platformy.
 
-\subsection{Fluid background}
+\subsection{Vypočítané pozadí}
 
-Fluid background je vizuálně výrazné a technicky náročnější rozšíření, které demonstruje pokročilé možnosti práce s vykreslováním pomocí WebGL.
+Vypočítané pozadí (\enquote{Fluid backgrounds}) je vizuálně výrazné a technicky náročnější rozšíření, které demonstruje pokročilé možnosti práce s vykreslováním pomocí WebGL.
 Uživatel může pomocí panelu v editoru upravovat různé parametry shaderu, jako jsou barvy, amplitudy, rychlosti pohybu a další vizuální efekty.
 
 Tato ukázka slouží jako příklad toho, jakým způsobem lze vytvářet složitější a zároveň efektivní vizuální bloky, které mohou obohatit prezentaci nebo jiný výukový materiál. 
@@ -1548,7 +1548,7 @@ Rozšíření také ukazuje využití API editoru a jeho schopnost reagovat na z
 \subsection{Slovní stěna}
 
 
-Rozšíření Slovní stěna vytváří v materiálech interaktivní prvek, do kterého mohou sledující zapisovat slova a věty. 
+Rozšíření Slovní stěna (\enquote{Word wall}) vytváří v materiálech interaktivní prvek, do kterého mohou sledující zapisovat slova a věty. 
 Ty se v reálném čase zobrazují přímo v materiálu prezentujícího.
 
 To lze použít při výuce pro rychlé sbírání odpovědí, postřehů nebo asociací bez nutnosti přerušovat výklad. 
@@ -1561,13 +1561,22 @@ Vzhledem k jednoduchému formátu není třeba dlouhé vysvětlování a aktivit
 Rozšíření prezentuje komplexní možnosti rozšíření a to využití API v přehrávači, které dovoluje vzdálenou komunikaci (viz sekce \ref{text:realizace/vzdalenaKomunikace}).
 Mimo komunikaci jsou data dále předávána do bloku pro vykreslení.
 V bloku se vykreslují nejčastější slova s určitou velikosti podle frekvence.
+
+
+\subsection{Hlasování}
+
+Rozšíření Hlasování (\enquote{Yes/no vote}) dovolí uživatelům v materiálech vytvořit interaktivní prvek, ve kterém mohou v reálném čase sledující odpovídat na jednu z možností -- pozitivní a negativní.
+Autor materiálu může vybrat text pro dané možnosti, aby seděl na kontext obsahu materiálu.
+
+Rozšíření je velmi podobné Slovní stěně a využívá skoro stejný kód.
+
+
 % \section{Vytvořené rozšíření}\label{text:realizace/vytvoreneRozsireni}
 
 % - ukázka systému, vytvořeny nějaká rozšíření
 % - ukázka a testování systému
 % - více v testování od lidi, co platformu nevyvijeli pro lepši zhodnoceni
-% - všechny pluginy jsou k dispozici v nahrané aplikaci a v příloze \todo{CESTA K PLUGINŮM}
-
+% - všechny pluginy jsou k dispozici v nahrané aplikaci a v příloze 
 % \subsection{Centrist}
 
 % - ukázka pouze modifikace v editoru (pomocník), nedělá nic v přehrávači, nemá žádný kód
@@ -1588,11 +1597,12 @@ V bloku se vykreslují nejčastější slova s určitou velikosti podle frekvenc
 % - mnoho parametrů přímo v editoru (ukazka API bloku)
 % - nutne resit prekreslovani bloku
 
-% \subsection{Page numberer}\todo{Actually ještě není vytvořené}
+% \subsection{Page numberer}
 
 % - číslování slidů
 
-\section{Ukázkové materiály}\label{text:realizace/vytvoreneMaterialy}
+% \section{Ukázkové materiály}\label{text:realizace/vytvoreneMaterialy}
 
-- ukázka systému, možnost vytvořit komplexní prezentace do jdou v jiných aplikacích
-- více v testování\todo{dopsat}
+% Přo testování systému jsem si vytvořil pár úkazkových materiálů
+% - ukázka systému, možnost vytvořit komplexní prezentace do jdou v jiných aplikacích
+% - více v testování\todo{dopsat}

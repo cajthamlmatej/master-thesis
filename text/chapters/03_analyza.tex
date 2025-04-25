@@ -11,10 +11,10 @@ V závěru jsou definovány klíčové požadavky na uživatele aplikace a funk�
 
 Do vzdělávacího procesu mimo klasické metody patří tvorba a distribuce výukových materiálů.
 Mezi výukové materiály lze zahrnout například prezentace, skripta, plakáty, interaktivní hry, doplňovačky, testy, simulační modely nebo audiovizuální obsah.
-V posledních letech, díky rozvoji digitálních technologií, je stále důležitější sdílet materiály online, aby studenti mohli pracovat samostatně nebo v týmech a měli k materiálům přístup kdykoliv.
+V posledních letech, díky rozvoji digitálních technologií, je stále důležitější sdílet materiály online~\cite{digikompetence}, aby studenti mohli pracovat samostatně nebo v týmech~\cite{kursch2019trendy} a měli k materiálům přístup kdykoliv.
 
 Online sdílení materiálů umožňuje rychlou aktualizaci obsahu, což je zvlášť důležité v případech, kdy se výukový obsah mění nebo vyvíjí v reakci na aktuální potřeby studentů nebo průběh výuky.
-Navíc umožňuje učitelům flexibilně přizpůsobovat obsah individuálním potřebám jednotlivých studentů nebo skupin.
+Navíc umožňuje učitelům flexibilně přizpůsobovat obsah individuálním potřebám jednotlivých studentů~\cite{kursch2019trendy} nebo skupin.
 Studenti se poté cítí, že mohou studovat či si připomenout látku kdekoliv.
 
 Dalším přínosem je možnost zpětné vazby v reálném čase, kdy studenti mohou přímo komentovat, odpovídat a reagovat na obsah materiálu.
@@ -63,17 +63,30 @@ Správně strukturovaná prezentace poskytuje kostru výkladu, umožňuje přehl
 Na trhu existuje celá řada nástrojů určených pro tvorbu prezentací, lišících se funkcionalitou, mírou interaktivity, možnostmi spolupráce a také obtížností při vytváření obsahu.
 Následující podkapitoly popisují vybrané zástupce, kteří jsou pro mou budoucí práci relevantní.
 
+Výběr jednotlivých nástrojů v této části práce byl veden snahou postihnout široké spektrum dostupných řešení pro tvorbu prezentací s ohledem na jejich odlišné přístupy, možnosti a technické zázemí. 
+Záměrně byly vybrány nástroje jak z oblasti tradičních desktopových aplikací (např. PowerPoint), tak i moderních webových řešení (např. Google Slides), open-source frameworků (RevealJS) i akademicky orientovaných systémů (Beamer v \LaTeX). 
+Každý z těchto nástrojů reprezentuje odlišný přístup k tvorbě prezentací -- od intuitivního WYSIWYG rozhraní až po čistě kódové generování -- a poskytuje různé možnosti práce s interaktivitou, spoluprací nebo přizpůsobitelností.
+
 \subsection{PowerPoint}
 
 PowerPoint, součást balíku Microsoft Office, je dlouhodobě vnímán jako standard~\cite{pp_usage} v oblasti tvorby prezentací.
 Mnoho uživatelů jej zná díky intuitivnímu rozhraní a širokému spektru funkcí~\cite{pp_usage}.
 Hlavní výhody PowerPointu spočívají v jeho univerzálnosti, snadné obsluze a perfektní provázanosti s dalšími nástroji Microsoft Office, jako jsou Word či Excel~\cite{pp_excel, pp_word}.
 Nabízí také velkou knihovnu šablon, grafů, přechodových efektů a základní možnosti vkládání multimédií.
+Na obrázku \ref{fig:analyza/powerpoint} je vyobrazena ukázka rozhraní PowerPoint s prezentací. 
 
 Nevýhodou může být omezená kreativita u některých uživatelů vyplývající z lineárního uspořádání snímků a složitého nebo omezeného používání interaktivních prvků. 
 Častým problémem je i kompatibilita mezi staršími a novějšími verzemi formátů.
 Přestože PowerPoint existuje i ve webové verzi umožňující spolupráci v reálném čase, tato online varianta je funkcemi oproti desktopové verzi značně omezena~\cite{pp_platforms}.
 Další nevýhodou je cena –- přístup k plné verzi aplikace je placený, a to často brzdí její širší využití zejména ve školách s omezenými rozpočty.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{media/03_analyza/powerpoint.png}
+    \caption{Prezentace v PowerPoint, prezentace pro státní závěrečnou zkoušku (vlastní zpracování)}
+    \label{fig:analyza/powerpoint}
+\end{figure}
+
 
 \subsection{Google Slides}\label{text:google_slides}
 
@@ -111,8 +124,7 @@ Celkově si uživatelé chválí i možnost modularity těchto snímků a že je
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.9\linewidth]{media/03_analyza/revealjs.png}
-    \caption{RevealJS prezentace s rozdělením kódu a výsledku}\label{fig:analyza:revealjs-ukazka}
-    {\medskip\small Z mnou vytvořené prezentace pro předmět Webové aplikace.} 
+    \caption[RevealJS prezentace s rozdělením kódu a výsledku]{RevealJS prezentace s rozdělením kódu a výsledku (vlastní zpracování)}\label{fig:analyza:revealjs-ukazka}
 \end{figure}
 
 \subsection{Beamer v \LaTeX}
@@ -544,7 +556,7 @@ Každý Realm obsahuje svou vlastní kopii globálního objektu a základních v
 Přestože se jedná o bezpečnější variantu oproti \texttt{eval}, má \texttt{Realms} své omezení, například v podobě složitosti při komunikaci mezi hlavním a izolovaným kontextem. 
 Další problém s \texttt{Realms} je ten, že kód běží na jednom vlákně společně se zbytkem stránky a tak zásek v tomto kódu způsobí zaseknutí celé webové stránky.
 
-Způsob pomocí \texttt{Realms} původně zvažoval a implementoval program Figma~\cite{figma_plugins_blog}.
+Způsob pomocí \texttt{Realms} původně zvažovali a implementovali vývojáři platformy Figma~\cite{figma_plugins_blog}.
 V kapitole \ref{text:figma} je popsán postupný vývoj této platformy a to, jak se rozhodla z Realms, kvůli svým kritickým chybám, přejít na WebAssembly.
 
 \subsection{Iframe}
@@ -628,28 +640,28 @@ Požadavky určují očekávané vlastnosti~\cite{uml_2007} a chování budoucí
 
 Funkční požadavky vymezují konkrétní funkcionality~\cite{uml_2007}, které aplikace musí podporovat. Na těchto požadavcích jsou postaveny případy užití (viz kapitola~\ref{chapter:analyza/uzivatelskePripady}), jež specifikují, jak bude aplikace využívána. Přehled všech identifikovaných funkčních požadavků je uveden níže.
 
+
 \begin{description}
-    \item[F1 -- Uživatelé]
-    Systém musí umožnit správu uživatelských účtů, včetně registrace, přihlášení a změny nastavení uživatele. Ke každému uživateli jsou vedeny různé informace, jako je nastavení a preference. Veškeré uživatelské účty mají stejné pravomoce.
-    
-    \item[F2 -- Materiály]
-    Uživatel musí mít možnost prohlížet, vytvářet, upravovat, sdílet, mazat a spravovat materiály. Materiál je soubor dat, které se vykreslují v přehrávači (viz F3). Mohou obsahovat jednotlivé snímky. Snímky obsahují jednotlivé bloky, které reprezentují např. text, obrázek či pokročilý graf.
-    
-    \item[F3 -- Editor a přehrávač]
-    Systém musí umožnit uživatelům vytvářet a upravovat materiály pomocí vestavěného editoru s podporou správy snímků, bloků a interaktivity.\todo{spolupráce, verzování?}
-    
-    \item[F4 -- Média]
-    Uživatel musí mít možnost přidávat do materiálů různé typy médií, včetně obrázků a videí.
-    
-    \item[F5 -- Šablony]
-    Uživatel musí mít možnost vytvářet a používat šablony pro efektivnější tvorbu materiálů. Šablony jsou předpřipravené materiály, které obsahují různé typy snímků, které lze opakovaně používat. 
-    
-    \item[F6 -- Rozšíření]
-    Systém musí podporovat komunitní rozšíření pro rozšíření funkcionality editoru a přehrávače.
-    Schválená rozšíření budou k dispozici přímo v aplikaci pro instalaci kýmkoliv.
-    
-    \item[F7 -- Import/Export]
-    Systém musí umožnit importování a exportování materiálů do a z různých formátů.
+    \item[F1 -- Správa uživatelů]
+    Systém umožňuje registraci, přihlášení a úpravu uživatelských údajů. Uživatelské účty nemají role, ale uchovávají individuální nastavení a preference.
+
+    \item[F2 -- Tvorba a správa materiálů]
+    Uživatelé mohou vytvářet, upravovat, mazat, sdílet a importovat/exportovat výukové materiály. Materiály se skládají ze snímků a bloků, včetně podpory různých typů obsahu.
+
+    \item[F3 -- Editor]
+    Editor umožňuje práci s bloky na plátně, jejich přesouvání, úpravy, nastavení a kopírování. Podporuje historii změn, přizpůsobení UI a integraci rozšíření.
+
+    \item[F4 -- Přehrávač]
+    Přehrávač zajišťuje zobrazení vytvořených materiálů a interaktivní prezentaci. Umožňuje přehrávání, navigaci i režim kreslení a synchronizaci obsahu.
+
+    \item[F5 -- Interaktivita]
+    Systém umožňuje přidávání interaktivních prvků, jako jsou chaty, dynamické bloky či živé reakce. Mezi instancemi přehrávače je umožněna obousměrná komunikace.
+
+    \item[F6 -- Komunitní rozšíření]
+    Platforma podporuje rozšíření, která lze instalovat přímo z aplikace. Rozšíření mohou využívat API editoru a přehrávače, přidávat nové bloky a dále pracovat s materiálem.
+
+    \item[F7 -- Spolupráce v editoru]
+    Více uživatelů může současně upravovat jeden materiál. Změny jsou synchronizovány v reálném čase a uživatelé vidí aktivitu ostatních.
 \end{description}
 
 
@@ -661,32 +673,29 @@ Nefunkční požadavky~\cite{uml_2007} neurčují přímo funkčnost aplikace, a
 
 \begin{description}
     \item[N1 -- Výkon]
-    Aplikace musí být schopna efektivně pracovat i s velkými materiály bez znatelného zpomalení.
-    
-    \item[N2 -- Webová aplikace]
-    Výsledek musí být webová aplikace, která bude napsána ve validním HTML, CSS a JS.
-    
+    Aplikace musí efektivně pracovat i s rozsáhlými materiály a mnoha interaktivními prvky bez znatelného zpomalení.
+
+    \item[N2 -- Webová platforma]
+    Výsledná aplikace je plně webová a postavena na HTML, CSS a JavaScriptu. Nevyžaduje žádnou instalaci.
+
     \item[N3 -- Bezpečnost]
-    Uživatelé musí být chráněni proti neoprávněnému přístupu k jejich datům pomocí ověřovacích mechanismů.
-    
-    \item[N4 -- Škálovatelnost]
-    Aplikace musí být navržena tak, aby zvládla velký počet uživatelů a jejich materiálů bez ztráty výkonu.
-    
-    \item[N5 -- Podpora jazyků]
-    Systém musí podporovat více jazyků a umožňovat snadnou lokalizaci.
-    
-    \item[N6 -- Kompatibilita]
-    Aplikace musí být přístupná z moderních webových prohlížečů a různých zařízení bez nutnosti instalace softwaru.
-    
-    \item[N7 -- Modularita]
-    Editor musí být navržen modulárně tak, aby bylo možné snadno rozšiřovat jeho funkcionalitu pomocí komunity (vlastní bloky) ale i komunitních rozšíření.
-    
-    \item[N8 -- Responzivní design]
-    Aplikace musí být optimalizovaná pro použití na různých typech zařízení, včetně mobilních telefonů a tabletů.
-    
-    \item[N9 -- Intuitivní uživatelské rozhraní]
-    Rozhraní musí být navrženo s ohledem na použitelnost a jednoduchost, aby umožnilo snadnou práci s materiály.
+    Uživatelská data jsou chráněna pomocí autentizačních a bezpečnostních mechanismů. Pluginy běží izolovaně a nemají přímý přístup k systému.
+
+    \item[N4 -- Modularita a rozšiřitelnost]
+    Architektura systému je navržena modulárně -- jednotlivé části aplikace jsou nezávislé a umožňují snadné rozšíření komunitními pluginy.
+
+    \item[N5 -- Lokalizace]
+    Aplikace podporuje vícejazyčné prostředí a uživatel si může zvolit jazyk rozhraní v osobním nastavení.
+
+    \item[N6 -- Responzivní design]
+    Rozhraní je plně responzivní a uzpůsobené pro použití na různých zařízeních, včetně mobilních telefonů a tabletů.
+
+    \item[N7 -- Intuitivní uživatelské rozhraní]
+    Aplikace byla navržena s důrazem na jednoduché a přehledné rozhraní, které bylo ověřeno uživatelským testováním.
+
 \end{description}
+
+
 \section{Případy užití}\label{chapter:analyza/uzivatelskePripady}
 
 Tato kapitola slouží k definici typů uživatelů aplikace a toho, jak aplikaci budou používat.
@@ -698,7 +707,7 @@ Uživatelé -- aktéři této aplikace se dají rozdělit do následujících po
     \item[Nepřihlášený uživatel] Tedy někdo, kdo je na webové stránce, nemá k dispozici materiál k používání. Může se například přihlásit.
     \item[Přihlášený uživatel] Tedy někdo, kdo je přihlášen v aplikaci a chce v aplikaci používat -- například používat či tvořit materiály.
     \item[Tvůrce] Tedy někdo, kdo vytváří materiály a je přihlášen. Může se jednat o učitele ale i obyčejného uživatele. Jeho cílem je v aplikaci vytvořit prezentaci, plakát či cokoliv jiného. V aplikaci musí být přihlášen.
-    \item[Čtenář] Tedy někdo, kdo přišel do této webové aplikace číst, resp. používat materiály, které vytvořil někdo jiný. Může být přihlášen i nepřihlášen.
+    \item[Sledující] Tedy někdo, kdo přišel do této webové aplikace sledovat, studovat, resp. používat materiály, které vytvořil někdo jiný. Může být přihlášen i nepřihlášen.
 \end{description}
 
 
@@ -708,7 +717,8 @@ Uživatelé -- aktéři této aplikace se dají rozdělit do následujících po
     \caption{Diagram uživatelských případů}\label{fig:uzivatelskePripady}
 \end{figure}
 
-Níže jsou definovány všechny případy užití, které mají být implementovány ve výsledné aplikaci z této práce. Vztahy a propojení s jednotlivými aktéry jsou k dispozici na obrázku~\ref{fig:uzivatelskePripady}.
+Níže jsou definovány všechny případy užití, které mají být implementovány ve výsledné aplikaci z této práce.
+Vztahy a propojení s jednotlivými aktéry jsou k dispozici na obrázku~\ref{fig:uzivatelskePripady}.
 
 \begin{description}
     \item[UC1 -- Registrace]
@@ -717,13 +727,29 @@ Níže jsou definovány všechny případy užití, které mají být implemento
     \item[UC2 -- Přihlášení]
     Uživatel se může přihlásit pomocí e-mailu a hesla. Alternativně lze použít ověření přes e-mail, kdy je na zadaný e-mail zaslán jednorázový přihlašovací kód.
     
-    \item[UC3 -- Prohlížet materiál]
+    \item[UC3 -- Změna jazyka]
+    Uživatel může změnit jazyk aplikace. Aplikace se následně přepne do zvoleného jazyka. 
+
+    \item[UC4 -- Změna nastavení]
+    Uživatel může měnit svá uživatelská nastavení, jako je heslo, e-mail a další osobní údaje.
+    
+    \item[UC5 -- Export dat]
+    Uživatel může v aplikaci požádat o export dat, tedy, že obdrží archív, ve kterém je záloha všech dat, která si o něm a jeho materiálech aplikace ukládá.
+    
+    
+    \item[UC6 -- Tvorba komunitního rozšíření]
+    Uživatel může vytvářet vlastní komunitní rozšíření pro editor a přehrávač materiálů. Tato rozšíření se píší ve skriptovacím jazyce a dovolují uživateli poslouchat různé akce, vytvářet bloky a upravovat je.
+    
+    \item[UC7 -- Prohlížet materiál]
     Uživatel může procházet dostupné materiály. Musí mít možnost přecházet mezi jednotlivými snímky, interagovat s interaktivními prvky, přepnout na celou obrazovku, provádět pohyb v materiálu a další související akce.
     
-    \item[UC4 -- Vytvořit materiál]
+    \item[UC8 -- Sledovat materiál]
+    Uživatel může získat odkaz ke sledování materiálu, tedy, že bude mít s prezentujícím synchronizovaný obsah materiálu, aktuální snímek a další.
+    
+    \item[UC9 -- Vytvořit materiál]
     Uživatel může vytvořit nový materiál buď od začátku, nebo duplikací existujícího materiálu.
     
-    \item[UC5 -- Upravit materiál]
+    \item[UC10 -- Upravit materiál]
     Uživatel může provádět komplexní úpravy materiálu pomocí vestavěného editoru. Upravování je rozděleno do několika dílčích případů:
         
         \begin{description}
@@ -746,68 +772,56 @@ Níže jsou definovány všechny případy užití, které mají být implemento
             Uživatel má přístup k historii úprav, může se pohybovat zpět a vpřed v provedených změnách.
         \end{description}
     
-    \item[UC6 -- Sdílet materiál]
-    Uživatel může nastavit viditelnost materiálu v různých režimech (nepřihlášený, pouze přihlášení uživatelé, soukromý). Lze definovat způsob procházení materiálu (automatický, ruční, pouze interaktivitou). Dále může povolit procházení materiálů jako plátna či jako prezentaci.
+    \item[UC11 -- Sdílet materiál]
+    Uživatel může nastavit viditelnost materiálu v různých režimech (nepřihlášený, pouze přihlášení uživatelé, soukromý). Lze definovat způsob procházení materiálu (automatický, ruční, pouze interaktivitou). Dále může povolit procházení materiálů jako plátna či jako prezentaci. Materiál lze sdílet v módu sledování.
     
-    \item[UC7 -- Správa materiálů]
+    \item[UC12 -- Správa materiálů]
     Uživatel může spravovat své materiály, zobrazit seznam, vyhledávat a provádět různé akce, včetně mazání materiálů.
     
-    \item[UC8 -- Změna nastavení]
-    Uživatel může měnit svá uživatelská nastavení, jako je heslo, e-mail a další osobní údaje.
-    
-    \item[UC9 -- Změna preferencí]
+    \item[UC13 -- Změna preferencí]
     Uživatel může upravovat nastavení editoru, způsob ukládání a způsob používání jednotlivých operací.
-    
-    \item[UC10 -- Změna jazyka]
-    Uživatel může změnit jazyk aplikace. Aplikace se následně přepne do zvoleného jazyka. 
-    
-    \item[UC11 -- Použití šablon]
-    Uživatel může vytvářet, upravovat a používat předdefinované šablony pro rychlejší tvorbu materiálů.
 
-    \item[UC12 -- Použití komunitního rozšíření]
+    \item[UC14 -- Použití komunitního rozšíření]
     Uživatel může instalovat a spravovat komunitní rozšíření, která umožňují přidávání nových funkcí do editoru.
-
     
-    \item[UC13 -- Tvorba komunitního rozšíření]
-    Uživatel může vytvářet vlastní komunitní rozšíření pro editor a přehrávač materiálů. Tato rozšíření se píší ve skriptovacím jazyce a dovolují uživateli poslouchat různé akce, vytvářet bloky a upravovat je.
-    
-    \item[UC14 -- Importování materiálu]
+    \item[UC15 -- Importování materiálu]
     Uživatel může importovat externí soubory nebo formáty pro vytvoření materiálu.
     
-    \item[UC15 -- Exportování materiálu]
+    \item[UC16 -- Exportování materiálu]
     Uživatel může exportovat svůj materiál do různých formátů (např. PDF, obrázky, interaktivní formáty) pro sdílení a archivaci. Tato sdílení z důvodu nespolupracujících formátů budou velmi omezená svojí funkcionalitou a vzhledem.
 \end{description}
 
-
-Matice pokrytí určuje~\cite{uml_2007}, které funkční požadavky jsou nezbytné pro realizaci uživatelských případů. 
-Zajišťuje kontrolu, zda každý funkční požadavek odpovídá alespoň jednomu uživatelskému případu a zda jsou pro každý uživatelský případ definovány všechny potřebné funkční požadavky. 
-Pro tuto analýzu jsem sestavil matici pokrytí funkčních požadavků (viz tabulka~\ref{tabular:maticePokryti}).
-
 \renewcommand{\c}{\checkmark}
 
-\begin{table}[ht!]
+\begin{table}[h!]
 \centering
 \caption[Matice pokrytí funkčních požadavků]{~Matice pokrytí funkčních požadavků}\label{tabular:maticePokryti}
 \begin{tabular}{l|c|c|c|c|c|c|c}
      ~         & F1 & F2 & F3 & F4 & F5 & F6 & F7 \\\hline\hline
      UC1       & \c &    &    &    &    &    &    \\\hline
      UC2       & \c &    &    &    &    &    &    \\\hline
-     UC3       &    & \c & \c &    &    &    &    \\\hline
-     UC4       & \c & \c &    &    &    &    &    \\\hline
-     UC5       &    & \c & \c & \c & \c & \c &    \\\hline
-     UC6       &    & \c & \c &    &    &    &    \\\hline
-     UC7       & \c & \c &    &    &    &    &    \\\hline
-     UC8       & \c &    &    &    &    &    &    \\\hline
-     UC9       & \c &    & \c &    &    &    &    \\\hline
-     UC10      & \c &    &    &    &    &    &    \\\hline
-     UC11      &    & \c & \c &    & \c &    &    \\\hline
-     UC12      & \c &    & \c &    &    & \c &    \\\hline
-     UC13      & \c &    & \c &    &    & \c &    \\\hline
-     UC14      & \c & \c &    & \c &    &    & \c \\\hline
-     UC15      & \c & \c &    & \c &    &    & \c \\
+     UC3       & \c &  &  &    &    &    &    \\\hline
+     UC4       & \c &  &    &    &    &    &    \\\hline
+     UC5       & \c & \c &   &   &   & \c &    \\\hline
+     UC6       & \c & \c & \c & \c &    & \c &    \\\hline
+     UC7       & \c & \c &    & \c &    &    &    \\\hline
+     UC8       & \c & \c&    & \c &    &    & \c\tablefootnote{Ve smyslu synchronizace.} \\\hline
+     UC9       & \c & \c & \c &    &  &  &  \\\hline
+     UC10      & \c & \c & \c &    & \c & \c & \c \\\hline
+     UC11      & \c & \c & \c &    & \c &    &    \\\hline
+     UC12      & \c & \c & \c &    &    & \c &    \\\hline
+     UC13      & \c & \c & \c &    &    & \c &    \\\hline
+     UC14      & \c & \c & \c & \c & \c & \c & \c \\\hline
+     UC15      & \c & \c &    & \c &    &    & \c \\\hline
+     UC16      & \c & \c &    & \c &    &    & \c \\
 \end{tabular}
 \end{table}
 
+
+
+Matice pokrytí určuje~\cite{uml_2007}, které funkční požadavky jsou nezbytné pro realizaci uživatelských případů. 
+Zajišťuje kontrolu, zda každý funkční požadavek odpovídá alespoň jednomu uživatelskému případu a zda jsou pro každý uživatelský případ definovány všechny potřebné funkční požadavky. 
+Pro tuto analýzu jsem sestavil matici pokrytí funkčních požadavků (viz tabulka~\ref{tabular:maticePokryti}).
 
 \section{Doménový model}\label{text:analyza/datovymodel}
 
@@ -815,10 +829,13 @@ Pro lepší porozumění vztahům mezi jednotlivými prvky v aplikaci je nutné 
 
 \begin{description}
     \item[Uživatel] 
-    Entita reprezentující uživatele systému. Obsahuje informace jako jméno a příjmení, e-mailovou adresu, hashované heslo, stav aktivace, aktivační token, datum vytvoření účtu, datum posledního přihlášení a datum poslední změny hesla.
+    Entita reprezentující uživatele systému. Obsahuje informace jako jméno a příjmení, e-mailovou adresu, hašované heslo, stav aktivace, aktivační token, datum vytvoření účtu, datum posledního přihlášení a datum poslední změny hesla.
 
     \item[Žádost o přihlášení] 
     Entita uchovávající kód žádosti o přihlášení, jeho expiraci a stav použití, o které požádal konkrétní uživatel.
+    
+    \item[Žádost o export]
+    Entita reprezentující žádost uživatele o export osobních údajů z platformy.
     
     \item[Preference] 
     Reprezentuje uživatelská nastavení editoru. Obsahuje možnosti ukládání, frekvenci ukládání, velikost historie a specifické funkce editoru. Vytváří se při vytvoření uživatele v aplikaci.
@@ -829,24 +846,21 @@ Pro lepší porozumění vztahům mezi jednotlivými prvky v aplikaci je nutné 
     \item[Materiál] 
     Reprezentuje obsah vytvářený uživatelem. Obsahuje název, datum vytvoření a datum poslední úpravy. Obsahuje jednotlivé snímky.
     
-    \item[Viditelnost] 
-    Definuje viditelnost materiálu v systému pro ostatní uživatele. Je připojena k různým entitám pro správu jejich přístupnosti.
-        
-    \item[Procházení] 
-    Nastavení pro procházení materiálu, zahrnuje způsob procházení a čas automatického přechodu mezi snímky.
-    
-    \item[Mód] 
-    Určuje režim, ve kterém je materiál zobrazen nebo přehráván.
+    \item[Nastavení] 
+    Definuje nastavení materiálu. Například se jedná o viditelnost k ostatním uživatelům, spolu editoři, způsob procházení, mód procházení, čas přechodu.
     
     \item[Snímek] 
     Každý materiál obsahuje snímky, které představují jednotlivé části obsahu. Entita obsahuje náhledový obrázek a pozici v rámci materiálu. Obsahuje taktéž data, která udávají nastavení snímku, např. velikost a šířku, a dále obsahuje bloky materiálu.
     
     \item[Blok] 
-    Základní stavební prvek snímku. Obsahuje atributy jako typ, pozici, velikost, rotaci, přiřazenou skupinu, vrstvu, stav zamknutí a interaktivitu. Má další specifické vlastnosti v závislosti na konkrétním typu bloku. Například se může jednat o text, obrázek či komplexní blok pro zobrazení kódu.
+    Základní stavební prvek snímku. Obsahuje atributy jako typ, pozici, velikost, rotaci, přiřazenou skupinu, vrstvu, stav zamknutí a interaktivitu. Má další specifické vlastnosti v závislosti na konkrétním typu bloku. Například se může jednat o text, obrázek či komplexní blok pro zobrazení kódu
+    
+    \item[Rozšíření]
+    Reprezentuje rozšíření v platformě. Je navázán na autora rozšíření a verze. Verze je konkrétní verze kódu.
 \end{description}
 
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=1\textwidth]{media/03_analyza/domenovy_model.pdf}
     \caption{Diagram doménového modelu}\label{fig:domenovyModel}
-\end{figure}\todo{předělat data a vztahy k nemu, BLOK > DATA nedávají smysl}
+\end{figure}
