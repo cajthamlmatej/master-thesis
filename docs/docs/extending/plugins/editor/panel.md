@@ -5,7 +5,7 @@ It can be used to display information about the plugin, or to provide a way for 
 The panel is displayed in the editor and can be opened and closed by the user.
 
 Every plugin can have none or one panel.
-The panel is registered by using [Editor API callback](api.md#pluginblockrender).
+The panel is registered by using [Editor API callback](api.md#panelRegister).
 It can contain any HTML element and can be styled using CSS.
 It is rendered as an iframe (for more information see [Security](../security.md)).
 
