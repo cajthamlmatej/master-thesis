@@ -90,7 +90,8 @@ export class MaterialsExportService {
         fs.mkdirSync(outputFolder, {recursive: true});
 
         try {
-            for (let slide of material.slides) {
+            const sortedSlides = material.slides.sort((a, b) => a.position - b.position);
+            for (let slide of sortedSlides) {
                 const slideId = slide.id;
                 const outputFile = `${outputFolder}/${slideId}.jpg`;
                 const width = Number(slide.data.editor.size.width);
@@ -136,7 +137,8 @@ export class MaterialsExportService {
 
         let output = `${outputFolder}/output-pdf.pdf`;
 
-        for (let slide of material.slides) {
+        const sortedSlides = material.slides.sort((a, b) => a.position - b.position);
+        for (let slide of sortedSlides) {
             const slideId = slide.id;
             const outputFile = `${outputFolder}/${slideId}.pdf`;
             const width = Number(slide.data.editor.size.width);
@@ -159,7 +161,7 @@ export class MaterialsExportService {
 
         const merger = new PDFMerger();
 
-        for (let slide of material.slides) {
+        for (let slide of sortedSlides) {
             const slideId = slide.id;
             const outputFile = `${outputFolder}/${slideId}.pdf`;
 
