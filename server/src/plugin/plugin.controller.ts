@@ -11,14 +11,14 @@ import {
     UnauthorizedException,
     UseGuards
 } from '@nestjs/common';
-import {PluginService} from "./plugin.service";
-import {RequestWithUser} from "../types";
-import {AllPluginsSuccessDTO} from "../../dto/plugin/AllPluginsSuccessDTO";
-import {SpecificPluginsSuccessDTO} from "../../dto/plugin/SpecificPluginsSuccessDTO";
-import {RequiresAuthenticationGuard} from "../auth/auth.guard";
-import {CreatePluginReleaseDTO} from "../../dto/plugin/CreatePluginReleaseDTO";
-import {CreatePluginDTO} from "../../dto/plugin/CreatePluginDTO";
-import {UpdatePluginDTO} from "../../dto/plugin/UpdatePluginDTO";
+import { PluginService } from "./plugin.service";
+import { RequestWithUser } from "../types";
+import { AllPluginsSuccessDTO } from "../../dto/plugin/AllPluginsSuccessDTO";
+import { SpecificPluginsSuccessDTO } from "../../dto/plugin/SpecificPluginsSuccessDTO";
+import { RequiresAuthenticationGuard } from "../auth/auth.guard";
+import { CreatePluginReleaseDTO } from "../../dto/plugin/CreatePluginReleaseDTO";
+import { CreatePluginDTO } from "../../dto/plugin/CreatePluginDTO";
+import { UpdatePluginDTO } from "../../dto/plugin/UpdatePluginDTO";
 
 @Controller('')
 export class PluginController {
@@ -30,16 +30,20 @@ export class PluginController {
         const plugins = await this.pluginService.getPlugins();
 
         return {
-            plugins: plugins.map((p) => ({
-                id: p.id,
-                author: p.author ? p.author.name : "Unknown",
-                name: p.name,
-                icon: p.icon,
-                description: p.description,
-                tags: p.tags,
-                lastReleaseDate: p.releases[0]?.date.toISOString(),
-                lastManifest: p.releases[0]?.manifest
-            }))
+            plugins: plugins.map((p) => {
+                const sorted = p.releases.sort((a, b) => b.date.getTime() - a.date.getTime());
+
+                return {
+                    id: p.id,
+                    author: p.author ? p.author.name : "Unknown",
+                    name: p.name,
+                    icon: p.icon,
+                    description: p.description,
+                    tags: p.tags,
+                    lastReleaseDate: sorted[0]?.date.toISOString(),
+                    lastManifest: sorted[0]?.manifest
+                }
+            })
         } as AllPluginsSuccessDTO;
     }
 
@@ -143,7 +147,7 @@ export class PluginController {
         }
 
         // Check if one of the code is provided
-        if(!body.editorCode && !body.playerCode) {
+        if (!body.editorCode && !body.playerCode) {
             throw new BadRequestException('You must provide at least one code');
         }
 
