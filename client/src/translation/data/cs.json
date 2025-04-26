@@ -378,7 +378,8 @@
             },
             "watch-link": {
                 "title": "Sdílení odkazu pro sledování",
-                "description": "Sdílejte tento odkaz s ostatními, aby se nyní mohli připojit a sledovat vás průchod materiálem. Tento odkaz je platný pouze pro aktuální zobrazení a po opuštění materiálu již nebude funkční."
+                "description": "Sdílejte tento odkaz s ostatními, aby se nyní mohli připojit a sledovat vás průchod materiálem. Tento odkaz je platný pouze pro aktuální zobrazení a po opuštění materiálu již nebude funkční.",
+                "button": "Zapnout sledování"
             },
             "watch": {
                 "failed": {

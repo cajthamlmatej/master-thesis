@@ -380,7 +380,8 @@
             },
             "watch-link": {
                 "title": "Share Watch Link",
-                "description": "Share this link with others so they can join now and watch your progress through the material. This link is valid only for the current session and will no longer work once you leave the material."
+                "description": "Share this link with others so they can join now and watch your progress through the material. This link is valid only for the current session and will no longer work once you leave the material.",
+                "button": "Enable watching"
             },
             "watch": {
                 "failed": {
