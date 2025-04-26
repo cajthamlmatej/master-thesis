@@ -407,6 +407,10 @@
                 "title": "Materiál není veřejný",
                 "description": "Tento materiál není veřejný a tedy ho nemůžete sdílet s nikým jiným než s autory. Pokud chcete, aby byl veřejný, přejděte do editoru a změňte nastavení viditelnosti."
             }
+        },
+        "disconnected": {
+            "title": "Byl jste odpojen",
+            "help": "Byl jste odpojen od serverů Materalist. Zkontrolujte prosím připojení k internetu a zkuste to znovu. Pokud problém přetrvává, zkuste stránku obnovit nebo se odhlásit a znovu přihlásit."
         }
     },
     "editor": {
@@ -706,6 +710,10 @@
         "attendees": {
             "title": "Účastníci",
             "current": "Vy"
+        },
+        "disconnected": {
+            "title": "Byl jste odpojen",
+            "help": "Byl jste odpojen od serverů Materalist. Zkontrolujte prosím připojení k internetu a zkuste to znovu. Pokud problém přetrvává, zkuste stránku obnovit nebo se odhlásit a znovu přihlásit."
         }
     },
     "blocks": {

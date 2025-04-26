@@ -409,6 +409,10 @@
                 "title": "Material is Not Public",
                 "description": "This material is not public and therefore cannot be shared with anyone except the authors. If you want it to be public, go to the editor and change the visibility settings."
             }
+        },
+        "disconnected": {
+            "title": "You have been disconnected",
+            "help": "You have been disconnected from the Materalist servers. Please check your internet connection and try again. If the problem persists, try refreshing the page or logging out and logging back in."
         }
     },
     "editor": {
@@ -703,6 +707,10 @@
         "attendees": {
             "title": "Attendees",
             "current": "You"
+        },
+        "disconnected": {
+            "title": "You have been disconnected",
+            "help": "You have been disconnected from the Materalist servers. Please check your internet connection and try again. If the problem persists, try refreshing the page or logging out and logging back in."
         }
     },
     "blocks": {

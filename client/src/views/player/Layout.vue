@@ -421,6 +421,8 @@
             <span class="watch--code">{{ watchCode }}</span>
         </div>
     </div>
+
+    <CommunicatorObserver type="player" />
 </template>
 
 <script lang="ts" setup>
@@ -445,6 +447,7 @@ import {communicator} from "@/api/websockets";
 import Card from "@/components/design/card/Card.vue";
 import PluginLocalImport from "@/components/plugin/manage/PluginLocalImport.vue";
 import {useEditorStore} from "@/stores/editor";
+import CommunicatorObserver from "@/components/CommunicatorObserver.vue";
 
 const materialStore = useMaterialStore();
 const playerStore = usePlayerStore();
