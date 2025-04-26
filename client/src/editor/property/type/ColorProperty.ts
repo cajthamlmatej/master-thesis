@@ -40,7 +40,7 @@ export abstract class ColorProperty<T extends EditorBlock = EditorBlock> extends
     public processRecalculateValues() {
         this.recalculateValues((value) => {
             const input = this.element.querySelector<HTMLInputElement>(`[data-property="${this.name}"]`)!;
-            input.value = value.toString();
+            input.value = value?.toString() ?? "#000000";
         });
     }
 
