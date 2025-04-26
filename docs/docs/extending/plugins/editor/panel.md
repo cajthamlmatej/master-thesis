@@ -9,6 +9,12 @@ The panel is registered by using [Editor API callback](api.md#panelRegister).
 It can contain any HTML element and can be styled using CSS.
 It is rendered as an iframe (for more information see [Security](../security.md)).
 
+:::warning
+
+If you need to register a custom block and you **dont need much custom creation logic**, we would recommend using the [Registering custom block](custom-blocks.md) API instead of the panel API for just one action.
+
+:::
+
 ## Communication with plugin
 
 The panel can communicate with the plugin using the [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) API.

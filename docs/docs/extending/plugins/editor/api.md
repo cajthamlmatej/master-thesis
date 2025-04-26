@@ -178,6 +178,16 @@ The `property` argument is the name of the property that was changed.
 
 For more information about custom blocks, visit the [Custom block documentation](custom-blocks.md).
 
+
+### `createCustomBlock`
+
+**Signature**: `on('createCustomBlock', (id: string) => string): void`
+
+The callback is called when user requests a custom block to be created from this plugin that was registered in the editor.
+The `id` argument is the custom block ID that you can recognize in your plugin.
+
+For more information about custom blocks, visit the [Custom block documentation](custom-blocks.md).
+
 ## `sendPanelMessage`
 
 **Signature**: `sendPanelMessage(message: string): void`
@@ -186,3 +196,15 @@ Sends a message to the plugin panel.
 
 
 For more panel information, see [Panel documentation](panel.md).
+
+## `registerCustomBlock`
+
+**Signature**: `registerCustomBlock(data: { id: string, name: string, icon: string }): void`
+
+Registers a custom block in the editor with specific ID, name and icon.
+Icon has to be a valid icon name from the [Material Design Icons](https://materialdesignicons.com/) library.
+
+This custom block will be available in the editor and can be created by the user.
+When user creates this custom block, the `createCustomBlock` event will be triggered in the plugin.
+
+For more information about custom blocks, visit the [Custom block documentation](custom-blocks.md).
