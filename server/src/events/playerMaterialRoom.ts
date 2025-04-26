@@ -48,13 +48,15 @@ export class PlayerMaterialRoom {
     }
 
     public removeListener(client: Socket) {
-        client.leave(this.roomId);
-        this.presenter.emit("watcherLeftPlayerRoom", client.id);
-
         if (this.presenter === client) {
             this.gateway.server.to(this.roomId).emit('presenterDisconnected');
             this.gateway.removePlayerMaterialRoom(this);
+            return;
         }
+        
+        client.leave(this.roomId);
+
+        this.presenter.emit("watcherLeftPlayerRoom", client.id);
     }
 
     getCode() {
