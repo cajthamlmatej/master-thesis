@@ -1,85 +1,34 @@
-export const onPanelMessage = (message) => {
-    const editor = api.editor;
-
-    let centerX = editor.getSize().width / 2;
-    let centerY = editor.getSize().height / 2;
-
-    centerX -= 100;
-    centerY -= 100;
-
-    editor.addBlock({
-        type: 'plugin',
-        position: {
-            x: centerX,
-            y: centerY
-        },
-        size: {
-            width: 200,
-            height: 200
-        },
-        rotation: 0,
-        zIndex: 1000,
-        opacity: 1,
-        data: {},
-        properties: []
-    });
-};
-
-
 export const initEditor = function () {
-    api.editor.on("panelMessage", onPanelMessage);
-    api.editor.on("panelRegister", () => {
-        return `
-    <style>
-        section {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 10px;
-        }
-    
-        section button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding: 10px;
-            border: none;
-            background-color:rgba(236, 236, 239, 0.86);
-            backdrop-filter: blur(18px);
-            cursor: pointer;
-            color: #333;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            font-size: 20px;
-            transition: background-color 0.3s ease;
-            text-align: center;
-            border-radius: 1em;
-        }
-    
-        section button:hover {
-            background-color: rgba(227, 227, 240, 0.86);
-        }
+    api.editor.registerCustomBlock({
+        icon: "form-textbox-password",
+        id: "wordWall",
+        name: "Word Wall",
+    });
+    api.editor.on("createCustomBlock", () => {
+        const editor = api.editor;
 
-        #value {
-            font-weight: bold;
-            font-size: 20px;
-            text-align: center;
-        }
-    </style>
-    
-    <section>
-        <button>
-            Add word wall
-        </button>
-    </section>
-    
-    
-    <script>
-        document.querySelector("button").addEventListener("click", () => {
-            window.parent.postMessage({target: "script", message: "add"}, "*");
+        let centerX = editor.getSize().width / 2;
+        let centerY = editor.getSize().height / 2;
+
+        centerX -= 100;
+        centerY -= 100;
+
+        return editor.addBlock({
+            type: 'plugin',
+            position: {
+                x: centerX,
+                y: centerY
+            },
+            size: {
+                width: 200,
+                height: 200
+            },
+            rotation: 0,
+            zIndex: 1000,
+            opacity: 1,
+            data: {},
+            properties: []
         });
-    </script>
-    `;
     });
     api.editor.on("pluginBlockRender", function (block) {
         return `<!DOCTYPE html>

@@ -1,139 +1,64 @@
-export const onPanelMessage = (message) => {
-    const editor = api.editor;
-
-    let centerX = editor.getSize().width / 2;
-    let centerY = editor.getSize().height / 2;
-
-    centerX -= 100;
-    centerY -= 100;
-
-    const id = editor.addBlock({
-        type: 'plugin',
-        position: {
-            x: centerX,
-            y: centerY
-        },
-        size: {
-            width: 200,
-            height: 200
-        },
-        rotation: 0,
-        zIndex: 1000,
-        opacity: 1,
-        data: {
-        },
-        properties: []
-    });
-
-    let block = editor.getBlocks().find((block) => block.id === id);
-
-    const getName = (fnc) => {
-        if (api.cache.get("svatek") !== undefined) {
-            fnc(api.cache.get("svatek"));
-
-            return;
-        }
-
-        api.fetch('https://svatkyapi.cz/api/day').then((data) => {
-            let name = JSON.parse(data).name;
-            api.cache.set("svatek", name);
-
-            fnc(name);
-        }).catch((error) => {
-            api.log("Could not load svatek: " + error.toString());
-            let name = "Nepodařilo se načíst svátek";
-            api.cache.set("svatek", name);
-            fnc(name);
-        });
-    }
-
-    getName((name) => {
-        editor.sendPanelMessage(name);
-        // @ts-ignore
-        block.sendMessage(name);
-    })
-};
-
-
 export const initEditor = function () {
-    api.editor.on("panelMessage", onPanelMessage);
-    api.editor.on("panelRegister", () => {
-        const getName = async () => {
+    api.editor.registerCustomBlock({
+        icon: "calendar-heart-outline",
+        id: "dnesniSvatek",
+        name: "Dnešní svátek",
+    });
+    api.editor.on("createCustomBlock", () => {
+        const editor = api.editor;
+
+        let centerX = editor.getSize().width / 2;
+        let centerY = editor.getSize().height / 2;
+
+        centerX -= 100;
+        centerY -= 100;
+
+        const id = editor.addBlock({
+            type: 'plugin',
+            position: {
+                x: centerX,
+                y: centerY
+            },
+            size: {
+                width: 200,
+                height: 200
+            },
+            rotation: 0,
+            zIndex: 1000,
+            opacity: 1,
+            data: {
+            },
+            properties: []
+        });
+
+        let block = editor.getBlocks().find((block) => block.id === id);
+
+        const getName = (fnc) => {
             if (api.cache.get("svatek") !== undefined) {
-                return api.cache.get("svatek");
+                fnc(api.cache.get("svatek"));
+
+                return;
             }
 
-            await api.fetch('https://svatkyapi.cz/api/day').then((data) => {
+            api.fetch('https://svatkyapi.cz/api/day').then((data) => {
                 let name = JSON.parse(data).name;
                 api.cache.set("svatek", name);
+
+                fnc(name);
             }).catch((error) => {
                 api.log("Could not load svatek: " + error.toString());
                 let name = "Nepodařilo se načíst svátek";
                 api.cache.set("svatek", name);
+                fnc(name);
             });
-
-            return api.cache.get("svatek");
         }
 
-        getName().then((name) => {
-            api.editor.sendPanelMessage(name);
-        });
+        getName((name) => {
+            // @ts-ignore
+            block.sendMessage(name);
+        })
 
-        return `
-    <style>
-        section {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 10px;
-        }
-    
-        section button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding: 10px;
-            border: none;
-            background-color: #f0f0f0;
-            cursor: pointer;
-            color: #333;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            font-size: 20px;
-            transition: background-color 0.3s ease;
-            text-align: center;
-        }
-    
-        section button:hover {
-            background-color: #e0e0e0;
-        }
-
-        #value {
-            font-weight: bold;
-            font-size: 20px;
-            text-align: center;
-        }
-    </style>
-    
-    <section>
-        <button>
-            Přidat pole dnešního svátku
-        </button>
-    
-        <p>Dnešní svátek má:</p>
-        <span id="value"></span>
-    </section>
-    
-    
-    <script>
-    document.querySelector("button").addEventListener("click", () => {
-        window.parent.postMessage({target: "script", message: "add"}, "*");
-    });
-    window.addEventListener("message", function(event) {
-        document.querySelector("#value").innerText = event.data.message;
-    });
-    </script>
-    `;
+        return block.id;
     });
     api.editor.on("pluginBlockRender", function (block) {
         return `
