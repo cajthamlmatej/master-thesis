@@ -45,7 +45,7 @@
                                 <div v-if="shareType === 'SHARE_LINK'">
                                     <p class="description" v-t>player.share.share-link.description</p>
                                 </div>
-                                <div v-else>
+                                <div v-else-if="watchStarted">
                                     <p class="description" v-t>player.share.watch-link.description</p>
 
                                     <div class="flex flex-justify-center  pt-1" v-if="link">
@@ -61,9 +61,22 @@
                                         {{ watchCode }}
                                     </p>
                                 </div>
+                                <div v-else>
+                                    <p class="description" v-t>player.share.watch-link.description</p>
+
+                                    <Button
+                                        class="mt-1"
+                                        color="primary"
+                                        icon="transit-connection-variant"
+                                        @click="watchStarted = true"
+                                    >
+                                        <span v-t>player.share.watch-link.button</span>
+                                    </Button>   
+                                </div>
+                                
 
                                 <div
-                                    v-if="link"
+                                    v-if="link && (shareType === 'SHARE_LINK' || watchStarted)"
                                     class="flex flex-justify-space-between flex-align-center gap-2 pt-1">
                                     <div class="flex-grow">
                                         <Input v-model:value="link" :readonly="true" hide-error
@@ -393,6 +406,20 @@
                 </Button>
             </Card>
         </Dialog>
+
+        <div class="watch" v-if="watchStarted">    
+            <qrcode-vue 
+                :margin="3" 
+                :size="200" 
+                :value="link"
+                background="white"
+                foreground="black"
+                level="H"
+                render-as="svg"
+            ></qrcode-vue>
+            
+            <span class="watch--code">{{ watchCode }}</span>
+        </div>
     </div>
 </template>
 
@@ -439,6 +466,7 @@ const shareType = ref<string>('SHARE_LINK');
 const canStartWatch = computed(() => {
     return materialStore.currentMaterial?.user === userStore.user?.id || materialStore.currentMaterial?.attendees.find(a => typeof a == "object" ? a.id === userStore.user?.id : false) !== undefined;
 });
+const watchStarted = ref(false);
 
 const link = computed(() => {
     if (!watchCode.value) {
@@ -824,6 +852,40 @@ const refresh = () => {
 </script>
 
 <style lang="scss" scoped>
+.watch {
+    position: fixed;
+    bottom: 0.5em;
+    left: 0.5em;
+    width: 10em;
+    height: 12em;
+    border-radius: 1em;
+    overflow: hidden;
+    z-index: 1000;
+    background-color: white;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: var(--shadow-primary);
+    opacity: 0.9;
+    padding: 0.5rem 0;
+    transition: opacity 0.3s ease-in-out;
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    &--code {
+        font-size: 1.5em;
+        text-align: center;
+    }
+
+    &:hover {
+        opacity: 0;
+    }
+}
+
 .player-header {
     background-color: var(--color-background-accent);
 }
