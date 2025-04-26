@@ -10,4 +10,4 @@ Editor and player component, which is not rendered by Vue.js, is located in `src
 
 ## Debugging
 
-In player you can debug the interactivity properties, variables and plugins by adding a query parameter `?debug=true` to the URL.
+In player you can debug the interactivity properties, variables and plugins by adding a query parameter `?debug=true` or `&debug=true` to the URL.
