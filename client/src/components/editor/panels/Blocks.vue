@@ -6,7 +6,7 @@
                     v-for="block in blocks"
                     :key="block.type"
                     :icon="block.icon"
-                    @mousedown="(e) => add(e, block.type)">
+                    @mousedown="(e: MouseEvent) => add(e, block.type)">
                     <span v-t>blocks.{{block.type}}.name</span>
                 </Button>
             </div>
@@ -18,7 +18,7 @@
                     :key="block.id+block.pluginId"
                     :icon="block.icon"
                     v-tooltip="getPluginName(block.pluginId)"
-                    @mousedown="(e) => addPlugin(e, block)">
+                    @mousedown="(e: MouseEvent) => addPlugin(e, block)">
                     <span>{{block.name}}</span>
                 </Button>
             </div>
