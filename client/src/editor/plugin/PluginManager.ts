@@ -6,6 +6,7 @@ import {PluginCache} from "@/editor/plugin/PluginCache";
 import Player from "@/editor/player/Player";
 import { toRaw } from "vue";
 import Plugin from "@/models/Plugin";
+import { PluginCustomBlock } from "./PluginCustomBlock";
 
 export class PluginManager {
     public static readonly CURRENT_MANIFEST_VERSION = 1;
@@ -95,5 +96,21 @@ export class PluginManager {
         this.plugins = [];
         this.disabledPlugins = [];
         this.cache.clear();
+        this.customBlocks = [];
+    }
+
+    public customBlocks: PluginCustomBlock[] = [];
+    public registerCustomBlock(data: PluginCustomBlock) {
+        if (this.customBlocks.find(b => b.pluginId === data.pluginId && b.id === data.id)) {
+            console.warn(`[PluginManager] Custom block ${data.id} already registered for plugin ${data.pluginId}, skipping`);
+            return;
+        }
+
+        this.customBlocks.push(data);
+        console.log(`[PluginManager] Registered custom block ${data.id} for plugin ${data.pluginId}`);
+    }
+
+    public getCustomBlocks(){
+        return this.customBlocks;
     }
 }

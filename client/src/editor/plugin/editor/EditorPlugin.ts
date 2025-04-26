@@ -25,7 +25,8 @@ export class EditorPlugin {
 
     private callbacks: Record<EditorPluginEvent, QuickJSHandle | undefined> = {
         panelMessage: undefined, panelRegister: undefined,
-        pluginBlockRender: undefined, pluginBlockMessage: undefined, pluginBlockPropertyChange: undefined
+        pluginBlockRender: undefined, pluginBlockMessage: undefined, pluginBlockPropertyChange: undefined,
+        createCustomBlock: undefined
     };
     private api: EditorPluginApi = new EditorPluginApi();
     private pluginMessageCallback: ((message: string) => void) | undefined;
@@ -171,6 +172,15 @@ export class EditorPlugin {
         const serializedBlock = this.serializeBlock(param);
 
         await this.callEvent(EditorPluginEvent.PLUGIN_BLOCK_PROPERTY_CHANGE, serializedBlock, this.context!.newString(key));
+    }
+
+    
+    async createCustomBlock(id: string): Promise<string> {
+        const result = await this.callEvent(EditorPluginEvent.CREATE_CUSTOM_BLOCK, this.context!.newString(id));
+
+        if (!result) return "";
+
+        return this.context!.dump(result.unwrap());
     }
 
     private async prepareContext() {

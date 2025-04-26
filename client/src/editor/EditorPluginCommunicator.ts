@@ -56,4 +56,14 @@ export class EditorPluginCommunicator {
 
         return editorPlugin;
     }
+
+    async createCustomBlock(pluginId: string, id: string): Promise<string> {
+        const editorPlugin = this.getEditorPlugin(pluginId);
+
+        if (!editorPlugin) {
+            return "";
+        }
+
+        return await editorPlugin.createCustomBlock(id);
+    }
 }

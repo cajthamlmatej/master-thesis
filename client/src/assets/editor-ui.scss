@@ -581,6 +581,18 @@
     flex-direction: column;
     gap: 0.5em;
     padding: 1em;
+
+    &--plugins {
+        background-color: var(--color-background-accent);
+        box-shadow: inset var(--shadow-accent);
+    
+        .title {
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 0.5em;
+        }
+    }
 }
 
 .editor-slides {

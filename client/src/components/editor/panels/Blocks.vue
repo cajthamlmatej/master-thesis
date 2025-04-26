@@ -1,13 +1,25 @@
 <template>
     <Navigation v-model:menu="blocksMenu" full-control shift>
         <template #primary>
-            <div v-show="blocksMenu" ref="menu" class="menu editor-blocks">
+            <div v-show="blocksMenu" class="menu editor-blocks">
                 <Button
                     v-for="block in blocks"
                     :key="block.type"
                     :icon="block.icon"
-                    @mousedown="(e: MouseEvent) => add(e, block.type)">
+                    @mousedown="(e) => add(e, block.type)">
                     <span v-t>blocks.{{block.type}}.name</span>
+                </Button>
+            </div>
+            <div v-show="blocksMenu && pluginBlocks.length > 0" class="menu editor-blocks editor-blocks--plugins">
+                <p class="title" v-t>editor.plugin.blocks.title</p>
+
+                <Button
+                    v-for="block in pluginBlocks"
+                    :key="block.id+block.pluginId"
+                    :icon="block.icon"
+                    v-tooltip="getPluginName(block.pluginId)"
+                    @mousedown="(e) => addPlugin(e, block)">
+                    <span>{{block.name}}</span>
                 </Button>
             </div>
         </template>
@@ -16,7 +28,7 @@
 
 <script lang="ts" setup>
 
-import {onMounted, ref, toRaw, watch} from "vue";
+import {computed, onMounted, ref, toRaw, watch} from "vue";
 import {useEditorStore} from "@/stores/editor";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {TextEditorBlock} from "@/editor/block/base/text/TextEditorBlock";
@@ -28,6 +40,8 @@ import {InteractiveAreaEditorBlock} from "@/editor/block/base/interactiveArea/In
 import {MermaidEditorBlock} from "@/editor/block/base/mermaid/MermaidEditorBlock";
 import {IframeEditorBlock} from "@/editor/block/base/iframe/IframeEditorBlock";
 import {ChatEditorBlock} from "@/editor/block/base/chat/ChatEditorBlock";
+import { usePluginStore } from "@/stores/plugin";
+import {PluginCustomBlock} from "@/editor/plugin/PluginCustomBlock";
 
 const blocksMenu = ref(true);
 
@@ -235,5 +249,62 @@ const add = (event: MouseEvent, type: string) => {
 
     window.addEventListener("mousemove", move);
     window.addEventListener("mouseup", up);
+};
+
+const pluginStore = usePluginStore();
+const pluginBlocks = computed(() => {
+    return pluginStore.manager.getCustomBlocks();
+});
+
+const addPlugin = async(event: MouseEvent, blockData: PluginCustomBlock) => {
+    const editorValue = toRaw(editor.value);
+
+    if (!editorValue) {
+        console.error("Editor not initialized");
+        return;
+    }
+
+    const {x: startX, y: startY} = editorValue.screenToEditorCoordinates(event.clientX, event.clientY);
+
+    let blockId = await editorValue.getPluginCommunicator().createCustomBlock(blockData.pluginId, blockData.id);
+
+    const block = editorValue.getBlockById(blockId)!;
+
+    editorValue.getSelector().deselectAllBlocks();
+
+    block.move(startX, startY);
+
+    const move = (event: MouseEvent) => {
+        const {x, y} = editorValue.screenToEditorCoordinates(event.clientX, event.clientY);
+
+        block.move(x, y);
+
+        blocksMenu.value = false;
+    };
+
+    const up = () => {
+        window.removeEventListener("mousemove", move);
+        window.removeEventListener("mouseup", up);
+
+        const diffX = block.position.x - startX;
+        const diffY = block.position.y - startY;
+
+        if (Math.abs(diffX) < 10 && Math.abs(diffY) < 10) {
+            const canvasSize = editorValue.getSize();
+            const blockSize = block.size;
+            block.move(canvasSize.width / 2 - blockSize.width / 2, canvasSize.height / 2 - blockSize.height / 2);
+        }
+
+        editorValue.getSelector().selectBlock(block);
+        blocksMenu.value = false;
+    };
+
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", up);
+};
+
+const getPluginName = (pluginId: string) => {
+    const plugin = pluginStore.manager.getPlugin(pluginId);
+    return plugin ? plugin.getName() : "???";
 };
 </script>

@@ -705,6 +705,9 @@
                     "cancel": "Zrušit",
                     "confirm": "Aktivovat"
                 }
+            },
+            "blocks": {
+                "title": "Bloky pluginů"
             }
         },
         "attendees": {

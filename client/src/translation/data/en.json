@@ -702,6 +702,9 @@
                     "cancel": "Cancel",
                     "confirm": "Activate"
                 }
+            },
+            "blocks": {
+                "title": "Blocks from plugins"
             }
         },
         "attendees": {
