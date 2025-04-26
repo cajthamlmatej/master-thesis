@@ -21,6 +21,36 @@ Consult the [Block API](../block.md) for more details about the block types, the
 
 **Returns**: The ID of the created block.
 
+**Example**:
+```javascript
+const editor = api.editor;
+
+let centerX = editor.getSize().width / 2;
+let centerY = editor.getSize().height / 2;
+
+centerX -= 100;
+centerY -= 100;
+
+const id = editor.addBlock({
+    type: 'text',
+    position: {
+        x: centerX,
+        y: centerY
+    },
+    size: {
+        width: 200,
+        height: 200
+    },
+    rotation: 0,
+    zIndex: 1000,
+    opacity: 1,
+    content: 'Hello World',
+    fontSize: 20,
+});
+```
+
+For all types of blocks, visit the [Block documentation](../block.md).
+
 ## `removeBlock`
 
 **Signature**: `removeBlock(blockId: string): void`
