@@ -5,9 +5,26 @@
                 <div class="meta">
                     <span class="name">{{ material.name }}</span>
 
-                    <span v-t="{start: timeFromStart, slide: timeFromSlide}" class="time">player.timer</span>
-                    <span v-t="{start: timeFromStart, slide: timeFromSlide}"
-                          class="time-short">player.timer-short</span>
+                    <span class="addition">
+                        <span class="time">
+                            <span class="mdi mdi-timer"></span>
+                            {{ timeFromStart }}
+                        </span>
+                        <span class="count" v-if="material.slides.length > 1">
+                            <span class="mdi mdi-cards-variant"></span>
+                            {{ currentSlide+1 }} / {{ material.slides.length }}
+                        </span>
+                        <span class="time" v-if="material.slides.length > 1">
+                            <span class="mdi mdi-cards-variant"></span>
+                            {{ timeFromSlide }}
+                        </span>
+                        <!-- <span v-t="{start: timeFromStart, slide: timeFromSlide}" class="time">player.timer</span>
+                        <span v-t="{start: timeFromStart, slide: timeFromSlide}" class="time-short">player.timer-short</span> -->
+                        <span class="watchers" v-if="watchStarted">
+                            <span class="mdi mdi-account-multiple"></span>
+                            {{ watcherCount }}
+                        </span>
+                    </span>
                 </div>
             </template>
             <template #navigation>
@@ -565,6 +582,8 @@ onMounted(async () => {
     hasNextSlide.value = !!playerStore.getSlides().find(s => s.position > playerStore.getActiveSlide()!.position);
     hasPreviousSlide.value = !!playerStore.getSlides().reverse().find(s => s.position < playerStore.getActiveSlide()!.position);
 
+    currentSlide.value = playerStore.getActiveSlide()!.position;
+
     window.addEventListener("click", click);
     window.addEventListener("keydown", keydown);
     window.addEventListener("mousemove", mousemove);
@@ -604,7 +623,13 @@ const joinWatch = async() => {
     await communicator.getPlayerRoom()?.joined;
 
     joining.value = false;
+
+    setInterval(() => {
+        watcherCount.value = communicator.getPlayerRoom()?.getWatcherCount() ?? 0;
+    }, 1000);
 }
+
+const watcherCount = ref<number>(0);
 
 const tryWithoutCode = async () => {
     const url = router.resolve({
@@ -667,6 +692,7 @@ const click = (e: MouseEvent) => {
 
 const hasNextSlide = ref<boolean>(false);
 const hasPreviousSlide = ref<boolean>(false);
+const currentSlide = ref<number>(0);
 
 const nextSlide = () => {
     if (watching.value) return;
@@ -680,6 +706,8 @@ const nextSlide = () => {
 
     hasNextSlide.value = !!playerStore.getSlides().find(s => s.position > next!.position);
     hasPreviousSlide.value = true;
+
+    currentSlide.value = next.position;
 
     if (!watching.value) {
         communicator.getPlayerRoom()?.changeSlide(next.id);
@@ -697,6 +725,8 @@ const previousSlide = () => {
 
     hasPreviousSlide.value = !!playerStore.getSlides().reverse().find(s => s.position < prev!.position);
     hasNextSlide.value = true;
+
+    currentSlide.value = prev.position;
 
     if (!watching.value) {
         communicator.getPlayerRoom()?.changeSlide(prev.id);
@@ -911,6 +941,10 @@ const refresh = () => {
     .name {
         font-size: 1.5em;
         font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 50vw;
 
         @media (max-width: 768px) {
             font-size: 1.2em;
@@ -919,19 +953,13 @@ const refresh = () => {
 
     .time {
         font-size: 1em;
-
-        @media (max-width: 768px) {
-            display: none;
-        }
     }
 
-    .time-short {
+    .addition {
+        display: flex;
+        align-items: center;
+        gap: 1em;
         font-size: 0.8em;
-        display: none;
-
-        @media (max-width: 768px) {
-            display: block;
-        }
     }
 }
 
