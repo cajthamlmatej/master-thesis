@@ -158,7 +158,7 @@ const recalculate = () => {
             }
         }
 
-        const latestVersion = [...plugin.releases].sort((a, b) => a.date.diff(b.date)).pop();
+        const latestVersion = [...plugin.releases].sort((a, b) => b.date.diff(a.date)).pop();
         if (!latestVersion) {
             return {
                 plugin: p,
