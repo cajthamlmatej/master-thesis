@@ -30,7 +30,10 @@ document
 ```
 
 The message in the `postMessage` function is an string that will be sent to the plugin.
-Target is currently only `script`.
+Valid targets are:
+- `script` - the message will be sent to the plugin script
+- `editor` - the message will be sent to the editor
+    - you can send a message `close` to close the panel
 
 The panel can listen for the message using the `window.addEventListener` function.
 
