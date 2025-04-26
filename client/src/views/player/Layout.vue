@@ -6,7 +6,7 @@
                     <span class="name">{{ material.name }}</span>
 
                     <span class="addition">
-                        <span class="time">
+                        <span class="time" v-if="!watching">
                             <span class="mdi mdi-timer"></span>
                             {{ timeFromStart }}
                         </span>
@@ -14,7 +14,7 @@
                             <span class="mdi mdi-cards-variant"></span>
                             {{ currentSlide+1 }} / {{ material.slides.length }}
                         </span>
-                        <span class="time" v-if="material.slides.length > 1">
+                        <span class="time" v-if="!watching && material.slides.length > 1">
                             <span class="mdi mdi-cards-variant"></span>
                             {{ timeFromSlide }}
                         </span>
