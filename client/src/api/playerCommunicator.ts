@@ -9,7 +9,7 @@ export class PlayerCommunicator {
     private joinedResolve: () => void;
     public readonly joined: Promise<void> = new Promise<void>((resolve) => this.joinedResolve = resolve);
 
-    private count: number = 0;
+    private watchers = new Set<string>();
 
     constructor(material: Material, code: string, isPresenter: boolean, slideId: string) {
         this.material = material;
@@ -89,16 +89,16 @@ export class PlayerCommunicator {
                 clientId
             });
         });
-        communicator.socket.on("watcherJoinedPlayerRoom", () => {
-            this.count++;
+        communicator.socket.on("watcherJoinedPlayerRoom", (id) => {
+            this.watchers.add(id);
         });
-        communicator.socket.on("watcherLeftPlayerRoom", () => {
-            this.count--;
+        communicator.socket.on("watcherLeftPlayerRoom", (id) => {
+            this.watchers.delete(id);
         });
     }
 
     public getWatcherCount() {
-        return this.count;
+        return this.watchers.size;
     }
 
     public changeSlide(slideId: string) {
