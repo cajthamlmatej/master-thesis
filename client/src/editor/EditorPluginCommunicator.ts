@@ -40,7 +40,7 @@ export class EditorPluginCommunicator {
     }
 
     private getEditorPlugin(pluginId: string) {
-        const plugin = this.pluginManager.getPlugin(pluginId);
+        const plugin = toRaw(this.pluginManager).getPlugin(pluginId);
 
         if (!plugin) {
             console.error("[EditorPluginCommunicator] Plugin with ID " + pluginId + " not found.");

@@ -16,7 +16,9 @@ export class PlayerPluginCommunicator {
             return "";
         }
 
-        return await playerPlugin.renderBlock(block);
+        const result = await playerPlugin.renderBlock(block);
+    
+        return result;
     }
 
     async processMessage(block: PluginPlayerBlock, message: string) {
@@ -40,7 +42,7 @@ export class PlayerPluginCommunicator {
     }
 
     private getPlayerPlugin(pluginId: string) {
-        const plugin = this.pluginManager.getPlugin(pluginId);
+        const plugin = toRaw(this.pluginManager).getPlugin(pluginId);
 
         if (!plugin) {
             console.error("[PlayerPluginCommunicator] Plugin with ID " + pluginId + " not found.");

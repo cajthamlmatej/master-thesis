@@ -35,7 +35,7 @@ export default class Player {
     private wheelEvent: (event: WheelEvent) => void;
     private touchEvent: (event: TouchEvent) => void;
 
-    constructor(element: HTMLElement, options: MaterialOptions, blocks: PlayerBlock[]) {
+    constructor(element: HTMLElement, options: MaterialOptions) {
         this.blockRegistry = new BlockRegistry();
         this.element = element;
 
@@ -45,7 +45,6 @@ export default class Player {
         this.fitToParent();
         this.setupUsage();
 
-        this.setBlocks(blocks);
         this.changeMode(PlayerMode.PLAY);
 
         this.draw = new PlayerDraw(this);
@@ -284,7 +283,7 @@ export default class Player {
         this.updateElement();
     }
 
-    private setBlocks(blocks: PlayerBlock[]) {
+    public addBlocks(blocks: PlayerBlock[]) {
         for (const block of blocks) {
             this.addBlock(block);
         }

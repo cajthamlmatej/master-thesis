@@ -128,11 +128,7 @@ const process = () => {
                     }
                 ]);
 
-            const pluginContext = new PluginContext(pluginObj, pluginObj.releases[0]!, editorStore.getEditor()!, playerStore.getPlayer()!);
-
-            pluginStore.plugins.push(pluginObj);
-            await pluginStore.manager.loadPlugin(pluginContext);
-            await pluginStore.getPanels();
+            pluginStore.manager.setDebugPlugin(pluginObj);
 
             emits('done');
         }).catch((error) => {

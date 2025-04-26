@@ -474,7 +474,7 @@ const pluginStore = usePluginStore();
 const router = useRouter();
 const route = useRoute();
 
-const rendering = ref(route.query.rendering === 'true');
+const rendering = computed(() => route.query.rendering === 'true');
 const debugging = computed(() => route.query.debug === 'true');
 
 const joining = ref(false);
@@ -528,7 +528,7 @@ const menu = ref<boolean>(false);
 
 const player = ref<Player | null>(null);
 
-watch(() => playerStore.getPlayer(), (value) => {
+watch(() => playerStore.getPlayer(), async(value) => {
     player.value = value as Player;
 
     if (!material) return;
@@ -551,11 +551,11 @@ const isPresenter = ref<boolean>(false);
 
 const editorStore = useEditorStore();
 onMounted(async () => {
-    if(editorStore.getEditor()) {
-        // Reload the page
-        window.location.reload();
-        return;
-    }
+    // if(editorStore.getEditor()) {
+    //     // Reload the page
+    //     window.location.reload();
+    //     return;
+    // }
 
     await materialStore.load();
     await pluginStore.load();

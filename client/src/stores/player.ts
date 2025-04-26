@@ -123,8 +123,7 @@ export const usePlayerStore = defineStore("player", () => {
         }
 
         const deserializer = new PlayerDeserializer();
-        const pluginStore = usePluginStore();
-        const newPlayer = deserializer.deserialize(slide.data, playerElement.value, new PlayerPluginCommunicator(toRaw(pluginStore.manager) as PluginManager), rendering);
+        const newPlayer = await deserializer.deserialize(slide.data, playerElement.value, rendering);
 
         setPlayer(newPlayer);
         activeSlide.value = slide.id;

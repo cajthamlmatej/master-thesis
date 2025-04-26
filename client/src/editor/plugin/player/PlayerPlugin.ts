@@ -19,7 +19,7 @@ export class PlayerPlugin {
     private baseEvaluation: QuickJSHandle;
 
     private loadedResolve: (value: void) => void;
-    private loadedPromise = new Promise<void>((resolve) => {
+    public loadedPromise = new Promise<void>((resolve) => {
         this.loadedResolve = resolve;
     });
 

@@ -19,7 +19,7 @@ export class EditorPlugin {
     private baseEvaluation: QuickJSHandle;
 
     private loadedResolve: (value: void) => void;
-    private loadedPromise = new Promise<void>((resolve) => {
+    public loadedPromise = new Promise<void>((resolve) => {
         this.loadedResolve = resolve;
     });
 
@@ -128,7 +128,6 @@ export class EditorPlugin {
     }
 
     public async processMessageFromPanel(message: string) {
-        console.log("Processing message from panel");
         const args = this.context!.newString(message);
         const result = await this.callEvent(EditorPluginEvent.PANEL_MESSAGE, args);
 
@@ -141,7 +140,6 @@ export class EditorPlugin {
         await this.loadedPromise;
         const serializedBlock = this.serializeBlock(block);
 
-        console.log("Calling render block event");
         const result = await this.callEvent(EditorPluginEvent.PLUGIN_BLOCK_RENDER, serializedBlock);
 
         if (!result) {

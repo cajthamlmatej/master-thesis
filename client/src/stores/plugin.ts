@@ -12,13 +12,15 @@ import {PluginContext} from "@/editor/plugin/PluginContext";
 import {usePlayerStore} from "@/stores/player";
 import {useRouter} from "vue-router";
 import {useUserStore} from "@/stores/user";
+import Editor from "@/editor/Editor";
+import Player from "@/editor/player/Player";
 
 export const usePluginStore = defineStore("plugin", () => {
     const plugins = ref([] as Plugin[]);
     let loadedResolve = (val?: any) => {};
     let loaded = new Promise((r) => loadedResolve = r);
 
-    let pluginManager = new PluginManager();
+    let pluginManager = ref<PluginManager>(new PluginManager());
     const pluginPanels = ref<PluginEditorPanel[]>([]);
 
     const editorStore = useEditorStore();
@@ -36,7 +38,7 @@ export const usePluginStore = defineStore("plugin", () => {
 
     const router = useRouter();
     watch(() => router.currentRoute.value, async () => {
-        pluginManager = new PluginManager();
+        pluginManager.value = new PluginManager();
     });
 
     const load = async () => {
@@ -62,7 +64,7 @@ export const usePluginStore = defineStore("plugin", () => {
         plugins.value = plugins.value.map((p) => {
             const plugin = response.plugins.find((plugin) => plugin.id === p.id);
             if (!plugin) {
-                console.error("Plugin is loaded but currently not in the list", p.id);
+                //console.error("Plugin is loaded but currently not in the list", p.id);
                 return p;
             }
 
@@ -98,29 +100,19 @@ export const usePluginStore = defineStore("plugin", () => {
     }
 
     const getPanels = async () => {
-        pluginPanels.value = await pluginManager.getEditorPanels();
+        pluginPanels.value = await pluginManager.value.getEditorPanels();
     }
 
-    watch(() => editorStore.getEditor(), async (value) => {
-        loadPlugins();
-    });
-    watch(() => playerStore.getPlayer(), async () => {
-        loadPlugins();
-    });
-
-    const loadPlugins = async () => {
-        const editor = toRaw(editorStore.getEditor());
-        const player = toRaw(playerStore.getPlayer());
-
+    const loadPlugins = async (editor?: Editor, player?: Player) => {
         loaded = new Promise((r) => loadedResolve = r);
+
+        pluginManager.value.clear();
 
         const material = toRaw(materialStore.currentMaterial) as Material | undefined;
         if (!material) return;
 
-        pluginManager.clear();
-
         const toLoadPlugins = (material.plugins
-            .filter((p) => !pluginManager.isActive(p.plugin))
+            // .filter((p) => !pluginManager.isActive(p.plugin))
             .map((p) => plugins.value.find((plugin) => plugin.id === p.plugin))
             .filter((p) => p !== undefined) as Plugin[])
             .filter((p) => p.releases.length <= 0)
@@ -131,7 +123,7 @@ export const usePluginStore = defineStore("plugin", () => {
         }
 
         for (const plugin of material.plugins) {
-            if (pluginManager.isActive(plugin.plugin)) continue;
+            // if (pluginManager.isActive(plugin.plugin)) continue;
 
             const pluginObject = plugins.value.find((p) => p.id === plugin.plugin);
 
@@ -149,13 +141,22 @@ export const usePluginStore = defineStore("plugin", () => {
 
             const pluginContext = new PluginContext(pluginObject, release, editor, player);
 
-            await pluginManager.loadPlugin(pluginContext);
+            await pluginManager.value.loadPlugin(pluginContext);
+            await pluginContext.loaded;
         }
+
+        if(pluginManager.value.debugPlugin) {
+            const debugPlugin = pluginManager.value.debugPlugin;
+            const pluginContext = new PluginContext(debugPlugin, debugPlugin.releases[0]!, editor, player);
+
+            await pluginManager.value.loadPlugin(pluginContext);
+            await pluginContext.loaded;
+        }
+
         loadedResolve();
 
+    
         await getPanels();
-        editor?.redrawBlocks();
-        player?.redrawBlocks();
     }
 
     // watch(() => materialStore.currentMaterial, async () => {
@@ -191,7 +192,7 @@ export const usePluginStore = defineStore("plugin", () => {
 
         await materialStore.save();
 
-        await pluginManager.loadPlugin(
+        await pluginManager.value.loadPlugin(
             new PluginContext(plugin,
                 plugin.releases.find((r) => r.version === lastRelease)!,
                 editorStore.getEditor()!, playerStore.getPlayer()!));
@@ -216,9 +217,9 @@ export const usePluginStore = defineStore("plugin", () => {
 
         await materialStore.save();
 
-        pluginManager.removePlugin(plugin.getId());
+        pluginManager.value.removePlugin(plugin.getId());
 
-        pluginPanels.value = await pluginManager.getEditorPanels();
+        pluginPanels.value = await pluginManager.value.getEditorPanels();
         materialStore.synchronize();
 
         return true;
@@ -274,6 +275,7 @@ export const usePluginStore = defineStore("plugin", () => {
         plugins,
         loaded,
         load,
+        loadPlugins,
         loadOne,
         tags,
         panels: pluginPanels,

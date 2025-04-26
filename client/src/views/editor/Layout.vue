@@ -221,11 +221,11 @@ const router = useRouter();
 
 const playerStore = usePlayerStore();
 onMounted(async () => {
-    if(playerStore.getPlayer()) {
-        // Reload the page
-        window.location.reload();
-        return;
-    }
+    // if(playerStore.getPlayer()) {
+    //     // Reload the page
+    //     window.location.reload();
+    //     return;
+    // }
     window.addEventListener("click", handleClick);
 
     await materialStore.load();

@@ -99,7 +99,7 @@
                         </template>
                         <template #default="{toggle}">
                             <Card dialog>
-                                <PluginLocalImport @done="toggle" />
+                                <PluginLocalImport @done="() => { toggle(); refresh()}" />
                             </Card>
                         </template>
                     </Dialog>
@@ -184,7 +184,7 @@ const removePlugin = async (plugin: PluginContext) => {
     loading.value = true;
     await pluginStore.removePluginFromMaterial(plugin);
 
-    const editor = useEditorStore().getEditor();
+    const editor = editorStore.getEditor();
 
     if(editor) {
         editor.redrawBlocks();
@@ -195,4 +195,10 @@ const removePlugin = async (plugin: PluginContext) => {
 };
 
 const manifestVersion = PluginManager.CURRENT_MANIFEST_VERSION;
+
+const editorStore = useEditorStore();
+
+const refresh = () => {
+    editorStore.changeSlide(editorStore.getActiveSlide()!);
+};
 </script>
