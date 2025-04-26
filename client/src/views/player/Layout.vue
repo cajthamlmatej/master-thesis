@@ -488,6 +488,10 @@ const canStartWatch = computed(() => {
 });
 const watchStarted = ref(false);
 
+onUnmounted(() => {
+    communicator.getPlayerRoom()?.destroy();
+});
+
 const link = computed(() => {
     if (!watchCode.value) {
         return undefined;
