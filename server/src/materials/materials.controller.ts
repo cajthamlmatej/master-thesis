@@ -243,9 +243,15 @@ export class MaterialsController {
     @Get('/material/:id/export/:format')
     @UseGuards(RequiresAuthenticationGuard)
     async export(@Param('id') id: string, @Req() req: RequestWithUser, @Param('format') format: string) {
-        const material = await this.materialsService.findById(id);
+        let material = await this.materialsService.findById(id);
 
         if (!material) throw new BadRequestException("Material not found");
+
+        const editorRoom = this.eventsGateway.getEditorRoom(material.id);
+        if (editorRoom !== undefined) {
+            material = editorRoom.getMaterial();
+        }
+
         if (material.user.toString() !== req.user.id) {
             if(!material.attendees.map(a => a.toString()).includes(req.user.id.toString())) {
                 throw new UnauthorizedException('You are not allowed to access this resource');
