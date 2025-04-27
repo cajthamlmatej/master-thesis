@@ -1,31 +1,31 @@
 <template>
 
-    <Card fluid class="mb-1">
+    <Card class="mb-1" fluid>
         <div class="flex flex-justify-center flex-justify-sm-space-between flex-align-center flex-wrap gap-1">
-            <span class="main-title" v-t>page.featured.title</span>
+            <span v-t class="main-title">page.featured.title</span>
             <div class="flex flex-align-center gap-1">
                 <Dialog>
                     <template #activator="{toggle}">
                         <Button v-tooltip="$t('page.featured.remove.tooltip')"
                                 :label="$t('page.featured.remove.tooltip')"
                                 color="primary"
-                                @click="toggle"
-                                icon="minus"/>
+                                icon="minus"
+                                @click="toggle"/>
                     </template>
                     <template #default="{toggle}">
                         <Card dialog>
-                            <p class="title" v-t>page.featured.remove.title</p>
+                            <p v-t class="title">page.featured.remove.title</p>
 
-                            <p class="description" v-t>page.featured.remove.description</p>
+                            <p v-t class="description">page.featured.remove.description</p>
 
                             <Select
-                                :choices="choicesMaterialsRemove"
                                 v-model:value="selectedMaterialRemove"
+                                :choices="choicesMaterialsRemove"
                             />
 
                             <div class="flex flex-justify-end">
-                                <Button @click="() => {featureMaterialRemove(); toggle()}"
-                                        :disabled="!selectedMaterialRemove">
+                                <Button :disabled="!selectedMaterialRemove"
+                                        @click="() => {featureMaterialRemove(); toggle()}">
                                     <span v-t>page.featured.remove.remove</span>
                                 </Button>
                             </div>
@@ -37,23 +37,23 @@
                         <Button v-tooltip="$t('page.featured.new.tooltip')"
                                 :label="$t('page.featured.new.tooltip')"
                                 color="primary"
-                                @click="toggle"
-                                icon="plus"/>
+                                icon="plus"
+                                @click="toggle"/>
                     </template>
                     <template #default="{toggle}">
                         <Card dialog>
-                            <p class="title" v-t>page.featured.new.title</p>
+                            <p v-t class="title">page.featured.new.title</p>
 
-                            <p class="description" v-t>page.featured.new.description</p>
+                            <p v-t class="description">page.featured.new.description</p>
 
                             <Select
-                                :choices="choicesMaterialsAdd"
                                 v-model:value="selectedMaterialAdd"
+                                :choices="choicesMaterialsAdd"
                             />
 
                             <div class="flex flex-justify-end">
-                                <Button @click="() => {featureMaterialAdd(); toggle()}"
-                                        :disabled="!selectedMaterialAdd">
+                                <Button :disabled="!selectedMaterialAdd"
+                                        @click="() => {featureMaterialAdd(); toggle()}">
                                     <span v-t>page.featured.new.add</span>
                                 </Button>
                             </div>
@@ -68,7 +68,7 @@
         <Alert v-if="featuredMaterials.length <= 0">
             <span v-t>page.featured.empty</span>
         </Alert>
-        <Row align="stretch" :gap="1" wrap v-if="featuredMaterials.length >= 1">
+        <Row v-if="featuredMaterials.length >= 1" :gap="1" align="stretch" wrap>
             <Col v-for="material in featuredMaterials" :key="material.id" cols="12" lg="4" md="4" sm="6">
                 <article class="material" @click="router.push({name: 'Player', params: {material: material.id}})">
                     <div class="image-holder">
@@ -79,9 +79,9 @@
 
                     <div class="meta">
                         <div class="state">
-                            <p class="title" v-tooltip="material.name">{{ material.name }}</p>
+                            <p v-tooltip="material.name" class="title">{{ material.name }}</p>
 
-                            <p class="author" v-tooltip="material.user">{{material.user}}</p>
+                            <p v-tooltip="material.user" class="author">{{ material.user }}</p>
                         </div>
                     </div>
                 </article>
@@ -96,7 +96,6 @@ import {useRouter} from "vue-router";
 import {computed, onMounted, ref} from "vue";
 import {useMaterialStore} from "@/stores/material";
 import {$t} from "@/translation/Translation";
-import FileInput from "@/components/design/input/FileInput.vue";
 import Select from "@/components/design/select/Select.vue";
 
 const router = useRouter();
@@ -106,12 +105,12 @@ const featuredMaterials = computed(() => {
     return materialStore.featured;
 })
 
-const load = async() => {
+const load = async () => {
     await materialStore.loadFeatured();
     await materialStore.load();
 }
 
-onMounted(async() => {
+onMounted(async () => {
     load();
 })
 
@@ -127,7 +126,7 @@ const choicesMaterialsAdd = computed(() => {
             }
         })
 });
-const featureMaterialAdd = async() => {
+const featureMaterialAdd = async () => {
     const material = materialStore.materials.find(material => material.id === selectedMaterialAdd.value);
     if (!material) return;
 
@@ -153,7 +152,7 @@ const choicesMaterialsRemove = computed(() => {
         })
 });
 
-const featureMaterialRemove = async() => {
+const featureMaterialRemove = async () => {
     const material = materialStore.materials.find(material => material.id === selectedMaterialRemove.value);
     if (!material) return;
 
@@ -171,6 +170,7 @@ const featureMaterialRemove = async() => {
     font-weight: bold;
     line-height: 1.05em;
 }
+
 article.material {
     //border: 1px solid #ccc;
     background-color: var(--color-background-accent);

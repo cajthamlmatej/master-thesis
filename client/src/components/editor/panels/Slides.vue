@@ -19,15 +19,15 @@
                             </div>
 
                             <div class="attendees">
-                                <div class="attendee"
-                                        v-for="attendee in attendees.find(a => a.slide === slide.id)?.attendees"
-                                        :key="attendee.id"
-                                        :style="{
+                                <div v-for="attendee in attendees.find(a => a.slide === slide.id)?.attendees"
+                                     :key="attendee.id"
+                                     :style="{
                                             '--color': attendee.color,
                                         }"
+                                     class="attendee"
                                 >
                                     <span class="visualiser">
-                                        {{attendee.icon}}
+                                        {{ attendee.icon }}
                                     </span>
                                 </div>
                             </div>
@@ -39,7 +39,7 @@
                             </div>
                             <div class="actions">
                                 <SlideSettings :key="slide.getSize().width +'-'+ slide.getSize().height "
-                                                   :slide="slide"/>
+                                               :slide="slide"/>
 
                                 <i v-tooltip="$t('editor.panel.slides.action.up')" :class="{disabled: i === 0}"
                                    class="mdi mdi-arrow-up" @click="materialStore.moveSlide(slide, -1)"/>
@@ -80,7 +80,7 @@ const attendees = ref<{
     slide: string,
     attendees: EditorAttendee[]
 }[]>([]);
-onMounted(async() => {
+onMounted(async () => {
     editorRoom = communicator.getEditorRoom()!;
     updateAttendees();
     editorRoom.EVENTS.ATTENDEE_SLIDES_CHANGED.on(() => {

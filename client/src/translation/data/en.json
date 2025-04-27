@@ -82,7 +82,6 @@
                 "own": "Created by me",
                 "shared": "Shared with me"
             },
-
             "new": {
                 "tooltip": "Create new material",
                 "import": {
@@ -103,7 +102,6 @@
                 },
                 "empty": "Empty material"
             },
-
             "new-material": "New material"
         },
         "authentication": {

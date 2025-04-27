@@ -10,12 +10,12 @@ describe('Base - Cookies', () => {
         expect(localStorage.getItem("cookies")).to.be.null;
     });
     it('Clicking on accept should set cookies', () => {
-        cy.get("[data-cy=cookies-accept]").click().then(()=>{
+        cy.get("[data-cy=cookies-accept]").click().then(() => {
             expect(localStorage.getItem("cookies")).to.eq("true");
         })
     });
     it('Cookies should disappear', () => {
-        cy.get("[data-cy=cookies-accept]").click().then(()=>{
+        cy.get("[data-cy=cookies-accept]").click().then(() => {
             expect(localStorage.getItem("cookies")).to.eq("true");
             cy.get("[data-cy=cookies]").should('not.exist');
         })

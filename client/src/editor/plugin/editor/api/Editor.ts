@@ -13,7 +13,7 @@ import {DeselectBlockApiFeature} from "@/editor/plugin/editor/api/editor/Deselec
 import {IsBlockSelectedApiFeature} from "@/editor/plugin/editor/api/editor/IsBlockSelected";
 import {EventsApiFeature} from "@/editor/plugin/editor/api/editor/Events";
 import {PanelMessageApiFeature} from "@/editor/plugin/editor/api/editor/PanelMessage";
-import { RegisterCustomBlockApiFeature } from "./editor/RegisterCustomBlock";
+import {RegisterCustomBlockApiFeature} from "./editor/RegisterCustomBlock";
 
 export class EditorApiFeature extends EditorPluginApiFeature {
     register(obj: QuickJSHandle, data: EditorPluginApiData): void {

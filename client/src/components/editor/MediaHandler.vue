@@ -12,12 +12,12 @@ import {useMediaStore} from "@/stores/media";
 const mediaStore = useMediaStore();
 const editorStore = useEditorStore();
 
-let handleDrop = async(e: DragEvent) => {
+let handleDrop = async (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
     const editor = editorStore.getEditor();
-    if(!editor) {
+    if (!editor) {
         return;
     }
 
@@ -33,7 +33,7 @@ let handleDrop = async(e: DragEvent) => {
         if (mime.startsWith("image/")) {
             const response = await mediaStore.upload(file);
 
-            if(!response) {
+            if (!response) {
                 console.error("Failed to upload image:", file);
                 return;
             }

@@ -5,6 +5,7 @@ import Player from "@/editor/player/Player";
 import {PlayerPlugin} from "@/editor/plugin/player/PlayerPlugin";
 
 export class PluginContext {
+    public loaded: Promise<void>;
     private id: string;
     private name: string;
     private manifestVersion: number;
@@ -12,11 +13,8 @@ export class PluginContext {
     private version: string;
     private icon: string;
     private allowedOrigins: string[] = [];
-
     private readonly editorPlugin: EditorPlugin | undefined;
     private readonly playerPlugin: PlayerPlugin | undefined;
-
-    public loaded: Promise<void>;
 
     constructor(plugin: Plugin, release: PluginRelease, editor?: Editor, player?: Player) {
         this.parseManifest(release.manifest);
@@ -41,7 +39,7 @@ export class PluginContext {
 
         //console.log(this.playerPlugin, this.editorPlugin);
 
-        this.loaded = Promise.all([this.playerPlugin?.loadedPromise, this.editorPlugin?.loadedPromise].filter(a=>a)).then();
+        this.loaded = Promise.all([this.playerPlugin?.loadedPromise, this.editorPlugin?.loadedPromise].filter(a => a)).then();
     }
 
     public getEditorPlugin() {

@@ -1,4 +1,3 @@
-
 export const interpolateColor = (f: number, color1: string, color2: string) => {
     if (f > 1) f = 1;
     if (f < 0) f = 0;

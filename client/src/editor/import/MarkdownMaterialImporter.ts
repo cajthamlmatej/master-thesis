@@ -1,8 +1,7 @@
 import {MaterialImporter} from "@/editor/import/MaterialImporter";
-import Material, {Slide} from "@/models/Material";
+import Material, {Slide, SlideData as MaterialSlideData} from "@/models/Material";
 import {marked} from "marked";
 import {generateUUID} from "@/utils/Generators";
-import {SlideData as MaterialSlideData} from "@/models/Material";
 
 
 interface SlideData {
@@ -122,10 +121,10 @@ export class MarkdownMaterialImporter extends MaterialImporter {
                 }
             };
 
-            correctSlides.push(new Slide(generateUUID(), data, undefined,0));
+            correctSlides.push(new Slide(generateUUID(), data, undefined, 0));
         })();
 
-        for(let slide of slides) {
+        for (let slide of slides) {
             let blocks = [] as any[];
 
             let padding = 20;
@@ -162,8 +161,8 @@ export class MarkdownMaterialImporter extends MaterialImporter {
 
             lastSpace += gaps;
 
-            for(let block of slide.blocks) {
-                switch(block.type) {
+            for (let block of slide.blocks) {
+                switch (block.type) {
                     case "paragraph": {
                         let fontSize = 48;
                         let height = fontSize * 1.5;

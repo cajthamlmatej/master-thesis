@@ -29,14 +29,13 @@
         <p v-t class="mb-1">page.plugins.new-release.help</p>
 
         <Input v-model:value="data.version"
-           :label="$t('page.plugins.new-release.info.version.label')"
+               :label="$t('page.plugins.new-release.info.version.label')"
                :validators="[
                     (value: string) => value.length > 0 || $t('page.plugins.release.new-release.version.error'),
                     (value: string) => value.length <= 255 || $t('page.plugins.release.new-release.version.error'),
                ]"
         />
-        <Input type="textarea" v-model:value="data.manifest"
-           :label="$t('page.plugins.new-release.info.manifest.label')"
+        <Input v-model:value="data.manifest" :label="$t('page.plugins.new-release.info.manifest.label')"
                :validators="[
                     (value: string) => isValidJSON(value) || $t('page.plugins.new-release.info.manifest.error'),
                     (value: string) => !!JSON.parse(value).manifest || $t('page.plugins.new-release.info.manifest.required'),
@@ -44,31 +43,32 @@
                     (value: string) => !JSON.parse(value).allowedOrigins ? true : ((Array.isArray(JSON.parse(value).allowedOrigins) && JSON.parse(value).allowedOrigins.every((a: any) => typeof a === 'string' && !!a.match(/^https?:\/\/[a-z]+.[a-z]+$/))) || $t('page.plugins.release.info.manifest.allowedOrigins')),
                     (value: string) => value.length <= 32768 || $t('page.plugins.release.info.manifest.length'),
                ]"
+               type="textarea"
         />
     </div>
     <div v-else-if="releaseInfo == 'CHANGELOG'">
-        <Input type="textarea" v-model:value="data.changelog"
-               :label="$t('page.plugins.new-release.info.changelog.label')"
+        <Input v-model:value="data.changelog" :label="$t('page.plugins.new-release.info.changelog.label')"
                :validators="[
                     (value: string) => value.length > 0 || $t('page.plugins.release.new-release.changelog.error'),
                     (value: string) => value.length <= 32768 || $t('page.plugins.release.new-release.changelog.error'),
                ]"
+               type="textarea"
         />
     </div>
     <div v-else-if="releaseInfo == 'EDITOR'">
-        <Input type="textarea" v-model:value="data.editor"
-               :label="$t('page.plugins.new-release.info.editor.label')"
+        <Input v-model:value="data.editor" :label="$t('page.plugins.new-release.info.editor.label')"
                :validators="[
                    (value: string) => value.length <= 131072 || $t('page.plugins.release.new-release.editor.error'),
                ]"
+               type="textarea"
         />
     </div>
     <div v-else-if="releaseInfo == 'PLAYER'">
-        <Input type="textarea" v-model:value="data.player"
-               :label="$t('page.plugins.new-release.info.player.label')"
+        <Input v-model:value="data.player" :label="$t('page.plugins.new-release.info.player.label')"
                :validators="[
                    (value: string) => value.length <= 131072 || $t('page.plugins.release.new-release.player.error'),
                ]"
+               type="textarea"
         />
     </div>
     <div v-else-if="releaseInfo == 'SUMMARY'">
@@ -86,7 +86,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import {$t} from "@/translation/Translation";
 import Tabs from "@/components/design/tabs/Tabs.vue";
@@ -121,35 +121,35 @@ const isValidJSON = (value: string) => {
 };
 
 const canContinue = () => {
-    if(data.version.length === 0) {
+    if (data.version.length === 0) {
         return false;
     }
 
-    if(data.manifest.length === 0) {
+    if (data.manifest.length === 0) {
         return false;
     }
 
-    if(!isValidJSON(data.manifest)) {
+    if (!isValidJSON(data.manifest)) {
         return false;
     }
 
-    if(!JSON.parse(data.manifest).manifest) {
+    if (!JSON.parse(data.manifest).manifest) {
         return false;
     }
 
-    if(!((typeof JSON.parse(data.manifest).manifest == 'number' && Math.round(Number(JSON.parse(data.manifest).manifest)) === JSON.parse(data.manifest).manifest && !isNaN(Number(JSON.parse(data.manifest).manifest))))) {
+    if (!((typeof JSON.parse(data.manifest).manifest == 'number' && Math.round(Number(JSON.parse(data.manifest).manifest)) === JSON.parse(data.manifest).manifest && !isNaN(Number(JSON.parse(data.manifest).manifest))))) {
         return false;
     }
 
-    if(!(!JSON.parse(data.manifest).allowedOrigins ? true : ((Array.isArray(JSON.parse(data.manifest).allowedOrigins) && JSON.parse(data.manifest).allowedOrigins.every((a: any) => typeof a === 'string' && !!a.match(/^https?:\/\/[a-z]+.[a-z]+$/)))))) {
+    if (!(!JSON.parse(data.manifest).allowedOrigins ? true : ((Array.isArray(JSON.parse(data.manifest).allowedOrigins) && JSON.parse(data.manifest).allowedOrigins.every((a: any) => typeof a === 'string' && !!a.match(/^https?:\/\/[a-z]+.[a-z]+$/)))))) {
         return false;
     }
 
-    if(data.changelog.length === 0) {
+    if (data.changelog.length === 0) {
         return false;
     }
 
-    if(data.editor.length === 0 && data.player.length === 0) {
+    if (data.editor.length === 0 && data.player.length === 0) {
         return false;
     }
 
@@ -160,8 +160,8 @@ const emits = defineEmits(['close'])
 
 const creating = ref(false);
 const pluginStore = usePluginStore();
-const send = async() => {
-    if(creating.value || !canContinue()) {
+const send = async () => {
+    if (creating.value || !canContinue()) {
         return;
     }
 

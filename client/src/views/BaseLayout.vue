@@ -4,18 +4,18 @@
         </template>
 
         <template #navigation>
-            <NavigationButton icon="cog-outline"
+            <NavigationButton :label="$t('layout.base.settings')"
                               :to="{name: 'UserSettings'}"
+                              :tooltip-text="$t('layout.base.settings')"
                               hide-mobile
-                              tooltip-position="bottom"
-                              :label="$t('layout.base.settings')"
-                              :tooltip-text="$t('layout.base.settings')"></NavigationButton>
+                              icon="cog-outline"
+                              tooltip-position="bottom"></NavigationButton>
 
             <ChangeLanguage></ChangeLanguage>
 
             <NavigationButton :label="$t('layout.base.logout')" :tooltip-text="$t('layout.base.logout')"
-                              hide-mobile
                               data-cy="logout"
+                              hide-mobile
                               icon="logout"
                               tag="li"
                               tooltip-position="bottom"
@@ -30,40 +30,40 @@
                               :tooltip-text="$t('layout.base.dashboard')"
                               icon="solar-panel"></NavigationButton>
 
-            <NavigationButton :to="{name: 'Featured'}"
-                              icon="book-open-outline"
-                              :label="$t('layout.base.featured')"
-                              :tooltip-text="$t('layout.base.featured')">
+            <NavigationButton :label="$t('layout.base.featured')"
+                              :to="{name: 'Featured'}"
+                              :tooltip-text="$t('layout.base.featured')"
+                              icon="book-open-outline">
             </NavigationButton>
 
-<!--            <NavigationButton disabled-->
-<!--                              icon="border-radius"-->
-<!--                              :label="Browse templates"-->
-<!--                              tooltip-text="Browse templates"-->
-<!--            ></NavigationButton>-->
+            <!--            <NavigationButton disabled-->
+            <!--                              icon="border-radius"-->
+            <!--                              :label="Browse templates"-->
+            <!--                              tooltip-text="Browse templates"-->
+            <!--            ></NavigationButton>-->
 
-            <NavigationButton :to="{name: 'Plugins'}"
-                              icon="package-variant"
-                              :label="$t('layout.base.plugins')"
+            <NavigationButton :label="$t('layout.base.plugins')"
+                              :to="{name: 'Plugins'}"
                               :tooltip-text="$t('layout.base.plugins')"
+                              icon="package-variant"
             ></NavigationButton>
 
             <Dialog>
                 <template #activator="{toggle}">
-                    <NavigationButton icon="information-slab-circle-outline"
-                                      :label="$t('layout.base.info.tooltip')"
+                    <NavigationButton :label="$t('layout.base.info.tooltip')"
                                       :tooltip-text="$t('layout.base.info.tooltip')"
                                       class="mt-2"
-                                        @click="toggle"
+                                      icon="information-slab-circle-outline"
+                                      @click="toggle"
                     ></NavigationButton>
                 </template>
                 <template #default>
                     <Card dialog>
-                        <p class="title" v-t>layout.base.info.title</p>
+                        <p v-t class="title">layout.base.info.title</p>
 
                         <p v-t>layout.base.info.description</p>
 
-                        <p class="mt-1"><b v-t>layout.base.info.version</b>: {{version}}</p>
+                        <p class="mt-1"><b v-t>layout.base.info.version</b>: {{ version }}</p>
 
                         <div class="flex flex-column gap-1 flex-wrap mt-1">
                             <Button :href="homepage" target="_blank">
@@ -85,13 +85,13 @@
         </template>
 
         <template #secondary>
-            <NavigationButton icon="cog-outline"
+            <NavigationButton :label="$t('layout.base.settings')"
                               :to="{name: 'UserSettings'}"
-                              :label="$t('layout.base.settings')">
+                              icon="cog-outline">
             </NavigationButton>
             <NavigationButton :label="$t('layout.base.logout')"
-                              icon="logout"
                               data-cy="logout-telephone"
+                              icon="logout"
                               tag="li"
                               @click="authenticationStore.logout()"></NavigationButton>
         </template>
@@ -111,7 +111,6 @@
 <script lang="ts" setup>
 import {reactive} from "vue";
 import {useAuthenticationStore} from "@/stores/authentication";
-import {useUserStore} from "@/stores/user";
 import {$t} from "@/translation/Translation";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
 import Navigation from "@/components/design/navigation/Navigation.vue";

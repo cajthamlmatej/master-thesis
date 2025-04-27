@@ -7,9 +7,11 @@ import Event from "@/utils/Event";
 
 export class WebSocketCommunicator {
     public socket: Socket;
+    public DISCONNECTED = new Event<void>();
     private resolveReadyPromise: () => void;
     public readyPromise: Promise<void> = new Promise<void>((resolve) => this.resolveReadyPromise = resolve);
-    public DISCONNECTED = new Event<void>();
+    private editorRoom: EditorCommunicator | undefined;
+    private playerRoom: PlayerCommunicator | undefined;
 
     constructor() {
     }
@@ -31,29 +33,31 @@ export class WebSocketCommunicator {
         this.socket.on("disconnect", () => {
             this.DISCONNECTED.emit();
         });
-        this.socket.on("newThumbnails", async({ materialId, slides }: {materialId: string, slides: {id: string, thumbnail: string}[]}) => {
+        this.socket.on("newThumbnails", async ({materialId, slides}: {
+            materialId: string,
+            slides: { id: string, thumbnail: string }[]
+        }) => {
             const editorStore = (await import("@/stores/editor")).useEditorStore();
             const materialStore = (await import("@/stores/material")).useMaterialStore();
 
-            if(materialStore.currentMaterial!.id !== materialId) {
+            if (materialStore.currentMaterial!.id !== materialId) {
                 return;
             }
 
-            for(let slideData of slides) {
+            for (let slideData of slides) {
                 const slide = editorStore.getSlideById(slideData.id);
 
-                if(!slide) return;
+                if (!slide) return;
 
                 slide.thumbnail = slideData.thumbnail;
             }
         });
     }
 
-    private editorRoom: EditorCommunicator | undefined;
     async setupEditorRoom(material: Material) {
         await this.readyPromise;
 
-        if(this.editorRoom) {
+        if (this.editorRoom) {
             this.editorRoom.destroy();
             this.editorRoom = undefined;
         }
@@ -70,18 +74,16 @@ export class WebSocketCommunicator {
     async leaveEditorRoom(material: Material) {
         await this.readyPromise;
 
-        if(this.editorRoom) {
+        if (this.editorRoom) {
             this.editorRoom.destroy();
             this.editorRoom = undefined;
         }
     }
 
-    private playerRoom: PlayerCommunicator | undefined;
-
     async setupPlayerRoom(material: Material, code: string, isPresenter: boolean, slideId: string) {
         await this.readyPromise;
 
-        if(this.playerRoom) {
+        if (this.playerRoom) {
             this.playerRoom.destroy();
             this.playerRoom = undefined;
         }

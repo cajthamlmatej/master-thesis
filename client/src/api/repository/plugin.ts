@@ -38,7 +38,7 @@ export class PluginRepository extends Repository {
         );
     }
 
-    async create(data:CreatePluginDTO) {
+    async create(data: CreatePluginDTO) {
         return await this.makeRequest(
             `plugin`,
             "POST",

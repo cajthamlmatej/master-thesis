@@ -11,7 +11,7 @@ export class SendRemoteMessageApiFeature extends PlayerBlockApiFeature {
             const message = context.getString(messageRaw);
 
             block.sendMessage(message);
-            
+
             return context.undefined;
         }));
     }

@@ -61,7 +61,7 @@ export class PluginEditorBlock extends EditorBlock {
         try {
             const render = await this.editor.getPluginCommunicator().render(this);
 
-            if(render == "") {
+            if (render == "") {
                 throw new Error("Empty render");
             }
 
@@ -79,7 +79,7 @@ export class PluginEditorBlock extends EditorBlock {
             content.innerHTML = "";
 
             this.element.classList.add("block--type-plugin--failed");
-            this.element.style.setProperty("--text", "'" + $t("blocks.plugin.failed", { plugin: this.plugin }) + "'");
+            this.element.style.setProperty("--text", "'" + $t("blocks.plugin.failed", {plugin: this.plugin}) + "'");
         }
     }
 

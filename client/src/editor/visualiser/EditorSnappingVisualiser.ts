@@ -1,8 +1,4 @@
 import type Editor from "@/editor/Editor";
-import type {EditorBlock} from "@/editor/block/EditorBlock";
-import {colorFromSeed} from "@/utils/Generators";
-import {boundingBoxOfElements} from "@/utils/Area";
-import {interpolateColor} from "@/utils/Color";
 import {getRotatedRectanglePoints} from "@/utils/spaceManipulation";
 
 export default class EditorSnappingVisualiser {
@@ -17,10 +13,6 @@ export default class EditorSnappingVisualiser {
         vertical: new Set()
     }
 
-    public getLines() {
-        return this.lines;
-    }
-
     constructor(editor: Editor) {
         this.editor = editor;
 
@@ -30,7 +22,7 @@ export default class EditorSnappingVisualiser {
         this.editor.getSelector().events.SELECTED_BLOCK_CHANGED.on(() => {
             this.recalculate();
 
-            if(this.editor.getSelector().getSelectedBlocks().length <= 0) {
+            if (this.editor.getSelector().getSelectedBlocks().length <= 0) {
                 this.processVisibility(false);
             }
         });
@@ -43,6 +35,10 @@ export default class EditorSnappingVisualiser {
 
         this.element = snappingElement;
         this.recalculate();
+    }
+
+    public getLines() {
+        return this.lines;
     }
 
     public recalculate() {
@@ -84,7 +80,7 @@ export default class EditorSnappingVisualiser {
             const verticalLines = [...lines].filter(l => l.classList.contains("line--vertical"));
             const toHandle = [...this.lines.vertical.values()];
 
-            for(const line of verticalLines) {
+            for (const line of verticalLines) {
                 const lineInToHandle = toHandle.find(p => p === parseFloat(line.getAttribute("data-x")!));
 
                 if (!lineInToHandle) {
@@ -94,7 +90,7 @@ export default class EditorSnappingVisualiser {
                 }
             }
 
-            for(const point of toHandle) {
+            for (const point of toHandle) {
                 const line = document.createElement("div");
                 line.classList.add("line", "line--vertical");
                 line.setAttribute("data-x", point.toString());
@@ -107,7 +103,7 @@ export default class EditorSnappingVisualiser {
             const horizontalLines = [...lines].filter(l => l.classList.contains("line--horizontal"));
             const toHandle = [...this.lines.horizontal.values()];
 
-            for(const line of horizontalLines) {
+            for (const line of horizontalLines) {
                 const lineInToHandle = toHandle.find(p => p === parseFloat(line.getAttribute("data-y")!));
 
                 if (!lineInToHandle) {
@@ -117,7 +113,7 @@ export default class EditorSnappingVisualiser {
                 }
             }
 
-            for(const point of toHandle) {
+            for (const point of toHandle) {
                 const line = document.createElement("div");
                 line.classList.add("line", "line--horizontal");
                 line.setAttribute("data-y", point.toString());

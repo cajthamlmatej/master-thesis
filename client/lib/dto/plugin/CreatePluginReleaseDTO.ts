@@ -1,16 +1,4 @@
-import {
-    IsArray,
-    IsDefined, IsHexColor,
-    IsIn,
-    IsNumber,
-    IsObject, IsOptional, IsPositive,
-    IsString,
-    MaxLength,
-    Min,
-    MinLength,
-    ValidateNested
-} from "class-validator";
-import {Type} from "class-transformer";
+import {IsOptional, IsString, MaxLength, MinLength} from "class-validator";
 
 export class CreatePluginReleaseDTO {
     @IsString()

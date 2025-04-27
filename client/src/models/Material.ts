@@ -114,7 +114,7 @@ export default class Material {
     public serializeAttendees(): string[] {
         let attendees = [];
 
-        for(const attendee of this.attendees) {
+        for (const attendee of this.attendees) {
             if (typeof attendee === 'string') {
                 attendees.push(attendee);
             } else {

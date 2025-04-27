@@ -3,18 +3,18 @@
         <template #primary>
             <div ref="menu" class="editor-property">
             </div>
-            <div class="editor-property-resizer" @mousedown.stop.prevent="resize" ref="resizer"></div>
-<!--            <div class="editor-property-hider"-->
-<!--                 @click="visible = false">-->
-<!--                <span class="mdi mdi-chevron-right"></span>-->
-<!--            </div>-->
+            <div ref="resizer" class="editor-property-resizer" @mousedown.stop.prevent="resize"></div>
+            <!--            <div class="editor-property-hider"-->
+            <!--                 @click="visible = false">-->
+            <!--                <span class="mdi mdi-chevron-right"></span>-->
+            <!--            </div>-->
         </template>
     </Navigation>
 
-    <div class="editor-property-hint"
-         :class="{
+    <div :class="{
             'editor-property-hint--visible': canBeVisible && !visible
          }"
+         class="editor-property-hint"
          @click="visible = true">
         <span class="mdi mdi-chevron-right"></span>
     </div>
@@ -61,7 +61,7 @@ const resize = (e: MouseEvent) => {
 
         const halfDisplay = window.innerWidth / 2;
 
-        if(targetWidth < 150) {
+        if (targetWidth < 150) {
             parent.style.width = `${160}px`;
 
             visible.value = false;
@@ -70,7 +70,7 @@ const resize = (e: MouseEvent) => {
             return;
         }
 
-        if(targetWidth > halfDisplay) {
+        if (targetWidth > halfDisplay) {
             return;
         }
 
@@ -124,17 +124,17 @@ watch(() => materialStore.getEditor(), (value) => {
         debounce = setTimeout(() => {
             canBeVisible.value = blocks.length > 0;
 
-            if(canBeVisible.value && firstTime.value && !onMobile.value) {
+            if (canBeVisible.value && firstTime.value && !onMobile.value) {
                 visible.value = true;
                 firstTime.value = false;
                 return;
             }
 
-            if(onMobile.value && !canBeVisible.value) {
+            if (onMobile.value && !canBeVisible.value) {
                 visible.value = false;
             }
 
-            if(!canBeVisible.value) {
+            if (!canBeVisible.value) {
                 visible.value = false;
             }
         }, 100) as any;

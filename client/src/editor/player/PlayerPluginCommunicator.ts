@@ -17,7 +17,7 @@ export class PlayerPluginCommunicator {
         }
 
         const result = await playerPlugin.renderBlock(block);
-    
+
         return result;
     }
 

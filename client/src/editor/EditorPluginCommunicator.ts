@@ -39,6 +39,16 @@ export class EditorPluginCommunicator {
         await editorPlugin.processBlockPropertyChange(block, key);
     }
 
+    async createCustomBlock(pluginId: string, id: string): Promise<string> {
+        const editorPlugin = this.getEditorPlugin(pluginId);
+
+        if (!editorPlugin) {
+            return "";
+        }
+
+        return await editorPlugin.createCustomBlock(id);
+    }
+
     private getEditorPlugin(pluginId: string) {
         const plugin = toRaw(this.pluginManager).getPlugin(pluginId);
 
@@ -55,15 +65,5 @@ export class EditorPluginCommunicator {
         }
 
         return editorPlugin;
-    }
-
-    async createCustomBlock(pluginId: string, id: string): Promise<string> {
-        const editorPlugin = this.getEditorPlugin(pluginId);
-
-        if (!editorPlugin) {
-            return "";
-        }
-
-        return await editorPlugin.createCustomBlock(id);
     }
 }

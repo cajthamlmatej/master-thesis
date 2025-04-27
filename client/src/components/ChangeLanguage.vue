@@ -1,13 +1,14 @@
 <template>
     <Dialog>
         <template #activator="{ toggle }">
-            <NavigationButton :hide-mobile="props.header && !props.neverHide"
-                              data-cy="translate-button"
-                              :hide-desktop="!props.header && !props.neverHide" :label="language" icon="translate-variant"
+            <NavigationButton :hide-desktop="!props.header && !props.neverHide"
+                              :hide-mobile="props.header && !props.neverHide"
+                              :label="language" data-cy="translate-button"
+                              icon="translate-variant"
                               tooltip-position="bottom" tooltip-text="Language" @click="toggle"></NavigationButton>
         </template>
         <template #default>
-            <Card dialog data-cy="translate-modal">
+            <Card data-cy="translate-modal" dialog>
                 <p class="title">Change language</p>
 
                 <List>

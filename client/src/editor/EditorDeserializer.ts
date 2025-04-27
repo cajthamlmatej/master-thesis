@@ -2,9 +2,8 @@ import Editor from "@/editor/Editor";
 import type EditorPreferences from "@/editor/EditorPreferences";
 import {EditorPluginCommunicator} from "@/editor/EditorPluginCommunicator";
 import {SlideData} from "@/models/Material";
-import { usePluginStore } from "@/stores/plugin";
-import { toRaw } from "vue";
-import { PluginManager } from "./plugin/PluginManager";
+import {usePluginStore} from "@/stores/plugin";
+import {PluginManager} from "./plugin/PluginManager";
 
 export class EditorDeserializer {
 

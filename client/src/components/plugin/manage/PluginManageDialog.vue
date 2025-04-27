@@ -8,7 +8,7 @@
                 @click="toggle"></NavigationButton>
         </template>
         <template #default>
-            <Card dialog class="editor-plugin-manage-dialog">
+            <Card class="editor-plugin-manage-dialog" dialog>
                 <div class="tabs">
                     <Tabs v-model:selected="selected" :items="[
                         {value: 'active', text:$t('editor.plugin.manage.active')},
@@ -92,16 +92,16 @@
                     <Dialog>
                         <template #activator="{toggle}">
                             <Button
-                                @click="toggle"
-                                icon="package-variant-plus"
                                 class="mt-1"
+                                icon="package-variant-plus"
+                                @click="toggle"
                             >
                                 <span v-t>player.debug.plugin.addLocal</span>
                             </Button>
                         </template>
                         <template #default="{toggle}">
                             <Card dialog>
-                                <PluginLocalImport @done="() => { toggle(); refresh()}" />
+                                <PluginLocalImport @done="() => { toggle(); refresh()}"/>
                             </Card>
                         </template>
                     </Dialog>
@@ -125,10 +125,8 @@ import PluginBrowse from "@/components/plugin/manage/PluginBrowse.vue";
 import {usePluginStore} from "@/stores/plugin";
 import {PluginManager} from "@/editor/plugin/PluginManager";
 import Card from "@/components/design/card/Card.vue";
-import FileInput from "@/components/design/input/FileInput.vue";
 import PluginLocalImport from "@/components/plugin/manage/PluginLocalImport.vue";
 import {useEditorStore} from "@/stores/editor";
-import {PluginEditorBlock} from "@/editor/block/base/plugin/PluginEditorBlock";
 
 const selected = ref('active');
 
@@ -153,7 +151,7 @@ const recalculate = () => {
     plugins.value = pluginStore.manager.getPlugins().map(p => {
         const plugin = pluginStore.plugins.find(pl => pl.id == p.getId());
 
-        if(!plugin) {
+        if (!plugin) {
             return {
                 plugin: p,
                 newVersion: false
@@ -188,7 +186,7 @@ const removePlugin = async (plugin: PluginContext) => {
 
     const editor = editorStore.getEditor();
 
-    if(editor) {
+    if (editor) {
         editor.redrawBlocks();
     }
 

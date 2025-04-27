@@ -1,7 +1,6 @@
 import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeature";
 import {QuickJSHandle} from "quickjs-emscripten";
 import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
-import {generateUUID} from "@/utils/Generators";
 
 export class RegisterCustomBlockApiFeature extends EditorPluginApiFeature {
     register(obj: QuickJSHandle, data: EditorPluginApiData): void {
@@ -16,7 +15,7 @@ export class RegisterCustomBlockApiFeature extends EditorPluginApiFeature {
                 id
             } = context!.dump(rawData)
 
-            if(!name || !icon || !id) {
+            if (!name || !icon || !id) {
                 plugin.log("Missing name, icon or id when registering custom block");
                 return;
             }

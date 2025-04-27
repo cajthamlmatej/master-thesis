@@ -58,7 +58,7 @@ export class EditorSelector {
         block.processEvent(BlockEvent.DESELECTED);
         this.events.SELECTED_BLOCK_CHANGED.emit(this.selectedBlocks);
 
-        if(!skipAnnouncement) {
+        if (!skipAnnouncement) {
             this.editor.events.BLOCK_CONTENT_CHANGED.emit(block);
         }
     }
@@ -83,7 +83,7 @@ export class EditorSelector {
         }
 
         const room = communicator.getEditorRoom();
-        if(room) {
+        if (room) {
             if (!room.canSelectBlock(block.id)) {
                 return;
             }

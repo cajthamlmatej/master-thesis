@@ -1,7 +1,10 @@
 import {
-    IsArray, IsBoolean, IsDefined,
+    IsArray,
+    IsBoolean,
+    IsDefined,
     IsIn,
-    IsNumber, IsObject,
+    IsNumber,
+    IsObject,
     IsOptional,
     IsString,
     MaxLength,

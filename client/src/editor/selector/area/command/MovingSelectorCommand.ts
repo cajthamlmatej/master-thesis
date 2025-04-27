@@ -37,7 +37,7 @@ export class MovingSelectorCommand extends SelectorCommand {
 
             const shouldSnap = event.shiftKey;
             const snapDistance = selectorArea.getEditor().getPreferences().MOVEMENT_SNAPPING_DISTANCE;
-            if(shouldSnap) {
+            if (shouldSnap) {
                 selectorArea.getEditor().getSnapping().processVisibility(true);
             } else {
                 selectorArea.getEditor().getSnapping().processVisibility(false);
@@ -49,7 +49,7 @@ export class MovingSelectorCommand extends SelectorCommand {
                 let newX = x + deltaX - initialX;
                 let newY = y + deltaY - initialY;
 
-                if(shouldSnap) {
+                if (shouldSnap) {
                     const rotated = getRotatedRectanglePoints(newX, newY, block.size.width, block.size.height, block.rotation);
 
                     const blockLeft = Math.min(...rotated.map(p => p.x));
@@ -99,7 +99,7 @@ export class MovingSelectorCommand extends SelectorCommand {
                         }
                     }
 
-                    if(closestLineHorizontal && closestLineVertical) {
+                    if (closestLineHorizontal && closestLineVertical) {
                         if (minDistanceHorizontal < minDistanceVertical) {
                             closestLineVertical = null;
                         } else {

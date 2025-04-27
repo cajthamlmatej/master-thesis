@@ -1,6 +1,5 @@
 import Player from "@/editor/player/Player";
 import {PlayerMode} from "@/editor/player/PlayerMode";
-import type EditorSelectorArea from "@/editor/selector/area/EditorSelectorArea";
 import {communicator} from "@/api/websockets";
 import {sanitizeSvg} from "@/utils/Sanitize";
 
@@ -391,7 +390,7 @@ export class PlayerDraw {
                     }
                 }
 
-                if(announce) {
+                if (announce) {
                     this.synchronizeAttendees();
                 }
             });

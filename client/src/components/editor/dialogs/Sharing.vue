@@ -144,18 +144,17 @@
                                 <p v-t class="description mb-1">editor.sharing.export.description</p>
 
                                 <List>
-                                    <ListItem hover :disabled="exporting" @click="exportFile('json')">
+                                    <ListItem :disabled="exporting" hover @click="exportFile('json')">
                                         <span v-t>editor.sharing.export.local</span>
 
                                         <span class="mdi mdi-download-outline"></span>
                                     </ListItem>
-                                    <ListItem hover :disabled="exporting" @click="exportFile('pdf')">
+                                    <ListItem :disabled="exporting" hover @click="exportFile('pdf')">
                                         <span v-t>editor.sharing.export.pdf</span>
 
                                         <span class="mdi mdi-download-outline"></span>
                                     </ListItem>
                                 </List>
-
 
 
                                 <Dialog v-model:value="exporting" persistent>
@@ -192,18 +191,19 @@
                                     <Dialog>
                                         <template #activator="{toggle}">
                                             <Button
+                                                class="mt-1"
                                                 color="primary"
                                                 icon="plus"
-                                                class="mt-1"
                                                 @click="toggle">
                                                 <span v-t>editor.sharing.attendees.add.title</span>
                                             </Button>
                                         </template>
                                         <template #default="{toggle}">
                                             <Card dialog>
-                                                <p class="title" v-t>editor.sharing.attendees.add.title</p>
+                                                <p v-t class="title">editor.sharing.attendees.add.title</p>
 
-                                                <p class="description mb-1" v-t>editor.sharing.attendees.add.description</p>
+                                                <p v-t class="description mb-1">
+                                                    editor.sharing.attendees.add.description</p>
 
                                                 <Input
                                                     v-model:value="newAttendee"
@@ -222,19 +222,20 @@
                                     </Dialog>
                                 </div>
                                 <List>
-                                    <ListItem v-for="(attendee, i) in data.attendees" :key="i" hover class="flex-align-center">
+                                    <ListItem v-for="(attendee, i) in data.attendees" :key="i" class="flex-align-center"
+                                              hover>
                                         <span v-if="typeof attendee === 'object'">
-                                            {{attendee.name}}
+                                            {{ attendee.name }}
                                         </span>
                                         <span v-else>
-                                            {{attendee}}
+                                            {{ attendee }}
                                         </span>
 
                                         <div>
                                             <Button
-                                                icon="delete-outline"
                                                 v-tooltip="$t('editor.sharing.attendees.remove')"
                                                 :label="$t('editor.sharing.attendees.remove')"
+                                                icon="delete-outline"
                                                 @click="removeAttendee(attendee)"
                                             />
                                         </div>
@@ -361,15 +362,15 @@ const exportFile = async (type: string) => {
     exporting.value = true;
     let suffix = ".bin";
 
-    if(type === "pdf") {
+    if (type === "pdf") {
         suffix = "pdf";
-    } else if(type === "json") {
+    } else if (type === "json") {
         suffix = "json";
     }
 
     const response = await api.material.export(materialStore.currentMaterial!.id, type);
 
-    if(!response || response.status !== 200) {
+    if (!response || response.status !== 200) {
         // TODO: notify
         exporting.value = false;
         return;

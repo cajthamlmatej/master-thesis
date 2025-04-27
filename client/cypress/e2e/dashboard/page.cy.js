@@ -1,5 +1,7 @@
 describe('Dashboard page', () => {
-    Cypress.on('uncaught:exception', () => { return false })
+    Cypress.on('uncaught:exception', () => {
+        return false
+    })
     beforeEach(() => {
         cy.login();
 

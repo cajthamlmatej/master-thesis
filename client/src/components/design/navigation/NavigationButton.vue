@@ -153,6 +153,7 @@ a.button {
             display: none;
         }
     }
+
     &.button--hide-desktop {
         @media (min-width: 768px) {
             display: none;

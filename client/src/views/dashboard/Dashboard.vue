@@ -1,6 +1,6 @@
 <template>
     <div data-cy=dashboard>
-        <Card fluid class="mb-1">
+        <Card class="mb-1" fluid>
             <div class="flex flex-justify-center flex-justify-sm-space-between flex-align-center flex-wrap gap-1">
                 <span v-t="{ name: sanitizeAttribute(userStore.user?.name ?? '') }" class="main-title">page.dashboard.title-welcome</span>
 
@@ -11,42 +11,47 @@
                                     :label="$t('page.dashboard.new.tooltip')"
                                     color="primary"
                                     data-cy="new-material"
-                                    @click="toggle"
-                                    icon="plus"/>
+                                    icon="plus"
+                                    @click="toggle"/>
                         </template>
                         <template #default="{toggle}">
-                            <Card dialog data-cy="new-material-modal">
+                            <Card data-cy="new-material-modal" dialog>
                                 <div class="import-buttons">
                                     <Dialog>
                                         <template #activator="{toggle}">
-                                            <button @click="toggle" data-cy="import-material">
+                                            <button data-cy="import-material" @click="toggle">
                                                 <span class="icon mdi mdi-file-import-outline"></span>
-                                                <span class="text" v-t>page.dashboard.new.import.tooltip</span>
+                                                <span v-t class="text">page.dashboard.new.import.tooltip</span>
                                             </button>
                                         </template>
                                         <template #default="{toggle}">
-                                            <Card dialog data-cy="import-material-modal">
-                                                <p class="title" v-t>page.dashboard.new.import.title</p>
+                                            <Card data-cy="import-material-modal" dialog>
+                                                <p v-t class="title">page.dashboard.new.import.title</p>
 
                                                 <p v-t>page.dashboard.new.import.description</p>
 
-                                                <FileInput v-model:value="importFile" class="mt-1" data-cy="import-material-file"/>
+                                                <FileInput v-model:value="importFile" class="mt-1"
+                                                           data-cy="import-material-file"/>
 
-                                                <Alert type="error" v-if="importError" class="mt-1" data-cy="import-material-error">
+                                                <Alert v-if="importError" class="mt-1" data-cy="import-material-error"
+                                                       type="error">
                                                     {{ importError }}
                                                 </Alert>
 
                                                 <div class="flex flex-justify-end mt-1">
-                                                    <Button @click="() => processImport(toggle)" :disabled="importFile.length != 1" data-cy="import-material-process">
+                                                    <Button :disabled="importFile.length != 1"
+                                                            data-cy="import-material-process"
+                                                            @click="() => processImport(toggle)">
                                                         <span v-t>page.dashboard.new.import.process</span>
                                                     </Button>
                                                 </div>
                                             </Card>
                                         </template>
                                     </Dialog>
-                                    <button @click="router.push({name: 'Editor', params: {material: 'new'}})" data-cy="new-empty-material">
+                                    <button data-cy="new-empty-material"
+                                            @click="router.push({name: 'Editor', params: {material: 'new'}})">
                                         <span class="icon mdi mdi-artboard"></span>
-                                        <span class="text" v-t>page.dashboard.new.empty</span>
+                                        <span v-t class="text">page.dashboard.new.empty</span>
                                     </button>
                                 </div>
                             </Card>
@@ -54,14 +59,14 @@
                     </Dialog>
 
                     <Input v-model:value="search" :label="$t('page.dashboard.search')"
-                           data-cy="search-materials"
-                           :placeholder="$t('page.dashboard.search')" dense
+                           :placeholder="$t('page.dashboard.search')"
+                           data-cy="search-materials" dense
                            hide-error hide-label type="text"/>
                 </div>
             </div>
         </Card>
 
-        <Tabs fluid v-model:selected="selected" :items="[
+        <Tabs v-model:selected="selected" :items="[
             {
                 value: 'OWN',
                 text: $t('page.dashboard.materials.own')
@@ -70,7 +75,7 @@
                 value: 'SHARED',
                 text: $t('page.dashboard.materials.shared')
             }
-        ]"></Tabs>
+        ]" fluid></Tabs>
 
         <Card fluid>
             <div class="flex flex-justify-center">
@@ -83,7 +88,7 @@
                 </Alert>
             </div>
 
-            <Row align="stretch" :gap="1" wrap :class="{'mt-1': materialsOnPage.length > 0}" data-cy="materials">
+            <Row :class="{'mt-1': materialsOnPage.length > 0}" :gap="1" align="stretch" data-cy="materials" wrap>
                 <Col v-for="material in materialsOnPage" :key="material.id" cols="12" lg="4" md="4" sm="6">
                     <article class="material" @click="router.push({name: 'Editor', params: {material: material.id}})">
                         <div class="image-holder">
@@ -94,10 +99,12 @@
 
                         <div class="meta">
                             <div class="state">
-                                <p class="title" v-tooltip="material.name">{{ material.name }}</p>
+                                <p v-tooltip="material.name" class="title">{{ material.name }}</p>
 
                                 <p class="time">
-                                    <span v-t>page.dashboard.materials.modified</span> {{ material.updatedAt.fromNow() }}</p>
+                                    <span v-t>page.dashboard.materials.modified</span> {{
+                                        material.updatedAt.fromNow()
+                                    }}</p>
                                 <p class="time">
                                     <span v-t>page.dashboard.materials.created</span> {{ material.createdAt.fromNow() }}
                                 </p>
@@ -108,7 +115,7 @@
                                     <template #activator="{toggle}">
                                         <Button v-tooltip="$t('page.dashboard.materials.delete-tooltip')"
                                                 :label="$t('page.dashboard.materials.delete-tooltip')"
-                                                 :loading="processing"
+                                                :loading="processing"
                                                 color="transparent"
                                                 icon="mdi mdi-delete" @click.stop.capture="toggle"/>
                                     </template>
@@ -129,13 +136,13 @@
                                             </div>
                                         </Card>
                                     </template>
-                                </Dialog >
-                                <Button 
-                                        v-tooltip="$t('page.dashboard.materials.copy-tooltip')"
-                                        :label="$t('page.dashboard.materials.copy-tooltip')"
-                                        :loading="processing"
-                                        color="transparent" icon="mdi mdi-content-copy"
-                                        @click.stop.capture="copyMaterial(material.id)"/>
+                                </Dialog>
+                                <Button
+                                    v-tooltip="$t('page.dashboard.materials.copy-tooltip')"
+                                    :label="$t('page.dashboard.materials.copy-tooltip')"
+                                    :loading="processing"
+                                    color="transparent" icon="mdi mdi-content-copy"
+                                    @click.stop.capture="copyMaterial(material.id)"/>
                             </div>
                         </div>
                     </article>
@@ -154,10 +161,7 @@ import {useRouter} from "vue-router";
 import {$t} from "@/translation/Translation";
 import Card from "@/components/design/card/Card.vue";
 import FileInput from "@/components/design/input/FileInput.vue";
-import {marked} from "marked";
-import Material, {Slide} from "@/models/Material";
-import {generateUUID} from "@/utils/Generators";
-import {useHead, useSeoMeta} from "unhead";
+import {useSeoMeta} from "unhead";
 import {MaterialImporter} from "@/editor/import/MaterialImporter";
 import {JsonMaterialImporter} from "@/editor/import/JsonMaterialImporter";
 import {MarkdownMaterialImporter} from "@/editor/import/MarkdownMaterialImporter";
@@ -185,7 +189,7 @@ watch(search, () => {
 const materials = computed(() => {
     let materials = materialStore.materials;
 
-    if(selected.value === 'OWN') {
+    if (selected.value === 'OWN') {
         materials = materials.filter(material => material.user === userStore.user?.id);
     } else if (selected.value === 'SHARED') {
         materials = materials.filter(material => material.user !== userStore.user?.id);
@@ -210,8 +214,8 @@ const deleteMaterial = async (materialId: string, toggle: () => void) => {
     processing.value = false;
     toggle();
 
-    if(page.value > Math.max(Math.ceil(materials.value.length/8), 1)) {
-        page.value = Math.max(Math.ceil(materials.value.length/8), 1);
+    if (page.value > Math.max(Math.ceil(materials.value.length / 8), 1)) {
+        page.value = Math.max(Math.ceil(materials.value.length / 8), 1);
     }
 };
 
@@ -231,7 +235,7 @@ const processImport = (toggle: () => void) => {
     const extension = file.name.split('.').pop() ?? '';
 
     // JSON, markdown
-    if(!["application/json"].includes(mime) && !["md"].includes(extension)) {
+    if (!["application/json"].includes(mime) && !["md"].includes(extension)) {
         console.log("Invalid mime type", mime, extension);
         importError.value = $t('page.dashboard.new.import.error');
         return;
@@ -251,9 +255,9 @@ const processImport = (toggle: () => void) => {
 
             let importer: MaterialImporter;
 
-            if(mime === "application/json") {
+            if (mime === "application/json") {
                 importer = new JsonMaterialImporter();
-            } else if(extension === "md") {
+            } else if (extension === "md") {
                 importer = new MarkdownMaterialImporter();
             } else {
                 throw new Error("Invalid mime type");
@@ -489,9 +493,11 @@ article.material {
             font-size: 4em;
             transition: transform 0.2s;
         }
+
         .text {
             font-size: 1em;
         }
+
         transition: background 0.2s;
 
         &:hover {

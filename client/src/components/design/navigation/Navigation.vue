@@ -127,6 +127,7 @@ aside.navigation {
             }
         }
     }
+
     &:not(&--primary) {
         backdrop-filter: blur(18px);
         background-color: var(--color-navigation-background-overlay);
@@ -190,6 +191,7 @@ aside.navigation {
                         display: none;
                     }
                 }
+
                 &:has(.button--hide-mobile) {
                     @media (max-width: 768px) {
                         display: none;
@@ -212,6 +214,7 @@ aside.navigation {
                         display: none;
                     }
                 }
+
                 &:has(.button--hide-mobile) {
                     @media (max-width: 768px) {
                         display: none;

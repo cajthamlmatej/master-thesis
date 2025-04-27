@@ -54,7 +54,7 @@ watch(() => panel.value, (value) => {
     if (!value) return;
 
     setupCallback();
-}, { immediate: true });
+}, {immediate: true});
 
 const iframe = ref<HTMLIFrameElement | null>(null);
 watch(() => iframe.value, (value) => {
@@ -64,7 +64,7 @@ watch(() => iframe.value, (value) => {
 
     window.addEventListener("message", (event) => {
         const data = event.data;
-        
+
         const plugin = toRaw(panel.value.plugin);
 
         if (typeof data !== "object" || !('target' in data) || !('message' in data)) {

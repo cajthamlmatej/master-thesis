@@ -1,5 +1,5 @@
 <template>
-    <Dialog v-model:value="loading" v-if="type === 'editor'" persitent>
+    <Dialog v-if="type === 'editor'" v-model:value="loading" persitent>
         <Card dialog>
             <div class="flex flex-justify-center">
                 <span class="mdi mdi-loading mdi-spin"></span>
@@ -9,7 +9,7 @@
 
     <Dialog v-model:value="disconnected" persistent>
         <Card dialog>
-            <p class="title" v-t>{{ props.type }}.disconnected.title</p>
+            <p v-t class="title">{{ props.type }}.disconnected.title</p>
 
             <p v-t>{{ props.type }}.disconnected.help</p>
         </Card>
@@ -17,8 +17,8 @@
 </template>
 
 <script lang="ts" setup>
-import { communicator } from '@/api/websockets';
-import { onMounted, ref, watch } from 'vue';
+import {communicator} from '@/api/websockets';
+import {onMounted, ref} from 'vue';
 
 const props = defineProps({
     type: {
@@ -37,7 +37,7 @@ onMounted(async () => {
     });
     await communicator.readyPromise;
 
-    if(props.type !== 'editor') {
+    if (props.type !== 'editor') {
         await communicator.getPlayerRoom()?.joined
     }
 

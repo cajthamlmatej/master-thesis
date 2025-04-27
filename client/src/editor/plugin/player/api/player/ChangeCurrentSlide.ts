@@ -1,5 +1,4 @@
 import {QuickJSHandle} from "quickjs-emscripten";
-import {generateUUID} from "@/utils/Generators";
 import {PlayerPluginApiData} from "@/editor/plugin/player/PlayerPluginApi";
 import {PlayerPluginApiFeature} from "@/editor/plugin/player/PlayerPluginApiFeature";
 import {usePlayerStore} from "@/stores/player";
@@ -17,7 +16,7 @@ export class ChangeCurrentSlideApiFeature extends PlayerPluginApiFeature {
 
             const slide = playerStore.getSlideById(parsedData);
 
-            if(!slide) {
+            if (!slide) {
                 plugin.log(`Cannot find slide with id ${parsedData}`);
                 return;
             }

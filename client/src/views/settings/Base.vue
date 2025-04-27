@@ -2,33 +2,33 @@
     <Row wrap>
         <Col cols="12" md="6">
             <Card fluid>
-                <p class="title" v-t>page.user-settings.user.title</p>
+                <p v-t class="title">page.user-settings.user.title</p>
 
-                <Input type="password" :label="$t('page.user-settings.user.new-password')" v-model:value="newPassword"
-                       :validators="[
+                <Input v-model:value="newPassword" :label="$t('page.user-settings.user.new-password')" :validators="[
                            (v: string) => v.length >= 8 || $t('page.register.fields.password.short'),
                            (v: string) => v.length < 255 || $t('page.register.fields.password.long')
-                       ]"></Input>
+                       ]"
+                       type="password"></Input>
 
-                <Input type="text" :label="$t('page.user-settings.user.name')" v-model:value="newName"
-                       :validators="[
+                <Input v-model:value="newName" :label="$t('page.user-settings.user.name')" :validators="[
                             (v: string) => !!v || $t('page.register.fields.name.required'),
                             (v: string) => v.length > 3 || $t('page.register.fields.name.short'),
                             (v: string) => v.length < 255 || $t('page.register.fields.name.long')
-                       ]"></Input>
+                       ]"
+                       type="text"></Input>
 
                 <Divider></Divider>
 
-                <Input type="password" :label="$t('page.user-settings.user.current')"
-                       v-model:value="currentPassword"></Input>
+                <Input v-model:value="currentPassword" :label="$t('page.user-settings.user.current')"
+                       type="password"></Input>
 
-                <Alert type="error" v-if="error" class="my-1">
+                <Alert v-if="error" class="my-1" type="error">
                     <span>{{ error }}</span>
                 </Alert>
 
                 <div class="flex flex-justify-end">
-                    <Button @click="updateAccount" :loading="loading"
-                            :disabled="newName.length <= 3 || newPassword.length <= 3 || currentPassword.length <= 3">
+                    <Button :disabled="newName.length <= 3 || newPassword.length <= 3 || currentPassword.length <= 3" :loading="loading"
+                            @click="updateAccount">
                         <span v-t>page.user-settings.user.change</span>
                     </Button>
                 </div>
@@ -36,7 +36,7 @@
         </Col>
         <Col cols="12" md="6">
             <Card fluid>
-                <p class="title" v-t>page.user-settings.export.title</p>
+                <p v-t class="title">page.user-settings.export.title</p>
 
                 <p v-t class="mb-1">page.user-settings.export.description</p>
 
@@ -46,10 +46,10 @@
                 </Alert>
 
                 <div class="flex flex-justify-end gap-1">
-                    <Button v-if="exported" @click="downloadExport" :loading="loading">
+                    <Button v-if="exported" :loading="loading" @click="downloadExport">
                         <span v-t>page.user-settings.export.download</span>
                     </Button>
-                    <Button v-else-if="!recent" @click="processExport" :loading="loading">
+                    <Button v-else-if="!recent" :loading="loading" @click="processExport">
                         <span v-t>page.user-settings.export.process</span>
                     </Button>
                 </div>
@@ -105,7 +105,7 @@ onMounted(async () => {
     loading.value = false;
 })
 
-const load = async() => {
+const load = async () => {
     await dataExportStore.load();
     exported.value = false;
     recent.value = false;

@@ -23,7 +23,7 @@ describe('Import', () => {
         cy.fixture('example.txt', null).as('textExample')
 
         cy.get('[data-cy=import-material-file] input')
-            .selectFile('@textExample', { force: true });
+            .selectFile('@textExample', {force: true});
 
         cy.get('[data-cy=import-material-process]').click();
 
@@ -37,7 +37,7 @@ describe('Import', () => {
         cy.fixture('example.md', null).as('mdExample')
 
         cy.get('[data-cy=import-material-file] input')
-            .selectFile('@mdExample', { force: true });
+            .selectFile('@mdExample', {force: true});
 
         cy.get('[data-cy=import-material-process]').click();
 
@@ -63,7 +63,7 @@ describe('Import', () => {
         cy.fixture('example.json', null).as('jsonExample')
 
         cy.get('[data-cy=import-material-file] input')
-            .selectFile('@jsonExample', { force: true });
+            .selectFile('@jsonExample', {force: true});
 
         cy.get('[data-cy=import-material-process]').click();
 
@@ -86,7 +86,7 @@ describe('Import', () => {
         cy.fixture('example-invalid-format.json', null).as('jsonExample')
 
         cy.get('[data-cy=import-material-file] input')
-            .selectFile('@jsonExample', { force: true });
+            .selectFile('@jsonExample', {force: true});
 
         cy.get('[data-cy=import-material-process]').click();
 
@@ -103,7 +103,7 @@ describe('Import', () => {
         cy.fixture('example-missing-data.json', null).as('jsonExample')
 
         cy.get('[data-cy=import-material-file] input')
-            .selectFile('@jsonExample', { force: true });
+            .selectFile('@jsonExample', {force: true});
 
         cy.get('[data-cy=import-material-process]').click();
 

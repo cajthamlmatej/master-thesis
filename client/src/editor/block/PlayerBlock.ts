@@ -348,7 +348,7 @@ export abstract class PlayerBlock {
 
                     this.processInteractivity(interactivity);
                 }, interactivity.timerTime));
-            } else if(interactivity.timerType === "NOW-REPEAT") {
+            } else if (interactivity.timerType === "NOW-REPEAT") {
                 this.repeats.intervals.push(setInterval(async () => {
                     await this.loaded;
 
@@ -472,6 +472,34 @@ export abstract class PlayerBlock {
         return apiFeatures;
     }
 
+    public sendMessage(message: string) {
+        const room = communicator.getPlayerRoom();
+
+        if (!room) return;
+
+        room.sendBlockMessage(message, this.id);
+    }
+
+    public async isInPlayerRoom() {
+        await this.loaded;
+        await communicator.readyPromise;
+        const room = communicator.getPlayerRoom();
+
+        console.log("isInPlayerRoom", room);
+        if (!room) return false;
+
+        await room.joined;
+        return true;
+    }
+
+    public isPresenter() {
+        const room = communicator.getPlayerRoom();
+
+        if (!room) return false
+
+        return room.isPresenter;
+    }
+
     private async loadPlayerStore() {
         const {usePlayerStore} = await import("@/stores/player");
         this.playerStore = usePlayerStore();
@@ -547,7 +575,7 @@ export abstract class PlayerBlock {
     }
 
     private processInteractivity(interactivity: BlockInteractivity) {
-        for(let action of interactivity.actions) {
+        for (let action of interactivity.actions) {
             switch (action.action) {
                 case "CHANGE_PROPERTY": {
                     let blocks = [] as PlayerBlock[];
@@ -679,33 +707,5 @@ export abstract class PlayerBlock {
                 }
             }
         }
-    }
-
-    public sendMessage(message: string) {
-        const room = communicator.getPlayerRoom();
-
-        if(!room) return;
-
-        room.sendBlockMessage(message, this.id);
-    }
-
-    public async isInPlayerRoom() {
-        await this.loaded;
-        await communicator.readyPromise;
-        const room = communicator.getPlayerRoom();
-
-        console.log("isInPlayerRoom", room);
-        if(!room) return false;
-
-        await room.joined;
-        return true;
-    }
-
-    public isPresenter() {
-        const room = communicator.getPlayerRoom();
-
-        if(!room) return false
-
-        return room.isPresenter;
     }
 }

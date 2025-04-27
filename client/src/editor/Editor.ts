@@ -422,13 +422,23 @@ export default class Editor {
         return this.pluginCommunicator;
     }
 
+    public update() {
+        this.updateElement();
+    }
+
+    public redrawBlocks() {
+        this.getBlocks().filter(b => b instanceof PluginEditorBlock).forEach((block: PluginEditorBlock) => {
+            block.renderIframe();
+        });
+    }
+
     private parseOptions(options?: MaterialOptions) {
         if (!options) return;
 
         if (options.size) {
             this.size = options.size;
         }
-        if(options.color) {
+        if (options.color) {
             this.color = options.color;
         }
     }
@@ -623,10 +633,6 @@ export default class Editor {
         observer.observe(content, {attributes: true, childList: true, subtree: true});
     }
 
-    public update() {
-        this.updateElement();
-    }
-
     private updateElement() {
         this.editorElement.style.backgroundColor = this.color;
         this.editorElement.style.left = this.position.x + "px";
@@ -641,7 +647,7 @@ export default class Editor {
     private setupAttendee() {
         const room = communicator.getEditorRoom();
 
-        if(!room) {
+        if (!room) {
             return;
         }
         //
@@ -675,11 +681,5 @@ export default class Editor {
         //         this.removeBlock(block);
         //     }
         // });
-    }
-
-    public redrawBlocks() {
-        this.getBlocks().filter(b => b instanceof PluginEditorBlock).forEach((block: PluginEditorBlock) => {
-            block.renderIframe();
-        });
     }
 }

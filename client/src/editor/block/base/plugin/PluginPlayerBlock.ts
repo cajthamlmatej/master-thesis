@@ -6,7 +6,6 @@ import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerializ
 import {RenderApiFeature} from "@/editor/block/base/plugin/api/player/RenderApiFeature";
 import {RegisterPlayerBlockApiFeature} from "@/editor/plugin/player/RegisterPlayerBlockApiFeature";
 import {SendMessageApiFeature} from "@/editor/block/base/plugin/api/player/SendMessageApiFeature";
-import {BlockInteractiveProperty} from "@/editor/interactivity/BlockInteractivity";
 import {SendRemoteMessageApiFeature} from "@/editor/block/base/plugin/api/player/SendRemoteMessageApiFeature";
 
 @RegisterPlayerBlockApiFeature(RenderApiFeature)
@@ -101,6 +100,10 @@ export class PluginPlayerBlock extends PlayerBlock {
         }
     }
 
+    getPlugin() {
+        return this.plugin;
+    }
+
     @BlockEventListener(BlockEvent.MESSAGE)
     private async onMessage(data: { message: string, clientId?: string }) {
         const pluginCommunicator = await this.player.getPluginCommunicator();
@@ -109,9 +112,5 @@ export class PluginPlayerBlock extends PlayerBlock {
         }
 
         await pluginCommunicator.processRemoteMessage(this, data.message, data.clientId);
-    }
-
-    getPlugin() {
-        return this.plugin;
     }
 }

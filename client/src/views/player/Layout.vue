@@ -1,26 +1,26 @@
 <template>
     <div class="underlay">
-        <Header v-if="material && !rendering" v-model:menu="menu" :active="active" fixed class="player-header">
+        <Header v-if="material && !rendering" v-model:menu="menu" :active="active" class="player-header" fixed>
             <template #logo>
                 <div class="meta">
                     <span class="name">{{ material.name }}</span>
 
                     <span class="addition">
-                        <span class="time" v-if="!watching">
+                        <span v-if="!watching" class="time">
                             <span class="mdi mdi-timer"></span>
                             {{ timeFromStart }}
                         </span>
-                        <span class="count" v-if="material.slides.length > 1">
+                        <span v-if="material.slides.length > 1" class="count">
                             <span class="mdi mdi-cards-variant"></span>
-                            {{ currentSlide+1 }} / {{ material.slides.length }}
+                            {{ currentSlide + 1 }} / {{ material.slides.length }}
                         </span>
-                        <span class="time" v-if="!watching && material.slides.length > 1">
+                        <span v-if="!watching && material.slides.length > 1" class="time">
                             <span class="mdi mdi-cards-variant"></span>
                             {{ timeFromSlide }}
                         </span>
                         <!-- <span v-t="{start: timeFromStart, slide: timeFromSlide}" class="time">player.timer</span>
                         <span v-t="{start: timeFromStart, slide: timeFromSlide}" class="time-short">player.timer-short</span> -->
-                        <span class="watchers" v-if="watchStarted">
+                        <span v-if="watchStarted" class="watchers">
                             <span class="mdi mdi-account-multiple"></span>
                             {{ watcherCount }}
                         </span>
@@ -43,10 +43,9 @@
                             />
                         </template>
                         <template #default>
-                            <Card dialog v-if="material.visibility === 'PUBLIC'">
+                            <Card v-if="material.visibility === 'PUBLIC'" dialog>
                                 <Tabs
                                     v-model:selected="shareType"
-                                    fluid
                                     :items="[
                                     {
                                         text: $t('player.share.share-link.title'),
@@ -57,15 +56,16 @@
                                         value: 'WATCH_LINK'
                                     }
                                 ]"
+                                    fluid
                                 ></Tabs>
 
                                 <div v-if="shareType === 'SHARE_LINK'">
-                                    <p class="description" v-t>player.share.share-link.description</p>
+                                    <p v-t class="description">player.share.share-link.description</p>
                                 </div>
                                 <div v-else-if="watchStarted">
-                                    <p class="description" v-t>player.share.watch-link.description</p>
+                                    <p v-t class="description">player.share.watch-link.description</p>
 
-                                    <div class="flex flex-justify-center  pt-1" v-if="link">
+                                    <div v-if="link" class="flex flex-justify-center  pt-1">
                                         <qrcode-vue :margin="3" :size="200" :value="link"
                                                     background="white"
                                                     foreground="black"
@@ -79,7 +79,7 @@
                                     </p>
                                 </div>
                                 <div v-else>
-                                    <p class="description" v-t>player.share.watch-link.description</p>
+                                    <p v-t class="description">player.share.watch-link.description</p>
 
                                     <Button
                                         class="mt-1"
@@ -88,9 +88,9 @@
                                         @click="watchStarted = true"
                                     >
                                         <span v-t>player.share.watch-link.button</span>
-                                    </Button>   
+                                    </Button>
                                 </div>
-                                
+
 
                                 <div
                                     v-if="link && (shareType === 'SHARE_LINK' || watchStarted)"
@@ -109,8 +109,8 @@
                                     </div>
                                 </div>
                             </Card>
-                            <Card dialog v-else>
-                                <p class="title" v-t>player.share.notPublic.title</p>
+                            <Card v-else dialog>
+                                <p v-t class="title">player.share.notPublic.title</p>
                                 <p v-t>player.share.notPublic.description</p>
                             </Card>
                         </template>
@@ -129,23 +129,23 @@
                         </template>
                         <template #default="{toggle}">
                             <Card dialog>
-                                <p class="title" v-t>player.share.join.title</p>
+                                <p v-t class="title">player.share.join.title</p>
 
                                 <p v-t>player.share.join.description</p>
 
                                 <Input v-model:value="watchCode"
-                                       class="mt-1"
                                        :label="$t('player.share.join.code')"
                                        :validators="[
                                             (value: string) => value.length === 9 || $t('player.share.join.error')
                                        ]"
+                                       class="mt-1"
                                 ></Input>
 
                                 <div class="flex flex-justify-end mt-1">
                                     <Button
+                                        :disabled="watchCode?.length !== 9"
                                         color="primary"
                                         icon="transit-connection-variant"
-                                        :disabled="watchCode?.length !== 9"
                                         @click="() => {joinWithCode(); toggle()}">
                                         <span v-t>player.share.join.join</span>
                                     </Button>
@@ -217,11 +217,11 @@
                         v-if="canStartWatch && !watching"
                         :label="$t('player.control.edit')"
                         :to="{name: 'Editor', params: {material: route.params.material}}"
-                        @click="communicator.getPlayerRoom()?.destroy()"
                         :tooltip-text="$t('player.control.edit')"
                         hide-mobile
                         icon="square-edit-outline"
                         tooltip-position="bottom"
+                        @click="communicator.getPlayerRoom()?.destroy()"
                     />
                     <Dialog v-if="debugging && !watching">
                         <template #default>
@@ -229,7 +229,8 @@
                                 <p v-t class="title">player.debug.variables.title</p>
 
                                 <List class="mb-2">
-                                    <ListItem v-for="variable in Object.keys(playerStore.variables) ?? []" :key="variable">
+                                    <ListItem v-for="variable in Object.keys(playerStore.variables) ?? []"
+                                              :key="variable">
                                         <span>{{ variable }}</span>
                                         <pre><code>{{ playerStore.variables[variable] }}</code></pre>
                                     </ListItem>
@@ -243,14 +244,14 @@
                                 <Dialog>
                                     <template #default="{toggle}">
                                         <Card dialog>
-                                            <PluginLocalImport @done="() => {toggle(); refresh();}" />
+                                            <PluginLocalImport @done="() => {toggle(); refresh();}"/>
                                         </Card>
                                     </template>
                                     <template #activator="{toggle}">
                                         <Button
-                                            @click="toggle"
-                                            icon="package-variant-plus"
                                             class="mt-1"
+                                            icon="package-variant-plus"
+                                            @click="toggle"
                                         >
                                             <span v-t>player.debug.plugin.addLocal</span>
                                         </Button>
@@ -275,15 +276,15 @@
                         :label="$t('player.control.leave')"
                         :to="{name: 'Dashboard'}"
                         :tooltip-text="$t('player.control.leave')"
-                        @click="communicator.getPlayerRoom()?.destroy()"
                         hide-mobile
                         icon="exit-to-app"
                         tooltip-position="bottom"
+                        @click="communicator.getPlayerRoom()?.destroy()"
                     />
                 </div>
             </template>
         </Header>
-        <Navigation v-model:menu="menu" primary full-control v-if="!rendering">
+        <Navigation v-if="!rendering" v-model:menu="menu" full-control primary>
             <template #primary>
                 <ChangeLanguage :header="false"/>
 
@@ -343,14 +344,14 @@
                         <Dialog>
                             <template #default>
                                 <Card dialog>
-                                    <PluginLocalImport />
+                                    <PluginLocalImport/>
                                 </Card>
                             </template>
                             <template #activator="{toggle}">
                                 <Button
-                                    @click="toggle"
-                                    icon="package-variant-plus"
                                     class="mt-1"
+                                    icon="package-variant-plus"
+                                    @click="toggle"
                                 >
                                     <span v-t>upload</span>
                                 </Button>
@@ -373,19 +374,19 @@
                     v-if="material && canStartWatch && !watching"
                     :label="$t('player.control.edit')"
                     :to="{name: 'Editor', params: {material: route.params.material}}"
-                    @click="communicator.getPlayerRoom()?.destroy()"
                     :tooltip-text="$t('player.control.edit')"
                     icon="square-edit-outline"
                     tooltip-position="bottom"
+                    @click="communicator.getPlayerRoom()?.destroy()"
                 />
 
                 <NavigationButton
                     :label="$t('player.control.leave')"
                     :to="{name: 'Dashboard'}"
-                    @click="communicator.getPlayerRoom()?.destroy()"
                     :tooltip-text="$t('player.control.leave')"
                     icon="exit-to-app"
                     tooltip-position="bottom"
+                    @click="communicator.getPlayerRoom()?.destroy()"
                 />
             </template>
         </Navigation>
@@ -394,10 +395,10 @@
 
         <Dialog v-model:value="watchFailed" persistent>
             <Card dialog>
-                <p class="title" v-t>player.share.watch.failed.title</p>
+                <p v-t class="title">player.share.watch.failed.title</p>
                 <p v-t>player.share.watch.failed.description</p>
 
-                <Button @click="tryWithoutCode" class="mt-1">
+                <Button class="mt-1" @click="tryWithoutCode">
                     <span v-t>player.share.watch.failed.button</span>
                 </Button>
             </Card>
@@ -405,7 +406,7 @@
 
         <Dialog :value="joining && !watchFailed" persistent>
             <Card dialog>
-                <p class="title" v-t>player.share.watch.loading.title</p>
+                <p v-t class="title">player.share.watch.loading.title</p>
 
                 <div class="flex flex-justify-center loader">
                     <span class="mdi mdi-loading mdi-spin"></span>
@@ -415,31 +416,31 @@
 
         <Dialog v-model:value="playerStore.watchEnded" persistent>
             <Card dialog>
-                <p class="title" v-t>player.share.watch.ended.title</p>
+                <p v-t class="title">player.share.watch.ended.title</p>
                 <p v-t>player.share.watch.ended.description</p>
 
-                <Button @click="tryWithoutCode" class="mt-1">
+                <Button class="mt-1" @click="tryWithoutCode">
                     <span v-t>player.share.watch.ended.button</span>
                 </Button>
             </Card>
         </Dialog>
 
-        <div class="watch" v-if="watchStarted">    
-            <qrcode-vue 
-                :margin="3" 
-                :size="200" 
+        <div v-if="watchStarted" class="watch">
+            <qrcode-vue
+                :margin="3"
+                :size="200"
                 :value="link"
                 background="white"
                 foreground="black"
                 level="H"
                 render-as="svg"
             ></qrcode-vue>
-            
+
             <span class="watch--code">{{ watchCode }}</span>
         </div>
     </div>
 
-    <CommunicatorObserver type="player" />
+    <CommunicatorObserver type="player"/>
 </template>
 
 <script lang="ts" setup>
@@ -532,7 +533,7 @@ const menu = ref<boolean>(false);
 
 const player = ref<Player | null>(null);
 
-watch(() => playerStore.getPlayer(), async(value) => {
+watch(() => playerStore.getPlayer(), async (value) => {
     player.value = value as Player;
 
     if (!material) return;
@@ -611,10 +612,10 @@ onMounted(async () => {
     joinWatch();
 });
 
-const joinWatch = async() => {
+const joinWatch = async () => {
     joining.value = true;
 
-    if(!isPresenter.value) {
+    if (!isPresenter.value) {
         setTimeout(() => {
             if (joining.value) {
                 watchFailed.value = true;

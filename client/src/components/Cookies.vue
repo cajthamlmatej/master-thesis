@@ -1,7 +1,7 @@
 <template>
     <Dialog v-model:value="visible" persistent>
         <template #default>
-            <Card dialog data-cy="cookies">
+            <Card data-cy="cookies" dialog>
                 <div class="flex flex-justify-space-between header">
                     <p v-t class="title">cookies.title</p>
 
@@ -19,7 +19,7 @@
                 <p v-t class="mb-1">cookies.not-accept</p>
 
                 <div class="flex flex-justify-end">
-                    <Button @click="accept" data-cy="cookies-accept"><span v-t>cookies.accept</span></Button>
+                    <Button data-cy="cookies-accept" @click="accept"><span v-t>cookies.accept</span></Button>
                 </div>
             </Card>
         </template>
@@ -35,12 +35,12 @@ const visible = ref(false);
 
 const route = useRoute();
 const router = useRouter();
-onMounted(async() => {
+onMounted(async () => {
     visible.value = localStorage.getItem("cookies") !== "true";
 
     await router.isReady();
 
-    if(route.query.cookies === "true") {
+    if (route.query.cookies === "true") {
         visible.value = false;
     }
 });

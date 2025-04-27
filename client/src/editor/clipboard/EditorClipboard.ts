@@ -75,12 +75,12 @@ export class EditorClipboard {
 
         let mapper: Record<string, string> = {};
 
-        for(let cloned of clonedBlocks) {
-            if(!cloned.group) continue;
+        for (let cloned of clonedBlocks) {
+            if (!cloned.group) continue;
 
             let newGroup = mapper[cloned.group];
 
-            if(!newGroup) {
+            if (!newGroup) {
                 newGroup = generateUUID();
                 mapper[cloned.group] = newGroup;
             }

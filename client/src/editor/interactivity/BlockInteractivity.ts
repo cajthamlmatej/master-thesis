@@ -114,12 +114,12 @@ interface BlockInteractivityActionBase {
 
 export type BlockInteractivityAction =
     BlockInteractivityActionBase & (
-        BlockInteractivityActionChangeProperty
-        | BlockInteractivityActionResetProperty
-        | BlockInteractivityActionChangeSlideRelative
-        | BlockInteractivityActionChangeSlideAbsolute
-        | BlockInteractivityActionChangeVariable
-        | BlockInteractivityActionOpenLink);
+    BlockInteractivityActionChangeProperty
+    | BlockInteractivityActionResetProperty
+    | BlockInteractivityActionChangeSlideRelative
+    | BlockInteractivityActionChangeSlideAbsolute
+    | BlockInteractivityActionChangeVariable
+    | BlockInteractivityActionOpenLink);
 
 type BlockInteractivityActions = {
     actions: BlockInteractivityAction[];

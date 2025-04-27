@@ -4,9 +4,8 @@ import {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {BlockRegistry} from "@/editor/block/BlockRegistry";
 import {MaterialOptions} from "@/editor/MaterialOptions";
 import {SlideData} from "@/models/Material";
-import { usePluginStore } from "@/stores/plugin";
-import { PluginManager } from "../plugin/PluginManager";
-import { toRaw } from "vue";
+import {usePluginStore} from "@/stores/plugin";
+import {PluginManager} from "../plugin/PluginManager";
 
 export class PlayerDeserializer {
 
@@ -21,7 +20,7 @@ export class PlayerDeserializer {
             const block = blockRegistry.deserializePlayer(blockData);
 
             if (block) {
-                if(rendering) {
+                if (rendering) {
                     block.interactivity = [];
                 }
 
@@ -30,13 +29,13 @@ export class PlayerDeserializer {
         }
 
         const player = new Player(element, editorData);
-        
+
         const pluginStore = usePluginStore();
         await pluginStore.loadPlugins(undefined, player);
 
         player.addBlocks(blocks);
 
-        player.setPluginCommunicator(new PlayerPluginCommunicator(pluginStore.manager as PluginManager));    
+        player.setPluginCommunicator(new PlayerPluginCommunicator(pluginStore.manager as PluginManager));
 
         return player;
 

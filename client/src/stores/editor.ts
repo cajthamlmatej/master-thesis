@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {computed, ref, toRaw, watch} from "vue";
+import {ref, toRaw, watch} from "vue";
 import Editor from "@/editor/Editor";
 import {generateUUID} from "@/utils/Generators";
 import {EditorDeserializer} from "@/editor/EditorDeserializer";
@@ -7,9 +7,6 @@ import {EditorSerializer} from "@/editor/EditorSerializer";
 import {EditorProperty} from "@/editor/property/EditorProperty";
 import {useMaterialStore} from "@/stores/material";
 import {Slide} from "@/models/Material";
-import {usePluginStore} from "@/stores/plugin";
-import {PluginManager} from "@/editor/plugin/PluginManager";
-import {EditorPluginCommunicator} from "@/editor/EditorPluginCommunicator";
 import {communicator} from "@/api/websockets";
 
 
@@ -146,7 +143,7 @@ export const useEditorStore = defineStore("editor", () => {
 
         synchronizeMaterialSlides();
 
-        for(let slide of slides.value) {
+        for (let slide of slides.value) {
             synchronizeSlide(slide);
         }
     }
@@ -259,7 +256,7 @@ export const useEditorStore = defineStore("editor", () => {
             await changeSlide(slides.value[0] as Slide);
         }
 
-        communicator.getEditorRoom()?.removeSlide({ slideId: slide.id });
+        communicator.getEditorRoom()?.removeSlide({slideId: slide.id});
     }
 
     const copySlide = async (slide: Slide) => {

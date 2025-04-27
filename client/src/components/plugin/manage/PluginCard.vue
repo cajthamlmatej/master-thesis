@@ -27,8 +27,8 @@
                 <template #activator="{toggle}">
                     <Button
                         v-tooltip="plugin.lastManifest.manifest != PluginManager.CURRENT_MANIFEST_VERSION.toString() ? $t('editor.plugin.manage.old-version') : $t('editor.plugin.manage.activate.title')"
-                        :label="plugin.lastManifest.manifest != PluginManager.CURRENT_MANIFEST_VERSION.toString() ? $t('editor.plugin.manage.old-version') : $t('editor.plugin.manage.activate.title')"
                         :disabled="plugin.lastManifest.manifest != PluginManager.CURRENT_MANIFEST_VERSION.toString()"
+                        :label="plugin.lastManifest.manifest != PluginManager.CURRENT_MANIFEST_VERSION.toString() ? $t('editor.plugin.manage.old-version') : $t('editor.plugin.manage.activate.title')"
                         :loading="loading"
                         icon="package-variant-closed-plus"
                         @click="() => plugin.requiresUserAttention() ? toggle() : activate()"
@@ -37,11 +37,12 @@
 
                 <template #default="{toggle}">
                     <Card dialog>
-                        <p class="title" v-t>editor.plugin.manage.attention.title</p>
+                        <p v-t class="title">editor.plugin.manage.attention.title</p>
 
                         <p v-t>editor.plugin.manage.attention.description</p>
 
-                        <p v-t v-if="plugin.lastManifest.allowedOrigins.length > 0" class="mt-1">editor.plugin.manage.attention.allowed-origins</p>
+                        <p v-if="plugin.lastManifest.allowedOrigins.length > 0" v-t class="mt-1">
+                            editor.plugin.manage.attention.allowed-origins</p>
                         <List v-if="plugin.lastManifest.allowedOrigins.length > 0">
                             <ListItem v-for="origin in plugin.lastManifest.allowedOrigins" :key="origin">
                                 <span>{{ origin }}</span>
@@ -120,10 +121,10 @@ const activate = async () => {
         result = await pluginStore.addPluginToMaterial(plugin.value);
         const editor = useEditorStore().getEditor();
 
-        if(editor) {
+        if (editor) {
             editor.redrawBlocks();
         }
-    } catch(e) {
+    } catch (e) {
         result = undefined
     }
 

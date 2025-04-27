@@ -174,13 +174,27 @@ export class EditorPlugin {
         await this.callEvent(EditorPluginEvent.PLUGIN_BLOCK_PROPERTY_CHANGE, serializedBlock, this.context!.newString(key));
     }
 
-    
+
     async createCustomBlock(id: string): Promise<string> {
         const result = await this.callEvent(EditorPluginEvent.CREATE_CUSTOM_BLOCK, this.context!.newString(id));
 
         if (!result) return "";
 
         return this.context!.dump(result.unwrap());
+    }
+
+    public serializeObject(value: any, object?: QuickJSHandle): QuickJSHandle {
+        if (!this.context) throw new Error("Context not ready");
+
+        if (!object) {
+            object = this.context.newObject();
+        }
+
+        for (const key in value) {
+            this.context.setProp(object, key, this.serializeAny(value[key]));
+        }
+
+        return object;
     }
 
     private async prepareContext() {
@@ -192,7 +206,7 @@ export class EditorPlugin {
         this.baseEvaluation = this.context.unwrapResult(result);
 
         this.setupContext();
-        if(!(await this.callFunctionIfExists("initEditor"))) {
+        if (!(await this.callFunctionIfExists("initEditor"))) {
             console.error("Error while calling initEditor");
             return;
         }
@@ -241,20 +255,5 @@ export class EditorPlugin {
         }
 
         return true;
-    }
-
-
-    public serializeObject(value: any, object?: QuickJSHandle): QuickJSHandle {
-        if (!this.context) throw new Error("Context not ready");
-
-        if (!object) {
-            object = this.context.newObject();
-        }
-
-        for (const key in value) {
-            this.context.setProp(object, key, this.serializeAny(value[key]));
-        }
-
-        return object;
     }
 }

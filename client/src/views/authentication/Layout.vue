@@ -1,9 +1,9 @@
 <template>
     <Header :hasMenu="false">
         <template #navigation>
-            <ChangeLanguage :header="false" never-hide />
+            <ChangeLanguage :header="false" never-hide/>
 
-            <NavigationButton :label="$t('layout.auth.home')" @click="redirect" icon="home-outline"/>
+            <NavigationButton :label="$t('layout.auth.home')" icon="home-outline" @click="redirect"/>
         </template>
     </Header>
 

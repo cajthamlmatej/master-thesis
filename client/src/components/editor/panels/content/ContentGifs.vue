@@ -3,7 +3,7 @@
         <Input ref="searchInput" v-model:value="search" :placeholder="$t('editor.panel.content.gifs.search')" hide-error
                hide-label
         ></Input>
-<!--        <Button icon="close" @click="search = ''"></Button>-->
+        <!--        <Button icon="close" @click="search = ''"></Button>-->
     </div>
 
     <div v-if="categories.length > 0 && (search.length < 1 || results.length == 0)" class="categories">
@@ -326,6 +326,7 @@ const add = (event: MouseEvent, media: string) => {
             }
         }
     }
+
     &::-webkit-scrollbar {
         width: 0.25em;
     }

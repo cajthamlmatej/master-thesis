@@ -34,7 +34,8 @@
                 <div ref="content" class="content">
                     <div v-for="media in mediaStore.media" :key="media.id" class="media"
                          @mousedown="(e) => add(e, media.id)">
-                        <img :alt="media.name" :data-src="mediaStore.linkToMedia(media)" draggable="false" loading="lazy"
+                        <img :alt="media.name" :data-src="mediaStore.linkToMedia(media)" draggable="false"
+                             loading="lazy"
                              src=""/>
                     </div>
                 </div>

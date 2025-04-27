@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, getCurrentInstance, onBeforeMount, onMounted, onUpdated, ref, useSlots, watch} from "vue";
+import {computed, getCurrentInstance, onMounted, onUpdated, ref, useSlots, watch} from "vue";
 import {useRoute} from "vue-router";
 
 const props = defineProps({
@@ -99,7 +99,7 @@ const textAfterTranslation = ref(undefined as string | undefined);
 
 const instance = getCurrentInstance()!;
 const updateText = () => {
-    textAfterTranslation.value = instance.vnode.el?.textContent ?? ($slots.default?.()[0]?.children as any)?.map((a: any) => a.el?.textContent??"").join(" ").trim();
+    textAfterTranslation.value = instance.vnode.el?.textContent ?? ($slots.default?.()[0]?.children as any)?.map((a: any) => a.el?.textContent ?? "").join(" ").trim();
 };
 
 onUpdated(() => {

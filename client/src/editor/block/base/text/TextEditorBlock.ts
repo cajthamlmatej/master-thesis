@@ -51,40 +51,6 @@ export class TextEditorBlock extends EditorBlock {
         return element;
     }
 
-    private setupEditor(content: Element | undefined = undefined) {
-        if (this.textEditor) {
-            this.textEditor.destroy();
-        }
-        if (!content) {
-            content = this.element.querySelector(".block-content")! as HTMLElement;
-
-            if(!content) return;
-        }
-
-        this.textEditor = new Editor({
-            element: content,
-            extensions: [
-                StarterKit,
-                Underline,
-                Superscript,
-                Subscript,
-                TextStyle,
-                Color,
-                FontFamily,
-                TextAlign.configure({
-                    types: ['heading', 'paragraph'],
-                }),
-                FontSize
-            ],
-            content: this.content,
-            editable: false,
-            onUpdate: ({editor}) => {
-                this.changeContent(editor.getHTML());
-                this.matchRenderedHeight();
-            },
-        });
-    }
-
     public override processDataChange(data: any) {
         super.processDataChange(data);
 
@@ -176,6 +142,54 @@ export class TextEditorBlock extends EditorBlock {
         return this.editable;
     }
 
+    getInteractivityProperties(): Omit<BlockInteractiveProperty & {
+        relative: boolean;
+        animate: boolean
+    }, "change" | "reset" | "getBaseValue">[] {
+        return [
+            ...super.getInteractivityProperties(),
+            {
+                label: "content",
+                relative: false,
+                animate: false,
+            }
+        ];
+    }
+
+    private setupEditor(content: Element | undefined = undefined) {
+        if (this.textEditor) {
+            this.textEditor.destroy();
+        }
+        if (!content) {
+            content = this.element.querySelector(".block-content")! as HTMLElement;
+
+            if (!content) return;
+        }
+
+        this.textEditor = new Editor({
+            element: content,
+            extensions: [
+                StarterKit,
+                Underline,
+                Superscript,
+                Subscript,
+                TextStyle,
+                Color,
+                FontFamily,
+                TextAlign.configure({
+                    types: ['heading', 'paragraph'],
+                }),
+                FontSize
+            ],
+            content: this.content,
+            editable: false,
+            onUpdate: ({editor}) => {
+                this.changeContent(editor.getHTML());
+                this.matchRenderedHeight();
+            },
+        });
+    }
+
     @BlockEventListener(BlockEvent.SELECTED)
     private onSelected() {
         this.element.addEventListener("keydown", this.onKeyDown.bind(this));
@@ -250,20 +264,6 @@ export class TextEditorBlock extends EditorBlock {
         content.style.transform = "";
 
         this.synchronize();
-    }
-
-    getInteractivityProperties(): Omit<BlockInteractiveProperty & {
-        relative: boolean;
-        animate: boolean
-    }, "change" | "reset" | "getBaseValue">[] {
-        return [
-            ...super.getInteractivityProperties(),
-            {
-                label: "content",
-                relative: false,
-                animate: false,
-            }
-        ];
     }
 
 

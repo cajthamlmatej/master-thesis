@@ -1,16 +1,16 @@
 <template>
     <Header v-model:menu="data.menu">
         <template #logo>
-            <div class="flex flex-align-center" v-if="editor">
+            <div v-if="editor" class="flex flex-align-center">
                 <div class="meta">
                     <span class="title" data-cy="editor-title">{{ materialStore.currentMaterial?.name }}</span>
 
-<!--                    <span class="state">{{ state }}</span>-->
+                    <!--                    <span class="state">{{ state }}</span>-->
                 </div>
 
                 <div class="flex gap-0-5">
-<!--                    <Save @save="saved" @saving="saving" />-->
-                    <Attendees />
+                    <!--                    <Save @save="saved" @saving="saving" />-->
+                    <Attendees/>
 
                     <NavigationButton :label="$t('editor.navigation.preview')"
                                       :to="{ name: 'Player', params: { material: $route.params.material } }"
@@ -30,7 +30,7 @@
             </div>
         </template>
 
-        <template #navigation v-if="editor">
+        <template v-if="editor" #navigation>
             <History/>
 
             <Preferences/>
@@ -79,7 +79,7 @@
                 icon="solar-panel"
                 tooltip-position="bottom"></NavigationButton>
 
-            <History :header="false" />
+            <History :header="false"/>
 
             <Preferences :header="false"/>
 
@@ -103,13 +103,13 @@
         </transition>
     </router-view>
 
-    <MediaHandler />
+    <MediaHandler/>
 
-    <CommunicatorObserver type="editor" />
+    <CommunicatorObserver type="editor"/>
 </template>
 
 <script lang="ts" setup>
-import {onMounted, onUnmounted, reactive, ref, toRaw, watch} from "vue";
+import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import Slides from "@/components/editor/panels/Slides.vue";
 import CommunicatorObserver from "@/components/CommunicatorObserver.vue";
 import Blocks from "@/components/editor/panels/Blocks.vue";
@@ -121,7 +121,6 @@ import type Editor from "@/editor/Editor";
 import Preferences from "@/components/editor/dialogs/Preferences.vue";
 import {useRoute, useRouter} from "vue-router";
 import {useMaterialStore} from "@/stores/material";
-import Save from "@/components/editor/Save.vue";
 import History from "@/components/editor/History.vue";
 import {$t} from "@/translation/Translation";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
@@ -135,7 +134,6 @@ import {useSeoMeta} from "unhead";
 import {communicator} from "@/api/websockets";
 import Material from "@/models/Material";
 import Attendees from "@/components/editor/Attendees.vue";
-import {EditorCommunicator} from "@/api/editorCommunicator";
 import {usePlayerStore} from "@/stores/player";
 import MediaHandler from "@/components/editor/MediaHandler.vue";
 
@@ -292,7 +290,7 @@ watch(() => editorStore.getEditor(), (value) => {
     });
     value.events.HISTORY_JUMP.on(() => {
         setTimeout(() => {
-            for(let block of (editor.value?.getBlocks() ?? [])) {
+            for (let block of (editor.value?.getBlocks() ?? [])) {
                 communicator.getEditorRoom()?.synchronizeBlock(block);
             }
         }, 400);
@@ -374,6 +372,7 @@ main {
             display: none;
         }
     }
+
     @media (max-width: 768px) {
         max-width: 400px;
     }

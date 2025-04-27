@@ -118,7 +118,7 @@ export class ImageEditorBlock extends EditorBlock {
                 this.editor.events.BLOCK_CONTENT_CHANGED.emit(this);
             }
 
-            if(this.imageElement.complete) {
+            if (this.imageElement.complete) {
                 processSize();
             } else {
                 this.imageElement.addEventListener("load", processSize);

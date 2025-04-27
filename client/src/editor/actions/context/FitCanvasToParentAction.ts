@@ -1,6 +1,5 @@
 import type {ActionKeybind, ActionParameters} from "@/editor/actions/EditorAction";
 import {ContextAction} from "@/editor/actions/ContextAction";
-import {EditorMode} from "@/editor/EditorMode";
 
 export class FitCanvasToParentAction extends ContextAction {
     constructor() {

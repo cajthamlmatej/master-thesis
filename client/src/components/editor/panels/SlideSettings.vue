@@ -7,7 +7,7 @@
             <Card dialog>
                 <p v-t class="title mb-0">editor.panel.slides.settings.title</p>
 
-                <Tabs fluid :items="[
+                <Tabs v-model:selected="selected" :items="[
                     {
                         value: 'visual',
                         text: $t('editor.panel.slides.settings.visual.title'),
@@ -16,7 +16,7 @@
                         value: 'resize',
                         text: $t('editor.panel.slides.settings.size.title'),
                     }
-                ]" v-model:selected="selected"></Tabs>
+                ]" fluid></Tabs>
 
                 <div v-if="selected === 'resize'">
                     <div class="flex flex-justify-space-between flex-align-center">
@@ -92,7 +92,7 @@ const save = () => {
     }
     const editor = editorStore.getEditor();
 
-    if(!editor) {
+    if (!editor) {
         return;
     }
 

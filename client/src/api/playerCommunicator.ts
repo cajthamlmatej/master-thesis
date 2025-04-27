@@ -3,9 +3,8 @@ import {communicator} from "@/api/websockets";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 
 export class PlayerCommunicator {
-    private material: Material;
     isPresenter: boolean;
-
+    private material: Material;
     private joinedResolve: () => void;
     public readonly joined: Promise<void> = new Promise<void>((resolve) => this.joinedResolve = resolve);
 
@@ -44,7 +43,7 @@ export class PlayerCommunicator {
         //     player.setScale(scale);
         //     player.updateElement();
         // });
-        communicator.socket.on("presenterDisconnected", async() => {
+        communicator.socket.on("presenterDisconnected", async () => {
             const playerStore = (await import("@/stores/player")).usePlayerStore();
             playerStore.watchEnded = true;
         });
@@ -70,7 +69,11 @@ export class PlayerCommunicator {
         communicator.socket.on("joinedPlayerRoom", () => {
             this.joinedResolve();
         });
-        communicator.socket.on("blockMessage", async({message, blockId, clientId}: { message: string, blockId: string, clientId?: string }) => {
+        communicator.socket.on("blockMessage", async ({message, blockId, clientId}: {
+            message: string,
+            blockId: string,
+            clientId?: string
+        }) => {
             console.log("blockMessage", message, blockId, clientId);
             const player = (await import("@/stores/player")).usePlayerStore().getPlayer();
 
@@ -114,7 +117,7 @@ export class PlayerCommunicator {
     }
 
     public sendBlockMessage(message: string, blockId: string) {
-        if(this.isPresenter) {
+        if (this.isPresenter) {
             communicator.socket.emit("sendBlockMessageToAttendees", {
                 message,
                 blockId

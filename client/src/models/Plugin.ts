@@ -33,7 +33,7 @@ export default class Plugin {
         this.tags = tags;
         this.releases = releases;
 
-        if(lastManifest) {
+        if (lastManifest) {
             try {
                 this.lastManifest = JSON.parse(lastManifest);
             } catch (e) {
@@ -43,21 +43,21 @@ export default class Plugin {
                 };
             }
         } else {
-            if(this.releases.length === 0) {
+            if (this.releases.length === 0) {
                 this.lastManifest = {
                     manifest: "",
                     allowedOrigins: []
                 };
-            }  else {
+            } else {
                 this.lastManifest = JSON.parse(this.releases[0].manifest);
             }
         }
 
 
-        if(this.lastReleaseDate) {
+        if (this.lastReleaseDate) {
             this.lastReleaseDate = moment(lastReleaseDate);
         } else {
-            if(this.releases.length === 0) {
+            if (this.releases.length === 0) {
                 this.lastReleaseDate = moment();
             } else {
                 this.lastReleaseDate = this.releases[0].date;
@@ -70,7 +70,7 @@ export default class Plugin {
     }
 
     lastRelease() {
-        if(this.releases.length === 0) {
+        if (this.releases.length === 0) {
             return undefined;
         }
 

@@ -275,7 +275,7 @@ export class EditorCommunicator {
             return;
         }
 
-        if(this.attendees.some(a => a.selectedBlocks.includes(block.id) && a.id !== communicator.socket.id)) {
+        if (this.attendees.some(a => a.selectedBlocks.includes(block.id) && a.id !== communicator.socket.id)) {
             console.error("Block is selected by someone else and trying to synchronize");
             return;
         }

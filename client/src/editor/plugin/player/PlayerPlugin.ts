@@ -159,6 +159,25 @@ export class PlayerPlugin {
         }
     }
 
+    async processRemoteMessage(block: PluginPlayerBlock, message: string, clientId: string | undefined) {
+        await this.loadedPromise;
+        const serializedBlock = this.serializeBlock(block);
+
+        try {
+            const result = await this.callEvent(PlayerPluginEvent.PLUGIN_REMOTE_MESSAGE,
+                serializedBlock,
+                this.context!.newString(message),
+                clientId ? this.context!.newString(clientId) : this.context!.undefined);
+
+            if (!result) return "";
+
+            return this.context!.dump(result.unwrap());
+        } catch (e) {
+            console.error(e);
+            return undefined;
+        }
+    }
+
     private async prepareContext() {
         const QuickJS = await load();
         this.context = QuickJS.newContext();
@@ -212,24 +231,5 @@ export class PlayerPlugin {
         }
 
         return;
-    }
-
-    async processRemoteMessage(block: PluginPlayerBlock, message: string, clientId: string | undefined) {
-        await this.loadedPromise;
-        const serializedBlock = this.serializeBlock(block);
-
-        try {
-            const result = await this.callEvent(PlayerPluginEvent.PLUGIN_REMOTE_MESSAGE,
-                serializedBlock,
-                this.context!.newString(message),
-                clientId ? this.context!.newString(clientId) : this.context!.undefined);
-
-            if (!result) return "";
-
-            return this.context!.dump(result.unwrap());
-        } catch (e) {
-            console.error(e);
-            return undefined;
-        }
     }
 }

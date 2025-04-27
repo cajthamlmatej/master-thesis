@@ -1,4 +1,3 @@
-
 export interface PluginCustomBlock {
     name: string;
     icon: string;

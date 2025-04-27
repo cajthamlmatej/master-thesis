@@ -1,31 +1,31 @@
 <template>
     <VDropdown
-        placement="bottom"
-        :showTriggers="['click']"
         :hideTriggers="['click']"
+        :showTriggers="['click']"
+        placement="bottom"
     >
-<!--        :showTriggers="['hover', 'click']"-->
-<!--        :hideTriggers="['click', 'hover']"-->
+        <!--        :showTriggers="['hover', 'click']"-->
+        <!--        :hideTriggers="['click', 'hover']"-->
         <NavigationButton
             :icon="attendees.length <= 1 ? 'account':'account-multiple'"
-            :tooltip-text="$t('editor.attendees.title')"
             :tooltip-position="'bottom'"
+            :tooltip-text="$t('editor.attendees.title')"
         ></NavigationButton>
 
         <template #popper>
             <div class="attendee-dropdown">
                 <div v-for="attendee in attendees" :key="attendee.attendee.id" class="attendee">
-                    <span class="visualiser"
-                        :style="{
+                    <span :style="{
                             '--color': attendee.attendee.color,
                         }"
+                          class="visualiser"
                     >
-                        {{attendee.attendee.icon}}
+                        {{ attendee.attendee.icon }}
                     </span>
                     <span class="name">
                         {{ attendee.attendee.name }}
                     </span>
-                    <span class="current" v-if="attendee.current">
+                    <span v-if="attendee.current" class="current">
                         ({{ $t('editor.attendees.current') }})
                     </span>
                 </div>
@@ -34,10 +34,9 @@
     </VDropdown>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import {communicator} from "@/api/websockets";
-import Material from "@/models/Material";
 import {onMounted, ref} from "vue";
 import {useMaterialStore} from "@/stores/material";
 import {$t} from "@/translation/Translation";
@@ -49,7 +48,7 @@ const materialStore = useMaterialStore();
 
 let editorRoom: EditorCommunicator;
 
-onMounted(async() => {
+onMounted(async () => {
     editorRoom = communicator.getEditorRoom()!;
     updateAttendees();
     editorRoom.EVENTS.ATTENDEE_CHANGES.on(() => {
@@ -61,6 +60,7 @@ const attendees = ref<{
     attendee: EditorAttendee,
     current: boolean
 }[]>([]);
+
 function updateAttendees() {
     const current = editorRoom.getCurrent();
     attendees.value = editorRoom.getAttendees().map((attendee) => ({

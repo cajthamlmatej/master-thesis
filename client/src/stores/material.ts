@@ -185,7 +185,7 @@ export const useMaterialStore = defineStore("material", () => {
         const responseMaterial = await api.material.one(id, undefined);
         const original = MaterialMapper.fromMaterialDTO(responseMaterial!.material);
 
-        if(!original) {
+        if (!original) {
             throw new Error("Material not found");
         }
 

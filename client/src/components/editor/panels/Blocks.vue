@@ -7,20 +7,20 @@
                     :key="block.type"
                     :icon="block.icon"
                     @mousedown="(e: MouseEvent) => add(e, block.type)">
-                    <span v-t>blocks.{{block.type}}.name</span>
+                    <span v-t>blocks.{{ block.type }}.name</span>
                 </Button>
             </div>
             <div v-show="blocksMenu && pluginBlocks.length > 0" class="menu editor-blocks editor-blocks--plugins">
-                <p class="title" v-t>editor.plugin.blocks.title</p>
+                <p v-t class="title">editor.plugin.blocks.title</p>
 
                 <Button
                     v-for="block in pluginBlocks"
                     :key="block.id+block.pluginId"
-                    :icon="block.icon"
                     v-tooltip="getPluginName(block.pluginId)"
+                    :icon="block.icon"
                     :label="getPluginName(block.pluginId)"
                     @mousedown="(e: MouseEvent) => addPlugin(e, block)">
-                    <span>{{block.name}}</span>
+                    <span>{{ block.name }}</span>
                 </Button>
             </div>
         </template>
@@ -41,7 +41,7 @@ import {InteractiveAreaEditorBlock} from "@/editor/block/base/interactiveArea/In
 import {MermaidEditorBlock} from "@/editor/block/base/mermaid/MermaidEditorBlock";
 import {IframeEditorBlock} from "@/editor/block/base/iframe/IframeEditorBlock";
 import {ChatEditorBlock} from "@/editor/block/base/chat/ChatEditorBlock";
-import { usePluginStore } from "@/stores/plugin";
+import {usePluginStore} from "@/stores/plugin";
 import {PluginCustomBlock} from "@/editor/plugin/PluginCustomBlock";
 
 const blocksMenu = ref(true);
@@ -213,7 +213,7 @@ const add = (event: MouseEvent, type: string) => {
 
     const blockData = blocks.find(b => b.type === type);
 
-    if(!blockData) {
+    if (!blockData) {
         console.error("Block not found");
         return;
     }
@@ -257,7 +257,7 @@ const pluginBlocks = computed(() => {
     return pluginStore.manager.getCustomBlocks();
 });
 
-const addPlugin = async(event: MouseEvent, blockData: PluginCustomBlock) => {
+const addPlugin = async (event: MouseEvent, blockData: PluginCustomBlock) => {
     const editorValue = toRaw(editor.value);
 
     if (!editorValue) {

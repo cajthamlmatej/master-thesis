@@ -1,12 +1,9 @@
 import {defineStore} from "pinia";
-import {ref, toRaw, watch} from "vue";
+import {ref, watch} from "vue";
 import {useMaterialStore} from "@/stores/material";
 import {Slide} from "@/models/Material";
 import type Player from "@/editor/player/Player";
 import {PlayerDeserializer} from "@/editor/player/PlayerDeserializer";
-import {PlayerPluginCommunicator} from "@/editor/player/PlayerPluginCommunicator";
-import {usePluginStore} from "@/stores/plugin";
-import {PluginManager} from "@/editor/plugin/PluginManager";
 
 
 export const usePlayerStore = defineStore("player", () => {
@@ -50,7 +47,7 @@ export const usePlayerStore = defineStore("player", () => {
             throw new Error("No material loaded, cannot request player");
         }
 
-        if(!slideId) {
+        if (!slideId) {
             await changeSlide(slides.value[0]);
         } else {
             await changeSlide(slideId, rendering);

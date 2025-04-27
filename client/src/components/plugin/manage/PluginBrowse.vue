@@ -23,7 +23,7 @@
             </div>
         </header>
 
-        <Pagination v-model:page="page" :page-size="3" class="mb-1" :total="pageCount"/>
+        <Pagination v-model:page="page" :page-size="3" :total="pageCount" class="mb-1"/>
 
         <div class="browse">
             <PluginCard v-for="plugin in pluginsToShow"

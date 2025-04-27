@@ -7,8 +7,9 @@
                         <Tabs v-model:selected="data.tab" :items="data.tabs" fluid></Tabs>
                         <TransitionGroup :duration="40000" class="authentication-holder" name="authentication-fade"
                                          tag="div">
-                            <Form v-if="data.tab === 'EMAIL_PASSWORD'" data-cy=email-password-form :onSubmit="() => handle('EMAIL_PASSWORD')"
-                                  class="form">
+                            <Form v-if="data.tab === 'EMAIL_PASSWORD'" :onSubmit="() => handle('EMAIL_PASSWORD')"
+                                  class="form"
+                                  data-cy=email-password-form>
                                 <template #default="{ validationChange }">
                                     <Input v-model:value="data.email"
                                            :label="$t('page.authentication.fields.email.label')"
@@ -37,7 +38,8 @@
                                 </template>
                             </Form>
 
-                            <Form v-if="data.tab === 'EMAIL'" data-cy=email-form :onSubmit="() => handle('EMAIL')" class="form">
+                            <Form v-if="data.tab === 'EMAIL'" :onSubmit="() => handle('EMAIL')" class="form"
+                                  data-cy=email-form>
                                 <template #default="{ validationChange }">
                                     <Input v-model:value="data.email" :disabled="data.emailStage === 1"
                                            :label="$t('page.authentication.fields.email.label')"
@@ -76,14 +78,14 @@
                             <div>
                                 <h2 v-t>web.name</h2>
 
-                                <p class="mb-1" v-t>page.authentication.about.0</p>
-                                <p class="mb-1" v-t>page.authentication.about.1</p>
-                                <p class="mb-1" v-t>page.authentication.about.2</p>
-                                <p class="mb-1" v-t>page.authentication.about.3</p>
+                                <p v-t class="mb-1">page.authentication.about.0</p>
+                                <p v-t class="mb-1">page.authentication.about.1</p>
+                                <p v-t class="mb-1">page.authentication.about.2</p>
+                                <p v-t class="mb-1">page.authentication.about.3</p>
                             </div>
 
                             <Button :icon-size="1.4" :to="{ name: 'Authentication/Register'}" class="mt-1"
-                                    fluid icon="account-plus-outline" data-cy="create-account">
+                                    data-cy="create-account" fluid icon="account-plus-outline">
                                 <span v-t>page.authentication.create-account</span>
                             </Button>
 

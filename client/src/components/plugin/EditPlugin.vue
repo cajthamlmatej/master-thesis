@@ -1,16 +1,17 @@
 <template>
-    <p class="title" v-t>page.plugins.edit-plugin.title</p>
+    <p v-t class="title">page.plugins.edit-plugin.title</p>
 
     <Input v-model:value="data.name" :label="$t('page.plugins.edit-plugin.name.label')"
-        :validators="[
+           :validators="[
             (value: string) => value.length > 0 || $t('page.plugins.edit-plugin.name.error'),
         ]"
     ></Input>
 
     <div class="flex flex-justify-space-between gap-1 flex-align-center py-1">
-        <Select  :label="$t('page.plugins.edit-plugin.icon.label')" v-model:value="data.icon" :choices="icons" class="select"></Select>
+        <Select v-model:value="data.icon" :choices="icons" :label="$t('page.plugins.edit-plugin.icon.label')"
+                class="select"></Select>
 
-        <span class="icon" :class="{mdi: true, ['mdi-' + data.icon]: true}"></span>
+        <span :class="{mdi: true, ['mdi-' + data.icon]: true}" class="icon"></span>
     </div>
 
     <Input v-model:value="data.description" :label="$t('page.plugins.edit-plugin.description.label')"
@@ -18,20 +19,21 @@
             (value: string) => value.length > 0 || $t('page.plugins.edit-plugin.description.error'),
         ]"></Input>
 
-    <Select  :label="$t('page.plugins.edit-plugin.tags.label')" v-model:value="data.tags" :choices="tags" multiple></Select>
+    <Select v-model:value="data.tags" :choices="tags" :label="$t('page.plugins.edit-plugin.tags.label')"
+            multiple></Select>
 
     <div class="flex flex-justify-end mt-2">
         <Button
+            :disabled="!canContinue()"
             :loading="creating"
             @click="send"
-            :disabled="!canContinue()"
         >
             <span v-t>page.plugins.edit-plugin.submit</span>
         </Button>
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import {$t} from "@/translation/Translation";
 import {computed, onMounted, PropType, reactive, ref} from "vue";
@@ -86,8 +88,8 @@ const emits = defineEmits(['close'])
 
 const creating = ref(false);
 const pluginStore = usePluginStore();
-const send = async() => {
-    if(creating.value || !canContinue()) {
+const send = async () => {
+    if (creating.value || !canContinue()) {
         return;
     }
 

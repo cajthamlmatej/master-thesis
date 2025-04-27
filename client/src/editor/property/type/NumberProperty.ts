@@ -1,6 +1,5 @@
 import {Property} from "@/editor/property/Property";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
-import sanitizeHtml from 'sanitize-html';
 import {sanitizeAttribute} from "@/utils/Sanitize";
 
 
@@ -49,7 +48,7 @@ export abstract class NumberProperty<T extends EditorBlock = EditorBlock> extend
     public processRecalculateValues() {
         this.recalculateValues((value) => {
             const input = this.element.querySelector<HTMLInputElement>(`[data-property="${this.name}"]`)!;
-            input.value = (value??0).toString();
+            input.value = (value ?? 0).toString();
         });
     }
 

@@ -20,6 +20,12 @@ export default class EditorEvents {
     public BLOCK_SIZE_CHANGED = new Event<{ block: EditorBlock, manual: boolean }>();
     public BLOCK_OPACITY_CHANGED = new Event<{ block: EditorBlock, manual: boolean }>();
     public BLOCK_CHANGED = new Event<EditorBlock>();
+    private blockDebounce: {
+        [key: string]: {
+            createdAt: number,
+            timeout: NodeJS.Timeout
+        }
+    } = {}
 
     constructor() {
         [
@@ -49,20 +55,13 @@ export default class EditorEvents {
         })
     }
 
-    private blockDebounce: {
-        [key: string]: {
-            createdAt: number,
-            timeout: NodeJS.Timeout
-        }
-    } = {}
-
     private tryToEmit(block: EditorBlock) {
         if (this.blockDebounce[block.id]) {
             const diff = Date.now() - this.blockDebounce[block.id].createdAt;
 
             clearTimeout(this.blockDebounce[block.id].timeout);
 
-            if(diff > 300) {
+            if (diff > 300) {
                 this.BLOCK_CHANGED.emit(block);
                 delete this.blockDebounce[block.id];
             }

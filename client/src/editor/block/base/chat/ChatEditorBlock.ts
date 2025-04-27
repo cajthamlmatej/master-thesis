@@ -1,6 +1,5 @@
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
-import {Property} from "@/editor/property/Property";
 import {$t} from "@/translation/Translation";
 
 export class ChatEditorBlock extends EditorBlock {

@@ -17,7 +17,8 @@ import Player from "@/editor/player/Player";
 
 export const usePluginStore = defineStore("plugin", () => {
     const plugins = ref([] as Plugin[]);
-    let loadedResolve = (val?: any) => {};
+    let loadedResolve = (val?: any) => {
+    };
     let loaded = new Promise((r) => loadedResolve = r);
 
     let pluginManager = ref<PluginManager>(new PluginManager());
@@ -145,7 +146,7 @@ export const usePluginStore = defineStore("plugin", () => {
             await pluginContext.loaded;
         }
 
-        if(pluginManager.value.debugPlugin) {
+        if (pluginManager.value.debugPlugin) {
             const debugPlugin = pluginManager.value.debugPlugin;
             const pluginContext = new PluginContext(debugPlugin, debugPlugin.releases[0]!, editor, player);
 
@@ -155,7 +156,7 @@ export const usePluginStore = defineStore("plugin", () => {
 
         loadedResolve();
 
-    
+
         await getPanels();
     }
 
@@ -225,7 +226,7 @@ export const usePluginStore = defineStore("plugin", () => {
         return true;
     }
 
-    const createPluginRelease = async(plugin: Plugin, release: {
+    const createPluginRelease = async (plugin: Plugin, release: {
         version: string,
         changelog: string,
         manifest: string,
@@ -241,7 +242,7 @@ export const usePluginStore = defineStore("plugin", () => {
         await loadForUser();
     }
 
-    const createPlugin = async(data: {
+    const createPlugin = async (data: {
         name: string;
         icon: string;
         description: string;
@@ -256,7 +257,7 @@ export const usePluginStore = defineStore("plugin", () => {
         await loadForUser();
     }
 
-    const updatePlugin = async(plugin: Plugin, data: {
+    const updatePlugin = async (plugin: Plugin, data: {
         name?: string;
         icon?: string;
         description?: string;

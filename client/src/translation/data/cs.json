@@ -212,7 +212,7 @@
             "no-releases": "Žádné verze pluginu nebyly nalezeny.",
             "new-plugin": {
                 "title": "Tvorba pluginu",
-                "name":{
+                "name": {
                     "label": "Název pluginu",
                     "error": "Název pluginu musí být vyplněn a být kratší než 255 znaků."
                 },
@@ -230,7 +230,7 @@
             },
             "edit-plugin": {
                 "title": "Úprava pluginu",
-                "name":{
+                "name": {
                     "label": "Název pluginu",
                     "error": "Název pluginu musí být vyplněn."
                 },
@@ -472,7 +472,6 @@
         "sharing": {
             "open": "Sdílení materiálu",
             "title": "Sdílení materiálu",
-
             "share": {
                 "title": "Sdílení a nastavení",
                 "name": "Název materiálu",

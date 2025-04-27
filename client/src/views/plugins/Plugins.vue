@@ -1,8 +1,8 @@
 <template>
 
-    <Card fluid class="mb-1">
+    <Card class="mb-1" fluid>
         <div class="flex flex-justify-center flex-justify-sm-space-between flex-align-center flex-wrap gap-1">
-            <span class="main-title" v-t>page.plugins.title</span>
+            <span v-t class="main-title">page.plugins.title</span>
 
             <div class="flex flex-align-center gap-1">
                 <Dialog>
@@ -10,8 +10,8 @@
                         <Button v-tooltip="$t('page.plugins.new.tooltip')"
                                 :label="$t('page.plugins.new.tooltip')"
                                 color="primary"
-                                @click="toggle"
-                                icon="plus" />
+                                icon="plus"
+                                @click="toggle"/>
                     </template>
                     <template #default="{toggle}">
                         <Card dialog>
@@ -41,14 +41,14 @@
 
 
         <div class="plugins">
-            <article class="plugin" v-for="plugin in pluginsOnPage" :key="plugin.id">
+            <article v-for="plugin in pluginsOnPage" :key="plugin.id" class="plugin">
                 <div class="meta">
                     <div class="icon">
                         <span :class="`mdi mdi-` + plugin.icon"></span>
                     </div>
 
                     <div class="state">
-                        <p class="title" v-tooltip="plugin.name">{{ plugin.name }}</p>
+                        <p v-tooltip="plugin.name" class="title">{{ plugin.name }}</p>
 
                         <div class="description">
                             <p v-t="{lastVersion: plugin.lastRelease()?.version ?? 'N/A'}">page.plugins.last-version</p>
@@ -58,7 +58,7 @@
                     <div class="actions">
                         <Dialog>
                             <template #activator="{toggle}">
-                                <Button @click="toggle" color="primary" icon="format-list-text">
+                                <Button color="primary" icon="format-list-text" @click="toggle">
                                     <span v-t>page.plugins.list-releases</span>
                                 </Button>
                             </template>
@@ -69,16 +69,17 @@
                                             <span v-t>page.plugins.no-releases</span>
                                         </ListItem>
 
-                                        <ListItem v-for="(release, i) in plugin.sortedReleases()" :key="release.version" class="release">
+                                        <ListItem v-for="(release, i) in plugin.sortedReleases()" :key="release.version"
+                                                  class="release">
                                             <span class="meta">
-                                                <span>{{release.version}}</span>
+                                                <span>{{ release.version }}</span>
 
-                                                <span class="active" v-if="i === 0" v-t>page.plugins.active</span>
+                                                <span v-if="i === 0" v-t class="active">page.plugins.active</span>
                                             </span>
                                             <span>
                                                 <Dialog>
                                                     <template #activator="{toggle}">
-                                                        <Button icon="information-variant" dense @click="toggle"/>
+                                                        <Button dense icon="information-variant" @click="toggle"/>
                                                     </template>
                                                     <template #default>
                                                         <Card dialog>
@@ -105,19 +106,27 @@
                                                             ></Tabs>
 
                                                             <div v-if="releaseInfo == 'BASE'">
-                                                                <p><b v-t>page.plugins.release.date</b>: {{ release.date.format("DD. MM. YYYY HH:mm") }}</p>
+                                                                <p><b v-t>page.plugins.release.date</b>: {{
+                                                                        release.date.format("DD. MM. YYYY HH:mm")
+                                                                    }}</p>
                                                                 <p><b v-t>page.plugins.release.manifest</b>:</p>
-                                                                <p class="code">{{ JSON.stringify(JSON.parse(release.manifest), null, 4) }}</p>
+                                                                <p class="code">{{
+                                                                        JSON.stringify(JSON.parse(release.manifest), null, 4)
+                                                                    }}</p>
                                                             </div>
                                                             <div v-else-if="releaseInfo == 'CHANGELOG'">
                                                                 <pre class="code">{{ release.changelog }}</pre>
                                                             </div>
                                                             <div v-else-if="releaseInfo == 'EDITOR'">
-                                                                <pre class="code" v-if="release.editorCode">{{ release.editorCode }}</pre>
+                                                                <pre v-if="release.editorCode" class="code">{{
+                                                                        release.editorCode
+                                                                    }}</pre>
                                                                 <p v-else v-t>page.plugins.release.info.no-code</p>
                                                             </div>
                                                             <div v-else-if="releaseInfo == 'PLAYER'">
-                                                                <pre class="code" v-if="release.playerCode">{{ release.playerCode }}</pre>
+                                                                <pre v-if="release.playerCode" class="code">{{
+                                                                        release.playerCode
+                                                                    }}</pre>
                                                                 <p v-else v-t>page.plugins.release.info.no-code</p>
                                                             </div>
                                                         </Card>
@@ -131,8 +140,8 @@
                                         <Dialog>
                                             <template #activator="{toggle}">
                                                 <Button
-                                                    @click="toggle"
                                                     color="primary"
+                                                    @click="toggle"
                                                 >
                                                     <span v-t>page.plugins.new-release.title</span>
                                                 </Button>
@@ -149,7 +158,7 @@
                         </Dialog>
                         <Dialog>
                             <template #activator="{toggle}">
-                                <Button @click="toggle" color="primary" icon="text-box-edit-outline">
+                                <Button color="primary" icon="text-box-edit-outline" @click="toggle">
                                     <span v-t>page.plugins.edit</span>
                                 </Button>
                             </template>
@@ -159,13 +168,13 @@
                                 </Card>
                             </template>
                         </Dialog>
-<!--                        <Dialog>-->
-<!--                            <template #activator="{toggle}">-->
-<!--                                <Button @click="toggle" color="primary" icon="trash-can-outline">-->
-<!--                                    <span v-t>page.plugins.remove</span>-->
-<!--                                </Button>-->
-<!--                            </template>-->
-<!--                        </Dialog>-->
+                        <!--                        <Dialog>-->
+                        <!--                            <template #activator="{toggle}">-->
+                        <!--                                <Button @click="toggle" color="primary" icon="trash-can-outline">-->
+                        <!--                                    <span v-t>page.plugins.remove</span>-->
+                        <!--                                </Button>-->
+                        <!--                            </template>-->
+                        <!--                        </Dialog>-->
                     </div>
                 </div>
             </article>
@@ -175,15 +184,12 @@
 </template>
 
 <script lang="ts" setup>
-import {useUserStore} from "@/stores/user";
 import {useRouter} from "vue-router";
 import Card from "@/components/design/card/Card.vue";
 import {computed, onMounted, ref, watch} from "vue";
 import {$t} from "@/translation/Translation";
-import FileInput from "@/components/design/input/FileInput.vue";
 import Pagination from "@/components/design/pagination/Pagination.vue";
 import {usePluginStore} from "@/stores/plugin";
-import moment from "moment";
 import ListItem from "@/components/design/list/ListItem.vue";
 import List from "@/components/design/list/List.vue";
 import Tabs from "@/components/design/tabs/Tabs.vue";
@@ -283,7 +289,7 @@ const releaseInfo = ref('BASE');
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                
+
                 max-width: 300px;
             }
 
@@ -330,6 +336,7 @@ const releaseInfo = ref('BASE');
         }
     }
 }
+
 .code {
     background-color: var(--color-text);
     color: white;

@@ -2,7 +2,8 @@
     <header :class="classes">
         <div class="logo">
             <slot name="logo">
-                <router-link :to="{ name: 'Dashboard' }" class="icon cursor-clickable" :aria-label="$t('web.name')"></router-link>
+                <router-link :aria-label="$t('web.name')" :to="{ name: 'Dashboard' }"
+                             class="icon cursor-clickable"></router-link>
             </slot>
         </div>
 
@@ -21,8 +22,8 @@
 
 <script lang="ts" setup>
 import {useRoute, useRouter} from "vue-router";
-import {computed, onMounted, ref, onUnmounted, watch} from "vue";
-import { $t } from "@/translation/Translation";
+import {computed, onMounted, onUnmounted, ref, watch} from "vue";
+import {$t} from "@/translation/Translation";
 
 const props = defineProps({
     hasMenu: {
@@ -208,6 +209,7 @@ header {
                         display: none;
                     }
                 }
+
                 &:has(.button--hide-mobile) {
                     @media (max-width: 768px) {
                         display: none;
@@ -224,6 +226,7 @@ header {
                         display: none;
                     }
                 }
+
                 &:has(.button--hide-mobile) {
                     @media (max-width: 768px) {
                         display: none;

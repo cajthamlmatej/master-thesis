@@ -6,9 +6,7 @@ import PlayerEvents from "@/editor/player/PlayerEvents";
 import {PlayerPluginCommunicator} from "@/editor/player/PlayerPluginCommunicator";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {EditorBlock} from "@/editor/block/EditorBlock";
-import {EditorMode} from "@/editor/EditorMode";
 import type {MaterialOptions} from "@/editor/MaterialOptions";
-import {PluginEditorBlock} from "@/editor/block/base/plugin/PluginEditorBlock";
 import {PluginPlayerBlock} from "@/editor/block/base/plugin/PluginPlayerBlock";
 
 export default class Player {
@@ -34,6 +32,8 @@ export default class Player {
     private mouseDownEvent: (event: MouseEvent) => void;
     private wheelEvent: (event: WheelEvent) => void;
     private touchEvent: (event: TouchEvent) => void;
+    private pluginCommunicatorPromiseResolve: (any?: any) => void;
+    private pluginCommunicatorPromise = new Promise((r) => this.pluginCommunicatorPromiseResolve = r);
 
     constructor(element: HTMLElement, options: MaterialOptions) {
         this.blockRegistry = new BlockRegistry();
@@ -51,16 +51,6 @@ export default class Player {
 
         console.log("[Player] Player initialized");
         this.events.LOADED.emit();
-    }
-    private parseOptions(options?: MaterialOptions) {
-        if (!options) return;
-
-        if (options.size) {
-            this.size = options.size;
-        }
-        if(options.color) {
-            this.color = options.color;
-        }
     }
 
     public getElement() {
@@ -190,8 +180,6 @@ export default class Player {
         return this.draw;
     }
 
-    private pluginCommunicatorPromiseResolve: (any?: any) => void;
-    private pluginCommunicatorPromise = new Promise((r) => this.pluginCommunicatorPromiseResolve = r);
     public setPluginCommunicator(pluginCommunicator: PlayerPluginCommunicator) {
         this.pluginCommunicator = pluginCommunicator;
         this.pluginCommunicatorPromiseResolve();
@@ -222,6 +210,43 @@ export default class Player {
 
         blockInstance.element.remove();
         this.blocks.splice(blockIndex, 1);
+    }
+
+    public addBlocks(blocks: PlayerBlock[]) {
+        for (const block of blocks) {
+            this.addBlock(block);
+        }
+    }
+
+    public getPosition() {
+        return this.position;
+    }
+
+    public updateElement() {
+        this.element.style.backgroundColor = this.color;
+        this.element.style.left = this.position.x + "px";
+        this.element.style.top = this.position.y + "px";
+        this.element.style.transformOrigin = `0 0`;
+        this.element.style.transform = `scale(${this.scale})`;
+        this.element.style.width = this.size.width + "px";
+        this.element.style.height = this.size.height + "px";
+    }
+
+    public redrawBlocks() {
+        this.getBlocks().filter(b => b instanceof PluginPlayerBlock).forEach((block: PluginPlayerBlock) => {
+            block.renderIframe();
+        });
+    }
+
+    private parseOptions(options?: MaterialOptions) {
+        if (!options) return;
+
+        if (options.size) {
+            this.size = options.size;
+        }
+        if (options.color) {
+            this.color = options.color;
+        }
     }
 
     private usageMouseDownEvent(event: MouseEvent) {
@@ -281,12 +306,6 @@ export default class Player {
         this.events.CANVAS_REPOSITION.emit();
 
         this.updateElement();
-    }
-
-    public addBlocks(blocks: PlayerBlock[]) {
-        for (const block of blocks) {
-            this.addBlock(block);
-        }
     }
 
     private setupUsage() {
@@ -376,33 +395,13 @@ export default class Player {
         }
     }
 
-    public getPosition() {
-        return this.position;
-    }
-
     private usageResizeEvent() {
         if (this.mode === PlayerMode.MOVE) return;
 
         this.fitToParent();
     }
 
-    public updateElement() {
-        this.element.style.backgroundColor = this.color;
-        this.element.style.left = this.position.x + "px";
-        this.element.style.top = this.position.y + "px";
-        this.element.style.transformOrigin = `0 0`;
-        this.element.style.transform = `scale(${this.scale})`;
-        this.element.style.width = this.size.width + "px";
-        this.element.style.height = this.size.height + "px";
-    }
-
     private setupPlayer() {
         this.element.innerHTML = `<div class="player-content"></div>`
-    }
-
-    public redrawBlocks() {
-        this.getBlocks().filter(b => b instanceof PluginPlayerBlock).forEach((block: PluginPlayerBlock) => {
-            block.renderIframe();
-        });
     }
 }
