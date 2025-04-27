@@ -29,7 +29,7 @@ Až později v rámci práce vznikly systematické automatizované testy, které
 
 \subsection{Tým testerů}
 
-Během vývoje vzniklo \textbf{19}\todo{Kolik?} verzí aplikace včetně prototypu. 
+Během vývoje vzniklo \textbf{19} verzí aplikace včetně prototypu. 
 Každá z těchto verzí byla nahrána na testovací prostředí, ke kterému měl přístup vedoucí práce a tým dobrovolných testerů -- především kolegové a přátelé z okolí.
 
 Tento způsob testování odpovídá tzv. neformálnímu uživatelskému testování, často označovanému jako beta testování či nehlídané uživatelské testování. 
@@ -105,7 +105,7 @@ Díky tomu lze testy snadno upravovat a jejich výstupy zůstávají spolehlivé
 V některých případech bylo nutné testy izolovat od reálného backendu.
 Použil jsem proto mocking vybraných API volání, například při ověřování fetch požadavků, abych mohl otestovat pouze konkrétní chování bez závislosti na databázi nebo serveru.
 
-Testy jsou umístěny ve složce \texttt{cypress/}\todo{asi presnejsi lokace} v klientské části projektu. 
+Zdrojové kódy vytvořených testů jsou umístěny v kódové příloze ve složce \texttt{/platform/client/cypress/}. 
 V rámci této struktury jsem vytvořil několik pomocných funkcí, například pro přihlášení uživatele nebo potvrzení cookie banneru. 
 Díky tomu lze jednotlivé testy zapsat stručněji a přehledněji.
 Testovací skripty je možné spustit příkazem \verb|npx cypress run|.
@@ -177,7 +177,7 @@ Všechny scénáře vycházejí z uživatelských případů uvedených v kapito
 Ukázku konkrétního testovacího scénáře TC-U-6 lze nalézt níže. 
 Kompletní seznam použitých scénářů je uveden v příloze \ref{appendix:testovaciScenare}.
 
-Celkem bylo vytvořeno \textbf{27} testovacích scénářů, které pokrývají hlavní oblasti používání aplikace.
+Celkem bylo vytvořeno \textbf{29} testovacích scénářů, které pokrývají hlavní oblasti používání aplikace.
 Testovací scénáře jsem rozdělil do tří kategorií:
 
 \begin{description}
@@ -258,12 +258,12 @@ Vybrané osobní údaje byly záměrně vynechány nebo anonymizovány, a to bu�
 \begin{description}
 \item[Účastnice 1] Kristýna Dřevikovská, studentka SSPŠ, 18 let. Mezi zájmy patří knihy, fotografie, sport a informační technologie. Ovládá počítačové programy na vysoké úrovni.
 \item[Účastník 2] Denis Lenger DiS., učitel na VOŠ, G, SPŠ a SOŠ Podskalská, student na FIŠ VŠE, 24 let. Mezi zájmy patří informační technologie, s aplikací se nesetkal, velká znalost informačních systémů a tvorby materiálů.
-\item[Účastnice 3] Ava Špráchalů, studentka SSPŠ, 19 let, členka týmu testerů. Mezi zájmy patří programování, umění, skriptování, tvorba video her. Ovládá počítačové programy na vysoké úrovni.
-\item[Účastník 4] Kryštof Bruthans, student SSPŠ, 18 let, člen týmu testerů. ...
-\item[Účastník 5] Kryštof Křemeček, student SSPŠ, 19 let. Mezi zájmy patří právo, humanistické vědy, informační technologie a hudba.
+\item[Účastnice 3] Ava Špráchalů, studentka SSPŠ, 20 let, členka týmu testerů. Mezi zájmy patří programování, umění, skriptování, tvorba video her. Ovládá počítačové programy na vysoké úrovni. Před tímto testovala i systém rozšíření, viz sekce~\ref{text:testovani/rozsireni}.
+% \item[Účastník 4] Kryštof Bruthans, student SSPŠ, 18 let, člen týmu testerů. ...
+\item[Účastník 4] Kryštof Křemeček, student SSPŠ, 19 let. Mezi zájmy patří právo, humanistické vědy, informační technologie a hudba.
 % \item[Účastník 6] Lukáš Andrýsek, student SSPŠ, 18 let. ...
-\item[Účastník 7] Učitel technických předmětů na SSPŠ, 27 let. Ke koníčkům patří programování, auta a procházky. Ovládá počítačové programy a internet na vysoké úrovni. S aplikací se nesetkal, velká znalost informačních systémů a tvorby materiálů.
-\item[Účastník 8] Manažer střední firmy v Praze, 38 let. Ke koníčkům patří gastronomie a cestování. Ovládá počítačové programy a internet na obyčejné úrovni. S aplikací se nesetkal, znalost systémů pro tvorbu prezentací.
+\item[Účastník 5] Učitel technických předmětů na SSPŠ, 27 let. Ke koníčkům patří programování, auta a procházky. Ovládá počítačové programy a internet na vysoké úrovni. S aplikací se nesetkal, poměrně dobrá znalost informačních systémů a tvorby materiálů.
+\item[Účastník 6] Manažer střední firmy v Praze, 38 let. Ke koníčkům patří gastronomie a cestování. Ovládá počítačové programy a internet na obyčejné úrovni. S aplikací se nesetkal, znalost systémů pro tvorbu prezentací.
 \end{description}
 
 \subsubsection{Průchody účastníků}
@@ -290,30 +290,7 @@ Aby bylo možné scénáře provádět za standardních podmínek, byla aplikace
 Tento krok provedl buď pozorovatel, nebo samotný účastník. 
 V případě, že se účastník dostal do situace, kdy nemohl dále pokračovat, byly mu podle potřeby postupně předány nápovědy vycházející z popisu scénáře, resp. kroků realizace.
 
-
-% \subsubsection{Účastnicí}
-
-% - pozval jsem X účastníků
-% - někteří účastníci (níže řádně označeny) mají s aplikací již zkušenosti, protože ji průběžně testovali, viz sekce \ref{text:testovani/prubezne}
-% - některé osobní údaje jsou skryty, protože nereflektují nic zásadního k testování nebo na žádost testovaného
-
-
-% \begin{description}
-% \item[Účastnice 1] Kristýna Dřevikovská, studentka SSPŠ, 18 let, členka týmu testerů. TODO...
-% \item[Účastník 2] TODO
-% \end{description}
-
-% \subsubsection{Průchody účastníků}
-
-% - provedeny pruchody vsech scenaru se vsemi učastniky
-% - vyhodnoceni ucastnikem tak pozorovatelem
-% - hodnoceni u kazdeho scenaru 1 až 5, kdy 1 je "cíl splněn, intuitivní postup, splněno samostatně" a 5 je "cíl nesplňěn, neintuitivní postup, nutný zásah pozorovatele"
-% - hodnoceni pozorovatele je klíčové, protože uživatel mohl například přehlédnout nějakou možnost aplikace či cíl splnit jiným způsobem
-
-% - při začátku testování jsem každému účastníkovi vysvětlil jak funguje toto testování
-% - před každým scénářem jsem účastníkovi vysvětlil cíl, co má udělat a on začal scénář naplňovat
-% - před každým scénářem byla aplikace převedena (účastníkem nebo pozorovatelem) do stavu, který daný scénář vyžaduje
-% - pokud účastník nemohl dále pokračovat, byly mu postupně ukázány cíle k vyřešení z definice scénáře
+Z přehlednosti tohoto dokumentu jsou některé tabulky, které obsahují hodnocení průchodu účastníkem, pozorovatelem a komentáře k scénáři, k dispozici pouze v příloze této práce ve složce \verb|/testing|.
 
 \paragraph{Průchod účastnice 1}
 
@@ -355,22 +332,88 @@ TC-P-3   & 1 & 1 & - \\\hline
 TC-P-4   & 2 & 2 & Různé způsoby sdílení, těžko k nalezení v editoru materiálu. \\\hline
 TC-P-5   & 1 & 1 & Nejasné co znamená sledování. \\\hline
 TC-P-6   & 1 & 1 & Problém zapisování znaků bez kapitálek, nejasné umístění. \\\hline\hline
-průměr   & X & X & - \\
+průměr   & 1,28 & 1,28 & - \\
 \end{longtable}
 
 Celkově jsem z testování spokojen, účastnice aktivně hledala v testování různé způsoby průchodu a reagovala i na celý kontext aplikace.
 Vzhledem k tomu, že aplikaci používala poprvé si myslím, že závěry ze scénářů jsou velmi pozitivní.
 
-\paragraph{Průchod účastníka 8}
+\paragraph{Průchod účastníka 2}
 
-Testování účastníka 8 proběhlo dne 22. 4. 2025 v 18.30. 
+Testování účastníka 2 proběhlo dne 28. 4. 2025 v 15.30. 
+Účastník byl na testování připraven a seznámil jsem ho s průběhem testů a procesu hodnocení. 
+Testování bylo trvalo okolo....
+
+\paragraph{Průchod účastnice 3}
+
+Testování účastnice 3 proběhlo dne 27. 4. 2025 v XX.XX. 
+Účastnice byla na testování připravena a seznámil jsem ji s průběhem testů a procesu hodnocení. 
+Testování trvalo XXX
+
+\paragraph{Průchod účastníka 4}
+
+Testování účastníka 4 proběhlo dne XX. 4. 2025 v XX.XX. 
+Účastník byl na testování připraven a seznámil jsem ho s průběhem testů a procesu hodnocení. 
+Testování bylo trvalo okolo....
+
+\paragraph{Průchod účastníka 5}
+
+Testování účastníka 5 proběhlo dne 25. 4. 2025 v 8.30. 
 Účastník byl na testování připraven a seznámil jsem ho s průběhem testů a procesu hodnocení. 
 Testování bylo dlouhé okolo jedné a půl hodiny.
 
-V tabulce~\ref{tab:hodnoceniPruchoduUcastnika8} lze nalézt jednotlivá hodnocení testovacích scénářů účastnice, které provedla po každém průchodu scénáře společně se hodnocením pozorovatele a komentáři, které se k danému scénáři vztahují.
+V tabulce~\ref{tab:hodnoceniPruchoduUcastnika5} lze nalézt jednotlivá hodnocení testovacích scénářů účastníka, které provedl po každém průchodu scénáře společně se hodnocením pozorovatele a komentáři, které se k danému scénáři vztahují.
 
 \begin{longtable}{r|p{2cm}|p{2cm}|p{6cm}}
-    \caption{Hodnocení průchodu scénářů účastníka 8}\label{tab:hodnoceniPruchoduUcastnika8}\\
+    \caption{Hodnocení průchodu scénářů účastníka 5}\label{tab:hodnoceniPruchoduUcastnika5}\\
+Scénář & Hodnocení účastníka & Hodnocení pozorovatele & Poznámky\\\hline\hline
+TC-U-1   & 1 & 1 & - \\\hline
+TC-U-2   & 1 & 1 & Účastník během registrace zapomněl heslo. \\\hline
+TC-U-3   & 1 & 1 & - \\\hline
+TC-U-4   & 1 & 1 & - \\\hline
+TC-U-5   & 2 & 1 & Účastníkovi nepřijde dobré, že se údaje mění najednou. \\\hline
+TC-U-6   & 1 & 1 & - \\\hline
+TC-E-1   & 1 & 1 & - \\\hline
+TC-E-2   & 1 & 2 & Účastník měl problém pochopit označování textu v bloku. \\\hline
+TC-E-3   & 1 & 1 & - \\\hline
+TC-E-4   & 1 & 1 & - \\\hline
+TC-E-5   & 2 & 1 & Účastník poté zkoušel další práci se snímky a nepřijde mu dobrý způsob vytváření snímků -- respektive to, že se vždy vkládají na konec. \\\hline
+TC-E-6   & 1 & 1 & Účastník ocenil možnou další práci s JSON a možné generování mimo aplikaci. \\\hline
+TC-E-7   & 1 & 1 & - \\\hline
+TC-E-8   & 1 & 1 & - \\\hline
+TC-E-9   & 1 & 1 & Účastníkovi nebylo jasné jaké syntaxe se do materiálu nedostanou. \\\hline
+TC-E-10  & 1 & 1 & - \\\hline
+TC-E-11  & 1 & 1 & - \\\hline
+TC-E-12  & 1 & 1 & Účastníkovi nepřijde přehledné menu se seznamem rozšíření. \\\hline
+TC-E-13  & 1 & 1 & - \\\hline
+TC-E-14  & 1 & 1 & Účastník zkoušel z počítače a telefonního zařízení. \\\hline
+TC-E-15  & 1 & 1 & - \\\hline
+TC-E-16  & 1 & 1 & Účastník si stěžoval na umístění této stránky. \\\hline
+TC-E-17  & 1 & 1 & - \\\hline
+TC-P-1   & 1 & 1 & - \\\hline
+TC-P-2   & 1 & 1 & - \\\hline
+TC-P-3   & 1 & 1 & - \\\hline
+TC-P-4   & 1 & 1 & - \\\hline
+TC-P-5   & 1 & 1 & - \\\hline
+TC-P-6   & 1 & 1 & - \\\hline\hline
+průměr   & 1,07 & 1,03 & - \\
+\end{longtable}
+
+Výsledky zkoušení mě vzhledem ke zkušenostem účastníka nepřekvapila.
+Účastník je velmi zkušený v podobných nástrojích a vzhledem ke standardu v těchto aplikacích a tím, že používám podobné rozmístění, bylo jednoduché se v rozhraní vyznat.
+Z další diskuze jsme se dostali k problému použitelnosti platformy a to je to, že účastník již má hotové materiály v jiných aplikacích a předělávat mu všechny přijde zbytečné.
+Navrhl implementovat import i z jiných formátu, jako například \verb|.pptx|.
+
+\paragraph{Průchod účastníka 6}
+
+Testování účastníka 6 proběhlo dne 22. 4. 2025 v 18.30. 
+Účastník byl na testování připraven a seznámil jsem ho s průběhem testů a procesu hodnocení. 
+Testování bylo dlouhé okolo jedné a půl hodiny.
+
+V tabulce~\ref{tab:hodnoceniPruchoduUcastnika6} lze nalézt jednotlivá hodnocení testovacích scénářů účastníka, které provedl po každém průchodu scénáře společně se hodnocením pozorovatele a komentáři, které se k danému scénáři vztahují.
+
+\begin{longtable}{r|p{2cm}|p{2cm}|p{6cm}}
+    \caption{Hodnocení průchodu scénářů účastníka 6}\label{tab:hodnoceniPruchoduUcastnika6}\\
 Scénář & Hodnocení účastníka & Hodnocení pozorovatele & Poznámky\\\hline\hline
 TC-U-1   & 1 & 1 & - \\\hline
 TC-U-2   & 1 & 1 & - \\\hline
@@ -401,7 +444,7 @@ TC-P-3   & 1 & 1 & - \\\hline
 TC-P-4   & 1 & 1 & - \\\hline
 TC-P-5   & 2 & 2 & Dlouhé řešení co vlastně sledování znamená. \\\hline
 TC-P-6   & 2 & 2 & V době testování se aplikace účastníka rozhodla odpojit od sledování. \\\hline\hline
-průměr   & X & X & - \\
+průměr   & 1,41 & 1,34 & - \\
 \end{longtable}
 
 Ze závěru testování této osoby jsem velice nadšen.
@@ -447,28 +490,28 @@ Přijde mu, že z možných tvarů a bloků je těžké vytvořit něco opravdu 
 
 \subsubsection{Shrnutí}
 
-- globalni hodnoceni
+Uživatelské testování nepoukázalo na žádné drastické problémy při zamýšleném používání celé platformy.
+Každý z účastníků se zpětně poměrně pozitivně vyjádřil k celé platformě.
+Nejdůležitější nalezené chyby dle mého jsou zejména v neklasickém (respektive nestandardním) rozložení nějakých prvků v uživatelském rozhraní.
+Další testy, zejména vícerozměrné testování (například A/B test) by byl vhodný k určení toho, jaká varianta je pro tuto aplikaci nejlepší.
 
-- co se nepovedlo a povedlo
+Všichni účastníci naopak oceňují revolučnost aplikace a zejména její možné rozšiřování pomocí komunitních rozšíření.
+Avšak všichni se shodují, že v aplikaci je řada chyb, které se pro nejlepší používání musí opravit.
 
-- ze jsem to opravil
+Mnoho zmíněných chyb v testování jsem průběžně opravoval a přidával jsem i nové funkcionality, které zlepšují celé používání aplikace. 
 
-- globalni problemy a co za ne nejspise muze
-
-- dalsi testovani\todo{dopsat}
-
-\subsection{Testování rozšíření}
+\subsection{Testování rozšíření}\label{text:testovani/rozsireni}
 
 Pro testování rozšíření jsem požádal svojí kamarádku Avu Špráchalů o testování skriptovací platformy pro rozšíření.
 Slečna Špráchalů má velmi dobré zkušeností se skriptování a obecně s programováním v těchto jazycích a poměrně omezených prostředích.
 Nejvíce však v skriptovacím jazyce Lua.
 
-Skriptovací platforma aplikace vyžaduje znalost programovacího jazyku JavaScript, který avšak slečna Špráchalů umí.
+Skriptovací platforma aplikace vyžaduje znalost programovacího jazyku JavaScript, který však slečna Špráchalů umí.
 
 Dne 14. 4. 2025 jsem slečně Špráchalů předal informace o testování aplikace.
 Předal jsem jí odkaz na nahranou verzi aplikace (viz sekce \ref{text:realizace/nasazeni}) a hlavně dokumentaci.
 Jediným stanoveným cílem bylo vytvořit nějaké rozšíření, které by se pro tuto platformu dalo využít.
-Společně jsme se pouze bavili o tom, jaké rozšíření je vhodné a dohodli jsme se, ze vytvoří rozšíření \textbf{časovače}.
+Společně jsme se pouze bavili o tom, jaké rozšíření je vhodné a dohodli jsme se, ze vytvoří rozšíření \textbf{časovače} či \textbf{počítadla}.
 
 Termín k dokončení nebyl stanoven a jediné, o co jsem poté žádal bylo o vytvořený kód a zpětnou vazbu k dokumentaci, platformě a jejího pocitu ze skriptování.
 
@@ -477,15 +520,17 @@ V rámci uživatelského testování nebylo testováno vytváření rozšířen�
 
 \subsubsection{Vytvořené rozšíření}
 
-Dne XX. 4. 2025 jsem obdržel zprávu od slečny Špráchalů, že rozšíření bylo úspěšně dokončeno.
-Během této doby postupně četla dokumentaci a samotné vytvoření rozšíření ji zabralo XX hodin.
+Dne 27. 4. 2025 jsem obdržel zprávu od slečny Špráchalů, že rozšíření bylo úspěšně dokončeno.
+Během této doby postupně četla dokumentaci a samotné vytvoření rozšíření ji zabralo několik dní částečné práce, odhadem se čtením dokumentace 5~hodin.
 
-Vytvořené rozšíření je dle původní dohody tedy na přidávání časovač (stopek) do snímků materiálu. 
-Slečna přidala...
+Slečna si nakonec vytvořila rozšíření pro přidávání počítadla do snímku materiálu.
+Důvodem bylo podle jejích slov to, že časovač je spíše věc, kterou by musel implementovat složitě zejména v HTML, CSS a JS, a to ji nepřišlo vhodné, protože by tím v podstatě vůbec netestovala API platformy.
+
+V rozšíření pro editor si vytvořila panel, který komunikuje s rozšířením pro přidání počítadla. V přehrávači se vykresluje blok a od prezentujícího se komunikuje s připojenými sledujícími a těm se ukazuje vybraná hodnota.
 
 \subsubsection{Zpětná vazba}
 
-Už během tvorby rozšíření mě slečna Špráchalů informovala o různých gramatických problémů v dokumentaci a já je postupně během těchto termínů opravoval.
+Už během tvorby rozšíření mě slečna Špráchalů informovala o různých gramatických problémů v dokumentaci a já je postupně během této doby opravoval.
 Velkým problémem dokumentace bylo to, že celou dobu byly špatně vytvořené odkazy, které propojují jednotlivé stránky.
 Obecně byly i chyby se špatným pojmenováním věcí, jako špatné reference na panel či rozšíření.
 
@@ -498,21 +543,31 @@ Před odevzdáním rozšíření jsme ještě řešili to, že přidávání blo
 Společně jsme tedy navrhli možnost vytvoření nového API do editoru, které dovolí každému bloku zaregistrovat si bloky, které se zobrazí v panelu bloků přímo v aplikaci.
 Panely se tedy budou používat spíše na komplexní možnosti či úpravu přidaných bloků s funkcionalitami, které základní vlastnosti nepodporují.
 
+Taktéž nemožnost toho definovat HTML mimo skriptovací soubor není příjemná pro vývoj.
+Tato definice se často musí duplikovat i mezi rozšíření pro přehrávač i editor, i když mohou být stejná.
+Obdobně je problém s lokálním vývojem, kdy je pro spuštění rozšíření na platformě nutné pokaždé zdrojové soubory spojit do souboru \verb|ZIP|.
+
+
 Podobně jsme diskutovali o dalších možnostech vzdálené komunikace, kde by dle obou z nás měla být přidána možnost kontaktovat jednotlivé sledující místo všech najednou.
 To by se hodilo na možnosti například kvízů~--~každý sledující by mohl vidět jinou otázku a na ní odpovídat.
 
 Na konci mi slečna Špráchalů platformu následně zhodnotila:
 
-\textit{\enquote{TODOTO TO DO TOTOT DO TOD TODO}}
+\vspace{1em}
 
-% - pozadal jsem kamaradku
-% - zkusenosti se skriptovanim
-% - v skupine testeru aplikace, rozšireni ale nepsalo
-% - dobre vyzkouseni stavu dokumentace, api i aplikace samotne
+\textit{\enquote{API je chytře vymyšlené a tvorba pluginů je intuitivní, včetně synchronizace s diváky. Integrace s editorem a možnost plně vlastního kódu i vykreslování ve vlastních blocích dovoluje opravdu jakýkoliv typ pluginu~--~jediné, v čem tato neomezenost momentálně může dělat problém, je riziko esteticky nejednotného stylu mezi různými pluginy. Zároveň pluginy většinou vytváří vlastní bloky, pro což by se velmi hodila dedikovaná funkcionalita v API, aby každý plugin nemusel mít svůj vlastní panel jen pro řešení přidávání bloků do editoru.
+Celkově jsou ale pluginy podle mě dobře řešené a velmi si cením možnosti pomocí nich přidávat do materiálů prvky, se kterými interagují diváci.}}
 
-% - zadani: volne vypracovat z dostupnych materialů jakekoliv rozšíření (či více)
 
-% - zadal jsem to...
+\subsubsection{Zhodnocení}
+
+Ze závěrů testování rozšíření jsem nadšen.
+Tímto testováním se prokázalo, že i člověk který nebyl s vývojem aplikace vnitřně seznámen je schopen pomocí dokumentace a API napsat pokročilé rozšíření, které pomůže rozrůst platformu tak, aby se dala použít na ledacos.
+
+Zmíněné nedostatky jsou zcela rozumné a vše, co jsme diskutovali, jsem do platformy buď implementoval po konci tohoto testování nebo uvádím v kapitole~\ref{text:diskuze} k dalšímu vývoji platformy.
+
+Další testování může proběhnout už pouze tím, že přijdou zcela neznámí lidé a pro tuto aplikaci budou chtít napsat rozšíření.
+Tím se odhalí chybějící API a funkce, které by bylo vhodné do platformy implementovat.
 
 
 \section{Přístupnost platformy}
@@ -539,20 +594,61 @@ Identifikované problémy jsem odstranil úpravou stylů v komponentách uživat
 Konkrétně jsem zvýšil kontrast barev u některých textových prvků a upravil vizuální značení aktivních oblastí pro lepší orientaci uživatelů využívajících klávesové ovládání.
 Dále jsem provedl validaci všech interaktivních prvků z hlediska přístupnosti pro čtečky obrazovky, a to přidáním atributů \texttt{aria-label}.
 
-Z testování vyplynulo, že platforma je plně použitelná i v prostředích s asistivními technologiemi a zůstává přístupná jak na mobilních zařízeních, tak na desktopu.
+Z testování vyplynulo, že platforma je dobře použitelná i v prostředích s asistivními technologiemi a zůstává přístupná jak na mobilních zařízeních, tak na desktopu.
 Díky kombinaci ručního ověření a automatizovaných nástrojů tak mohu potvrdit, že přístupnost byla zohledněna a splňuje běžné požadavky na moderní webové aplikace.
 
-% - po uzivatelskem testovani zkouska platformy jako celku vice obencne
-% - otestovani lighthouse, co je to ligthouse
-% - vysledky lighthouse, jak jsem je vyresil
+\section{Výkonnostní testování}\label{text:testovani/vykon}
 
-% - zjisteny podporovane prohlizece (zjisteno od uzivatelskeho testovani, funkci Vivaldi, Chrome, Chromium, Safari, Firefox, Edge, Brave, vše posledni verze, pouzivani i BrowserStack, zadne problemy) a testovani mnou na zarizenych mych, kamaradu a rodiny (Galaxy S10 Lite, Galaxy A51, Xiaomi Mi 8 Lite, Samsung Galaxy A33, Huawei P8 Lite, iPhone 13 Mini, iPhone 14 Pro, iPhone 16) a i desktopove (Mac verze NEJAKA, Windows 11, Linux Debian, Arch).
+Pro vyzkoušení stability platformy při velké náloži jsem provedl toto testování.
+Cílem bylo vytvořit skript, který se spustí a otestuje stabilitu platformy při počtu připojených zařízení emulující obyčejnou práci zejména v editoru.
+Testováním jsem chtěl zjistit takový limit, který je vhodný prosazovat při editaci materiálu tak, aby stabilita platformy a výkon nebyl omezen.
 
+Pro testování bylo emulováno volání pomocí protokolů HTTP a WebSockets.
+Akce jsem determinoval po sledování obyčejné práce, které jsem v editoru dělal samostatně ale i ve skupině více lidí.
 
-\section{Výkonnostní testování}
+Skript poté bere parametr, který spustí více takových instancí a na nějaké instanci aplikace je zkouší.
+Instance se dělí vždy na celkový počet uživatelů a počet materiálů, které se upravují.
+Uživatelé se poměrově distribuují do jednotlivých materiálů.
+Pro oba způsoby volání akcí jde určitým způsobem detekovat jak dlouho trvá odpověď.
+Pro WebSockets mají nějaké typy mnou implementovaných zpráv (výběr bloku, změna snímku, úprava bloku) návratové odpovědi a tím lze říct jak dlouho odpověď trvá.
 
-- zkouska vykonnosti platformy, limit lidi na jednom dokumentu a tak dale
-\todo{t}
+Tuto dobu odpovědi jsem bral jako hlavní kritérium pro posouzení využitelnosti platformy s daným počtem uživatelů.
+Měřil jsem na přesnost ms.
+
+Jednotlivé testy pro daný počet uživatelů jsem nechal běžet 10 minut a během toho sbíral data.
+U vyšších instancí bylo dle mého vhodné otestovat spuštění na více zařízení (aby hardware přespříliš neovlivňoval tyto testy) a proto jsem u testů s více jak 100 uživateli vždy dělil volání mezi různé počítače po 50 uživatelích.
+U největšího testu jsem testoval i připojení v dvou různých sítích.
+
+\begin{table}[ht!]
+    \caption{Výsledky výkonnostního testování}\label{tab:vysledkyTestovani}
+    \centering
+    \begin{tabular}{r|c|c|c|c}
+        Počet uživatelů & Počet materiálů & Průměrná & Minimální & Maximální\\\hline\hline
+        3 & 1 &  & 14 ms & 140ms \\\hline
+        10 & 1 &  &  & \\\hline
+        50 & 5 &  &  & \\\hline
+        100 & 5 &  &  & \\\hline
+        100 & 10 &  &  & \\\hline
+        250 & 25 &  &  & \\\hline
+        500 & 50 &  &  & \\\hline
+        1000 & 100 &  &  & \\\hline\hline
+        průměr & - & &  & 
+    \end{tabular}
+\end{table}
+
+Tyto výsledky mě vzhledem k testováním ve výuce a s uživateli moc nepřekvapili.
+Aplikace zvládne XXX uživatelů s intenzivní prací v editoru v jeden moment.
+Proto jsem po testování v jednom materiálu omezil počet lidí na YYY.
+
+Z dalšího testování jsem zjistil, že hodně zpomalení je způsobeno tím, jak jsou pro jednotlivé materiály generovány náhledové snímky.
+Generování probíhá nárazově pouze několikrát do minuty pro jeden materiál, ale vzhledem k tomu, že se otevírá virtuální prohlížeč, je to pro hostitelský počítač docela náročná operace.
+Stává se tedy to, že někdy uživatelský požadavek přijde tehdy, když se zrovna spouští okno či obecně generuje náhledový obrázek a to způsobí zpomalení.
+O způsobu opravy diskutuji v kapitole~\ref{text:diskuze}.
+
+Pro další testování by bylo vhodné vyzkoušet i to, kolik v jeden moment zvládne platforma sledujících materiálů.
+Odhaduji však, že to bude mnohokrát více vzhledem k tomu, že uživatelé poté s materiály interagují sporadicky.
+
+Testování i na různých zařízeních v různých sítích proběhlo i v další sekci a to přímo pomocí testování ve třídě na zhruba 15 zařízených kde žádné zpoždění, které by omezovalo platformu, nebylo evidováno.
 
 \section{Přínos pro výuku}
 
@@ -575,14 +671,14 @@ V rámci platformy jsem se však snažil využít všechny dostupné interaktivn
 Do prezentací jsem začlenil klikací prvky, skryté odpovědi, vstupní pole pro studenty i reakční komponenty.
 
 Obě dvě prezentace jsou v aplikaci označeny jako zvýrazněné a lze je otevřít například pomocí hlavní stránky či přímo aplikace.
-Vytvořené prezentace jsou jako lokální záloha uvedené v přiloženém archívu ve složce \verb|/examples/|\todo{zkontrolovat}.
+Vytvořené prezentace jsou jako lokální záloha uvedené v přiloženém archívu ve složce \verb|/examples/|.
 
 \subsection{První hodina}
 
 Studenti byly na začátku hodiny s experimentem aplikace seznámeni a všichni s ním souhlasili.
 Studenty jsem vyzval k připojení se k sledování aplikace za pomocí QR kódu.
 Postupně jsem prezentoval jednotlivé snímky, látku a diskutovali jsme o čem studenti zrovna přemýšleli.
-K prvnímu interaktivnímu prvku jsme se z dvojhodinového (2x45 minut) bloku dostali asi po 30 minutách.
+K prvnímu interaktivnímu prvku jsme se z dvojhodinového (2x 45 minut) bloku dostali asi po 30 minutách.
 V této části jsme zjistili problém s tím, že zařízení připojená ke sledování se od propojení v reálném čase odpojí a po otevření zařízení se znovu nepřipojí.
 Proto jsem studentům musel QR kód ukazovat několikrát.
 Studenty napadlo to, že by QR kód měl být vidět pořád od začátku připojení.
@@ -598,6 +694,13 @@ Studenti pochopili výhody platformy a oceňují právě mód sledování, kter�
 
 \subsection{Druhá hodina}
 
+Studenty jsem s experimentem seznámil a v trojhodinovém (3x 45 minut) bloku jsme částečně prezentaci používali.
+
+Po prvním testování v první hodině jsem opravil řadu chyb a očekával jsem jiné reakce na platformu a její používání.
+Jednalo se zejména o používání QR kódu k připojení a další funkcionality k zlepšení používání. 
+
+...
+
 \subsection{Souhrn}
 
 Z těchto prvních testovacích případů je patrné, že platforma má potenciál přispět ke zlepšení kvality výuky, a to zejména v oblastech zapojení studentů a udržení jejich pozornosti. 
@@ -608,25 +711,3 @@ V dlouhodobém horizontu považuji za důležité nejen ladit jednotlivé funkce
 
 Chyby a návrhy od studentů jsem vzal v potaz a všechno jsem dle svých možností implementoval a opravil.
 QR kód se tedy nyní po zapnutí sledování vždy zobrazuje na obrazovce (a jde skrýt najetím) a například aplikace nyní lépe reaguje na to, když se klientské zařízení odpojí od sledování (a to samé v editoru).
-
-% - pro otestovani platformy jsem vytvoril prezentace, ktere jsem pouzil ve vyuce
-% - konkretne se jednalo o:
-%    - Odborného semináře, Přípravy na vysokoškolské studium
-%       - cílem hodiny bylo ukázat co si brzy maturujici studenti z predmetu odnesli
-%       - nejcastejsi veci, ceho se boji, obecne well being
-%       - spise klidna hodina, konecna
-%    - Volitelný maturitní odborný předmět, Webového inženýrství
-%       - cílem hodiny bylo opakovat termíny z webového backendu a tvorby v express
-%       - jak se pracuje se vstupem, ze mu neni mozno verit
-%       - opakovat zaklady relacnich databazi, dotazy a spravne navyky
-%       - hodina plna latky, hodne zamereni se na to
-      
-% - prezentace jsem se snazil vytvorit v mem obycejnem stylu
-% - hodne se zamerit na interaktivitu a vyuzit vsechny implementovane moznosti
-% - zkouska primo ve vyuce, kdy jsem to testoval 24. 4. 2025 (seminar) a 28. 4. 2025 (web)
-% - studenty jsem pozval do modu sledovani prezentace, aby mohli interagovat
-
-% - reakce studentů - , doplnim
-% - moje zpetna reakce - , doplnim
-
-% - obecne potreba dalsi testovani, dalsi moznosti, aby byly nastroje jak delat vyuku lepsi

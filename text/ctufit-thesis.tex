@@ -47,10 +47,14 @@
 \ctufityear{2025} % replace with the year of your defence
 \ctufitdeclarationplace{Praze} % replace with the place where you sign the declaration
 \ctufitdeclarationdate{\today} % replace with the date of signature of the declaration
-\ctufitabstractCZE{x}
-\ctufitabstractENG{y}
-\ctufitkeywordsCZE{a}
-\ctufitkeywordsENG{b}
+\ctufitabstractCZE{
+Tato diplomová práce se věnuje analýze, návrhu a implementaci platformy pro tvorbu interaktivních studijních materiálů, jejímž cílem je zvýšit aktivní zapojení studentů do výuky. Klíčové části platformy jsou postaveny na architektuře Vue, NestJS a využívají WebSockets pro synchronizaci prezentací v reálném čase. Podporuje skriptování pomocí komunitních rozšíření a umožňuje nejen tvorbu a prezentaci výukových materiálů, ale i jejich sdílení, společnou editaci a sledování prezentací na zařízeních studentů. Součástí projektu je také prezentační web a technická dokumentace. Aplikace byla nasazena do produkčního prostředí a ověřena uživatelským testováním se studenty i učiteli, doplněným o automatizované testy.
+}
+\ctufitabstractENG{
+This thesis focuses on the analysis, design and implementation of a platform for the creation of interactive learning materials aimed at increasing active student engagement in learning. The key parts of the platform are using Vue, NestJS and also WebSockets for real-time synchronization of presentations. It supports scripting with community extensions and allows not only creating and presenting learning materials, but also sharing, collaborative editing and viewing presentations on students' devices. The project also includes a presentation website and technical documentation. The application has been deployed in a production environment and validated by user testing with students and teachers, supplemented by automated tests.
+}
+\ctufitkeywordsCZE{materiály, prezentace, výuková platforma, interaktivita, zapojení studentů, webová aplikace, Vue, Nest, WebSockets}
+\ctufitkeywordsENG{materials, presentation, learning platform, interactivity, student involvement, web application, Vue, Nest, WebSockets}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % END FILL IN
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -101,9 +105,9 @@
 %%%%%%%%%%%%%%%%%%%%%%
 \usepackage{todonotes}
 \usepackage{xevlna}
-\usepackage{lineno}
+% \usepackage{lineno}
 % \usepackage{parskip}
-\linenumbers
+% \linenumbers
 
 \usepackage{dirtree}
 \usepackage{lipsum,tikz}
@@ -114,6 +118,7 @@
 \usepackage{minted} % typesetting of sources
 \usepackage{longtable} % long talber
 \usepackage{enumitem} % moving list
+% \usepackage{tabularray}
 
 \usepackage{amssymb}% http://ctan.org/pkg/amssymb
 \usepackage{pifont}
@@ -149,14 +154,17 @@
 % This is a place to thank people for helping you. It is common to thank your supervisor.
 %%%%%%%%%%%%%%%%%%%
 \begin{acknowledgmentpage}
-    Za pomoc bych chtěl poděkovat:
-    \begin{itemize}
-        \item Ing.\,Marku Suchánkovi, Ph.D. et Ph.D., za odborné vedení a cenné rady.
-        \item Kristýně Dřevikovské za pomoc s korekturou.
-        \item Avě Špráchalů za pomoc s testováním.
-    \end{itemize}
-
-    TODO!!!  DOPSAT!
+    Nejprve bych chtěl poděkovat vedoucímu mé diplomové práce, panu Ing.\,Marku Suchánkovi, Ph.D. et Ph.D., za možnost pracovat na využitelném projektu a také za všechny jeho cenné rady a konzultace, kterých se mi během psaní a realizace práce dostalo.
+\\\\
+    Taktéž chci poděkovat všem svým přátelům a testerům, kteří mě v práci podporovali, a práci mi průběžně kontrolovali. Zejména slečně Kristýně Dřevikovské, Avě Špráchalů a panu Denisovi Lengerovi za jejich korekce a neustálou oporu. A také pánům
+    Brodmanovi,
+    Andrýskovi,
+    Křemečkovi
+    a
+    Bruthansi 
+    za pomoc během testování.
+\\\\
+    Velké díky patří i všem mým studentům, kteří mě zejména tento školní rok při práci podporovali, motivovali a vždy předávali cennou zpětnou vazbu. 
 \end{acknowledgmentpage} 
 %%%%%%%%%%%%%%%%%%%
 % ACKNOWLEDGMENT END

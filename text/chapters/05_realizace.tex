@@ -68,9 +68,9 @@ Zároveň jsem využíval GitHub pro synchronizaci a zálohu repozitáře.
 Projekt byl veden jako monorepozitář, což umožnilo jednoduchou provázanost všech součástí systému, které spolu úzce souvisí. 
 Tento přístup se ukázal jako výhodný pro počáteční vývoj, nicméně do budoucna by bylo vhodné jednotlivé části oddělit do samostatných repozitářů s jasně definovaným rozhraním.
 
-Pro lepší orientaci v historii změn jsem používal semantické zprávy při commitech. 
+Pro lepší orientaci v historii změn jsem používal sémantické zprávy. 
 Každá zpráva jasně popisuje, co se změnilo a v jaké části systému, což usnadňuje zpětné dohledávání konkrétních úprav. 
-V rámci vývoje vzniklo XXX\todo{kolik?} samostatných balíčků změn (commit), které pokrývají vývoj nových funkcí, opravy chyb i refaktoring.
+V rámci vývoje vzniklo přes 600 samostatných balíčků změn (tzv. commit), které pokrývají vývoj nových funkcí, opravy chyb i refaktoring.
 
 Plánování probíhalo mimo samotné verzovací nástroje, především prostřednictvím služby ClickUp. 
 Tento nástroj sloužil ke správě úkolů, revizí a sledování pokroku ve vývoji. 
@@ -152,7 +152,7 @@ Tento přístup umožňuje nejen jednoduché změny barevných schémat, ale i p
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=0.8\textwidth]{media/05_realizace/design.png}
-    \caption{Ukázka prvků v implementovaném designu aplikace}
+    \caption[Prvky v implementovaném designu aplikace]{Prvky v implementovaném designu aplikace, lze vidět kartu, tlačítko, vstupní pole, navigaci, stránkovač a stránkovač}
     \label{fig:realizace/design}
 \end{figure}
 
@@ -222,7 +222,7 @@ Tento přístup zajišťuje přehlednost a snadnou údržbu jednotlivých jazyko
 
 
 \begin{listing}[ht!]
-\caption{Ukázka zápisu překladů}\label{code:zapisPrekladu}
+\caption{Zápisu překladů}\label{code:zapisPrekladu}
 \begin{minted}{json}
 {
   "editor": {
@@ -327,7 +327,7 @@ Nest klade důraz na modularitu. Každá část aplikace je definována jako sam
 \end{description}
 
 Moduly \texttt{media}, \texttt{users}, \texttt{preferences} a další využívají knihovnu Mongoose pro práci s databází MongoDB. 
-Schémata jednotlivých entit jsou definována ve složce XXX\todo{složka}, v implementaci byly zjištěny různé nedostatky s původním návrhem a bylo nutné nějaké entity změnit.
+Schémata jednotlivých entit byly vytvořeny již v době návrhu, v implementaci byly zjištěny různé nedostatky s původním návrhem a bylo nutné nějaké entity změnit.
 
 \subsection{Autentizace a autorizace}
 
@@ -684,7 +684,7 @@ Události spuštění:
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=0.8\textwidth]{media/05_realizace/interaktivita.png}
-    \caption{Ukázka interaktivity na bloku v Editoru}
+    \caption{Rozhraní interaktivity na bloku v Editoru}
     \label{fig:interaktivita}
 \end{figure}
 
@@ -713,7 +713,7 @@ Vlastnosti, které lze měnit, si každý blok definuje samostatně pomocí rozh
 Ukázka nastavené interaktivity na bloku lze vidět na obrázku \ref{fig:interaktivita}.
 
 \begin{listing}[ht!]
-\caption[Ukázka zápisu registrace vlastnosti bloku tvaru pro editor]{Ukázka zápisu registrace vlastnosti bloku tvaru pro editor, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:zapisVlastnostiEditor}
+\caption[Zápis registrace vlastnosti bloku tvaru pro editor]{Zápis registrace vlastnosti bloku tvaru pro editor, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:zapisVlastnostiEditor}
 \begin{minted}{javascript}
 public override getInteractivityProperties() {
   return [
@@ -731,7 +731,7 @@ public override getInteractivityProperties() {
 
 
 \begin{listing}[ht!]
-\caption[Ukázka zápisu registrace vlastnosti bloku tvaru pro přehrávač]{Ukázka zápisu registrace vlastnosti bloku tvaru pro přehrávač, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:zapisVlastnostiPrehravac}
+\caption[Zápis registrace vlastnosti bloku tvaru pro přehrávač]{Zápis registrace vlastnosti bloku tvaru pro přehrávač, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:zapisVlastnostiPrehravac}
 \begin{minted}{javascript}
 public override getInteractivityProperties() {
   return [
@@ -873,6 +873,7 @@ Server v takovém případě spustí virtuální prohlížeč a kontaktuje speci
 Tento vykreslený náhled je poté odeslán zpět a uložen do databáze. 
 Výsledkem je velmi přesná vizualizace reálného vzhledu snímku bez závislosti na rozšířeních nebo výkonu zařízení klienta.
 Stejně jako u ukládání probíhá generování náhledů pomocí \textit{debounce} se stejnými časovými limity.
+Pro bezpečnost musel být vytvořen systém ochrany neveřejných materiálů a proto tento virtuální prohlížeč používá svůj systém autorizace k materiálům.
 
 Nad rámec synchronizace samotného obsahu se mezi klienty přenášejí také další informace o materiálu -- jeho název, nastavení sdílení nebo vlastnosti přehrávání.
 Synchronizují se i případná rozšíření a další metadata, čímž se zajišťuje, že všichni účastníci mají vždy aktuální stav.
@@ -945,14 +946,14 @@ Systém proto podporuje jak import, tak export materiálů.
 Architektura je rozdělena mezi klienta a server. Import zajišťuje klientská část, která ze zadaného vstupu vytvoří nový materiál včetně odpovídajících bloků. 
 Export naopak probíhá na serveru.
 
-Při exportu odešle klient požadavek na konkrétní formát, aktuálně podporované jsou \texttt{JSON} a \texttt{PDF}. 
+Při exportu odešle klient požadavek na konkrétní formát, aktuálně podporované jsou JSON a PDF. 
 Export do JSON vrací kompletní strukturu materiálu, respektive jednotlivých snímků, včetně všech vlastností. 
 Tento formát je vhodný pro zálohování nebo pozdější import. 
 Export do PDF funguje tak, že server pomocí nástroje \texttt{puppeteer} vykreslí každý snímek zvlášť jako náhled -- obdobně jako v případě kolaborace. 
 Výsledkem je soubor obsahující jednotlivé stránky, které reflektují vzhled snímků tak, jak je vidí uživatel.
 Jelikož mohou mít jednotlivé snímky odlišné rozměry, je nezbytné generovat je po jednom a teprve následně spojit do jednoho PDF dokumentu.
 
-Import podporuje klient ze dvou formátů: \texttt{JSON} a \texttt{Markdown}. 
+Import podporuje klient ze dvou formátů: JSON a Markdown. 
 Při importu JSON dojde ke znovuvytvoření materiálu přesně podle předchozí struktury. 
 Markdown je zpracován pomocí knihovny \texttt{marked}, která na klientovi vrací stromovou reprezentaci dokumentu. 
 Klient následně přečte jednotlivé nadpisy a obsahové bloky mezi nimi a rozdělí je do odpovídajících snímků. 
@@ -996,11 +997,11 @@ Uživatelé, resp. vývojáři, mohou pluginy jednoduše přidávat přímo v ap
 Rozšíření a jejich API jsou dokumentována v dokumentaci platformy.
 Pro lepší vývoj byly vytvořeny typy, které lze používat i v programování v jazyce JS.
 Ty napovídají v moderních vývojových prostředích vývojářům rozšíření s tím, co mohou za věci ve vytvořeném API používat.
-Ukázku typů lze najít v kódu \ref{code:realizace/typy}, celý soubor typů lze najít ve složce \verb|/plugins/types.d.ts|\todo{ověřit}.
+Ukázku typů lze najít v kódu \ref{code:realizace/typy}, celý soubor typů lze najít v kódové příloze ve složce \verb|/platform/plugins/types.d.ts|.
 
 
 \begin{listing}[ht!]
-\caption[Ukázka vytvořených typů pro platformu rozšíření]{Ukázka vytvořených typů pro platformu rozšíření, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:realizace/typy}
+\caption[Část vytvořených typů pro platformu rozšíření]{Část vytvořených typů pro platformu rozšíření, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:realizace/typy}
 \begin{minted}{typescript}
 interface ApiPlayer {
     /**
@@ -1153,7 +1154,7 @@ Ukázka panelu z ukázkového pluginu lze vidět na obrázku \ref{fig:realizace/
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=0.8\textwidth]{media/05_realizace/panel.png}
-    \caption{Ukázka panelu v aplikaci}
+    \caption{Zaregistrovaný panel rozšíření v aplikaci}
     \label{fig:realizace/panel}
 \end{figure}
 
@@ -1211,7 +1212,6 @@ Tato komunikace je poté složitější a ukázka toho, jak vypadá, je na obrá
 %   - plugin kod
 %   - editor kod
 % - moznost pridavat pluginy v aplikaci pro prihlašeni a nahravat nove verze
-% - system schvalovani\todo{neni}
 
 % \subsection{Spouštění kódu}
 
@@ -1343,6 +1343,8 @@ Níže jsou uvedeny odkazy pro nahrané části aplikace.
     \item[Aplikace] \href{https://app.materalist.com}{https://app.materalist.com}
     \item[Server] \href{https://api.materalist.com}{https://api.materalist.com}
 \end{description}
+
+Výsledná aplikace, respektive její uživatelské rozhraní je na obrazcích k zobrazení taktéž v příloze \ref{appendix:uzivatelskeRozhrani} včetně ukázky hlavní stránky a dokumentace.
 
 DNS záznamy spravuji pomocí služby Cloudflare, která zároveň zajišťuje automatické vydávání certifikátů pro HTTPS a end-to-end šifrování. 
 Veškerý provoz tak probíhá šifrovaně a zabezpečeně.
@@ -1514,7 +1516,7 @@ Tato sekce představuje několik ukázkových rozšíření, která byla v rámc
 Slouží jako demonstrace možností systému, jeho flexibility a využití připraveného API. 
 Rozšíření vytvořena (či testována) i dalšími uživateli, kteří se na vývoji platformy nepodíleli, jsou popsány v kapitole \ref{text:testovani}.
 To umožnilo získat nezávislou zpětnou vazbu, podrobněji popsanou v kapitole o testování. Všechna rozšíření jsou dostupná v přiložené aplikaci a taktéž jako příloha práce.
-Rozšíření jsou dostupná v příloze ve složce SLOŽKA\todo{CESTA K PLUGINŮM}.
+Rozšíření jsou dostupná v kódové příloze ve složce \verb|/platform/plugins|.
 
 \subsection{Zarovnávač}
 
@@ -1605,4 +1607,3 @@ Rozšíření je velmi podobné Slovní stěně a využívá skoro stejný kód.
 
 % Přo testování systému jsem si vytvořil pár úkazkových materiálů
 % - ukázka systému, možnost vytvořit komplexní prezentace do jdou v jiných aplikacích
-% - více v testování\todo{dopsat}
