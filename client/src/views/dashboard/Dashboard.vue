@@ -2,7 +2,7 @@
     <div data-cy=dashboard>
         <Card fluid class="mb-1">
             <div class="flex flex-justify-center flex-justify-sm-space-between flex-align-center flex-wrap gap-1">
-                <span v-t="{ name: userStore.user?.name ?? '' }" class="main-title">page.dashboard.title-welcome</span>
+                <span v-t="{ name: sanitizeAttribute(userStore.user?.name ?? '') }" class="main-title">page.dashboard.title-welcome</span>
 
                 <div class="flex flex-align-center gap-1">
                     <Dialog>
@@ -155,6 +155,7 @@ import {useHead, useSeoMeta} from "unhead";
 import {MaterialImporter} from "@/editor/import/MaterialImporter";
 import {JsonMaterialImporter} from "@/editor/import/JsonMaterialImporter";
 import {MarkdownMaterialImporter} from "@/editor/import/MarkdownMaterialImporter";
+import {sanitizeAttribute} from "@/utils/Sanitize";
 
 useSeoMeta({
     title: $t('page.dashboard.title')
