@@ -73,7 +73,7 @@ export class MaterialsService {
         });
     }
 
-    findById(id: string) {
+    findById(id: string): Promise<HydratedDocument<Material> | null> {
         return this.materialModel.findById(id).exec();
     }
 

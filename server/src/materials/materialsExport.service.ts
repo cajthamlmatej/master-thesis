@@ -109,8 +109,6 @@ export class MaterialsExportService {
                     quality: 10,
                 });
 
-                // TODO: downscale?
-
                 const header = "data:image/jpeg;base64,";
                 slide.thumbnail = header + fs.readFileSync(outputFile).toString('base64');
 
