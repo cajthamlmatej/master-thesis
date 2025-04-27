@@ -1,7 +1,7 @@
 export const initPlayer = function () {
     api.player.on("pluginBlockRender", function (block) {
         if(api.player.isPresenter()) {
-            const words = (api.cache.get("words") || "").split(",").filter(word => word.trim() !== "");
+            const words = (api.cache.get("words"+block.id) || "").split(",").filter(word => word.trim() !== "");
 
             return `<!DOCTYPE html>
 <html lang="en">
@@ -221,7 +221,7 @@ export const initPlayer = function () {
     });
     api.player.on("pluginRemoteMessage", function (block, message) {
         if(api.player.isPresenter()) {
-            api.cache.set("words", (api.cache.get("words") || "") + "," + message);
+            api.cache.set("words"+block.id, (api.cache.get("words"+block.id) || "") + "," + message);
             block.sendMessage(message);
         } else {
             api.log(`Player received message: ${message} but not presenter`);
