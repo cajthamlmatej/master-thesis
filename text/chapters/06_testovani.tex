@@ -9,7 +9,7 @@ Závěr kapitoly se věnuje přístupnosti aplikace, výkonnostním zkouškám a
 
 \section{Průběžné testování}\label{text:testovani/prubezne}
 
-Vývoj platformy probíhal iterativně, viz sekce \ref{text:realizace/metodikaVyvoje}, s důrazem na časté testování již během samotné implementace.
+Vývoj platformy probíhal iterativně, viz sekce~\ref{text:realizace/metodikaVyvoje}, s důrazem na časté testování již během samotné implementace.
 To umožnilo včasné odhalení problémů a zároveň zajištění vyšší kvality finální aplikace.
 
 \subsection{Při vývoji}
@@ -46,34 +46,7 @@ Probíhaly nejen mezi sebou, ale i přímo se mnou jako vývojářem.
 Společně jsme řešili otázky spojené s prioritizací oprav a návrhem vylepšení.
 
 Na závěr vývoje jsem všechny účastníky testování požádal, aby se zamysleli nad tím, jaké funkce nebo úpravy by v aplikaci v budoucnu uvítali. 
-Tyto návrhy a postřehy jsou taktéž zahrnuty v kapitole \ref{text:diskuze}.
-
-% \section{Průběžné testování}\label{text:testovani/prubezne}
-
-% \subsection{Při vývoji}
-
-% - při vývoji klienta a hlavní webové stránky používán vite pro hot-reloading
-% - podobně pro backend využíváno sledování nodemon přímo v ekosystému nest
-
-% - při vytváření různých funkcionalit jsem požadované funkcionality implementoval prvne na serveru
-% - pozadavky na REST API jsem testoval pomoci aplikace postman
-% - pote implementace na klientovi
-% - tam jsem rovnou testoval funkcionality celkove, pozdeji testy, viz další sekce v této kapitole
-
-
-% \subsection{Tým testerů}
-
-% - pri vyvoji platformy a celkove teto prace vznikolo X verzi (a prototyp)
-% - kazdou verzi jsem vzdy nahraval na testovaci prostredi
-% - k tomuto prostredi mel pristup vedouci prace a tym testeru - kamaradi a další osoby
-% - casto se tomu rika nehlidane testovani uzivateli, beta skupina a podobně
-% - cil zjisti vazbu pred zverejnenim verejnosti
-% - ke kazde verzi byly zverejnen seznam zmen a klicove zmeny, na ktere se meli testeri zamerit
-% - dle sveho volenho casu aplikaci pouzivali, hodnotili a vraceli mi zpetnou vazbu
-% - zjistilo se napriklad: nefunkconst na konkretnich zarizenich, ruzne bugy s editorem a desitky dalsich problemu, ktere jsem se vzdy snazil do dalsi verze aplikace opravit
-% - probihalo na Discord
-% - často probihali mezi temito lidmi diskuze, i semnou, o aplikaci, na co se ma zamerit a podobne
-% - na konci vyvoje jsem pozadal vsechny ucastniky, aby se zamysleli nad tim, co by v aplikaci dale radi videli, to je mozne najit v kaapitole \ref{text:diskuze}.
+Tyto návrhy a postřehy jsou taktéž zahrnuty v kapitole~\ref{text:diskuze}.
 
 \section{Automatizované testování}
 
@@ -119,31 +92,6 @@ Všechny testy aktuálně procházejí bez chyb a pomáhají zajišťovat stabil
 
 - zejména testování WS implementace, protože je to to nejdůležitější
 
-% \section{Automatizované testování}
-
-% - automatické testování provádí program za uživatele
-% - programátoři nemusí pořád zkoušet ty stejné operace
-% - obecně udržitelná aplikace
-% - můžeme spouštět v CI/CD
-% - lze obecně dělit do spoustu kategorií - např. unit testy, e2e a další
-% - v této aplikaci je klíčové zařídit testování klientské aplikace
-
-% \subsection{Klientská část}
-
-% - testování přihlášení, interakcí, editoru, přehrávače a dalších
-% - e2e
-% - možnost na výběr je cypress a napříkald DOPLŇ
-% - vypral jsem cypress (nabízí například komponentové testy, ty jsem ale nevyužil)
-% - testování zejména toho, zda je (či není) prvek vidět, po kliknutí aplikace funguje a podobně
-
-% - psani udržitelných testů: testy jsou atomické, nezávisí na stavech jiný, ze stránky prvky vybíráme pomocí jasných selektorů které se v budoucnu nemůžou těžce replikovat
-% - mockovani, testovani toho, zda se něco zavolalo, používáno třeba pro fetch
-% - testy se píší do šložky cypress/ v klientu, možné psát různé pomocné funkce
-% - například pomocná funkce pro přihlášení uživatele, potvrzení cookies a podobně
-% - testy je možné spustit pomocí příkazu npx cypress run
-
-% - celkově bylo napsáno XXX testů, všechny testy procházejí a testují velkou část aplikace
-
 \section{Uživatelské testování}
 
 Testování aplikace reálnými uživateli je jedním z nejdůležitějších kroků v rámci vývoje. 
@@ -173,9 +121,9 @@ Testovací scénáře popisují účel testu, očekávaný výsledek a konkrétn
 Každý scénář obsahuje také omezený časový rámec, definované podmínky před začátkem a očekávaný stav po skončení testu. 
 Aby se minimalizovalo riziko ovlivnění, pozorovatel by měl zachovat odstup a vyvarovat se odpovídání na dotazy během testu.
 
-Všechny scénáře vycházejí z uživatelských případů uvedených v kapitole \ref{chapter:analyza/uzivatelskePripady}.
+Všechny scénáře vycházejí z uživatelských případů uvedených v sekci~\ref{chapter:analyza/uzivatelskePripady}.
 Ukázku konkrétního testovacího scénáře TC-U-6 lze nalézt níže. 
-Kompletní seznam použitých scénářů je uveden v příloze \ref{appendix:testovaciScenare}.
+Kompletní seznam použitých scénářů je uveden v příloze~\ref{appendix:testovaciScenare}.
 
 Celkem bylo vytvořeno \textbf{29} testovacích scénářů, které pokrývají hlavní oblasti používání aplikace.
 Testovací scénáře jsem rozdělil do tří kategorií:
@@ -185,33 +133,6 @@ Testovací scénáře jsem rozdělil do tří kategorií:
     \item[TC-E] Uživatelské testovací scénáře, které se zaměřují na části editoru, tvorby, exportu a importu materiálů.
     \item[TC-P] Uživatelské testovací scénáře, které se zaměřují na části přehrávače, sdílení, interaktivity.
 \end{description}
-
-
-% \section{Uživatelské testování}
-
-% - testovani realnymi lidmi
-% - velmi caste
-% - nutne mit lidi, objektivni hodnoceni, zadny benefit delani toho
-% - bere v potaz normalni chovani lidi, kazdy je jiny, umi najit veci, ktere by vyvojare ani nenapadli
-% - pro tuto aplikaci jsem se rozhodl udelat testovani aplikace pomoci testovacich scenaru a taktez otestovat rozsireni pomoci mene tradicniho zpusobu
-
-% \subsection{Testování aplikace}
-
-% - kazde testovani by mel nekdo sledovat a evaulovat, dobrym practicem je, ze lidi nahlas rikaji co delaji
-% - kazdy test je predem znamy a pozorovatel vzdy uvede účastnika do toho, co má za úkol provést
-% - predem se definuji testovaci scenare, ktere prave popisuji cil, jak dlouho test ma maximalne trvat, jaky je postup ( v případe, ze se nepovede) a co je stav aplikace předem a potom
-% - behem testovani si pozorovatel zapisuje poznamky a po kazdem testu a na konci sděluje výsledky sledovanému uživateli, radi mu v pripade problemu a podobne
-
-
-% \subsubsection{Testovací scénáře}
-
-% - urcuje se jim: účle, časový limit, podmínky, kroky k realizaci, očekavaný výstup
-% - pozorovatel nesmí do akcí testujícího zasahovat, limitace kontaminace odpovídáním na otázky
-% - testovací scénaře se odkazují na uživatelské případy z sekce \ref{chapter:analyza/uzivatelskePripady}.
-% - nize je ukazka testovacího scénáře dle formátu, který budu využívat
-% - všechny scénáře jsou v příloze \ref{appendix:testovaciScenare}
-% - celkem vytvořeno XXX scénářů
-
 
 
 \vspace{1em}\noindent{\large\textbf{TC-U-6 -- Exportování dat}}
@@ -251,7 +172,7 @@ Testovací scénáře jsem rozdělil do tří kategorií:
 \subsubsection{Účastníci}
 
 Testování se zúčastnilo X\todo{kolik?} osob. 
-Někteří účastníci měli s aplikací předchozí zkušenost, jelikož se podíleli na jejím průběžném testování (viz sekce \ref{text:testovani/prubezne}). 
+Někteří účastníci měli s aplikací předchozí zkušenost, jelikož se podíleli na jejím průběžném testování (viz sekce~\ref{text:testovani/prubezne}). 
 U těchto osob je tato skutečnost v popisu výslovně uvedena. 
 Vybrané osobní údaje byly záměrně vynechány nebo anonymizovány, a to buď na žádost samotného účastníka, nebo z důvodu jejich nerelevance k průběhu testování.
 
@@ -452,42 +373,6 @@ Osobně jsem nečekal takové kladné hodnocení od někoho, kdo je v jiné gene
 Po ukončení uživatelského testování jsme diskutovali o tom, co by dál bylo vhodné implementovat do aplikace a účastník jasně definoval zejména grafické možnosti materiálu.
 Přijde mu, že z možných tvarů a bloků je těžké vytvořit něco opravdu hezky prezentovatelného~--~třeba na úrovni manažerských cílů.
 
-
-% \begin{longtable}{r|p{2cm}|p{2cm}|p{6cm}}
-%     \caption{Hodnocení průchodu scénářů účastníka 8}\label{tab:hodnoceniPruchoduUcastnika8}\\
-% Scénář & Hodnocení účastnice & Hodnocení pozorovatele & Poznámky\\\hline\hline
-% TC-U-1   &   &   & - \\\hline
-% TC-U-2   &   &   & - \\\hline
-% TC-U-3   &   &   & - \\\hline
-% TC-U-4   &   &   & - \\\hline
-% TC-U-5   &   &   & - \\\hline
-% TC-U-6   &   &   & - \\\hline
-% TC-E-1   &   &   & - \\\hline
-% TC-E-2   &   &   & - \\\hline
-% TC-E-3   &   &   & - \\\hline
-% TC-E-4   &   &   & - \\\hline
-% TC-E-5   &   &   & - \\\hline
-% TC-E-6   &   &   & - \\\hline
-% TC-E-7   &   &   & - \\\hline
-% TC-E-8   &   &   & - \\\hline
-% TC-E-9   &   &   & - \\\hline
-% TC-E-10  &   &   & - \\\hline
-% TC-E-11  &   &   & - \\\hline
-% TC-E-12  &   &   & - \\\hline
-% TC-E-13  &   &   & - \\\hline
-% TC-E-14  &   &   & - \\\hline
-% TC-E-15  &   &   & - \\\hline
-% TC-E-16  &   &   & - \\\hline
-% TC-E-17  &   &   & - \\\hline
-% TC-P-1   &   &   & - \\\hline
-% TC-P-2   &   &   & - \\\hline
-% TC-P-3   &   &   & - \\\hline
-% TC-P-4   &   &   & - \\\hline
-% TC-P-5   &   &   & - \\\hline
-% TC-P-6   &   &   & - \\\hline\hline
-% průměr   & X & X & - \\
-% \end{longtable}
-
 \subsubsection{Shrnutí}
 
 Uživatelské testování nepoukázalo na žádné drastické problémy při zamýšleném používání celé platformy.
@@ -509,7 +394,7 @@ Nejvíce však v skriptovacím jazyce Lua.
 Skriptovací platforma aplikace vyžaduje znalost programovacího jazyku JavaScript, který však slečna Špráchalů umí.
 
 Dne 14. 4. 2025 jsem slečně Špráchalů předal informace o testování aplikace.
-Předal jsem jí odkaz na nahranou verzi aplikace (viz sekce \ref{text:realizace/nasazeni}) a hlavně dokumentaci.
+Předal jsem jí odkaz na nahranou verzi aplikace (viz sekce~\ref{text:realizace/nasazeni}) a hlavně dokumentaci.
 Jediným stanoveným cílem bylo vytvořit nějaké rozšíření, které by se pro tuto platformu dalo využít.
 Společně jsme se pouze bavili o tom, jaké rozšíření je vhodné a dohodli jsme se, ze vytvoří rozšíření \textbf{časovače} či \textbf{počítadla}.
 

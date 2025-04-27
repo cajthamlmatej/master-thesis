@@ -18,7 +18,7 @@ Tento prototyp měl za cíl ověřit proveditelnost hlavních funkcí a eliminov
 
 V rámci tvorby prototypu byly implementovány a testovány různé způsoby vykreslování obsahu, přičemž klíčovou otázkou bylo, zda bude vhodnější využít technologii HTML, SVG nebo Canvas.
 Každý z těchto přístupů má své specifické výhody a nevýhody, které ovlivňují jak kvalitu zobrazení, tak výkon a možnosti interakce s uživatelem. 
-Podrobnější rozbor těchto technologií je uveden v kapitole \ref{text:vykreslovani}, kde jsou jednotlivé přístupy porovnány z hlediska efektivity a použitelnosti v kontextu plánované platformy.
+Podrobnější rozbor těchto technologií je uveden v sekci~\ref{text:vykreslovani}, kde jsou jednotlivé přístupy porovnány z hlediska efektivity a použitelnosti v kontextu plánované platformy.
 
 Při vývoji prototypu se objevily i obecné problémy související s implementací editoru -- respektive s jejich matematickou reprezentaci. 
 Klíčovou výzvou se ukázaly být skupinové transformace a manipulace s prvky na plátně, zejména pokud jde o jejich pohyb a transformaci v rámci editačního prostoru.
@@ -33,17 +33,12 @@ Po potvrzení, že zamýšlené principy mohou fungovat, bylo nutné přistoupit
 Tento krok zahrnoval refaktorování kódu, zpřehlednění architektury a návrh struktury, která umožní snadnou údržbu i budoucí rozšíření funkcionalit. 
 Přepis zároveň eliminoval technické dluhy vzniklé při rychlém vývoji.
 
-% - behem vyberu samotneho zadani
-% - velky risk problemu s editorem
-% - implementovany ruzne zpusoby vykreslovani (viz kapitola \ref{text:vykreslovani}
-% - obecny problemy s editorem a matematikou
-
 \section{Metodika vývoje}\label{text:realizace/metodikaVyvoje}
 
 Proces vývoje platformy pro tvorbu interaktivních výukových materiálů probíhal iterativním způsobem, což umožnilo průběžné testování a úpravy jednotlivých částí aplikace. 
 Tento přístup se ukázal jako efektivní nejen při samotné implementaci, ale i při optimalizaci uživatelského prostředí na základě zpětné vazby od testerů.
 
-Vývoj začal základním návrhem a analýzou požadavků, což bylo detailně popsáno v kapitolách \ref{text:navrh} a \ref{text:analyza}. 
+Vývoj začal základním návrhem a analýzou požadavků, což bylo detailně popsáno v kapitolách~\ref{text:navrh} a~\ref{text:analyza}. 
 Po definování architektury systému a stanovení klíčových funkcionalit byl zahájen samotný vývoj. 
 Každá část aplikace byla pečlivě promyšlena před jejím naprogramováním, přičemž se důraz kladl na modularitu a možnost budoucího rozšíření.
 
@@ -51,7 +46,7 @@ Samotný vývoj probíhal iterativně.
 V každém cyklu bylo nejprve rozhodnuto, na které části aplikace se bude pracovat. 
 Poté následovala detailní analýza a návrh této části, což umožnilo identifikovat možné komplikace ještě před samotnou implementací. 
 Po naprogramování byla nová funkcionalita nasazena na dočasné testovací prostředí, kde probíhalo její testování různými uživateli. 
-K testování byli zapojeni především kolegové a studenti (viz kapitola \ref{text:testovani}), jejichž zpětná vazba byla klíčová pro identifikaci problémů a návrh zlepšení.
+K testování byli zapojeni především kolegové a studenti (viz kapitola~\ref{text:testovani}), jejichž zpětná vazba byla klíčová pro identifikaci problémů a návrh zlepšení.
 
 Získané podněty byly zaznamenány a klasifikovány dle priority. 
 Kritické chyby byly opraveny okamžitě, zatímco drobné úpravy a návrhy na zlepšení byly zařazeny do plánu budoucího vývoje. 
@@ -77,19 +72,9 @@ Tento nástroj sloužil ke správě úkolů, revizí a sledování pokroku ve v�
 Pomáhal mi tak udržet přehled o jednotlivých krocích, přestože jsem pracoval většinou samostatně.
 
 
-% - po zakladnim navrhu a analyze (viz kapitoly \ref{text:navrh} a \ref{text:analyza})
-% - iterativni zpusob prace
-%     - rozhodnout co dale programovat, analyza a navrh dane casti
-%     - naprogramovat cast
-%     - cast nasadit na docasnou produkci
-%     - predat k testovani ruznymi kamarady (viz kapitola \ref{text:testovani})
-%     - ulozit si feedback, issues
-%     - opravit akutni chyby
-% - prepisovani a vyuziti refactoring
-
 \section{Klientská část}\label{text:realizace/klient}
 
-Klientská část aplikace byla vyvinuta jako webová aplikace v souladu s návrhem z kapitoly \ref{text:navrh/klient}. 
+Klientská část aplikace byla vyvinuta jako webová aplikace v souladu s návrhem ze sekce~\ref{text:navrh/klient}. 
 Pro implementaci byl zvolen framework Vue spolu s nástrojem Vite, který umožňuje rychlý vývoj a stabilní správu závislostí.
 
 Pro usnadnění tvorby požadovaných funkcionalit bylo využito několik knihoven, které zajišťují specifické potřeby aplikace. 
@@ -103,32 +88,17 @@ Mezi klíčové patří:
 \end{description}
 
 Dále byly použity i další knihovny, které přispívají k lepší modularitě a efektivitě vývoje.
-O některých se budu dále zmiňovat v následujících kapitolách.
-
-
-% - dle navrhu z analyzy \ref{text:navrh/klient} vytvorena webová aplikace
-% - použit framewrok Vue s nástrojem Vite
-% - použita řada knihoven pro zlehceni tvorby pozadovanych funkcionalit, napriklad:
-%     - floating-vue pro tvorbu vyskakovacich tooltipů a menu
-%     - moment pro jednoduchou správu datumu a času
-%     - pinia pro jednoduchou správu data v globálních úložištích
-%     - vue-router pro vytvoření více viruálních stránek
-%     - a další
+O některých se budu dále zmiňovat v následujících sekcích.
 
 \subsection{Komponenty}
 
-V souladu s analýzou v kapitole \ref{text:navrh/design/komponenty} byly vytvořeny všechny potřebné komponenty. 
+V souladu s analýzou v sekci~\ref{text:navrh/design/komponenty} byly vytvořeny všechny potřebné komponenty. 
 Při jejich návrhu byl kladen důraz na znovupoužitelnost a udržitelnost kódu, přičemž značná část tvorby, inspirace a kódu pocházela z mé bakalářské práce~\cite{cajthaml_bp}.
 
 První iterace vývoje se zaměřovala na základní implementaci klíčových prvků a ověření jejich funkčnosti. 
 Hlavním cílem bylo zajistit, aby komponenty byly dobře udržovatelné a univerzálně použitelné v různých částech aplikace.
 
-Tyto komponenty sloužili především pro webovou stránku a uvnitř editoru (viz kapitola \ref{text:realizace/editor}) se nepoužívají.
-
-% - dle analýzy, kapitoly \ref{text:navrh/desgin/komponenty}, vytvořeny všechny komponenty
-% - reusing kodu komponent, hodne inspirace z me bakalarske prace
-% - obecne vytvareno prvni iterace 
-% - cilem udrzitelne a pouzitelne komponenty
+Tyto komponenty sloužili především pro webovou stránku a uvnitř editoru (viz sekce~\ref{text:realizace/editor}) se nepoužívají.
 
 \subsection{Designový návrh}
 
@@ -143,7 +113,7 @@ Tento styl je populární v moderním UI/UX designu a využívají ho napříkla
 Součástí vizuální identity aplikace se stala fialová barva doplněná o gradienty, což přispívá k výraznému a zapamatovatelnému vzhledu.
 
 Hlavním cílem bylo vytvořit jednoduchý, ale vizuálně přitažlivý design, který bude snadno přizpůsobitelný.
-Na obrázku \ref{fig:realizace/design} je možné vidět ukázku implementovaných komponent a jejich designu.
+Na obrázku~\ref{fig:realizace/design} je možné vidět ukázku implementovaných komponent a jejich designu.
 Pro usnadnění budoucích úprav a možnou implementaci více barevných režimů byly ve stylování využity CSS proměnné.
 Tento přístup umožňuje nejen jednoduché změny barevných schémat, ale i potenciální rozšíření designu o tmavý nebo kontrastní režim podle preferencí uživatele.
 
@@ -178,23 +148,10 @@ Materiály dále rozlišují viditelnost pomocí příznaku \texttt{visibility}.
 Pokud je nastavena hodnota \texttt{PUBLIC}, je materiál veřejně dostupný pro přehrávání přes přehrávač. 
 V opačném případě, tedy při hodnotě \texttt{PRIVATE}, je přístup omezený pouze na vlastníka a případně přidané spolupracovníky.
 
-
-% - všechny stránky až na přehrávač pouze pro přihlášené
-% - token v localstorage
-% - při expirování automaticky na login screen
-% - autorizace: pokud nema pristup tak se hodi chyba
-% - materiály mají majitele, který má přístu vždy
-% - materiál může mít nastavenou viditelnost (VISIBILITY) na PRIVATE vs PUBLIC, kdy PUBLIC dovolí to zobrazovat všem (player)
-% - materiál může mít přiřazené kolaborátory, kteří mají přístup k materiálu a přehrávání
-
-% \subsection{Šablony}
-
-% - procházení
-
 \subsection{Responzivita}\label{text:realizace/responzivita}
 
 
-Všechny stránky aplikace jsou přizpůsobené pro různá zařízení, jak je podrobněji uvedeno v kapitole \ref{text:testovani}. 
+Všechny stránky aplikace jsou přizpůsobené pro různá zařízení, jak je podrobněji uvedeno v kapitole~\ref{text:testovani}. 
 Responzivita je zajištěna hlavně díky použití komponentového systému a systému gridu, přičemž konkrétně se využívá dvanácti sloupcové rozvržení. 
 Rozdělení do sloupců je řízeno pomocí CSS tříd a breakpointů, přičemž nejčastěji se používají pouze tři základní — \texttt{sm}, \texttt{md} a všechny vyšší velikosti.
 
@@ -203,21 +160,14 @@ Dále se využívají pomocné třídy pro nastavení okrajů (\texttt{margin}),
 Tyto třídy také reagují na breakpointy, což umožňuje jemné doladění vzhledu jednotlivých částí rozhraní podle šířky obrazovky.
 
 Výjimku tvoří editor, který má z pohledu responzivity specifické chování. 
-Podrobnosti jeho řešení jsou popsány v kapitole \ref{text:realizace/editor}. 
+Podrobnosti jeho řešení jsou popsány v sekci~\ref{text:realizace/editor}. 
 V jeho případě bylo nutné upravit některé části individuálně, protože běžné techniky nebyly dostačující.
-
-% - veskere stranky responzivni na urcite zarizeni, viz kapitola \ref{text:testovani}
-% - responzivita diky komponentam, @media queries, celkove skoro žádná, až na editor, viz kapitola \ref{text:realizace/editor}
-% - využití systému gridu, 12 sloupců, dělení pomocí columns, stejně jako komponenty, pomocí breakpointu
-% - sloupce pomocí breakpointu, v zásadě jen "sm", "md" a vše vyšší
-% - pomocné třídy pro padding, margin, flex, gapy a další, znovu breakpointy.
-
 
 \subsection{Překlady}
 
 Překlady v aplikaci probíhají pomocí vlastního systému, který vychází ze strukturovaného zápisu v jazyce JSON. 
 Každý překlad je identifikován unikátním klíčem, například \texttt{editor.action.delete.tooltip}, a může být uložen ve stromové struktuře. 
-V kódu \ref{code:zapisPrekladu} jsou vyobrazeny zápisy překladů.
+V kódu~\ref{code:zapisPrekladu} jsou vyobrazeny zápisy překladů.
 Tento přístup zajišťuje přehlednost a snadnou údržbu jednotlivých jazykových mutací.
 
 
@@ -246,14 +196,6 @@ Překlady se ukládají i do zkrácené podoby v URL, což umožňuje přímé s
 Do budoucna lze očekávat problémy spojené se skloňováním, zejména v jazycích se složitou gramatikou, která vyžaduje flexibilitu podle kontextu. 
 Tento aspekt zatím systém neřeší a může být řešen později například pomocí rozšíření stávající logiky.
 
-% - vlastni system
-% - pouziti klicu (napr. editor.title), zapis v JSON (\{editor: \{title: "..."\}\})
-% - ulozeni zkratky v URL
-% - pouziti direktiv a funkce \$t pro preklad, jde vkladat promenne
-% - promenne nahrazovani pomoci \%test\%
-% - v aplikaci prozaitm CS a EN
-% - v budoucnu mozny problem se sklonovanim
-
 \subsection{Optimalizace pro webové vyhledávače}
 
 Klientská část platformy je postavena jako SPA pomocí frameworku Vue. 
@@ -265,31 +207,19 @@ Při detekci specifického \textit{user-agenta} (typicky pro vyhledávací robot
 Výsledkem je obsah, který lze snadno indexovat bez ohledu na způsob zobrazení na straně klienta.
 
 Z hlediska obsahu je pro SEO zásadní zejména přehrávač, který obsahuje samotné výukové materiály, a přihlašovací stránka. 
-Prerendering je nasazen také pro hlavní stránku platformy, jak je popsáno v kapitole~\ref{text:realizace/hlavniStranka}. 
-Samotné nasazení této služby je detailně popsáno v kapitole~\ref{text:realizace/nasazeni}.
+Prerendering je nasazen také pro hlavní stránku platformy, jak je popsáno v sekci~\ref{text:realizace/hlavniStranka}. 
+Samotné nasazení této služby je detailně popsáno v sekci~\ref{text:realizace/nasazeni}.
 
 Pro zlepšení optimalizace na straně klienta se používá knihovna \texttt{unhead}, která umožňuje dynamicky upravovat nadpisy stránek a další SEO metadata. 
 V kombinaci s prerendering tak vzniká systém, který je pro vyhledávače čitelný a současně neomezuje funkčnost platformy. 
-Stránky jsou navíc přístupné a plně responzivní, jak rozvádím v kapitole~\ref{text:realizace/responzivita}.
+Stránky jsou navíc přístupné a plně responzivní, jak rozvádím v sekci~\ref{text:realizace/responzivita}.
 
 Alternativa k tomuto by byla použít vykreslování na serveru pomocí nějakého frameworku, třeba Nuxt.
 Vzhledem k tomu, že stránky nejsou takovým velkým cílem SEO, se mi zdála tato možnost jako nevhodná a proto jsem ji nezvolil.
 
-% \subsection{Optimalizace pro webové vyhledávače}
-
-% - vue je SPA, problem s vykreslovanim pro vyhledavace
-% - hlavni problem - vykresleni - reseno pomoci tzv. prerender
-% - predkresleni stranky pro urcite lidi s danym user-agent
-% - sluzba prerender, spousti virtualni prohlizec, vraci vykreslene HTML
-% - pro klientskou cast je klicove jen prihlasovaci stranka a prehravac, ktery nese dalsi obsah
-% - nasazeni reseno v sekci \ref{text:realizace/nasazeni}
-% - v klientske casti reseni pomoci unhead nadpis stranky a dalsi seo
-% - stranka je taktez pristupna, viz \ref{text:realizace/responzivita}
-% - prerender se pouziva i na hlavni stranku viz sekce \ref{text:realizace/hlavniStranka}
-
 \section{Serverová část}\label{text:realizace/server}
 
-Serverová část aplikace byla implementována v souladu s návrhem popsaným v kapitole~\ref{text:navrh/server}. 
+Serverová část aplikace byla implementována v souladu s návrhem popsaným v sekci~\ref{text:navrh/server}. 
 Hlavní jazykem byl TypeScript a vývoj probíhal s využitím frameworku Nest. 
 
 Pro jednotlivé funkce byly použity následující balíčky:
@@ -345,7 +275,7 @@ Pro strukturovaný přenos dat byly vytvořeny DTO třídy, které definují, ja
 Tyto DTO se využívají jak v serverové, tak klientské části aplikace, což vyžadovalo častou synchronizaci během vývoje.
 
 Validace těchto objektů probíhá pomocí knihovny \texttt{class-validator}, která umožňuje definovat validační pravidla přímo v kódu tříd.
-V kódu \ref{code:realizace/dto} je ukázka DTO s validací.
+V kódu~\ref{code:realizace/dto} je ukázka DTO s validací.
 To přispívá ke konzistenci a zajišťuje, že na server se nikdy nedostanou nevalidní data přímo z klientské části.
 
 
@@ -375,45 +305,6 @@ export default class InAuthDTO {
 }
 \end{minted}
 \end{listing}
-
-
-% \section{Serverová část}\label{text:realizace/server}
-
-% - serverová část aplikace byla vyvinuta v souladu s návrhem z kapitoly \ref{text:navrh/server}.
-% - použití TS a Nest knihovny
-% - další balíčky byly použity:
-%     - bcrypt na hashovani hesel
-%     - class-validator pro validovani prijmanych trid
-%     - mjml pro formatovani emailu
-%     - puppeteer na generaci nahledovych obrazku a export
-% - misto express jsem nakonec pouzil fastify, protoze to za me knihovna resilo a nezdalo se to jako zadny problem, jen zlepseni
-
-% - celkove server mene prace, nez jsem ze zacatku ocekaval, klientska cast, zejmena editor a prehravac byla nejvetsi programovaci cast
-
-% \subsection{Moduly}
-
-% - nest deli veci na moduly
-% - vytvoril jsem tyto moduly:
-%      - materials které spravují materiály a jejich export
-%      - auth zajistuje prihlasovani a registraci
-%      - email posilani emailu a jejich formatovani
-%      - events pro kolaboraci a realtime komunikaci
-%      - media pro spravu obsahu uzivatelů
-%      - preferences pro nastaveni uzivatelů
-%      - users sprava uzivatelu
-%  - modul media, users, preferences, material obsahuji napojeni na mongoose, ODM pro mongo, schema jednotlivych entit ve finalnim zpracovani je mozne ve slozce XXXXXX
-
-% \subsection{Autentizace a autorizace}
-
-% - v nest pouzivam guardy (ktere se pak zapínají přes TS dekorátory)
-% - guardů existuje mnoho, existuji varianty na povinne prihlaseni, nepovinne a prihlaseni do WS
-% - autorizaci si řeší každý endpoint sam, kontroluje se, zda ma uživatel přístup k materiálu (je veřejný, je majitelem, je účastníkem)
-
-% \subsection{Přenos a výměna dat}
-
-% - probiha pomoci JSON
-% - vytvořeny DTO, viz slozka YYYYYY, jsou stejne pro server i klient, casta synchronizace pri vyvoji
-% - pouzivam class-validator pro validaci techto entit
 
 \section{Editor a přehrávač}\label{text:realizace/editor}
 
@@ -488,59 +379,6 @@ Každý blok má možnost zakázat některé operace, například znemožnit oto
 Bloky lze také uzamknout, což znemožní jejich výběr při tažení výběrovým rámečkem (select boxem). 
 Tato granularita nastavení zajišťuje přesné chování bloku podle kontextu použití.
 
-% \section{Editor a přehrávač}\label{text:realizace/editor}
-
-% - součást klientské části
-% - nejdůležitější část
-% - samostatné vykreslování mimo Vue, vlastní řešení překreslování
-% - oboje podobný kód, pracují s tzv. bloky
-% - vždy instance pro jednu stránku
-
-% \subsection{Materiál}
-
-% - obsahuje několik stránek
-% - jméno
-% - nastavení zobrazování
-
-% \subsection{Bloky}
-
-% - reprezentuje uživatelem vytvořená data
-% - např. text či obrázky
-% - každý blok obsahuje základní data: pozici, velikost, otočení, průhlednost, skupinu, z-index a interaktivitu
-% - z této třídy poté ostatní dědí
-
-% \subsubsection{Serializace}
-
-% - slouží k převedení bloku do JSON podoby, která se poté ukládá
-% - každý blok má serialize metodu, která slouží pro nalezení věcí, které se mají uložit a uložení jich
-% - vlastnosti v děděných třídách se anotují pomocí TS dekorátorů, které metoda čte
-
-% \subsubsection{Události}
-% - jednotlivé bloky dědící z hlavní třídy mohou používat eventy
-% - tím se lze navázat například na to, kdy je blok vykreslen na stránku, vybrán v editoru, posunován a mnoho dalšího
-% - pro toto používám TS dekorátory metod
-
-% \subsection{Editor}
-
-% - specifické věci pro editor následují
-% - editor má dost nastavení a další API
-% - editor má události, na které se může každý blok vázat
-
-% \subsubsection{Transformace}
-
-% - bloky je možné:
-%   - označovat (i více)
-%   - zvětšovat
-%   - posouvat
-%   - otáčet
-
-% - dle nastavení mohou být operace zvětšování nastaveny na kolaborativní či jednotlivé transformace
-
-% - každý blok může jednotlivé operace vypnout
-
-% - tažení (select box)
-% - blok může být uzamknut a není možné ho vybrat tažením
-
 \subsubsection{Akce}
 
 Editor podporuje množství kontextových akcí, které se dynamicky mění podle aktuálního výběru. 
@@ -551,7 +389,7 @@ Mezi běžné akce patří seskupování bloků, jejich oddělování, přesunut
 Každá akce může mít definované klávesové zkratky, které umožňují efektivní práci i bez použití myši. 
 Základní sada akcí je definována jako rozšiřitelná a jednotlivé akce lze registrovat externě.
 
-Na obrázku \ref{fig:realizace/vlastnosti} je k vidění jedna kontextová akce pro uzamknutí bloku.
+Na obrázku~\ref{fig:realizace/vlastnosti} je k vidění jedna kontextová akce pro uzamknutí bloku.
 
 
 \subsubsection{Vlastnosti bloků}
@@ -559,7 +397,7 @@ Na obrázku \ref{fig:realizace/vlastnosti} je k vidění jedna kontextová akce 
 Editor zobrazuje panel vlastností, který se mění v závislosti na výběru. 
 Při výběru více bloků se zobrazuje pouze podmnožina vlastností, které mají bloky společné a které lze hromadně upravit. 
 Například u více vybraných bloků tvaru je možné současně měnit průhlednost či barvu ale i tvar.
-Na obrázku \ref{fig:realizace/vlastnosti} je k vidění panel vlastností pro blok textu.
+Na obrázku~\ref{fig:realizace/vlastnosti} je k vidění panel vlastností pro blok textu.
 
 Systém vlastností je navržen jako flexibilní API, které umožňuje definovat různé typy vstupů včetně posuvníků, barevných výběrů, zaškrtávacích polí a dalších. 
 Editor podporuje také přímé tahání u nadpisu vlastnosti pro efektivnější změnu hodnoty vlastnosti.
@@ -574,27 +412,6 @@ Díky tomu zůstává uživatelské rozhraní přehledné i při práci s komple
     \caption{Panel vlastnosti v editoru pro blok textu}
     \label{fig:realizace/vlastnosti}
 \end{figure}
-
-
-% \subsubsection{Akce}
-
-% - kontextove (pravy klik)
-% - select (nad označenými prvky)
-% - updatuji se dle označenych prvků
-% - např. seskupení, přesunutí do plátna, kopírování
-% - každá akce může mít klávesové zkratky, které dovolují jednoduché akce s editorem
-
-% - jaké byly implementované?
-
-% \subsubsection{Vlastnosti bloků}
-
-% - podle vybraných bloků
-% - stejné možné vlastnosti, které to podporují se mohou spojit do jedné
-% - možnost upravovat skoro jakákoliv data
-% - velké api agregací a typů vlastností
-% - možnost změny pomocí dragování
-% - panel se zdá zvětšovat i skrývat
-
 
 \subsubsection{Historie}
 
@@ -627,30 +444,6 @@ Editor nabízí několik režimů transformace a různé možnosti chování př
 Díky těmto volbám si může každý uživatel přizpůsobit prostředí svým potřebám -- ať už preferuje jakoukoliv práci.
 
 Všechna nastavení se ukládají do profilu uživatele, takže při každém otevření editoru jsou znovu automaticky načtena.
-
-
-% \subsubsection{Historie}
-
-% - zaregistrovává se k různým událostem, které se dějí v editoru
-% - při každé události si uloží stav celého editoru
-% - pomocí akcí zpět a dopředu se lze v této historii hýbat
-% - omezení velikosti historie dle preferencí uživatele
-% - samotné aplikování a ukládání stavu podobné jako v návrhovém vzoru memento\cite{abbc}
-% - existuje speciální událost, kterou mohou volat ostatní části systému, na které se v editoru nedá registrovat
-
-% \subsubsection{Schránka}
-
-% - dovoluje kopírovat bloky a vkládat je pomocí operací
-% - je mozne kopirovat skrz stránky (otevrené i najednou)
-% - taktéž je možné kopírovat skrz snímky jednoho materiálu
-% - ukládá se skrz poslední návštěvu
-
-% \subsubsection{Nastavení}
-
-% - nastavení anebo preference
-% - uživatel si nastaví jak chce, aby s ním editor komunikoval
-% - muže nastavit např. zmíněnou velikost historie
-% - nebo nastavit například počet snapnutí otáčení, způsob transformace a další
 
 \subsection{Přehrávač}
 
@@ -708,9 +501,9 @@ Interaktivita může obsahovat libovolné množství akcí. Mezi základní akce
 
 Akce se mohou vztahovat na konkrétní bloky, všechny bloky na snímku, nebo aktuální blok. 
 Systém podporuje interpolaci pro plynulé přechody hodnot a možnost zadávat relativní změny.
-Vlastnosti, které lze měnit, si každý blok definuje samostatně pomocí rozhraní v kódu (viz kód \ref{code:zapisVlastnostiEditor} a \ref{code:zapisVlastnostiPrehravac}).
+Vlastnosti, které lze měnit, si každý blok definuje samostatně pomocí rozhraní v kódu (viz kód~\ref{code:zapisVlastnostiEditor} a~\ref{code:zapisVlastnostiPrehravac}).
 
-Ukázka nastavené interaktivity na bloku lze vidět na obrázku \ref{fig:interaktivita}.
+Ukázka nastavené interaktivity na bloku lze vidět na obrázku~\ref{fig:interaktivita}.
 
 \begin{listing}[ht!]
 \caption[Zápis registrace vlastnosti bloku tvaru pro editor]{Zápis registrace vlastnosti bloku tvaru pro editor, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:zapisVlastnostiEditor}
@@ -761,45 +554,6 @@ Tyto interaktivity jsou zpracovávány přímo přehrávačem a mohou být snadn
 Pro jednodušší práci s interaktivitou byl vytvořen i speciální blok -- a to interaktivní oblast.
 Tento blok umožňuje definovat akce, které nejsou navázané na žádný konkrétní vizuální prvek, ale slouží jako neviditelný spouštěč událostí.
 
-
-% \subsection{Přehrávač}
-
-% - podobné fungování jako editor
-% - vlastní bloky, vlastní vykreslování
-% - jiné módy => přidáno kreslení
-% - kreslení: dovoluje vyber barvy, velikost čáry, průhlednost, stabilizace, akce mazání, smazání všeho,
-% - UI dovoluje přepínání snímku tlačítky či mačkání na "plátno"
-% - interakce s bloky pomocí interaktivity a speciálních bloků rozšíření
-
-% \subsection{Interaktivita}
-
-% - každému bloku lze přidat interaktivity
-% - ty určují jak se blok bude chovat v různých situacích
-% - každá interaktivita má povinně určenou událost a podmínku volání
-% - události:
-%   - CLICK, při kliknutí na daný blok
-%   - HOVER START, při najetí na daný blok
-%   - HOVER END, při ukončení najetí (odjetí) z daného bloku
-%   - SLIDE LOAD, při načtení snímku (bez závislosti na bloku)
-%   - TIMER, který dovoluje spuštění po nějaké době či opakovaně
-% - podmínky:
-%   - ALWAYS, akce se provedou vždy
-%   - TIME PASSED, po nějaké době od otevření materiálu či konkrétního snímku, na kterém je blok (tato interakce)
-%   - VARIABLE, po tom, zda se hodnota nějaké podmínky rovná či nerovná zadané hodnotě
-% - poté může interaktivita obsahovat neomezeně mnoho akcí
-% - akce:
-%   - CHANGE PROPERTY, která dovolí změnit zaregistrované vlastnosti bloku
-%   - RESET PROPERTY, která dovolí resetovat zaregistrované vlastnosti bloku do původního stavu
-%   - ^ u nich jde vybrat jaké bloky (všechny na snímku, aktuální či konkrétní) se budou změny aplikovat 
-%   - ^ taky je možné použít interpolace pro přechod a či relativní hodnoty, které upravují aktuální stav
-%   - každý blok si registruje tyto vlastnosti sám, viz kód \ref{code:zapisVlastnosti}
-%   - CHANGE SLIDE, změna snímku, podle indexu či relativní (+, -, náhodný, NEXT, PREVIOUS, FIRST, LAST)
-%   - CHANGE VARIABLE, dovolí změnit hodnotu proměnné na jinou 
-%   - OPEN LINK, dovolí otevřit jinou stránku
-% - tyto interaktivity se poté zpracovávají v přehrávači při daných událostech
-% - proměnné si lze zobrazit v přehrávači v tzv. debugovacím módu
-% - pouze pro interaktivitu vytvořen speciální blok - interaktivní oblast.
-
 \subsection{Multimédia}
 
 Součástí editoru je možnost vkládat multimediální obsah, zejména obrázky a animované gify.
@@ -816,18 +570,8 @@ V případě většího množství nahraných souborů je procházení optimaliz
 
 Kromě fotobanky a gifů má uživatel možnost vložit jakýkoli externí odkaz na obrázek.
 Tento způsob je vhodný zejména tehdy, pokud uživatel nechce daný obrázek ukládat do systému, ale chce jej pouze referencovat. 
-O způsobu vložení externího odkazu a respektive o bloku obrázku pojednává detailně sekce \ref{text:realizace/vytvoreneBloky}.
+O způsobu vložení externího odkazu a respektive o bloku obrázku pojednává detailně sekce~\ref{text:realizace/vytvoreneBloky}.
 
-% \subsection{Multimédia}
-
-% - vytvořené z fotobank/gifbank
-% - uživatel má možnost nahrát vlastní obrázky
-% - vlastní obrázky lze používat vícekrát v různých materiálech
-% - vlastní procházení všech variant pomocí lazy-loading
-% - fotobanka: Pexels, kde jde vyhledávat \& "populární obrázky"
-% - gifová banka: Tenor v Google APIs, vyhledávání pomocí kategorií a co uživatel zadá
-% - po kliku se dané multimédium přidá do materiálu
-% - uživatel může zadat jakýkoliv odkaz do bloku obrázku viz sekce \ref{text:realizace/vytvoreneBloky}
 \subsection{Kolaborace}
 
 Možnost víceuživatelské kolaborace nad jedním výukovým materiálem je jedním ze stěžejních rysů celé platformy.
@@ -836,7 +580,7 @@ To by významně omezilo plynulou spolupráci a editaci v reálném čase.
 
 Cílem bylo umožnit současnou úpravu jednoho materiálu více uživateli. 
 Typickým příkladem je práce z více zařízení jedním uživatelem nebo kooperace více učitelů. 
-Tím, že je kolaborace zajištěna přímo na úrovni serveru (viz kapitola~\ref{text:realizace/server}), není nutné řešit tradiční formy zamykání dokumentu.
+Tím, že je kolaborace zajištěna přímo na úrovni serveru (viz sekce~\ref{text:realizace/server}), není nutné řešit tradiční formy zamykání dokumentu.
 
 Při zahájení editace materiálu se na serveru příslušný materiál označí jako \enquote{aktivní} a jeho obsah je načten do paměti. 
 Od tohoto momentu není změna ihned uložena do databáze, ale uchovává se dočasně a průběžně se ukládá s využitím techniky \textit{debounce} -- tedy až ve chvíli, kdy se tři sekundy nic nemění. 
@@ -854,7 +598,7 @@ Při každé změně -- ať už jde o přepnutí snímku, označení bloku nebo 
 Server změnu přepošle všem ostatním připojeným účastníkům, čímž je zajištěna konzistence mezi jednotlivými instancemi editoru.
 V materiálu u klienta je v UI vidět, kdo je k materiálu připojen, jak se jmenuje a na jakém snímku se aktuálně nachází.
 Na daném snímku se poté vykresluje speciální obdélník okolo bloků, které má označené (a které tedy nelze označovat).
-Na obrázku \ref{fig:realizace/kolaborace} lze vidět takto označený blok a seznam účastníků editování.
+Na obrázku~\ref{fig:realizace/kolaborace} lze vidět takto označený blok a seznam účastníků editování.
 
 
 
@@ -878,29 +622,6 @@ Pro bezpečnost musel být vytvořen systém ochrany neveřejných materiálů a
 Nad rámec synchronizace samotného obsahu se mezi klienty přenášejí také další informace o materiálu -- jeho název, nastavení sdílení nebo vlastnosti přehrávání.
 Synchronizují se i případná rozšíření a další metadata, čímž se zajišťuje, že všichni účastníci mají vždy aktuální stav.
 
-% \subsection{Kolaborace}
-
-% - práce na jednom materiálu by bez tohoto byla možná jen na jednom počítači
-% - pokud by neexistovala, bylo by nutné soubor uzamykat a nebyla by možnost spolupracovat v jeden moment
-% - zejména serverová věc, implementace v kapitole \ref{text:realizace/server}
-
-% - hlavním cilem bylo to, aby v jeden moment mohl upravovat jeden material vice lidi, pr. jeden clovek z vice zarizeni
-% - neni nutne resit zamykani souboru
-
-% - pokud nekdo zacne editovat material, na serveru se takto material oznaci a misto klasickeho ulozeni v db je ulozen v pameti a casto ukladan
-% - existuje mistnost (room) pro editaci konkretniho materialu, do ktere se mohou připojit lidi, kteri maji pristup do materialu
-% - v tomto modu si server pamatuje o kazdem ucastnikovi: na jakem snimku se nachazi, jake bloky ma oznaceny, jmeno a barvu
-
-% - klient i server vytvari system zamykani jednotlivych bloku na snimku, protoze jejich synchronizace by byla slozita. v jeden moment tedy muze mit jeden blok oznacen jen jeden clovek
-% - pri zmene (bloku, oznaceni bloků, snimku) klient oznamuje zmenu serveru, ten ji preposila dalsim ucastniku
-% - v klientske casti je videt kdo je k materialu pripojen, kdo je na jakem slidu a jake bloky ma kdo oznacene
-% - server se mimo rizeni komunikace a povolovani toho, co kdo muze, stara i o dalsi veci, jako je napriklad generovani nahledovych snimku ci ukladani
-% - ukladani probiha 1x za 3 sekundy prave tehdy, pokud nekdo neco zmenit pomoci tzv. debounce, tedy ulozi se az po 3 sekundach prestane prace (zmena bloku), pripadne po 30 i se zmenami
-% - generovani nahledovych snimku jsem resil tim zpusobem, ze misto generace na klientovi (zavislost na rozsirenich, pomale, rusive pro klienta) se generuji na serveru pomoci virtualniho prohlizece (knihovny puppeteer), tim, ze server kontaktuje specialni stranku na klienta, kde se verifikuje specialnim kodem, a bez UI vykresli v prehravaci dany snimek (ci snimky), ktere se pote odesilaji klientům a ukládají se do db
-% - generovani na serveru taktez znamena velmi presne zobrazeni toho, co tam realne je
-% - generovani je taktez tvoreno pomoci debounce se stejnymi intervaly jako ukladani
-% - mezi klienty se synchronizují taktéž dalši data o materiálu (např. jméno, nastavení sdílení a přehrávání) a například rozšíření
-
 \subsection{Prezentování}
 
 
@@ -922,19 +643,9 @@ Interagují výhradně skrze interaktivní bloky, které byly do prezentace vlo�
 Přehrávač zajišťuje, aby byl aktuální snímek synchronizovaný mezi všemi sledujícími.
 Rovněž je synchronizována i funkce kreslení, kterou může prezentující využít k doplňování výkladu během prezentace.
 
-Tento režim prezentování je připraven na použití vzdálené komunikace (viz sekce \ref{text:realizace/vzdalenaKomunikace}).
+Tento režim prezentování je připraven na použití vzdálené komunikace (viz sekce~\ref{text:realizace/vzdalenaKomunikace}).
 Díky tomu lze rozšířit výuku o plně interaktivní prvky, jako je chat, hlasování, nebo různé typy kvízů. 
 To zajišťuje, že i při pasivním sledování prezentace mohou studenti aktivně reagovat a zapojit se do výukového procesu.
-
-% - v editoru lze nastavit nastaveni mimo jine:
-%  - průchod: automaticky (po case na snimku), rucne a nebo pouze interaktivitou
-%  - zobrazeni: vzdy roztahle na stranku, nemoznost manipulace a nebo moznost hybat s platnem
-% - po zapnuti přehravače je vždy v základním rezimu prezentovani
-% - prezentovnani lze potom zapnout do modu sledovani
-% - prezentujici dostane odkaz, kod a QR kod, ktery muze sdilet ostatnim
-% - ostatni se mohou pripojit, s materialem interaguji jen pomoci bloku, pohyb v snimku nejde
-% - potom se synchronizuje aktualni snimek a kresleni
-% - lze pouzit vzdalenou komunikaci, viz pozdejsi sekce \ref{text:realizace/vzdalenaKomunikace}, a tedy lze vytvorit zcela interaktivni prvky, jako chat ci ruzne kvizy
 
 \subsection{Importování a exportování}
 
@@ -962,28 +673,6 @@ První nadpis se použije jako název materiálu a titulní strana.
 Markdown import podporuje běžné textové struktury jako nadpisy, tučný a kurzívní text, odkazy nebo seznamy. 
 Díky tomu je možné rychle vytvořit základní kostru prezentace bez nutnosti ručního zadávání každého bloku.
 
-% \subsection{Importování a exportování}
-
-% - materialy jsou sice interaktivni, ale nekdo si naprikald muze chtit material vytisknout, nebo v tom opravdu delat treba nejaky plakát
-% - system musi dovolovat lokalni zalohy pro bezpecnost
-
-% - implementovan system, kdy importovani dela klient, ktery vytvori material s danymi bloky
-% - export dela server
-
-% - exportovani: na server se posle pozadavek, ktery zacne export daneho typu
-% - aktualne JSON a PDF
-% - json vrati reprezentaci celeho materialu (resp. snimku)
-% - pdf vygeneruje kazdy snimek do PDF
-% - pro pdf se vyuziva puppeteer, ktery stejně jako kolaborace udělá obrázek stránky pomocí volání dotazu pro kazdý snímek
-% - jelikoz stranky mohou mit ruzne velikosti, je nutne generovat po snimkach a potom je spojit do velkeho pdf
-
-% - importovani: klient umi zpracovat a vytvořit materialu z JSON a markdown
-% - markdown se na klientovi zparsuje pomoci knihovny marked, ktera umi vratit stromovou reprezentaci dat v textu
-% - klient z toho přečte jednotive nadpisy a po nadpisech veskery obsah, ktery vloží na danou stranku s danym formatovanim
-% - nadpis jedna je nazev materialu a titulni strany
-% - umi zpracovat text, bold, italic, odkaz, listy
-% - dovoluje to jednodusjei vytvorit kostru prezentace
-
 \section{Rozšíření}
 
 Platforma umožňuje přidávat nové funkcionality pomocí tzv. pluginů. 
@@ -997,7 +686,7 @@ Uživatelé, resp. vývojáři, mohou pluginy jednoduše přidávat přímo v ap
 Rozšíření a jejich API jsou dokumentována v dokumentaci platformy.
 Pro lepší vývoj byly vytvořeny typy, které lze používat i v programování v jazyce JS.
 Ty napovídají v moderních vývojových prostředích vývojářům rozšíření s tím, co mohou za věci ve vytvořeném API používat.
-Ukázku typů lze najít v kódu \ref{code:realizace/typy}, celý soubor typů lze najít v kódové příloze ve složce \verb|/platform/plugins/types.d.ts|.
+Ukázku typů lze najít v kódu~\ref{code:realizace/typy}, celý soubor typů lze najít v kódové příloze ve složce \verb|/platform/plugins/types.d.ts|.
 
 
 \begin{listing}[ht!]
@@ -1030,7 +719,7 @@ interface ApiPlayer {
 
 \subsection{Spouštění kódu}
 
-Spouštění kódu pluginů probíhá bezpečně v prostředí QuickJS, jak je uvedeno v návrhu v kapitole \ref{text:navrh/plugins}. 
+Spouštění kódu pluginů probíhá bezpečně v prostředí QuickJS, jak je uvedeno v návrhu v sekci~\ref{text:navrh/plugins}. 
 Kód pluginů má omezený přístup pouze k API editoru a obsahu stránky prostřednictvím definovaného rozhraní. 
 Přístup k jakýmkoliv dalším zdrojům mimo tento rámec není možný ze zabezpečení knihovny QuickJS a jejich systému.
 
@@ -1058,17 +747,17 @@ Podobně funguje i Player API, které rovněž umožňuje čtení a přidáván�
 
 Každému rozšíření začíná životní cyklus voláním globální exportované funkce se jménem \texttt{initEditor} v spuštění v editoru, případně \texttt{initPlayer} v přehrávači.
 V této metodě může rozšíření spouštět řadu věcí a již interagovat s API.
-Základně v této metodě se budou programátoři rozšíření zejména připojovat k událostem, které způsobí to, že když daná událost nastane, tak se zavolá i příslušná funkce k této události od tohoto rozšíření. Ukázka zachycení k události a prvotního načtení je vyobrazena v kódu \ref{code:registraceUdalosti}.
+Základně v této metodě se budou programátoři rozšíření zejména připojovat k událostem, které způsobí to, že když daná událost nastane, tak se zavolá i příslušná funkce k této události od tohoto rozšíření. Ukázka zachycení k události a prvotního načtení je vyobrazena v kódu~\ref{code:registraceUdalosti}.
 
 Pro editor a přehrávač (ne nutně pro oba) existují následující události:
 
 \begin{description}
     \item[pluginBlockRender] Tato událost se volá tehdy, když je blok typu \texttt{plugin} vykreslován. Událost se volá jen pro rozšíření, který blok vlastní. Volá se sporadicky, zejména jenom při prvotním načtení editoru či přehrávače. 
-    \item[panelRegister] Tato událost se volá tehdy, když je uživatelské rozhraní připraveno získat informace o tom, jaký plugin požaduje jaké panely v rozhraní editoru. Na událost musí funkce vracet HTML, které se vykreslí v iframe. O bezpečnosti této metody viz kapitola \ref{text:vykreslovani}.
+    \item[panelRegister] Tato událost se volá tehdy, když je uživatelské rozhraní připraveno získat informace o tom, jaký plugin požaduje jaké panely v rozhraní editoru. Na událost musí funkce vracet HTML, které se vykreslí v iframe. O bezpečnosti této metody viz sekci~\ref{text:vykreslovani}.
     \item[panelMessage] Událost se volá tehdy, když panel přiřazen tomuto rozšíření chce předat zprávu rozšíření. Předávaná data jsou vždy v textovém řetězci.
     \item[pluginBlockMessage] Tuto událost volá konkrétní blok v editoru či přehrávači právě tehdy, když chce předat zprávu rozšíření. Předávaná data jsou taktéž v textovém řetězci.
     \item[pluginBlockPropertyChange] Tato událost se volá tehdy, když v uživatelském rozhraní editoru uživatel změní konkrétnímu bloku vlastnost. Rozšíření pomocí parametrů ví jaká konkrétní vlastnost se změnila a na jakém bloku.
-    \item[pluginRemoteMessage] Tato událost se volá tehdy, když blok vlastněný tímto rozšířením obdrží zprávu od vzdáleného bloku stejné instance. Více se o vzdálené komunikaci zmiňuji v sekci \ref{text:realizace/vzdalenaKomunikace}. 
+    \item[pluginRemoteMessage] Tato událost se volá tehdy, když blok vlastněný tímto rozšířením obdrží zprávu od vzdáleného bloku stejné instance. Více se o vzdálené komunikaci zmiňuji v sekci~\ref{text:realizace/vzdalenaKomunikace}. 
 \end{description}
 
 \begin{listing}[ht!]
@@ -1105,11 +794,6 @@ export const initEditor = function () {
 
 \subsection{Vykreslované bloky}
 
-% Pluginy mohou vytvářet vlastní bloky, které jsou vykreslovány při zobrazení materiálu. 
-% Samotné vykreslení bloku provádí platforma voláním příslušného rozšíření. 
-% Bloky a pluginy spolu mohou obousměrně komunikovat, což umožňuje dynamickou aktualizaci obsahu a interakci uživatelů s vykreslenými prvky.
-% Překreslování pomocí volání pluginu (tj. vykreslování HTML) je prováděno sporadicky, zejména jen v době, kdy se vykresluje poprvé či se upravují vlastnosti bloku.
-
 Platforma poskytuje pluginům možnost definovat a vykreslovat vlastní bloky, které jsou součástí vizuální reprezentace materiálů.
 Tyto bloky mohou sloužit k rozšíření funkcionality uživatelského rozhraní, například formou interaktivních ovládacích prvků, vizualizací nebo jako prostředek pro zobrazení dynamického obsahu.
 
@@ -1141,12 +825,12 @@ To umožňuje bezpečnou a efektivní výměnu zpráv mezi oddělenými kontexty
 
 V rámci vývoje pluginu je nezbytné definovat způsob, jakým panel odesílá a přijímá zprávy. 
 Aplikace poskytuje vlastní API, které nad rámec běžného \texttt{postMessage} rozšiřuje funkcionalitu o specifické události, zpracování chyb nebo obsluhu odpovědí. 
-Ukázka takové komunikace je uvedena v kódu \ref{code:registraceUdalosti}, kde je demonstrována registrace obsluhy zpráv přicházejících z panelu.
+Ukázka takové komunikace je uvedena v kódu~\ref{code:registraceUdalosti}, kde je demonstrována registrace obsluhy zpráv přicházejících z panelu.
 
 Z pohledu uživatele je panel obvykle přístupný prostřednictvím uživatelského rozhraní materiálu v podobě postranní navigace. 
 Její obsah je zcela v kompetenci pluginu, což umožňuje značnou míru přizpůsobení vzhledu i chování dle konkrétních potřeb.
 
-Ukázka panelu z ukázkového pluginu lze vidět na obrázku \ref{fig:realizace/panel}.
+Ukázka panelu z ukázkového pluginu lze vidět na obrázku~\ref{fig:realizace/panel}.
 
 
 
@@ -1157,11 +841,6 @@ Ukázka panelu z ukázkového pluginu lze vidět na obrázku \ref{fig:realizace/
     \caption{Zaregistrovaný panel rozšíření v aplikaci}
     \label{fig:realizace/panel}
 \end{figure}
-
-
-% Každý plugin může registrovat svůj vlastní panel, který se jednorázově vykreslí v uživatelském rozhraní. 
-% Tento panel umožňuje komunikaci mezi bloky a pluginy a slouží k výměně dat, například pro konfiguraci nastavení, vytváření nových bloků či editaci stávajících prvků. 
-% Ukázka komunikace mezi iframe pomocí API prohlížeče \texttt{postMessage} a tedy i v API aplikace je viditelný v kódu \ref{code:registraceUdalosti}.
 
 \subsection{Vzdálená komunikace}\label{text:realizace/vzdalenaKomunikace}
 
@@ -1195,63 +874,14 @@ Komunikaci mohou používat všechny bloky a to dokonce i bloky vytvořené pro 
 Místo toho, aby komunikaci spravoval blok, spravuje ho pro tyto bloky rozšíření, které se může zachytit na událost \verb|pluginRemoteMessage|.
 Rozšíření tuto zprávu může zpracovat a odeslat ostatním podle svých možností. 
 Znovu je možné použít komunikaci s blokem pro vykreslení obsahu uvnitř bloku.
-Tato komunikace je poté složitější a ukázka toho, jak vypadá, je na obrázku \ref{fig:realizace/vzdalenaKomunikace}.
+Tato komunikace je poté složitější a ukázka toho, jak vypadá, je na obrázku~\ref{fig:realizace/vzdalenaKomunikace}.
 
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=1\textwidth]{media/05_realizace/vzdalenaKomunikace.pdf}
     \caption{Diagram vzdálené komunikace bloků}\label{fig:realizace/vzdalenaKomunikace}
 \end{figure}
- 
 
-% \section{Rozšíření}
-
-% - plugin jmeno a popis
-% - nekolik verzi, obshauje:
-%   - manifest
-%   - plugin kod
-%   - editor kod
-% - moznost pridavat pluginy v aplikaci pro prihlašeni a nahravat nove verze
-
-% \subsection{Spouštění kódu}
-
-% - viz navrh \ref{text:navrh/plugins}
-% - tedy v JS, v emscriptu, zabezpečene
-% - přistup k editoru a strance obecne pomoci api
-% - mimo nema pristup, velmi omezene
-
-% \subsection{Přístup k API}
-
-% - globalni api:
-%    - fetch
-%    - cache
-%    - plugin
-%    - language
-%    - log
-% - bloky:
-%    - bloky registruji api
-%    - pristup vlastnosti jakymkoliv
-% - editor api
-%    - cteni bloku
-%    - pridani bloku
-%    - mody, velikosti platna
-% - player api
-%    - cteni bloku
-%    - pridani bloku
-%    - mody, velikosti platna
-
-% \subsection{Vykreslované bloky}
-
-% - plugin muze vytvorit blok, ktery vykresluje plugin
-% - kdyz se ma blok vykreslit tak se vykresli pomoci volani rozsireni
-% - vzajemna komunikace bloku a rozsireni
-
-% \subsection{Panel}
-
-% - kazdy plugin muze zaregistrovat panel
-% - jednou vykresleni
-% - vzajemna komunikace bloku a panelu
-% - vymena dat, napr. pro nastaveni, vytvoreni bloku, editace a dalsi
 
 \section{Hlavní webová stránka}\label{text:realizace/hlavniStranka}
 
@@ -1265,10 +895,10 @@ Důležitou součástí webové prezentace je porovnání s ostatními aplikacem
 To pomáhá uživatelům lépe pochopit výhody a jedinečné vlastnosti aplikace. 
 Kromě toho webová stránka představuje dostupné pluginy, které rozšiřují základní funkcionalitu aplikace.
 
-Design webové stránky vychází z vizuálního stylu samotné aplikace (viz kapitola \ref{text:realizace/klient}). 
+Design webové stránky vychází z vizuálního stylu samotné aplikace (viz sekce~\ref{text:realizace/klient}). 
 Stránka je responzivní a optimalizovaná pro různé typy zařízení.
 
-Pro sjednocení vizuální identity bylo navrženo logo aplikace (viz obrázek \ref{fig:logo}), které symbolizuje kombinaci plátna a písmene \enquote{M}, což reflektuje jak materiálový aspekt, tak kreativní přístup k tvorbě obsahu.
+Pro sjednocení vizuální identity bylo navrženo logo aplikace (viz obrázek~\ref{fig:logo}), které symbolizuje kombinaci plátna a písmene \enquote{M}, což reflektuje jak materiálový aspekt, tak kreativní přístup k tvorbě obsahu.
 
 \begin{figure}[ht!]
     \centering
@@ -1296,13 +926,6 @@ Vývoj pluginů je vysvětlen krok za krokem, včetně propojení s existující
 
 Celý obsah je psaný v angličtině, aby byl přístupný širší komunitě. 
 Text je doplněn odkazy mezi jednotlivými stránkami, což umožňuje snadnou orientaci.
-
-% - pomoci docosaurus
-% - dve casti: pouziti a rozsirovani
-% - pouziti: ui aplikace, rozdeleni, ruzne funkcionality
-% - rozsirovani: rozsirovani kodu a pomoci pluginu, lokalni instalace, pluginy a jejich api, dokumentace, postup tvorby pluginu postupne
-% - psani v markdownu, hodne propojeni pro prehlednost
-% - psano v anglictine
 
 \section{Sestavení a nasazení aplikace}\label{text:realizace/nasazeni}
 
@@ -1344,7 +967,7 @@ Níže jsou uvedeny odkazy pro nahrané části aplikace.
     \item[Server] \href{https://api.materalist.com}{https://api.materalist.com}
 \end{description}
 
-Výsledná aplikace, respektive její uživatelské rozhraní je na obrazcích k zobrazení taktéž v příloze \ref{appendix:uzivatelskeRozhrani} včetně ukázky hlavní stránky a dokumentace.
+Výsledná aplikace, respektive její uživatelské rozhraní je na obrazcích k zobrazení taktéž v příloze~\ref{appendix:uzivatelskeRozhrani} včetně ukázky hlavní stránky a dokumentace.
 
 DNS záznamy spravuji pomocí služby Cloudflare, která zároveň zajišťuje automatické vydávání certifikátů pro HTTPS a end-to-end šifrování. 
 Veškerý provoz tak probíhá šifrovaně a zabezpečeně.
@@ -1364,29 +987,6 @@ Vývojové prostředí využívá upravené varianty \texttt{Dockerfile} a \text
 
 Na rozdíl od produkce se při vývoji nepoužívá \texttt{volume} pro mount celého projektu, ale jen pro adresáře mimo \texttt{node\_modules}, kontejner pak otevře projekt v módu \texttt{live-reload}.
 Vývojáři tak mohou spustit celý systém jedním příkazem, bez nutnosti dalších úprav a vyvíjet platformu.
-
-% \subsection{Nasazení pomocí služby docker}
-
-% - docker compose easy
-% - docker compose v rootu
-% - kazda cast ma svuj dockerfile
-% - propojeni klicovych promennych pomoci globalniho .env
-% - compose predava kazde casti tyto promenne a pridava sve na propojeni mezi castmi
-
-% \subsection{Nasazení na produkci}
-
-% - koupena domena
-% - vlastni server kde vse hostuji
-% - docker-compose
-% - automaticke nahrani pomoci gitlab actions, pouzivam ssh s rsync, na serveru se zbuilduje
-% - nasazeni bez vypadku
-% - masked promenne, bezpecne
-
-% \subsection{Vývoj}
-
-% - specialni docker compose a specialni dockerfile pro kazdou casti 
-% - nemountuje se, jen na nodemodules,  
-% - staci spustit a vse jede
 
 \section{Vytvořené bloky}\label{text:realizace/vytvoreneBloky}
 
@@ -1439,7 +1039,7 @@ Blok umožňuje spustit libovolný kód v izolovaném prostředí a zobrazit jeh
 
 Editace probíhá kliknutím na blok, kdy se otevře rozhraní pro úpravu kódu. 
 Výstup se mimo editační režim vykreslí automaticky. 
-Kvůli bezpečnostním rizikům a nemožnosti opustit iframe z vnitřního prostředí je nutné tento způsob používat obezřetně, viz kapitola \ref{text:anaylza/spousteniNeduveryhodnehoKodu}.
+Kvůli bezpečnostním rizikům a nemožnosti opustit iframe z vnitřního prostředí je nutné tento způsob používat obezřetně, viz sekce~\ref{text:anaylza/spousteniNeduveryhodnehoKodu}.
 
 \subsection{Tvar}
 
@@ -1452,70 +1052,20 @@ Tyto bloky slouží jako doplňkový vizuální prvek, který zvyšuje čitelnos
 \subsection{Chat}
 
 Blok chatu dovoluje komunikaci při době prezentování materiálu mezi sledujícími.
-Blok používá vzdálenou komunikaci (viz sekce \ref{text:realizace/vzdalenaKomunikace}).
+Blok používá vzdálenou komunikaci (viz sekce~\ref{text:realizace/vzdalenaKomunikace}).
 Prezentujícímu se ukazuje box se zprávami a může se do konverzace zapojovat.
 Jako prezentující taktéž může posílání zprav pozastavit.
 
 Sledující si v chatu může vybrat jméno nebo bez něj bude používat identifikátor připojení WebSocket.
-
-% \section{Vytvořené bloky}\label{text:realizace/vytvoreneBloky}
-
-% - pro testování a ukázku schopnosti, ohebnosti systemu
-% - základní bloky přímo v aplikaci
-% - připraveno na leccos
-% - bloky reaguji na vlastnosti v panelu vlastnosti
-% - nektere bloky se pretransformuji/zmeni/dovoli editovat právě při kliku na vybrany blok (tj. treba kod ci text se zapisuje přímo do bloku v editoru)
-
-% \subsection{Text}
-
-% - dovoluje vkladat formatovany text
-% - moznost menit barvu, velikost, bold, italics, underline, přeskrtnutí, zarovnani (vlevo, vpravo, doprostred, do bloku), font, suptext, subtext a taky lze vytvorit listy
-% - po kliku na blok se otevre prave moznost oznacovat a psat text, ktery se poté v panelu vlastností upravuje
-% - ciste teoreticky se uklada html, vykresluje se ale jen povolene mnozstvi tagů a atributu, na to se používá knihovna \texttt{sanitize-html}
-
-% \subsection{Obrázek}
-
-% - lze vkládat odkaz na obrázek
-% - používají ho obsahové menu (foto/gif banky a vlastní uživatelské multimédia)
-% - možnost zapnout tzv. zamknutí poměru stran, které nastaví možnost obrázek nastavit jen v původním poměru
-% - v připradě vypnutného zapnutí se při zvětšování/zmenšování bloku se obrázek nastavuje na "překrytí", tj. obrázek je vždy v původním poměru, jen se ne vždy celý vejde (cropne se)
-% - pokud se obrazek nepovede nacist, v editoru upozorneni, v prehravaci nic
-
-% \subsection{Interaktivní oblast}
-
-% - v editoru viditelna, v prehravaci nikoliv
-% - dovoluje mit na sobe interaktivitu
-% - hodi se napriklad na prekrytivi vice prvku, aby se zvlastne nekopirovala interakvita
-
-% \subsection{Mermaid diagram}
-
-% - vykresluje pomoci knihovny \texttt{mermaid} různé diagramy
-% - mermaid dovoluje tvorit UML diagramy, grafy, matematicke grafy a různe další pomocné věci
-% - editace pomoci kliku, tam se pise kód, mimo editaci se vykresluje
-% - pokud je kod spatny, vykresli se chyba v editoru, v prehravaci nic
-% - problem s klikanim, nutne pouzit znovu iframe, mermaid znamy s XSS chybami
-
-% \subsection{Iframe okno}
-
-% - dovoluje psat jakekoliv HTML (tedy i CSS, JS), ktere se spusti v oddelenem okne
-% - editace pomoci kliku, tam pise kod, mimo editaci se vykresluje
-% - hodi se pro zkusene lidi
-% - nejde se z toho dostat, viz \ref{text:anaylza/spousteniNeduveryhodnehoKodu}
-
-% \subsection{Tvar}
-
-% - pouzivani preddefinovanych tvaru
-% - napr. obdelnik, hvezda, elipsa
-% - moznost nastavit barvu
-% - nektere specialni, daji se natahovat a oni se adaptuji, jako napr. sipka - prostredek se natahne dle velikosti
 
 \section{Vytvořené rozšíření}\label{text:realizace/vytvoreneRozsireni}
 
 Součástí návrhu platformy byla i možnost komunitního rozšiřování funkcionality prostřednictvím pluginů. 
 Tato sekce představuje několik ukázkových rozšíření, která byla v rámci vývoje vytvořena. 
 Slouží jako demonstrace možností systému, jeho flexibility a využití připraveného API. 
-Rozšíření vytvořena (či testována) i dalšími uživateli, kteří se na vývoji platformy nepodíleli, jsou popsány v kapitole \ref{text:testovani}.
-To umožnilo získat nezávislou zpětnou vazbu, podrobněji popsanou v kapitole o testování. Všechna rozšíření jsou dostupná v přiložené aplikaci a taktéž jako příloha práce.
+Rozšíření vytvořena (či testována) i dalšími uživateli, kteří se na vývoji platformy nepodíleli, jsou popsány v kapitole~\ref{text:testovani}.
+To umožnilo získat nezávislou zpětnou vazbu, podrobněji popsanou v sekci~\ref{text:testovani/rozsireni}. 
+Všechna rozšíření jsou dostupná v přiložené aplikaci a taktéž jako příloha práce.
 Rozšíření jsou dostupná v kódové příloze ve složce \verb|/platform/plugins|.
 
 \subsection{Zarovnávač}
@@ -1560,7 +1110,7 @@ Učitel zároveň vidí, jaké pojmy se nejčastěji objevují, a může na ně 
 Slovní stěna se hodí i jako zahřívací aktivita, například při brainstormingu nebo úvodu do nového tématu. 
 Vzhledem k jednoduchému formátu není třeba dlouhé vysvětlování a aktivitu lze spustit kdykoliv během hodiny.
 
-Rozšíření prezentuje komplexní možnosti rozšíření a to využití API v přehrávači, které dovoluje vzdálenou komunikaci (viz sekce \ref{text:realizace/vzdalenaKomunikace}).
+Rozšíření prezentuje komplexní možnosti rozšíření a to využití API v přehrávači, které dovoluje vzdálenou komunikaci (viz sekce~\ref{text:realizace/vzdalenaKomunikace}).
 Mimo komunikaci jsou data dále předávána do bloku pro vykreslení.
 V bloku se vykreslují nejčastější slova s určitou velikosti podle frekvence.
 
@@ -1571,39 +1121,3 @@ Rozšíření Hlasování (\enquote{Yes/no vote}) dovolí uživatelům v materi�
 Autor materiálu může vybrat text pro dané možnosti, aby seděl na kontext obsahu materiálu.
 
 Rozšíření je velmi podobné Slovní stěně a využívá skoro stejný kód.
-
-
-% \section{Vytvořené rozšíření}\label{text:realizace/vytvoreneRozsireni}
-
-% - ukázka systému, vytvořeny nějaká rozšíření
-% - ukázka a testování systému
-% - více v testování od lidi, co platformu nevyvijeli pro lepši zhodnoceni
-% - všechny pluginy jsou k dispozici v nahrané aplikaci a v příloze 
-% \subsection{Centrist}
-
-% - ukázka pouze modifikace v editoru (pomocník), nedělá nic v přehrávači, nemá žádný kód
-% - dovoluje zarovnávat na editoru
-% - panel ve kterém lze modifikovat označené bloky
-% - rozložení do prostřed, rozdělit rovnoměrně, přiblížit k sobě v obou osách
-
-% \subsection{Dnešní svátek}
-
-% - dovoluje vkládat jednoduché pole s dnešním svátkem
-% - volání externí služby - svatkyapi.cz
-% - využití cache pro ukládání svátku kvůli omezení API (rate limiting)
-% - manifest pro dovolení fetch na dané doméně API
-
-% \subsection{Fluid background}
-
-% - komplexní vykreslování shaderu webgl
-% - mnoho parametrů přímo v editoru (ukazka API bloku)
-% - nutne resit prekreslovani bloku
-
-% \subsection{Page numberer}
-
-% - číslování slidů
-
-% \section{Ukázkové materiály}\label{text:realizace/vytvoreneMaterialy}
-
-% Přo testování systému jsem si vytvořil pár úkazkových materiálů
-% - ukázka systému, možnost vytvořit komplexní prezentace do jdou v jiných aplikacích
