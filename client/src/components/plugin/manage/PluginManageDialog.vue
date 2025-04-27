@@ -160,7 +160,7 @@ const recalculate = () => {
             }
         }
 
-        const latestVersion = [...plugin.releases].sort((a, b) => b.date.diff(a.date)).pop();
+        const latestVersion = plugin.lastRelease();
         if (!latestVersion) {
             return {
                 plugin: p,
