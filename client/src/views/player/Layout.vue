@@ -838,7 +838,7 @@ const toggleAutomaticMovement = () => {
 
 onMounted(() => {
     automaticMovementInterval = setInterval(() => {
-        if (material.value.method !== 'AUTOMATIC') {
+        if (material.value.method !== 'AUTOMATIC' || watching.value) {
             return;
         }
 
