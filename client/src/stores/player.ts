@@ -27,6 +27,7 @@ export const usePlayerStore = defineStore("player", () => {
 
         slides.value = material.slides;
         drawData.value = [];
+        watchEnded.value = false;
     });
 
     const synchronizeDrawData = (slideId: string, data: string) => {
@@ -55,6 +56,7 @@ export const usePlayerStore = defineStore("player", () => {
 
         playerTime.value = Date.now();
         variables.value = {};
+        watchEnded.value = false;
 
         return getPlayer();
     }

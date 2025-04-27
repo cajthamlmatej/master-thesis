@@ -632,6 +632,8 @@ const joinWatch = async () => {
     setInterval(() => {
         watcherCount.value = communicator.getPlayerRoom()?.getWatcherCount() ?? 0;
     }, 1000);
+
+    player.value?.redrawBlocks();
 }
 
 const watcherCount = ref<number>(0);
