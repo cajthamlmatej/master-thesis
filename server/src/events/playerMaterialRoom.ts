@@ -13,6 +13,7 @@ export class PlayerMaterialRoom {
     private slideId: string;
     // private position: { x: number; y: number } = { x: 0, y: 0 };
     // private scale: number = 1;
+    private drawings: Map<string, string> = new Map();
 
     constructor(material: HydratedDocument<Material>, gateway: EventsGateway, code: string, presenter: Socket) {
         this.material = material;
@@ -53,7 +54,7 @@ export class PlayerMaterialRoom {
             this.gateway.removePlayerMaterialRoom(this);
             return;
         }
-        
+
         client.leave(this.roomId);
 
         this.presenter.emit("watcherLeftPlayerRoom", client.id);
@@ -71,6 +72,15 @@ export class PlayerMaterialRoom {
         return this.presenter === socket;
     }
 
+    // changeCanvas(position: { x: number; y: number }, scale: number ) {
+    //     this.position = position;
+    //     this.scale = scale;
+    //     this.gateway.server.to(this.roomId).emit('changeCanvas', {
+    //         position: position,
+    //         scale: scale
+    //     });
+    // }
+
     changeSlide(slideId: string) {
         const slide = this.material.slides.find(s => s.id === slideId);
 
@@ -86,17 +96,6 @@ export class PlayerMaterialRoom {
 
         // this.changeCanvas({x: 0, y: 0}, 1);
     }
-
-    // changeCanvas(position: { x: number; y: number }, scale: number ) {
-    //     this.position = position;
-    //     this.scale = scale;
-    //     this.gateway.server.to(this.roomId).emit('changeCanvas', {
-    //         position: position,
-    //         scale: scale
-    //     });
-    // }
-
-    private drawings: Map<string, string> = new Map();
 
     synchronizeDraw(content: string) {
         this.drawings.set(this.slideId, content);

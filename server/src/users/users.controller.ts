@@ -1,6 +1,6 @@
 import {
     Body,
-    Controller, Delete,
+    Controller,
     Get,
     NotFoundException,
     Param,
@@ -9,7 +9,7 @@ import {
     UnauthorizedException,
     UseGuards
 } from '@nestjs/common';
-import {OptionalAuthenticationGuard, RequiresAuthenticationGuard} from "../auth/auth.guard";
+import {RequiresAuthenticationGuard} from "../auth/auth.guard";
 import {RequestWithUser} from "../types";
 import {UsersService} from "./users.service";
 import OneUserSuccessDTO from "../../dto/user/OneUserSuccessDTO";
@@ -62,11 +62,12 @@ export class UsersController {
             password: update.password ? (await this.usersService.hashPassword(update.password)) : undefined,
             name: update.name,
         });
-        
+
         return {
             success: true,
         };
     }
+
     //
     // @Delete("/:id")
     // @UseGuards(OptionalAuthenticationGuard)

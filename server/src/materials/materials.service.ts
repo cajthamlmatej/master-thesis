@@ -16,48 +16,13 @@ interface FeaturedMaterial {
 @Injectable()
 export class MaterialsService {
     private featured: FeaturedMaterial[] = [];
+
     constructor(@InjectModel(Material.name) private materialModel: Model<Material>) {
         this.getFeatured();
 
         setInterval(() => {
             this.getFeatured();
         }, 1000 * 60 * 60);
-    }
-
-    private async getFeatured() {
-        const aggregate = await this.materialModel.aggregate([
-            { $match: { featured: true, visibility: "PUBLIC" } },
-            { $sample: { size: 20 } },
-            {
-                $project: {
-                    _id: 1,
-                    name: 1,
-                    user: 1,
-                    'slides': { $slice: ['$slides', 1] },
-                }
-            },
-            {
-                $addFields: {
-                    thumbnail: { $arrayElemAt: ['$slides.thumbnail', 0] }
-                }
-            },
-            {
-                $project: {
-                    slides: 0
-                }
-            }
-        ]).exec();
-
-        await this.materialModel.populate(aggregate, { path: "user", select: { name: 1 } });
-
-        this.featured = aggregate.map(featured => {
-            return {
-                id: featured._id.toString(),
-                user: featured.user.name.toString(),
-                thumbnail: featured.thumbnail,
-                name: featured.name
-            }
-        })
     }
 
     findAllForUser(user: HydratedDocument<User>) {
@@ -77,7 +42,9 @@ export class MaterialsService {
         return this.materialModel.findById(id).exec();
     }
 
-    async update(material: HydratedDocument<Material>, updateMaterialDto: UpdateMaterialDTO | Omit<UpdateMaterialDTO, "attendees"> & {attendees?: HydratedDocument<User>[]}) {
+    async update(material: HydratedDocument<Material>, updateMaterialDto: UpdateMaterialDTO | Omit<UpdateMaterialDTO, "attendees"> & {
+        attendees?: HydratedDocument<User>[]
+    }) {
         await this.materialModel.findByIdAndUpdate(material._id, {
             $set: {
                 ...updateMaterialDto,
@@ -125,5 +92,41 @@ export class MaterialsService {
 
     updateFeatured() {
         this.getFeatured();
+    }
+
+    private async getFeatured() {
+        const aggregate = await this.materialModel.aggregate([
+            {$match: {featured: true, visibility: "PUBLIC"}},
+            {$sample: {size: 20}},
+            {
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    user: 1,
+                    'slides': {$slice: ['$slides', 1]},
+                }
+            },
+            {
+                $addFields: {
+                    thumbnail: {$arrayElemAt: ['$slides.thumbnail', 0]}
+                }
+            },
+            {
+                $project: {
+                    slides: 0
+                }
+            }
+        ]).exec();
+
+        await this.materialModel.populate(aggregate, {path: "user", select: {name: 1}});
+
+        this.featured = aggregate.map(featured => {
+            return {
+                id: featured._id.toString(),
+                user: featured.user.name.toString(),
+                thumbnail: featured.thumbnail,
+                name: featured.name
+            }
+        })
     }
 }

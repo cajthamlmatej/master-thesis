@@ -39,7 +39,7 @@ export class DataExportService {
             }
         });
 
-        for(const dataExport of dataExports) {
+        for (const dataExport of dataExports) {
             try {
                 fs.rmSync(this.getPath(dataExport), {recursive: true});
             } catch (e) {
@@ -56,7 +56,7 @@ export class DataExportService {
             expiresAt: {$exists: false}
         }).populate("user");
 
-        if(!dataExport) {
+        if (!dataExport) {
             return;
         }
 
@@ -71,7 +71,7 @@ export class DataExportService {
             {
                 const media = await this.mediaService.findAllForUser(dataExport.user as HydratedDocument<User>);
 
-                for(const file of media) {
+                for (const file of media) {
                     const data = fs.readFileSync(file.path);
 
                     zip.file(file.path, data);

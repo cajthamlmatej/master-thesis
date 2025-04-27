@@ -30,41 +30,6 @@ export class MaterialsExportService {
         return this.TOKEN;
     }
 
-    private async getBrowser(): Promise<Browser> {
-        if(this.browser) {
-            return this.browser;
-        }
-
-        let hasToRegenerate = false;
-
-        if(!this.browserPromise) {
-            hasToRegenerate = true;
-        }
-
-        let awaited = await this.browserPromise;
-
-        if(!(awaited)) {
-            hasToRegenerate = true;
-        }
-
-        if(!hasToRegenerate && awaited) {
-            return awaited;
-        }
-
-        this.browserPromise = new Promise(async (resolve) => {
-            this.browserPromiseResolve = resolve;
-        });
-
-        this.browser = await puppeteer.launch({
-            headless: true,
-            args: ['--no-sandbox']
-        });
-
-        this.browserPromiseResolve(this.browser);
-
-        return this.browser;
-    }
-
     public async exportMaterial(material: HydratedDocument<Material>, format: string) {
         const outputFolder = `./temp/${material.id}/`;
         fs.mkdirSync(outputFolder, {recursive: true});
@@ -128,6 +93,41 @@ export class MaterialsExportService {
         } catch (e) {
             this.logger.error(`Error exporting slide thumbnails for material ${material.id}: ${e}`);
         }
+    }
+
+    private async getBrowser(): Promise<Browser> {
+        if (this.browser) {
+            return this.browser;
+        }
+
+        let hasToRegenerate = false;
+
+        if (!this.browserPromise) {
+            hasToRegenerate = true;
+        }
+
+        let awaited = await this.browserPromise;
+
+        if (!(awaited)) {
+            hasToRegenerate = true;
+        }
+
+        if (!hasToRegenerate && awaited) {
+            return awaited;
+        }
+
+        this.browserPromise = new Promise(async (resolve) => {
+            this.browserPromiseResolve = resolve;
+        });
+
+        this.browser = await puppeteer.launch({
+            headless: true,
+            args: ['--no-sandbox']
+        });
+
+        this.browserPromiseResolve(this.browser);
+
+        return this.browser;
     }
 
     private async exportToPDF(material: HydratedDocument<Material>, outputFolder: string) {

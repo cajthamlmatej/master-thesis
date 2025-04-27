@@ -11,14 +11,14 @@ import {
     UnauthorizedException,
     UseGuards
 } from '@nestjs/common';
-import { PluginService } from "./plugin.service";
-import { RequestWithUser } from "../types";
-import { AllPluginsSuccessDTO } from "../../dto/plugin/AllPluginsSuccessDTO";
-import { SpecificPluginsSuccessDTO } from "../../dto/plugin/SpecificPluginsSuccessDTO";
-import { RequiresAuthenticationGuard } from "../auth/auth.guard";
-import { CreatePluginReleaseDTO } from "../../dto/plugin/CreatePluginReleaseDTO";
-import { CreatePluginDTO } from "../../dto/plugin/CreatePluginDTO";
-import { UpdatePluginDTO } from "../../dto/plugin/UpdatePluginDTO";
+import {PluginService} from "./plugin.service";
+import {RequestWithUser} from "../types";
+import {AllPluginsSuccessDTO} from "../../dto/plugin/AllPluginsSuccessDTO";
+import {SpecificPluginsSuccessDTO} from "../../dto/plugin/SpecificPluginsSuccessDTO";
+import {RequiresAuthenticationGuard} from "../auth/auth.guard";
+import {CreatePluginReleaseDTO} from "../../dto/plugin/CreatePluginReleaseDTO";
+import {CreatePluginDTO} from "../../dto/plugin/CreatePluginDTO";
+import {UpdatePluginDTO} from "../../dto/plugin/UpdatePluginDTO";
 
 @Controller('')
 export class PluginController {

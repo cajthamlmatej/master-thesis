@@ -10,7 +10,7 @@ import {PreferencesModule} from './preferences/preferences.module';
 import {MediaModule} from './media/media.module';
 import {PluginModule} from './plugin/plugin.module';
 import {EventsModule} from './events/events.module';
-import { DataExportModule } from './data-export/data-export.module';
+import {DataExportModule} from './data-export/data-export.module';
 
 @Module({
     imports: [

@@ -16,7 +16,7 @@ export class DataExportController {
     public async get(@Param('id') id: string, @Req() req: RequestWithUser) {
         const data = await this.dataExportService.get(req.user);
 
-        if(!data) {
+        if (!data) {
             throw new NotFoundException("No data export found");
         }
 
@@ -35,7 +35,7 @@ export class DataExportController {
     public async create(@Param('id') id: string, @Req() req: RequestWithUser) {
         const data = await this.dataExportService.get(req.user);
 
-        if(data) {
+        if (data) {
             throw new NotFoundException("Data export already exists");
         }
 
@@ -52,19 +52,19 @@ export class DataExportController {
     public async getOne(@Param("id") id: string, @Param("exportId") exportId: string, @Req() req: RequestWithUser) {
         const data = await this.dataExportService.get(req.user);
 
-        if(!data) {
+        if (!data) {
             throw new NotFoundException("No data export found");
         }
 
-        if(data.id !== exportId) {
+        if (data.id !== exportId) {
             throw new NotFoundException("Data export not found");
         }
 
-        if(!data.completedAt || !data.expiresAt) {
+        if (!data.completedAt || !data.expiresAt) {
             throw new NotFoundException("Data export not completed");
         }
 
-        if(data.expiresAt < new Date()) {
+        if (data.expiresAt < new Date()) {
             throw new NotFoundException("Data export expired");
         }
 

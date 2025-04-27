@@ -1,10 +1,10 @@
 import {Injectable} from '@nestjs/common';
 import * as path from "path";
 import * as fs from "fs";
-import mjml2html = require('mjml');
 import * as nodemailer from "nodemailer";
 import {ConfigService} from "@nestjs/config";
 import {EmailTemplate} from "./email.template";
+import mjml2html = require('mjml');
 
 @Injectable()
 export class EmailService {

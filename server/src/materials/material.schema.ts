@@ -49,7 +49,7 @@ export class Material {
     @Prop()
     name: string;
 
-    @Prop({ default: false })
+    @Prop({default: false})
     featured: boolean;
 
     @Prop()

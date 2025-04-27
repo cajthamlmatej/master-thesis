@@ -30,7 +30,7 @@ import {UsersService} from "../users/users.service";
 import {HydratedDocument} from "mongoose";
 import {User} from "../users/user.schema";
 import FeaturedMaterialsSuccessDTO from "../../dto/material/FeaturedMaterialsSuccessDTO";
-import { normalizeString } from '../utils/normalize';
+import {normalizeString} from '../utils/normalize';
 
 @Controller('')
 export class MaterialsController {
@@ -90,12 +90,12 @@ export class MaterialsController {
             const user = req.user || {id: null};
 
             if (!token) {
-                if(!user || !user.id) {
+                if (!user || !user.id) {
                     throw new UnauthorizedException('You are not allowed to access this resource');
                 }
 
                 if (material.user.toString() !== user.id) {
-                    if(!material.attendees.map(a => a.toString()).includes(user.id.toString())) {
+                    if (!material.attendees.map(a => a.toString()).includes(user.id.toString())) {
                         throw new UnauthorizedException('You are not allowed to access this resource');
                     }
                 }
@@ -112,7 +112,7 @@ export class MaterialsController {
 
         const materialWithAttendees = await (await this.materialsService.findById(id))?.populate("attendees");
 
-        if(!materialWithAttendees) throw new BadRequestException("Material not found");
+        if (!materialWithAttendees) throw new BadRequestException("Material not found");
 
         return {
             material: {
@@ -153,14 +153,14 @@ export class MaterialsController {
         if (!material) throw new BadRequestException("Material not found");
 
         if (material.user.toString() !== req.user.id) {
-            if(!material.attendees.map(a => a.toString()).includes(req.user.id.toString())) {
+            if (!material.attendees.map(a => a.toString()).includes(req.user.id.toString())) {
                 throw new UnauthorizedException('You are not allowed to access this resource');
             }
         }
         // TODO: validate if release & plugin exists
 
         // Just the owner of the material can update the attendees
-        if(material.user.toString() === req.user.id) {
+        if (material.user.toString() === req.user.id) {
             const attendees = updateMaterialDto.attendees || material.attendees;
             let newAttendees = [] as HydratedDocument<User>[];
 
@@ -187,11 +187,10 @@ export class MaterialsController {
             await this.materialsService.update(material, updateMaterialDto);
         }
 
-        if(updateMaterialDto.featured !== undefined && (await this.materialsService.getFeaturedMaterials()).length < 20) {
+        if (updateMaterialDto.featured !== undefined && (await this.materialsService.getFeaturedMaterials()).length < 20) {
             this.materialsService.updateFeatured();
         }
     }
-
 
 
     @Post('/material')
@@ -253,7 +252,7 @@ export class MaterialsController {
         }
 
         if (material.user.toString() !== req.user.id) {
-            if(!material.attendees.map(a => a.toString()).includes(req.user.id.toString())) {
+            if (!material.attendees.map(a => a.toString()).includes(req.user.id.toString())) {
                 throw new UnauthorizedException('You are not allowed to access this resource');
             }
         }

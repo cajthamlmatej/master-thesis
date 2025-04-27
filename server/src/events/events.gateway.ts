@@ -38,6 +38,7 @@ export class EventsGateway {
     public getEditorRoom(id: any) {
         return this.editorRooms.find(r => r.getMaterialId() === id);
     }
+
     public removePlayerMaterialRoom(param: PlayerMaterialRoom) {
         this.playerRooms = this.playerRooms.filter(r => r !== param);
     }
@@ -53,14 +54,14 @@ export class EventsGateway {
                 oldRoom.removeListener(client);
             }
         }
-        
+
         const material = await this.materialsService.findById(materialId);
 
         if (!material) {
             throw new WsException("Material not found");
         }
 
-        if(material.user.toString() !== client.data.user?._id.toString() && !material.attendees.map(a => a.toString()).includes(client.data.user?._id.toString())) {
+        if (material.user.toString() !== client.data.user?._id.toString() && !material.attendees.map(a => a.toString()).includes(client.data.user?._id.toString())) {
             throw new WsException("You cannot start edit this material");
         }
 
@@ -155,8 +156,7 @@ export class EventsGateway {
         size: { width: number; height: number };
         color: string;
         position: number
-    }, @ConnectedSocket() client: Socket)
-    {
+    }, @ConnectedSocket() client: Socket) {
         const editorRoom = client.data.editorRoom as EditorMaterialRoom | undefined;
 
         if (!editorRoom) {
@@ -189,7 +189,11 @@ export class EventsGateway {
 
 
     @SubscribeMessage('joinPlayerMaterialRoom')
-    public async handleJoinPlayer(@MessageBody() {materialId, code, slideId}: {materialId: string, code: string, slideId: string}, @ConnectedSocket() client: Socket) {
+    public async handleJoinPlayer(@MessageBody() {materialId, code, slideId}: {
+        materialId: string,
+        code: string,
+        slideId: string
+    }, @ConnectedSocket() client: Socket) {
         let room = this.playerRooms.find((r) => r.getCode() === code && r.getMaterialId() === materialId);
 
         if (client.data.playerRoom !== null) {
@@ -207,7 +211,7 @@ export class EventsGateway {
                 throw new WsException("Material not found");
             }
 
-            if(material.user.toString() !== client.data.user?._id.toString() && !material.attendees.map(a => a.toString()).includes(client.data.user?._id.toString())) {
+            if (material.user.toString() !== client.data.user?._id.toString() && !material.attendees.map(a => a.toString()).includes(client.data.user?._id.toString())) {
                 throw new WsException("You cannot start watch in this material");
             }
 
@@ -224,7 +228,9 @@ export class EventsGateway {
     }
 
     @SubscribeMessage('synchronizeDraw')
-    public async handleSynchronizeDraw(@MessageBody() {content}: {content: string}, @ConnectedSocket() client: Socket) {
+    public async handleSynchronizeDraw(@MessageBody() {content}: {
+        content: string
+    }, @ConnectedSocket() client: Socket) {
         const playerRoom = client.data.playerRoom as PlayerMaterialRoom | undefined;
 
         if (!playerRoom) {
@@ -252,7 +258,10 @@ export class EventsGateway {
      * Client (not a presenter) send a message to the presenter.
      */
     @SubscribeMessage('sendBlockMessage')
-    public async handleSendBlockMessage(@MessageBody() {message, blockId}: { message: string, blockId: string }, @ConnectedSocket() client: Socket) {
+    public async handleSendBlockMessage(@MessageBody() {message, blockId}: {
+        message: string,
+        blockId: string
+    }, @ConnectedSocket() client: Socket) {
         const playerRoom = client.data.playerRoom as PlayerMaterialRoom | undefined;
 
         if (!playerRoom) {
@@ -270,7 +279,10 @@ export class EventsGateway {
      * Presenter send a message to the clients (attendees).
      */
     @SubscribeMessage('sendBlockMessageToAttendees')
-    public async handleSendBlockMessageToAttendees(@MessageBody() {message, blockId}: { message: string, blockId: string }, @ConnectedSocket() client: Socket) {
+    public async handleSendBlockMessageToAttendees(@MessageBody() {message, blockId}: {
+        message: string,
+        blockId: string
+    }, @ConnectedSocket() client: Socket) {
         const playerRoom = client.data.playerRoom as PlayerMaterialRoom | undefined;
 
         if (!playerRoom) {
