@@ -33,10 +33,7 @@ watch(() => props.value, (value) => {
     menu.value = value;
 });
 
-const iframe = ref<HTMLIFrameElement | null>(null);
-watch(() => iframe.value, (value) => {
-    if (!value) return;
-
+const setupCallback = () => {
     const plugin = toRaw(panel.value.plugin);
 
     plugin.getEditorPlugin()!.setPanelMessageCallback((message) => {
@@ -51,12 +48,27 @@ watch(() => iframe.value, (value) => {
             plugin.log("Error sending message to panel: " + e);
         }
     });
+};
+
+watch(() => panel.value, (value) => {
+    if (!value) return;
+
+    setupCallback();
+}, { immediate: true });
+
+const iframe = ref<HTMLIFrameElement | null>(null);
+watch(() => iframe.value, (value) => {
+    if (!value) return;
+
+    setupCallback();
 
     window.addEventListener("message", (event) => {
         const data = event.data;
+        
+        const plugin = toRaw(panel.value.plugin);
 
         if (typeof data !== "object" || !('target' in data) || !('message' in data)) {
-            plugin.log("Invalid message received from parent: " + data);
+            plugin.log("Invalid message received from panel: " + data);
             return;
         }
 
