@@ -84,9 +84,12 @@ export class PluginManager {
         return this.disabledPlugins;
     }
 
-    clear() {
+    clear(cache: boolean = false) {
         this.plugins = [];
         this.disabledPlugins = [];
-        this.cache.clear();
+
+        if(cache) {
+            this.cache.clear();
+        }
     }
 }
