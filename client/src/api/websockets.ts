@@ -3,11 +3,13 @@ import {useAuthenticationStore} from "@/stores/authentication";
 import Material from "@/models/Material";
 import {EditorCommunicator} from "@/api/editorCommunicator";
 import {PlayerCommunicator} from "@/api/playerCommunicator";
+import Event from "@/utils/Event";
 
 export class WebSocketCommunicator {
     public socket: Socket;
     private resolveReadyPromise: () => void;
     public readyPromise: Promise<void> = new Promise<void>((resolve) => this.resolveReadyPromise = resolve);
+    public DISCONNECTED = new Event<void>();
 
     constructor() {
     }
@@ -25,6 +27,9 @@ export class WebSocketCommunicator {
 
         this.socket.on("connect", () => {
             this.resolveReadyPromise();
+        });
+        this.socket.on("disconnect", () => {
+            this.DISCONNECTED.emit();
         });
         this.socket.on("newThumbnails", async({ materialId, slides }: {materialId: string, slides: {id: string, thumbnail: string}[]}) => {
             const editorStore = (await import("@/stores/editor")).useEditorStore();

@@ -4,4 +4,5 @@ export enum EditorPluginEvent {
     PLUGIN_BLOCK_RENDER = "pluginBlockRender",
     PLUGIN_BLOCK_MESSAGE = "pluginBlockMessage",
     PLUGIN_BLOCK_PROPERTY_CHANGE = "pluginBlockPropertyChange",
+    CREATE_CUSTOM_BLOCK = "createCustomBlock",
 }

@@ -40,6 +40,7 @@
                             <div class="actions">
                                 <Button
                                     v-tooltip="$t('editor.plugin.manage.deactivate')"
+                                    :label="$t('editor.plugin.manage.deactivate')"
                                     :loading="loading"
                                     icon="package-variant-closed-minus"
                                     @click="removePlugin(plugin.plugin as PluginContext)"
@@ -79,6 +80,7 @@
                             <div class="actions">
                                 <Button
                                     v-tooltip="$t('editor.plugin.manage.deactivate')"
+                                    :label="$t('editor.plugin.manage.deactivate')"
                                     :loading="loading"
                                     icon="package-variant-closed-minus"
                                     @click="removePlugin(plugin as PluginContext)"
@@ -99,7 +101,7 @@
                         </template>
                         <template #default="{toggle}">
                             <Card dialog>
-                                <PluginLocalImport @done="toggle" />
+                                <PluginLocalImport @done="() => { toggle(); refresh()}" />
                             </Card>
                         </template>
                     </Dialog>
@@ -158,7 +160,7 @@ const recalculate = () => {
             }
         }
 
-        const latestVersion = [...plugin.releases].sort((a, b) => a.date.diff(b.date)).pop();
+        const latestVersion = plugin.lastRelease();
         if (!latestVersion) {
             return {
                 plugin: p,
@@ -184,7 +186,7 @@ const removePlugin = async (plugin: PluginContext) => {
     loading.value = true;
     await pluginStore.removePluginFromMaterial(plugin);
 
-    const editor = useEditorStore().getEditor();
+    const editor = editorStore.getEditor();
 
     if(editor) {
         editor.redrawBlocks();
@@ -195,4 +197,10 @@ const removePlugin = async (plugin: PluginContext) => {
 };
 
 const manifestVersion = PluginManager.CURRENT_MANIFEST_VERSION;
+
+const editorStore = useEditorStore();
+
+const refresh = () => {
+    editorStore.changeSlide(editorStore.getActiveSlide()!);
+};
 </script>

@@ -178,3 +178,86 @@ window.addEventListener("message", function(event) { {
     });
 };
 ```
+
+## Registering a custom block
+
+You dont need to register a custom block in the editor.
+You can manage them without the editor knowing about them.
+
+For ease of use, we would strongly recommend to register the custom block in the editor so users can add them by using block panel.
+
+If you need to create complex creation logic, you can use the [Panel API](panel.md) to create a custom panel for the block.
+
+### Registering
+
+You need to call [`api.editor.registerBlock` function](api.md#registercustomblock) to register a custom block.
+The function takes a metadata for the button that will be displayed in the block panel.
+
+It also requires you to add custom `id` which allows you to identify the block when the editor will request to create it.
+If you will create just one block, you can use the any `id` and ignore it while creating the block.
+
+See the example below:
+
+```javascript
+api.editor.registerBlock({
+    id: "custom-block",
+    icon: "cat",
+    name: "Random cat"
+});
+```
+
+Call this method in the `initEditor` function to register the block when the editor is initialized.	
+
+### Creating a custom block
+
+When user interact with the button in the block panel, the editor will call the `createCustomBlock` event in the plugin.
+You have to implement the `on` method in your plugin and listen for the `createCustomBlock` event.
+
+You will receive the `id` of the block that was registered in the editor (the one you passed in the `registerBlock` function).
+And you have to return the id of the block that you created for the user.
+
+You can specify anything for the block, so you can create custom blocks for this plugin, others or use the basic ones but special features.
+
+Example:
+
+```javascript
+api.editor.on("createCustomBlock", (id) => {
+    if (id === "custom-block") {
+        return api.editor.addBlock({
+            type: "plugin",
+            position: {
+                x: 100,
+                y: 100
+            },
+            size: {
+                width: 200,
+                height: 200
+            },
+            rotation: 0,
+            zIndex: 1000,
+            opacity: 1,
+            data: {
+                name: "Custom block",
+                color: "#ff0000"
+            },
+            properties: [
+                {
+                    key: "name",
+                    label: "Name",
+                    type: "text"
+                },
+                {
+                    key: "color",
+                    label: "Background color",
+                    type: "color"
+                }
+            ]
+        });
+    }
+});
+```
+
+After creation the editor will handle the rest of the process.
+User will probably move the block while creating it, so the position you set in the `addBlock` function will be ignored.
+
+If it is a custom block for this plugin, you will receive the `pluginBlockRender` event and you can render the block as you want.

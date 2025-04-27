@@ -5,9 +5,26 @@
                 <div class="meta">
                     <span class="name">{{ material.name }}</span>
 
-                    <span v-t="{start: timeFromStart, slide: timeFromSlide}" class="time">player.timer</span>
-                    <span v-t="{start: timeFromStart, slide: timeFromSlide}"
-                          class="time-short">player.timer-short</span>
+                    <span class="addition">
+                        <span class="time" v-if="!watching">
+                            <span class="mdi mdi-timer"></span>
+                            {{ timeFromStart }}
+                        </span>
+                        <span class="count" v-if="material.slides.length > 1">
+                            <span class="mdi mdi-cards-variant"></span>
+                            {{ currentSlide+1 }} / {{ material.slides.length }}
+                        </span>
+                        <span class="time" v-if="!watching && material.slides.length > 1">
+                            <span class="mdi mdi-cards-variant"></span>
+                            {{ timeFromSlide }}
+                        </span>
+                        <!-- <span v-t="{start: timeFromStart, slide: timeFromSlide}" class="time">player.timer</span>
+                        <span v-t="{start: timeFromStart, slide: timeFromSlide}" class="time-short">player.timer-short</span> -->
+                        <span class="watchers" v-if="watchStarted">
+                            <span class="mdi mdi-account-multiple"></span>
+                            {{ watcherCount }}
+                        </span>
+                    </span>
                 </div>
             </template>
             <template #navigation>
@@ -45,7 +62,7 @@
                                 <div v-if="shareType === 'SHARE_LINK'">
                                     <p class="description" v-t>player.share.share-link.description</p>
                                 </div>
-                                <div v-else>
+                                <div v-else-if="watchStarted">
                                     <p class="description" v-t>player.share.watch-link.description</p>
 
                                     <div class="flex flex-justify-center  pt-1" v-if="link">
@@ -61,9 +78,22 @@
                                         {{ watchCode }}
                                     </p>
                                 </div>
+                                <div v-else>
+                                    <p class="description" v-t>player.share.watch-link.description</p>
+
+                                    <Button
+                                        class="mt-1"
+                                        color="primary"
+                                        icon="transit-connection-variant"
+                                        @click="watchStarted = true"
+                                    >
+                                        <span v-t>player.share.watch-link.button</span>
+                                    </Button>   
+                                </div>
+                                
 
                                 <div
-                                    v-if="link"
+                                    v-if="link && (shareType === 'SHARE_LINK' || watchStarted)"
                                     class="flex flex-justify-space-between flex-align-center gap-2 pt-1">
                                     <div class="flex-grow">
                                         <Input v-model:value="link" :readonly="true" hide-error
@@ -393,7 +423,23 @@
                 </Button>
             </Card>
         </Dialog>
+
+        <div class="watch" v-if="watchStarted">    
+            <qrcode-vue 
+                :margin="3" 
+                :size="200" 
+                :value="link"
+                background="white"
+                foreground="black"
+                level="H"
+                render-as="svg"
+            ></qrcode-vue>
+            
+            <span class="watch--code">{{ watchCode }}</span>
+        </div>
     </div>
+
+    <CommunicatorObserver type="player" />
 </template>
 
 <script lang="ts" setup>
@@ -418,6 +464,7 @@ import {communicator} from "@/api/websockets";
 import Card from "@/components/design/card/Card.vue";
 import PluginLocalImport from "@/components/plugin/manage/PluginLocalImport.vue";
 import {useEditorStore} from "@/stores/editor";
+import CommunicatorObserver from "@/components/CommunicatorObserver.vue";
 
 const materialStore = useMaterialStore();
 const playerStore = usePlayerStore();
@@ -427,7 +474,7 @@ const pluginStore = usePluginStore();
 const router = useRouter();
 const route = useRoute();
 
-const rendering = ref(route.query.rendering === 'true');
+const rendering = computed(() => route.query.rendering === 'true');
 const debugging = computed(() => route.query.debug === 'true');
 
 const joining = ref(false);
@@ -438,6 +485,11 @@ const watchFailed = ref(false);
 const shareType = ref<string>('SHARE_LINK');
 const canStartWatch = computed(() => {
     return materialStore.currentMaterial?.user === userStore.user?.id || materialStore.currentMaterial?.attendees.find(a => typeof a == "object" ? a.id === userStore.user?.id : false) !== undefined;
+});
+const watchStarted = ref(false);
+
+onUnmounted(() => {
+    communicator.getPlayerRoom()?.destroy();
 });
 
 const link = computed(() => {
@@ -480,7 +532,7 @@ const menu = ref<boolean>(false);
 
 const player = ref<Player | null>(null);
 
-watch(() => playerStore.getPlayer(), (value) => {
+watch(() => playerStore.getPlayer(), async(value) => {
     player.value = value as Player;
 
     if (!material) return;
@@ -503,11 +555,11 @@ const isPresenter = ref<boolean>(false);
 
 const editorStore = useEditorStore();
 onMounted(async () => {
-    if(editorStore.getEditor()) {
-        // Reload the page
-        window.location.reload();
-        return;
-    }
+    // if(editorStore.getEditor()) {
+    //     // Reload the page
+    //     window.location.reload();
+    //     return;
+    // }
 
     await materialStore.load();
     await pluginStore.load();
@@ -533,6 +585,8 @@ onMounted(async () => {
     await playerStore.requestPlayer(route.query.slide as string, rendering.value);
     hasNextSlide.value = !!playerStore.getSlides().find(s => s.position > playerStore.getActiveSlide()!.position);
     hasPreviousSlide.value = !!playerStore.getSlides().reverse().find(s => s.position < playerStore.getActiveSlide()!.position);
+
+    currentSlide.value = playerStore.getActiveSlide()!.position;
 
     window.addEventListener("click", click);
     window.addEventListener("keydown", keydown);
@@ -573,7 +627,13 @@ const joinWatch = async() => {
     await communicator.getPlayerRoom()?.joined;
 
     joining.value = false;
+
+    setInterval(() => {
+        watcherCount.value = communicator.getPlayerRoom()?.getWatcherCount() ?? 0;
+    }, 1000);
 }
+
+const watcherCount = ref<number>(0);
 
 const tryWithoutCode = async () => {
     const url = router.resolve({
@@ -636,6 +696,7 @@ const click = (e: MouseEvent) => {
 
 const hasNextSlide = ref<boolean>(false);
 const hasPreviousSlide = ref<boolean>(false);
+const currentSlide = ref<number>(0);
 
 const nextSlide = () => {
     if (watching.value) return;
@@ -649,6 +710,8 @@ const nextSlide = () => {
 
     hasNextSlide.value = !!playerStore.getSlides().find(s => s.position > next!.position);
     hasPreviousSlide.value = true;
+
+    currentSlide.value = next.position;
 
     if (!watching.value) {
         communicator.getPlayerRoom()?.changeSlide(next.id);
@@ -666,6 +729,8 @@ const previousSlide = () => {
 
     hasPreviousSlide.value = !!playerStore.getSlides().reverse().find(s => s.position < prev!.position);
     hasNextSlide.value = true;
+
+    currentSlide.value = prev.position;
 
     if (!watching.value) {
         communicator.getPlayerRoom()?.changeSlide(prev.id);
@@ -824,6 +889,40 @@ const refresh = () => {
 </script>
 
 <style lang="scss" scoped>
+.watch {
+    position: fixed;
+    bottom: 0.5em;
+    left: 0.5em;
+    width: 10em;
+    height: 12em;
+    border-radius: 1em;
+    overflow: hidden;
+    z-index: 1000;
+    background-color: white;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: var(--shadow-primary);
+    opacity: 0.9;
+    padding: 0.5rem 0;
+    transition: opacity 0.3s ease-in-out;
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    &--code {
+        font-size: 1.5em;
+        text-align: center;
+    }
+
+    &:hover {
+        opacity: 0;
+    }
+}
+
 .player-header {
     background-color: var(--color-background-accent);
 }
@@ -846,6 +945,10 @@ const refresh = () => {
     .name {
         font-size: 1.5em;
         font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 50vw;
 
         @media (max-width: 768px) {
             font-size: 1.2em;
@@ -854,19 +957,13 @@ const refresh = () => {
 
     .time {
         font-size: 1em;
-
-        @media (max-width: 768px) {
-            display: none;
-        }
     }
 
-    .time-short {
+    .addition {
+        display: flex;
+        align-items: center;
+        gap: 1em;
         font-size: 0.8em;
-        display: none;
-
-        @media (max-width: 768px) {
-            display: block;
-        }
     }
 }
 

@@ -16,6 +16,8 @@ export class PluginContext {
     private readonly editorPlugin: EditorPlugin | undefined;
     private readonly playerPlugin: PlayerPlugin | undefined;
 
+    public loaded: Promise<void>;
+
     constructor(plugin: Plugin, release: PluginRelease, editor?: Editor, player?: Player) {
         this.parseManifest(release.manifest);
         this.author = plugin.author;
@@ -24,16 +26,22 @@ export class PluginContext {
         this.icon = plugin.icon;
         this.id = plugin.id;
 
-        if (release.editorCode) {
+        //console.log(editor, player);
+
+        if (release.editorCode && editor) {
             this.editorPlugin = new EditorPlugin(this, release.editorCode, editor);
         } else {
-            this.log("No editor code found, skipping editor plugin creation");
+            this.log("No editor code or editor itself found, skipping editor plugin creation");
         }
-        if (release.playerCode) {
+        if (release.playerCode && player) {
             this.playerPlugin = new PlayerPlugin(this, release.playerCode, player);
         } else {
-            this.log("No player code found, skipping player plugin creation");
+            this.log("No player code or player itself found, skipping player plugin creation");
         }
+
+        //console.log(this.playerPlugin, this.editorPlugin);
+
+        this.loaded = Promise.all([this.playerPlugin?.loadedPromise, this.editorPlugin?.loadedPromise].filter(a=>a)).then();
     }
 
     public getEditorPlugin() {

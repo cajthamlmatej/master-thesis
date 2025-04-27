@@ -59,8 +59,8 @@ Toto dovoluje odlehčit server náročnými požadavky (překreslením HTML na s
 Klient taktéž bude moci být používán s menší závislostí na serveru a při správném nastavení například i dále dovolovat čtení, i když uživatel nebude připojen k internetové síti.
 Nevýhodou je zátěž a dostupné funkcionality na zařízení, na kterém webová stránka poběží, ale to by na dnešních zařízeních neměl být žádný problém.
 
-V kapitole \ref{text:vykreslovani} zmiňuji různé způsoby vykreslování obsahu na webových stránkách.
-I když je analýza směřována zejména na obsah, tak podobné myšlenky, zejména z kapitoly \ref{text:vykreslovani/html} lze aplikovat i na zbytek webových stránek.
+V sekci~\ref{text:vykreslovani} zmiňuji různé způsoby vykreslování obsahu na webových stránkách.
+I když je analýza směřována zejména na obsah, tak podobné myšlenky, zejména z sekce~\ref{text:vykreslovani/html} lze aplikovat i na zbytek webových stránek.
 Zjednodušeně, tvoření komplexních webových aplikací s mnohými funkcionalitami (což v tomto návrhu pro aplikaci plánuji) nelze dělat udržitelně pouze se základními funkcionalitami HTML, CSS a JS.
 Pro komplexní \enquote{thick klient} webovou aplikaci je nutné~\cite{uzayr2022frontend} v moderním světě webového vývoje použít framework, který za nás bude řešit nejen uvedené:
 
@@ -104,16 +104,16 @@ Z tohoto důvodu musí být takto komplexní komponenta, tedy editor a přehráv
 Naštěstí framework Vue dovoluje označit část kódu jako spravovanou někým jiným a tento prvek nebude překreslovat, pokud se nezmění jeho závislost (tedy pokud mu to kód neoznámí). 
 Takovéto fundamentální rozdělení taktéž dovolí, že editor se může velmi jednoduše přidat i do jiných projektů či komponent.
 
-V pozdější kapitole \ref{text:navrh/editor_player} rozepíši, jak hodlám řešit to, jak se bude obsah zobrazovat v editoru a přehrávači, jak se bude upravovat, definovat a podobně.
+V pozdější sekci~\ref{text:navrh/editor_player} rozepíši, jak hodlám řešit to, jak se bude obsah zobrazovat v editoru a přehrávači, jak se bude upravovat, definovat a podobně.
 
 \subsection{Server}\label{text:navrh/server}
 
 Cílem serverové části je poskytovat data klientské části a to kvůli \enquote{thick klientu}. 
 Tato data bude server získávat z dalších služeb a zejména z databáze, ve které budou data perzistentně uložena.
-O databázi se budu dále rozepisovat v kapitole \ref{text:navrh/databaze}.
+O databázi se budu dále rozepisovat v sekci~\ref{text:navrh/databaze}.
 Mezi další služby bude patřit e-mailový server či různá další externí API třetích služeb (například na získávání obrázků z datových bank a tak dále).
 
-Poskytované API, což jsem zmínil v kapitole \ref{text:navrh/klient}, bude RESTful a tedy bude dovolovat práci se zdroji. 
+Poskytované API, což jsem zmínil v sekci~\ref{text:navrh/klient}, bude RESTful a tedy bude dovolovat práci se zdroji. 
 Alternativní způsob designu API~\cite{richardson_2013} je například Simple Object Access Protocol (SOAP), který dovoluje volání akcí na serveru.
 Standard REST API, jakožto moderní způsob komunikace, ukládá za povinnost takové věci API, které se slučují s navrhovanou aplikací.
 SOAP by byl v tomto případě nevhodný a to zejména z důvodu, že server v tomto případě zejména slouží jakožto služba, která ukládá data.
@@ -131,12 +131,12 @@ Těmto objektům se říká Data Transfer Object (DTO).
 Tyto objekty dovolují jednoduše typovat data, která vstupují a vystupují z REST API.
 
 Některé koncové body a zdroje API musí být zabezpečené pomocí autorizace a autentizace. 
-O zabezpečení budu mluvit v pozdější kapitole \ref{text:navrh/auth}.
+O zabezpečení budu mluvit v pozdější sekci~\ref{text:navrh/auth}.
 Některé koncové body musí být limitované i pomocí \verb|rate-limiter|, tedy že omezí počet volání daného koncové body pro konkrétního uživatele či globálně.
 Jedná se např. o stránku s registrací.
 
 Samotná serverová část bude tvořena v jazyce TypeScript.
-Volba TS je stejná jako v klientské části (viz kapitola \ref{text:navrh/klient}) a to tedy, že nutí programátora psát udržitelný kód, který je staticky typově zajištěn.
+Volba TS je stejná jako v klientské části (viz sekce~\ref{text:navrh/klient}) a to tedy, že nutí programátora psát udržitelný kód, který je staticky typově zajištěn.
 
 Implementace komunikačního uzlu je možná přes řadu způsobů a knihoven.
 V JS, resp. TS ekosystému patří mezi nejoblíbenější~\cite{brown2019web} backendový rámec knihovna Express.js (často taktéž Express).
@@ -155,7 +155,7 @@ Dovoluje rapidně tvořit udržitelné webové servery s HTTP API a podporuje ř
 Jedná se např. o passport, Mongo, Prisma, fronty úkolů, volání úloh, CORS, verzování API a mnoho dalšího.
 Proto jsem se rozhodl NestJS s Express použít a to za pomoci TypeScriptu.
 
-Server nejspíše bude používat i řadu dalších knihoven, například na odesílání e-mailů, jejich formátování a například na generování přihlašovacích tokenů pomocí JWT (viz kapitola \ref{text:navrh/auth}).
+Server nejspíše bude používat i řadu dalších knihoven, například na odesílání e-mailů, jejich formátování a například na generování přihlašovacích tokenů pomocí JWT (viz sekce~\ref{text:navrh/auth}).
 Tyto knihovny budu zajišťovat během vývoje aplikace.
 
 V aplikaci plánuji vytvořit kolaboraci v editoru materiálu a další real-time komunikaci a proto je potřeba zajistit tento mechanismus.
@@ -195,7 +195,7 @@ Aplikace jako celý cíl má stanovené to, že má být v budoucnu rozšiřitel
 Je možné si představit, že tato aplikace bude v budoucnu ukládat velmi mnoho dat a bude potřeba, aby databázový stroj podporoval horizontální i vertikální škálování.
 Podobně data, která budou v databázi uložena, nemají jasně stanovenou strukturu a obecně se bude jednat o velmi komplexní objekty.
 V této aplikaci je lepší ztratit konzistenci dat, která např. MongoDB negarantuje (resp. je v módu \enquote{někdy bude konzistentní}~\cite{irena2015big}), důležitá je dostupnost a odolnost k přerušení.
-I když budou na sebe data ukazovat (viz datový model v kapitole \ref{text:analyza/datovymodel}), jsou tato propojení velmi triviální a spíše je vhodné dokumenty do sebe vnořovat.
+I když budou na sebe data ukazovat (viz datový model v sekci~\ref{text:analyza/datovymodel}), jsou tato propojení velmi triviální a spíše je vhodné dokumenty do sebe vnořovat.
 Proto nevidím důvod na použití relační databáze a to i kvůli struktuře dat.
 
 Alternativou s podobnými vlastnostmi~\cite{irena2015big} jako MongoDB je CouchDB a Firebase Firestore. 
@@ -205,7 +205,7 @@ Firestore, jako součást ekosystému Firebase~\cite{firebase}, nabízí jednodu
 Nicméně, Firestore je úzce spjat s Google Cloud platformou a může být nákladnější v závislosti na objemu provozu a požadavcích na škálovatelnost. 
 Vzhledem k těmto faktorům jsem se rozhodl zvolit MongoDB, která poskytuje dostatečnou flexibilitu pro strukturu dat i škálovatelnost bez závislosti na konkrétním poskytovateli cloudových služeb.
 
-Díky výběru knihovny Nest (viz kapitola \ref{text:navrh/server}) je vhodné pro databázi použít takový driver, aby s ním i daná knihovna uměla pracovat.
+Díky výběru knihovny Nest (viz sekce~\ref{text:navrh/server}) je vhodné pro databázi použít takový driver, aby s ním i daná knihovna uměla pracovat.
 V základním rozpoložení umí Nest pracovat mimo jiné s drivery (resp. ODM/ORM) Mongoose a Prisma~\cite{nest_database}.
 S Mongoose mám velmi velké zkušenosti a používám ho i v projektech mimo Nest.
 Prisma je na druhou stranu velmi populární nejen pro MongoDB, ale i pro ostatní databázové stroje.
@@ -217,7 +217,7 @@ Proto jsem se rozhodl použít s MongoDB právě knihovnu ODM mongoose.
 
 Přestože návrh využívá nerelační databázi MongoDB, která nevyžaduje pevné schéma, je struktura dat vynucena pomocí ODM Mongoose na serveru.
 Konzistenci dat tedy zajišťuje samotná aplikace při jejich zápisu a čtení. 
-Pro vytvoření databázového schématu bylo nutné vycházet z doménového modelu a provedené analýzy z kapitoly~\ref{text:analyza/datovymodel}.
+Pro vytvoření databázového schématu bylo nutné vycházet z doménového modelu a provedené analýzy ze sekce~\ref{text:analyza/datovymodel}.
 
 Navržené databázové schéma pracuje s relacemi, a proto jeho níže uvedená reprezentace není zcela přesná -- jde o hrubý návrh, kde jsou relace nahrazeny vazbami mezi jednotlivými dokumenty. 
 V návrhu se rovněž nacházejí vlastnosti s datovými typy označenými otazníkem na konci, což signalizuje možnost absence dané hodnoty.
@@ -225,9 +225,10 @@ V kontextu MongoDB a JavaScriptu to znamená, že hodnota může být buď expli
 
 Entity v databázovém schématu odpovídají těm v doménovém modelu, avšak jejich názvy, atributy a další části byly přeloženy do angličtiny pro snadnější implementaci. 
 Do návrhu byly doplněny další entity, dle provedeného návrhu aplikace, a také dekompozice vazeb typu \texttt{M:N}. 
-% Schéma je uvedeno v diagramu v obrázku \ref{fig:databazoveSchema}.
+% Schéma je uvedeno v diagramu v obrázku~\ref{fig:databazoveSchema}.
 
-Kompletní definice schématu jsou dostupné v kódové příloze ve složce \todo{složka}. 
+Kompletní definice realizovaných schémat jsou dostupné v kódové příloze ve složce \verb|/platform/server/| a jednotlivých modulech.
+Jednotlivé entity jsou vždy označeny příponou \verb|.schema.ts|.
 Každá entita obsahuje validaci, která definuje platné hodnoty, povinné atributy, unikátnost či požadovanou délku.
 
 % \begin{figure}[ht!]
@@ -265,7 +266,7 @@ Pro odlišení mezi konkurencí je skoro nezbytné si vytvořit vlastní systém
 To souvisí s designovou identitou a všechny pojmy se tímto propojují.
 
 Designové systémy často mají předpřipravené komponenty pro různá prostředí. 
-Například Material Design je implementován pro framework Vue (který jsem vybral v kapitole \ref{text:navrh/klient}) v různých knihovnách, mezi nejznámější patří například Vuetify či Quasar.
+Například Material Design je implementován pro framework Vue (který jsem vybral v sekci~\ref{text:navrh/klient}) v různých knihovnách, mezi nejznámější patří například Vuetify či Quasar.
 
 Výsledná aplikace je sice nástroj, ale reálně by měla být použita a být něco nového. 
 Chtěl bych, aby aplikaci ihned kdokoliv poznal. 
@@ -334,14 +335,14 @@ Oproti detailnějším prototypům či mockupům se u nich klade důraz předev�
 
 Vytváření návrhů pro tuto aplikaci probíhalo v nástroji Figma. 
 
-Během práce jsem se inspiroval zejména svými již dříve vytvořenými uživatelskými prostředími a obecně z nástrojů, které jsem analyzoval v kapitolách \ref{text:analyza/prezentace}, \ref{text:analyza/grafika} a \ref{text:analyza/materialy}.
+Během práce jsem se inspiroval zejména svými již dříve vytvořenými uživatelskými prostředími a obecně z nástrojů, které jsem analyzoval v sekcích~\ref{text:analyza/prezentace},~\ref{text:analyza/grafika} a~\ref{text:analyza/materialy}.
 
 Během práce bylo možné ihned provádět úpravy na základě zpětné vazby od uživatelů a lépe tak vyladit přehlednost nebo ergonomii rozložení. 
-Více o testování a zpětné vazbě při tvorbě aplikace je k dispozici v kapitole \ref{text:testovani}.
+Více o testování a zpětné vazbě při tvorbě aplikace je k dispozici v kapitole~\ref{text:testovani}.
 Každá z vytvořených obrazovek proto odráží aktuální požadavky na funkčnost i strukturu aplikace.
 
 
-Celkem vzniklo 22 návrhových obrazovek, jejichž ukázky jsou uvedeny v obrázcích \ref{fig:navrhovaObrazovkaRozsireni} a \ref{fig:navrhovaObrazovkaEmailAKod}, zatímco úplný přehled všech návrhů lze nalézt v příloze \ref{appendix:navrhoveObrazovky}.
+Celkem vzniklo 22 návrhových obrazovek, jejichž ukázky jsou uvedeny v obrázcích~\ref{fig:navrhovaObrazovkaRozsireni} a~\ref{fig:navrhovaObrazovkaEmailAKod}, zatímco úplný přehled všech návrhů lze nalézt v příloze~\ref{appendix:navrhoveObrazovky}.
 Mezi ně patří:
 
 \begin{itemize}
@@ -402,7 +403,7 @@ Hlavní funkce editoru zahrnují:
 \begin{description}
     \item[Práce s plátnem] Což dovoluje nastavovat velikost plátna, se kterým bude uživatel pracovat, dovoluje přibližovat a hýbat s ním.
     \item[Práce s bloky] Dovoluje již zmíněné transformace, změny vlastností, interakce a dalšího.
-    \item[Správa pluginů] Která dovolí upravovat nainstalované a aktivní pluginy, jejich aktualizace a používání. Každý plugin v editoru bude mít své připravené místo na jeho ovládání, viz kapitola \ref{text:navrh/plugins}.
+    \item[Správa pluginů] Která dovolí upravovat nainstalované a aktivní pluginy, jejich aktualizace a používání. Každý plugin v editoru bude mít své připravené místo na jeho ovládání, viz sekce~\ref{text:navrh/plugins}.
     \item[Vkládání obsahu] Umožňuje vkládat obsah z veřejných knihoven (fotobanky a další), ale taktéž z uživatelských zdrojů, do kterých si uživatel může nahrát vlastní obsah.
     \item[Nastavení] Dovolí nastavit viditelnost materiálů, způsob jeho průchodu a další.
     \item[Export] Dovolí uložit si kopie materiálu v různých formátech.
@@ -448,55 +449,11 @@ Interakce se mohou spustit za nastavených určitých podmínek, jako je napří
 Interakce jsou plně přizpůsobitelné a uživatelé mohou nastavit parametry, které určují jejich chování.
 Lze taktéž nastavit animaci mezi jednotlivými stavy interakce.
 
-
-% - blok
-%     - nejmensi jednotka v materialu
-%     - muze byt cokoliv
-%     - ze zakladu navrhuji vytvorit zakladni bloky jako:
-%         - textové (práce s textem, velikosti, formatovani, barvy, fonty, ...) s pokrocilym editorem
-%         - obrazek a dalsi multimedia
-%         - tvary
-%         - HTML
-%     - bloky lze radit mezi sebou, upravovat, transformovat
-%     - bloky maji vlastnosti, ktere ovlivnuji jak se chovani a vypadaji, kazdy blok muze mit jake chce
-%     - ruzne stavy ve kterych jsou, *hinty* pro editor
-    
-% - editor - kde se edituji materialy
-%     - instalují se pluginy (viz kapitola \ref{text:navrh/plugins})
-%     - pohyb a celková transformace bloků
-%     - pohyb a práce s plátnem
-%     - vkládání dalšího obsahu a multimédií
-%         - verejne banky
-%         - vlastni nahravani obsahu
-
-% - prehravace - kde se prehrava
-%     - interakce s prvky
-%     - dovoluje kresleni
-%     - presouvani mezi snímky 
-%     - pouzivaji se pluginy
-%     - moznost ruzne nastavovat prochazeni
-
-% - interakce
-%     - kazdemu bloku muze byt nastavena interakce
-%     - jedna se napriklad o:
-%         - casove udalosti
-%         - kliknuti
-%         - najeti mysi
-%         - a další
-%     - na tyto udalosti blok muze reagovat:
-%         - upravou sebe ci jinych bloku
-%         - resetovanim bloku
-%         - zmenu snimku
-%         - zmeny hodnoty
-%         - a další
-%     - omezeni a nastaveni vsech hodnot, napriklad kdy se tato interakce muze vubec spustit
-%     - animace pomoci interpolace hodnot
-
 \subsection{Architektura jádra}
 
 Návrh tříd editoru a přehrávače tvoří základ celého systému. 
 Promyšlená struktura těchto komponent je klíčová pro budoucí rozšiřování a udržovatelnost projektu.
-Obrázek \ref{fig:kodovyNavrhEditoruAPrehravace} ukazuje navržené jádro systému v hiearchii tříd.
+Obrázek~\ref{fig:kodovyNavrhEditoruAPrehravace} ukazuje navržené jádro systému v hiearchii tříd.
 
 Centrálním bodem architektury je třída \texttt{Editor}, která spravuje bloky typu \texttt{EditorBlock}. 
 Tyto bloky pak mají jejich pozici, velikost a další vlastnosti jako neprůhlednost, uzamčení nebo například rotaci. 
@@ -530,21 +487,11 @@ Například závislosti mezi \texttt{BlockRegistry}, \texttt{Editor} a \texttt{P
     \label{fig:kodovyNavrhEditoruAPrehravace}
 \end{figure}
 
-% - promyslet to, jak budou vypadat třídy editoru je dle mého zásadní pro rozšiřitelný projekt.
-% - dle diagramu \ref{fig:kodovyNavrhEditoruAPrehravace}
-% - v diagramu chybi dědičnost a ukázkové bloky, nejspise bude vyresena lepe zavislost jednotlivych trid
-% - navrhnul jsem klicove tridy, zejmena editor, player, a system serializace
-% - serializace: kazdy blok se umi serializovat do nejakeho formatu, nejspise JSON
-% - existuje blockregistry, ktery obsahuje playerblock, editorblock a deserializer, ktery umi z dat serializovanych udelat player či editor blok konkretni instance
-% - editor selector predstavuje "modifikaci editoru", kterych bude nejspise vice (aktualne navrzen napriklad clipboard ci kontextove menu), ktere slouzi k rozdeleni komplexnich featur do mensich oddelenych instanci
-% - 
-
-
 \section{Návrh komunitního rozšíření}\label{text:navrh/plugins}
 
 Navrhovaná platforma bude podporovat komunitní rozšíření, což umožní uživatelům přizpůsobit si prostředí dle vlastních potřeb a vytvářet nové funkce nad základním jádrem aplikace.
 Klíčovými aspekty tohoto rozšíření je jazyková kompatibilita, bezpečnost, registrace API a způsob distribuce pluginů.
-Základní analýzou tohoto byla kapitola \ref{text:community_plugins}.
+Základní analýzou tohoto byla sekce~\ref{text:community_plugins}.
 
 Jako hlavní programovací jazyk pro komunitní rozšíření byl zvolen JavaScript.
 Tento jazyk byl vybrán pro svou jednoduchost, širokou adopci a kompatibilitu s webovým prostředím.
@@ -589,43 +536,6 @@ Dokumentace bude pokrývat jak základy tvorby pluginů, tak možnosti rozšíř
 Důraz bude kladen na snadnost implementace a přístupnost pro širší komunitu vývojářů.
 Nejvíce klíčové bude, aby pluginy měly jasně vytvořený systém typování, který dovolí kontrolu pluginu před během a pomocí IDE dovolí uživatelům prozkoumávat celé API.
 
-% - základní analýza dle kapitoly \ref{text:community_plugins}
-%     - jazykem bude JS, vzhledem k jednoduchosti a typingu
-%     - spousteni pomoci quickjs, bezi u klienta
-%     - vytvoreni API ktere bude dovolovat komunikovat s editorem/prehravacem
-%     - nevyuzuji abstrakci nad api, protoze by to zpusobilo velmi velke zkompilovani tvorby
-%     - pluginy na serveru, moznost pouzivani
-
-% - pluginy se skladaji z:
-%     - manifestu (nastaveni, verze)
-%     - plugin kodu
-%     - editor kodu
-%     - v db dale ulozene info o: jmeno, description, autor
-    
-% - system releases
-%     - novy kod, manifest
-%     - stare verze pluginu (pro aktualni manifest verzi editoru) funguji
-%     - stare verze nelze instalovat - uzivatel je musi aktualizovat
-%     - dve verze nelze mit najednou
-    
-% - vytvoreni features, ruzne registrace API pro bloky
-%     - komunikace podle daneho zamereni
-%     - editor - velikost, bloky, vytvreni, jejich uprava
-%     - prehravac - velikost, ovladani pozice slidu
-%     - registrace panelu
-%     - bloky primo pro pluginy, pomoci iframes, panely taktez
-    
-% - nutne myslet na bezpecnost
-%     - spravne pouzivani quickjs
-%     - komunikace stroha, dumpovani a validovani vsech hodnot
-%     - logováni chyb a toho, co jaky plugin dela
-%     - napriklad omezeni funkcionalit, komu muze delat fetch pozadavky
-
-% - dalsi komunitni rozsireni:
-%     - programovani tak, aby byla aplikace jednodusi
-%     - vytvoreni dokumentace tvorby pluginu ale i rozsirovani samotneho kodu a moznosti
-%     - jednoduche moznsoti pridavani novych typu bloku
-
 \section{Autentizace a autorizace}\label{text:navrh/auth}
 
 Autentizace je proces ověřování identity uživatele, tedy zajištění, že se daná osoba skutečně nachází v systému. 
@@ -658,25 +568,4 @@ Podobně jsou některé části systému, například rozšíření (pluginy), s
 
 V současné fázi vývoje platforma neobsahuje roli administrátora, což znamená, že neexistuje centrální správa uživatelů či jejich oprávnění. 
 Toto rozhodnutí bylo učiněno s ohledem na jednoduchost návrhu, avšak do budoucna je možné uvažovat o zavedení administrativních funkcí pro efektivnější moderaci obsahu.
-Dále se o administračním prostředí budu bavit v kapitole \ref{text:diskuze}.
-
-
-% - definice autentizace a autorizace
-% - autentizace:
-%     - system v budoucnu by mel podporovat radu prihlaseni, napriklad i treti strany a tj. i oauth
-%     - pro tuto praci pouze:
-%         - email \& heslo
-%         - email a potvrzeni z emailu
-%     - po prihlaseni se vygeneruje token JWT
-%     - tento token je podepsan na urcitou dobu, obsahuje zakladni informace o prihlasenem
-%     - token pouziva pri komunikaci v hlavicce Authentication s typem `Bearer`
-%     - klient uklada token u sebe v ulozisti, napriklad cookies ci local storage
-
-% - autorizace
-%     - vzhledem k navrhu nic sloziteho
-%     - aplikace obsahuje radu veci, ke kterym ma prava k uprave jen majitel, to je nutne validovat
-%     - nektere casti mohou mit nastavenou viditelnost pro ostatni - ze mohou pristupovat (videt) danou vec
-%         - napriklad material muze mit nastavenou viditelnost public, tj vsichni budou moci tento material zobrazit. 
-%         - pluginy jsou viditelne vsem
-%     - administrace prozatim neni potreb, tj neexistuje nikdo s pristupem administratora
-    
+Dále se o administračním prostředí budu bavit v kapitole~\ref{text:diskuze}.

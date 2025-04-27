@@ -55,6 +55,9 @@ const changeLanguage = (code: string) => {
         params: {
             ...route.params ?? {},
             lang: code
+        },
+        query: {
+            ...route.query ?? {}
         }
     });
 

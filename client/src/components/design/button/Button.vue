@@ -1,5 +1,5 @@
 <template>
-    <router-link v-if="to" :aria-label="label" :class="classes" :to="to">
+    <router-link v-if="to" :aria-label="ariaLabel" :class="classes" :to="to">
         <p>
             <slot></slot>
         </p>
@@ -10,7 +10,7 @@
         }"></span>
     </router-link>
 
-    <a v-else-if="href" :aria-label="label" :class="classes" :href="href" rel="noopener noreferrer" target="_blank">
+    <a v-else-if="href" :aria-label="ariaLabel" :class="classes" :href="href" rel="noopener noreferrer" target="_blank">
         <p>
             <slot></slot>
         </p>
@@ -21,7 +21,7 @@
         }"></span>
     </a>
 
-    <button v-else :aria-label="label" :class="classes" @click="onClick">
+    <button v-else :aria-label="ariaLabel" :class="classes" @click="onClick">
         <p>
             <slot></slot>
         </p>
@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, ref, useSlots, watch} from "vue";
+import {computed, getCurrentInstance, onBeforeMount, onMounted, onUpdated, ref, useSlots, watch} from "vue";
 import {useRoute} from "vue-router";
 
 const props = defineProps({
@@ -93,7 +93,29 @@ const props = defineProps({
     dense: {
         type: Boolean,
         default: false,
-    },
+    }
+});
+const textAfterTranslation = ref(undefined as string | undefined);
+
+const instance = getCurrentInstance()!;
+const updateText = () => {
+    textAfterTranslation.value = instance.vnode.el?.textContent ?? ($slots.default?.()[0]?.children as any)?.map((a: any) => a.el?.textContent??"").join(" ").trim();
+};
+
+onUpdated(() => {
+    updateText();
+});
+
+onMounted(() => {
+    updateText();
+
+    setTimeout(() => {
+        updateText();
+    }, 1000);
+});
+
+const ariaLabel = computed(() => {
+    return props.label || textAfterTranslation.value || "Button";
 });
 
 const $route = useRoute();

@@ -40,7 +40,7 @@ export class EditorPluginCommunicator {
     }
 
     private getEditorPlugin(pluginId: string) {
-        const plugin = this.pluginManager.getPlugin(pluginId);
+        const plugin = toRaw(this.pluginManager).getPlugin(pluginId);
 
         if (!plugin) {
             console.error("[EditorPluginCommunicator] Plugin with ID " + pluginId + " not found.");
@@ -55,5 +55,15 @@ export class EditorPluginCommunicator {
         }
 
         return editorPlugin;
+    }
+
+    async createCustomBlock(pluginId: string, id: string): Promise<string> {
+        const editorPlugin = this.getEditorPlugin(pluginId);
+
+        if (!editorPlugin) {
+            return "";
+        }
+
+        return await editorPlugin.createCustomBlock(id);
     }
 }

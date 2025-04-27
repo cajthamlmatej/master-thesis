@@ -38,7 +38,7 @@
 
 <!--            <NavigationButton disabled-->
 <!--                              icon="border-radius"-->
-<!--                              label="Browse templates"-->
+<!--                              :label="Browse templates"-->
 <!--                              tooltip-text="Browse templates"-->
 <!--            ></NavigationButton>-->
 

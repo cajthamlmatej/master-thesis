@@ -7,6 +7,7 @@
                 <Dialog>
                     <template #activator="{toggle}">
                         <Button v-tooltip="$t('page.featured.remove.tooltip')"
+                                :label="$t('page.featured.remove.tooltip')"
                                 color="primary"
                                 @click="toggle"
                                 icon="minus"/>
@@ -34,6 +35,7 @@
                 <Dialog>
                     <template #activator="{toggle}">
                         <Button v-tooltip="$t('page.featured.new.tooltip')"
+                                :label="$t('page.featured.new.tooltip')"
                                 color="primary"
                                 @click="toggle"
                                 icon="plus"/>

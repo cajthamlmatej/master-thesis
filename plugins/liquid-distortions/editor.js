@@ -1,156 +1,105 @@
-export const onPanelMessage = (message) => {
-    const editor = api.editor;
-
-    let centerX = editor.getSize().width / 2;
-    let centerY = editor.getSize().height / 2;
-
-    centerX -= 100;
-    centerY -= 100;
-
-    editor.addBlock({
-        type: 'plugin',
-        position: {
-            x: centerX,
-            y: centerY
-        },
-        size: {
-            width: 200,
-            height: 200
-        },
-        rotation: 0,
-        zIndex: 1000,
-        opacity: 1,
-        data: {
-        },
-        properties: [
-            {
-                key: 'timeScale',
-                label: 'Time scale',
-                type: 'number'
-            },
-            {
-                key: 'patternAmp',
-                label: 'Pattern Amplitude',
-                type: 'number'
-            },
-            {
-                key: 'patternFreq',
-                label: 'Pattern Frequency',
-                type: 'number'
-            },
-            {
-                key: 'bloomStrength',
-                label: 'Bloom Strength',
-                type: 'number'
-            },
-            {
-                key: 'saturation',
-                label: 'Saturation',
-                type: 'number'
-            },
-            {
-                key: 'grainAmount',
-                label: 'Grain Amount',
-                type: 'number'
-            },
-            {
-                key: 'colorTintR',
-                label: 'Color Tint (Red)',
-                type: 'number'
-            },
-            {
-                key: 'colorTintG',
-                label: 'Color Tint (Green)',
-                type: 'number'
-            },
-            {
-                key: 'colorTintB',
-                label: 'Color Tint (Blue)',
-                type: 'number'
-            },
-            {
-                key: 'minCircleSize',
-                label: 'Minimum Circle Size',
-                type: 'number'
-            },
-            {
-                key: 'circleStrength',
-                label: 'Circle Strength',
-                type: 'number'
-            },
-            {
-                key: 'distortX',
-                label: 'Distortion X',
-                type: 'number'
-            },
-            {
-                key: 'distortY',
-                label: 'Distortion Y',
-                type: 'number'
-            }
-        ]
-        
-    });
-};
-
-
 export const initEditor = function () {
-    api.editor.on("panelMessage", onPanelMessage);
+    api.editor.registerCustomBlock({
+        icon: "waves",
+        id: "liquid",
+        name: "Liquid Distortions",
+    });
+    api.editor.on("createCustomBlock", () => {
+        const editor = api.editor;
+
+        let centerX = editor.getSize().width / 2;
+        let centerY = editor.getSize().height / 2;
+    
+        centerX -= 100;
+        centerY -= 100;
+    
+        return editor.addBlock({
+            type: 'plugin',
+            position: {
+                x: centerX,
+                y: centerY
+            },
+            size: {
+                width: 200,
+                height: 200
+            },
+            rotation: 0,
+            zIndex: 1000,
+            opacity: 1,
+            data: {
+            },
+            properties: [
+                {
+                    key: 'timeScale',
+                    label: 'Time scale',
+                    type: 'number'
+                },
+                {
+                    key: 'patternAmp',
+                    label: 'Pattern Amplitude',
+                    type: 'number'
+                },
+                {
+                    key: 'patternFreq',
+                    label: 'Pattern Frequency',
+                    type: 'number'
+                },
+                {
+                    key: 'bloomStrength',
+                    label: 'Bloom Strength',
+                    type: 'number'
+                },
+                {
+                    key: 'saturation',
+                    label: 'Saturation',
+                    type: 'number'
+                },
+                {
+                    key: 'grainAmount',
+                    label: 'Grain Amount',
+                    type: 'number'
+                },
+                {
+                    key: 'colorTintR',
+                    label: 'Color Tint (Red)',
+                    type: 'number'
+                },
+                {
+                    key: 'colorTintG',
+                    label: 'Color Tint (Green)',
+                    type: 'number'
+                },
+                {
+                    key: 'colorTintB',
+                    label: 'Color Tint (Blue)',
+                    type: 'number'
+                },
+                {
+                    key: 'minCircleSize',
+                    label: 'Minimum Circle Size',
+                    type: 'number'
+                },
+                {
+                    key: 'circleStrength',
+                    label: 'Circle Strength',
+                    type: 'number'
+                },
+                {
+                    key: 'distortX',
+                    label: 'Distortion X',
+                    type: 'number'
+                },
+                {
+                    key: 'distortY',
+                    label: 'Distortion Y',
+                    type: 'number'
+                }
+            ]
+            
+        });
+    });
     api.editor.on("pluginBlockPropertyChange", (block) => {
         block.sendMessage(JSON.stringify(block.data));
-    });
-    api.editor.on("panelRegister", () => {
-        return `
-    <style>
-        section {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 10px;
-        }
-    
-        section button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding: 10px;
-            border: none;
-            background-color:rgba(236, 236, 239, 0.86);
-            backdrop-filter: blur(18px);
-            cursor: pointer;
-            color: #333;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            font-size: 20px;
-            transition: background-color 0.3s ease;
-            text-align: center;
-            border-radius: 1em;
-        }
-    
-        section button:hover {
-            background-color: rgba(227, 227, 240, 0.86);
-        }
-
-        #value {
-            font-weight: bold;
-            font-size: 20px;
-            text-align: center;
-        }
-    </style>
-    
-    <section>
-        <button>
-            Add Liquid Distortions
-        </button>
-    </section>
-    
-    
-    <script>
-    document.querySelector("button").addEventListener("click", () => {
-        window.parent.postMessage({target: "script", message: "add"}, "*");
-    });
-    </script>
-    `;
     });
     api.editor.on("pluginBlockRender", function (block) {
         return `<style>

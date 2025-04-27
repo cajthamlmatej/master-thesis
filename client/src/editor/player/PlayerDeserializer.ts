@@ -4,10 +4,13 @@ import {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {BlockRegistry} from "@/editor/block/BlockRegistry";
 import {MaterialOptions} from "@/editor/MaterialOptions";
 import {SlideData} from "@/models/Material";
+import { usePluginStore } from "@/stores/plugin";
+import { PluginManager } from "../plugin/PluginManager";
+import { toRaw } from "vue";
 
 export class PlayerDeserializer {
 
-    deserialize(data: SlideData, element: HTMLElement, communicator: PlayerPluginCommunicator, rendering: boolean = false): Player {
+    async deserialize(data: SlideData, element: HTMLElement, rendering: boolean = false) {
         const editorData = data.editor as MaterialOptions;
         const blocksData = data.blocks;
 
@@ -26,9 +29,14 @@ export class PlayerDeserializer {
             }
         }
 
-        const player = new Player(element, editorData, blocks);
+        const player = new Player(element, editorData);
+        
+        const pluginStore = usePluginStore();
+        await pluginStore.loadPlugins(undefined, player);
 
-        player.setPluginCommunicator(communicator);
+        player.addBlocks(blocks);
+
+        player.setPluginCommunicator(new PlayerPluginCommunicator(pluginStore.manager as PluginManager));    
 
         return player;
 

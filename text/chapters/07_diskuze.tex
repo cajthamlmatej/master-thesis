@@ -67,6 +67,10 @@ V této kapitole proto shrnuji vybrané směry dalšího vývoje, které by mohl
   Jediný rozumný způsob jak animovat jednotlivé části je pomocí interaktivity, a to velmi strohým způsobem.
   Pro lepší využívání platformy by bylo vhodné implementovat třeba animace skrz snímky a nebo například možnosti dělení animačních sekvencí uvnitř jednoho snímku.
   Do by dovolovalo pomocí tzv. fragmentů například postupně zobrazovat jednotlivé řádky či body v seznamech, což by vedlo k interaktivnějším materiálům.
+
+  \item[Generování náhledových obrázků] V sekci~\ref{text:testovani/vykon} jsem během výkonnostních testů zjistil, že hodně velké zpomalení aplikace je způsobeno tím, jak se generují náhledové obrázky jednotlivých snímků (a materiálu).
+  Změna způsobu (tedy toho, že se spouští virtuální prohlížeč, který stránku načítá), není možná kvůli komplexitě vykreslovaného obsahu a komunitních rozšíření.
+  Do budoucna by bylo vhodné tedy vytvořit separátní službu, která by se zejména soustředila na vykreslování snímku, a server by pouze tuto službu obeznámil s tím, že je vhodné překreslit náhledový obrázek.
 \end{description}
 
 Na projektu budu pracovat i nadále. 
@@ -74,47 +78,3 @@ V příštím školním roce plánuji platformu nasadit ve všech předmětech, 
 Zároveň se pokusím zapojit další vyučující a komunitu kolem školy do vývoje rozšíření i samotné platformy.
 Postupně chci vytvořit širokou sadu výukových materiálů a rozšíření, které budou sloužit jako inspirace i základ pro další tvůrce. 
 Cílem je, aby kdokoliv mohl snadno vytvořit takové materiály, jaké si vymyslí.
-
-
-% aplikace implementovana a otestovana dle navrhu a planů z analyzy
-% vyuzitelnost platformy, probrano v testovani jiz drive
-% obecne je potreba hodne na projektu dale pracovat
-% napriklad cilit na rozvoj komunitnich rozsireni
-% pro interaktivni prezentace je potreba vice interaktivity, prvků, wigetů
-% testovani uverilo ze aplikace je pouzitelna a ja ji budu pouzivat
-% prace je dokoncena, ale mohla by byt lepsi
-
-% nize sepisuji jednotlive veci, ktere by bylo dobre do prace zahrnout (nestihli se, nebo ve vetsine byly mimo ramec diplomove prace)
-
-% rozsireni a bezpecnost: pluginy existuji, jsem dost presvedceny ze jsou bezpecne, ale melo by se to vice otestovat, vice o tom premyslet, pripravit reakce na utoky
-
-% moderovani: chybi administrace, pluginy a ani obsah nejde moderovat, je potreba dovolit banovani uzivatelu, mazani verejnych (zvyranznenych) materialu, mazani rozsireni, ktere neco porusuji, tim by bylo potreba vyresit role (nejspise pomoci RBAC)
-
-% zlepseni kolaborace: kolaborace je dostatecna, ale pro lepsi experience by bylo nutne implementovat lepsi synchronizaci bloku, chatovani a treba historii materialu primo na serveru (tj. lze se vratit k verzi mesice stare napriklad)
-
-% vice obsahu a bloku: bloky jsou velmi strohe a bylo by dobre implementovat vice typu a zlepsit pouzvani stavajich, treba moznosti do textu, ktery nedovoluje napriklad vysku radku a obecne se s nim blbe pracuje. Dobre by bylo pridat i moznost "tahani bloku" v prezentaci, napriklad na odkryvani, zobrazeni a podobne
-
-% offline mode: materialy by melo jit v nejakem zpusobu otevirat offline v aplikaci, napriklad vytvorit nativni aplikace ci PWA, a synchronizace by byla az by byl s internetem
-
-% moznosti importu a exportu: exportovat lze jen do JSON a PDF, bylo by lepsi mit dalsi alterantivy a obecne mit moznost z a do PPTX, coz nabizi konkurence, i kdyby to mely byt jen strohe verze dane prezentace.
-
-% poznamky pro prezentuijiciho: mod prezentujiciho vidi jen slidy a nejake bloky jinak, nez sledujici, ale bylo by vhodne vytvorit separatni okno jen na poznamky, ktere by si mohl prezentujici cist behem prezentace
-
-% lepsi sdileni: moznost sdileni za pomoci hesla, lepsi pristup k materialum (jen s kodem, nez url+kod)
-
-% lepsi sprava: uzivatel ma materaily, nelze je davat do slozek a stromove struktury, to by pomohlo s prehlednosti
-
-% nasazeni: aktualni nasazeni je velmi komorni, hodne male a neumim si predstavit ze by takto fungovalo obrovska sluzba. aplikace je ted spise delana na to, aby si ji mensi komunita lidi (skola) sama hostovala a pouzivala. do budoucna by bylo vhodne premyslet o tom, aby byla aplikace lepe skalovatelna a treba by lepe pracovala pri vice serverech ci databazich (databaze jsou vsak vyresene pomoci horizontalniho skalovani v MongoDB), server vsak neumi resit pristup napriklad sdileni materialu, kde by nebylo jasne kde je vlastne "spravce" daneho propojeni
-
-% ja na projektu budu dale pracovat a v dalsim skolnim roce hodlam platformu pouzivat ve vsech predmetch, ktere na smichovske stredni prumyslove skole a gymnaziu budu ucit. dale se pokusim platformu sirit aby ji pouzivali dalsi vyucujici a lidi. cilem je vytvorit hodne obsahu, aby kdokoliv mohl vytvorit vetsinu veci, co si vymysli
-
-
-% 
-
-%     \item bezpecnost obecne, pluginy
-%     \item mozne zlepseni: offline mode, vice kolaborace (chat, lepsi synchronziace), lepsi bloky
-%     \item propagovani komunitnich rozsireni
-%     \item vice importu a exportu
-%     \item historie ukladana na serveru
-%     \item poznamky pro prezentujiciho
-% \end{itemize}

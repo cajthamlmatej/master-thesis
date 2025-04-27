@@ -4,6 +4,9 @@ import {PluginEditorPanel} from "@/editor/plugin/PluginEditorPanel";
 import Event from "@/utils/Event";
 import {PluginCache} from "@/editor/plugin/PluginCache";
 import Player from "@/editor/player/Player";
+import { toRaw } from "vue";
+import Plugin from "@/models/Plugin";
+import { PluginCustomBlock } from "./PluginCustomBlock";
 
 export class PluginManager {
     public static readonly CURRENT_MANIFEST_VERSION = 1;
@@ -40,8 +43,13 @@ export class PluginManager {
         return this.plugins;
     }
 
+    public debugPlugin: Plugin | undefined = undefined;
+    public setDebugPlugin(plugin: Plugin) {
+        this.debugPlugin = plugin;
+    }
+
     public async getEditorPanels() {
-        const plugins = this.plugins.filter(plugin => plugin.getEditorPlugin());
+        const plugins = toRaw(this.getPlugins()).filter(plugin => plugin.getEditorPlugin());
 
         let panels: PluginEditorPanel[] = [];
 
@@ -77,7 +85,7 @@ export class PluginManager {
     }
 
     getPlugin(pluginId: string) {
-        return this.plugins.find(p => p.getId() === pluginId);
+        return this.getPlugins().find(p => p.getId() === pluginId);
     }
 
     getDisabledPlugins() {
@@ -87,9 +95,25 @@ export class PluginManager {
     clear(cache: boolean = false) {
         this.plugins = [];
         this.disabledPlugins = [];
+        this.customBlocks = [];
 
         if(cache) {
             this.cache.clear();
         }
+    }
+
+    public customBlocks: PluginCustomBlock[] = [];
+    public registerCustomBlock(data: PluginCustomBlock) {
+        if (this.customBlocks.find(b => b.pluginId === data.pluginId && b.id === data.id)) {
+            console.warn(`[PluginManager] Custom block ${data.id} already registered for plugin ${data.pluginId}, skipping`);
+            return;
+        }
+
+        this.customBlocks.push(data);
+        console.log(`[PluginManager] Registered custom block ${data.id} for plugin ${data.pluginId}`);
+    }
+
+    public getCustomBlocks(){
+        return this.customBlocks;
     }
 }

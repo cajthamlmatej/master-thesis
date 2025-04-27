@@ -30,7 +30,7 @@ import {UsersService} from "../users/users.service";
 import {HydratedDocument} from "mongoose";
 import {User} from "../users/user.schema";
 import FeaturedMaterialsSuccessDTO from "../../dto/material/FeaturedMaterialsSuccessDTO";
-import { normalizeString } from 'src/utils/normalize';
+import { normalizeString } from '../utils/normalize';
 
 @Controller('')
 export class MaterialsController {

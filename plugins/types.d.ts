@@ -342,10 +342,26 @@ interface ApiEditor {
      */
     on(eventName: 'pluginBlockPropertyChange', callback: (block: EditorBlockBaseData & EditorBlockBaseActions & PluginEditorBlock & PluginEditorBlockActions, property: string) => void): void;
     /**
+     * Calls the callback when the user clicked on this plugin registered custom block in block's menu.
+     * 
+     * **Calling this function multiple times will overwrite the previous callback.**
+     * @param eventName 'createCustomBlock'
+     * @param callback The returned string should be the id of the new created block. Recieved is the id of the registered custom block.
+     */
+    on(eventName: 'createCustomBlock', callback: (id: string) => string): void;
+    
+    /**
      * Sends a message to this plugin's panel. The message will be received by the window's `message` event.
      * @param message The message to send to the panel.
      */
     sendPanelMessage(message: string): void;
+
+    /**
+     * Registers a custom block in the editor. The block will be available in the block's menu.
+     * The block will be created when the user clicks on it in the menu by calling the `createCustomBlock` event.
+     * @param data The data of the custom block. The icon has to be valid MDI icon name.
+     */
+    registerCustomBlock(data: { id: string, name: string, icon: string }): void;
 }
 
 // Currently the types are exactly the same as for the editor, but they might differ in the future

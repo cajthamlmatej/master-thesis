@@ -8,6 +8,7 @@
                 <Dialog>
                     <template #activator="{toggle}">
                         <Button v-tooltip="$t('page.plugins.new.tooltip')"
+                                :label="$t('page.plugins.new.tooltip')"
                                 color="primary"
                                 @click="toggle"
                                 icon="plus" />

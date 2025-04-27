@@ -104,11 +104,14 @@
     </router-view>
 
     <MediaHandler />
+
+    <CommunicatorObserver type="editor" />
 </template>
 
 <script lang="ts" setup>
 import {onMounted, onUnmounted, reactive, ref, toRaw, watch} from "vue";
 import Slides from "@/components/editor/panels/Slides.vue";
+import CommunicatorObserver from "@/components/CommunicatorObserver.vue";
 import Blocks from "@/components/editor/panels/Blocks.vue";
 import {useEditorStore} from "@/stores/editor";
 import {EditorMode} from "@/editor/EditorMode";
@@ -218,11 +221,11 @@ const router = useRouter();
 
 const playerStore = usePlayerStore();
 onMounted(async () => {
-    if(playerStore.getPlayer()) {
-        // Reload the page
-        window.location.reload();
-        return;
-    }
+    // if(playerStore.getPlayer()) {
+    //     // Reload the page
+    //     window.location.reload();
+    //     return;
+    // }
     window.addEventListener("click", handleClick);
 
     await materialStore.load();

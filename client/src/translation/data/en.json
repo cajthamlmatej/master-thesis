@@ -380,7 +380,8 @@
             },
             "watch-link": {
                 "title": "Share Watch Link",
-                "description": "Share this link with others so they can join now and watch your progress through the material. This link is valid only for the current session and will no longer work once you leave the material."
+                "description": "Share this link with others so they can join now and watch your progress through the material. This link is valid only for the current session and will no longer work once you leave the material.",
+                "button": "Enable watching"
             },
             "watch": {
                 "failed": {
@@ -408,6 +409,10 @@
                 "title": "Material is Not Public",
                 "description": "This material is not public and therefore cannot be shared with anyone except the authors. If you want it to be public, go to the editor and change the visibility settings."
             }
+        },
+        "disconnected": {
+            "title": "You have been disconnected",
+            "help": "You have been disconnected from the Materalist servers. Please check your internet connection and try again. If the problem persists, try refreshing the page or logging out and logging back in."
         }
     },
     "editor": {
@@ -697,11 +702,18 @@
                     "cancel": "Cancel",
                     "confirm": "Activate"
                 }
+            },
+            "blocks": {
+                "title": "Blocks from plugins"
             }
         },
         "attendees": {
             "title": "Attendees",
             "current": "You"
+        },
+        "disconnected": {
+            "title": "You have been disconnected",
+            "help": "You have been disconnected from the Materalist servers. Please check your internet connection and try again. If the problem persists, try refreshing the page or logging out and logging back in."
         }
     },
     "blocks": {

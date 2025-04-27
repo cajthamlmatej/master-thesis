@@ -47,9 +47,9 @@ const classes = computed(() => ({
         background-color: var(--color-card-dialog-background);
         width: 600px;
 
-        @media (max-width: 768px) {
-            width: 95%;
-        }
+        // @media (max-width: 768px) {
+        //     width: 95%;
+        // }
     }
 
     &.card--fluid {
