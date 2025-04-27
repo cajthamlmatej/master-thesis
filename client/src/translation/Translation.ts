@@ -4,6 +4,7 @@ import Event from "@/utils/Event";
 
 import en from "@/translation/data/en.json";
 import cs from "@/translation/data/cs.json";
+import {sanitizeAttribute} from "@/utils/Sanitize";
 
 export class Translation {
     public LANGUAGE_CHANGED: Event<string> = new Event();
@@ -59,6 +60,8 @@ export class Translation {
                 if (typeof value === 'function') {
                     value = value();
                 }
+
+                value = sanitizeAttribute(value);
 
                 text = text.replace(new RegExp(key, 'gm'), value);
             }
