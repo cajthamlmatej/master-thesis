@@ -234,6 +234,7 @@
                                             <Button
                                                 icon="delete-outline"
                                                 v-tooltip="$t('editor.sharing.attendees.remove')"
+                                                :label="$t('editor.sharing.attendees.remove')"
                                                 @click="removeAttendee(attendee)"
                                             />
                                         </div>

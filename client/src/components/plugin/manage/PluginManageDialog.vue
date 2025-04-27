@@ -40,6 +40,7 @@
                             <div class="actions">
                                 <Button
                                     v-tooltip="$t('editor.plugin.manage.deactivate')"
+                                    :label="$t('editor.plugin.manage.deactivate')"
                                     :loading="loading"
                                     icon="package-variant-closed-minus"
                                     @click="removePlugin(plugin.plugin as PluginContext)"
@@ -79,6 +80,7 @@
                             <div class="actions">
                                 <Button
                                     v-tooltip="$t('editor.plugin.manage.deactivate')"
+                                    :label="$t('editor.plugin.manage.deactivate')"
                                     :loading="loading"
                                     icon="package-variant-closed-minus"
                                     @click="removePlugin(plugin as PluginContext)"

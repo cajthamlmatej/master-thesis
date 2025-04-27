@@ -15,6 +15,7 @@
             icon="check"
             :disabled="hasLocalPlugin || files.length == 0"
             v-tooltip="hasLocalPlugin ? $t('player.debug.plugin.error.localPluginAlreadyExists') : (files.length == 0 ? $t('player.debug.plugin.error.missingFile') : '')"
+            :label="hasLocalPlugin ? $t('player.debug.plugin.error.localPluginAlreadyExists') : (files.length == 0 ? $t('player.debug.plugin.error.missingFile') : '')"
         >
             <span v-t>player.debug.plugin.import</span>
         </Button>

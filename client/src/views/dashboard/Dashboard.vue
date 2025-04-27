@@ -8,6 +8,7 @@
                     <Dialog>
                         <template #activator="{toggle}">
                             <Button v-tooltip="$t('page.dashboard.new.tooltip')"
+                                    :label="$t('page.dashboard.new.tooltip')"
                                     color="primary"
                                     data-cy="new-material"
                                     @click="toggle"
@@ -105,7 +106,9 @@
                             <div class="actions">
                                 <Dialog v-if="selected === 'OWN'">
                                     <template #activator="{toggle}">
-                                        <Button v-tooltip="$t('page.dashboard.materials.delete-tooltip')" :loading="processing"
+                                        <Button v-tooltip="$t('page.dashboard.materials.delete-tooltip')"
+                                                :label="$t('page.dashboard.materials.delete-tooltip')"
+                                                 :loading="processing"
                                                 color="transparent"
                                                 icon="mdi mdi-delete" @click.stop.capture="toggle"/>
                                     </template>
@@ -127,7 +130,10 @@
                                         </Card>
                                     </template>
                                 </Dialog >
-                                <Button v-tooltip="$t('page.dashboard.materials.copy-tooltip')" :loading="processing"
+                                <Button 
+                                        v-tooltip="$t('page.dashboard.materials.copy-tooltip')"
+                                        :label="$t('page.dashboard.materials.copy-tooltip')"
+                                        :loading="processing"
                                         color="transparent" icon="mdi mdi-content-copy"
                                         @click.stop.capture="copyMaterial(material.id)"/>
                             </div>

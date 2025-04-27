@@ -18,6 +18,7 @@
                     :key="block.id+block.pluginId"
                     :icon="block.icon"
                     v-tooltip="getPluginName(block.pluginId)"
+                    :label="getPluginName(block.pluginId)"
                     @mousedown="(e: MouseEvent) => addPlugin(e, block)">
                     <span>{{block.name}}</span>
                 </Button>
