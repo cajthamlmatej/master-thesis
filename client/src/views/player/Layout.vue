@@ -548,6 +548,8 @@ watch(() => playerStore.getPlayer(), async (value) => {
         player.value.changeMode(PlayerMode.MOVE);
     else
         player.value.changeMode(PlayerMode.PLAY);
+
+    drawing.value = false;
 });
 
 const material = computed(() => materialStore.currentMaterial!);
