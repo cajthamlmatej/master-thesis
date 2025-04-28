@@ -68,7 +68,7 @@ export class MaterialsExportService {
                 await page.goto(
                     `${url}/${material.id}?slide=${slideId}&rendering=true&cookies=true&token=${this.getToken()}`, {waitUntil: 'networkidle2'});
 
-                await page.waitForSelector(".editor-content", {timeout: 10000});
+                await page.waitForSelector(".editor-content", {timeout: 30000});
                 await page.waitForFunction(() => {
                     const element = document.querySelector("[data-cy=cookies]");
                     return !element;
