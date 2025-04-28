@@ -81,6 +81,7 @@ export const usePluginStore = defineStore("plugin", () => {
         }
     }
     const loadForUser = async () => {
+        await userStore.userLoaded;
         const user = userStore.user?.id;
 
         if (!user) {
