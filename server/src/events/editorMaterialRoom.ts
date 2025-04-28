@@ -19,6 +19,7 @@ export class EditorMaterialRoom {
         this.gateway = gateway;
         this.roomId = `editor-material-${material.id}`;
         this.attendees = [];
+        this.generateThumbnail();
     }
 
     public addListener(listener: Socket) {
