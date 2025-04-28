@@ -152,8 +152,16 @@ export class PlayerDraw {
     }
 
     private setupUsage() {
-        window.addEventListener("mousedown", this.mouseDownEvent.bind(this));
-        window.addEventListener("touchstart", this.mouseDownEvent.bind(this));
+        let mouseDown = this.mouseDownEvent.bind(this);
+        let touchStart = this.mouseDownEvent.bind(this);
+
+        window.addEventListener("mousedown", mouseDown);
+        window.addEventListener("touchstart", touchStart);
+
+        this.player.events.PLAYER_DESTROYED.on(() => {
+            window.removeEventListener("mousedown", mouseDown);
+            window.removeEventListener("touchstart", touchStart);
+        });
 
         const buttons = this.element.querySelectorAll(".player-draw-navigation-options button");
 

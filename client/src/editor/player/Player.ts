@@ -170,6 +170,7 @@ export default class Player {
         window.removeEventListener("mousedown", this.mouseDownEvent);
         window.removeEventListener("wheel", this.wheelEvent);
         window.removeEventListener("touchstart", this.touchEvent);
+        this.events.PLAYER_DESTROYED.emit();
     }
 
     public getMode() {
