@@ -1,0 +1,908 @@
+{
+    "web": {
+        "name": "Materalist"
+    },
+    "unit": {
+        "ms": "ms",
+        "s": "s"
+    },
+    "components": {
+        "pagination": {
+            "previous": "Previous",
+            "next": "Next"
+        },
+        "select": {
+            "search": "Search...",
+            "no-results": "No results found",
+            "hint": "Select an option"
+        },
+        "file-input": {
+            "choose": "Choose file",
+            "no-selected": "No file selected",
+            "selected": "File selected",
+            "and-more": "and %count% more"
+        }
+    },
+    "layout": {
+        "base": {
+            "logout": "Logout",
+            "dashboard": "Dashboard",
+            "featured": "Featured materials",
+            "settings": "Settings",
+            "plugins": "Plugins",
+            "info": {
+                "tooltip": "About the application",
+                "title": "About the Application",
+                "version": "Version",
+                "description": "Materalist is a modern platform for creating and sharing interactive educational materials. Below you’ll find the most important links and information about the application.",
+                "homepage": "Homepage",
+                "docs": "Documentation",
+                "terms-of-service": "Terms of Service",
+                "privacy-policy": "Privacy Policy"
+            }
+        },
+        "auth": {
+            "home": "Home"
+        }
+    },
+    "cookies": {
+        "title": "Information about local files and cookies",
+        "message": "When you visit this site, local files and cookies are stored for the purposes of the site. The files are necessary for the operation of the site. These include:",
+        "items": {
+            "login": "login tokens",
+            "logged": "information about the logged-in user",
+            "more": "and more"
+        },
+        "not-accept": "If you do not agree to the processing of cookies, please leave the site immediately.",
+        "accept": "I agree"
+    },
+    "page": {
+        "not-found": {
+            "title": "Not Found",
+            "message": "The page you are looking for does not exist. Please check the URL and try again.\nYou can also go back to the dashboard using the button below.",
+            "dashboard": "Go to dashboard"
+        },
+        "dashboard": {
+            "title": "Dashboard",
+            "title-welcome": "Welcome, %name%",
+            "search": "Search...",
+            "materials": {
+                "not-found-by-criteria": "No materials found with the given search criteria.",
+                "modified": "modified",
+                "created": "created",
+                "deletion": {
+                    "title": "Confirm deletion",
+                    "deletion": "Are you really sure you want to delete this material? This action cannot be undone.",
+                    "after": "After clicking button \"I am sure\" the material will be deleted, including all of its slides, filled forms and other data.",
+                    "sure": "I am sure",
+                    "cancel": "Cancel"
+                },
+                "delete-tooltip": "Delete material",
+                "copy-tooltip": "Copy material",
+                "own": "Created by me",
+                "shared": "Shared with me"
+            },
+            "new": {
+                "tooltip": "Create new material",
+                "import": {
+                    "tooltip": "Import material",
+                    "title": "Import material",
+                    "description": "Here you can import material from various file types. The application currently supports uploading a local backup (in JSON format) or a Markdown file created according to the guidelines.",
+                    "process": "Import file",
+                    "error": "The uploaded file does not match any supported format. Please check if you selected the correct file.",
+                    "json": {
+                        "error": "Invalid JSON file format. Please check if the file was created according to the guidelines."
+                    },
+                    "md": {
+                        "error": "Invalid Markdown file format. Please check if the file was created according to the guidelines."
+                    },
+                    "saving": {
+                        "error": "Problem while saving the material. Please try again later."
+                    }
+                },
+                "empty": "Empty material"
+            },
+            "new-material": "New material"
+        },
+        "authentication": {
+            "title": "Login",
+            "type": {
+                "email-password": "E-mail and password",
+                "email": "E-mail"
+            },
+            "about": [
+                "Materalist is a modern platform for creating and sharing interactive educational materials, suitable not only for schools but also for professional environments. It allows you to create presentations, scripts, posters, quizzes, and other creative teaching formats — all in one clear and accessible interface.",
+                "To fully use the application, you need to create an account. With registration, you’ll be able to manage your materials, create new ones, and engage with the authoring community.",
+                "If you’re here just as a presentation participant (for example, a student or attendee), simply scan the QR code or open the link shared by the presenter. No registration is required.",
+                "Want to learn more about the application? Visit our homepage to explore examples, features, and reasons why you’ll love Materalist."
+            ],
+            "homepage": "Homepage",
+            "fields": {
+                "email": {
+                    "required": "E-mail is required",
+                    "invalid": "E-mail has to be in the correct format",
+                    "label": "E-mail"
+                },
+                "password": {
+                    "invalid": "Password has to be at least 4 characters long",
+                    "label": "Password"
+                },
+                "code": {
+                    "invalid": "Code has to be 6 characters",
+                    "label": "Code"
+                }
+            },
+            "login": "Login",
+            "already-code": "I already have a code.",
+            "no-code": "I need a code.",
+            "create-account": "Create an account",
+            "fail": {
+                "failed": "Login failed. Make sure you entered correct account details.",
+                "wrong-email": "You entered wrong e-mail or there is already a request for login. Check your e-mail and try again.",
+                "wrong-code": "You entered wrong code. Check your e-mail and try again."
+            }
+        },
+        "register": {
+            "title": "Registration",
+            "fields": {
+                "name": {
+                    "required": "Name is required",
+                    "short": "Name has to be at least 4 characters long",
+                    "long": "Name has to be at most 255 characters long",
+                    "label": "Name you want us to call you"
+                },
+                "email": {
+                    "required": "E-mail is required",
+                    "invalid": "E-mail has to be in the correct format",
+                    "long": "E-mail has to be at most 255 characters long",
+                    "label": "E-mail"
+                },
+                "password": {
+                    "short": "Password has to be at least 8 characters long",
+                    "long": "Password has to be at most 255 characters long",
+                    "label": "Password"
+                },
+                "password-repeat": {
+                    "not-match": "Passwords do not match",
+                    "label": "Repeat password"
+                }
+            },
+            "register": "Register",
+            "after-register": "After registration, you will be asked to confirm your registration using the link in the entered e-mail.",
+            "by-registering": "By registering you agree to terms of use and privacy policy.",
+            "already-account": "Already have an account?",
+            "sign-in": "Sign in here.",
+            "success": {
+                "title": "Registration successful",
+                "message": "Registration was successful. Check your e-mail for a link to confirm your registration. Then you can log in.",
+                "sign-in": "Sign in"
+            },
+            "fail": {
+                "failed": "Registration failed. An account with this e-mail probably already exists. Try different e-mail."
+            },
+            "terms-of-service": "Terms of use",
+            "privacy-policy": "Privacy policy"
+        },
+        "activate": {
+            "title": "Account activation",
+            "activation": "Activation of your account",
+            "success": "Account has been successfully activated. Now you can log in.",
+            "loading": "Activating account, please wait...",
+            "fail": "Account activation failed. Please try again later.",
+            "sign-in": "Sign in"
+        },
+        "editor": {
+            "title": "Editor %name% material"
+        },
+        "player": {
+            "title": "Player %name% material"
+        },
+        "plugins": {
+            "title": "Plugins",
+            "search": "Search plugins...",
+            "new": {
+                "tooltip": "New plugin"
+            },
+            "not-found-by-criteria": "No plugins found with the given search criteria.",
+            "list-releases": "List of versions",
+            "remove": "Remove plugin",
+            "active": "Active version",
+            "edit": "Edit plugin",
+            "last-version": "Last version: %lastVersion%",
+            "no-releases": "No plugin versions found.",
+            "new-plugin": {
+                "title": "Create Plugin",
+                "name": {
+                    "label": "Plugin Name",
+                    "error": "Plugin name must be filled in and have to be shorter than 255 characters."
+                },
+                "icon": {
+                    "label": "Plugin Icon"
+                },
+                "description": {
+                    "label": "Plugin Description",
+                    "error": "Plugin description must be filled in and have to be shorter than 255 characters."
+                },
+                "tags": {
+                    "label": "Plugin Tags"
+                },
+                "submit": "Create Plugin"
+            },
+            "edit-plugin": {
+                "title": "Edit Plugin",
+                "name": {
+                    "label": "Plugin Name",
+                    "error": "Plugin name must be filled in."
+                },
+                "icon": {
+                    "label": "Plugin Icon"
+                },
+                "description": {
+                    "label": "Plugin Description",
+                    "error": "Plugin description must be filled in."
+                },
+                "tags": {
+                    "label": "Plugin Tags"
+                },
+                "submit": "Update Plugin"
+            },
+            "new-release": {
+                "title": "Create New",
+                "help": "In the following sections in the top navigation, fill in all the required information about the new plugin version. Once you are finished, click the 'Create New Version' button on the Overview and Submission page. Some errors in the form may only appear in the final step. For more information, visit the documentation.",
+                "info": {
+                    "version": {
+                        "label": "Version code",
+                        "error": "The code must be filled in and have to be shorter than 255 characters."
+                    },
+                    "manifest": {
+                        "label": "Manifest",
+                        "error": "The manifest must be valid JSON.",
+                        "length": "The manifest has to be shorter than 32768 characters.",
+                        "required": "Manifest is required.",
+                        "number": "Manifest version must be filled in and must be a number.",
+                        "allowedOrigins": "Allowed domains must be an array containing only URL strings (only protocol and domain, without path)."
+                    },
+                    "changelog": {
+                        "label": "Changes",
+                        "error": "Changes must be filled in and have to be shorter than 32768 characters."
+                    },
+                    "editor": {
+                        "label": "Editor code",
+                        "error": "Editor code have to be shorter than 131072 characters."
+                    },
+                    "player": {
+                        "label": "Player code",
+                        "error": "Player code have to be shorter than 131072 characters."
+                    }
+                },
+                "summary": {
+                    "help": "Submitting a new plugin version will immediately create a new version. This version will be recommended to all users of this plugin. Versions can only be deleted by contacting the support team. To submit, at least one code (editor or player) must be filled in.",
+                    "button": "Create New Version"
+                }
+            },
+            "release": {
+                "date": "Release date",
+                "manifest": "Manifest",
+                "info": {
+                    "base": "Basic Information",
+                    "changelog": "Changes",
+                    "editor": "Editor Code",
+                    "player": "Player Code",
+                    "summary": "Overview and Submission",
+                    "no-code": "No code uploaded."
+                }
+            }
+        },
+        "user-settings": {
+            "user": {
+                "title": "Account Settings",
+                "new-password": "New Password",
+                "name": "New Name",
+                "current": "Current Password",
+                "change": "Change Details",
+                "error": "Failed to change the details. Please check if you entered the correct password."
+            },
+            "export": {
+                "title": "Export Personal Data",
+                "exported": "Personal data has been exported. You can download it below until %date%. After that, the data will be deleted.",
+                "download": "Download",
+                "process": "Request Export",
+                "recent": "The request has been recorded and the data is currently being exported. Once the data is ready, you will receive an email and will be able to download it here.",
+                "description": "Here you can export the personal data we have about you. This data includes all your materials, plugins, and other information we have collected during your use of the application. The exported data will be in JSON format and will contain all the personal data we have about you."
+            }
+        },
+        "featured": {
+            "title": "Featured Materials",
+            "empty": "No featured materials have been added yet.",
+            "new": {
+                "tooltip": "Add featured material",
+                "title": "Add Featured Material",
+                "description": "Here you can mark one of your materials as featured. Featured materials will be shown on the homepage and will be accessible to all users. Only materials marked as public will be visible to others. Please use this feature responsibly and only share materials you truly want to make public.",
+                "add": "Add"
+            },
+            "remove": {
+                "tooltip": "Remove featured material",
+                "title": "Remove Featured Material",
+                "description": "Removing a featured material will hide it from the homepage and make it unavailable to other users. However, the material will still be accessible to people who already have the link and if it is marked as public. Removal may take several hours to take effect.",
+                "remove": "Remove"
+            }
+        }
+    },
+    "player": {
+        "debug": {
+            "title": "Debug",
+            "variables": {
+                "title": "Material variables",
+                "not-found": "No variables found in this material."
+            },
+            "plugin": {
+                "title": "Plugins",
+                "addLocal": "Add local plugin",
+                "import": "Import plugin",
+                "error": {
+                    "localPluginAlreadyExists": "Local plugin already exists. Reload the page to delete it.",
+                    "missingFile": "Missing file.",
+                    "noManifest": "Missing manifest.json file in the ZIP archive.",
+                    "noCode": "The plugin must have at least one code file (editor.js or player.js).",
+                    "readingFile": "Failed to read the file.",
+                    "zipError": "Error while extracting the ZIP archive."
+                }
+            }
+        },
+        "timer": "%start% (time on slide: %slide%)",
+        "timer-short": "%start% (%slide%)",
+        "control": {
+            "previous-slide": "Previous slide",
+            "next-slide": "Next slide",
+            "fullscreen": "Fullscreen",
+            "enable-draw": "Enable drawing",
+            "disable-draw": "Disable drawing",
+            "edit": "Edit this material",
+            "leave": "Leave material",
+            "automatic-stop": "Stop automatic playback",
+            "automatic-play": "Start automatic playback",
+            "focus": "Fit to screen",
+            "share": "Sharing and Watching",
+            "watch": "Watch"
+        },
+        "loading": "Loading...",
+        "not-found": {
+            "title": "Not found",
+            "message": "This material does not exist or you don't have access to it. Ask the owner to share it with you or check the URL.",
+            "dashboard": "Go to dashboard"
+        },
+        "share": {
+            "share-link": {
+                "title": "Share Link",
+                "description": "Share this link with others so they can view it independently at any time in the mode you set in the editor settings."
+            },
+            "watch-link": {
+                "title": "Share Watch Link",
+                "description": "Share this link with others so they can join now and watch your progress through the material. This link is valid only for the current session and will no longer work once you leave the material.",
+                "button": "Enable watching"
+            },
+            "watch": {
+                "failed": {
+                    "title": "Failed to Start Watching",
+                    "description": "The provided watch code is invalid. Please make sure you entered the correct code and try again. You will now be redirected to the material page where you can try to start watching again.",
+                    "button": "Go to Material"
+                },
+                "ended": {
+                    "title": "Watching Ended",
+                    "description": "The watching session has ended. You will now be redirected to the material page where you can either start watching again or go through the material on your own.",
+                    "button": "Go to Material"
+                },
+                "loading": {
+                    "title": "Joining Watching..."
+                }
+            },
+            "join": {
+                "title": "Join Watching",
+                "description": "Enter the watch code provided by someone else to join and watch the material. This code is valid only for the current session and will no longer work once you leave the material.",
+                "code": "Watch Code",
+                "join": "Join",
+                "error": "Kód musí být vyplněn a mít 9 znaků."
+            },
+            "notPublic": {
+                "title": "Material is Not Public",
+                "description": "This material is not public and therefore cannot be shared with anyone except the authors. If you want it to be public, go to the editor and change the visibility settings."
+            }
+        },
+        "disconnected": {
+            "title": "You have been disconnected",
+            "help": "You have been disconnected from the Materalist servers. Please check your internet connection and try again. If the problem persists, try refreshing the page or logging out and logging back in."
+        }
+    },
+    "editor": {
+        "navigation": {
+            "preview": "Preview",
+            "dashboard": "Dashboard"
+        },
+        "panel": {
+            "slides": {
+                "title": "Slides",
+                "add": "Add slide",
+                "slide-number": "Slide %number%",
+                "action": {
+                    "up": "Move slide up",
+                    "down": "Move slide down",
+                    "copy": "Copy slide",
+                    "delete": "Delete slide",
+                    "settings": "Slide settings"
+                },
+                "settings": {
+                    "title": "Slide settings",
+                    "visual": {
+                        "title": "Visual",
+                        "color": "Background color",
+                        "save": "Save"
+                    },
+                    "size": {
+                        "title": "Size",
+                        "resize": "Resize",
+                        "to-fit": "Resize content to fit",
+                        "width": "Width",
+                        "width-invalid": "Width has to be a number greater than 0",
+                        "height": "Height",
+                        "height-invalid": "Height has to be a number greater than 0",
+                        "times": "x"
+                    }
+                }
+            },
+            "blocks": {
+                "title": "Add block"
+            },
+            "media": {
+                "title": "Media",
+                "add": "Add media"
+            },
+            "content": {
+                "title": "Content",
+                "back": "Back",
+                "gifs": {
+                    "title": "Gifs",
+                    "search": "Search among gifs"
+                },
+                "images": {
+                    "title": "Images",
+                    "search": "Search among images"
+                }
+            }
+        },
+        "sharing": {
+            "open": "Sharing material",
+            "title": "Sharing material",
+            "share": {
+                "title": "Share and settings",
+                "name": "Material name",
+                "visibility": {
+                    "PUBLIC": "Public for everyone",
+                    "PRIVATE": "Private",
+                    "label": "Visibility"
+                },
+                "method": {
+                    "AUTOMATIC": "Automatic playback",
+                    "MANUAL": "Manual playback",
+                    "INTERACTIVITY": "Only via interactivity",
+                    "label": "Playback method"
+                },
+                "automatic": {
+                    "time": "Time per slide"
+                },
+                "sizing": {
+                    "FIT_TO_SCREEN": "Fit to screen",
+                    "MOVEMENT": "Stretch and move",
+                    "label": "Display mode"
+                },
+                "save": "Save",
+                "link": "Link"
+            },
+            "export": {
+                "title": "Material export",
+                "description": "Download an offline backup of your material in various formats. Exported files contain all slides but may be limited by the given format and all are without interactivity, for example.",
+                "local": "Local backup (JSON)",
+                "pdf": "PDF"
+            },
+            "exporting": {
+                "title": "Material is being exported",
+                "description": "The material is being exported to the format. This operation may take several minutes. Once completed, the file will be automatically downloaded."
+            },
+            "attendees": {
+                "title": "Co-authors",
+                "description": "Add co-authors (attendees) to your material. They will be able to edit the material and present it to others. They cannot delete the material.",
+                "add": {
+                    "title": "Add co-author",
+                    "description": "To add a co-author, enter their e-mail address. They will be able to see the material in their dashboard and edit it.",
+                    "input": "E-mail address",
+                    "add": "Add"
+                },
+                "remove": "Remove co-author",
+                "empty": "No co-authors added yet.",
+                "save": "Save"
+            }
+        },
+        "ui": {
+            "fit-to-screen": "Fit to the screen",
+            "change-mode": {
+                "to-move": "Turn on move mode",
+                "to-select": "Turn on select mode"
+            },
+            "history": {
+                "undo": "Undo",
+                "redo": "Redo"
+            },
+            "plugin": {
+                "manage": "Manage plugins",
+                "plugin": "%name% (plugin)"
+            },
+            "save": "Save to cloud",
+            "state": {
+                "nothing": "---",
+                "last-save": "Last saved %time%",
+                "saving": "Saving..."
+            }
+        },
+        "preferences": {
+            "open": "Preferences",
+            "title": "Editor preferences",
+            "save": "Save",
+            "enabled": "Enabled",
+            "validation": {
+                "filled": "The value has to be filled",
+                "number": "The value has to be a number"
+            },
+            "KEEP_EDITOR_TO_FIT_PARENT": {
+                "label": "Keep editor to fit parent",
+                "description": "When enabled, the editor will always fit the parent element while resizing."
+            },
+            "ROTATION_SNAPPING_COUNT": {
+                "label": "Rotation snapping count",
+                "description": "The count of the snapping while rotating the object (using SHIFT while rotating).",
+                "range": "The value should be between 2 and 180"
+            },
+            "MOVEMENT_SNAPPING_DISTANCE": {
+                "label": "Snap Distance on Move",
+                "description": "The minimum distance for snapping an object while moving. If enabled, the editor will snap the object to the grid or other elements within the specified distance.",
+                "range": "The value should be between 1 and 1000"
+            },
+            "PER_OBJECT_TRANSFORMATION": {
+                "label": "Per object transformation",
+                "description": "When enabled, the transformation (rotate and scale) will be applied per object instead of the selected objects (group)."
+            },
+            "AUTOMATIC_SAVING": {
+                "label": "Automatic saving",
+                "description": "When enabled, the editor will automatically save the project regularly."
+            },
+            "AUTOMATIC_SAVING_INTERVAL": {
+                "label": "Automatic saving interval",
+                "description": "The interval of the automatic saving. Is only available when the automatic saving is enabled.",
+                "30-seconds": "30 seconds",
+                "1-minute": "1 minute",
+                "2-minutes": "2 minutes",
+                "5-minutes": "5 minutes",
+                "10-minutes": "10 minutes"
+            },
+            "HISTORY_LIMIT": {
+                "label": "History stack limit",
+                "description": "The limit of the history stack. The editor will remove the oldest history if the limit is reached. May affect the performance.",
+                "range": "The value should be between 5 and 1000"
+            }
+        },
+        "keybinds": {
+            "title": "Key bindings",
+            "optional-key": "This key is optional and pressing it may occur different outcome.",
+            "modifier": {
+                "shift": "Shift",
+                "ctrl": "Ctrl",
+                "alt": "Alt"
+            },
+            "key": {
+                " ": "Space"
+            }
+        },
+        "action": {
+            "copy": {
+                "label": "Copy"
+            },
+            "delete": {
+                "label": "Delete"
+            },
+            "duplicate": {
+                "label": "Duplicate"
+            },
+            "move": {
+                "label": "Move"
+            },
+            "paste": {
+                "label": "Paste"
+            },
+            "redo": {
+                "label": "Redo"
+            },
+            "select-all": {
+                "label": "Select all"
+            },
+            "undo": {
+                "label": "Undo"
+            },
+            "z-index-bottom": {
+                "label": "Push to back"
+            },
+            "z-index-top": {
+                "label": "Push to top"
+            },
+            "z-index-down": {
+                "label": "Push backward"
+            },
+            "z-index-up": {
+                "label": "Push forward"
+            },
+            "bring-back": {
+                "label": "Bring Back"
+            },
+            "group": {
+                "label": "Group"
+            },
+            "lock": {
+                "label": "Lock"
+            },
+            "ungroup": {
+                "label": "Ungroup"
+            },
+            "unlock": {
+                "label": "Unlock"
+            },
+            "mode": {
+                "label": "Change editor mode"
+            },
+            "fit-canvas-to-parent": {
+                "label": "Fit canvas to parent"
+            },
+            "snap": {
+                "label": "Snap on Move or Rotate"
+            }
+        },
+        "plugin": {
+            "manage": {
+                "active": "Currently active",
+                "by": "by %name%, for manager version %version%",
+                "manifest": "Manager current version: v%version%",
+                "browse": {
+                    "title": "Browse plugins",
+                    "search": "Search among plugins",
+                    "tags": {
+                        "ALL": "All",
+                        "EDITOR": "Editor",
+                        "WIDGETS": "Widgets",
+                        "CONTENT": "Content",
+                        "PLAYER": "Player",
+                        "GAMIFICATION": "Gamification"
+                    },
+                    "last-version": "Last version on %date%",
+                    "no-plugins": "No plugins found with the given search criteria."
+                },
+                "deactivate": "Deactivate plugin",
+                "activate": {
+                    "title": "Activate plugin",
+                    "error": "Failed to activate plugin. Please try again later."
+                },
+                "no-plugins": "Current material has no active plugins. You can add some from the browse section.",
+                "new-version": "New version of the plugin is available. Remove the plugin and add it again to get the new version.",
+                "disabled": {
+                    "title": "Not available plugins",
+                    "description": "Following plugins are not enabled or loaded in because they are not supported, they are not compatible with the current version of the manager or were removed from the application."
+                },
+                "old-version": "This plugin is not supported thus it cannot be activated.",
+                "attention": {
+                    "title": "Warning",
+                    "description": "The plugin you are trying to add requires special permissions to access the editor. Please read the following plugin requirements carefully and if you agree, you can activate the plugin.",
+                    "allowed-origins": "The plugin requires and will have access to call any actions from the following domains:",
+                    "cancel": "Cancel",
+                    "confirm": "Activate"
+                }
+            },
+            "blocks": {
+                "title": "Blocks from plugins"
+            }
+        },
+        "attendees": {
+            "title": "Attendees",
+            "current": "You"
+        },
+        "disconnected": {
+            "title": "You have been disconnected",
+            "help": "You have been disconnected from the Materalist servers. Please check your internet connection and try again. If the problem persists, try refreshing the page or logging out and logging back in."
+        }
+    },
+    "blocks": {
+        "interactiveArea": {
+            "name": "Interactive area",
+            "warning": "This will not be visible in the player."
+        },
+        "shape": {
+            "name": "Shape",
+            "ladder": "Ladder",
+            "crescent": "Crescent",
+            "hexagon": "Hexagon",
+            "pentagon": "Pentagon",
+            "heart": "Heart",
+            "star": "Star",
+            "egg": "Egg",
+            "arrow-1": "Arrow 1",
+            "triangle": "Triangle",
+            "rectangle": "Rectangle",
+            "ellipse": "Ellipse",
+            "property": {
+                "color": {
+                    "label": "Color"
+                },
+                "shape": {
+                    "label": "Shape"
+                }
+            }
+        },
+        "image": {
+            "name": "Image",
+            "failed": "Failed to load image.",
+            "property": {
+                "imageUrl": {
+                    "label": "Image URL"
+                },
+                "aspectRatio": {
+                    "label": "Keep aspect ratio"
+                }
+            }
+        },
+        "text": {
+            "name": "Text",
+            "property": {
+                "formatting": {
+                    "label": "Formatting"
+                }
+            }
+        },
+        "mermaid": {
+            "name": "Mermaid diagram",
+            "failed": "Failed to load Mermaid diagram."
+        },
+        "iframe": {
+            "name": "Iframe",
+            "failed": "Failed to load iframe."
+        },
+        "plugin": {
+            "name": "Plugin",
+            "failed": "Failed to load content from plugin (%plugin%)."
+        },
+        "chat": {
+            "name": "Chat",
+            "title": "Chat",
+            "name-placeholder": "Your nickname",
+            "send": "Send",
+            "presenter": "Presenter",
+            "message-example": "Messages will appear here.",
+            "loading": "Loading..."
+        }
+    },
+    "property": {
+        "interactivity": {
+            "label": "Interactivity",
+            "event": {
+                "label": "Event",
+                "CLICKED": "Clicked",
+                "HOVER_START": "Hover start",
+                "HOVER_END": "Hover end",
+                "TIMER": "Timer",
+                "SLIDE_LOAD": "Slide load"
+            },
+            "timer": {
+                "label": "When",
+                "TIMEOUT": "Timeout",
+                "REPEAT": "Repeat",
+                "NOW-REPEAT": "Now and repeat",
+                "TIMEOUT-selected": "After",
+                "REPEAT-selected": "Every"
+            },
+            "actions": {
+                "title": "Actions"
+            },
+            "action": {
+                "label": "Do",
+                "CHANGE_PROPERTY": "Change property",
+                "RESET_PROPERTY": "Reset property",
+                "CHANGE_SLIDE": "Change slide",
+                "CHANGE_VARIABLE": "Change variable",
+                "OPEN_LINK": "Open link"
+            },
+            "on": {
+                "label": "On",
+                "SELF": "Self",
+                "ALL": "All on slide",
+                "SELECTED": "Selected",
+                "blocks": "Blocks"
+            },
+            "property": {
+                "label": "Property",
+                "ALL": "All properties",
+                "value": "Value",
+                "relative": "Relative"
+            },
+            "animate": {
+                "label": "Animate",
+                "duration": "Duration",
+                "easing": "Easing",
+                "easings": {
+                    "LINEAR": "Linear",
+                    "EASE_IN": "Ease in",
+                    "EASE_OUT": "Ease out",
+                    "EASE_IN_OUT": "Ease in out",
+                    "EASE": "Ease",
+                    "STEPS_4": "Steps 4",
+                    "STEPS_6": "Steps 6",
+                    "STEPS_8": "Steps 8",
+                    "STEPS_10": "Steps 10"
+                }
+            },
+            "slide": {
+                "label": "Slide",
+                "NEXT": "Next",
+                "PREVIOUS": "Previous",
+                "FIRST": "First",
+                "LAST": "Last",
+                "RANDOM": "Random",
+                "SLIDE": "Slide",
+                "index": "Slide index"
+            },
+            "variable": {
+                "name": "Variable name",
+                "operator": "Operator",
+                "EQUALS": "Equals",
+                "NOT_EQUALS": "Not equals",
+                "value": "Value"
+            },
+            "link": {
+                "label": "Link"
+            },
+            "condition": {
+                "label": "Only if",
+                "ALWAYS": "Always",
+                "TIME_PASSED": "Time passed",
+                "VARIABLE": "Variable"
+            },
+            "time-passed": {
+                "label": "Time from",
+                "OPEN": "From the material",
+                "SLIDE": "From the slide",
+                "time": "Time"
+            },
+            "properties": {
+                "position-x": "Position X",
+                "position-y": "Position Y",
+                "width": "Width",
+                "height": "Height",
+                "rotation": "Rotation",
+                "z-index": "Z-Index",
+                "opacity": "Opacity",
+                "content": "Content",
+                "imageUrl": "Image URL",
+                "color": "Color",
+                "shape": "Shape"
+            }
+        },
+        "opacity": {
+            "label": "Opacity"
+        },
+        "position": {
+            "label": "Position",
+            "x": "X",
+            "y": "Y"
+        },
+        "rotation": {
+            "label": "Rotation"
+        },
+        "size": {
+            "label": "Size",
+            "width": "W",
+            "height": "H"
+        }
+    }
+}

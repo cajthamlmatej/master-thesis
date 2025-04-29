@@ -1,0 +1,79 @@
+version: "3.8"
+
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        API_DOMAIN: ${API_DOMAIN}
+        DOCS_DOMAIN: ${DOCS_DOMAIN}
+        APP_DOMAIN: ${APP_DOMAIN}
+        HOMEPAGE_DOMAIN: ${HOMEPAGE_DOMAIN}
+    image: materalist-client
+    container_name: materalist-client
+    ports:
+      - "4000:80"
+    restart: unless-stopped
+
+  homepage:
+    build:
+      context: ./homepage
+      dockerfile: Dockerfile
+      args:
+        API_DOMAIN: ${API_DOMAIN}
+        DOCS_DOMAIN: ${DOCS_DOMAIN}
+        APP_DOMAIN: ${APP_DOMAIN}
+        HOMEPAGE_DOMAIN: ${HOMEPAGE_DOMAIN}
+    image: materalist-homepage
+    container_name: materalist-homepage
+    ports:
+      - "4001:80"
+    restart: unless-stopped
+
+  docs:
+    build:
+      context: ./docs
+      dockerfile: Dockerfile
+      args:
+        API_DOMAIN: ${API_DOMAIN}
+        DOCS_DOMAIN: ${DOCS_DOMAIN}
+        APP_DOMAIN: ${APP_DOMAIN}
+        HOMEPAGE_DOMAIN: ${HOMEPAGE_DOMAIN}
+    image: materalist-docs
+    container_name: materalist-docs
+    ports:
+      - "4002:80"
+    restart: unless-stopped
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      args:
+        API_DOMAIN: ${API_DOMAIN}
+        DOCS_DOMAIN: ${DOCS_DOMAIN}
+        APP_DOMAIN: ${APP_DOMAIN}
+        HOMEPAGE_DOMAIN: ${HOMEPAGE_DOMAIN}
+    image: materalist-server
+    container_name: materalist-server
+    ports:
+      - "4003:2020"
+    environment:
+      - DATABASE_URL=mongodb://mongo:27017/materalist
+    depends_on:
+      - mongo
+    restart: unless-stopped
+    volumes:
+      - materalist-server-data:/app/upload
+
+  mongo:
+    image: mongo
+    container_name: materalist-mongo
+    volumes:
+      - materalist-mongo-data:/data/db
+    restart: unless-stopped
+
+volumes:
+  materalist-mongo-data:
+  materalist-server-data:

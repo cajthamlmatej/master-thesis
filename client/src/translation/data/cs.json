@@ -1,0 +1,911 @@
+{
+    "web": {
+        "name": "Materalist"
+    },
+    "unit": {
+        "ms": "ms",
+        "s": "s"
+    },
+    "components": {
+        "pagination": {
+            "previous": "Předchozí",
+            "next": "Další"
+        },
+        "select": {
+            "search": "Hledat...",
+            "no-results": "Žádné výsledky",
+            "hint": "Vyberte možnost"
+        },
+        "file-input": {
+            "choose": "Vybrat soubor",
+            "no-selected": "Žádný soubor nebyl vybrán",
+            "selected": "Soubor vybrán",
+            "and-more": "a %count% další(ch)"
+        }
+    },
+    "layout": {
+        "base": {
+            "logout": "Odhlásit se",
+            "dashboard": "Ovládací panel",
+            "featured": "Ukázkové materiály",
+            "settings": "Nastavení",
+            "plugins": "Pluginy",
+            "info": {
+                "tooltip": "Informace o aplikaci",
+                "title": "Informace o aplikaci",
+                "version": "Verze",
+                "description": "Materalist je moderní platforma pro tvorbu a sdílení interaktivních vzdělávacích materiálů. Níže najdete nejdůležitější odkazy a informace o aplikaci.",
+                "homepage": "Hlavní stránka",
+                "docs": "Dokumentace",
+                "terms-of-service": "Podmínky používání",
+                "privacy-policy": "Zásady ochrany osobních údajů"
+            }
+        },
+        "auth": {
+            "home": "Home"
+        }
+    },
+    "cookies": {
+        "title": "Informace o místních souborech a cookies",
+        "message": "Při návštěvě této stránky se pro její účely ukládají místní soubory a cookies. Tyto soubory jsou nezbytné pro provoz stránek. Patří mezi ně:",
+        "items": {
+            "login": "přihlašovací tokeny",
+            "logged": "informace o přihlášeném uživateli",
+            "more": "a další"
+        },
+        "not-accept": "Pokud nesouhlasíte se zpracováním souborů cookie, okamžitě opusťte stránky.",
+        "accept": "Souhlasím"
+    },
+    "page": {
+        "not-found": {
+            "title": "Nenalezeno",
+            "message": "Hledaná stránka neexistuje. Zkontrolujte prosím adresu URL a zkuste to znovu.\nNa ovládací panel se můžete vrátit také pomocí níže uvedeného tlačítka.",
+            "dashboard": "Jít na ovládací panel"
+        },
+        "dashboard": {
+            "title": "Ovládací panel",
+            "title-welcome": "Vítej, %name%",
+            "search": "Hledat...",
+            "materials": {
+                "not-found-by-criteria": "Žádné materiály nebyly nalezeny podle zadaných kritérií.",
+                "modified": "upraveno",
+                "created": "vytvořeno",
+                "deletion": {
+                    "title": "Potvrzení smazání",
+                    "deletion": "Opravdu chcete tento materiál odstranit? Tuto akci nelze vzít zpět.",
+                    "after": "Po kliknutí na tlačítko „Jsem si jistý“ se materiál vymaže, včetně všech jeho snímků, vyplněných formulářů a dalších údajů.",
+                    "sure": "Jsem si jistý",
+                    "cancel": "Zrušit"
+                },
+                "delete-tooltip": "Smazat materiál",
+                "copy-tooltip": "Kopírovat materiál",
+                "own": "Vytvořeno mnou",
+                "shared": "Sdíleno se mnou"
+            },
+            "new": {
+                "tooltip": "Vytvořit nový materiál",
+                "import": {
+                    "tooltip": "Importovat materiál",
+                    "title": "Importovat materiál",
+                    "description": "Zde můžete importovat materiál z různých typů souborů. Aplikace aktuálně podporuje nahrání lokální zálohy (ve formátu JSON) nebo souboru ve formátu Markdown, který je vytvořen podle nápovědy.",
+                    "process": "Importovat soubor",
+                    "error": "Nahraný soubor neodpovídá žádnému podporovanému formátu. Zkontrolujte, zda jste vybrali správný soubor.",
+                    "json": {
+                        "error": "Neplatný formát JSON souboru. Zkontrolujte, zda je soubor vytvořen podle nápovědy."
+                    },
+                    "md": {
+                        "error": "Neplatný formát souboru Markdown. Zkontrolujte, zda je soubor vytvořen podle nápovědy."
+                    },
+                    "saving": {
+                        "error": "Problém během ukládání materiálu. Zkuste to znovu později."
+                    }
+                },
+                "empty": "Prázdný materiál"
+            },
+            "new-material": "Nový materiál"
+        },
+        "authentication": {
+            "title": "Přihlášení",
+            "type": {
+                "email-password": "E-mail a heslo",
+                "email": "E-mail"
+            },
+            "about": [
+                "Materalist je moderní platforma pro tvorbu a sdílení interaktivních vzdělávacích materiálů, která nachází uplatnění nejen ve školství, ale i v pracovním prostředí. Umožňuje vytvářet prezentace, skripta, plakáty, kvízy nebo další kreativní formy výuky — vše v jednom přehledném prostředí.",
+                "Pro plnohodnotné používání aplikace je potřeba si vytvořit účet. Díky registraci budete moci spravovat své materiály, tvořit nové, nebo se zapojit do komunity autorů.",
+                "Pokud jste zde jen jako účastník prezentace (například student nebo posluchač), stačí naskenovat QR kód nebo otevřít odkaz, který vám předal prezentující. Není potřeba se registrovat.",
+                "Chcete se o aplikaci dozvědět víc? Podívejte se na naši hlavní stránku, kde najdete ukázky, funkce i důvody, proč si Materalist zamilujete."
+            ],
+            "homepage": "Hlavní stránka",
+            "fields": {
+                "email": {
+                    "required": "E-mail je povinný",
+                    "invalid": "E-mail musí být ve správném formátu",
+                    "label": "E-mail"
+                },
+                "password": {
+                    "invalid": "Heslo musí mít alespoň 4 znaky",
+                    "label": "Heslo"
+                },
+                "code": {
+                    "invalid": "Kód musí mít alespoň 6 znaky",
+                    "label": "Kód"
+                }
+            },
+            "login": "Přihlásit se",
+            "already-code": "Mám kód.",
+            "no-code": "Potřebuji kód.",
+            "create-account": "Vytvořit účet",
+            "fail": {
+                "failed": "Přihlášení se nezdařilo. Zkontrolujte, zda jste zadali správné údaje o účtu.",
+                "wrong-email": "Zadali jste špatný e-mail nebo již existuje žádost o přihlášení. Zkontrolujte svůj e-mail a zkuste to znovu.",
+                "wrong-code": "Zadali jste špatný kód. Zkontrolujte svůj e-mail a zkuste to znovu."
+            }
+        },
+        "register": {
+            "title": "Registrace",
+            "fields": {
+                "name": {
+                    "required": "Jméno je povinné",
+                    "short": "Jméno musí mít alespoň 4 znaky",
+                    "long": "Jméno musí mít nejvýše 255 znaků",
+                    "label": "Jak chceš být osloven"
+                },
+                "email": {
+                    "required": "E-mail je povinný",
+                    "invalid": "E-mail musí být ve správném formátu",
+                    "long": "E-mail musí mít nejvýše 255 znaků",
+                    "label": "E-mail"
+                },
+                "password": {
+                    "short": "Heslo musí mít alespoň 8 znaků",
+                    "long": "Heslo musí mít nejvýše 255 znaků",
+                    "label": "Heslo"
+                },
+                "password-repeat": {
+                    "not-match": "Hesla se neshodují",
+                    "label": "Heslo znovu"
+                }
+            },
+            "register": "Registrovat se",
+            "after-register": "Po registraci budete vyzváni k potvrzení registrace pomocí odkazu v zadaném e-mailu.",
+            "by-registering": "Registrací souhlasíte s podmínkami používání a zásadami ochrany osobních údajů.",
+            "already-account": "Už máte účet?",
+            "sign-in": "Přihlaste se zde.",
+            "success": {
+                "title": "Úspěšná registrace",
+                "message": "Registrace proběhla úspěšně. Podívejte se do e-mailu na odkaz pro potvrzení registrace. Poté se můžete přihlásit.",
+                "sign-in": "Přihlásit se"
+            },
+            "fail": {
+                "failed": "Registrace se nezdařila. Účet s tímto e-mailem již pravděpodobně existuje. Zkuste jiný e-mail."
+            },
+            "terms-of-service": "Podmínky používání",
+            "privacy-policy": "Zásady ochrany osobních údajů"
+        },
+        "activate": {
+            "title": "Aktivace účtu",
+            "activation": "Aktivace vašeho účtu",
+            "success": "Váš účet byl úspěšně aktivován. Nyní se můžete přihlásit.",
+            "loading": "Aktivace účtu, prosím čekejte...",
+            "fail": "Aktivace účtu se nezdařila. Odkaz je neplatný nebo již byl použit, zkuste to znovu.",
+            "sign-in": "Přihlásit se"
+        },
+        "editor": {
+            "title": "Editor %name% materiál"
+        },
+        "player": {
+            "title": "Přehrávač %name% materiál"
+        },
+        "plugins": {
+            "title": "Pluginy",
+            "search": "Hledat pluginy...",
+            "new": {
+                "tooltip": "Nový plugin"
+            },
+            "not-found-by-criteria": "Žádné pluginy nebyly nalezeny podle zadaných kritérií.",
+            "list-releases": "Seznam verzí",
+            "remove": "Odebrat plugin",
+            "active": "Aktivní verze",
+            "edit": "Upravit plugin",
+            "last-version": "Poslední verze: %lastVersion%",
+            "no-releases": "Žádné verze pluginu nebyly nalezeny.",
+            "new-plugin": {
+                "title": "Tvorba pluginu",
+                "name": {
+                    "label": "Název pluginu",
+                    "error": "Název pluginu musí být vyplněn a být kratší než 255 znaků."
+                },
+                "icon": {
+                    "label": "Ikona pluginu"
+                },
+                "description": {
+                    "label": "Popis pluginu",
+                    "error": "Popis pluginu musí být vyplněn a být kratší než 255 znaků."
+                },
+                "tags": {
+                    "label": "Tagy pluginu"
+                },
+                "submit": "Vytvořit plugin"
+            },
+            "edit-plugin": {
+                "title": "Úprava pluginu",
+                "name": {
+                    "label": "Název pluginu",
+                    "error": "Název pluginu musí být vyplněn."
+                },
+                "icon": {
+                    "label": "Ikona pluginu"
+                },
+                "description": {
+                    "label": "Popis pluginu",
+                    "error": "Popis pluginu musí být vyplněn."
+                },
+                "tags": {
+                    "label": "Tagy pluginu"
+                },
+                "submit": "Upravit plugin"
+            },
+            "new-release": {
+                "title": "Vytvořit novou",
+                "help": "V následujcích sekcích v horní navigaci vyplňte všechny potřebné informace o nové verzi pluginu. Jakmile budete hotovi, klikněte na tlačítko „Vytvořit novou verzi“ v stránce Přehled a odeslání. Nějaké chyby ve vyplní se mohou zobrazit až v posledním kroku. Pro více informací navštivte dokumentaci.",
+                "info": {
+                    "version": {
+                        "label": "Kód verze",
+                        "error": "Kód musí být vyplněn a být kratší než 255 znaků."
+                    },
+                    "manifest": {
+                        "label": "Manifest",
+                        "error": "Manifest musí být platný JSON.",
+                        "length": "Manifest musí být kratší než 32768 znaků.",
+                        "required": "Manifest je povinný.",
+                        "number": "Verze manifestu musí být vyplněna a musí být číslo.",
+                        "allowedOrigins": "Povolené domény musí být pole a obsahovat pouze řetězce URL (pouze protokol a doména, bez cesty)."
+                    },
+                    "changelog": {
+                        "label": "Změny",
+                        "error": "Změny musí být vyplněny a musí být kratší než 32768 znaků."
+                    },
+                    "editor": {
+                        "label": "Kód editoru",
+                        "error": "Kód editoru musí být kratší jak 131072 znaků."
+                    },
+                    "player": {
+                        "label": "Kód přehrávače",
+                        "error": "Kód přehrávače musí být kratší jak 131072 znaků."
+                    }
+                },
+                "summary": {
+                    "help": "Odesláním nové verze pluginu se okamžitě vytvoří nová verze. Tato verze se bude doporučovat všem, co tento plugin používají. Verze lze smazat jen pomocí kontaktu s týmem podpory. Pro odeslání je nutné, aby alespoň jeden kód (editoru či přehrávače) musí být vyplněn.",
+                    "button": "Vytvořit novou verzi"
+                }
+            },
+            "release": {
+                "date": "Datum vydání",
+                "manifest": "Manifest",
+                "info": {
+                    "base": "Základní informace",
+                    "changelog": "Změny",
+                    "editor": "Kód editoru",
+                    "player": "Kód přehrávače",
+                    "summary": "Přehled a odeslání",
+                    "no-code": "Žádný kód nenahrán."
+                }
+            }
+        },
+        "user-settings": {
+            "user": {
+                "title": "Nastavení účtu",
+                "new-password": "Nové heslo",
+                "name": "Nové jméno",
+                "current": "Aktuální heslo",
+                "change": "Změnit údaje",
+                "error": "Údaje se nepodařilo změnit. Zkontrolujte, zda jste zadali správné heslo."
+            },
+            "export": {
+                "title": "Export osobních údajů",
+                "exported": "Osobní údaje byly vyexportovány. Níže si je můžete stáhnout do %date%. Poté budou data smazána.",
+                "download": "Stáhnout",
+                "process": "Zažádat o export",
+                "recent": "Žádost byla zaznamenána a data se právě exportují. Jakmile budou data připravena, obdržíte e-mail a zde si je budete moci stáhnout.",
+                "description": "Zde můžete exportovat osobní údaje, které o vás máme. Tyto údaje zahrnují všechny vaše materiály, pluginy a další informace, které jsme shromáždili během používání aplikace. Vyexportované údaje budou ve formátu JSON a budou obsahovat všechny vaše osobní údaje, které máme."
+            }
+        },
+        "featured": {
+            "title": "Ukázkové materiály",
+            "empty": "Prozatím nebyly přidány žádné ukázkové materiály.",
+            "new": {
+                "tooltip": "Přidat ukázkový materiál",
+                "title": "Přidat ukázkový materiál",
+                "description": "Zde můžete označit nějaký svůj materiál jako ukázkový. Ukázkové materiály se zobrazí na hlavní stránce a budou dostupné pro všechny uživatele. Jen materiály, které jsou nastaveny jako veřejné se nakonec zobrazí ostatním. Nezneužívejte tuto funkci a přidávejte sem pouze materiály, které chcete sdílet s ostatními uživateli.",
+                "add": "Přidat"
+            },
+            "remove": {
+                "tooltip": "Odebrat ukázkový materiál",
+                "title": "Odebrat ukázkový materiál",
+                "description": "Odebráním ukázkového materiálu se materiál již nebude zobrazovat na hlavní stránce a nebude dostupný pro ostatní uživatele. Materiál však zůstane dostupný pro lidi, kteří již odkaz mají a pokud je materiál označen jako veřejný. Odstranění může trvat několik hodin.",
+                "remove": "Odebrat"
+            }
+        }
+    },
+    "player": {
+        "debug": {
+            "title": "Debug",
+            "variables": {
+                "title": "Proměnné v materiálu",
+                "not-found": "Žádné proměnné nebyly nalezeny."
+            },
+            "plugin": {
+                "title": "Pluginy",
+                "addLocal": "Přidat lokální plugin",
+                "import": "Importovat plugin",
+                "error": {
+                    "localPluginAlreadyExists": "Lokální plugin již existuje. Pro smazání přenačtěte stránku.",
+                    "missingFile": "Chybí soubor.",
+                    "noManifest": "Chybí manifest.json soubor v ZIP archivu.",
+                    "noCode": "Plugin musí mít alespoň jeden kód (editor.js nebo player.js).",
+                    "readingFile": "Nepodařilo se přečíst soubor.",
+                    "zipError": "Chyba při rozbalování ZIP archivu."
+                }
+            }
+        },
+        "timer": "%start% (čas na snímku: %slide%)",
+        "timer-short": "%start% (%slide%)",
+        "control": {
+            "previous-slide": "Předchozí snímek",
+            "next-slide": "Další snímek",
+            "fullscreen": "Celá obrazovka",
+            "enable-draw": "Zapnout kreslení",
+            "disable-draw": "Zrušit kreslení",
+            "edit": "Upravit materiál",
+            "leave": "Opustit materiál",
+            "automatic-stop": "Zastavit automatické procházení",
+            "automatic-play": "Zapnout automatické procházení",
+            "focus": "Zvětšit do obrazovky",
+            "share": "Sdílení a sledování",
+            "watch": "Sledovat"
+        },
+        "loading": "Načítání materiálu...",
+        "not-found": {
+            "title": "Materiál nenalezen",
+            "message": "Materiál, který se snažíte otevřít, nebyl nalezen. Zkontrolujte prosím odkaz či kontaktujte autora materiálu.",
+            "dashboard": "Zpět na ovládací panel"
+        },
+        "share": {
+            "share-link": {
+                "title": "Sdílení odkazu",
+                "description": "Sdílejte tento odkaz s ostatními, aby si ho mohli kdykoliv prohlédnout samostatně ve vámi určeném režimu z nastavení v editoru."
+            },
+            "watch-link": {
+                "title": "Sdílení odkazu pro sledování",
+                "description": "Sdílejte tento odkaz s ostatními, aby se nyní mohli připojit a sledovat vás průchod materiálem. Tento odkaz je platný pouze pro aktuální zobrazení a po opuštění materiálu již nebude funkční.",
+                "button": "Zapnout sledování"
+            },
+            "watch": {
+                "failed": {
+                    "title": "Započatí sledování se nezdařilo",
+                    "description": "Zadaný kód pro sledování je neplatný. Ujistěte se, že jste zadali správný kód a zkuste to znovu. Nyní budete přesměrován na stránku materiálu, kde můžete sledování znovu zahájit.",
+                    "button": "Přejít na materiál"
+                },
+                "ended": {
+                    "title": "Sledování skončilo",
+                    "description": "Sledování materiálu skončilo. Nyní budete přesměrován na stránku materiálu, kde můžete sledování znovu zahájit či si projít materiál samostatně.",
+                    "button": "Přejít na materiál"
+                },
+                "loading": {
+                    "title": "Připojování se k sledování..."
+                }
+            },
+            "join": {
+                "title": "Připojit se k sledování",
+                "description": "Zadejte kód pro sledování, který vám dal někdo jiný, abyste se mohli připojit k sledování materiálu. Tento kód je platný pouze pro aktuální zobrazení a po opuštění materiálu již nebude funkční.",
+                "code": "Kód pro sledování",
+                "join": "Připojit se",
+                "error": "Kód musí být vyplněn a mít 9 znaků."
+            },
+            "notPublic": {
+                "title": "Materiál není veřejný",
+                "description": "Tento materiál není veřejný a tedy ho nemůžete sdílet s nikým jiným než s autory. Pokud chcete, aby byl veřejný, přejděte do editoru a změňte nastavení viditelnosti."
+            }
+        },
+        "disconnected": {
+            "title": "Byl jste odpojen",
+            "help": "Byl jste odpojen od serverů Materalist. Zkontrolujte prosím připojení k internetu a zkuste to znovu. Pokud problém přetrvává, zkuste stránku obnovit nebo se odhlásit a znovu přihlásit."
+        }
+    },
+    "editor": {
+        "navigation": {
+            "preview": "Náhled",
+            "dashboard": "Ovládací panel"
+        },
+        "panel": {
+            "slides": {
+                "title": "Snímky",
+                "add": "Přidat snímek",
+                "slide-number": "%number%. snímek",
+                "action": {
+                    "up": "Posunout snímek nahoru",
+                    "down": "Posunout snímek dolů",
+                    "copy": "Kopírovat snímek",
+                    "delete": "Smazat snímek",
+                    "settings": "Nastavení snímku"
+                },
+                "settings": {
+                    "title": "Nastavení snímku",
+                    "visual": {
+                        "title": "Vizuál",
+                        "color": "Barva pozadí",
+                        "save": "Uložit"
+                    },
+                    "size": {
+                        "title": "Velikost",
+                        "resize": "Změnit velikost",
+                        "to-fit": "Přizpůsobit obsah velikosti",
+                        "width": "Šířka",
+                        "width-invalid": "Šířka musí být číslo větší než 0",
+                        "height": "Výška",
+                        "height-invalid": "Výška musí být číslo větší než 0",
+                        "times": "x"
+                    }
+                }
+            },
+            "blocks": {
+                "title": "Přidat blok"
+            },
+            "media": {
+                "title": "Média",
+                "add": "Nahrát obsah"
+            },
+            "content": {
+                "title": "Obsah",
+                "back": "Zpět",
+                "gifs": {
+                    "title": "Gify",
+                    "search": "Hledat mezi gify"
+                },
+                "images": {
+                    "title": "Obrázky",
+                    "search": "Hledat mezi obrázky"
+                }
+            }
+        },
+        "sharing": {
+            "open": "Sdílení materiálu",
+            "title": "Sdílení materiálu",
+            "share": {
+                "title": "Sdílení a nastavení",
+                "name": "Název materiálu",
+                "visibility": {
+                    "PUBLIC": "Veřejný pro všechny",
+                    "PRIVATE": "Soukromý",
+                    "label": "Viditelnost"
+                },
+                "method": {
+                    "AUTOMATIC": "Automatické přehrávání",
+                    "MANUAL": "Manuální přehrávání",
+                    "INTERACTIVITY": "Pouze pomocí interaktivity",
+                    "label": "Způsob přehrávání"
+                },
+                "automatic": {
+                    "time": "Čas na snímek"
+                },
+                "sizing": {
+                    "FIT_TO_SCREEN": "Přizpůsobit obrazovce",
+                    "MOVEMENT": "Roztáhnout a pohyb",
+                    "label": "Způsob zobrazení"
+                },
+                "save": "Uložit",
+                "link": "Odkaz"
+            },
+            "export": {
+                "title": "Export materiálu",
+                "description": "Stáhněte si offline zálohu vašeho materiálu v různých formátech. Exportované soubory obsahují všechny snímky ale mohou být omezeny daným formátem a všechny jsou například bez interaktivity.",
+                "local": "Lokální záloha (JSON)",
+                "pdf": "PDF"
+            },
+            "exporting": {
+                "title": "Materiál se exportuje",
+                "description": "Materiál se exportuje do formátu. Tato operace může trvat několik minut. Po dokončení bude soubor automaticky stáhnut."
+            },
+            "attendees": {
+                "title": "Spoluautoři",
+                "description": "Přidejte ke svému materiálu spoluautory (účastníky). Budou moci materiál upravovat a prezentovat jej ostatním. Materiál však nemohou smazat.",
+                "add": {
+                    "title": "Přidat spoluautora",
+                    "description": "Pro přidání spoluautora zadejte jeho e-mailovou adresu. Materiál se mu zobrazí na ovládacím panelu a bude jej moci upravovat.",
+                    "input": "E-mailová adresa",
+                    "add": "Přidat"
+                },
+                "remove": "Odebrat spoluautora",
+                "empty": "Zatím nebyli přidáni žádní spoluautoři.",
+                "save": "Uložit"
+            }
+        },
+        "ui": {
+            "fit-to-screen": "Přizpůsobit obrazovce",
+            "change-mode": {
+                "to-move": "Zapnout režim přesunu",
+                "to-select": "Zapnout režim výběru"
+            },
+            "history": {
+                "undo": "Zpět v historii",
+                "redo": "Dopředu v historii"
+            },
+            "plugin": {
+                "manage": "Spravovat pluginy",
+                "plugin": "%name% (plugin)"
+            },
+            "save": "Uložit do cloudu",
+            "state": {
+                "nothing": "---",
+                "last-save": "Naposledy uloženo %time%",
+                "saving": "Ukládání..."
+            }
+        },
+        "preferences": {
+            "open": "Předvolby",
+            "title": "Předvolby editoru",
+            "save": "Uložit",
+            "enabled": "Povoleno",
+            "validation": {
+                "filled": "Hodnota musí být vyplněna",
+                "number": "Hodnota musí být číslo"
+            },
+            "KEEP_EDITOR_TO_FIT_PARENT": {
+                "label": "Udržet editor přizpůsobený rodiči",
+                "description": "Pokud je povoleno, editor se při změně velikosti vždy přizpůsobí rodičovskému prvku."
+            },
+            "ROTATION_SNAPPING_COUNT": {
+                "label": "Počet přichytávání při otáčení",
+                "description": "Počet přichytávacích bodů při otáčení objektu (pomocí SHIFT při otáčení).",
+                "range": "Hodnota by měla být mezi 2 a 180"
+            },
+            "MOVEMENT_SNAPPING_DISTANCE": {
+                "label": "Vzdálenost přichytávání při pohybu",
+                "description": "Minimální vzdálenost pro přichytávání objektu při pohybu. Pokud je povoleno, editor přichytí objekt k mřížce z ostatních prvků v uvedené vzdálenosti.",
+                "range": "Hodnota by měla být mezi 1 a 1000"
+            },
+            "PER_OBJECT_TRANSFORMATION": {
+                "label": "Transformace pro každý objekt",
+                "description": "Pokud je povoleno, transformace (otáčení a změna měřítka) bude aplikována na jednotlivé objekty místo na vybranou skupinu."
+            },
+            "AUTOMATIC_SAVING": {
+                "label": "Automatické ukládání",
+                "description": "Pokud je povoleno, editor bude automaticky ukládat projekt v pravidelných intervalech."
+            },
+            "AUTOMATIC_SAVING_INTERVAL": {
+                "label": "Interval automatického ukládání",
+                "description": "Interval automatického ukládání. K dispozici pouze pokud je automatické ukládání povoleno.",
+                "30-seconds": "30 sekund",
+                "1-minute": "1 minuta",
+                "2-minutes": "2 minuty",
+                "5-minutes": "5 minut",
+                "10-minutes": "10 minut"
+            },
+            "HISTORY_LIMIT": {
+                "label": "Limit historie",
+                "description": "Limit zásobníku historie. Pokud je dosažen limit, editor odstraní nejstarší záznamy. Může ovlivnit výkon.",
+                "range": "Hodnota by měla být mezi 5 a 1000"
+            }
+        },
+        "keybinds": {
+            "title": "Klávesové zkratky",
+            "optional-key": "Tato klávesa je volitelná a její stisknutí může mít různý výsledek.",
+            "modifier": {
+                "shift": "Shift",
+                "ctrl": "Ctrl",
+                "alt": "Alt"
+            },
+            "key": {
+                "ArrowUp": "Šipka nahoru",
+                "ArrowDown": "Šipka dolů",
+                "ArrowLeft": "Šipka doleva",
+                "ArrowRight": "Šipka doprava",
+                " ": "Mezerník"
+            }
+        },
+        "action": {
+            "copy": {
+                "label": "Kopírovat"
+            },
+            "delete": {
+                "label": "Smazat"
+            },
+            "duplicate": {
+                "label": "Duplikovat"
+            },
+            "move": {
+                "label": "Přesunout"
+            },
+            "paste": {
+                "label": "Vložit"
+            },
+            "redo": {
+                "label": "Dopředu v historii"
+            },
+            "select-all": {
+                "label": "Vybrat vše"
+            },
+            "undo": {
+                "label": "Zpět v historii"
+            },
+            "z-index-bottom": {
+                "label": "Posunout zcela dozadu"
+            },
+            "z-index-top": {
+                "label": "Posunout zcela dopředu"
+            },
+            "z-index-down": {
+                "label": "Posunout vzad"
+            },
+            "z-index-up": {
+                "label": "Posunout vpřed"
+            },
+            "bring-back": {
+                "label": "Přenést zpět do plátna"
+            },
+            "group": {
+                "label": "Seskupit"
+            },
+            "lock": {
+                "label": "Zamknout"
+            },
+            "ungroup": {
+                "label": "Rozdělit"
+            },
+            "unlock": {
+                "label": "Odemknout"
+            },
+            "mode": {
+                "label": "Změnit režim editoru"
+            },
+            "fit-canvas-to-parent": {
+                "label": "Přizpůsobit plátno rodiči"
+            },
+            "snap": {
+                "label": "Přichytávání při pohybu a rotaci"
+            }
+        },
+        "plugin": {
+            "manage": {
+                "active": "Aktivní pluginy",
+                "by": "od %name%, pro správce verze v%version%",
+                "manifest": "Aktuální verze správce: v%version%",
+                "browse": {
+                    "title": "Procházet pluginy",
+                    "search": "Hledat pluginy...",
+                    "tags": {
+                        "ALL": "Vše",
+                        "EDITOR": "Editor",
+                        "WIDGETS": "Widgety",
+                        "CONTENT": "Obsah",
+                        "PLAYER": "Přehrávač",
+                        "GAMIFICATION": "Gamifikace"
+                    },
+                    "last-version": "Poslední verze dne %date%",
+                    "no-plugins": "Žádné pluginy nebyly nalezeny podle zadaných kritérií."
+                },
+                "deactivate": "Deaktivovat plugin",
+                "activate": {
+                    "title": "Aktivovat plugin",
+                    "error": "Nepodařilo se aktivovat plugin. Zkuste to znovu později."
+                },
+                "no-plugins": "Aktuální materiál nemá žádné aktivní pluginy. Můžete přidat nové skrz procházení pluginů.",
+                "new-version": "Nová verze pluginu je k dispozici. Deaktivujte plugin a znovu ho aktivujte, abyste získali novou verzi.",
+                "disabled": {
+                    "title": "Nedostupné pluginy",
+                    "description": "Následující pluginy byly deaktivovány, protože nejsou kompatibilní s aktuální verzí správce a nebo byly odstraněny z katalogu pluginů."
+                },
+                "old-version": "Plugin není podporován a nemůže být aktivován.",
+                "attention": {
+                    "title": "Upozornění",
+                    "description": "Plugin, který se snažíte přidat vyžaduje speciální oprávnění k přístupu k editoru. Pozorně si přečtěte následující požadavky pluginu a pokud souhlasíte, můžete plugin aktivovat.",
+                    "allowed-origins": "Plugin vyžaduje a bude mít přístup k volání jakýchkoliv akcí z následujících domén:",
+                    "cancel": "Zrušit",
+                    "confirm": "Aktivovat"
+                }
+            },
+            "blocks": {
+                "title": "Bloky pluginů"
+            }
+        },
+        "attendees": {
+            "title": "Účastníci",
+            "current": "Vy"
+        },
+        "disconnected": {
+            "title": "Byl jste odpojen",
+            "help": "Byl jste odpojen od serverů Materalist. Zkontrolujte prosím připojení k internetu a zkuste to znovu. Pokud problém přetrvává, zkuste stránku obnovit nebo se odhlásit a znovu přihlásit."
+        }
+    },
+    "blocks": {
+        "interactiveArea": {
+            "name": "Interaktivní oblast",
+            "warning": "Toto nebude viditelné v přehrávači."
+        },
+        "shape": {
+            "name": "Tvar",
+            "ladder": "Žebřík",
+            "crescent": "Půlměsíc",
+            "hexagon": "Šestiúhelník",
+            "pentagon": "Pětiúhelník",
+            "heart": "Srdce",
+            "star": "Hvězda",
+            "egg": "Vejce",
+            "arrow-1": "Šipka 1",
+            "triangle": "Trojúhelník",
+            "rectangle": "Obdélník",
+            "ellipse": "Elipsa",
+            "property": {
+                "color": {
+                    "label": "Barva"
+                },
+                "shape": {
+                    "label": "Tvar"
+                }
+            }
+        },
+        "image": {
+            "name": "Obrázek",
+            "failed": "Načtení obrázku se nezdařilo.",
+            "property": {
+                "imageUrl": {
+                    "label": "Odkaz na obrázek"
+                },
+                "aspectRatio": {
+                    "label": "Udržet poměr stran"
+                }
+            }
+        },
+        "text": {
+            "name": "Text",
+            "property": {
+                "formatting": {
+                    "label": "Formátování"
+                }
+            }
+        },
+        "mermaid": {
+            "name": "Diagram Mermaid",
+            "failed": "Načtení diagramu se nezdařilo."
+        },
+        "iframe": {
+            "name": "Webová stránka"
+        },
+        "plugin": {
+            "name": "Plugin",
+            "failed": "Načtení bloku pluginu (%plugin%) se nezdařilo."
+        },
+        "chat": {
+            "name": "Chat",
+            "title": "Chat",
+            "name-placeholder": "Vaše přezdívka",
+            "send": "Odeslat",
+            "presenter": "Prezentující",
+            "message-example": "Zde uvidíte zprávy.",
+            "loading": "Načítání..."
+        }
+    },
+    "property": {
+        "interactivity": {
+            "label": "Interaktivita",
+            "event": {
+                "label": "Událost",
+                "CLICKED": "Kliknuto",
+                "HOVER_START": "Začátek najetí",
+                "HOVER_END": "Konec najetí",
+                "TIMER": "Časovač",
+                "SLIDE_LOAD": "Načtení snímku"
+            },
+            "timer": {
+                "label": "Kdy",
+                "TIMEOUT": "Po uplynutí",
+                "REPEAT": "Opakování",
+                "NOW-REPEAT": "Nyní a opakování",
+                "TIMEOUT-selected": "Po",
+                "REPEAT-selected": "Každých"
+            },
+            "actions": {
+                "title": "Akce"
+            },
+            "action": {
+                "label": "Provést",
+                "CHANGE_PROPERTY": "Změnit vlastnost",
+                "RESET_PROPERTY": "Resetovat vlastnost",
+                "CHANGE_SLIDE": "Změnit snímek",
+                "CHANGE_VARIABLE": "Změnit proměnnou",
+                "OPEN_LINK": "Otevřít odkaz"
+            },
+            "on": {
+                "label": "Na",
+                "SELF": "Sebe",
+                "ALL": "Všechny na snímku",
+                "SELECTED": "Vybrané",
+                "blocks": "Bloky"
+            },
+            "property": {
+                "label": "Vlastnost",
+                "ALL": "Všechny vlastnosti",
+                "value": "Hodnota",
+                "relative": "Relativní"
+            },
+            "animate": {
+                "label": "Animace",
+                "duration": "Doba trvání",
+                "easing": "Změkčení",
+                "easings": {
+                    "LINEAR": "Lineární",
+                    "EASE_IN": "Zrychlení",
+                    "EASE_OUT": "Zpomalení",
+                    "EASE_IN_OUT": "Zrychlení a zpomalení",
+                    "EASE": "Změkčení",
+                    "STEPS_4": "4 kroky",
+                    "STEPS_6": "6 kroků",
+                    "STEPS_8": "8 kroků",
+                    "STEPS_10": "10 kroků"
+                }
+            },
+            "slide": {
+                "label": "Snímek",
+                "NEXT": "Další",
+                "PREVIOUS": "Předchozí",
+                "FIRST": "První",
+                "LAST": "Poslední",
+                "RANDOM": "Náhodný",
+                "SLIDE": "Snímek",
+                "index": "Index snímku"
+            },
+            "variable": {
+                "name": "Název proměnné",
+                "operator": "Operátor",
+                "EQUALS": "Rovná se",
+                "NOT_EQUALS": "Nerovná se",
+                "value": "Hodnota"
+            },
+            "link": {
+                "label": "Odkaz"
+            },
+            "condition": {
+                "label": "Pouze pokud",
+                "ALWAYS": "Vždy",
+                "TIME_PASSED": "Uplynulý čas",
+                "VARIABLE": "Proměnná"
+            },
+            "time-passed": {
+                "label": "Čas od otevření",
+                "OPEN": "Materiálu",
+                "SLIDE": "Snímku",
+                "time": "Čas"
+            },
+            "properties": {
+                "position-x": "Pozice X",
+                "position-y": "Pozice Y",
+                "width": "Šířka",
+                "height": "Výška",
+                "rotation": "Rotace",
+                "z-index": "Z-index",
+                "opacity": "Průhlednost",
+                "content": "Obsah",
+                "imageUrl": "Odkaz na obrázek",
+                "color": "Barva",
+                "shape": "Tvar"
+            }
+        },
+        "opacity": {
+            "label": "Průhlednost"
+        },
+        "position": {
+            "label": "Pozice",
+            "x": "X",
+            "y": "Y"
+        },
+        "rotation": {
+            "label": "Rotace"
+        },
+        "size": {
+            "label": "Velikost",
+            "width": "Š",
+            "height": "V"
+        }
+    }
+}

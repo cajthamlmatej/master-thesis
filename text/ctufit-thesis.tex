@@ -29,7 +29,7 @@
 % language: czech/english/slovak
 % thesis type: bachelor/master/dissertation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[czech,master,unicode]{ctufit-thesis}
+\documentclass[czech,master,unicode,oneside]{ctufit-thesis}
 
 % \geometry{textwidth=38em}
 % \renewcommand{\baselinestretch}{1.15}
@@ -38,7 +38,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FILL IN THIS INFORMATION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ctufittitle{XY} % replace with the title of your thesis
+\ctufittitle{Platforma pro tvorbu interaktivních výukových materiálů} % replace with the title of your thesis
 \ctufitauthorfull{Bc.\,Matěj Cajthaml} % replace with your full name (first name(s) and then family name(s) / surname(s)) including academic degrees
 \ctufitauthorsurnames{Cajthaml} % replace with your surname(s) / family name(s)
 \ctufitauthorgivennames{Matěj} % replace with your first name(s) / given name(s)
@@ -47,10 +47,14 @@
 \ctufityear{2025} % replace with the year of your defence
 \ctufitdeclarationplace{Praze} % replace with the place where you sign the declaration
 \ctufitdeclarationdate{\today} % replace with the date of signature of the declaration
-\ctufitabstractCZE{x}
-\ctufitabstractENG{y}
-\ctufitkeywordsCZE{a}
-\ctufitkeywordsENG{b}
+\ctufitabstractCZE{
+Tato diplomová práce se věnuje analýze, návrhu a implementaci platformy pro tvorbu interaktivních studijních materiálů, jejímž cílem je zvýšit aktivní zapojení studentů do výuky. Klíčové části platformy jsou postaveny na architektuře Vue, NestJS a využívají WebSockets pro synchronizaci prezentací v reálném čase. Podporuje skriptování pomocí komunitních rozšíření a umožňuje nejen tvorbu a prezentaci výukových materiálů, ale i jejich sdílení, společnou editaci a sledování prezentací na zařízeních studentů. Součástí projektu je také prezentační web a technická dokumentace. Aplikace byla nasazena do produkčního prostředí a ověřena uživatelským testováním se studenty i učiteli, doplněným o automatizované testy.
+}
+\ctufitabstractENG{
+This thesis focuses on the analysis, design and implementation of a platform for the creation of interactive learning materials aimed at increasing active student engagement in learning. The key parts of the platform are using Vue, NestJS and also WebSockets for real-time synchronization of presentations. It supports scripting with community extensions and allows not only creating and presenting learning materials, but also sharing, collaborative editing and viewing presentations on students' devices. The project also includes a presentation website and technical documentation. The application has been deployed in a production environment and validated by user testing with students and teachers, supplemented by automated tests.
+}
+\ctufitkeywordsCZE{materiály, prezentace, výuková platforma, interaktivita, zapojení studentů, webová aplikace, Vue, Nest, WebSockets}
+\ctufitkeywordsENG{materials, presentation, learning platform, interactivity, student involvement, web application, Vue, Nest, WebSockets}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % END FILL IN
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -64,20 +68,29 @@
 \iftutex % XeLaTeX and LuaLaTeX
     \RequirePackage{ellipsis}[2020/05/22] %ellipsis workaround for XeLaTeX
 \else
-    \RequirePackage[utf8]{inputenc}[2018/08/11] %this file encoding
-    \RequirePackage{lmodern}[2009/10/30] % vector flavor of Computer Modern font
+    \errmessage{Only compilation with XeLaTeX or LuaLaTeX is allowed}
+    \stop
 \fi
 
+
 % hyperlinks
-\RequirePackage[pdfpagelayout=TwoPageRight,colorlinks=false,allcolors=decoration,pdfborder={0 0 0.1}]{hyperref}[2020-05-15]
+\hypersetup{
+    pdfpagelayout=TwoPageRight,
+    colorlinks=false,
+    allcolors=decoration,
+    pdfborder={0 0 0.1}
+}
 
 % uncomment the following to hide all hyperlinks
-% \RequirePackage[pdfpagelayout=TwoPageRight,hidelinks]{hyperref}[2020-05-15]
+%\hypersetup{hidelinks}
+
+% uncomment the following to change the colour of all hyperlinks to CTU blue
+%\hypersetup{allbordercolors=decoration}
 
 \RequirePackage{pdfpages}[2020/01/28]
 
 \setcounter{secnumdepth}{4} % numbering sections; 4: subsubsection
-\setcounter{tocdepth}{3}
+\setcounter{tocdepth}{2}
 
 
 
@@ -92,36 +105,31 @@
 %%%%%%%%%%%%%%%%%%%%%%
 \usepackage{todonotes}
 \usepackage{xevlna}
-\usepackage{lineno}
-%\linenumbers
+% \usepackage{lineno}
+% \usepackage{parskip}
+% \linenumbers
 
 \usepackage{dirtree}
 \usepackage{lipsum,tikz}
+\usepackage{xurl}
 \usepackage[style=iso-numeric]{biblatex}
 \addbibresource{text/bib-database.bib}
 \usepackage{listings} % typesetting of sources
 \usepackage{minted} % typesetting of sources
 \usepackage{longtable} % long talber
 \usepackage{enumitem} % moving list
+% \usepackage{tabularray}
 
+\usepackage{amssymb}% http://ctan.org/pkg/amssymb
+\usepackage{pifont}
+\usepackage{graphicx}
+ % \usepackage[table,xcdraw]{xcolor}
 
 \usepackage{csquotes}
+\usepackage{tablefootnote}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
 
-%theorems, definitions, etc.
-\theoremstyle{plain}
-\newtheorem{theorem}{Věta}
-\newtheorem{lemma}[theorem]{Tvrzení}
-\newtheorem{corollary}[theorem]{Důsledek}
-\newtheorem{proposition}[theorem]{Návrh}
-\newtheorem{definition}[theorem]{Definice}
-\theoremstyle{definition}
-\newtheorem{example}[theorem]{Příklad}
-\theoremstyle{remark}
-\newtheorem{note}[theorem]{Poznámka}
-\newtheorem*{note*}{Poznámka}
-\newtheorem{remark}[theorem]{Pozorování}
-\newtheorem*{remark*}{Pozorování}
-\numberwithin{theorem}{chapter}
 %theorems, definitions, etc. END
 %%%%%%%%%%%%%%%%%%%%%%
 % DEMO CONTENTS SETTINGS END
@@ -133,28 +141,12 @@
 
 \begin{document} 
 \frontmatter\frontmatterinit % do not remove these two commands
+\thispagestyle{empty}\maketitle\thispagestyle{empty}\cleardoublepage % do not remove these four commands
 
-% \includepdf{cajthmat-assignment.pdf} % replace that file with your thesis assignment provided by study office
-
-\thispagestyle{empty}\cleardoublepage\maketitle % do not remove these three commands
+\includepdf[pages={1-}]{cajthmat-assignment.pdf} % replace this file with your thesis assignment generated from ProjectsFIT
 
 \imprintpage % do not remove this command
-
-\tableofcontents % do not remove this command
-%%%%%%%%%%%%%%%%%%%%%%
-% list of other contents: figures, tables, code listings, algorithms, etc.
-% add/remove commands accordingly
-%%%%%%%%%%%%%%%%%%%%%%
-\listoffigures % list of figures
-\begingroup
-\let\clearpage\relax
-\listoftables % list of tables
-%\lstlistoflistings % list of source code listings generated by the listings package
-\listoflistings % list of source code listings generated by the minted package
-\endgroup
-%%%%%%%%%%%%%%%%%%%%%%
-% list of other contents END
-%%%%%%%%%%%%%%%%%%%%%%
+\stopTOCentries
 
 %%%%%%%%%%%%%%%%%%%
 % ACKNOWLEDGMENT
@@ -162,12 +154,17 @@
 % This is a place to thank people for helping you. It is common to thank your supervisor.
 %%%%%%%%%%%%%%%%%%%
 \begin{acknowledgmentpage}
-    Za pomoc bych chtěl poděkovat:
-    \begin{itemize}
-        \item Ing.\,Marku Suchánkovi, Ph.D. et Ph.D. za odborné vedení a cenné rady.
-        \item Kristýně Dřevikovské za pomoc s korekturou.
-        \item Avě Špráchalů za pomoc s testováním.
-    \end{itemize}
+    Nejprve bych chtěl poděkovat vedoucímu mé diplomové práce, panu Ing.\,Marku Suchánkovi, Ph.D. et Ph.D., za možnost pracovat na využitelném projektu a také za všechny jeho cenné rady a konzultace, kterých se mi během psaní a realizace práce dostalo.
+\\\\
+    Taktéž chci poděkovat všem svým přátelům a testerům, kteří mě v práci podporovali, a práci mi průběžně kontrolovali. Zejména slečně Kristýně Dřevikovské, Avě Špráchalů a panu Denisovi Lengerovi za jejich korekce a neustálou oporu. A také pánům
+    Brodmanovi,
+    Andrýskovi,
+    Křemečkovi
+    a
+    Bruthansi 
+    za pomoc během testování.
+\\\\
+    Velké díky patří i všem mým studentům, kteří mě zejména tento školní rok při práci podporovali, motivovali a vždy předávali cennou zpětnou vazbu. 
 \end{acknowledgmentpage} 
 %%%%%%%%%%%%%%%%%%%
 % ACKNOWLEDGMENT END
@@ -196,69 +193,33 @@ smlouvy o užití této práce jako školního díla podle § 60 odst. 1 citovan
 
 \printabstractpage % do not remove this command
 
+\tableofcontents % do not remove this command
+%%%%%%%%%%%%%%%%%%%%%%
+% list of other contents: figures, tables, code listings, algorithms, etc.
+% add/remove commands accordingly
+%%%%%%%%%%%%%%%%%%%%%%
+\listoffigures % list of figures
+\begingroup
+\let\clearpage\relax
+\listoftables % list of tables
+\thectufitlistingscommand
+\endgroup
+
 %%%%%%%%%%%%%%%%%%%
 % ABBREVIATIONS
 % FILL IN / MODIFY
 % OR REMOVE ENTIRELY
 % List the abbreviations in lexicography order.
 %%%%%%%%%%%%%%%%%%%
-\chapter{Seznam zkratek}
+\chapter{\thectufitabbreviationlabel}
  
-\begin{longtable}{rl}
-AJAX & Asynchronous JavaScript and XML\\
-API & Application Programming Interface\\
-CORS & Cross-Origin Resource Sharing\\
-CRUD & Create Read Update Delete\\
-CSS & Cascading Style Sheets\\
-CSS3 & Cascading Style Sheets verze 3\\
-CSV & Comma separated values\\
-ČVUT & České vysoké učení technické\\
-DI & Dependency injection\\
-DOM & Document Object Model\\
-DTO & Data Transfer Object\\
-FIT & Fakulta informačních technologií\\
-GUI & Graphical User Interface\\
-HTML & HyperText Markup Language\\
-HTML5 & HyperText Markup Language verze 5\\
-HTTP & Hypertext Transfer Protocol\\
-HTTPS & Hypertext Transfer Protocol Secure\\
-IS & Informační systém\\
-JS & JavaScript\\
-JSON & JavaScript Object Notation\\
-JSX & JavaScript Syntax Extension\\
-JWT & JSON Web Token\\
-Less & Leaner Style Sheets\\
-NoSQL & Not only SQL\\
-npm & Node Package Manager\\
-ODM & Object Document Mapping\\
-ORM & Object Relation Mapping\\
-SQL & Structured query language\\
-REST & Representational State Transfer\\
-Sass & Syntactically awesome style sheets\\
-SEO & Search Engine Optimalization\\
-SOAP & Simple Object Access Protocol\\
-SPA & Single Page Application\\
-SŘBD & Systém řízení báze dat\\
-SSPŠ & Smíchovská střední průmyslová škola\\
-SSR & Server-side rendering\\
-ŠIS & Školní informační systém\\
-TS & TypeScript\\
-UI & User Interface\\
-UX & User Experience\\
-URI & Uinform Resource Identificator\\
-URL & Uniform Resource Locator\\
-WWW & World Wide Web\\
-WYSIWYG & What you see is what you get\\
-WYSIWYM & What you see is what you mean\\
-W3C & World Wide Web Consortium\\
-XML & Extensible Markup Language\\
-\end{longtable}
+\input{text/abbreviations}
 %%%%%%%%%%%%%%%%%%%
 % ABBREVIATIONS END
 %%%%%%%%%%%%%%%%%%%
 
+\resumeTOCentries
 \mainmatter\mainmatterinit % do not remove these two commands
-
 %%%%%%%%%%%%%%%%%%%
 % THE THESIS
 % MODIFY ANYTHING BELOW THIS LINE

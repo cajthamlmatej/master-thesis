@@ -1,0 +1,19 @@
+FROM node:20 as builder
+WORKDIR /app
+COPY . .
+RUN npm install
+
+ARG HOMEPAGE_DOMAIN
+RUN echo "\nVITE_HOME=${HOMEPAGE_DOMAIN}" >> .env
+ARG DOCS_DOMAIN
+RUN echo "\nVITE_DOCS=${DOCS_DOMAIN}" >> .env
+ARG API_DOMAIN
+RUN echo "\nVITE_API=${API_DOMAIN}" >> .env
+
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80

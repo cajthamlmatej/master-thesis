@@ -1,0 +1,14 @@
+Dockerfile
+
+.git
+.gitignore
+.config
+.npm
+
+.vscode
+node_modules
+
+dist
+temp
+test
+upload

@@ -1,0 +1,1039 @@
+@use 'sass:math';
+
+.editor {
+    transform-origin: top left;
+
+    // Arbitrary size for the correct sizing of the editor
+    width: 100px;
+    height: 100px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    flex-shrink: 0;
+    flex-grow: 0;
+
+    background-color: #fff;
+
+    box-shadow: var(--shadow-primary);
+
+    // --- OTHERS ---
+
+    > .editor-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+
+        > .block {
+            position: absolute;
+            display: block;
+            --selector-size: calc(0.1 * var(--vh, 1vh) / var(--scale));
+
+            > .block-content {
+                transform-origin: top left;
+                contain: layout style;
+
+                outline: 0;
+            }
+
+            // --- STATES-ABLE ---
+            &--selectable {
+                cursor: pointer;
+
+                &:not(&.block--selected):hover:not(&.block--locked) {
+                    outline: var(--selector-size) ridge rgba(0, 0, 0, 0.24);
+                }
+            }
+
+            &--resizable {
+            }
+
+            &--rotatable {
+            }
+
+            &--movable {
+                &.block--selected {
+                    cursor: move;
+                }
+            }
+
+            &--moving {
+                cursor: move;
+            }
+
+            &--hover.block--selectable:not(&.block--locked) {
+                outline: var(--selector-size) ridge rgba(0, 0, 0, 0.24);
+            }
+
+            // --- STATES ---
+            &--selected {
+                //outline: 4px solid rgba(101, 194, 183, 1);
+                outline: var(--selector-size) ridge rgba(0, 0, 0, 0.24);
+                box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.24);
+            }
+
+            // --- TYPES ---
+            &--type-watermark {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+                font-size: 24px;
+                font-family: sans-serif;
+            }
+
+            &--type-text {
+                font-variant: normal;
+                font-family: Helvetica, sans-serif !important;
+
+                ul, ol {
+                    list-style-position: inside;
+
+                    li p {
+                        display: inline;
+                    }
+                }
+
+                ul {
+                    list-style-type: disc;
+                }
+
+                &.block--movable.block--selected {
+                    cursor: pointer;
+                }
+            }
+
+            &--type-image {
+                img {
+                    display: block;
+                    height: 100%;
+                    width: 100%;
+                    object-fit: cover;
+
+                    pointer-events: none;
+                    user-focus: none;
+                    user-select: none;
+                    -moz-user-select: none;
+                    -webkit-user-drag: none;
+                    -webkit-user-select: none;
+                    -ms-user-select: none;
+                    -webkit-user-drag: none;
+                    -khtml-user-drag: none;
+                    -moz-user-drag: none;
+                    -o-user-drag: none;
+                    user-drag: none;
+                }
+
+                &--failed {
+                    overflow: hidden;
+                    position: absolute;
+                    background-color: rgba(255, 30, 40, 0.3);
+
+                    &::after {
+                        content: var(--text);
+                        position: absolute;
+                        background-color: rgba(255, 12, 40, 0.5);
+
+                        padding: 0.3em;
+                        bottom: 0;
+                        left: 0;
+                        text-align: center;
+
+                        width: 100%;
+
+                        font-size: 1.25em;
+                    }
+
+                    &::before {
+                        // Material design icon
+                        content: "\F0A04";
+                        display: inline-block;
+                        font: normal normal normal 24px / 1 "Material Design Icons";
+                        text-rendering: auto;
+                        line-height: inherit;
+                        -webkit-font-smoothing: antialiased;
+
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: clamp(1em, 10cqmin, 5em);
+
+                        color: black;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+
+                    img {
+                        display: none;
+                    }
+                }
+            }
+
+            &--type-shape {
+                svg {
+                    display: block;
+                    height: 100%;
+                    width: 100%;
+                }
+
+                > .block-content {
+                    height: 100%;
+                    width: 100%;
+
+                    &.one-line {
+                        display: flex;
+                        align-items: center;
+                        height: 100%;
+                        width: 100%;
+
+                        svg {
+                            height: 100%;
+                            width: auto;
+                        }
+
+                        &.grow-2 {
+                            svg:nth-child(2) {
+                                flex-grow: 2;
+                                transform: scale(1.02);
+                            }
+                        }
+                    }
+                }
+            }
+
+            &--type-interactiveArea {
+                position: relative;
+                cursor: pointer;
+                background-color: rgba(110, 79, 169, 0.7);
+                overflow: hidden;
+
+                &::after {
+                    content: var(--text);
+                    position: absolute;
+                    background-color: rgba(123, 87, 196, 0.7);
+                    color: var(--color-text);
+
+                    padding: 0.3em;
+                    bottom: 0;
+                    left: 0;
+                    text-align: center;
+
+                    width: 100%;
+
+                    font-size: 0.75em;
+                }
+
+                &::before {
+                    // Material design icon
+                    content: "\F0CFE";
+                    display: inline-block;
+                    font: normal normal normal 24px / 1 "Material Design Icons";
+                    text-rendering: auto;
+                    line-height: inherit;
+                    -webkit-font-smoothing: antialiased;
+
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: clamp(1em, 10cqmin, 3em);
+
+                    color: black;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+            }
+
+            &--type-mermaid {
+                &:not(&--editable) {
+                    > .block-content {
+                        height: 100%;
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        > svg, iframe {
+                            height: 100%;
+                            width: 100%;
+                            flex-grow: 1;
+                            object-fit: contain;
+                            max-width: 100% !important;
+
+                            border: 0;
+                            pointer-events: none;
+                        }
+                    }
+                }
+
+                &--editable {
+                    background-color: white;
+                    box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.24);
+
+                    > .block-content {
+                        height: 100%;
+                        width: 100%;
+
+                        padding: 0.5em;
+
+                        overflow: auto;
+                    }
+                }
+
+
+                &--failed {
+                    overflow: hidden;
+                    position: absolute;
+                    background-color: rgba(255, 30, 40, 0.3);
+
+                    &::after {
+                        content: var(--text);
+                        position: absolute;
+                        background-color: rgba(255, 12, 40, 0.5);
+
+                        padding: 0.3em;
+                        bottom: 0;
+                        left: 0;
+                        text-align: center;
+
+                        width: 100%;
+
+                        font-size: 1.25em;
+                    }
+
+                    &::before {
+                        // Material design icon
+                        content: "\F19E2";
+                        display: inline-block;
+                        font: normal normal normal 24px / 1 "Material Design Icons";
+                        text-rendering: auto;
+                        line-height: inherit;
+                        -webkit-font-smoothing: antialiased;
+
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: clamp(1em, 10cqmin, 5em);
+
+                        color: black;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+
+                    img {
+                        display: none;
+                    }
+                }
+
+
+                &.block--movable.block--selected:not(&.block--moving) {
+                    cursor: pointer;
+                }
+            }
+
+
+            &--type-iframe {
+                &:not(&--editable) {
+                    > .block-content {
+                        height: 100%;
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        > svg, iframe {
+                            height: 100%;
+                            width: 100%;
+                            flex-grow: 1;
+                            object-fit: contain;
+                            max-width: 100% !important;
+
+                            border: 0;
+                            pointer-events: none;
+                        }
+                    }
+                }
+
+                &--editable {
+                    background-color: white;
+                    box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.24);
+
+                    > .block-content {
+                        height: 100%;
+                        width: 100%;
+
+                        padding: 0.5em;
+
+                        overflow: auto;
+                    }
+                }
+
+                &.block--movable.block--selected:not(&.block--moving) {
+                    cursor: pointer;
+                }
+            }
+
+            &--type-plugin {
+                > .block-content {
+                    height: 100%;
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    > iframe {
+                        height: 100%;
+                        width: 100%;
+                        flex-grow: 1;
+                        object-fit: contain;
+                        max-width: 100% !important;
+
+                        border: 0;
+                        pointer-events: none;
+                    }
+                }
+
+                &--failed {
+                    overflow: hidden;
+                    position: absolute;
+                    background-color: rgba(255, 30, 40, 0.3);
+
+                    &::after {
+                        content: var(--text);
+                        position: absolute;
+                        background-color: rgba(255, 12, 40, 0.5);
+
+                        padding: 0.3em;
+                        bottom: 0;
+                        left: 0;
+                        text-align: center;
+
+                        width: 100%;
+
+                        font-size: 1.25em;
+                    }
+
+                    &::before {
+                        // Material design icon
+                        content: "\F0A04";
+                        display: inline-block;
+                        font: normal normal normal 24px / 1 "Material Design Icons";
+                        text-rendering: auto;
+                        line-height: inherit;
+                        -webkit-font-smoothing: antialiased;
+
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: clamp(1em, 10cqmin, 5em);
+
+                        color: black;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+
+                    img {
+                        display: none;
+                    }
+                }
+            }
+
+            &--type-chat {
+                overflow: hidden;
+
+                display: flex;
+                flex-direction: column;
+                gap: 1em;
+
+                background-color: #f3f3f3;
+                border-radius: 1em;
+                box-shadow: var(--shadow-accent);
+
+                .header {
+                    padding: 0.5em 1em;
+                    background-color: var(--color-primary);
+
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    span {
+                        font-weight: 900;
+                        font-size: 2em;
+                        color: white;
+                    }
+
+                    input {
+                        border: 0;
+                        border-radius: 1em;
+                        padding: 0.5em;
+                        background-color: #fff;
+                        box-shadow: var(--shadow-accent);
+                        font-size: 1em;
+                        width: 100%;
+                    }
+
+                    .actions {
+                        display: flex;
+                        align-content: center;
+                        gap: 1em;
+                    }
+
+                    .button {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 3rem;
+                        height: 3rem;
+                        color: white;
+                        font-size: 1.8em;
+                        background-color: transparent;
+                        border: 0;
+                        border-radius: 1em;
+                        transition: background-color 0.2s, color 0.2s;
+                        cursor: not-allowed;
+                    }
+                }
+
+                .chat {
+                    padding: 0.5em;
+                    flex-grow: 1;
+                    max-width: 100%;
+
+                    overflow-y: auto;
+
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5em;
+
+                    .message {
+                        background-color: #fff;
+                        border-radius: 1em;
+                        padding: 0.5em;
+
+                        .message-content {
+                            border-radius: 1em;
+                            margin: 0;
+                            font-size: 1em;
+                        }
+
+                        .message-author {
+                            font-weight: 900;
+                            font-size: 0.8em;
+                        }
+                    }
+                }
+
+                .send {
+                    padding: 0.5em;
+                    display: flex;
+                    gap: 1em;
+
+                    > * {
+                        flex-grow: 1;
+                    }
+
+                    input {
+                        border: 0;
+                        border-radius: 1em;
+                        padding: 0.5em;
+                        background-color: #fff;
+                        box-shadow: var(--shadow-accent);
+                        font-size: 1em;
+                        width: 100%;
+                    }
+
+                    button {
+                        border: 0;
+                        border-radius: 1em;
+                        padding: 0.5em 1em;
+                        background-color: var(--color-primary);
+                        color: white;
+                        box-shadow: var(--shadow-accent);
+                        font-size: 1em;
+                        transition: background-color 0.2s;
+                        cursor: not-allowed;
+
+                    }
+                }
+            }
+        }
+    }
+
+    > .editor-selector {
+        position: absolute;
+        z-index: 2000;
+        top: 0;
+        left: 0;
+        width: 300px;
+        height: 200px;
+        display: none;
+        user-select: none;
+        touch-action: none;
+        pointer-events: none;
+
+        &--active {
+            display: block;
+        }
+
+        > .move {
+            --selector-size: calc(0.25 * var(--vh, 1vh) / var(--scale));
+            //--selector-size: 2px;
+            display: none;
+            position: absolute;
+            pointer-events: auto;
+            cursor: move;
+
+            &::after {
+                position: absolute;
+                border-style: solid;
+                border-width: var(--selector-size);
+                border-color: var(--color-primary-dark);
+            }
+
+            &--top {
+                height: calc(2 * var(--selector-size));
+                width: 100%;
+                top: calc(-0.5 * var(--selector-size));
+                left: 0;
+
+                &::after {
+                    content: '';
+                    top: 0;
+
+                    height: 0;
+                    width: 100%;
+
+                    border-left: 0;
+                    border-right: 0;
+                    border-bottom: 0;
+                }
+            }
+
+            &--bottom {
+                height: calc(2 * var(--selector-size));
+                width: 100%;
+                bottom: calc(-0.5 * var(--selector-size));
+                left: 0;
+
+                &::after {
+                    content: '';
+                    bottom: 0;
+
+                    height: 0;
+                    width: 100%;
+
+                    border-left: 0;
+                    border-right: 0;
+                    border-top: 0;
+                }
+            }
+
+            &--left {
+                width: calc(2 * var(--selector-size));
+                height: 100%;
+                top: 0;
+                left: calc(-0.5 * var(--selector-size));
+
+                &::after {
+                    content: '';
+                    left: 0;
+
+                    height: 100%;
+                    width: 0;
+
+                    border-top: 0;
+                    border-bottom: 0;
+                    border-right: 0;
+                }
+            }
+
+            &--right {
+                width: calc(2 * var(--selector-size));
+                height: 100%;
+                top: 0;
+                right: calc(-0.5 * var(--selector-size));
+
+                &::after {
+                    content: '';
+                    right: 0;
+
+                    height: 100%;
+                    width: 0;
+
+                    border-top: 0;
+                    border-bottom: 0;
+                    border-left: 0;
+                }
+            }
+        }
+
+        > .resize {
+            --selector-size: calc(0.4 * var(--vh, 1vh) / var(--scale));
+            display: none;
+            position: absolute;
+            $size: 3;
+            width: calc($size * var(--selector-size));
+            height: calc($size * var(--selector-size));
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            background-color: var(--color-primary-light);
+            box-shadow: var(--shadow-accent);
+            outline: calc(1 * var(--selector-size)) solid rgba(255, 255, 255, 0.24);
+            pointer-events: auto;
+
+            &--top-right {
+                top: calc(-1 * (math.div($size, 2)) * var(--selector-size));
+                right: calc(-1 * (math.div($size, 2)) * var(--selector-size));
+                cursor: ne-resize;
+            }
+
+            &--top-left {
+                top: calc(-1 * (math.div($size, 2)) * var(--selector-size));
+                left: calc(-1 * (math.div($size, 2)) * var(--selector-size));
+                cursor: nw-resize;
+            }
+
+            &--bottom-right {
+                bottom: calc(-1 * (math.div($size, 2)) * var(--selector-size));
+                right: calc(-1 * (math.div($size, 2)) * var(--selector-size));
+                cursor: se-resize;
+            }
+
+            &--bottom-left {
+                bottom: calc(-1 * (math.div($size, 2)) * var(--selector-size));
+                left: calc(-1 * (math.div($size, 2)) * var(--selector-size));
+                cursor: sw-resize;
+            }
+
+            &--middle-right {
+                top: 50%;
+                right: calc(-1 * (math.div($size, 2)) * var(--selector-size));
+                transform: translateY(-50%);
+                cursor: e-resize;
+            }
+
+            &--middle-left {
+                top: 50%;
+                left: calc(-1 * (math.div($size, 2)) * var(--selector-size));
+                transform: translateY(-50%);
+                cursor: w-resize;
+            }
+
+            &--top-middle {
+                top: calc(-1 * (math.div($size, 2)) * var(--selector-size));
+                left: 50%;
+                transform: translateX(-50%);
+                cursor: n-resize;
+            }
+
+            &--bottom-middle {
+                bottom: calc(-1 * (math.div($size, 2)) * var(--selector-size));
+                left: 50%;
+                transform: translateX(-50%);
+                cursor: s-resize;
+            }
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: calc((math.div($size, 2)) * var(--selector-size));
+                height: calc((math.div($size, 2)) * var(--selector-size));
+                background-color: white;
+                border-radius: 50%;
+                opacity: 0;
+            }
+
+            &:hover {
+                &::after {
+                    opacity: 1;
+                }
+            }
+        }
+
+
+        &--move {
+            > .move {
+                display: block;
+            }
+        }
+
+        //&:not(&--move) {
+        //    border: 4px dashed rgba(0, 0, 0, 0.2);;
+        //}
+
+        &--proportional-resizing {
+            > .resize--top-left, > .resize--top-right, > .resize--bottom-left, > .resize--bottom-right {
+                display: block;
+            }
+        }
+
+        &--non-proportional-resizing-x {
+            > .resize--middle-left, > .resize--middle-right {
+                display: block;
+            }
+        }
+
+        &--non-proportional-resizing-y {
+            > .resize--top-middle, > .resize--bottom-middle {
+                display: block;
+            }
+        }
+
+        > .rotate {
+            --selector-size: calc(0.5 * var(--vh, 1vh) / var(--scale));
+            display: none;
+            position: absolute;
+            bottom: calc(-1 * 2 * 5 * var(--selector-size));
+            right: 50%;
+            pointer-events: auto;
+            cursor: grab;
+
+            transform: translateX(50%);
+
+            width: calc(4 * var(--selector-size));
+            height: calc(4 * var(--selector-size));
+
+            border-radius: 50%;
+
+            background-color: var(--color-primary-light);
+            box-shadow: var(--shadow-accent);
+            outline: calc(1 * var(--selector-size)) solid rgba(255, 255, 255, 0.24);
+        }
+
+        &--rotation {
+            > .rotate {
+                display: block;
+            }
+        }
+
+        &--solo {
+            //.move {
+            //    display: none;
+            //}
+        }
+    }
+
+    > .editor-select-box {
+        display: none;
+        background: #6c29ff1a;
+        border: 0.25vh dashed #6c29ff;
+
+        position: absolute;
+        z-index: 2000;
+        pointer-events: none;
+
+        &--active {
+            display: block;
+        }
+    }
+
+    > .editor-context {
+        --selector-size: calc(0.5 * var(--vh, 1vh) / var(--scale));
+
+        position: absolute;
+        z-index: 2100;
+        top: 0;
+        left: 0;
+        display: none;
+
+        user-select: none;
+
+        background-color: var(--color-background-accent);
+        backdrop-filter: blur(18px);
+        box-shadow: var(--shadow-accent);
+        border-radius: var(--border-radius);
+        //padding: 0.25em;
+        width: max-content;
+        padding: 0.75em 0;
+
+        &--active {
+            display: block;
+        }
+
+        > .action {
+            display: none;
+            cursor: pointer;
+            padding: 0.25em 1rem;
+            border-radius: 0.1em;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+
+            &--visible {
+                display: block;
+            }
+        }
+    }
+
+    > .editor-selector-context {
+        --action-size: 40px;
+        --x: 0;
+        --y: 0;
+
+        display: none;
+        position: absolute;
+        z-index: 2100;
+
+        user-select: none;
+        top: var(--y);
+        left: var(--x);
+
+        gap: calc(var(--action-size) / 4);
+
+        &--active {
+            display: flex;
+        }
+
+        > .action {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            width: var(--action-size);
+            height: var(--action-size);
+            padding: 0.25em;
+            background-color: var(--color-primary);
+            outline: 0.2em solid rgba(255, 255, 255, 0.24);
+            border-radius: 50%;
+            font-size: 1.5em;
+            color: white;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+                background-color: var(--color-primary-dark);
+            }
+
+            &--visible {
+                display: flex;
+            }
+        }
+    }
+
+    > .editor-group-areas {
+        position: absolute;
+        z-index: 1000;
+
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        user-select: none;
+        pointer-events: none;
+
+        > .group-area {
+            position: absolute;
+            border: 3px dotted;
+            border-color: var(--group-area-color, #6c29ff);
+            opacity: 0.5;
+        }
+    }
+
+    > .editor-attendee {
+        position: absolute;
+        z-index: 1050;
+
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        user-select: none;
+        pointer-events: none;
+
+        > .area {
+            position: absolute;
+            border: 3px solid;
+            border-color: var(--area-color, #000000);
+            opacity: 1;
+            overflow: hidden;
+            container-type: inline-size;
+
+            > span {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                background-color: var(--area-color, #000000);
+                padding: 0.25em 1em;
+                border-top-right-radius: 1em;
+                font-size: 5.5cqmin;
+            }
+        }
+    }
+
+    > .editor-snapping {
+        position: absolute;
+        z-index: 1100;
+
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        user-select: none;
+        pointer-events: none;
+
+        overflow: hidden;
+
+        &--hidden {
+            display: none;
+        }
+
+        > .line {
+            position: absolute;
+            pointer-events: none;
+
+            top: var(--y, 0px);
+            left: var(--x, 0px);
+
+            background-color: var(--color-primary);
+            opacity: 0.5;
+
+            &--horizontal {
+                width: 100%;
+                height: 1px;
+            }
+
+            &--vertical {
+                width: 1px;
+                height: 100%;
+            }
+        }
+    }
+
+    // --- MODES ---
+    &--mode-move {
+        cursor: move;
+
+        > .editor-content > .block--selectable {
+            cursor: move;
+
+            &:not(&.block--selected):hover:not(&.block--locked) {
+                outline: 0;
+            }
+        }
+    }
+}

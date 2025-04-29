@@ -1,0 +1,118 @@
+[
+    {
+        "id": "2556c1ea-8c5d-484e-92ee-6a1cef1c1c6d",
+        "position": 0,
+        "data": {
+            "editor": {
+                "size": {
+                    "width": 1920,
+                    "height": 1080
+                },
+                "color": "#ffffff"
+            },
+            "blocks": [
+                {
+                    "content": "Your text here",
+                    "fontSize": 54,
+                    "id": "06ddff62-f241-48c7-93ca-af94458143c7",
+                    "type": "text",
+                    "position": {
+                        "x": 720,
+                        "y": 499
+                    },
+                    "size": {
+                        "width": 480,
+                        "height": 81
+                    },
+                    "rotation": 0,
+                    "zIndex": 1,
+                    "opacity": 1,
+                    "locked": false,
+                    "interactivity": []
+                },
+                {
+                    "color": "#1a1a19",
+                    "shape": "arrow-1",
+                    "id": "c18ddecb-e030-4930-bbb7-b68158f936b9",
+                    "type": "shape",
+                    "position": {
+                        "x": 398,
+                        "y": 350
+                    },
+                    "size": {
+                        "width": 1011.995012468828,
+                        "height": 270
+                    },
+                    "rotation": 0,
+                    "zIndex": 2,
+                    "opacity": 1,
+                    "locked": false,
+                    "interactivity": []
+                }
+            ]
+        }
+    },
+    {
+        "id": "7ffe7ead-aef9-4ac4-9bbe-1d7360ead124",
+        "position": 1,
+        "data": {
+            "editor": {
+                "size": {
+                    "width": 1920,
+                    "height": 1080
+                },
+                "color": "#ffffff"
+            },
+            "blocks": [
+                {
+                    "id": "b62a2e66-7764-4fbc-b32a-4edad1f214a8",
+                    "type": "interactiveArea",
+                    "position": {
+                        "x": 228,
+                        "y": 145
+                    },
+                    "size": {
+                        "width": 1402.5187032418953,
+                        "height": 796.5336658354115
+                    },
+                    "rotation": 0,
+                    "zIndex": 1,
+                    "opacity": 1,
+                    "locked": false,
+                    "interactivity": [
+                        {
+                            "id": "r2sqe4",
+                            "event": "CLICKED",
+                            "timerType": "TIMEOUT",
+                            "timerTime": 0,
+                            "actions": [
+                                {
+                                    "id": "004b8327-c42c-40c1-818e-20d0cf0d235b",
+                                    "action": "OPEN_LINK",
+                                    "slideType": "NEXT",
+                                    "on": "SELF",
+                                    "property": "position-x",
+                                    "blocks": [],
+                                    "slideIndex": 0,
+                                    "value": "",
+                                    "relative": false,
+                                    "animate": false,
+                                    "duration": 0,
+                                    "easing": "LINEAR",
+                                    "changeVariable": "",
+                                    "changeVariableValue": ""
+                                }
+                            ],
+                            "condition": "ALWAYS",
+                            "time": 0,
+                            "timeFrom": "OPEN",
+                            "ifVariable": "",
+                            "ifVariableValue": "",
+                            "ifVariableOperator": "EQUALS"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]

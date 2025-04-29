@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+        
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 20px;
+        }
+
+        .button {
+            display: flex;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+
+            background-color: #2c3e50;
+            border-radius: 10px;
+
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button span {
+            font-size: 4em;
+            font-weight: bold;
+            color: #ecf0f1;
+            text-align: center;
+        }
+
+        #yes {
+            background-color: #2ecc71;
+        }
+        #no {
+            background-color: #e74c3c;
+        }
+        #yes:hover {
+            background-color: #27ae60;
+        }
+        #no:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="yes" class="button">
+        <span>Yes</span>
+    </div>
+    <div id="no" class="button">
+        <span>No</span>
+    </div>
+
+    <script>
+        const yesButton = document.getElementById('yes');
+        const noButton = document.getElementById('no');
+
+        yesButton.addEventListener('click', () => {    
+            window.parent.postMessage({target: "script", message: "yes"}, "*");
+        });
+        noButton.addEventListener('click', () => {    
+            window.parent.postMessage({target: "script", message: "no"}, "*");
+        });
+    </script>
+</body>
+
+</html>

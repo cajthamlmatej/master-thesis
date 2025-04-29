@@ -1,0 +1,132 @@
+export const initEditor = function () {
+    api.editor.registerCustomBlock({
+        icon: "form-textbox-password",
+        id: "wordWall",
+        name: "Word Wall",
+    });
+    api.editor.on("createCustomBlock", () => {
+        const editor = api.editor;
+
+        let centerX = editor.getSize().width / 2;
+        let centerY = editor.getSize().height / 2;
+
+        centerX -= 100;
+        centerY -= 100;
+
+        return editor.addBlock({
+            type: 'plugin',
+            position: {
+                x: centerX,
+                y: centerY
+            },
+            size: {
+                width: 200,
+                height: 200
+            },
+            rotation: 0,
+            zIndex: 1000,
+            opacity: 1,
+            data: {},
+            properties: []
+        });
+    });
+    api.editor.on("pluginBlockRender", function (block) {
+        return `<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Wall</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+        }
+
+        #word-wall {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-content: center;
+            width: 100%;
+            min-height: 100vh;
+            gap: 1em;
+            box-sizing: border-box;
+        }
+
+        .word {
+            align-self: center;
+            height: fit-content;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: transform 0.3s, background 0.3s, font-size 0.3s ease;
+        }
+
+        .word:hover {
+            transform: scale(1.1) rotate(-2deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="word-wall"></div>
+
+    <script>
+        const wordCounts = {};
+
+        const MAX_FONT_SIZE = 64;
+        const MIN_FONT_SIZE = 14;
+
+        function getRandomColor() {
+            const colors = [
+                '#e74c3c', '#8e44ad', '#3498db', '#1abc9c', '#f1c40f', '#e67e22', '#2ecc71', '#9b59b6'
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function calculateFontSize(count, maxCount) {
+            const scale = (count / maxCount);
+            return MIN_FONT_SIZE + scale * (MAX_FONT_SIZE - MIN_FONT_SIZE);
+        }
+
+        function addWordToWall(word) {
+            const container = document.getElementById('word-wall');
+            wordCounts[word] = (wordCounts[word] || 0) + 1;
+
+            const maxCount = Math.max(...Object.values(wordCounts));
+
+            Object.entries(wordCounts).forEach(([w, count]) => {
+                let span = document.getElementById(\`word-\${w}\`);
+                if (!span) {
+                    span = document.createElement('span');
+                    span.className = 'word';
+                    span.id = \`word-\${w}\`;
+                    span.textContent = w;
+                    span.style.backgroundColor = getRandomColor();
+                    container.appendChild(span);
+                }
+                const fontSize = calculateFontSize(count, maxCount);
+                span.style.fontSize = fontSize + 'px';
+            });
+        }
+
+        ["Here", "you", "will", "see", "the", "words", "that", "others", "words", "words", "will", "add"].forEach(word => {
+            addWordToWall(word);
+        });
+    </script>
+</body>
+
+</html>`;
+    });
+};

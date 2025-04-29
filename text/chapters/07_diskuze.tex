@@ -1,0 +1,80 @@
+\chapter{Diskuze}\label{text:diskuze}
+
+Aplikace byla implementována a otestována podle návrhu, který vznikl v analytické fázi práce.
+Hlavní funkce byly realizovány včetně podpory interaktivity a možnosti komunitních rozšíření.
+Platforma je v současném stavu použitelná pro běžné scénáře výuky, což potvrdilo i testování.
+Z výsledků testování vyplynulo, že aplikace splňuje požadavky na použitelnost a odpovídá potřebám cílové skupiny.
+
+Veškeré navržené části systému aktuálně považuji za smysluplné a přínosné. 
+Nepředpokládám, že by bylo potřeba některou ze stávajících funkcí výrazně přepracovávat. 
+Architektura i návrhové principy se v praxi osvědčily.
+
+Přestože vývoj pokročil výrazně dál, než bylo původně plánováno, některé oblasti je nutné dále zmínit i mimo rozsah diplomové práce, aby mohly být v budoucnu zpracovány. 
+V této kapitole proto shrnuji vybrané směry dalšího vývoje, které by mohly přinést výrazné zlepšení platformy:
+
+\begin{description}
+  \item[Bezpečnost rozšíření] Systém rozšíření je již implementován a aktivně používán. 
+  V tuto chvíli předpokládám, že základní architektura poskytuje dostatečnou izolaci, ale nebylo provedeno hlubší testování s důrazem na odolnost proti škodlivému chování. 
+  Do budoucna by bylo vhodné zaměřit se na podrobnější analýzu bezpečnostních rizik, připravit možné reakce na útoky a zvážit například zavedení lepšího mechanismu pro kontrolované spouštění nedůvěryhodného kódu včetně jednoduché změny spouštěče.
+
+  \item[Moderování a správa obsahu] Aplikace zatím neobsahuje administraci ani nástroje pro moderování. 
+  Veřejné materiály nelze mazat, rozšíření nelze odstraňovat z důvodu porušení pravidel a neexistuje možnost blokovat uživatele. 
+  K tomu by bylo potřeba navrhnout a implementovat systém rolí, například na bázi RBAC, který by umožňoval řídit přístup k těmto funkcím. To je klíčové pro zajištění kvality a bezpečnosti v případě, že platformu začne využívat širší komunita.
+
+  \item[Kolaborace a synchronizace] Základní forma kolaborace je dostupná, ale má svá omezení.
+  Vylepšením by byla přesnější synchronizace bloků mezi uživateli (místo současného zamykání), možnost chatování v reálném čase a historie změn uložená na serveru. 
+  To by umožnilo vracet se zpět k předchozím verzím materiálů a zlepšilo by to přehled při skupinové práci.
+
+  \item[Rozšíření bloků] Dostupné bloky pokrývají základní scénáře, ale chybí pokročilé možnosti úprav. 
+  Například textový blok neumožňuje nastavovat výšku řádku nebo pohodlně manipulovat s rozložením. 
+  Do budoucna by bylo vhodné přidat další typy bloků a zjednodušit práci s existujícími.
+  Užitečné by byly i bloky, které umožňují interaktivní odkrývání obsahu nebo dynamické přesouvání prvků na plátně.
+
+  \item[Offline režim] Aplikace je zatím závislá na internetovém připojení. 
+  Bylo by přínosné umožnit alespoň částečné použití v offline režimu, například prostřednictvím PWA nebo nativní aplikace. 
+  Materiály by se mohly ukládat lokálně a synchronizovat později, což by rozšířilo možnosti použití mimo standardní prostředí.
+
+  \item[Import a export] V současné době je export omezen na formáty JSON a PDF. 
+  Pro větší kompatibilitu by bylo vhodné přidat podporu formátu PPTX, alespoň v základní podobě. 
+  To by umožnilo jednodušší přenos materiálů do jiných prezentačních nástrojů a zvýšilo srozumitelnost pro širší publikum.
+
+  \item[Režim prezentujícího] Prezentující v současnosti vidí stejné snímky jako sledující, pouze s několika drobnými úpravami. 
+  Užitečné by bylo přidat samostatné okno s poznámkami, které by nebyly součástí prezentace. 
+  Takový režim by zlepšil připravenost prezentujícího a umožnil mu lépe reagovat během výkladu.
+
+  \item[Sdílení materiálů] Sdílení pomocí odkazu a kódu je funkční, ale zbytečně složité. 
+  Do budoucna by bylo vhodné zavést možnost chráněného sdílení přes heslo nebo jednodušší autentizaci, která by umožnila například jednorázový přístup nebo skupinový přístup pomocí QR kódu.
+
+  \item[Podpora rozšíření] Rozšíření již teď mají k dispozici řadu přístupových bodů do API, ale pro lepší neomezenou práci s materiály by bylo lepši přidat další možnosti.
+  Mohlo by se jednat o lepší práci s materiály jako takovými (přístup k tvorbě snímků, úprav i mimo aktivní editor), přístup k více funkcionalitám bloků (interaktivita, animování) a obecně lepší reakce na uživatelské interakce.
+
+  \item[Organizace materiálů] Uživatelská správa materiálů je nyní lineární, bez možnosti složek či jiné struktury. 
+  To začíná být problém při větším množství dokumentů. 
+  Zavedení složek a stromového zobrazení by výrazně zlepšilo přehlednost a správu obsahu pro velké množství materiálů.
+
+  \item[Škálovatelnost a nasazení] Aktuální verze je vhodná pro malý počet uživatelů a není připravena na masové nasazení. 
+  Nyní je vhodné, aby si aplikaci hostoval malý počet lidí (například škola) samostatně.
+  Serverová část nedokáže řešit složitější scénáře sdílení napříč instancemi nebo více servery, jako například pro kolaboraci či sledování.
+  Škálování databáze je vyřešeno pomocí MongoDB, ale aplikační logika by potřebovala adaptaci pro robustnější provoz. 
+  Je nutné promyslet architekturu, která by zvládala větší zatížení a umožnila decentralizaci vlastnictví obsahu.
+
+  \item[Šablony] Aplikace zatím neobsahuje systém šablon. 
+  Ten je však zásadní pro efektivní a estetickou tvorbu prezentací na základě předdefinovaných designů. 
+  Je třeba vytvořit možnost ukládání vlastních šablon, jejich sdílení mezi uživateli a přepínání při tvorbě materiálů. 
+  Tím by se značně zrychlila práce, sjednotil vizuální styl výstupů a zároveň by se platforma přiblížila běžným standardům prezentačních nástrojů.
+
+  \item[Animace] Platforma postrádá pokročilé možnosti animace prvků.
+  Jediný rozumný způsob jak animovat jednotlivé části je pomocí interaktivity, a to velmi strohým způsobem.
+  Pro lepší využívání platformy by bylo vhodné implementovat třeba animace skrz snímky a nebo například možnosti dělení animačních sekvencí uvnitř jednoho snímku.
+  Do by dovolovalo pomocí tzv. fragmentů například postupně zobrazovat jednotlivé řádky či body v seznamech, což by vedlo k interaktivnějším materiálům.
+
+  \item[Generování náhledových obrázků] V sekci~\ref{text:testovani/vykon} jsem během výkonnostních testů zjistil, že hodně velké zpomalení aplikace je způsobeno tím, jak se generují náhledové obrázky jednotlivých snímků (a materiálu).
+  Změna způsobu (tedy toho, že se spouští virtuální prohlížeč, který stránku načítá), není možná kvůli komplexitě vykreslovaného obsahu a komunitních rozšíření.
+  Do budoucna by bylo vhodné tedy vytvořit separátní službu, která by se zejména soustředila na vykreslování snímku, a server by pouze tuto službu obeznámil s tím, že je vhodné překreslit náhledový obrázek.
+\end{description}
+
+Na projektu budu pracovat i nadále. 
+V příštím školním roce plánuji platformu nasadit ve všech předmětech, které učím na Smíchovské střední průmyslové škole a gymnáziu.
+Zároveň se pokusím zapojit další vyučující a komunitu kolem školy do vývoje rozšíření i samotné platformy.
+Postupně chci vytvořit širokou sadu výukových materiálů a rozšíření, které budou sloužit jako inspirace i základ pro další tvůrce. 
+Cílem je, aby kdokoliv mohl snadno vytvořit takové materiály, jaké si vymyslí.

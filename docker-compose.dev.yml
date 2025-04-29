@@ -1,0 +1,99 @@
+version: "3.8"
+
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: dockerfile.dev
+      args:
+        API_DOMAIN: ${API_DOMAIN}
+        DOCS_DOMAIN: ${DOCS_DOMAIN}
+        APP_DOMAIN: ${APP_DOMAIN}
+        HOMEPAGE_DOMAIN: ${HOMEPAGE_DOMAIN}
+    image: materalist-dev-client
+    container_name: materalist-dev-client
+    ports:
+      - "4000:5173"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+
+  homepage:
+    build:
+      context: ./homepage
+      dockerfile: dockerfile.dev
+      args:
+        API_DOMAIN: ${API_DOMAIN}
+        DOCS_DOMAIN: ${DOCS_DOMAIN}
+        APP_DOMAIN: ${APP_DOMAIN}
+        HOMEPAGE_DOMAIN: ${HOMEPAGE_DOMAIN}
+    image: materalist-dev-homepage
+    container_name: materalist-dev-homepage
+    ports:
+      - "4001:5173"
+    volumes:
+      - ./homepage:/app
+      - /app/node_modules
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+
+  docs:
+    build:
+      context: ./docs
+      dockerfile: dockerfile.dev
+      args:
+        API_DOMAIN: ${API_DOMAIN}
+        DOCS_DOMAIN: ${DOCS_DOMAIN}
+        APP_DOMAIN: ${APP_DOMAIN}
+        HOMEPAGE_DOMAIN: ${HOMEPAGE_DOMAIN}
+    image: materalist-dev-docs
+    container_name: materalist-dev-docs
+    ports:
+      - "4002:3000"
+    volumes:
+      - ./docs:/app
+      - /app/node_modules
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+
+  server:
+    build:
+      context: ./server
+      dockerfile: dockerfile.dev
+      args:
+        API_DOMAIN: ${API_DOMAIN}
+        DOCS_DOMAIN: ${DOCS_DOMAIN}
+        APP_DOMAIN: ${APP_DOMAIN}
+        HOMEPAGE_DOMAIN: ${HOMEPAGE_DOMAIN}
+    image: materalist-dev-server
+    container_name: materalist-dev-server
+    ports:
+      - "4003:2020"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+      - materalist-dev-server-data:/app/upload
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=mongodb://mongo:27017/materalist
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+  mongo:
+    image: mongo
+    container_name: materalist-dev-mongo
+    volumes:
+      - materalist-dev-mongo-data:/data/db
+    restart: unless-stopped
+    ports:
+      - "4004:27017"
+
+volumes:
+  materalist-dev-mongo-data:
+  materalist-dev-server-data:

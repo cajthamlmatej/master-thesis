@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Wall</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            gap: 1em;
+        }
+
+        input {
+            --shadow-accent: 0 0 0.5em 0.005em rgb(93 64 139 / 27%);
+            border: 0;
+            border-radius: 1em;
+            padding: 0.5em;
+            background-color: #fff;
+            box-shadow: var(--shadow-accent);
+            font-size: 1em;
+            width: 70%;
+        }
+
+        button {
+            --color-primary-dark: #7b57c4;
+            --color-primary: #907eb3;
+            --shadow-accent: 0 0 0.5em 0.005em rgb(93 64 139 / 27%);
+            border: 0;
+            border-radius: 1em;
+            padding: 0.5em 1em;
+            background-color: var(--color-primary);
+            color: white;
+            box-shadow: var(--shadow-accent);
+            font-size: 1em;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: var(--color-primary-dark);
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text">
+    <button>Submit</button>
+
+    <script>
+        const input = document.querySelector('input[type="text"]');
+        const button = document.querySelector('button');
+
+        const send = () => {
+            const word = input.value.trim();
+            if (word) {
+                window.parent.postMessage({target: "script", message: input.value.substring(0, 64)}, "*");
+                input.value = '';
+            }
+        };
+
+        button.addEventListener('click', send);
+
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                send();
+            }
+        });
+    </script>
+</body>
+
+</html>

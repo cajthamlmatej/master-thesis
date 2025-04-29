@@ -1,0 +1,78 @@
+{
+    "web": {
+        "name": "Materalist"
+    },
+    "navigation": {
+        "why-use": "Why Materalist?",
+        "about-us": "About Us",
+        "join": "Join Us",
+        "examples": "Sample Materials",
+        "documentation": "Documentation",
+        "application": "Go to App",
+        "home": "Home"
+    },
+    "landing": {
+        "title": "Creating Materials with a Clear Purpose",
+        "about": "Every material created for education matters.\nWith Materalist, you create presentations and study materials that are not just beautiful but also highly effective. Our goal is to make creation easier for you and help students understand the material better – whether during classes or for self-study.\nStart creating today and become part of a community that's changing how we learn and teach.",
+        "start": "Start Creating",
+        "why-use": "Why Materalist",
+        "label": "Usage of Editor"
+    },
+    "why-use": {
+        "subtitle": "Why Materalist",
+        "title": "Your Presentation, Our Priority",
+        "image-label": "TODO",
+        "keypoints": [
+            {
+                "title": "An Editor That Won’t Slow You Down",
+                "description": "A fast and intuitive interface lets you fully focus on your content. Forget unnecessary setup – start creating right away."
+            },
+            {
+                "title": "Interactivity Without Limits",
+                "description": "Thanks to community extensions, you can create materials that are not just passive but actively engage students."
+            },
+            {
+                "title": "For Presentations and Self-Study",
+                "description": "Materalist isn't just about showing something – it's about truly understanding the subject. Students can easily go through the materials at their own pace."
+            },
+            {
+                "title": "Openness and Collaboration",
+                "description": "Free of charge, with no hidden fees. The platform grows with you and because of you – contribute your own extensions or ideas."
+            }
+        ]
+    },
+    "about-us": {
+        "subtitle": "About Us",
+        "title": "What Led to This Project",
+        "text": [
+            "My name is Matěj Cajthaml and I am a young teacher of technical subjects. From the very beginning of my teaching career, I felt that traditional ways of presenting material failed to truly engage students. Static slides full of text couldn’t deliver complex technical topics in a way that would genuinely foster understanding and active involvement.\n\n",
+            "Over the years, I tried many different tools – from traditional presentations to various interactive platforms and specialized educational systems. Each had its advantages but also its limitations. Some were too complicated, others too closed off and inflexible. I kept searching for something that would combine simplicity, interactivity, and creative freedom.\n\n",
+            "Out of these experiences and a constant drive to improve teaching, the idea to create my own platform was born. This idea became the foundation of my diploma thesis, where I started building the first version of an app that would allow anyone to easily create modern educational materials.\n\n",
+            "The goal was not to create just another ordinary presentation tool. I wanted to build a platform that supports creativity, learning, and sharing among teachers and students. A platform that grows with the community and thanks to the community.\nAnd so, Materalist as you know it was born."
+        ],
+        "image-label": "Portrait of a teacher in front of a blackboard, artistically processed"
+    },
+    "join": {
+        "title": "Join Us",
+        "text": "Joining Materalist means becoming part of a community that believes in better education. Whether you want to create your own materials, get inspired by others, or expand the platform with new ideas, our doors are open to you.\n\nMateralist is completely free and always will be. We believe educational tools should be accessible to everyone without compromise. Join us, create, and help change the standards of education with us!\n\n",
+        "start": "Start Creating"
+    },
+    "examples": {
+        "subtitle": "Sample Materials",
+        "title": "What Materalist Can Do"
+    },
+    "footer": {
+        "copyright": "Copyright © %year% Materalist. All rights reserved.",
+        "love": "Created with love and passion for education."
+    },
+    "terms": {
+        "title": "Terms of Service",
+        "subtitle": "What you need to know",
+        "warning": "These terms are available in English only. If you don't understand them, please contact us for help."
+    },
+    "privacy": {
+        "title": "Privacy Policy",
+        "subtitle": "How we handle your data",
+        "warning": "These terms are available in English only. If you don't understand them, please contact us for help."
+    }
+}
