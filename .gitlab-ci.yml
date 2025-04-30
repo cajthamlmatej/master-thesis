@@ -9,13 +9,20 @@ client:tests:
   variables:
     npm_config_optional: false
   before_script:
-    - echo "Installing system deps (xvfb)…"
-    - apt-get update && apt-get install -y xvfb
-    - echo "Installing client dependencies…"
+    - echo "Installing system deps (xvfb + Cypress libs)…"
+    - apt-get update && apt-get install -y \
+        xvfb \
+        libgtk2.0-0 \
+        libgtk-3-0 \
+        libnotify-dev \
+        libgconf-2-4 \
+        libnss3 \
+        libxss1 \
+        libxtst6
+    - echo "Installing client deps…"
     - cd client
     - npm ci
   script:
-    - echo "Running type‐checks…"
     - npm run type-check
 
     - echo "Running Cypress under Xvfb…"
@@ -27,7 +34,6 @@ server:tests:
   stage: test-server
   image: node:16
   before_script:
-    - echo "Installing server dependencies…"
     - cd server
     - npm ci
   script:
