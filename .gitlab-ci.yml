@@ -7,7 +7,7 @@ client:tests:
   stage: test-client
   image:
     name: cypress/included:14.2.0
-    entrypoint: ["/bin/sh", "-lc"]
+    entrypoint: [""]
   variables:
     npm_config_optional: false
   before_script:
