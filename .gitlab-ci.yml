@@ -5,28 +5,17 @@ stages:
 
 client:tests:
   stage: test-client
-  image: node:16
+  image: cypress/included:14.2.0
   variables:
     npm_config_optional: false
   before_script:
-    - echo "Installing system deps (xvfb + Cypress libs)…"
-    - apt-get update && apt-get install -y \
-        xvfb \
-        libgtk2.0-0 \
-        libgtk-3-0 \
-        libnotify-dev \
-        libgconf-2-4 \
-        libnss3 \
-        libxss1 \
-        libxtst6
-    - echo "Installing client deps…"
     - cd client
     - npm ci
   script:
     - npm run type-check
 
-    - echo "Running Cypress under Xvfb…"
-    - xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24' npm run cy:run
+    - echo "Running Cypress tests…"
+    - npm run cy:run
   only:
     - main
 
