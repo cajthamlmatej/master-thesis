@@ -9,6 +9,8 @@ client:tests:
   variables:
     npm_config_optional: false
   before_script:
+    - echo "Installing system deps (xvfb)…"
+    - apt-get update && apt-get install -y xvfb
     - echo "Installing client dependencies…"
     - cd client
     - npm ci
@@ -16,8 +18,8 @@ client:tests:
     - echo "Running type‐checks…"
     - npm run type-check
 
-    - echo "Running end-to-end tests…"
-    - npm run cy:run
+    - echo "Running Cypress under Xvfb…"
+    - xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24' npm run cy:run
   only:
     - main
 
