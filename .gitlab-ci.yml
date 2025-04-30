@@ -8,8 +8,6 @@ client:tests:
   image:
     name: cypress/included:14.2.0
     entrypoint: [""]
-  variables:
-    npm_config_optional: false
   before_script:
     - echo "Installing client dependencies…"
     - cd client
