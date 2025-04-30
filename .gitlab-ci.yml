@@ -11,10 +11,18 @@ client:tests:
   variables:
     npm_config_optional: false
   before_script:
+    - echo "Installing client dependencies…"
     - cd client
     - npm ci
   script:
+    - echo "Type-checking…"
     - npm run type-check
+
+    - echo "Starting dev server in background…"
+    - npm run dev &
+
+    - echo "Waiting for http://localhost:5173 to respond…"
+    - sleep 10
 
     - echo "Running Cypress tests…"
     - npm run cy:run
