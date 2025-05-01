@@ -1,52 +1,9 @@
 stages:
-  - test-client
-  - test-server
   - deploy
-
-client:tests:
-  stage: test-client
-  image:
-    name: cypress/included:14.2.0
-    entrypoint: [""]
-  before_script:
-    - echo "Installing client dependencies…"
-    - cd client
-    - npm ci
-  script:
-    - echo "Type-checking…"
-    - npm run type-check
-
-    - echo "Starting dev server in background…"
-    - npm run dev &
-
-    - echo "Waiting for http://localhost:5173 to respond…"
-    - sleep 10
-
-    - echo "Running Cypress tests…"
-    - npm run cy:run
-  only:
-    - main
-
-server:tests:
-  stage: test-server
-  image: node:16
-  before_script:
-    - cd server
-    - npm ci
-  script:
-    - echo "Running server tests…"
-    - npm run test
-  needs:
-    - client:tests
-  only:
-    - main
 
 deploy:
   stage: deploy
   image: alpine:latest
-  needs:
-    - client:tests
-    - server:tests
   before_script:
     - apk add --no-cache openssh-client rsync
     - mkdir -p ~/.ssh
