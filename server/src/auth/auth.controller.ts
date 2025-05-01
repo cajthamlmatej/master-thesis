@@ -25,7 +25,7 @@ export class AuthController {
         const user = await this.usersService.getByEmail(dto.email);
 
         if (!user) throw new BadRequestException('User does not exist.');
-        // if (!user.active) throw new BadRequestException('User is not activated and cannot authenticate yet.');
+        if (!user.active) throw new BadRequestException('User is not activated and cannot authenticate yet.');
 
         switch (dto.type) {
             case 'EMAIL': {
