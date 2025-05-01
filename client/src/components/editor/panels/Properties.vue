@@ -1,7 +1,7 @@
 <template>
     <Navigation v-model:menu="visible" full-control shift side="right">
         <template #primary>
-            <div ref="menu" class="editor-property">
+            <div ref="menu" class="editor-property" data-cy="editor-property">
             </div>
             <div ref="resizer" class="editor-property-resizer" @mousedown.stop.prevent="resize"></div>
             <!--            <div class="editor-property-hider"-->

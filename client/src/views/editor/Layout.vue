@@ -16,6 +16,7 @@
                                       :to="{ name: 'Player', params: { material: $route.params.material } }"
                                       :tooltip-text="$t('editor.navigation.preview')"
                                       icon="play"
+                                      data-cy="preview-button"
                                       tooltip-position="bottom"></NavigationButton>
 
                     <Sharing/>
@@ -44,18 +45,22 @@
             <NavigationButton :label="$t('editor.panel.slides.title')"
                               :tooltip-text="$t('editor.panel.slides.title')"
                               icon="cards-variant"
+                              data-cy="slides-button"
                               @click="slidesMenu = !slidesMenu"></NavigationButton>
             <NavigationButton :label="$t('editor.panel.blocks.title')"
                               :tooltip-text="$t('editor.panel.blocks.title')"
                               icon="plus-box-outline"
+                              data-cy="blocks-button"
                               @click="blockMenu = !blockMenu"></NavigationButton>
             <NavigationButton :label="$t('editor.panel.media.title')"
                               :tooltip-text="$t('editor.panel.media.title')"
                               icon="multimedia"
+                              data-cy="media-button"
                               @click="mediaMenu = !mediaMenu"></NavigationButton>
             <NavigationButton :label="$t('editor.panel.content.title')"
                               :tooltip-text="$t('editor.panel.content.title')"
                               icon="web-plus"
+                              data-cy="content-button"
                               @click="contentMenu = !contentMenu"></NavigationButton>
 
             <EditorPlugins v-model:value="currentPluginMenu"></EditorPlugins>

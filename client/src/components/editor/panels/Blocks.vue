@@ -1,11 +1,12 @@
 <template>
     <Navigation v-model:menu="blocksMenu" full-control shift>
         <template #primary>
-            <div v-show="blocksMenu" class="menu editor-blocks">
+            <div v-show="blocksMenu" class="menu editor-blocks" data-cy="blocks-container">
                 <Button
                     v-for="block in blocks"
                     :key="block.type"
                     :icon="block.icon"
+                    :data-cy="'blocks-' + block.type + '-button'"
                     @mousedown="(e: MouseEvent) => add(e, block.type)">
                     <span v-t>blocks.{{ block.type }}.name</span>
                 </Button>
