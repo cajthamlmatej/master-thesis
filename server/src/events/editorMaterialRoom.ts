@@ -217,8 +217,12 @@ export class EditorMaterialRoom {
         }
 
         this.debounceMaterial = setTimeout(async () => {
-            this.material.updatedAt = new Date();
-            await this.material.save();
+            try {
+                this.material.updatedAt = new Date();
+                await this.material.save();
+            } catch (e) {
+                console.error("Unable to save material", e);
+            }
         }, 3000);
     }
 
