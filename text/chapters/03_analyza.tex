@@ -47,10 +47,29 @@ Skripta vytvářím buď přímo ve svém systému, nebo za pomoci \LaTeX, a pro
 Rozdělení různých typů materiálů do více platforem mi však nevyhovuje, protože jejich správa je zbytečně složitá a časově náročná.
 Právě tato zkušenost vedla k záměru této diplomové práce, jejímž cílem je vytvořit jednotnou platformu, která spojí různé typy materiálů a umožní jejich snadné rozšíření a úpravy.
 To by mi (a doufám i dalším učitelům) pomohlo tvořit kvalitní, ale i interaktivní a hezké materiály pro různé účely.
-Podobné názory mají i moje kolegyně a kolegové na Smíchovské průmyslové škole a gymnáziu, kde je cílem školy vytvořit co nejvíce individuální vzdělávání pro každého studenta.
+Podobné názory mají i moji kolegyně a kolegové na Smíchovské průmyslové škole a gymnáziu, kde je cílem školy vytvořit co nejvíce individuální vzdělávání pro každého studenta.
 
 Ze zpětných vazeb studentů, které pravidelně sbírám na konci pololetí a školního roku, často zaznívá, že interaktivita materiálů je nedostatečná a že jejich používání je kvůli tomu složité a neintuitivní.
 Tato zpětná vazba dále zdůrazňuje potřebu vytvořit systém, který by byl přehledný, interaktivní a přizpůsobitelný jak pro učitele, tak pro studenty.
+
+\subsection{Další zkušenosti}
+
+Pro pochopení komplexnosti integrace digitálních technologií do vzdělávacího procesu je přínosné zohlednit nejen teoretické koncepty, ale také praktické zkušenosti a problémy, se kterými se potýkají vzdělávací instituce v zahraničí i v tuzemsku. 
+Analýza těchto zkušeností umožňuje identifikovat běžné technické a pedagogické výzvy, čímž poskytuje širší kontext a oporu pro řešení zkoumaného problému.
+
+Jedním z hlavních technických problémů uváděných v odborné literatuře je nedostatečná interoperabilita mezi digitálními platformami a systémy využívanými ve školství. 
+To způsobuje fragmentaci dat, zvyšuje administrativní zátěž učitelů a komplikuje efektivní integraci technologií do výuky~\cite{powerschool2023}. 
+Tato situace často vede k nutnosti spravovat několik samostatných systémů, což negativně ovlivňuje produktivitu a efektivitu pedagogů.
+
+Dalším významným problémem, který potvrzují i externí zdroje, je přetížení učitelů a rodičů množstvím používaných digitálních platforem. 
+Výsledkem bývá frustrace z neustálého přepínání mezi nástroji, které navíc mohou mít odlišné uživatelské rozhraní a způsoby správy, což vede k neefektivnímu využití dostupných technologií~\cite{guardian2025}. 
+Technické potíže, kterým pedagogové běžně čelí, často narušují výukový proces a zvyšují potřebu dodatečného času věnovaného řešení vzniklých problémů~\cite{reddit2023}.
+
+Z pedagogického hlediska se často objevují kritiky ohledně nedostatečné interaktivity a nízkého zapojení studentů do digitálních kurzů.
+Pasivita žáků v důsledku nevhodně zvolených či navržených digitálních aktivit je významnou bariérou efektivního učení~\cite{edsembli2020}. 
+Navíc existující digitální nástroje často nedostatečně zohledňují různé styly učení a specifické vzdělávací potřeby, což znevýhodňuje především žáky se speciálními potřebami~\cite{altamira2025}.
+
+Tyto zkušenosti z praxe i odborné literatury zdůrazňují význam pečlivého výběru a návrhu digitálních nástrojů tak, aby byly technicky kompatibilní, spolehlivé a zároveň pedagogicky efektivní, a skutečně napomáhaly k dosažení vzdělávacích cílů při respektování individuálních potřeb všech účastníků vzdělávacího procesu.
 
 \section{Aplikace na tvorbu prezentací}\label{text:analyza/prezentace}
 
@@ -65,7 +84,7 @@ Každý z těchto nástrojů reprezentuje odlišný přístup k tvorbě prezenta
 
 \subsection{PowerPoint}
 
-PowerPoint, součást balíku Microsoft Office, je dlouhodobě vnímán jako standard~\cite{pp_usage} v oblasti tvorby prezentací.
+PowerPoint~\cite{pp_usage}, součást balíku Microsoft Office, je dlouhodobě vnímán jako standard v oblasti tvorby prezentací.
 Mnoho uživatelů jej zná díky intuitivnímu rozhraní a širokému spektru funkcí~\cite{pp_usage}.
 Hlavní výhody PowerPointu spočívají v jeho univerzálnosti, snadné obsluze a perfektní provázanosti s dalšími nástroji Microsoft Office, jako jsou Word či Excel~\cite{pp_excel, pp_word}.
 Nabízí také velkou knihovnu šablon, grafů, přechodových efektů a základní možnosti vkládání multimédií.
@@ -86,8 +105,8 @@ Další nevýhodou je cena –- přístup k plné verzi aplikace je placený, a 
 
 \subsection{Google Slides}\label{text:google_slides}
 
-Google Slides je bezplatný webový nástroj pro tvorbu prezentací od společnosti Google. 
-Hlavní přednosti spočívají v možnostech snadné spolupráce více uživatelů v reálném čase~\cite{slides}, neboť dokument lze sdílet a společně editovat odkudkoli.
+Google Slides~\cite{slides} je bezplatný webový nástroj pro tvorbu prezentací od společnosti Google. 
+Hlavní přednosti spočívají v možnostech snadné spolupráce více uživatelů v reálném čase, neboť dokument lze sdílet a společně editovat odkudkoli.
 Integrace s ostatními službami Google (Disk, Dokumenty, Tabulky) umožňuje jednoduchý import a export různých typů souborů a díky tomu se výrazně usnadňuje týmová práce a přístup ke společným materiálům. 
 Podobně jsou implementovány integrace s komunitními rozšířeními ze služeb Google.
 Ve výchozím stavu je služba zdarma, avšak pokročilé funkce a správa dat jsou často vázány na účet v rámci Google Workspace~\cite{slides}, který mohou organizace platit v rámci firemního nebo institucionálního předplatného. 
@@ -102,8 +121,8 @@ Google Slides nicméně celkově nabízí snadno použitelný a přístupný ná
 
 \subsection{RevealJS}\label{text:revealjs}
 
-RevealJS je knihovna a framework, která dovoluje tvořit prezentace pomocí zdrojového kódu v \texttt{HTML}. 
-Výsledné prezentace jsou k dispozici jako webová stránka~\cite{revealjs}, ve které se vykreslují jednotlivé snímky, mezi kterými lze plynule procházet. 
+RevealJS~\cite{revealjs} je knihovna a framework, která dovoluje tvořit prezentace pomocí zdrojového kódu v \texttt{HTML}. 
+Výsledné prezentace jsou k dispozici jako webová stránka, ve které se vykreslují jednotlivé snímky, mezi kterými lze plynule procházet. 
 Velkou výhodou RevealJS je široká komunita, řada open-source pluginů a neomezené možnosti integrace multimediálního obsahu, od videí přes animace až po spustitelný kód. 
 Nevýhodou může být různé zpracování, dokumentace a nastavení pluginů, které nemusí být vždy vzájemně kompatibilní, nutnost znalostí webových technologií a absence \texttt{WYSIWYG} editoru. 
 
@@ -125,7 +144,7 @@ Celkově si uživatelé chválí i možnost modularity těchto snímků a že je
 
 \subsection{Beamer v \LaTeX}
 
-Beamer je třída v sázecím systému \LaTeX, která se zaměřuje na vytváření snímkových prezentací.
+Beamer~\cite{beamer} je třída v sázecím systému \LaTeX, která se zaměřuje na vytváření snímkových prezentací.
 Nejvíce je Beamer společně s \LaTeX~populární v akademickém prostředí, zejména z důvodu jednoduchého sázení matematických formulí a zápisu pomocí kódového jazyka, který leccos dovoluje. 
 
 Zápis je ale zároveň to nejvíce nenáviděné na \LaTeX~\cite{latex_reddit}, a to zejména z důvodu kryptických kódových chyb a různých zastaralých zápisů.
@@ -143,7 +162,7 @@ Tato sekce se zaměřuje na nástroje, které umožňují snadno a rychle vytvá
 
 \subsection{Canva}\label{text:canva}
 
-Canva je webová platforma pro rychlou a snadnou tvorbu grafických materiálů, jako jsou plakáty, letáky, sociální příspěvky či prezentace, s bohatou nabídkou šablon, fontů a grafických prvků~\cite{canva_website}. 
+Canva~\cite{canva_website} je webová platforma pro rychlou a snadnou tvorbu grafických materiálů, jako jsou plakáty, letáky, sociální příspěvky či prezentace, s bohatou nabídkou šablon, fontů a grafických prvků. 
 Hlavní výhody Canvy spočívají v intuitivním uživatelském rozhraní~\cite{canva_recenze}, které je možná až příliš jednoduché, obrovské knihovně předpřipravených šablon a prvků, možnosti \enquote{drag-and-drop} úprav a snadné integraci multimédií.
 
 Díky cloudovému prostředí umožňuje Canva týmovou spolupráci~\cite{canva_live_help, canva_live_features}, sdílení souborů v reálném čase a přístup k materiálům odkudkoli, přičemž většina základních funkcí je dostupná zdarma. 
@@ -158,13 +177,13 @@ Tyto materiály, respektive kurzy, jsou zcela zdarma a tématy se zaměřují od
 
 \subsection{Figma}\label{text:figma_popis}
 
-Figma je profesionální online nástroj pro design a prototypování uživatelských rozhraní, který se v posledních letech stal standardem v oblasti webového a aplikačního designu~\cite{figma_website}. 
+Figma~\cite{figma_website} je profesionální online nástroj pro design a prototypování uživatelských rozhraní, který se v posledních letech stal standardem v oblasti webového a aplikačního designu. 
 Nabízí vektorový grafický editor, možnost vytvářet interaktivní prototypy a sdílet je v reálném čase s kolegy, což výrazně usnadňuje spolupráci v týmech~\cite{figma_website}. 
 Velkou předností Figmy je její cloudové prostředí, ve kterém se změny ukládají automaticky a každý člen týmu vidí okamžité aktualizace, což zjednodušuje proces zpětné vazby a revizí. 
 
 Nevýhodou může být vyšší křivka učení pro uživatele neznalé profesionálních grafických nástrojů a nutnost stabilního připojení k internetu, aby bylo možné plně využít funkce Figmy. 
 Přesto Figma představuje výkonný a flexibilní nástroj, který může pedagogům a školám pomoci při tvorbě interaktivních rozhraní pro studijní materiály, e-learningové platformy či jiné digitální vzdělávací projekty.
-Podobným problémem je omezený neplacený režim, který hodně omezuje počet a velikost projektů a to včetně počtu současných editorů dokumentu.
+Podobným problémem je omezený neplacený režim, který hodně omezuje počet a velikost projektů, a to včetně počtu současných editorů dokumentu.
 
 Inspirativní částí Figmy jsou velmi pokročilé možnosti editoru, jako je například interaktivní prototypování.
 To zahrnuje například možnosti přepínání komponent či jednotlivých rámců.
@@ -226,7 +245,7 @@ Podobně lze najít v různých komunitách na sociálních sítích i v nesouvi
 
 \subsection{Mentimeter}
 
-Mentimeter je webová aplikace určená pro interaktivní zapojení publika prostřednictvím online hlasování, dotazníků, kvízů, slovních mraků, průzkumů a anket~\cite{mentimeter}. 
+Mentimeter~\cite{mentimeter} je webová aplikace určená pro interaktivní zapojení publika prostřednictvím online hlasování, dotazníků, kvízů, slovních mraků, průzkumů a anket. 
 Umožňuje učitelům a přednášejícím získávat okamžitou zpětnou vazbu od studentů, což napomáhá identifikovat oblasti nepochopení, zvýšit míru interakce a podporovat aktivní účast na výuce. 
 
 Velkou předností Mentimeteru je jeho uživatelská přívětivost, široká nabídka interaktivních formátů, kompatibilita s mobilními zařízeními a snadná integrace do výukových scénářů, přičemž výsledky lze ihned zobrazit na obrazovce. 
@@ -241,8 +260,8 @@ V aplikaci taktéž velmi chybí grafické možnosti, na jednotlivé snímky lze
 
 \subsection{Prezi}
 
-Prezi je prezentační nástroj, který se odlišuje od klasických lineárních prezentací svou nelineární strukturou.
-Místo jednotlivých snímků pracuje Prezi s jedním velkým plátnem~\cite{prezi}, na němž lze rozmístit text, obrázky, videa a další obsah do logických celků, mezi kterými lze dynamicky přecházet pomocí pohyblivých či přibližovacích efektů.
+Prezi~\cite{prezi} je prezentační nástroj, který se odlišuje od klasických lineárních prezentací svou nelineární strukturou.
+Místo jednotlivých snímků pracuje Prezi s jedním velkým plátnem, na němž lze rozmístit text, obrázky, videa a další obsah do logických celků, mezi kterými lze dynamicky přecházet pomocí pohyblivých či přibližovacích efektů.
 Aplikace je tedy takovým velkým plátnem, v podstatě jednou myšlenkovou mapou.
 To však omezuje její použití na pouze jeden konkrétní případ způsobu výuky -- obyčejné prezentace, plakáty a další materiály zde vypadají velmi zvláštně.
 
@@ -256,7 +275,7 @@ Prezi je taktéž placená aplikace a omezuje použití jakýchkoliv pokročilý
 \section{Sumarizace knihoven a nástrojů}
 
 V tabulce~\ref{tab:porovnani_prezentaci} je sumarizovaná kapitola~\ref{text:analyza/prezentace}, která se zaobírá různým softwarem na tvorbu prezentací.
-Z tabulky vyplývá, že zatímco PowerPoint a Google Slides nabízí jednoduché a intuitivní použití, RevealJS a Beamer vyžadují znalosti kódování, ale umožňují větší flexibilitu. Největší rozdíly jsou v interaktivitě, přístupnosti a v dostupnosti pokročilých funkcí, přičemž žádný z těchto nástrojů není jednoznačně nejlepší pro všechny uživatele.
+Z tabulky vyplývá, že zatímco PowerPoint a Google Slides nabízejí jednoduché a intuitivní použití, RevealJS a Beamer vyžadují znalosti kódování, ale umožňují větší flexibilitu. Největší rozdíly jsou v interaktivitě, přístupnosti a v dostupnosti pokročilých funkcí, přičemž žádný z těchto nástrojů není jednoznačně nejlepší pro všechny uživatele.
 
 
 \begin{table*}[h!]
@@ -406,7 +425,7 @@ Toto vykreslování používají ze zmíněných služeb například Google slu�
 Cílem práce je vytvořit platformu, která bude podporovat komunitní rozšíření.
 K tomu bude velmi důležité navrhnout, jak se toto rozšiřování bude realizovat.
 
-V této sekci se podívám na to, jak komunitní rozšíření řeší jiné existující služby a knihovny.
+V této sekci je sepsáno, jak komunitní rozšíření řeší jiné existující služby a knihovny.
 
 \subsection{Google služby}
 
@@ -564,8 +583,8 @@ Pro některé scénáře, například interaktivní webové aplikace, je toto zp
 
 \subsection{WebAssembly}\label{text:webassembly}
 
-WebAssembly je nový způsob spouštění bezpečného kódu na webové stránce.
-WebAssembly spouští pseudo-assembly kód~\cite{webassembly}.
+WebAssembly~\cite{webassembly} je nový způsob spouštění bezpečného kódu na webové stránce.
+WebAssembly spouští pseudo-assembly kód.
 Toto prostředí je velmi omezené, protože běží v jiném prostředí než obyčejné stránky~\cite{webassembly, figma_plugins_blog}.
 Dané programy bez konkrétní implementace nemají k dispozici DOM a v podstatě cokoliv spojené s prohlížečem.
 WebAssembly je samozřejmě možné spouštět i mimo webový prohlížeč, např. na serveru či desktopu v běhových prostředích jako je Node.js či Deno~\cite{webassembly}.
@@ -583,7 +602,7 @@ Na druhou stranu je to taktéž velký problém, protože udržovat dokumentaci 
 Pokud bych se rozhodl používat tento způsob skriptování, musel bych se zaměřit pouze na jeden jazyk.
 Nejlogičtější varianta na skriptování přídavných rozšíření by byl nějaký jazyk, který je již určen na skriptování.
 Na webu pro většinu vývojářů bude jasná volba JavaScript.
-Pro spojení mezi WebAssembly a JS zajišťuje např. knihovna QuickJS~\cite{quickjs}, AssemblyScript~\cite{assemblyscript} a další.
+Spojení mezi WebAssembly a JS zajišťuje např. knihovna QuickJS~\cite{quickjs}, AssemblyScript~\cite{assemblyscript} a další.
 
 Tyto knihovny zabalují nějakou formu běhového prostředí (nejčastější je emscripten~\cite{assemblyscript, quickjs, figma_plugins_blog}, který například používá systém rozšíření ve Figma~\cite{figma_plugins_blog}) přes kterou poté kód spouští.
 Tyto knihovny však nepotřebují řešit jen spouštění, ale je nutné taktéž řešit již zmíněné předávání (resp. konverze) dat~\cite{assemblyscript} mezi spuštěným programem, spouštěčem a programem v prohlížeči.

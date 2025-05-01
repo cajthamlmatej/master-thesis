@@ -45,7 +45,7 @@ V této kapitole proto shrnuji vybrané směry dalšího vývoje, které by mohl
   \item[Sdílení materiálů] Sdílení pomocí odkazu a kódu je funkční, ale zbytečně složité. 
   Do budoucna by bylo vhodné zavést možnost chráněného sdílení přes heslo nebo jednodušší autentizaci, která by umožnila například jednorázový přístup nebo skupinový přístup pomocí QR kódu.
 
-  \item[Podpora rozšíření] Rozšíření již teď mají k dispozici řadu přístupových bodů do API, ale pro lepší neomezenou práci s materiály by bylo lepši přidat další možnosti.
+  \item[Podpora rozšíření] Rozšíření již teď mají k dispozici řadu přístupových bodů do API, ale pro lepší neomezenou práci s materiály by bylo lepší přidat další možnosti.
   Mohlo by se jednat o lepší práci s materiály jako takovými (přístup k tvorbě snímků, úprav i mimo aktivní editor), přístup k více funkcionalitám bloků (interaktivita, animování) a obecně lepší reakce na uživatelské interakce.
 
   \item[Organizace materiálů] Uživatelská správa materiálů je nyní lineární, bez možnosti složek či jiné struktury. 
@@ -66,11 +66,18 @@ V této kapitole proto shrnuji vybrané směry dalšího vývoje, které by mohl
   \item[Animace] Platforma postrádá pokročilé možnosti animace prvků.
   Jediný rozumný způsob jak animovat jednotlivé části je pomocí interaktivity, a to velmi strohým způsobem.
   Pro lepší využívání platformy by bylo vhodné implementovat třeba animace skrz snímky a nebo například možnosti dělení animačních sekvencí uvnitř jednoho snímku.
-  Do by dovolovalo pomocí tzv. fragmentů například postupně zobrazovat jednotlivé řádky či body v seznamech, což by vedlo k interaktivnějším materiálům.
+  To by dovolovalo pomocí tzv. fragmentů například postupně zobrazovat jednotlivé řádky či body v seznamech, což by vedlo k interaktivnějším materiálům.
 
-  \item[Generování náhledových obrázků] V sekci~\ref{text:testovani/vykon} jsem během výkonnostních testů zjistil, že hodně velké zpomalení aplikace je způsobeno tím, jak se generují náhledové obrázky jednotlivých snímků (a materiálu).
+  \item[Automatické testování] V kapitole~\ref{text:testovani} jsem popsal, jak byla aplikace automaticky otestována pomocí E2E a jednotkových testů. 
+  Otestována byla řada funkcionalit ale některé nezbyl čas částečně nebo zcela sepsat.
+  Obecně se však jedná o méně důležité funkce, ale v budoucnu by to mohlo vést k dalšímu neudržitelnému vývoji aplikace.
+  Největší problém je nejspíše E2E testy klientské části, které ke svému spuštěni vyžadují funkční server a není emulována komunikace s API.
+  Na serveru nejsou automaticky testovány nějaké moduly.
+  To nedovoluje automaticky testovat tuto část před nasazením v cyklu CI/CD.
+
+  \item[Generování náhledových obrázků] V sekci~\ref{text:testovani/vykon} jsem během výkonnostních testů zjistil, že hodně velké zpomalení aplikace je způsobeno tím, jak se generují náhledové obrázky jednotlivých snímků (a materiálů).
   Změna způsobu (tedy toho, že se spouští virtuální prohlížeč, který stránku načítá), není možná kvůli komplexitě vykreslovaného obsahu a komunitních rozšíření.
-  Do budoucna by bylo vhodné tedy vytvořit separátní službu, která by se zejména soustředila na vykreslování snímku, a server by pouze tuto službu obeznámil s tím, že je vhodné překreslit náhledový obrázek.
+  Do budoucna by bylo vhodné tedy vytvořit separátní službu, která by se zejména soustředila na vykreslování snímků, a server by pouze tuto službu obeznámil s tím, že je vhodné překreslit náhledový obrázek.
 \end{description}
 
 Na projektu budu pracovat i nadále. 
