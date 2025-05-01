@@ -36,11 +36,13 @@
 //   }
 // }
 
+const API_URL = `http://127.0.0.1:4003`
+
 // @ts-ignore
 Cypress.Commands.add('login', () => {
     cy.request({
         method: 'POST',
-        url: 'http://127.0.0.1:2020/authentication/in',
+        url: API_URL+'/authentication/in',
         form: true,
         body: {
             email: "cypress@cajthaml.eu",
@@ -68,7 +70,7 @@ Cypress.Commands.add('clearMaterials', () => {
 
     cy.request({
         method: 'GET',
-        url: `http://127.0.0.1:2020/user/${userId}/material`,
+        url: API_URL+`/user/${userId}/material`,
         headers: headers,
     }).then((response) => {
         const materialsIds = response.body.materials.map((m: any) => m.id);
@@ -76,7 +78,7 @@ Cypress.Commands.add('clearMaterials', () => {
         for (const id of materialsIds) {
             cy.request({
                 method: 'DELETE',
-                url: `http://127.0.0.1:2020/material/${id}`,
+                url: API_URL+`/material/${id}`,
                 headers: headers,
             });
         }
