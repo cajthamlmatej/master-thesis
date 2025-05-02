@@ -57,6 +57,12 @@ function bit_rol(d, _) {
     return d << _ | d >>> 32 - _
 }
 
+/**
+ * Generates an MD5 hash for the given input string.
+ * 
+ * @param data The input string to hash.
+ * @returns The MD5 hash of the input string.
+ */
 export const generateMD5 = (data) => {
     return MD5(data);
 }

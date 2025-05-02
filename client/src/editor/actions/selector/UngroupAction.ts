@@ -1,6 +1,9 @@
 import {SelectorAction} from "@/editor/actions/SelectorAction";
 import type {ActionKeybind, ActionParameters} from "@/editor/actions/EditorAction";
 
+/**
+ * Represents the action of ungrouping selected blocks.
+ */
 export class UngroupAction extends SelectorAction {
     constructor() {
         super("ungroup", "mdi mdi-ungroup");

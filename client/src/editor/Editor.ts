@@ -17,6 +17,10 @@ import {communicator} from "@/api/websockets";
 import EditorSnappingVisualiser from "@/editor/visualiser/EditorSnappingVisualiser";
 import {PluginEditorBlock} from "@/editor/block/base/plugin/PluginEditorBlock";
 
+/**
+ * The `Editor` class is the main entry point for managing the editor's state, 
+ * rendering, and interactions. It handles blocks, user input, and visual updates.
+ */
 export default class Editor {
     private static readonly DEFAULT_PADDING = 32;
     public readonly events = new EditorEvents();
@@ -41,6 +45,12 @@ export default class Editor {
 
     private pluginCommunicator: EditorPluginCommunicator;
 
+    /**
+     * Constructs a new `Editor` instance.
+     * @param editorElement - The root HTML element for the editor.
+     * @param options - Optional configuration for the editor (e.g., size, color).
+     * @param preferences - Optional user preferences for the editor.
+     */
     constructor(editorElement: HTMLElement, options?: MaterialOptions, preferences?: EditorPreferences) {
         this.editorElement = editorElement;
         this.blockRegistry = new BlockRegistry();
@@ -65,13 +75,17 @@ export default class Editor {
     }
 
     /**
-     * Destroy the editor instance, cleanup events and the main element
+     * Destroys the editor instance, cleans up events, and clears the main element.
      */
     public destroy() {
         this.events.EDITOR_DESTROYED.emit();
         this.editorElement.innerHTML = "";
     }
 
+    /**
+     * Sets the editor's mode and updates the UI accordingly.
+     * @param mode - The new mode to set (e.g., SELECT, MOVE).
+     */
     public setMode(mode: EditorMode) {
         this.mode = mode;
 
@@ -83,6 +97,9 @@ export default class Editor {
         this.events.MODE_CHANGED.emit(mode);
     }
 
+    /**
+     * Adjusts the editor's size and scale to fit its parent container.
+     */
     public fitToParent() {
         const parent = this.editorElement.parentElement;
 
@@ -119,7 +136,8 @@ export default class Editor {
     }
 
     /**
-     * Serialize the editor data, so it can be saved and loaded later
+     * Serializes the editor's state into an object for saving or loading.
+     * @returns An object representing the editor's state.
      */
     public serialize(): Object {
         return {
@@ -128,6 +146,12 @@ export default class Editor {
         }
     }
 
+    /**
+     * Converts screen coordinates to editor coordinates.
+     * @param screenX - The X coordinate on the screen.
+     * @param screenY - The Y coordinate on the screen.
+     * @returns The corresponding editor coordinates.
+     */
     public screenToEditorCoordinates(screenX: number, screenY: number) {
         const offset = this.getOffset();
         const scale = this.getScale();
@@ -138,6 +162,14 @@ export default class Editor {
         }
     }
 
+    /**
+     * Caps a position to ensure it stays within the editor's bounds.
+     * @param x - The X coordinate.
+     * @param y - The Y coordinate.
+     * @param width - Optional width of the element.
+     * @param height - Optional height of the element.
+     * @returns The adjusted position within bounds.
+     */
     public capPositionToEditorBounds(x: number, y: number, width?: number, height?: number) {
         if (!width || !height) {
             const size = this.getSize();
@@ -154,6 +186,10 @@ export default class Editor {
         }
     }
 
+    /**
+     * Gets the offset of the editor element relative to the viewport.
+     * @returns The offset as an object with `x` and `y` properties.
+     */
     public getOffset() {
         const rect = this.editorElement.getBoundingClientRect();
         return {
@@ -162,6 +198,11 @@ export default class Editor {
         }
     }
 
+    /**
+     * Adds a block to the editor.
+     * @param block - The block to add.
+     * @param newBlock - Whether the block is newly created (default: true).
+     */
     public addBlock(block: EditorBlock, newBlock: boolean = true) {
         // Check if the block is already added
         if (this.blocks.includes(block)) {
@@ -194,32 +235,22 @@ export default class Editor {
             this.events.BLOCK_ADDED.emit(block);
             this.events.HISTORY.emit();
         }
-
-        // console.log("[Editor] Block added", block);
-        //
-        // for (let block of this.blocks) {
-        //     console.group("Block " + block.id);
-        //     console.log(block);
-        //     console.log(Reflect.getMetadataKeys(block));
-        //
-        //     for(let key of Reflect.getMetadataKeys(block)) {
-        //         console.group(key);
-        //
-        //         console.log(Reflect.getMetadata(key, block));
-        //
-        //         console.groupEnd();
-        //     }
-        //
-        //     console.groupEnd();
-        // }
     }
 
+    /**
+     * Updates the editor's preferences.
+     * @param newPreferences - The new preferences to set.
+     */
     public setPreferences(newPreferences: EditorPreferences) {
         this.preferences = newPreferences;
 
         this.events.PREFERENCES_CHANGED.emit();
     }
 
+    /**
+     * Removes a block from the editor by instance or ID.
+     * @param block - The block instance or ID to remove.
+     */
     public removeBlock(block: EditorBlock | string) {
         const blockId = typeof block === "string" ? block : block.id;
         const blockIndex = this.blocks.findIndex(block => block.id === blockId);
@@ -243,6 +274,12 @@ export default class Editor {
         this.events.HISTORY.emit();
     }
 
+    /**
+     * Resizes the editor and optionally adjusts blocks to fit the new size.
+     * @param width - The new width of the editor.
+     * @param height - The new height of the editor.
+     * @param resizeToFit - Whether to resize blocks to fit the new dimensions.
+     */
     public resize(width: number, height: number, resizeToFit: boolean) {
         const originalWidth = this.size.width;
         const originalHeight = this.size.height;
@@ -284,81 +321,144 @@ export default class Editor {
                 block.resize(newWidth, newHeight);
             }
         }
-
-        // this.fitToParent();
     }
 
+    /**
+     * Changes the editor's background color.
+     * @param color - The new color to set.
+     */
     public recolor(color: string) {
         this.color = color;
         this.updateElement();
     }
 
+    /**
+     * Retrieves a block by its ID.
+     * @param blockId - The ID of the block to retrieve.
+     * @returns The block instance, or undefined if not found.
+     */
     public getBlockById(blockId: string) {
         return this.blocks.find(block => block.id === blockId);
     }
 
+    /**
+     * Retrieves all blocks in a specific group.
+     * @param group - The group name.
+     * @returns An array of blocks in the group.
+     */
     public getBlocksInGroup(group: string) {
         return this.blocks.filter(block => block.group === group);
     }
 
+    /**
+     * Gets the editor's selector instance.
+     * @returns The `EditorSelector` instance.
+     */
     public getSelector() {
         return this.selector;
     }
 
+    /**
+     * Gets the editor's context instance.
+     * @returns The `EditorContext` instance.
+     */
     public getContext() {
         return this.context;
     }
 
+    /**
+     * Gets the editor's clipboard instance.
+     * @returns The `EditorClipboard` instance.
+     */
     public getClipboard() {
         return this.clipboard;
     }
 
+    /**
+     * Gets the editor's keybinds instance.
+     * @returns The `EditorKeybinds` instance.
+     */
     public getKeybinds() {
         return this.keybinds;
     }
 
+    /**
+     * Gets the editor's snapping visualizer instance.
+     * @returns The `EditorSnappingVisualiser` instance.
+     */
     public getSnapping() {
         return this.snapping;
     }
 
+    /**
+     * Gets the editor's history instance.
+     * @returns The `EditorHistory` instance.
+     */
     public getHistory() {
         return this.history;
     }
 
+    /**
+     * Gets the editor's size.
+     * @returns The size as an object with `width` and `height` properties.
+     */
     public getSize() {
         return this.size;
     }
 
+    /**
+     * Gets the editor's current scale.
+     * @returns The scale factor.
+     */
     public getScale() {
         return this.scale;
     }
 
+    /**
+     * Gets the editor's current mode.
+     * @returns The current `EditorMode`.
+     */
     public getMode() {
         return this.mode;
     }
 
+    /**
+     * Gets the root HTML element of the editor.
+     * @returns The editor's root element.
+     */
     public getEditorElement() {
         return this.editorElement;
     }
 
+    /**
+     * Gets the wrapper element containing the editor.
+     * @returns The wrapper element.
+     */
     public getWrapperElement() {
         return this.editorElement.parentElement!;
     }
 
+    /**
+     * Gets the editor's preferences.
+     * @returns The `EditorPreferences` instance.
+     */
     public getPreferences() {
         return this.preferences;
     }
 
+    /**
+     * Gets all blocks currently in the editor.
+     * @returns An array of `EditorBlock` instances.
+     */
     public getBlocks() {
         return this.blocks;
     }
 
     /**
-     * This is a debug method to draw a point on the editor.
-     * Should not be used in production.
-     * @param initialX
-     * @param initialY
-     * @param color
+     * Draws a debug point on the editor (for development purposes only).
+     * @param initialX - The X coordinate of the point.
+     * @param initialY - The Y coordinate of the point.
+     * @param color - The color of the point.
      */
     debugPoint(initialX: number, initialY: number, color: string) {
         const size = 10;
@@ -376,13 +476,12 @@ export default class Editor {
     }
 
     /**
-     * This is a debug method to draw a line between two points on the editor.
-     * Should not be used in production.
-     * @param x
-     * @param y
-     * @param x2
-     * @param y2
-     * @param color
+     * Draws a debug line between two points on the editor (for development purposes only).
+     * @param x - The starting X coordinate.
+     * @param y - The starting Y coordinate.
+     * @param x2 - The ending X coordinate.
+     * @param y2 - The ending Y coordinate.
+     * @param color - The color of the line.
      */
     debugLine(x: number, y: number, x2: number, y2: number, color: string) {
         const line = document.createElement("div");
@@ -400,6 +499,9 @@ export default class Editor {
         this.editorElement.querySelector(".editor-content")!.appendChild(line);
     }
 
+    /**
+     * Clears all blocks from the editor.
+     */
     clearBlocks() {
         for (let block of this.blocks) {
             block.element.remove();
@@ -410,10 +512,19 @@ export default class Editor {
         this.selector.deselectAllBlocks();
     }
 
+    /**
+     * Sets the plugin communicator for the editor.
+     * @param pluginCommunicator - The `EditorPluginCommunicator` instance.
+     */
     public setPluginCommunicator(pluginCommunicator: EditorPluginCommunicator) {
         this.pluginCommunicator = pluginCommunicator;
     }
 
+    /**
+     * Gets the plugin communicator for the editor.
+     * @returns The `EditorPluginCommunicator` instance.
+     * @throws An error if the communicator is not set.
+     */
     public getPluginCommunicator() {
         if (!this.pluginCommunicator) {
             throw new Error("Block renderer not set before rendering blocks");
@@ -422,16 +533,26 @@ export default class Editor {
         return this.pluginCommunicator;
     }
 
+    /**
+     * Updates the editor's visual state.
+     */
     public update() {
         this.updateElement();
     }
 
+    /**
+     * Redraws all blocks in the editor.
+     */
     public redrawBlocks() {
         this.getBlocks().filter(b => b instanceof PluginEditorBlock).forEach((block: PluginEditorBlock) => {
             block.renderIframe();
         });
     }
 
+    /**
+     * Parses the provided options and applies them to the editor.
+     * @param options - The options to parse.
+     */
     private parseOptions(options?: MaterialOptions) {
         if (!options) return;
 
@@ -443,6 +564,10 @@ export default class Editor {
         }
     }
 
+    /**
+     * Parses the provided preferences and applies them to the editor.
+     * @param preferences - The preferences to parse.
+     */
     private parsePreferences(preferences: EditorPreferences | undefined) {
         if (!preferences) {
             this.preferences = new EditorPreferences();
@@ -452,12 +577,18 @@ export default class Editor {
         this.preferences = preferences;
     }
 
+    /**
+     * Sets up the editor's initial state and content.
+     */
     private setupEditor() {
         this.setupUsage();
         this.setupEditorContent();
         this.fitToParent();
     }
 
+    /**
+     * Sets up event listeners for user interactions.
+     */
     private setupUsage() {
         const resizeEvent = this.usageResizeEvent.bind(this);
         const mouseDownEvent = this.usageMouseDownEvent.bind(this);
@@ -477,12 +608,19 @@ export default class Editor {
         });
     }
 
+    /**
+     * Handles the resize event for the editor.
+     */
     private usageResizeEvent() {
         if (this.preferences.KEEP_EDITOR_TO_FIT_PARENT) {
             this.fitToParent();
         }
     }
 
+    /**
+     * Handles the mouse down event for the editor.
+     * @param event - The mouse event.
+     */
     private usageMouseDownEvent(event: MouseEvent) {
         if (this.mode !== EditorMode.MOVE) return;
 
@@ -513,6 +651,10 @@ export default class Editor {
         window.addEventListener("mouseup", handleUp);
     }
 
+    /**
+     * Handles the wheel event for zooming in/out of the editor.
+     * @param event - The wheel event.
+     */
     private usageWheelEvent(event: WheelEvent) {
         if (this.mode !== EditorMode.MOVE) return;
 
@@ -539,6 +681,10 @@ export default class Editor {
         this.updateElement();
     }
 
+    /**
+     * Handles touch events for interacting with the editor.
+     * @param event - The touch event.
+     */
     private usageTouchEvent(event: TouchEvent) {
         if (event.touches.length === 2) {
             if (this.mode !== EditorMode.MOVE) return;
@@ -614,6 +760,9 @@ export default class Editor {
         }
     }
 
+    /**
+     * Sets up the editor's content area.
+     */
     private setupEditorContent() {
         this.editorElement.innerHTML = `<div class="editor-content"></div>`;
 
@@ -633,6 +782,9 @@ export default class Editor {
         observer.observe(content, {attributes: true, childList: true, subtree: true});
     }
 
+    /**
+     * Updates the editor's root element with the current state.
+     */
     private updateElement() {
         this.editorElement.style.backgroundColor = this.color;
         this.editorElement.style.left = this.position.x + "px";
@@ -644,42 +796,14 @@ export default class Editor {
         this.editorElement.style.setProperty("--scale", this.scale.toString());
     }
 
+    /**
+     * Sets up attendee-related functionality for the editor.
+     */
     private setupAttendee() {
         const room = communicator.getEditorRoom();
 
         if (!room) {
             return;
         }
-        //
-        // room.EVENTS.SYNCHRONIZE_BLOCK.on((blockData) => {
-        //     const parsed = JSON.parse(blockData);
-        //     const oldBlock = this.getBlockById(parsed.id);
-        //
-        //     console.log("Searching for a block with id", parsed);
-        //     console.log("Found block", oldBlock);
-        //     console.log("All blocks", this.blocks);
-        //
-        //     if(oldBlock) {
-        //         for(let key in parsed) {
-        //             (oldBlock as any)[key] = parsed[key as any];
-        //         }
-        //
-        //         oldBlock.processDataChange(parsed);
-        //     } else {
-        //         const obj = this.blockRegistry.deserializeEditor(parsed);
-        //
-        //         if(!obj) return;
-        //
-        //         this.addBlock(obj);
-        //     }
-        // });
-
-        // room.EVENTS.REMOVE_BLOCK.on((blockId) => {
-        //     const block = this.getBlockById(blockId);
-        //
-        //     if(block) {
-        //         this.removeBlock(block);
-        //     }
-        // });
     }
 }

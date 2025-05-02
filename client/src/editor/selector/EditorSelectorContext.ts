@@ -8,6 +8,9 @@ import {LockAction} from "@/editor/actions/selector/LockAction";
 import {UnlockAction} from "@/editor/actions/selector/UnlockAction";
 import {BringBackAction} from "@/editor/actions/selector/BringBackAction";
 
+/**
+ * Manages the context menu for the editor's selector.
+ */
 export class EditorSelectorContext {
     private static SIZE = 40;
 
@@ -47,6 +50,10 @@ export class EditorSelectorContext {
         });
     }
 
+    /**
+     * Handles changes in the selected blocks and updates the context menu.
+     * @param selected The currently selected blocks.
+     */
     public handleContext(selected: EditorBlock[]) {
         if (!selected || selected.length == 0) {
             this.active = false;
@@ -76,6 +83,10 @@ export class EditorSelectorContext {
         this.recalculatePosition(this.selector.getArea().getArea());
     }
 
+    /**
+     * Recalculates the position of the context menu.
+     * @param data The new position data.
+     */
     public recalculatePosition(data: { x: number; y: number; width: number; height: number; rotation: number }) {
         const rotatedPoints = getRotatedRectanglePoints(data.x, data.y, data.width, data.height, data.rotation);
 
@@ -99,14 +110,25 @@ export class EditorSelectorContext {
         this.element.style.setProperty("--y", this.position.y + "px");
     }
 
+    /**
+     * Checks if the context menu is active.
+     * @returns True if active, false otherwise.
+     */
     public isActive() {
         return this.active;
     }
 
+    /**
+     * Retrieves the list of actions available in the context menu.
+     * @returns The list of actions.
+     */
     public getActions() {
         return this.actions;
     }
 
+    /**
+     * Sets up the context menu and its actions.
+     */
     private setupContext() {
         const contextElement = document.createElement("div");
 
@@ -140,6 +162,9 @@ export class EditorSelectorContext {
         this.element = contextElement;
     }
 
+    /**
+     * Handles the visibility of the context menu.
+     */
     private handleVisibility() {
         if (!this.active) {
             this.element.classList.remove("editor-selector-context--active");
@@ -147,6 +172,4 @@ export class EditorSelectorContext {
             this.element.classList.add("editor-selector-context--active");
         }
     }
-
-
 }

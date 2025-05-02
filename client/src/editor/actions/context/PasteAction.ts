@@ -1,6 +1,10 @@
 import type {ActionKeybind, ActionParameters} from "@/editor/actions/EditorAction";
 import {ContextAction} from "@/editor/actions/ContextAction";
 
+/**
+ * Represents the action of pasting content from the clipboard into the editor.
+ * This action is visible when the clipboard contains content.
+ */
 export class PasteAction extends ContextAction {
     constructor() {
         super("paste");

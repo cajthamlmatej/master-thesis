@@ -1,3 +1,7 @@
+/**
+ * Enum representing various events that can occur on a block in the editor.
+ * Each event corresponds to a specific action or state change of the block.
+ */
 export enum BlockEvent {
     /**
      * Called when the block is mounted to the editor.

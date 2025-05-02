@@ -1,6 +1,10 @@
 import type {ActionKeybind, ActionParameters} from "@/editor/actions/EditorAction";
 import {ContextAction} from "@/editor/actions/ContextAction";
 
+/**
+ * Represents the action of deleting selected blocks.
+ * This action is visible when at least one block is selected, all selected blocks support selection, and none are locked.
+ */
 export class DeleteAction extends ContextAction {
     constructor() {
         super("delete");

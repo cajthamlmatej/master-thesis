@@ -3,7 +3,16 @@ import {PlayerPluginApiFeature} from "@/editor/plugin/player/PlayerPluginApiFeat
 import {PlayerPluginApiData} from "@/editor/plugin/player/PlayerPluginApi";
 import {PlayerPluginEvent} from "@/editor/plugin/player/PlayerPluginEvent";
 
+/**
+ * Provides an API feature to register event listeners for player events.
+ */
 export class EventsApiFeature extends PlayerPluginApiFeature {
+    /**
+     * Registers the `on` method to the provided QuickJS object.
+     * 
+     * @param obj - The QuickJS object to which the method is added.
+     * @param data - The API data containing context, plugin, and player information.
+     */
     register(obj: QuickJSHandle, data: PlayerPluginApiData): void {
         const context = data.context;
         const playerPlugin = data.playerPlugin;

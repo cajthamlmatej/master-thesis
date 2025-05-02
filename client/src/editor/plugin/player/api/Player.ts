@@ -12,7 +12,16 @@ import {ChangeCurrentSlideApiFeature} from "@/editor/plugin/player/api/player/Ch
 import {WatcherCountApiFeature} from "@/editor/plugin/player/api/player/WatcherCount";
 import {GetCurrentSlideApiFeature} from "@/editor/plugin/player/api/player/GetCurrentSlide";
 
+/**
+ * Represents the Player API feature that provides various functionalities for interacting with the player.
+ */
 export class PlayerApiFeature extends PlayerPluginApiFeature {
+    /**
+     * Registers the Player API feature by setting the "player" property on the provided object.
+     * 
+     * @param obj - The QuickJS object to which the property will be added.
+     * @param data - The data containing the plugin and context information.
+     */
     register(obj: QuickJSHandle, data: PlayerPluginApiData): void {
         const context = data.context;
 

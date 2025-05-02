@@ -1,6 +1,10 @@
 import type {ActionKeybind, ActionParameters} from "@/editor/actions/EditorAction";
 import {ContextAction} from "@/editor/actions/ContextAction";
 
+/**
+ * Represents the action of moving selected blocks in a specified direction.
+ * This action is always available via its keybinds but is not visible in the context menu.
+ */
 export class MoveAction extends ContextAction {
     private static readonly directionMap: { [key: string]: { x: number, y: number } } = {
         ArrowUp: {x: 0, y: -1},

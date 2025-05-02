@@ -40,10 +40,19 @@ interface BlockRegistryEntry {
     deserializer: Type<BlockDeserializer>;
 }
 
+/**
+ * The BlockRegistry class is responsible for managing the registration and deserialization
+ * of different types of blocks used in the editor and player. It maintains a registry
+ * of block types and their corresponding editor, player, and deserializer classes.
+ */
 export class BlockRegistry {
     private entries: BlockRegistryEntry[] = [];
 
+    /**
+     * Initializes the BlockRegistry and registers the default block types.
+     */
     public constructor() {
+        // Registers default block types
         this.register("text", TextEditorBlock, TextPlayerBlock, TextBlockDeserializer);
         this.register("image", ImageEditorBlock, ImagePlayerBlock, ImageBlockDeserializer);
         this.register("watermark", WatermarkEditorBlock, WatermarkPlayerBlock, WatermarkBlockDeserializer);
@@ -56,6 +65,15 @@ export class BlockRegistry {
         // $ADD_BLOCK_REGISTRY_ENTRY
     }
 
+    /**
+     * Registers a new block type in the registry.
+     * 
+     * @param name - The unique name of the block type.
+     * @param editor - The editor block class for this block type.
+     * @param player - The player block class for this block type.
+     * @param deserializer - The deserializer class for this block type.
+     * @throws Error if a block with the same name is already registered.
+     */
     public register(name: string, editor: Type<EditorBlock>, player: Type<PlayerBlock>, deserializer: Type<BlockDeserializer>) {
         if (this.entries.find(entry => entry.name === name)) {
             throw new Error(`Block with name ${name} is already registered`);
@@ -64,6 +82,12 @@ export class BlockRegistry {
         this.entries.push({name, editor, player, deserializer});
     }
 
+    /**
+     * Deserializes data into an editor block instance.
+     * 
+     * @param data - The serialized data of the block.
+     * @returns The deserialized editor block instance, or undefined if the block type is not registered.
+     */
     public deserializeEditor(data: any): EditorBlock | undefined {
         const type = data.type as string;
 
@@ -79,6 +103,12 @@ export class BlockRegistry {
         return deserializer.deserializeEditor(data);
     }
 
+    /**
+     * Deserializes data into a player block instance.
+     * 
+     * @param data - The serialized data of the block.
+     * @returns The deserialized player block instance, or undefined if the block type is not registered.
+     */
     public deserializePlayer(data: any): PlayerBlock | undefined {
         const type = data.type as string;
 

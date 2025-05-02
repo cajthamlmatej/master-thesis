@@ -1,8 +1,27 @@
 import {MaterialImporter} from "@/editor/import/MaterialImporter";
 import Material from "@/models/Material";
 
-export class JsonMaterialImporter extends MaterialImporter {
+interface SlideData {
+    title: string;
+    blocks: {
+        type: string;
+        html: string;
+        items?: number;
+    }[]
+};
 
+/**
+ * Class for importing materials from JSON content.
+ * Validates and parses JSON into a presentation format with slides and blocks.
+ */
+export class JsonMaterialImporter extends MaterialImporter {
+    /**
+     * Processes the given JSON content and updates the provided material object.
+     * @param content - The JSON content to be processed.
+     * @param material - The material object to be updated with the processed data.
+     * @throws Will throw an error if the JSON format is invalid.
+     * @returns A promise that resolves when the processing is complete.
+     */
     async process(content: string, material: Material) {
         material.slides = JSON.parse(content);
 
@@ -27,5 +46,4 @@ export class JsonMaterialImporter extends MaterialImporter {
             }
         }
     }
-
 }

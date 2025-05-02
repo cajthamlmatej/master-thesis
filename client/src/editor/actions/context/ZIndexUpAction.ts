@@ -1,6 +1,10 @@
 import type {ActionParameters} from "@/editor/actions/EditorAction";
 import {ContextAction} from "@/editor/actions/ContextAction";
 
+/**
+ * Represents the action of increasing the z-index of selected blocks.
+ * This action is visible when at least one block is selected, all selected blocks support z-index, and none are locked.
+ */
 export class ZIndexUpAction extends ContextAction {
     constructor() {
         super("z-index-up");

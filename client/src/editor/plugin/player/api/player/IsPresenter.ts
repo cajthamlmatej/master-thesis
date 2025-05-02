@@ -3,7 +3,16 @@ import {PlayerPluginApiFeature} from "@/editor/plugin/player/PlayerPluginApiFeat
 import {PlayerPluginApiData} from "@/editor/plugin/player/PlayerPluginApi";
 import {communicator} from "@/api/websockets";
 
+/**
+ * Provides an API feature to check if the current user is the presenter.
+ */
 export class IsPresenterApiFeature extends PlayerPluginApiFeature {
+    /**
+     * Registers the `isPresenter` method to the provided QuickJS object.
+     * 
+     * @param obj - The QuickJS object to which the method is added.
+     * @param data - The API data containing context, plugin, and player information.
+     */
     register(obj: QuickJSHandle, data: PlayerPluginApiData): void {
         const context = data.context;
         const plugin = data.plugin;

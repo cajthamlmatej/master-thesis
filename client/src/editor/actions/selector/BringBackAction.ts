@@ -1,6 +1,9 @@
 import {SelectorAction} from "@/editor/actions/SelectorAction";
 import type {ActionParameters} from "@/editor/actions/EditorAction";
 
+/**
+ * Represents the action of bringing selected blocks back into the visible editor area.
+ */
 export class BringBackAction extends SelectorAction {
     constructor() {
         super("bring-back", "mdi mdi-adjust");

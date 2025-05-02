@@ -1,6 +1,9 @@
 import {SelectorAction} from "@/editor/actions/SelectorAction";
 import type {ActionParameters} from "@/editor/actions/EditorAction";
 
+/**
+ * Represents the action of locking selected blocks.
+ */
 export class LockAction extends SelectorAction {
     constructor() {
         super("lock", "mdi mdi-lock");

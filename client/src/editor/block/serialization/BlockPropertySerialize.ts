@@ -1,11 +1,14 @@
+/**
+ * Metadata key used to store serialization information for block properties.
+ */
 export const SERIALIZER_METADATA_KEY = 'block:serializer';
 
 /**
- * Entry for a property that should be serialized.
+ * Represents an entry for a property that should be serialized.
  */
 export interface SerializeEntry {
     /**
-     * Key to save the property under.
+     * Key to save the property under in the serialized data.
      */
     key: string;
     /**
@@ -15,10 +18,11 @@ export interface SerializeEntry {
 }
 
 /**
- * Marks a property as serializable for a block. The property will be added with the key to the serialized data.
+ * Marks a property as serializable for a block. The property will be added with the specified key to the serialized data.
  *
- * If key is not provided, the property key will be used as the key in the serialized data.
- * @constructor
+ * If no key is provided, the property key will be used as the key in the serialized data.
+ * @param keyToSave - Optional key to save the property under.
+ * @returns A property decorator function.
  */
 export function BlockSerialize(keyToSave?: string): PropertyDecorator {
     return function (

@@ -3,7 +3,16 @@ import {PlayerPluginApiFeature} from "@/editor/plugin/player/PlayerPluginApiFeat
 import {PlayerPluginApiData} from "@/editor/plugin/player/PlayerPluginApi";
 import {PlayerMode} from "@/editor/player/PlayerMode";
 
+/**
+ * Provides an API feature to set the player's mode.
+ */
 export class SetModeApiFeature extends PlayerPluginApiFeature {
+    /**
+     * Registers the `setMode` method to the provided QuickJS object.
+     * 
+     * @param obj - The QuickJS object to which the method is added.
+     * @param data - The API data containing context, plugin, and player information.
+     */
     register(obj: QuickJSHandle, data: PlayerPluginApiData): void {
         const context = data.context;
         const plugin = data.plugin;

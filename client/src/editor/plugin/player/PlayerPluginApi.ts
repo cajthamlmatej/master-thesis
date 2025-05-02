@@ -11,16 +11,46 @@ import {PluginApiFeature} from "@/editor/plugin/player/api/Plugin";
 import {PlayerApiFeature} from "@/editor/plugin/player/api/Player";
 import {GetSlidesApiFeature} from "@/editor/plugin/player/api/GetSlides";
 
+/**
+ * Data required to register features to the PlayerPlugin API.
+ */
 export interface PlayerPluginApiData {
+    /**
+     * The QuickJS context.
+     */
     context: QuickJSContext;
+
+    /**
+     * The PlayerPlugin instance.
+     */
     playerPlugin: PlayerPlugin;
+
+    /**
+     * The plugin context.
+     */
     plugin: PluginContext;
+
+    /**
+     * The Player instance.
+     */
     player: Player;
+
+    /**
+     * The PluginManager instance.
+     */
     pluginManager: PluginManager;
 }
 
+/**
+ * Class responsible for managing the PlayerPlugin API and registering features.
+ */
 export class PlayerPluginApi {
 
+    /**
+     * Registers all API features to the PlayerPlugin API.
+     * 
+     * @param data - The data required for API registration.
+     */
     public register(data: PlayerPluginApiData) {
         const context = data.context;
 

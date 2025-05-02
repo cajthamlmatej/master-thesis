@@ -1,6 +1,10 @@
 import type {ActionParameters} from "@/editor/actions/EditorAction";
 import {ContextAction} from "@/editor/actions/ContextAction";
 
+/**
+ * Represents the action of moving selected blocks to the bottommost z-index.
+ * This action is visible when at least one block is selected, all selected blocks support z-index, and none are locked.
+ */
 export class ZIndexBottomAction extends ContextAction {
     constructor() {
         super("z-index-bottom");

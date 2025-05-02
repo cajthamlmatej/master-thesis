@@ -4,9 +4,15 @@ import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {createElementFromHTML} from "@/utils/CreateElementFromHTML";
 import {getRotatedRectanglePoints} from "@/utils/spaceManipulation";
 
-
+/**
+ * Command for moving the selection area and its associated blocks.
+ */
 export class MovingSelectorCommand extends SelectorCommand {
 
+    /**
+     * Returns the HTML elements used for movement handles.
+     * @returns {HTMLElement[]} The movement handle elements.
+     */
     public getElements(): HTMLElement | HTMLElement[] {
         return [
             createElementFromHTML(`<div class="move move--top"></div>`),
@@ -16,6 +22,12 @@ export class MovingSelectorCommand extends SelectorCommand {
         ]
     }
 
+    /**
+     * Executes the movement command when triggered by user interaction.
+     * @param event The mouse or touch event that triggered the command.
+     * @param element The HTML element associated with the movement handle.
+     * @param selectorArea The selector area instance.
+     */
     public execute(event: MouseEvent | TouchEvent, element: HTMLElement, selectorArea: EditorSelectorArea): void {
         event.preventDefault();
         event.stopPropagation();
@@ -169,6 +181,12 @@ export class MovingSelectorCommand extends SelectorCommand {
         window.addEventListener("touchcancel", mouseUpHandler);
     }
 
+    /**
+     * Retrieves the editor coordinates from a mouse or touch event.
+     * @param selectorArea The selector area instance.
+     * @param event The mouse or touch event.
+     * @returns The x and y coordinates in editor space.
+     */
     private getPositionFromEvent(selectorArea: EditorSelectorArea, event: MouseEvent | TouchEvent) {
         let x = 0, y = 0;
 

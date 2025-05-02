@@ -2,8 +2,6 @@ import {MaterialImporter} from "@/editor/import/MaterialImporter";
 import Material, {Slide, SlideData as MaterialSlideData} from "@/models/Material";
 import {marked} from "marked";
 import {generateUUID} from "@/utils/Generators";
-
-
 interface SlideData {
     title: string;
     blocks: {
@@ -13,8 +11,17 @@ interface SlideData {
     }[]
 };
 
+/**
+ * Class for importing materials from Markdown content.
+ * Converts Markdown into a presentation format with slides and blocks.
+ */
 export class MarkdownMaterialImporter extends MaterialImporter {
-
+    /**
+     * Processes the given Markdown content and updates the provided material object.
+     * @param content - The Markdown content to be processed.
+     * @param material - The material object to be updated with the processed data.
+     * @returns A promise that resolves when the processing is complete.
+     */
     async process(content: string, material: Material) {
         const data = marked.lexer(content);
 

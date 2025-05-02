@@ -9,6 +9,10 @@ import {EditorBlock} from "@/editor/block/EditorBlock";
 import type {MaterialOptions} from "@/editor/MaterialOptions";
 import {PluginPlayerBlock} from "@/editor/block/base/plugin/PluginPlayerBlock";
 
+/**
+ * Represents the main player responsible for rendering and managing blocks,
+ * handling user interactions, and managing the canvas state.
+ */
 export default class Player {
     private static readonly DEFAULT_PADDING = 32;
 
@@ -35,6 +39,11 @@ export default class Player {
     private pluginCommunicatorPromiseResolve: (any?: any) => void;
     private pluginCommunicatorPromise = new Promise((r) => this.pluginCommunicatorPromiseResolve = r);
 
+    /**
+     * Creates a new Player instance.
+     * @param element The HTML element to render the player in.
+     * @param options Configuration options for the player.
+     */
     constructor(element: HTMLElement, options: MaterialOptions) {
         this.blockRegistry = new BlockRegistry();
         this.element = element;
@@ -53,10 +62,18 @@ export default class Player {
         this.events.LOADED.emit();
     }
 
+    /**
+     * Returns the root HTML element of the player.
+     * @returns The root HTML element.
+     */
     public getElement() {
         return this.element;
     }
 
+    /**
+     * Adds a block to the player and renders it.
+     * @param block The block to add.
+     */
     public addBlock(block: PlayerBlock) {
         this.blocks.push(block);
 
@@ -75,6 +92,9 @@ export default class Player {
         block.afterRender();
     }
 
+    /**
+     * Adjusts the player's size and position to fit its parent element.
+     */
     public fitToParent() {
         const parent = this.element.parentElement;
 
@@ -110,6 +130,10 @@ export default class Player {
         this.updateElement();
     }
 
+    /**
+     * Changes the player's mode (e.g., play, move, draw).
+     * @param mode The new mode to set.
+     */
     public changeMode(mode: PlayerMode) {
         this.mode = mode;
 
@@ -121,6 +145,12 @@ export default class Player {
         this.events.MODE_CHANGED.emit(mode);
     }
 
+    /**
+     * Converts screen coordinates to editor coordinates.
+     * @param screenX The X coordinate on the screen.
+     * @param screenY The Y coordinate on the screen.
+     * @returns The corresponding editor coordinates.
+     */
     public screenToEditorCoordinates(screenX: number, screenY: number) {
         const offset = this.getOffset();
         const scale = this.getScale();
@@ -131,6 +161,10 @@ export default class Player {
         }
     }
 
+    /**
+     * Gets the current offset of the player on the screen.
+     * @returns The offset as an object with x and y properties.
+     */
     public getOffset() {
         const rect = this.element.getBoundingClientRect();
         return {
@@ -139,21 +173,35 @@ export default class Player {
         }
     }
 
+    /**
+     * Gets the current scale of the player.
+     * @returns The scale factor.
+     */
     public getScale() {
         return this.scale;
     }
 
+    /**
+     * Gets the current size of the player.
+     * @returns The size as an object with width and height properties.
+     */
     public getSize(): { width: number; height: number } {
         return this.size;
     }
 
     /**
-     * Returns the blocks in the player.
+     * Returns all blocks currently in the player.
+     * @returns An array of PlayerBlock instances.
      */
     public getBlocks() {
         return this.blocks;
     }
 
+    /**
+     * Finds a block by its ID.
+     * @param blockId The ID of the block to find.
+     * @returns The block if found, or undefined otherwise.
+     */
     public getBlockById(blockId: string) {
         const block = this.blocks.find(block => block.id === blockId);
 
@@ -164,6 +212,9 @@ export default class Player {
         return block;
     }
 
+    /**
+     * Destroys the player and cleans up event listeners.
+     */
     public destroy() {
         console.log("[Player] Destroying player");
         window.removeEventListener("resize", this.resizeEvent);
@@ -173,19 +224,35 @@ export default class Player {
         this.events.PLAYER_DESTROYED.emit();
     }
 
+    /**
+     * Gets the current mode of the player.
+     * @returns The current PlayerMode.
+     */
     public getMode() {
         return this.mode;
     }
 
+    /**
+     * Gets the PlayerDraw instance associated with the player.
+     * @returns The PlayerDraw instance.
+     */
     public getDraw() {
         return this.draw;
     }
 
+    /**
+     * Sets the plugin communicator for the player.
+     * @param pluginCommunicator The PlayerPluginCommunicator instance.
+     */
     public setPluginCommunicator(pluginCommunicator: PlayerPluginCommunicator) {
         this.pluginCommunicator = pluginCommunicator;
         this.pluginCommunicatorPromiseResolve();
     }
 
+    /**
+     * Asynchronously gets the plugin communicator.
+     * @returns A promise that resolves to the PlayerPluginCommunicator instance.
+     */
     public async getPluginCommunicator() {
         await this.pluginCommunicatorPromise;
 
@@ -196,6 +263,10 @@ export default class Player {
         return this.pluginCommunicator;
     }
 
+    /**
+     * Removes a block from the player by its instance or ID.
+     * @param block The block instance or ID to remove.
+     */
     public removeBlock(block: EditorBlock | string) {
         const blockId = typeof block === "string" ? block : block.id;
         const blockIndex = this.blocks.findIndex(block => block.id === blockId);
@@ -213,16 +284,27 @@ export default class Player {
         this.blocks.splice(blockIndex, 1);
     }
 
+    /**
+     * Adds multiple blocks to the player.
+     * @param blocks An array of PlayerBlock instances to add.
+     */
     public addBlocks(blocks: PlayerBlock[]) {
         for (const block of blocks) {
             this.addBlock(block);
         }
     }
 
+    /**
+     * Gets the current position of the player.
+     * @returns The position as an object with x and y properties.
+     */
     public getPosition() {
         return this.position;
     }
 
+    /**
+     * Updates the player's HTML element to reflect its current state.
+     */
     public updateElement() {
         this.element.style.backgroundColor = this.color;
         this.element.style.left = this.position.x + "px";
@@ -233,12 +315,19 @@ export default class Player {
         this.element.style.height = this.size.height + "px";
     }
 
+    /**
+     * Redraws all blocks in the player.
+     */
     public redrawBlocks() {
         this.getBlocks().filter(b => b instanceof PluginPlayerBlock).forEach((block: PluginPlayerBlock) => {
             block.renderIframe();
         });
     }
 
+    /**
+     * Parses the provided options and applies them to the player.
+     * @param options The MaterialOptions to parse.
+     */
     private parseOptions(options?: MaterialOptions) {
         if (!options) return;
 
@@ -250,6 +339,10 @@ export default class Player {
         }
     }
 
+    /**
+     * Handles mouse down events for moving the canvas.
+     * @param event The mouse event.
+     */
     private usageMouseDownEvent(event: MouseEvent) {
         if (this.mode !== PlayerMode.MOVE) return;
 
@@ -282,6 +375,10 @@ export default class Player {
         window.addEventListener("mouseup", handleUp);
     }
 
+    /**
+     * Handles wheel events for zooming the canvas.
+     * @param event The wheel event.
+     */
     private usageWheelEvent(event: WheelEvent) {
         if (this.mode !== PlayerMode.MOVE) return;
 
@@ -309,6 +406,9 @@ export default class Player {
         this.updateElement();
     }
 
+    /**
+     * Sets up event listeners for user interactions.
+     */
     private setupUsage() {
         this.resizeEvent = this.usageResizeEvent.bind(this);
         this.mouseDownEvent = this.usageMouseDownEvent.bind(this);
@@ -321,6 +421,10 @@ export default class Player {
         window.addEventListener("touchstart", this.touchEvent);
     }
 
+    /**
+     * Handles touch events for moving or zooming the canvas.
+     * @param event The touch event.
+     */
     private usageTouchEvent(event: TouchEvent) {
         if (event.touches.length === 2) {
             if (this.mode !== PlayerMode.MOVE) return;
@@ -396,12 +500,18 @@ export default class Player {
         }
     }
 
+    /**
+     * Handles resize events to adjust the player's size.
+     */
     private usageResizeEvent() {
         if (this.mode === PlayerMode.MOVE) return;
 
         this.fitToParent();
     }
 
+    /**
+     * Sets up the player's HTML structure.
+     */
     private setupPlayer() {
         this.element.innerHTML = `<div class="player-content"></div>`
     }

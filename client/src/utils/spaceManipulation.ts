@@ -1,10 +1,12 @@
 /**
- * Rotate a rectangle around its center.
- * @param x
- * @param y
- * @param width
- * @param height
- * @param angle in degrees
+ * Calculates the coordinates of the four corners of a rectangle after rotating it around its center.
+ * 
+ * @param x The x-coordinate of the top-left corner of the rectangle.
+ * @param y The y-coordinate of the top-left corner of the rectangle.
+ * @param width The width of the rectangle.
+ * @param height The height of the rectangle.
+ * @param angle The rotation angle in degrees.
+ * @returns An array of points representing the rotated rectangle's corners.
  */
 export const getRotatedRectanglePoints = (x: number, y: number, width: number, height: number, angle: number) => {
     const angleInRadians = angle * (Math.PI / 180);

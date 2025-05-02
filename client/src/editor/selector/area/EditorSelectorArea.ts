@@ -9,6 +9,10 @@ import {ResizingSelectorCommand} from "@/editor/selector/area/command/ResizingSe
 import {MovingSelectorCommand} from "@/editor/selector/area/command/MovingSelectorCommand";
 import {EditorMode} from "@/editor/EditorMode";
 
+/**
+ * Represents the selection area in the editor.
+ * Handles the visualization, interaction, and manipulation of selected blocks.
+ */
 export default class EditorSelectorArea {
     private readonly selector: EditorSelector;
     private readonly editor: Editor;
@@ -27,6 +31,10 @@ export default class EditorSelectorArea {
     private baseX: number;
     private baseY: number;
 
+    /**
+     * Constructs an instance of EditorSelectorArea.
+     * @param selector The editor selector instance.
+     */
     constructor(selector: EditorSelector) {
         this.selector = selector;
         this.editor = selector.getEditor();
@@ -80,7 +88,8 @@ export default class EditorSelectorArea {
     }
 
     /**
-     * Returns the current selection area.
+     * Returns the current selection area dimensions and rotation.
+     * @returns An object containing x, y, width, height, and rotation of the selection area.
      */
     public getArea() {
         return {
@@ -93,7 +102,7 @@ export default class EditorSelectorArea {
     }
 
     /**
-     * Checks if the selector should be visible and updates its position, size, rotation and visible actions.
+     * Updates the selector's visibility and applies appropriate styles based on the selected blocks.
      */
     public handleSelector() {
         this.element.classList.remove("editor-selector--proportional-resizing");
@@ -161,14 +170,16 @@ export default class EditorSelectorArea {
     }
 
     /**
-     * Returns the editor instance.
+     * Returns the editor instance associated with this selector area.
+     * @returns The editor instance.
      */
     public getEditor() {
         return this.editor;
     }
 
     /**
-     * Recalculates the selection area based on the selected blocks.
+     * Recalculates the selection area based on the currently selected blocks.
+     * Emits an AREA_CHANGED event with the updated dimensions and rotation.
      */
     public recalculateSelectionArea() {
         this.element.style.transform = "rotate(0deg)";
@@ -209,7 +220,7 @@ export default class EditorSelectorArea {
     }
 
     /**
-     * Updates the selection area to the current position, size and rotation for future movement.
+     * Updates the base position and rotation of the selection area for future transformations.
      */
     public updateSelectionArea() {
         this.baseX = this.x;
@@ -218,9 +229,9 @@ export default class EditorSelectorArea {
     }
 
     /**
-     * Moves the selection area by the given delta.
-     * @param deltaX
-     * @param deltaY
+     * Moves the selection area by the specified delta values.
+     * @param deltaX The change in the x-coordinate.
+     * @param deltaY The change in the y-coordinate.
      */
     public moveSelectionArea(deltaX: number, deltaY: number) {
         this.x = this.baseX + deltaX;
@@ -240,8 +251,8 @@ export default class EditorSelectorArea {
     }
 
     /**
-     * Resizes the selection area by the given delta.
-     * @param deltaRotation
+     * Rotates the selection area by the specified delta rotation.
+     * @param deltaRotation The change in rotation (in degrees).
      */
     public rotateSelectionArea(deltaRotation: number) {
         this.rotation = this.baseRotation + deltaRotation;
@@ -255,7 +266,9 @@ export default class EditorSelectorArea {
         });
     }
 
-
+    /**
+     * Initializes the selector element and its associated events.
+     */
     private setupSelector() {
         const selectorElement = document.createElement("div");
         selectorElement.classList.add("editor-selector");
@@ -292,6 +305,9 @@ export default class EditorSelectorArea {
         this.setupEvents();
     }
 
+    /**
+     * Sets up global mouse and touch event listeners for block selection and movement.
+     */
     private setupEvents() {
         const mouseDown = this.handleMouseDownEvent.bind(this);
         const touchStart = this.handleMouseDownMobileEvent.bind(this);
@@ -306,6 +322,10 @@ export default class EditorSelectorArea {
         });
     }
 
+    /**
+     * Handles mouse down events for block selection or deselection.
+     * @param event The mouse event.
+     */
     private handleMouseDownEvent(event: MouseEvent) {
         // If the element is not in the editor, do not do anything
         if (!this.editor.getWrapperElement().contains(event.target as Node)) {
@@ -342,6 +362,10 @@ export default class EditorSelectorArea {
         this.setupSelectBox(event);
     }
 
+    /**
+     * Handles touch start events for block selection or deselection on mobile devices.
+     * @param event The touch event.
+     */
     private handleMouseDownMobileEvent(event: TouchEvent) {
         // If the element is not in the editor, do not do anything
         if (!this.editor.getWrapperElement().contains(event.target as Node)) {
@@ -364,6 +388,9 @@ export default class EditorSelectorArea {
         }
     }
 
+    /**
+     * Updates the visibility of the selector based on the number of selected blocks.
+     */
     private handleVisibility() {
         if (this.selector.getSelectedBlocks().length === 0) {
             this.element.classList.remove("editor-selector--active");
@@ -374,6 +401,11 @@ export default class EditorSelectorArea {
         }
     }
 
+    /**
+     * Sets up movement or selection behavior for a block based on the event.
+     * @param originalEvent The original mouse or touch event.
+     * @param block The block being interacted with.
+     */
     private setupMovementOrSelect(originalEvent: MouseEvent | TouchEvent, block: EditorBlock) {
         this.selector.selectBlock(block, originalEvent.shiftKey, originalEvent instanceof MouseEvent ? originalEvent : undefined);
         this.handleVisibility();
@@ -390,6 +422,12 @@ export default class EditorSelectorArea {
         }
     }
 
+    /**
+     * Retrieves the editor coordinates from a mouse or touch event.
+     * @param selectorArea The selector area instance.
+     * @param event The mouse or touch event.
+     * @returns The x and y coordinates in editor space.
+     */
     private getPositionFromEvent(selectorArea: EditorSelectorArea, event: MouseEvent | TouchEvent) {
         let x = 0, y = 0;
 
@@ -406,6 +444,11 @@ export default class EditorSelectorArea {
         return selectorArea.getEditor().screenToEditorCoordinates(x, y);
     }
 
+    /**
+     * Handles block movement or selection for mobile devices.
+     * @param block The block being interacted with.
+     * @param originalEvent The original touch event.
+     */
     private setupMovementOrSelectMobile(block: EditorBlock, originalEvent: TouchEvent) {
         let {x: initialX, y: initialY} = this.getPositionFromEvent(this, originalEvent);
 
@@ -459,6 +502,11 @@ export default class EditorSelectorArea {
         window.addEventListener("touchcancel", touchEndHandler);
     }
 
+    /**
+     * Handles block movement or selection for desktop devices.
+     * @param block The block being interacted with.
+     * @param originalEvent The original mouse event.
+     */
     private setupMovementOrSelectDesktop(block: EditorBlock, originalEvent: MouseEvent) {
         let {
             x: initialX,
@@ -507,6 +555,10 @@ export default class EditorSelectorArea {
         window.addEventListener("mouseup", mouseUpHandler);
     }
 
+    /**
+     * Sets up a selection box for selecting multiple blocks.
+     * @param event The mouse event that initiated the selection box.
+     */
     private setupSelectBox(event: MouseEvent) {
         if (this.editor.getMode() != EditorMode.SELECT) {
             return;

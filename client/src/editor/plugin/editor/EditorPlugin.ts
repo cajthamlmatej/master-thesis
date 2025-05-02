@@ -9,6 +9,9 @@ import {usePluginStore} from "@/stores/plugin";
 import {PluginManager} from "@/editor/plugin/PluginManager";
 import {PluginEditorBlock} from "@/editor/block/base/plugin/PluginEditorBlock";
 
+/**
+ * Represents an editor plugin, managing its lifecycle, context, and interactions.
+ */
 export class EditorPlugin {
     private plugin: PluginContext;
     private code: string;
@@ -40,6 +43,12 @@ export class EditorPlugin {
         this.prepareContext();
     }
 
+    /**
+     * Registers a callback function for a specific plugin event.
+     * 
+     * @param name - The name of the event.
+     * @param fnc - The callback function to register.
+     */
     public registerCallback(name: EditorPluginEvent, fnc: QuickJSHandle) {
         if (!this.context) throw new Error("Context not ready");
 
@@ -58,6 +67,13 @@ export class EditorPlugin {
         }
     }
 
+    /**
+     * Calls a registered event with the provided arguments.
+     * 
+     * @param name - The name of the event.
+     * @param args - The arguments to pass to the event handler.
+     * @returns The result of the event handler, if any.
+     */
     public async callEvent(name: EditorPluginEvent, ...args: QuickJSHandle[]) {
         if (!this.context) throw new Error("Context not ready");
         await this.loadedPromise;
@@ -71,6 +87,12 @@ export class EditorPlugin {
         return this.context.callFunction(fnc, this.context.undefined, ...args);
     }
 
+    /**
+     * Serializes a value into a QuickJSHandle.
+     * 
+     * @param value - The value to serialize.
+     * @returns The serialized QuickJSHandle.
+     */
     public serializeAny(value: any): QuickJSHandle {
         if (!this.context) throw new Error("Context not ready");
 
@@ -93,6 +115,12 @@ export class EditorPlugin {
         }
     }
 
+    /**
+     * Serializes an editor block into a QuickJSHandle, including its API features.
+     * 
+     * @param block - The editor block to serialize.
+     * @returns The serialized QuickJSHandle.
+     */
     public serializeBlock(block: EditorBlock): QuickJSHandle {
         const base = this.serializeAny(block.serialize());
 
@@ -197,6 +225,9 @@ export class EditorPlugin {
         return object;
     }
 
+    /**
+     * Prepares the QuickJS context for the plugin.
+     */
     private async prepareContext() {
         const QuickJS = await load();
         this.context = QuickJS.newContext();
@@ -215,6 +246,9 @@ export class EditorPlugin {
         this.editor?.redrawBlocks();
     }
 
+    /**
+     * Sets up the QuickJS context with the necessary API features and configurations.
+     */
     private setupContext() {
         if (!this.context || !this.editor) {
             console.error("Context or editor not ready, cannot setup context");
@@ -232,6 +266,13 @@ export class EditorPlugin {
         this.plugin.log(`Prepared context`);
     }
 
+    /**
+     * Calls a function in the QuickJS context if it exists.
+     * 
+     * @param name - The name of the function to call.
+     * @param args - The arguments to pass to the function.
+     * @returns The result of the function call, or false if the function does not exist.
+     */
     private async callFunctionIfExists(name: string, ...args: QuickJSHandle[]) {
         if (!this.context) throw new Error("Context not ready");
 

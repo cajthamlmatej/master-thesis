@@ -3,7 +3,17 @@ import {QuickJSHandle} from "quickjs-emscripten";
 import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
 import {EditorMode} from "@/editor/EditorMode";
 
+/**
+ * Provides the "setMode" API feature for the editor plugin.
+ * This feature allows changing the editor's mode.
+ */
 export class SetModeApiFeature extends EditorPluginApiFeature {
+    /**
+     * Registers the "setMode" function in the plugin API.
+     * 
+     * @param obj - The QuickJS object to which the function is added.
+     * @param data - The API data containing context, plugin, and editor references.
+     */
     register(obj: QuickJSHandle, data: EditorPluginApiData): void {
         const context = data.context;
         const plugin = data.plugin;

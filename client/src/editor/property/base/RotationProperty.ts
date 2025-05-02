@@ -2,16 +2,29 @@ import {NumberProperty} from "@/editor/property/type/NumberProperty";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 import {$t} from "@/translation/Translation";
 
+/**
+ * Represents a property for managing the rotation of editor blocks.
+ */
 export class RotationProperty<T extends EditorBlock = EditorBlock> extends NumberProperty<T> {
 
+    /**
+     * Initializes the RotationProperty with a label and identifier.
+     */
     constructor() {
         super($t("property.rotation.label"), "base-rotation");
     }
 
+    /**
+     * Determines if the property is visible.
+     * @returns {boolean} Always true.
+     */
     public override isVisible(): boolean {
         return true;
     }
 
+    /**
+     * Sets up event listeners for the rotation property.
+     */
     public override setup(): void {
         super.setup();
 
@@ -23,6 +36,10 @@ export class RotationProperty<T extends EditorBlock = EditorBlock> extends Numbe
         });
     }
 
+    /**
+     * Recalculates the rotation value based on the blocks' current rotations.
+     * @param change Callback to update the recalculated value.
+     */
     public override recalculateValues(change: (value: number) => void): void {
         let defaultRotation: number = this.blocks[0].rotation;
 
@@ -33,6 +50,12 @@ export class RotationProperty<T extends EditorBlock = EditorBlock> extends Numbe
         change(defaultRotation);
     }
 
+    /**
+     * Applies a new rotation value to the blocks.
+     * @param value The new rotation value.
+     * @param delta Optional delta for rotation adjustment.
+     * @returns {boolean} Always true.
+     */
     public override applyValue(value: number, delta?: { changeX: number, changeY: number, distance: number }): boolean {
         if (delta) {
             for (let block of this.blocks) {

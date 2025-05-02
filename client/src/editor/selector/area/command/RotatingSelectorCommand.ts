@@ -3,14 +3,32 @@ import type EditorSelectorArea from "@/editor/selector/area/EditorSelectorArea";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {createElementFromHTML} from "@/utils/CreateElementFromHTML";
 
+/**
+ * The RotatingSelectorCommand class handles the rotation of selected blocks within the editor.
+ * It allows users to rotate blocks around a central point or individually, with optional snapping.
+ */
 export class RotatingSelectorCommand extends SelectorCommand {
 
+    /**
+     * Returns the HTML elements associated with the rotation command.
+     * These elements are used to represent the rotation functionality in the UI.
+     * 
+     * @returns {HTMLElement | HTMLElement[]} The HTML elements for the rotation command.
+     */
     public getElements(): HTMLElement | HTMLElement[] {
         return [
             createElementFromHTML(`<div class="rotate"></div>`),
-        ]
+        ];
     }
 
+    /**
+     * Executes the rotation command. Handles the rotation logic, including snapping,
+     * updating block positions, and recalculating the selection area.
+     * 
+     * @param {MouseEvent | TouchEvent} event - The event that triggered the command.
+     * @param {HTMLElement} element - The HTML element associated with the command.
+     * @param {EditorSelectorArea} selectorArea - The selector area where the command is executed.
+     */
     public execute(event: MouseEvent | TouchEvent, element: HTMLElement, selectorArea: EditorSelectorArea): void {
         let {x: initialX, y: initialY} = this.getPositionFromEvent(selectorArea, event);
         const PER_OBJECT = selectorArea.getEditor().getPreferences().PER_OBJECT_TRANSFORMATION;
@@ -113,6 +131,14 @@ export class RotatingSelectorCommand extends SelectorCommand {
         window.addEventListener("touchcancel", mouseUpHandler);
     }
 
+    /**
+     * Extracts the position (x, y) from a mouse or touch event and converts it to editor coordinates.
+     * 
+     * @param {EditorSelectorArea} selectorArea - The selector area where the event occurred.
+     * @param {MouseEvent | TouchEvent} event - The event containing position data.
+     * @returns {{x: number, y: number}} The position in editor coordinates.
+     * @throws {Error} If the event type is unsupported.
+     */
     private getPositionFromEvent(selectorArea: EditorSelectorArea, event: MouseEvent | TouchEvent) {
         let x = 0, y = 0;
 

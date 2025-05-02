@@ -19,8 +19,16 @@ export interface EditorPluginApiData {
     pluginManager: PluginManager;
 }
 
+/**
+ * Represents the API for editor plugins, providing various features and utilities.
+ */
 export class EditorPluginApi {
 
+    /**
+     * Registers all available API features with the provided data.
+     * 
+     * @param data - The data required to initialize and register API features.
+     */
     public register(data: EditorPluginApiData) {
         const context = data.context;
 
