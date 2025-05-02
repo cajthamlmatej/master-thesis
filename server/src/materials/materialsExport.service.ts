@@ -9,6 +9,11 @@ import {MaterialsService} from "./materials.service";
 import {EventsGateway} from "../events/events.gateway";
 import {ConfigService} from "@nestjs/config";
 
+/**
+ * Service responsible for exporting materials in various formats (PDF, JSON) 
+ * and generating slide thumbnails. Utilizes Puppeteer for rendering and 
+ * PDFMerger for combining PDF files.
+ */
 @Injectable()
 export class MaterialsExportService {
     private TOKEN: string = generateToken(64);
@@ -26,10 +31,21 @@ export class MaterialsExportService {
         this.getBrowser();
     }
 
+    /**
+     * Retrieves the token used for authentication in export operations.
+     * @returns {string} The generated token.
+     */
     public getToken() {
         return this.TOKEN;
     }
 
+    /**
+     * Exports a material in the specified format (PDF or JSON).
+     * @param material The material document to export.
+     * @param format The format to export the material in ('pdf' or 'json').
+     * @returns {Promise<fs.ReadStream>} A readable stream of the exported file.
+     * @throws {BadRequestException} If the format is unsupported.
+     */
     public async exportMaterial(material: HydratedDocument<Material>, format: string) {
         const outputFolder = `./temp/${material.id}/`;
         fs.mkdirSync(outputFolder, {recursive: true});
@@ -46,6 +62,11 @@ export class MaterialsExportService {
         return fs.createReadStream(path);
     }
 
+    /**
+     * Exports slide thumbnails for a given material. Generates JPEG images
+     * for each slide and updates the material's thumbnails.
+     * @param material The material document containing slides to export.
+     */
     public async exportSlideThumbnails(material: HydratedDocument<Material>) {
         this.logger.log(`Exporting slide thumbnails for material ${material.id}`);
 
@@ -101,6 +122,10 @@ export class MaterialsExportService {
         }
     }
 
+    /**
+     * Retrieves or initializes a Puppeteer browser instance.
+     * @returns {Promise<Browser>} The Puppeteer browser instance.
+     */
     private async getBrowser(): Promise<Browser> {
         if (this.browser) {
             return this.browser;
@@ -136,6 +161,12 @@ export class MaterialsExportService {
         return this.browser;
     }
 
+    /**
+     * Exports a material's slides to a single PDF file.
+     * @param material The material document containing slides to export.
+     * @param outputFolder The folder to save the generated PDF files.
+     * @returns {Promise<string>} The path to the final merged PDF file.
+     */
     private async exportToPDF(material: HydratedDocument<Material>, outputFolder: string) {
         const url = this.configService.get<string>("FRONTEND_DOMAIN")! + this.configService.get<string>("FRONTEND_DOMAIN_PLAYER")!;
 
@@ -184,6 +215,12 @@ export class MaterialsExportService {
         return output;
     }
 
+    /**
+     * Exports a material's slides to a JSON file.
+     * @param material The material document containing slides to export.
+     * @param outputFolder The folder to save the generated JSON file.
+     * @returns {Promise<string>} The path to the generated JSON file.
+     */
     private async exportToJSON(material: HydratedDocument<Material>, outputFolder: string) {
         let output = `${outputFolder}/output-json.json`;
 

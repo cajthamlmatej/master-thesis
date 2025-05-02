@@ -5,6 +5,10 @@ import {WsException} from "@nestjs/websockets";
 import {EventsGateway} from "./events.gateway";
 import {EditorMaterialRoomAttendee} from "./editorMaterialRoomAttendee";
 
+/**
+ * Represents a room for editing a material collaboratively.
+ * Manages attendees, material synchronization, and slide/block operations.
+ */
 export class EditorMaterialRoom {
     private material: HydratedDocument<Material>;
     private readonly roomId: string;
@@ -14,6 +18,11 @@ export class EditorMaterialRoom {
     private attendees: EditorMaterialRoomAttendee[] = [];
     private debounceMaterial: NodeJS.Timeout;
 
+    /**
+     * Initializes the editor material room with the given material and gateway.
+     * @param material The material document to be edited.
+     * @param gateway The events gateway for communication.
+     */
     constructor(material: HydratedDocument<Material>, gateway: EventsGateway) {
         this.material = material;
         this.gateway = gateway;
@@ -22,6 +31,10 @@ export class EditorMaterialRoom {
         this.generateThumbnail();
     }
 
+    /**
+     * Adds a listener (attendee) to the room.
+     * @param listener The socket of the attendee to add.
+     */
     public addListener(listener: Socket) {
         listener.join(this.roomId);
 
@@ -52,6 +65,10 @@ export class EditorMaterialRoom {
         });
     }
 
+    /**
+     * Removes a listener (attendee) from the room.
+     * @param client The socket of the attendee to remove.
+     */
     public removeListener(client: Socket) {
         client.leave(this.roomId);
         this.attendees = this.attendees.filter(a => a.client !== client);
@@ -61,18 +78,35 @@ export class EditorMaterialRoom {
         });
     }
 
+    /**
+     * Gets the ID of the material being edited.
+     * @returns The material ID.
+     */
     public getMaterialId() {
         return this.material.id;
     }
 
+    /**
+     * Gets the material document being edited.
+     * @returns The material document.
+     */
     public getMaterial() {
         return this.material;
     }
 
+    /**
+     * Retrieves an attendee by their socket.
+     * @param client The socket of the attendee.
+     * @returns The attendee or undefined if not found.
+     */
     public getAttendee(client: Socket) {
         return this.attendees.find(a => a.client === client);
     }
 
+    /**
+     * Announces new thumbnails for slides to all attendees.
+     * @param slides The slides with their new thumbnails.
+     */
     public announceNewThumbnails(slides: {
         id: string,
         thumbnail: string
@@ -83,6 +117,12 @@ export class EditorMaterialRoom {
         });
     }
 
+    /**
+     * Changes the slide currently being viewed by an attendee.
+     * @param client The socket of the attendee.
+     * @param slideId The ID of the slide to switch to.
+     * @throws WsException if the attendee is not in the room.
+     */
     public changeAttendeeSlide(client: Socket, slideId: string) {
         const attendee = this.getAttendee(client);
 
@@ -98,6 +138,12 @@ export class EditorMaterialRoom {
         });
     }
 
+    /**
+     * Updates the blocks selected by an attendee.
+     * @param client The socket of the attendee.
+     * @param selectedBlocks The IDs of the selected blocks.
+     * @throws WsException if the attendee is not in the room.
+     */
     public changeAttendeeSelectedBlocks(client: Socket, selectedBlocks: string[]) {
         const attendee = this.getAttendee(client);
 
@@ -113,6 +159,11 @@ export class EditorMaterialRoom {
         });
     }
 
+    /**
+     * Synchronizes a block's data across all attendees.
+     * @param client The socket of the attendee making the change.
+     * @param block The block data to synchronize.
+     */
     public async synchronizeBlock(client: Socket, block: any) {
         const slideId = this.getAttendee(client)!.slideId;
         this.gateway.server.to(this.roomId).emit('synchronizeBlock', {
@@ -125,6 +176,11 @@ export class EditorMaterialRoom {
         await this.saveSlide(slideId);
     }
 
+    /**
+     * Removes a block from a slide and notifies all attendees.
+     * @param client The socket of the attendee making the change.
+     * @param blockId The ID of the block to remove.
+     */
     public async removeBlock(client: Socket, blockId: string) {
         const slideId = this.getAttendee(client)!.slideId;
         this.gateway.server.to(this.roomId).emit('removeBlock', {
@@ -137,6 +193,10 @@ export class EditorMaterialRoom {
         await this.saveSlide(slideId);
     }
 
+    /**
+     * Synchronizes the material's metadata and settings.
+     * @param data The updated material data.
+     */
     public synchronizeMaterial(data: {
         plugins: { plugin: string; release: string }[];
         name: string;
@@ -155,6 +215,10 @@ export class EditorMaterialRoom {
         this.gateway.server.to(this.roomId).emit('synchronizeMaterial', data);
     }
 
+    /**
+     * Synchronizes a slide's data across all attendees.
+     * @param data The updated slide data.
+     */
     public async synchronizeSlide(data: {
         slideId: string;
         size: { width: number; height: number };
@@ -190,6 +254,10 @@ export class EditorMaterialRoom {
         await this.saveSlide(data.slideId);
     }
 
+    /**
+     * Removes a slide from the material and notifies all attendees.
+     * @param slideId The ID of the slide to remove.
+     */
     public async removeSlide({slideId}: { slideId: string }) {
         this.material.slides = this.material.slides.filter(s => s.id !== slideId);
 
@@ -201,6 +269,10 @@ export class EditorMaterialRoom {
         this.saveMaterial();
     }
 
+    /**
+     * Generates thumbnails for the material's slides.
+     * Debounced to avoid frequent calls.
+     */
     public generateThumbnail() {
         if (this.debounceThumbnail) {
             clearTimeout(this.debounceThumbnail);
@@ -211,6 +283,10 @@ export class EditorMaterialRoom {
         }, 3000);
     }
 
+    /**
+     * Saves the material document to the database.
+     * Debounced to avoid frequent saves.
+     */
     private saveMaterial() {
         if (this.debounceMaterial) {
             clearTimeout(this.debounceMaterial);
@@ -226,12 +302,21 @@ export class EditorMaterialRoom {
         }, 3000);
     }
 
+    /**
+     * Saves a specific slide's data to the material.
+     * @param slideId The ID of the slide to save.
+     */
     private async saveSlide(slideId: string) {
         this.generateThumbnail();
         this.material.markModified("slides");
         this.saveMaterial();
     }
 
+    /**
+     * Retrieves a slide by its ID.
+     * @param slideId The ID of the slide to retrieve.
+     * @returns The slide or undefined if not found.
+     */
     private getSlide(slideId: string) {
         const slide = this.material.slides.find(s => s.id === slideId);
 
@@ -242,6 +327,11 @@ export class EditorMaterialRoom {
         return slide;
     }
 
+    /**
+     * Removes a block from a slide's data.
+     * @param slideId The ID of the slide.
+     * @param blockId The ID of the block to remove.
+     */
     private async removeSlideBlock(slideId: string, blockId: string) {
         const slide = this.getSlide(slideId);
 
@@ -250,6 +340,12 @@ export class EditorMaterialRoom {
         slide.data.blocks = slide.data.blocks.filter(b => b.id !== blockId);
     }
 
+    /**
+     * Synchronizes a block's data within a slide.
+     * Adds the block if it doesn't exist, or updates it if it does.
+     * @param slideId The ID of the slide.
+     * @param blockData The block data to synchronize.
+     */
     private async synchronizeSlideBlock(slideId: string, blockData: any) {
         const slide = this.getSlide(slideId)
         const block = JSON.parse(blockData);
