@@ -750,6 +750,12 @@ const keydown = (e: KeyboardEvent) => {
     if (!current) return;
     if (material.value.method !== 'MANUAL') return;
 
+    const target = e.target as HTMLElement;
+
+    if(target && target.tagName === 'INPUT') {
+        return;
+    }
+
     if (["ArrowRight", "Enter", "Space", " ", "PageUp"].includes(e.key)) {
         nextSlide();
     } else if (["ArrowLeft", "PageDown", "Backspace"].includes(e.key)) {
