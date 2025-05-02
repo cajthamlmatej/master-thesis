@@ -77,7 +77,7 @@ Pomáhal mi tak udržet přehled o jednotlivých krocích, přestože jsem praco
 Klientská část aplikace byla vyvinuta jako webová aplikace v souladu s návrhem ze sekce~\ref{text:navrh/klient}. 
 Pro implementaci byl zvolen framework Vue spolu s nástrojem Vite, který umožňuje rychlý vývoj a stabilní správu závislostí.
 
-Pro usnadnění tvorby požadovaných funkcionalit bylo využito několik knihoven, které zajišťují specifické potřeby aplikace. 
+Pro usnadnění tvorby požadovaných funkcionalit bylo využito několika knihoven, které zajišťují specifické potřeby aplikace. 
 Mezi klíčové patří:
 
 \begin{description}
@@ -153,7 +153,7 @@ V opačném případě, tedy při hodnotě \texttt{PRIVATE}, je přístup omezen
 
 Všechny stránky aplikace jsou přizpůsobené pro různá zařízení, jak je podrobněji uvedeno v kapitole~\ref{text:testovani}. 
 Responzivita je zajištěna hlavně díky použití komponentového systému a systému gridu, přičemž konkrétně se využívá dvanácti sloupcového rozvržení. 
-Rozdělení do sloupců je řízeno pomocí CSS tříd a breakpointů, přičemž nejčastěji se používají pouze tři základní — \texttt{sm}, \texttt{md} a všechny vyšší velikosti.
+Rozdělení do sloupců je řízeno pomocí CSS tříd a breakpointů, přičemž nejčastěji se používají pouze tři základní -- \texttt{sm}, \texttt{md} a všechny vyšší velikosti.
 
 Většina rozvržení se přizpůsobuje právě přes tyto nastavené breakpointy. 
 Dále se využívají pomocné třídy pro nastavení okrajů (\texttt{margin}), vnitřních okrajů (\texttt{padding}), flexibilního rozmístění prvků (\texttt{flex}) a rozestupů (\texttt{gap}). 
@@ -215,12 +215,12 @@ V kombinaci s prerendering tak vzniká systém, který je pro vyhledávače čit
 Stránky jsou navíc přístupné a plně responzivní, jak rozvádím v sekci~\ref{text:realizace/responzivita}.
 
 Alternativa k tomuto by byla použít vykreslování na serveru pomocí nějakého frameworku, třeba Nuxt.
-Vzhledem k tomu, že stránky nejsou takovým velkým cílem SEO, se mi zdála tato možnost jako nevhodná a proto jsem ji nezvolil.
+Vzhledem k tomu, že stránky nejsou takovým velkým cílem SEO, zdála se mi tato možnost jako nevhodná, a proto jsem ji nezvolil.
 
 \section{Serverová část}\label{text:realizace/server}
 
 Serverová část aplikace byla implementována v souladu s návrhem popsaným v sekci~\ref{text:navrh/server}. 
-Hlavní jazykem byl TypeScript a vývoj probíhal s využitím frameworku Nest. 
+Hlavním jazykem byl TypeScript a vývoj probíhal s využitím frameworku Nest. 
 
 Pro jednotlivé funkce byly použity následující balíčky:
 
@@ -234,7 +234,7 @@ Pro jednotlivé funkce byly použity následující balíčky:
 \end{description}
 
 Nest framework je ve výchozím stavu postaven na knihovně Express a s tím jsem počítal i v návrhu aplikace.
-V tomto projektu byl ale nakonec nahrazen za Fastify, protože Nest podporuje přepnutí serverového enginu nativně. 
+V tomto projektu byl ale nakonec nahrazen za Fastify, protože Nest podporuje přepnutí serverového procesoru nativně. 
 Změna nevyžadovala větší úpravy a přinesla drobné výhody z hlediska výkonu a např. nahrávání souborů.
 
 V porovnání s klientskou částí byla implementace serveru časově méně náročná.
@@ -257,7 +257,7 @@ Nest klade důraz na modularitu. Každá část aplikace je definována jako sam
 \end{description}
 
 Moduly \texttt{media}, \texttt{users}, \texttt{preferences} a další využívají knihovnu Mongoose pro práci s databází MongoDB. 
-Schémata jednotlivých entit byla vytvořena již v době návrhu, v implementaci byly zjištěny různé nedostatky s původního návrhu a bylo nutné některé entity změnit.
+Schémata jednotlivých entit byla vytvořena již v době návrhu, v implementaci byly zjištěny různé nedostatky z původního návrhu a bylo nutné některé entity změnit.
 
 \subsection{Autentizace a autorizace}
 
@@ -265,7 +265,7 @@ Autentizační logika využívá tzv. \emph{guards}, které Nest nabízí jako m
 Guardy se aktivují pomocí TS dekorátorů a lze jimi snadno řídit, které části systému vyžadují přihlášení a jakým způsobem. 
 Použity byly různé varianty guard -- pro běžné API volání, volitelnou autentizaci a také specifické guard pro připojení WebSocket.
 
-Autorizace není centralizovaná, ale probíhá na úrovni jednotlivých endpointů. 
+Autorizace není centralizovaná, ale probíhá na úrovni jednotlivých koncových bodů. 
 V každém případě se ověřuje, zda má uživatel přístup k danému materiálu -- buď je veřejný, nebo je uživatel jeho vlastníkem, případně účastníkem kolaborace.
 
 \subsection{Přenos a výměna dat}
@@ -355,7 +355,7 @@ Tato metoda zajišťuje, že se ukládají pouze relevantní informace a celý p
 
 Pro proces deserializace je vytvořena pro každý jednotlivý blok třída, která slouží k jeho deserializaci a převedení do podoby instance určené pro editor či přehrávač.
 
-Pro deserializaci (a práci v celém editoru či přehrávači) je vytvořená třída \texttt{BlockRegistry}, do které si jde zaregistrovat právě soubor třídy pro editor, třídy pro přehrávač a deserializer. 
+Pro deserializaci (a práci v celém editoru či přehrávači) je vytvořená třída \texttt{BlockRegistry}, do které si lze zaregistrovat právě soubor třídy pro editor, třídu pro přehrávač a deserializer. 
 
 \subsubsection{Události}
 
@@ -389,14 +389,14 @@ Mezi běžné akce patří seskupování bloků, jejich oddělování, přesunut
 Každá akce může mít definované klávesové zkratky, které umožňují efektivní práci i bez použití myši. 
 Základní sada akcí je definována jako rozšiřitelná a jednotlivé akce lze registrovat externě.
 
-Na obrázku~\ref{fig:realizace/vlastnosti} je k vidění jedna kontextová akce pro uzamknutí bloku.
+Na obrázku~\ref{fig:realizace/vlastnosti} je k vidění jedna kontextová akce pro uzamčení bloku.
 
 
 \subsubsection{Vlastnosti bloků}
 
 Editor zobrazuje panel vlastností, který se mění v závislosti na výběru. 
 Při výběru více bloků se zobrazuje pouze podmnožina vlastností, které mají bloky společné a které lze hromadně upravit. 
-Například u více vybraných bloků tvaru je možné současně měnit průhlednost či barvu ale i tvar.
+Například u více vybraných bloků tvaru je možné současně měnit průhlednost či barvu, ale i tvar.
 Na obrázku~\ref{fig:realizace/vlastnosti} je k vidění panel vlastností pro blok textu.
 
 Systém vlastností je navržen jako flexibilní API, které umožňuje definovat různé typy vstupů včetně posuvníků, barevných výběrů, zaškrtávacích polí a dalších. 
@@ -448,7 +448,7 @@ Všechna nastavení se ukládají do profilu uživatele, takže při každém ot
 \subsection{Přehrávač}
 
 Přehrávač sdílí mnoho společných rysů s editorem, avšak přináší několik klíčových odlišností. 
-Stejně jako editor využívá systém bloků a vlastní způsob vykreslování, ale je navržen primárně pro konzumaci a interakci s výukovým materiálem, nikoliv jeho úpravu.
+Stejně jako editor využívá systém bloků a vlastní způsob vykreslování, ale je navržen primárně pro konzumaci a interakci s výukovým materiálem, nikoli jeho úpravu.
 
 Zásadním rozšířením přehrávače oproti editoru je přidání režimu kreslení. 
 Tento režim umožňuje uživateli vybírat barvu, nastavovat tloušťku čáry, úroveň průhlednosti nebo aktivovat stabilizaci tahu. 
@@ -456,6 +456,7 @@ K dispozici jsou i akce jako mazání jednotlivých tahů, skrytí či smazání
 
 Uživatelské rozhraní přehrávače umožňuje přepínat mezi snímky buď pomocí tlačítek, nebo kliknutím na samotné plátno.
 Interakce se snímky tak zůstává plynulá a intuitivní. 
+
 Samotné bloky mohou reagovat na uživatelské vstupy díky systému interaktivity a speciálním blokům z rozšíření.
 
 \subsection{Interaktivita}
@@ -556,20 +557,20 @@ Tento blok umožňuje definovat akce, které nejsou navázané na žádný konkr
 
 \subsection{Multimédia}
 
-Součástí editoru je možnost vkládat multimediální obsah, zejména obrázky a animované gify.
+Součástí editoru je možnost vkládat multimediální obsah, zejména obrázky a animované GIF.
 Uživatel má k dispozici dvě základní cesty: buď využije integrované knihovny, nebo nahraje vlastní soubory. 
 V obou případech lze multimédia vložit přímo do výukového materiálu jednoduchým kliknutím.
 
 Pro vyhledávání fotografií slouží napojení na fotobanku Pexels. 
 Uživatel může zadat libovolný dotaz a zároveň má možnost vybírat z aktuálně populárních obrázků. 
-U animovaných gifů je použita služba Tenor, která je přístupná skrze Google API. 
+U animovaných GIF je použita služba Tenor, která je přístupná skrze Google API. 
 Vyhledávání zde probíhá na základě klíčových slov nebo výběrem z předdefinovaných kategorií.
 
 Nahrané soubory se ukládají do uživatelova účtu a lze je použít opakovaně napříč různými výukovými materiály.
 V případě většího množství nahraných souborů je procházení optimalizováno pomocí tzv. lazy-loading, což znamená, že se obsah načítá postupně podle potřeby, a nezatěžuje tak prohlížeč ani připojení zbytečnými daty.
 
-Kromě fotobanky a gifů má uživatel možnost vložit jakýkoli externí odkaz na obrázek.
-Tento způsob je vhodný zejména tehdy, pokud uživatel nechce daný obrázek ukládat do systému, ale chce jej pouze referencovat. 
+Kromě fotobanky a GIF má uživatel možnost vložit jakýkoli externí odkaz na obrázek.
+Tento způsob je vhodný zejména tehdy, pokud uživatel nechce daný obrázek ukládat do systému, ale chce jej pouze referovat. 
 O způsobu vložení externího odkazu a respektive o bloku obrázku pojednává detailně sekce~\ref{text:realizace/vytvoreneBloky}.
 
 \subsection{Kolaborace}
@@ -617,7 +618,7 @@ Server v takovém případě spustí virtuální prohlížeč a kontaktuje speci
 Tento vykreslený náhled je poté odeslán zpět a uložen do databáze. 
 Výsledkem je velmi přesná vizualizace reálného vzhledu snímku bez závislosti na rozšířeních nebo výkonu zařízení klienta.
 Stejně jako u ukládání probíhá generování náhledů pomocí \textit{debounce} se stejnými časovými limity.
-Pro bezpečnost musel být vytvořen systém ochrany neveřejných materiálů a proto tento virtuální prohlížeč používá svůj systém autorizace k materiálům.
+Pro bezpečnost musel být vytvořen systém ochrany neveřejných materiálů, a proto tento virtuální prohlížeč používá svůj systém autorizace k materiálům.
 
 Nad rámec synchronizace samotného obsahu se mezi klienty přenášejí také další informace o materiálu -- jeho název, nastavení sdílení nebo vlastnosti přehrávání.
 Synchronizují se i případná rozšíření a další metadata, čímž se zajišťuje, že všichni účastníci mají vždy aktuální stav.
@@ -647,6 +648,8 @@ Tento režim prezentování je připraven na použití vzdálené komunikace (vi
 Díky tomu lze rozšířit výuku o plně interaktivní prvky, jako je chat, hlasování, nebo různé typy kvízů. 
 To zajišťuje, že i při pasivním sledování prezentace mohou studenti aktivně reagovat a zapojit se do výukového procesu.
 
+Sledování je implementováno podobně jako kolaborace v editoru, tedy, že existuje speciální místnost, kterou avšak tentokrát tvoří uživatel, který sledování započne.
+
 \subsection{Importování a exportování}
 
 Přestože jsou výukové materiály na platformě koncipovány jako interaktivní, existují případy, kdy je potřeba je převést do statické podoby.
@@ -654,13 +657,14 @@ Typicky jde například o tisk, archivaci nebo tvorbu plakátu.
 Zároveň je důležité, aby měl uživatel možnost uchovávat lokální zálohy materiálů, a tím zvýšit bezpečnost dat mimo samotný server.
 
 Systém proto podporuje jak import, tak export materiálů. 
-Architektura je rozdělena mezi klienta a server. Import zajišťuje klientská část, která ze zadaného vstupu vytvoří nový materiál včetně odpovídajících bloků. 
+Architektura je rozdělena mezi klienta a server. 
+Import zajišťuje klientská část, která ze zadaného vstupu vytvoří nový materiál včetně odpovídajících bloků. 
 Export naopak probíhá na serveru.
 
 Při exportu odešle klient požadavek na konkrétní formát, aktuálně podporované jsou JSON a PDF. 
 Export do JSON vrací kompletní strukturu materiálu, respektive jednotlivých snímků, včetně všech vlastností. 
 Tento formát je vhodný pro zálohování nebo pozdější import. 
-Export do PDF funguje tak, že server pomocí nástroje \texttt{puppeteer} vykreslí každý snímek zvlášť jako náhled -- obdobně jako v případě kolaborace. 
+Export do PDF funguje tak, že server pomocí nástroje \texttt{puppeteer} vykreslí každý snímek zvlášť jako náhled. 
 Výsledkem je soubor obsahující jednotlivé stránky, které reflektují vzhled snímků tak, jak je vidí uživatel.
 Jelikož mohou mít jednotlivé snímky odlišné rozměry, je nezbytné generovat je po jednom a teprve následně spojit do jednoho PDF dokumentu.
 
@@ -725,7 +729,7 @@ Přístup k jakýmkoliv dalším zdrojům mimo tento rámec není možný ze zab
 
 \subsection{Přístup k API}
 
-Platforma poskytuje pluginům jasně definované globální API zahrnující funkce jako je:
+Platforma poskytuje pluginům jasně definované globální API zahrnující funkce, jako je:
 
 \begin{description}
     \item[fetch] která dovoluje volat požadavky přímo jako stránka editoru (tj. s CORS) na povolených doménách z manifestu.
@@ -736,7 +740,7 @@ Platforma poskytuje pluginům jasně definované globální API zahrnující fun
 \end{description}
 
 Dále mohou pluginy využívat API jednotlivých bloků, které umožňuje přístup k jejich vlastnostem a metodám.
-Například se jedná o funkce jako manipulaci bloku, změnu obsahu a dalšího.
+Například se jedná o funkce jako manipulaci bloku, změnu obsahu a další.
 
 Dále rozšíření, podle toho, kde jsou spuštěny, dovolují přistupovat ke konkrétním API přehrávače či editoru.
 
@@ -747,7 +751,8 @@ Podobně funguje i Player API, které rovněž umožňuje čtení a přidáván�
 
 Každému rozšíření začíná životní cyklus voláním globální exportované funkce se jménem \texttt{initEditor} ve spuštění v editoru, případně \texttt{initPlayer} v přehrávači.
 V této metodě může rozšíření spouštět řadu věcí a již interagovat s API.
-Základně v této metodě se budou programátoři rozšíření připojovat zejména k událostem, které způsobí to, že když daná událost nastane, tak se zavolá i příslušná funkce k této události od tohoto rozšíření. Ukázka zachycení k události a prvotního načtení je vyobrazena v kódu~\ref{code:registraceUdalosti}.
+Základně v této metodě se budou programátoři rozšíření připojovat zejména k událostem, které způsobí to, že když daná událost nastane, tak se zavolá i příslušná funkce k této události od tohoto rozšíření. 
+Ukázka zachycení k události a prvotního načtení je vyobrazena v kódu~\ref{code:registraceUdalosti}.
 
 Pro editor a přehrávač (ne nutně pro oba) existují následující události:
 
@@ -819,7 +824,7 @@ Tyto panely poskytují prostor pro interaktivní prvky, sloužící primárně k
 Panel je typicky využíván k implementaci rozhraní pro konfiguraci, správu uživatelských vstupů nebo jako nástroj pro zprostředkování výměny dat mezi jednotlivými komponentami pluginu. 
 Běžným příkladem je vytvoření formuláře pro zadávání parametrů nového bloku, editace existujících prvků či zobrazení informací relevantních pro daný plugin.
 
-Z technického hlediska je panel realizován jako samostatný iframe, jehož obsah je řízen pluginem. 
+Z technického hlediska je panel realizován jako samostatný Iframe, jehož obsah je řízen pluginem. 
 Komunikace mezi tímto panelem a ostatními částmi systému (např. hlavní aplikací nebo vykreslenými bloky) probíhá prostřednictvím rozhraní postaveného na standardu \texttt{postMessage}, které je součástí webového API moderních prohlížečů. 
 To umožňuje bezpečnou a efektivní výměnu zpráv mezi oddělenými kontexty, přičemž každá zpráva je jednoznačně identifikována a zpracována příslušnou částí systému.
 
@@ -910,6 +915,10 @@ Pro sjednocení vizuální identity bylo navrženo logo aplikace (viz obrázek~\
 
 Hlavní webová stránka byla tvořena taktéž ve webovém frameworku Vue, ze stejných důvodů jako hlavní aplikace.
 Hlavním konceptem je velká jednostránková webová stránka, která obsahuje všechny důležité informace a odkazuje na dokumentaci a samostatnou aplikaci.
+Stránka obsahuje zmíněné funkcionality, popis toho, co aplikace je a taktéž seznam ukázkových materiálů, které může kdokoliv přidat.
+
+Tato stránka obsahuje taktéž právní informace, a to podmínky používání a informace o ochraně osobních údajů.
+
 
 \section{Dokumentace}
 
@@ -939,7 +948,7 @@ Každou část aplikace lze sestavit samostatně pomocí sestavovacích skriptů
 Takové sestavení však potřebuje správné nastavení proměnných systémů, aby došlo ke správnému propojení nahraných aplikací.
 O celkovém sestavení si lze přečíst v dokumentaci aplikace.
 
-Výsledné části lzé poté hostovat jako statické stránky, tedy se jedná o projekty hlavní stránky, aplikace, dokumentace.
+Výsledné části lze poté hostovat jako statické stránky, tedy se jedná o projekty hlavní stránky, aplikace, dokumentace.
 Výslednou část serveru je nutné hostovat jako Node.js aplikaci na serveru.
 K tomu je potřeba mít nasazenou databázi typu MongoDB.
 
@@ -953,7 +962,7 @@ Každá komponenta má svůj vlastní \texttt{Dockerfile}, ve kterém je definov
 
 Pro sjednocení konfigurace je využit globální soubor \texttt{.env}, ve kterém jsou definované klíčové proměnné. 
 Tento soubor slouží jako centrální místo pro předávání informací do jednotlivých částí systému. 
-Služba \texttt{docker-compose.yml} tyto proměnné předává dál a zároveň přidává vlastní proměnné pro vzájemné propojení mezi kontejnery. 
+Služba Docker Compose tyto proměnné předává dál a zároveň přidává vlastní proměnné pro vzájemné propojení mezi kontejnery. 
 Tímto způsobem je možné jednoduše konfigurovat běh celého systému z jednoho místa.
 
 \subsection{Nasazení na produkci}
@@ -1009,7 +1018,7 @@ Vnitřně se text ukládá jako HTML, ale pro vykreslení se používá knihovna
 \subsection{Obrázek}
 
 Obrázkový blok umožňuje vkládání obrázků pomocí URL adresy. 
-Je využíván především v obsahových menu, kde lze vybírat z fotobank, gifů nebo vlastních multimedií. 
+Je využíván především v obsahových menu, kde lze vybírat z fotobank, GIF nebo vlastních multimédií. 
 Pro přesnější práci s obrázky je k dispozici funkce pro uzamčení poměru stran. 
 Pokud je aktivní, obrázek se při změně velikosti bloku přizpůsobuje původnímu poměru. 
 
@@ -1022,7 +1031,7 @@ Tento blok je viditelný pouze v editoru, nikoli v přehrávači.
 Slouží jako neviditelná vrstva, která umožňuje překrýt více prvků a zajistit, že se jejich interaktivita nebude vzájemně ovlivňovat.
 Jde o užitečný nástroj především pro složitější kompozice.
 
-\subsection{Mermaid diagram}
+\subsection{Diagram}
 
 Pro tvorbu různých typů diagramů je využita knihovna \texttt{mermaid}. 
 Umožňuje kreslit UML diagramy, grafy a další pomocné vizualizace. 
@@ -1031,7 +1040,7 @@ Mimo editační režim se automaticky vykresluje výsledný diagram.
 
 Pokud kód obsahuje chybu, editor zobrazí varování a místo náhledu diagramu vykreslí hlášení.
 V přehrávači se chybové bloky neobjevují. 
-Vzhledem ke známým bezpečnostním rizikům (XSS zranitelnosti) a komplikacím při interakci byla implementace řešena pomocí \texttt{iframe}.
+Vzhledem ke známým bezpečnostním rizikům (XSS zranitelnosti) a komplikacím při interakci byla implementace řešena pomocí Iframe.
 
 \subsection{Iframe okno}
 
@@ -1040,7 +1049,7 @@ Blok umožňuje spustit libovolný kód v izolovaném prostředí a zobrazit jeh
 
 Editace probíhá kliknutím na blok, kdy se otevře rozhraní pro úpravu kódu. 
 Výstup se mimo editační režim vykreslí automaticky. 
-Kvůli bezpečnostním rizikům a nemožnosti opustit iframe z vnitřního prostředí je nutné tento způsob používat obezřetně, viz sekce~\ref{text:anaylza/spousteniNeduveryhodnehoKodu}.
+Kvůli bezpečnostním rizikům a nemožnosti opustit Iframe z vnitřního prostředí je nutné tento způsob používat obezřetně, viz sekce~\ref{text:anaylza/spousteniNeduveryhodnehoKodu}.
 
 \subsection{Tvar}
 
@@ -1054,7 +1063,7 @@ Tyto bloky slouží jako doplňkový vizuální prvek, který zvyšuje čitelnos
 
 Blok chatu dovoluje komunikaci při době prezentování materiálu mezi sledujícími.
 Blok používá vzdálenou komunikaci (viz sekce~\ref{text:realizace/vzdalenaKomunikace}).
-Prezentujícímu se ukazuje box se zprávami a může se do konverzace zapojovat.
+Prezentujícímu se ukazuje box se zprávami a může se do konverzace zapojit.
 Jako prezentující taktéž můžete posílání zpráv pozastavit.
 
 Sledující si v chatu může vybrat jméno, nebo bez něj bude používat identifikátor připojení WebSocket.

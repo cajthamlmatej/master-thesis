@@ -72,8 +72,8 @@ V této kapitole proto shrnuji vybrané směry dalšího vývoje, které by mohl
   Otestována byla řada funkcionalit ale některé nezbyl čas částečně nebo zcela sepsat.
   Obecně se však jedná o méně důležité funkce, ale v budoucnu by to mohlo vést k dalšímu neudržitelnému vývoji aplikace.
   Největší problém je nejspíše E2E testy klientské části, které ke svému spuštěni vyžadují funkční server a není emulována komunikace s API.
-  Na serveru nejsou automaticky testovány nějaké moduly.
   To nedovoluje automaticky testovat tuto část před nasazením v cyklu CI/CD.
+  Na serveru chybí automatické testování nějakých modulů.
 
   \item[Generování náhledových obrázků] V sekci~\ref{text:testovani/vykon} jsem během výkonnostních testů zjistil, že hodně velké zpomalení aplikace je způsobeno tím, jak se generují náhledové obrázky jednotlivých snímků (a materiálů).
   Změna způsobu (tedy toho, že se spouští virtuální prohlížeč, který stránku načítá), není možná kvůli komplexitě vykreslovaného obsahu a komunitních rozšíření.

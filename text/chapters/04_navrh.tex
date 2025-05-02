@@ -4,7 +4,7 @@
 Tato kapitola představuje návrh architektury aplikace s důrazem na její modularitu, škálovatelnost a udržitelnost. 
 Zabývá se rozvržením klientské a serverové části, volbou technologií a organizací kódu. 
 Dále rozebírá klíčové prvky systému, jako je editor a přehrávač materiálů, možnosti komunitního rozšíření pomocí pluginů a bezpečnostní mechanismy pro ochranu uživatelských dat. 
-Kapitola nabízí hlubší pohled na rozhodnutí, která ovlivní aktuální ale i budoucí vývoj platformy.
+Kapitola nabízí hlubší pohled na rozhodnutí, která ovlivní aktuální, ale i budoucí vývoj platformy.
 \end{chapterabstract}
 
 \section{Architektura}
@@ -77,7 +77,7 @@ Pro komplexní \enquote{thick klient} webovou aplikaci je nutné~\cite{uzayr2022
 
 Jako webový framework pro klient použiji knihovnu Vue, která je známá~\cite{potter_2023} pro svoji jednoduchost, stabilitu a komunitu.
 Dobrou alternativou by byl například React, který byl vytvořen pro podporu velkých a komplexních aplikací, avšak s ním nemám tak velké zkušenosti.
-Z výběru jiného frameworku nedostanu žádné benefity na více a tedy preferuji použití něčeho, v čem mám největší zkušenosti.
+Z výběru jiného frameworku nedostanu žádné benefity na více, a tedy preferuji použití něčeho, v čem mám největší zkušenosti.
 Vue podporuje programování za pomocí TypeScript a taky typovanou nástavbu použiji.
 
 \subsubsection{Vrstvy a zodpovědnosti}
@@ -104,7 +104,7 @@ Z tohoto důvodu musí být takto komplexní komponenta, tedy editor a přehráv
 Naštěstí framework Vue dovoluje označit část kódu jako spravovanou někým jiným a tento prvek nebude překreslovat, pokud se nezmění jeho závislost (tedy pokud mu to kód neoznámí). 
 Takovéto fundamentální rozdělení taktéž dovolí, že editor se může velmi jednoduše přidat i do jiných projektů či komponent.
 
-V pozdější sekci~\ref{text:navrh/editor_player} rozepíši, jak hodlám řešit to, jak se bude obsah zobrazovat v editoru a přehrávači, jak se bude upravovat, definovat a podobně.
+V pozdější sekci~\ref{text:navrh/editor_player} je rozepsáno, jak hodlám řešit to, jak se bude obsah zobrazovat v editoru a přehrávači, jak se bude upravovat, definovat a podobně.
 
 \subsection{Server}\label{text:navrh/server}
 
@@ -132,7 +132,7 @@ Tyto objekty dovolují jednoduše typovat data, která vstupují a vystupují z 
 
 Některé koncové body a zdroje API musí být zabezpečené pomocí autorizace a autentizace. 
 O zabezpečení budu mluvit v pozdější sekci~\ref{text:navrh/auth}.
-Některé koncové body musí být limitované i pomocí \verb|rate-limiter|, tedy že omezí počet volání daného koncové body pro konkrétního uživatele či globálně.
+Některé koncové body musí být limitované i pomocí \verb|rate-limiter|, tedy že omezí počet volání daného koncového bodu pro konkrétního uživatele či globálně.
 Jedná se např. o stránku s registrací.
 
 Samotná serverová část bude tvořena v jazyce TypeScript.
@@ -158,15 +158,15 @@ Proto jsem se rozhodl NestJS s Express použít a to za pomoci TypeScriptu.
 Server nejspíše bude používat i řadu dalších knihoven, například na odesílání e-mailů, jejich formátování a například na generování přihlašovacích tokenů pomocí JWT (viz sekce~\ref{text:navrh/auth}).
 Tyto knihovny budu zajišťovat během vývoje aplikace.
 
-V aplikaci plánuji vytvořit kolaboraci v editoru materiálu a další real-time komunikaci a proto je potřeba zajistit tento mechanismus.
+V aplikaci plánuji vytvořit kolaboraci v editoru materiálu a další real-time komunikaci, a proto je potřeba zajistit tento mechanismus.
 Možné je používat např. metody polling, long polling, server-sent events a další~\cite{subramanian_2021}, které běží přímo za pomoci protokolu HTTP.
 Vhodnější je dle mého použít protokol WebSocket, který je přesně pro real-time oboustrannou komunikaci určen~\cite{rfc6455}.
 Na serveru lze používat různé knihovny.
 Mezi nejznámější~\cite{uzayr2022frontend} patří např. \verb|ws| či \verb|socket.io|.
 Právě \verb|socket.io| jsem si vybral z důvodu, že umí například řešit nepřístupnost WS či umí rozdělovat uživatele do skupin, ve kterých se odděleně komunikuje.
 
-Výsledné API, které vznikne z této aplikace se pokusí dodržovat vše, co uvádí standard REST.
-To souvisí i s návrhem jednotlivých koncových bodů, které budou řádně uvádět stavové kódy, dodržovat metody komunikace a řadu dalšího.
+Výsledné API, které vznikne z této aplikace, se pokusí dodržovat vše, co uvádí standard REST.
+To souvisí i s návrhem jednotlivých koncových bodů, které budou řádně uvádět stavové kódy, dodržovat metody komunikace a řadu dalších.
 
 \subsubsection{Vrstvy a zodpovědnosti}
 
@@ -308,7 +308,7 @@ Mezi další základní styly, které bude nutné implementovat, patří:
 \end{itemize}
 
 Komponenty se budou implementovat graficky, díky omezení a požadavkům na webovou stránku, pomocí HTML a CSS.
-Funkčnost budu tvořit za pomocí interaktivního frameworku Vue.
+Funkčnost budu tvořit za pomoci interaktivního frameworku Vue.
 
 Pro jednoduché grafické úpravy barev, odsazení a celkovou konzistenci skrz celou aplikaci je nutné implementovat tyto hodnoty jako proměnné.
 Je možné je definovat jako nativní CSS proměnné či v nějakém CSS preprocesoru, jako je například Syntactically awesome style sheets (Sass).
@@ -385,7 +385,7 @@ Základní typy bloků mimo jiné zahrnují:
     \item[Textové bloky] Které dovolují formátování textu, což zahrnuje velikosti, barvy, fonty a další.
     \item[Obrazové a multimediální bloky] Dovolují vkládání a různou manipulaci s obrázky, videi a dalším interaktivním obsahem
     \item[Tvarové bloky] Které umožňují vložit předdefinované tvary a jejich modifikaci.
-    \item[HTML blok] Umožňuje skoro neomezeně rozšiřovat funkcionality prezentace pomocí psaní si vlastního HTML kódu, který se bezpečně vykreslí pomocí tagu iframe.
+    \item[HTML blok] Umožňuje skoro neomezeně rozšiřovat funkcionality prezentace pomocí psaní si vlastního HTML kódu, který se bezpečně vykreslí pomocí tagu Iframe.
 \end{description}
 
 Bloky mohou být mezi sebou uspořádávány, transformovány a jejich vlastnosti lze dynamicky měnit. 
@@ -453,7 +453,7 @@ Lze taktéž nastavit animaci mezi jednotlivými stavy interakce.
 
 Návrh tříd editoru a přehrávače tvoří základ celého systému. 
 Promyšlená struktura těchto komponent je klíčová pro budoucí rozšiřování a udržovatelnost projektu.
-Obrázek~\ref{fig:kodovyNavrhEditoruAPrehravace} ukazuje navržené jádro systému v hiearchii tříd.
+Obrázek~\ref{fig:kodovyNavrhEditoruAPrehravace} ukazuje navržené jádro systému v hierarchii tříd.
 
 Centrálním bodem architektury je třída \texttt{Editor}, která spravuje bloky typu \texttt{EditorBlock}. 
 Tyto bloky pak mají jejich pozici, velikost a další vlastnosti jako neprůhlednost, uzamčení nebo například rotaci. 
@@ -490,12 +490,12 @@ Například závislosti mezi \texttt{BlockRegistry}, \texttt{Editor} a \texttt{P
 \section{Návrh komunitního rozšíření}\label{text:navrh/plugins}
 
 Navrhovaná platforma bude podporovat komunitní rozšíření, což umožní uživatelům přizpůsobit si prostředí dle vlastních potřeb a vytvářet nové funkce nad základním jádrem aplikace.
-Klíčovými aspekty tohoto rozšíření je jazyková kompatibilita, bezpečnost, registrace API a způsob distribuce pluginů.
+Klíčovými aspekty tohoto rozšíření jsou jazyková kompatibilita, bezpečnost, registrace API a způsob distribuce pluginů.
 Základní analýzou tohoto byla sekce~\ref{text:community_plugins}.
 
 Jako hlavní programovací jazyk pro komunitní rozšíření byl zvolen JavaScript.
 Tento jazyk byl vybrán pro svou jednoduchost, širokou adopci a kompatibilitu s webovým prostředím.
-Skripty budou spouštěny pomocí knihovny QuickJS, která umožňuje běh JavaScriptu na straně klienta s minimalizovanými bezpečnostními riziky díky využítí WebAssembly.
+Skripty budou spouštěny pomocí knihovny QuickJS, která umožňuje běh JavaScriptu na straně klienta s minimalizovanými bezpečnostními riziky díky využití WebAssembly.
 Aby byla zajištěna integrace s editorem a přehrávačem platformy, bude vytvořeno API, které umožní pluginům komunikaci s těmito komponentami. 
 Přímá abstrakce nad API nebude implementována, vzhledem k tomu, že zmenšení bezpečnosti QuickJS není pravděpodobné.
 Pokud by se stala knihovna QuickJS nebezpečnou tak, že by z ní mohla jednotlivá rozšíření uniknout, budou pravděpodobně nefunkční všechna další jiná řešení.
@@ -513,13 +513,13 @@ V rámci jedné instalace nebude možné mít aktivní více verzí jednoho plug
 
 Pro rozšíření funkcionality editoru i přehrávače bude možné registrovat API pro různé bloky a celý editor či plugin.
 Editor bude umožňovat modifikaci velikosti, vytváření a úpravy jednotlivých bloků, zatímco přehrávač nabídne možnosti manipulace s přehrávaným obsahem, včetně navigace mezi snímky.
-Mezi dalšími API budou různé debugovací nástroje, posílání požadavků či třeba systém cache pro ukládání dočasných dat.
+Mezi ostatními API budou různé debugovací nástroje, posílání požadavků či třeba systém cache pro ukládání dočasných dat.
 Dále bude pro rozšíření možné registrovat panely přímo do uživatelského rozhraní, což umožní hlubší integraci pluginů.
-Panely budou implementovány s využitím iframe technologie, která zajistí izolaci kódu a zvýší bezpečnost systému.
+Panely budou implementovány s využitím Iframe technologie, která zajistí izolaci kódu a zvýší bezpečnost systému.
 
 Podobně bude vytvořen systém, kdy plugin bude moci vytvořit sám pro sebe určitý blok tak, že pouze on ho spravuje a vykresluje.
 To dovoluje si ukládat speciální data a vytvořit řadu dalších funkcionalit.
-Tyto bloky budou v podstatě již zmíněné HTML bloky, jen budou dovolovat ukládaní dalších dat, registraci vlastních vlastností a další věci.
+Tyto bloky budou v podstatě již zmíněné HTML bloky, jen budou dovolovat ukládání dalších dat, registraci vlastních vlastností a další věci.
 
 Rozšíření budou moci oběma směry komunikovat jak s pluginy, tak i s jednotlivými bloky.
 To dovolí řadu budoucích rozšíření, kdy například kliknutí v panelu vytvoří blok, který může informovat plugin o tom, že se něco děje.
@@ -552,7 +552,7 @@ Po úspěšné autentizaci se vygeneruje JWT (JSON Web Token), který slouží k
 JWT token je podepsán na určitou dobu a obsahuje základní informace o uživateli, například jeho identifikátor a základní údaje pro rychlé vykreslení. 
 Tento token se následně posílá v hlavičce požadavků \texttt{Authorization} pod typem \texttt{Bearer}, čímž je umožněno bezpečné ověřování uživatele při komunikaci se serverovou částí systému.
 
-Uživatel si tento token ukládá lokálně, a to buď v cookies nebo v local storage prohlížeče, což mu umožňuje zůstat přihlášený i po uzavření okna prohlížeče. 
+Uživatel si tento token ukládá lokálně, a to buď v cookies, nebo v local storage prohlížeče, což mu umožňuje zůstat přihlášený i po uzavření okna prohlížeče. 
 Do budoucna je žádoucí rozšířit možnosti přihlašování například o autentizaci prostřednictvím OAuth, což by umožnilo přihlašování skrze služby třetích stran, jako je Google či Meta.
 Aplikace na to musí být připravena.
 

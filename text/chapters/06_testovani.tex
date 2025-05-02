@@ -17,15 +17,16 @@ To umožnilo včasné odhalení problémů a zároveň zajištění vyšší kva
 Při vývoji klientské aplikace i hlavní webové stránky jsem využíval nástroj \texttt{Vite}, který, díky vlastnosti hot-reloading, umožňuje okamžité načítání změn v kódu bez nutnosti manuálního obnovování stránky.
 Tato funkcionalita výrazně zrychlila zpětnou vazbu během vývoje uživatelského rozhraní.
 
-Na straně backendu jsem používal nástroj \texttt{Nodemon}, který automaticky restartuje vývojový server při změně kódu. 
+Na straně backendu jsem používal nástroj \texttt{nodemon}, který automaticky restartuje vývojový server při změně kódu. 
 Jelikož jsem využíval framework \texttt{NestJS}, vše bylo integrováno přímo v jeho ekosystému a vývoj backendu tak mohl probíhat bez zbytečných zdržení.
+Ke konci vývoje jsem již používal vytvořené pro vývoj kontejnery z Docker, viz sekce~\ref{text:realizace/nasazeni}.
 
 Nové funkcionality jsem zpravidla nejdříve implementoval na serveru.
 Po přidání nové REST API cesty jsem její funkčnost ověřoval pomocí nástroje Postman, který umožňuje rychlé testování HTTP požadavků.
 Teprve po úspěšném ověření jsem přistoupil k implementaci odpovídajících částí v klientské aplikaci.
 
 Na straně klienta jsem během vývoje nových částí vždy testoval funkčnost přímo v rozhraní aplikace.
-Až později v rámci práce vznikly systematické automatizované testy, které popisuji v předchozí kapitole.
+Až později v rámci práce vznikly systematické automatizované testy, které popisuji v následujících sekcích.
 
 \subsection{Tým testerů}
 
@@ -41,7 +42,7 @@ Testování probíhalo bez pevného harmonogramu -- každý účastník testoval
 Testeři pomohli odhalit celou řadu problémů, například nefunkčnost na specifických zařízeních, chyby v editoru a další technické i UX nedostatky. 
 Tyto poznatky jsem následně zapracoval do dalších verzí aplikace.
 
-Diskuse mezi členy testovací skupiny byly velmi přínosné.
+Diskuze mezi členy testovací skupiny byly velmi přínosné.
 Probíhaly nejen mezi sebou, ale i přímo se mnou jako vývojářem. 
 Společně jsme řešili otázky spojené s prioritizací oprav a návrhem vylepšení.
 
@@ -58,7 +59,7 @@ To může zajišťovat například to, že rozbitá aplikace (v takovém stavu, 
 
 Testování lze rozdělit~\cite{meszaros_2007} do několika kategorií podle úrovně a rozsahu. 
 Mezi nejčastější typy patří unit testy, které ověřují jednotlivé funkce nebo komponenty, integrační testy sledující spolupráci více částí systému, a end-to-end (E2E) testy simulující reálné uživatelské scénáře. 
-V této práci je klíčové zaměřit se především na testování klientské části aplikace, protože je to nejdůležitější část celé práce.
+% V této práci je klíčové zaměřit se především na testování klientské části aplikace, protože je to nejdůležitější část celé práce.
 
 \subsection{Klientská část}
 
@@ -243,7 +244,7 @@ Z přehlednosti tohoto dokumentu jsou některé tabulky, které obsahují hodnoc
 
 Testování účastnice 1 proběhlo dne 22. 4. 2025 v 14.30. 
 Účastnice byla na testování připravena a seznámil jsem ji s průběhem testů a procesu hodnocení. 
-Testování bylo dlouhé okolo jedné hodiny.
+Testování trvalo okolo jedné hodiny.
 
 V tabulce~\ref{tab:hodnoceniPruchoduUcastnika1} lze nalézt jednotlivá hodnocení testovacích scénářů účastnice, které provedla po každém průchodu scénáře, společně se hodnocením pozorovatele a komentáři, které se k danému scénáři vztahují.
 
@@ -277,7 +278,7 @@ TC-P-1   & 1 & 1 & - \\\hline
 TC-P-2   & 1 & 1 & - \\\hline
 TC-P-3   & 1 & 1 & - \\\hline
 TC-P-4   & 2 & 2 & Různé způsoby sdílení, těžko k nalezení v editoru materiálu. \\\hline
-TC-P-5   & 1 & 1 & Nejasné co znamená sledování. \\\hline
+TC-P-5   & 1 & 1 & Nejasné, co znamená sledování. \\\hline
 TC-P-6   & 1 & 1 & Problém zapisování znaků bez kapitálek, nejasné umístění. \\\hline\hline
 průměr   & 1,28 & 1,28 & - \\
 \end{longtable}
@@ -443,13 +444,13 @@ průměr   & 1,07 & 1,03 & - \\
 
 Výsledky zkoušení mě vzhledem ke zkušenostem účastníka nepřekvapily.
 Účastník je velmi zkušený v podobných nástrojích a vzhledem ke standardu v těchto aplikacích a tomu, že používám podobné rozmístění, bylo jednoduché se v rozhraní vyznat.
-Z další diskuze jsme se dostali k problému použitelnosti platformy a to je to, že účastník již má hotové materiály v jiných aplikacích a předělávat mu všechny přijde zbytečné.
+Z další diskuze jsme se dostali k problému použitelnosti platformy a to, že účastník již má hotové materiály v jiných aplikacích a předělávat mu všechny přijde zbytečné.
 Navrhl implementovat import i z jiných formátů, jako například \verb|.pptx|.
 
 \paragraph{Průchod účastníka 5}
 
 Testování účastníka 5 proběhlo dne 22. 4. 2025 v 18.30. 
-Účastník byl na testování připraven a seznámil jsem ho s průběhem testů a procesu hodnocení. 
+Účastník byl na testování připraven a seznámil jsem ho s průběhem testů a procesem hodnocení. 
 Testování bylo dlouhé okolo jedné a půl hodiny.
 
 V tabulce~\ref{tab:hodnoceniPruchoduUcastnika5} lze nalézt jednotlivá hodnocení testovacích scénářů účastníka, které provedl po každém průchodu scénáře, společně s hodnocením pozorovatele a komentáři, které se k danému scénáři vztahují.
@@ -476,7 +477,7 @@ TC-E-10  & 2 & 2 & Na účastníka to bylo příliš mnoho možností. \\\hline
 TC-E-11  & 1 & 1 & - \\\hline
 TC-E-12  & 2 & 2 & Účastník poměrně dlouho řešil, co jsou rozšíření, a sám si dokonce otevřel dokumentaci. \\\hline
 TC-E-13  & 1 & 1 & - \\\hline
-TC-E-14  & 2 & 2 & Účastníkovi přijde zvláštní umístění účastníků a přijde mu, že označené bloky jinými účastníky jsou příliš nápadné. \\\hline
+TC-E-14  & 2 & 2 & Účastníkovi přijde zvláštní umístění účastníků a zdá se mu, že označené bloky jinými účastníky jsou příliš nápadné. \\\hline
 TC-E-15  & 2 & 2 & Účastník nemá tolik zkušeností s programátorským myšlením a bylo pro něj těžší pochopit blokový zápis. \\\hline
 TC-E-16  & 2 & 2 & Těžší na nalezení v UI. \\\hline
 TC-E-17  & 1 & 1 & - \\\hline
@@ -522,12 +523,13 @@ Společně jsme se pouze bavili o tom, jaké rozšíření je vhodné, a dohodli
 Termín k dokončení nebyl stanoven a jediné, o co jsem poté žádal, bylo o vytvořený kód a zpětnou vazbu k dokumentaci, platformě a jejímu pocitu ze skriptování.
 
 Mimo jiné jsem tímto testoval integritu všech částí dohromady, které mohlo uživatelské testování přehlédnout.
-V rámci uživatelského testování nebylo testováno vytváření rozšíření v aplikaci, ani samotná platforma skriptování, než-li instalace rozšíření a jeho odebrání.
+V rámci uživatelského testování nebylo testováno vytváření rozšíření v aplikaci, ani samotná platforma skriptování. 
+Byla testována pouze instalace rozšíření a poté jeho odebrání.
 
 \subsubsection{Vytvořené rozšíření}
 
 Dne 27. 4. 2025 jsem obdržel zprávu od slečny Špráchalů, že rozšíření bylo úspěšně dokončeno.
-Během této doby postupně četla dokumentaci a samotné vytvoření rozšíření ji zabralo několik dní částečné práce, odhadem se čtením dokumentace 5~hodin.
+Během této doby postupně četla dokumentaci a samotné vytvoření rozšíření jí zabralo několik dní částečné práce, odhadem se čtením dokumentace 5~hodin.
 
 Slečna si nakonec vytvořila rozšíření pro přidávání počítadla do snímku materiálu.
 Důvodem bylo podle jejích slov to, že časovač je spíše věc, kterou by musela implementovat složitě zejména v HTML, CSS a JS, a to jí nepřišlo vhodné, protože by tím v podstatě vůbec netestovala API platformy.
@@ -540,12 +542,12 @@ Už během tvorby rozšíření mě slečna Špráchalů informovala o různých
 Velkým problémem dokumentace bylo to, že celou dobu byly špatně vytvořené odkazy, které propojují jednotlivé stránky.
 Obecně byly i chyby se špatným pojmenováním věcí, jako špatné reference na panel či rozšíření.
 
-Taktéž mě informovala o tom, že dokumentace je čtivá a jenom s ní lze pochopit spoustu věcí o celé platformě.
+Taktéž mě informovala o tom, že dokumentace je čtivá a jen s ní lze pochopit spoustu věcí o celé platformě.
 Avšak vytkla to, že některé názvy funkcionalit nejsou zrovna dobře pojmenované. 
 Jednalo se například o \verb|attendee| a \verb|watcher|.
 S těmito názory souhlasím a bylo by vhodné je přejmenovat. 
 
-Před odevzdáním rozšíření jsme ještě řešili to, že přidávání bloků do platformy je častá role rozšíření a tvorba panelu pro každé rozšíření jen pro to, aby se mohli přidat do rozšíření, není vhodné.
+Před odevzdáním rozšíření jsme ještě řešili to, že přidávání bloků do platformy je častá role rozšíření a tvorba panelu pro každé rozšíření jen pro to, aby se mohli přidat do rozšíření, není vhodná.
 Společně jsme tedy navrhli možnost vytvoření nového API do editoru, které dovolí každému bloku zaregistrovat si bloky, které se zobrazí v panelu bloků přímo v aplikaci.
 Panely se tedy budou používat spíše na komplexní možnosti či úpravu přidaných bloků s funkcionalitami, které základní vlastnosti nepodporují.
 
@@ -570,7 +572,7 @@ Celkově jsou ale pluginy podle mě dobře řešené a velmi si cením možnosti
 Ze závěrů testování rozšíření jsem nadšen.
 Tímto testováním se prokázalo, že i člověk, který nebyl s vývojem aplikace vnitřně seznámen, je schopen pomocí dokumentace a API napsat pokročilé rozšíření, které pomůže rozrůst platformu tak, aby se dala použít na ledacos.
 
-Zmíněné nedostatky jsou zcela rozumné a vše, co jsme diskutovali, jsem do platformy buď implementoval po konci tohoto testování nebo uvádím v kapitole~\ref{text:diskuze} k dalšímu vývoji platformy.
+Zmíněné nedostatky jsou zcela rozumné a vše, co jsme diskutovali, jsem do platformy buď implementoval po konci tohoto testování, nebo uvádím v kapitole~\ref{text:diskuze} k dalšímu vývoji platformy.
 
 Další testování může proběhnout už pouze tím, že přijdou zcela neznámí lidé a pro tuto aplikaci budou chtít napsat rozšíření.
 Tím se odhalí chybějící API a funkce, které by bylo vhodné do platformy implementovat.
