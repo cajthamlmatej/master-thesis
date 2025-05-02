@@ -296,6 +296,15 @@ watch(() => selected.value, () => {
     font-size: 1.75em;
     font-weight: bold;
     line-height: 1.05em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    overflow-y: clip;
+    max-width: 60vh;
+
+    @media (max-width: 1000px) {
+        max-width: 100%;
+    }
 }
 
 a.material {
