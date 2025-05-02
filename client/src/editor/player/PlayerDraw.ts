@@ -283,6 +283,7 @@ export class PlayerDraw {
 
         if (["INPUT", "BUTTON", "SPAN"].includes(target.tagName)) return;
         if (target.classList.contains("player-draw-navigation-settings-content")) return;
+        if (!target.classList.contains("player-draw") && !target.classList.contains("player-container")) return;
 
         this.resetSettings();
         if (this.mode === DrawMode.ERASE) {
