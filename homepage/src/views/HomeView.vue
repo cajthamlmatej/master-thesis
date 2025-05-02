@@ -57,12 +57,7 @@
                 }">
                 </div>
                 <div class="video">
-                    <video src="/thesis10.webm"
-                           autoplay
-                           loop
-                           muted
-                           playsinline
-                    ></video>
+                    <img src="/intro.gif" alt="Materalist">
 
                     <div class="content" v-t>landing.label</div>
 

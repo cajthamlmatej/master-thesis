@@ -447,15 +447,15 @@ main {
                 position: absolute;
                 top: 10%;
                 right: -50px;
-                width: 100px;
-                height: 200px;
+                width: 3em;
+                height: 10em;
                 opacity: 0.4;
                 user-select: none;
 
                 img {
                     width: 100%;
                     height: 100%;
-                    object-fit: contain;
+                    object-fit: cover;
                     backdrop-filter: blur(17px);
                 }
 
@@ -468,10 +468,11 @@ main {
 
             .video {
                 position: absolute;
-                top: -20%;
-                right: 10%;
-                width: 40%;
-                height: 180%;
+                top: 50%;
+                right: 2em;
+                transform: translateY(-50%);
+                width: 30em;
+                height: 34em;
                 //overflow: hidden;
                 border: 2px solid #7b57c4;
 
@@ -480,9 +481,9 @@ main {
                 display: flex;
                 flex-direction: column;
 
-                video {
+                video, > img {
                     width: 100%;
-                    flex-grow: 2;
+                    height: 30em;
                     object-fit: cover;
                     border-top-left-radius: 1rem;
                     border-top-right-radius: 1rem;
@@ -495,31 +496,20 @@ main {
                     justify-content: center;
                     font-size: 1.5rem;
                     line-height: 1em;
-                    padding: 1em;
+                    flex-basis: 4em;
                     border-bottom-left-radius: 0.6rem;
                     border-bottom-right-radius: 0.6rem;
                 }
 
                 @media (max-width: 1200px) {
-                    position: relative;
+                    position: static;
                     width: 100%;
-                    top: 0;
-                    left: 0;
-                }
+                    height: 24em;
+                    transform: translateY(0);
 
-                @media (max-height: 500px) {
-                    top: 10%;
-                    height: 90%;
-                }
-
-                @media (max-height: 800px) {
-                    top: 0%;
-                    height: 100%;
-                }
-
-                @media (max-height: 1000px) {
-                    top: -5%;
-                    height: 110%;
+                    video, > img {
+                        height: 20em;
+                    }
                 }
             }
         }
