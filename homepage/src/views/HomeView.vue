@@ -143,7 +143,7 @@
 import {useScrollReact} from "@/composables/scrollReact.ts";
 import {computed, onMounted, ref, watch} from "vue";
 import Slider from "@/components/Slider.vue";
-import {$t} from "@/translation/Translation.ts";
+import {$t, translation} from "@/translation/Translation.ts";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
 
 const DOCS_LINK = import.meta.env.VITE_DOCS;
@@ -189,7 +189,7 @@ onMounted(async() => {
             author: material.user,
             name: material.name,
             thumbnail: material.thumbnail,
-            link: `${APP_LINK}player/${material.id}`
+            link: `${APP_LINK}${translation.getLanguage()}/player/${material.id}`
         })
     }
 
