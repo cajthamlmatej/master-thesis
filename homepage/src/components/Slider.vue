@@ -168,7 +168,7 @@ onMounted(() => {
 <style scoped lang="scss">
 .slider {
     width: 100%;
-    height: 20em;
+    // height: 20em;
     overflow: hidden;
     position: relative;
     padding: 1em;
