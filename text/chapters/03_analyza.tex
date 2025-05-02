@@ -167,7 +167,7 @@ Hlavní výhody Canva spočívají v intuitivním uživatelském rozhraní~\cite
 
 Díky cloudovému prostředí umožňuje Canva týmovou spolupráci~\cite{canva_live_help, canva_live_features}, sdílení souborů v reálném čase a přístup k materiálům odkudkoli, přičemž většina základních funkcí je dostupná zdarma. 
 
-Nevýhodou může být omezenější možnost zcela individuálního designu u některých šablon, menší preciznost u specifických grafických úprav a u pokročilých funkcí potřeba placené verze Canva~Pro. 
+Nevýhodou může být omezenější možnost zcela individuálního designu u některých šablon, menší preciznost u specifických grafických úprav a u pokročilých funkcí třeba placené verze Canva~Pro. 
 Přesto je Canva velmi oblíbená pro rychlou tvorbu vizuálně atraktivních materiálů i mezi pedagogy, kteří nepotřebují pokročilé znalosti grafických programů a chtějí rychle připravit poutavé grafické materiály či prezentace.
 Čeští pedagogové mají program Canva k dispozici zdarma po ověření~\cite{canva_education}. Tento nástroj je mezi pedagogy velmi oceňován zejména právě pro jeho jednoduchost~\cite{canva_facebook}.
 
@@ -599,7 +599,7 @@ Spuštěný kód v prohlížeči či v běhovém prostředí může komunikovat 
 Spuštěný kód může v lineární paměti ukládat všelijaká data, ze kterých poté webová stránka může číst či zapisovat data.
 Samotný kód totiž může pracovat jenom s číselnými hodnotami a často je nutné je konvertovat z interních do externích typů.
 
-Nevýhodou WebAssembly je poměrně malý výkon~\cite{webassembly, figma_plugins_blog} a poměrně špatné možnosti debugování.
+Nevýhodou WebAssembly je poměrně malý výkon~\cite{webassembly, figma_plugins_blog} a poměrně nepoužitelné možnosti ladění.
 
 Pro skriptování je to vhodnou alternativou díky možnostem jazyků. 
 Na druhou stranu je to taktéž velký problém, protože udržovat dokumentaci a funkční několik jazyků je přinejmenším pro účely této práce skoro nemožné.
@@ -619,7 +619,7 @@ Požadavky určují očekávané vlastnosti~\cite{uml_2007} a chování budoucí
 \subsection{Funkční požadavky}
 
 Funkční požadavky vymezují konkrétní funkcionality~\cite{uml_2007}, které aplikace musí podporovat. 
-Na těchto požadavcích jsou postaveny případy užití (viz sekce~\ref{chapter:analyza/uzivatelskePripady}), jež specifikují, jak bude aplikace využívána. 
+Na těchto požadavcích (viz sekce~\ref{chapter:analyza/uzivatelskePripady}) jsou pak postaveny případy užití, jež specifikují, jak bude aplikace využívána. 
 Přehled všech identifikovaných funkčních požadavků je uveden níže.
 
 
@@ -628,10 +628,10 @@ Přehled všech identifikovaných funkčních požadavků je uveden níže.
     Systém umožňuje registraci, přihlášení a úpravu uživatelských údajů. Uživatelské účty nemají role, ale uchovávají individuální nastavení a preference.
 
     \item[F2 -- Tvorba a správa materiálů]
-    Uživatelé mohou vytvářet, upravovat, mazat, sdílet a importovat/exportovat výukové materiály. Materiály se skládají ze snímků a bloků, včetně podpory různých typů obsahu.
+    Uživatelé mohou výukové materiály vytvářet, upravovat, mazat, sdílet a importovat či exportovat. Materiály se skládají ze snímků a bloků, včetně podpory různých typů obsahu.
 
     \item[F3 -- Editor]
-    Editor umožňuje práci s bloky na plátně, jejich přesouvání, úpravy, nastavení a kopírování. Podporuje historii změn, přizpůsobení UI a integraci rozšíření.
+    Editor umožňuje práci s bloky na plátně, tedy například jejich přesouvání, úpravy, nastavení a kopírování. Podporuje historii změn, přizpůsobení UI a integraci rozšíření.
 
     \item[F4 -- Přehrávač]
     Přehrávač zajišťuje zobrazení vytvořených materiálů a interaktivní prezentaci. Umožňuje přehrávání, navigaci i režim kreslení a synchronizaci obsahu.
@@ -656,13 +656,13 @@ Přehled všech relevantních nefunkčních požadavků je uveden níže.
 
 \begin{description}
     \item[N1 -- Výkon]
-    Aplikace musí efektivně pracovat i s rozsáhlými materiály a mnoha interaktivními prvky bez znatelného zpomalení.
+    Aplikace musí efektivně pracovat i s velkými, rozsáhlými materiály a mnoha interaktivními prvky bez znatelného zpomalení.
 
     \item[N2 -- Webová platforma]
     Výsledná aplikace je plně webová a postavena na HTML, CSS a JavaScriptu. Nevyžaduje žádnou instalaci.
 
     \item[N3 -- Bezpečnost]
-    Uživatelská data jsou chráněna pomocí autentizačních a bezpečnostních mechanismů. Pluginy běží izolovaně a nemají přímý přístup k systému.
+    Uživatelská data jsou dostatečně chráněna pomocí autentizačních a bezpečnostních mechanismů. Pluginy běží izolovaně a nemají přímý přístup k systému.
 
     \item[N4 -- Modularita a rozšiřitelnost]
     Architektura systému je navržena modulárně -- jednotlivé části aplikace jsou nezávislé a umožňují snadné rozšíření komunitními pluginy.
@@ -724,7 +724,7 @@ Vztahy a propojení s jednotlivými aktéry jsou k dispozici na obrázku~\ref{fi
     Uživatel může vytvářet vlastní komunitní rozšíření pro editor a přehrávač materiálů. Tato rozšíření se píší ve skriptovacím jazyce a dovolují uživateli poslouchat různé akce, vytvářet bloky a upravovat je.
     
     \item[UC7 -- Prohlížet materiál]
-    Uživatel může procházet dostupné materiály. Musí mít možnost přecházet mezi jednotlivými snímky, interagovat s interaktivními prvky, přepnout na celou obrazovku, provádět pohyb v materiálu a další související akce.
+    Uživatel může procházet dostupné a ukázkové materiály. Musí mít možnost přecházet mezi jednotlivými snímky, interagovat s interaktivními prvky, přepnout na celou obrazovku, provádět pohyb v materiálu a další související akce.
     
     \item[UC8 -- Sledovat materiál]
     Uživatel může získat odkaz ke sledování materiálu, tedy, že bude mít s prezentujícím synchronizovaný obsah materiálu, aktuální snímek a další.
@@ -743,7 +743,7 @@ Vztahy a propojení s jednotlivými aktéry jsou k dispozici na obrázku~\ref{fi
             Uživatel může přidávat jednotlivé bloky nebo skupiny bloků. Obsah může být čerpán z banky zdrojů, například GIF nebo obrázků.
             
             \item[UC5.3 -- Úprava vlastností bloku]
-            Uživatel může ručně měnit vlastnosti bloků, jejich zobrazení, grafiku a specifické vlastnosti bloků. U interaktivních bloků lze definovat specifické akce, které se spustí při určité události (např. kliknutí, časovač, ...). Možné je také upravovat proměnné, nastavovat podmínky a další interaktivní chování.
+            Uživatel může měnit pro jednotlivé bloky jejich vlastnosti, zobrazení, grafické zobrazení a specifické vlastnosti bloků. U interaktivních bloků lze definovat specifické akce, které se spustí při určité události (např. kliknutí, časovač, ...). Možné je také upravovat proměnné, nastavovat podmínky a další interaktivní chování.
             
             \item[UC5.4 -- Správa bloků]
             Uživatel může bloky označovat, kopírovat, mazat, přesouvat, seskupovat a provádět další operace.
@@ -762,13 +762,13 @@ Vztahy a propojení s jednotlivými aktéry jsou k dispozici na obrázku~\ref{fi
     Uživatel může spravovat své materiály, zobrazit seznam, vyhledávat a provádět různé akce, včetně mazání materiálů.
     
     \item[UC13 -- Změna preferencí]
-    Uživatel může upravovat nastavení editoru, způsob ukládání a způsob používání jednotlivých operací.
+    Uživatel může v aplikaci upravovat specifické chování a nastavení editoru, způsob ukládání a způsob používání jednotlivých operací.
 
     \item[UC14 -- Použití komunitního rozšíření]
     Uživatel může instalovat a spravovat komunitní rozšíření, která umožňují přidávání nových funkcí do editoru.
     
     \item[UC15 -- Importování materiálu]
-    Uživatel může importovat externí soubory nebo formáty pro vytvoření materiálu.
+    Uživatel může importovat soubory v různých formátech pro vytvoření nového materiálu.
     
     \item[UC16 -- Exportování materiálu]
     Uživatel může exportovat svůj materiál do různých formátů (např. PDF, obrázky, interaktivní formáty) pro sdílení a archivaci. Tato sdílení z důvodu nespolupracujících formátů budou velmi omezená svou funkcionalitou a vzhledem.

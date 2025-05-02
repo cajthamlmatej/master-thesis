@@ -126,7 +126,7 @@ Hodnoty mají mnoho podporovaných datových typů.
 Server by měl být však připraven na jakýkoliv formát dat.
 Mělo by být možné velmi jednoduše změnit například na formát Extensible Markup Language (XML).
 
-Serverová a klientská část by měly spolu sdílet rozhraní definující vstupní a výstupní data aplikace.
+Serverová i klientská část by měly sdílet společné rozhraní definující vstupní a výstupní formát dat aplikace.
 Těmto objektům se říká Data Transfer Object (DTO).
 Tyto objekty dovolují jednoduše typovat data, která vstupují a vystupují z REST API.
 
@@ -382,7 +382,7 @@ V rámci návrhu je definována sada základních bloků, které lze kombinovat 
 Základní typy bloků mimo jiné zahrnují:
 
 \begin{description}
-    \item[Textové bloky] Které dovolují formátování textu, což zahrnuje velikosti, barvy, fonty a další.
+    \item[Textové bloky] Které dovolují formátování textu -- což zahrnuje změny velikosti, barvy, fontu a další.
     \item[Obrazové a multimediální bloky] Dovolují vkládání a různou manipulaci s obrázky, videi a dalším interaktivním obsahem
     \item[Tvarové bloky] Které umožňují vložit předdefinované tvary a jejich modifikaci.
     \item[HTML blok] Umožňuje skoro neomezeně rozšiřovat funkcionality prezentace pomocí psaní si vlastního HTML kódu, který se bezpečně vykreslí pomocí tagu Iframe.
@@ -396,7 +396,7 @@ To se hodí, pokud bloky mají existovat pouze v nějakém určitém místě.
 
 \subsection{Editor}
 
-Editor slouží jako prostředí, ve kterém jsou výukové materiály vytvářeny a upravovány. 
+Editor slouží jako prostředí, ve kterém jsou výukové materiály vytvářeny a poté upravovány. 
 Uživatelé zde mohou vkládat a přemisťovat bloky, nastavovat jejich vlastnosti a provádět transformace všeho obsahu.
 
 Hlavní funkce editoru zahrnují:
@@ -405,7 +405,7 @@ Hlavní funkce editoru zahrnují:
     \item[Práce s bloky] Dovoluje již zmíněné transformace, změny vlastností, interakce a dalšího.
     \item[Správa pluginů] Která dovolí upravovat nainstalované a aktivní pluginy, jejich aktualizace a používání. Každý plugin v editoru bude mít své připravené místo na jeho ovládání, viz sekce~\ref{text:navrh/plugins}.
     \item[Vkládání obsahu] Umožňuje vkládat obsah z veřejných knihoven (fotobanky a další), ale taktéž z uživatelských zdrojů, do kterých si uživatel může nahrát vlastní obsah.
-    \item[Nastavení] Dovolí nastavit viditelnost materiálů, způsob jeho průchodu a další.
+    \item[Nastavení] Dovolí nastavit jméno, sdílení, viditelnost materiálů, způsob jeho průchodu a další.
     \item[Export] Dovolí uložit si kopie materiálu v různých formátech.
 \end{description}
 
@@ -541,7 +541,7 @@ Nejvíce klíčové bude, aby pluginy měly jasně vytvořený systém typován�
 Autentizace je proces ověřování identity uživatele, tedy zajištění, že se daná osoba skutečně nachází v systému. 
 Typickými metodami autentizace jsou přihlašování pomocí uživatelského jména a hesla, biometrické údaje nebo autentizace prostřednictvím třetích stran.
 
-Autorizace naopak určuje, jaká oprávnění má autentizovaný uživatel v rámci systému.
+Autorizace naopak určuje, jaká oprávnění má přihlášený uživatel v rámci systému.
 Rozhoduje tedy o tom, ke kterým zdrojům má uživatel přístup a jak s nimi může nakládat.
 
 \subsection{Autentizace}

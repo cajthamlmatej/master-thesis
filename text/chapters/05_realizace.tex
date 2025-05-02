@@ -735,7 +735,7 @@ Platforma poskytuje pluginům jasně definované globální API zahrnující fun
     \item[fetch] která dovoluje volat požadavky přímo jako stránka editoru (tj. s CORS) na povolených doménách z manifestu.
     \item[cache] která dovoluje rozšíření si pamatovat věci skrz spuštění.
     \item[plugin] krerá dovoluje vědět, kdo je aktuálním spouštěčem skriptu.
-    \item[language] která dovoluje zjistit, v jakém jazyce je aktuálně vykreslována stránka.
+    \item[language] která dovoluje zjistit, jaký jazyk je aktuálně vybrán.
     \item[log] krerá dovoluje vypisovat věci do konzole pro lepší vývoj.
 \end{description}
 
@@ -908,7 +908,7 @@ Důležitou součástí webové prezentace je porovnání s ostatními aplikacem
 To pomáhá uživatelům lépe pochopit výhody a jedinečné vlastnosti aplikace. 
 Kromě toho webová stránka představuje dostupné pluginy, které rozšiřují základní funkcionalitu aplikace.
 
-Design webové stránky vychází z vizuálního stylu samotné aplikace (viz sekce~\ref{text:realizace/klient}). 
+Design webové stránky vychází a inspiruje se z vizuálního stylu samotné aplikace (viz sekce~\ref{text:realizace/klient}). 
 Stránka je responzivní a optimalizovaná pro různé typy zařízení.
 
 Pro sjednocení vizuální identity bylo navrženo logo aplikace (viz obrázek~\ref{fig:logo}), které symbolizuje kombinaci plátna a písmene \enquote{M}, což reflektuje jak materiálový aspekt, tak kreativní přístup k tvorbě obsahu.
@@ -977,7 +977,7 @@ Níže jsou uvedeny odkazy na nahrané části aplikace.
     \item[Server] \href{https://api.materalist.com}{https://api.materalist.com}
 \end{description}
 
-Výsledná aplikace, respektive její uživatelské rozhraní, je na obrazcích k zobrazení taktéž v příloze~\ref{appendix:uzivatelskeRozhrani} včetně ukázky hlavní stránky a dokumentace.
+Výsledná aplikace, respektive její uživatelské rozhraní, je k zobrazení taktéž na obrázcích v příloze~\ref{appendix:uzivatelskeRozhrani} včetně ukázky hlavní stránky a dokumentace.
 
 DNS záznamy spravuji pomocí služby Cloudflare, která zároveň zajišťuje automatické vydávání certifikátů pro HTTPS a end-to-end šifrování. 
 Veškerý provoz tak probíhá šifrovaně a zabezpečeně.
@@ -993,7 +993,8 @@ Citlivé proměnné jsou v repozitáři maskované a server k nim přistupuje p�
 
 \subsection{Vývoj}
 
-Vývojové prostředí využívá upravené varianty \texttt{Dockerfile} a \texttt{docker-compose.yml} souborů. Pro každou část systému existuje vlastní vývojová konfigurace, která umožňuje rychlé spuštění.
+Vývojové prostředí využívá upravené varianty stejných souborů \texttt{Dockerfile} a \texttt{docker-compose.yml} z nasazení na produkci. 
+Pro každou část systému existuje vlastní vývojová konfigurace, která umožňuje rychlé spuštění.
 
 Na rozdíl od produkce se při vývoji nepoužívá \texttt{volume} pro mount celého projektu, ale jen pro adresáře mimo \texttt{node\_modules}, kontejner pak otevře projekt v módu \texttt{live-reload}.
 Vývojáři tak mohou spustit celý systém jedním příkazem, bez nutnosti dalších úprav, a vyvíjet platformu.
