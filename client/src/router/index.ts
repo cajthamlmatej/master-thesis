@@ -39,6 +39,11 @@ const router = createRouter({
                     path: 'featured',
                     name: 'Featured',
                     component: () => import('../views/featured/Featured.vue'),
+                },
+                {
+                    path: 'development/component-test',
+                    name: 'ComponentTest',
+                    component: () => import('../views/development/ComponentTest.vue'),
                 }
             ]
         },
