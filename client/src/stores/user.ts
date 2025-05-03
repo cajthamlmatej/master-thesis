@@ -58,9 +58,9 @@ export const useUserStore = defineStore("user", () => {
         };
 
         const updateUser = async (data: {
-            name: string;
-            password: string;
-            currentPassword: string;
+            name?: string | undefined;
+            password?: string | undefined;
+            currentPassword?: string | undefined;
         }) => {
             if (!authenticationStore.isLogged) {
                 return;

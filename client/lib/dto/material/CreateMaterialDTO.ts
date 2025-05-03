@@ -1,11 +1,9 @@
 import {
     IsArray,
-    IsDefined,
-    IsHexColor,
+    IsDefined, IsHexColor,
     IsIn,
     IsNumber,
-    IsObject,
-    IsPositive,
+    IsObject, IsPositive,
     IsString,
     MaxLength,
     Min,

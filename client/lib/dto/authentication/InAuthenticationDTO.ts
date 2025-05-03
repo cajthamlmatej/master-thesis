@@ -1,4 +1,4 @@
-import {IsIn, IsOptional, IsString} from "class-validator";
+import {IsEmpty, IsIn, IsOptional, IsString, MaxLength} from "class-validator";
 
 class InAuthDTO {
     @IsIn(['EMAIL_PASSWORD', 'EMAIL'])

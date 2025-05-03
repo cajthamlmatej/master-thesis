@@ -1,4 +1,16 @@
-import {IsArray, IsEnum, IsString, MaxLength, MinLength} from "class-validator";
+import {
+    IsArray,
+    IsDefined, IsEnum, IsHexColor,
+    IsIn,
+    IsNumber,
+    IsObject, IsOptional, IsPositive,
+    IsString,
+    MaxLength,
+    Min,
+    MinLength,
+    ValidateNested
+} from "class-validator";
+import {Type} from "class-transformer";
 
 export class CreatePluginDTO {
     @IsString()

@@ -296,11 +296,18 @@
         "user-settings": {
             "user": {
                 "title": "Nastavení účtu",
-                "new-password": "Nové heslo",
                 "name": "Nové jméno",
-                "current": "Aktuální heslo",
+                "current": "Současné heslo",
                 "change": "Změnit údaje",
                 "error": "Údaje se nepodařilo změnit. Zkontrolujte, zda jste zadali správné heslo."
+            },
+            "password": {
+                "title": "Změna hesla",
+                "new-password-repeat": "Nové heslo znovu",
+                "new-password": "Nové heslo",
+                "change": "Změnit heslo",
+                "error": "Údaje se nepodařilo změnit.",
+                "match": "Hesla se neshodují."
             },
             "export": {
                 "title": "Export osobních údajů",

@@ -296,11 +296,18 @@
         "user-settings": {
             "user": {
                 "title": "Account Settings",
-                "new-password": "New Password",
                 "name": "New Name",
                 "current": "Current Password",
                 "change": "Change Details",
                 "error": "Failed to change the details. Please check if you entered the correct password."
+            },
+            "password": {
+                "title": "Change password",
+                "new-password-repeat": "New password again",
+                "new-password": "New password",
+                "change": "Change password",
+                "error": "Data could not be changed.",
+                "match": "Passwords do not match."
             },
             "export": {
                 "title": "Export Personal Data",

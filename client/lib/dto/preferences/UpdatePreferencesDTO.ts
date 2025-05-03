@@ -1,4 +1,15 @@
-import {IsBoolean, IsNumber, Max, Min} from "class-validator";
+import {
+    IsArray,
+    IsBoolean, IsIn,
+    IsNumber,
+    IsOptional,
+    IsString, Max,
+    MaxLength,
+    Min,
+    MinLength,
+    ValidateNested
+} from "class-validator";
+import {Type} from "class-transformer";
 
 export class UpdatePreferencesDTO {
     @IsBoolean()
