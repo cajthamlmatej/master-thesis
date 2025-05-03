@@ -100,7 +100,7 @@ const classes = computed(() => {
         height: 1.5rem;
 
         border: var(--checkbox-border-width) solid var(--color-checkbox-border);
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
 
         cursor: pointer;
 
@@ -111,8 +111,8 @@ const classes = computed(() => {
 
             display: block;
 
-            width: 1rem;
-            height: 1rem;
+            width: 0.8rem;
+            height: 0.8rem;
             border-radius: 0.25rem;
 
             background-color: var(--color-checkbox-background-checked);
