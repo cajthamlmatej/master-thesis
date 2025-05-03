@@ -420,7 +420,7 @@
         },
         "disconnected": {
             "title": "You have been disconnected",
-            "help": "You have been disconnected from the Materalist servers. Please check your internet connection and try again. If the problem persists, try refreshing the page or logging out and logging back in."
+            "help": "You have been disconnected from the Materalist servers. Please check your internet connection and try again. If the problem persists, try refreshing the page or logging out and logging back in.  We'll try to log you back in if we can."
         }
     },
     "editor": {
@@ -722,7 +722,7 @@
         },
         "disconnected": {
             "title": "You have been disconnected",
-            "help": "You have been disconnected from the Materalist servers. Please check your internet connection and try again. If the problem persists, try refreshing the page or logging out and logging back in."
+            "help": "You have been disconnected from the Materalist servers. Please check your internet connection and try again. If the problem persists, try refreshing the page or logging out and logging back in.  We'll try to log you back in if we can."
         },
         "kicked": {
             "title": "You've been kicked",

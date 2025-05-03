@@ -9,10 +9,15 @@ export class PlayerCommunicator {
     public readonly joined: Promise<void> = new Promise<void>((resolve) => this.joinedResolve = resolve);
 
     private watchers = new Set<string>();
+    
+    private code:string;
+    private slideId: string;
 
     constructor(material: Material, code: string, isPresenter: boolean, slideId: string) {
         this.material = material;
         this.isPresenter = isPresenter;
+        this.code = code;
+        this.slideId = slideId;
 
         communicator.socket.emit("joinPlayerMaterialRoom", {
             materialId: material.id,
@@ -32,6 +37,8 @@ export class PlayerCommunicator {
             if (!slide) {
                 return;
             }
+
+            this.slideId = slideId;
 
             await playerStore.changeSlide(slide);
         });
@@ -130,6 +137,16 @@ export class PlayerCommunicator {
         }
     }
 
+    getSlideId(): string {
+        return this.slideId;
+    }
+    getCode(): string {
+        return this.code;
+    }
+    getMaterial(): Material {
+        return this.material;
+    }
+    
     // changeCanvas(param: { position: { x: number; y: number }; scale: number }) {
     //     communicator.socket.emit("changeCanvas", param);
     // }

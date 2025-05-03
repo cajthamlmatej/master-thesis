@@ -46,6 +46,10 @@ onMounted(async () => {
     communicator.KICKED.on(() => {
         kicked.value = true;
     });
+    communicator.RECONNECTED.on(() => {
+        disconnected.value = false;
+        kicked.value = false;
+    });
     await communicator.readyPromise;
 
     if (props.type !== 'editor') {

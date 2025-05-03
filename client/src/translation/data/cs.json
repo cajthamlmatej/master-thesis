@@ -420,7 +420,7 @@
         },
         "disconnected": {
             "title": "Byl jste odpojen",
-            "help": "Byl jste odpojen od serverů Materalist. Zkontrolujte prosím připojení k internetu a zkuste to znovu. Pokud problém přetrvává, zkuste stránku obnovit nebo se odhlásit a znovu přihlásit."
+            "help": "Byl jste odpojen od serverů Materalist. Zkontrolujte prosím připojení k internetu a zkuste to znovu. Pokud problém přetrvává, zkuste stránku obnovit nebo se odhlásit a znovu přihlásit. Pokusíme se tě zpět přihlásit, pokud to půjde."
         }
     },
     "editor": {
@@ -726,7 +726,7 @@
         },
         "disconnected": {
             "title": "Byl jste odpojen",
-            "help": "Byl jste odpojen od serverů Materalist. Zkontrolujte prosím připojení k internetu a zkuste to znovu. Pokud problém přetrvává, zkuste stránku obnovit nebo se odhlásit a znovu přihlásit."
+            "help": "Byl jste odpojen od serverů Materalist. Zkontrolujte prosím připojení k internetu a zkuste to znovu. Pokud problém přetrvává, zkuste stránku obnovit nebo se odhlásit a znovu přihlásit.  Pokusíme se tě zpět přihlásit, pokud to půjde."
         },
         "kicked": {
             "title": "Byl jste vyhozen",
