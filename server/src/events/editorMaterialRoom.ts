@@ -1,9 +1,10 @@
-import {HydratedDocument} from "mongoose";
+import {Document, HydratedDocument, Types} from "mongoose";
 import {Material} from "../materials/material.schema";
-import {Socket} from "socket.io";
+import {DefaultEventsMap, Socket} from "socket.io";
 import {WsException} from "@nestjs/websockets";
 import {EventsGateway} from "./events.gateway";
 import {EditorMaterialRoomAttendee} from "./editorMaterialRoomAttendee";
+import { User, UserDocument } from "src/users/user.schema";
 
 /**
  * Represents a room for editing a material collaboratively.
@@ -359,5 +360,36 @@ export class EditorMaterialRoom {
         } else {
             slide.data.blocks = slide.data.blocks.map(b => b.id === block.id ? block : b);
         }
+    }
+
+    /**
+     * Checks if a client can join the room (if its not full, etc).
+     * @param client The socket of the client to check.
+     */
+    canJoin(client: Socket) {
+        const user = client.data.user!;
+
+        if(this.attendees.length < 10) {
+            return true;
+        }
+
+        if(this.material.user.toString() === user._id.toString()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    checkAttendees(newAttendees: (string)[]) {
+        for(const attendee of this.attendees) {
+            const user = newAttendees.find(a => a.toString() === attendee.client.data.user!._id.toString());
+
+            if (!user && this.material.user.toString() !== attendee.client.data.user!._id.toString()) {
+                this.removeListener(attendee.client);
+                attendee.client.emit("kicked");
+            }
+        }
+
+        this.material.attendees = newAttendees.map(a => a.toString()) as any;
     }
 }

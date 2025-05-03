@@ -75,6 +75,7 @@ export class EventsGateway {
         }
 
         if (material.user.toString() !== client.data.user?._id.toString() && !material.attendees.map(a => a.toString()).includes(client.data.user?._id.toString())) {
+            client.emit("kicked");
             throw new WsException("You cannot start edit this material");
         }
 
@@ -84,6 +85,13 @@ export class EventsGateway {
             this.editorRooms.push(newRoom);
             room = newRoom;
         } else {
+            const result = room.canJoin(client);
+
+            if (result !== true) {
+                client.emit("kicked", result);
+                return;
+            }
+
             room.addListener(client);
         }
 

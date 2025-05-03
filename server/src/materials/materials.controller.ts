@@ -183,6 +183,12 @@ export class MaterialsController {
             newAttendees = newAttendees.filter((attendee) => attendee.id !== req.user.id.toString());
 
             await this.materialsService.update(material, {...updateMaterialDto, attendees: newAttendees});
+
+            const room = this.eventsGateway.getEditorRoom(material.id);
+
+            if(room) {
+                room.checkAttendees(newAttendees as any);
+            }
         } else {
             await this.materialsService.update(material, updateMaterialDto);
         }
