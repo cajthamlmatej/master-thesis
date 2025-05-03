@@ -295,7 +295,7 @@ let data = ref({
 
 const link = ref("");
 
-const load = () => {
+const load = async() => {
     const material = materialStore.currentMaterial;
 
     if (!material) {
@@ -308,6 +308,8 @@ const load = () => {
     data.value.automaticTime = material.automaticTime ?? 0;
     data.value.sizing = material.sizing ?? "FIT_TO_SCREEN";
     data.value.attendees = material.attendees ?? [];
+
+    await router.isReady();
 
     const domain = window.location.origin;
     const player = router.resolve({name: 'Player', params: {material: material.id}}).href;
