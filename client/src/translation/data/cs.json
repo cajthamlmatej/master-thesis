@@ -301,6 +301,9 @@
                 "change": "Změnit údaje",
                 "error": "Údaje se nepodařilo změnit. Zkontrolujte, zda jste zadali správné heslo."
             },
+            "change-email": {
+                "warning": "Změna e-mailu není kvůli bezpečnosti možná přímo v nastavení. Pokud chcete změnit e-mail, kontaktujte prosím tým podpory na e-mailu support@materalist.com."
+            },
             "password": {
                 "title": "Změna hesla",
                 "new-password-repeat": "Nové heslo znovu",

@@ -94,6 +94,9 @@
         <!--            </Card>-->
         <!--        </Col>-->
     </Row>
+    <Alert fluid class="mt-1">
+        <p v-t>page.user-settings.change-email.warning</p>
+    </Alert>
     <Dialog
         v-model:value="finished"
     >

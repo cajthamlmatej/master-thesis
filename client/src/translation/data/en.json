@@ -301,6 +301,9 @@
                 "change": "Change Details",
                 "error": "Failed to change the details. Please check if you entered the correct password."
             },
+            "change-email": {
+                "warning": "Changing email is not possible directly in the settings due to security reasons. If you want to change your email, please contact the support team at support@materalist.com."
+            },
             "password": {
                 "title": "Change password",
                 "new-password-repeat": "New password again",
