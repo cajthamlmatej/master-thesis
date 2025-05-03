@@ -8,6 +8,7 @@ import Event from "@/utils/Event";
 export class WebSocketCommunicator {
     public socket: Socket;
     public DISCONNECTED = new Event<void>();
+    public KICKED = new Event<void>();
     private resolveReadyPromise: () => void;
     public readyPromise: Promise<void> = new Promise<void>((resolve) => this.resolveReadyPromise = resolve);
     private editorRoom: EditorCommunicator | undefined;
@@ -32,6 +33,9 @@ export class WebSocketCommunicator {
         });
         this.socket.on("disconnect", () => {
             this.DISCONNECTED.emit();
+        });
+        this.socket.on("kicked", () => {
+            this.KICKED.emit();
         });
         this.socket.on("newThumbnails", async ({materialId, slides}: {
             materialId: string,

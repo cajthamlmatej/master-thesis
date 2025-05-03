@@ -4,8 +4,6 @@
         :showTriggers="['click']"
         placement="bottom"
     >
-        <!--        :showTriggers="['hover', 'click']"-->
-        <!--        :hideTriggers="['click', 'hover']"-->
         <NavigationButton
             :icon="attendees.length <= 1 ? 'account':'account-multiple'"
             :tooltip-position="'bottom'"
@@ -13,21 +11,28 @@
         ></NavigationButton>
 
         <template #popper>
-            <div class="attendee-dropdown">
-                <div v-for="attendee in attendees" :key="attendee.attendee.id" class="attendee">
-                    <span :style="{
-                            '--color': attendee.attendee.color,
-                        }"
-                          class="visualiser"
-                    >
-                        {{ attendee.attendee.icon }}
-                    </span>
-                    <span class="name">
-                        {{ attendee.attendee.name }}
-                    </span>
-                    <span v-if="attendee.current" class="current">
-                        ({{ $t('editor.attendees.current') }})
-                    </span>
+            <div class="container">
+                <div class="attendee-dropdown">
+                    <div v-for="attendee in attendees" :key="attendee.attendee.id" class="attendee">
+                        <span :style="{
+                                '--color': attendee.attendee.color,
+                            }"
+                            class="visualiser"
+                        >
+                            {{ attendee.attendee.icon }}
+                        </span>
+                        <span class="name">
+                            {{ attendee.attendee.name }}
+                        </span>
+                        <span v-if="attendee.current" class="current">
+                            ({{ $t('editor.attendees.current') }})
+                        </span>
+                    </div>
+
+                    <div class="limits">
+                        <span>{{ current }} / {{ limit }}</span>
+                        <span class="help" v-t>editor.attendees.limit</span>
+                    </div>
                 </div>
             </div>
         </template>
@@ -37,7 +42,7 @@
 <script lang="ts" setup>
 
 import {communicator} from "@/api/websockets";
-import {onMounted, ref} from "vue";
+import {compile, computed, onMounted, ref} from "vue";
 import {useMaterialStore} from "@/stores/material";
 import {$t} from "@/translation/Translation";
 import NavigationButton from "@/components/design/navigation/NavigationButton.vue";
@@ -68,15 +73,27 @@ function updateAttendees() {
         current: current === attendee,
     }))
 }
+
+const current = computed(() => {
+    return attendees.value.filter((attendee) => attendee.current).length;
+});
+const limit = computed(() => {
+    return 10;
+});
 </script>
 
 <style lang="scss" scoped>
+div.container {
+    max-height: 50vh;
+}
+
 div.attendee-dropdown {
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: rgba(255, 255, 255, 0.543);
     backdrop-filter: blur(18px);
     display: flex;
     flex-direction: column;
     border-radius: 1em;
+    box-shadow: var(--shadow-accent);
     padding: 1em;
     gap: 0.5em;
 
@@ -95,6 +112,18 @@ div.attendee-dropdown {
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+    }
+
+    .limits {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: clamp(50px, 30vw, 200px);
+        text-align: center;
+
+        .help {
+            font-size: 0.8em;
         }
     }
 }

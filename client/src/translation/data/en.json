@@ -717,11 +717,16 @@
         },
         "attendees": {
             "title": "Attendees",
-            "current": "You"
+            "current": "You",
+            "limit": "After the limit of participants is reached, only the owner of the material will be able to join."
         },
         "disconnected": {
             "title": "You have been disconnected",
             "help": "You have been disconnected from the Materalist servers. Please check your internet connection and try again. If the problem persists, try refreshing the page or logging out and logging back in."
+        },
+        "kicked": {
+            "title": "You've been kicked",
+            "help": "You've been kicked from the material. The editor room is probably full (only the owner has access to the material) or you no longer have access to the material."
         }
     },
     "blocks": {

@@ -721,11 +721,16 @@
         },
         "attendees": {
             "title": "Účastníci",
-            "current": "Vy"
+            "current": "Vy",
+            "limit": "Po dosazení limitu účastníků se bude moci připojit jen majitel materiálu."
         },
         "disconnected": {
             "title": "Byl jste odpojen",
             "help": "Byl jste odpojen od serverů Materalist. Zkontrolujte prosím připojení k internetu a zkuste to znovu. Pokud problém přetrvává, zkuste stránku obnovit nebo se odhlásit a znovu přihlásit."
+        },
+        "kicked": {
+            "title": "Byl jste vyhozen",
+            "help": "Byl jste vyhozen z materiálu. Místnost editoru je nejspíše plná (přístup k materiálu pak má jen majitel) nebo již nemáte přístup k materiálu."
         }
     },
     "blocks": {
