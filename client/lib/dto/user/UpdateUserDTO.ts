@@ -5,17 +5,17 @@ export default class UpdateUserDTO {
     @IsString()
     @MinLength(3)
     @MaxLength(255)
-    password: string | undefined;
+    password?: string | undefined;
 
     @MaxLength(255)
     @IsOptional()
     @IsString()
     @MinLength(3)
-    name: string | undefined;
+    name?: string | undefined;
 
     @IsString()
     @IsOptional()
     @MinLength(3)
     @MaxLength(255)
-    currentPassword: string | undefined;
+    currentPassword?: string | undefined;
 }
