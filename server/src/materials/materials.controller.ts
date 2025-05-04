@@ -157,7 +157,6 @@ export class MaterialsController {
                 throw new UnauthorizedException('You are not allowed to access this resource');
             }
         }
-        // TODO: validate if release & plugin exists
 
         // Just the owner of the material can update the attendees
         if (material.user.toString() === req.user.id) {
@@ -203,8 +202,6 @@ export class MaterialsController {
     @UseGuards(RequiresAuthenticationGuard)
     async create(@Body() createMaterialDto: CreateMaterialDTO, @Req() req: RequestWithUser) {
         const material = await this.materialsService.create(createMaterialDto, req.user);
-
-        // TODO: validate if release & plugin exists
 
         return {
             material: {
