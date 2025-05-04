@@ -36,6 +36,10 @@ export class WebSocketCommunicator {
             if(this.editorRoom) {
                 this.setupEditorRoom(this.editorRoom.getMaterial());
             }
+            if(this.playerRoom) {
+                this.setupPlayerRoom(this.playerRoom.getMaterial(), this.playerRoom.getCode(), this.playerRoom.isPresenter, this.playerRoom.getSlideId());
+            }
+
 
             this.RECONNECTED.emit();
         });
