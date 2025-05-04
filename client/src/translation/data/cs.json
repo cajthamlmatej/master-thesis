@@ -140,6 +140,10 @@
                 "failed": "Přihlášení se nezdařilo. Zkontrolujte, zda jste zadali správné údaje o účtu.",
                 "wrong-email": "Zadali jste špatný e-mail nebo již existuje žádost o přihlášení. Zkontrolujte svůj e-mail a zkuste to znovu.",
                 "wrong-code": "Zadali jste špatný kód. Zkontrolujte svůj e-mail a zkuste to znovu."
+            },
+            "expired": {
+                "title": "Byl jste odhlášen",
+                "description": "Vaše přihlášení vypršelo. Pro pokračování v práci se prosím přihlaste znovu."
             }
         },
         "register": {

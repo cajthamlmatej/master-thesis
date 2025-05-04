@@ -4,6 +4,8 @@
     <Cookies :key="language"/>
 
     <Debug :key="language"/>
+
+    <AuthenticationObserver />
 </template>
 
 <script lang="ts" setup>
@@ -16,6 +18,7 @@ import {translation} from "@/translation/Translation";
 import {ref, watch} from "vue";
 import {useAuthenticationStore} from "@/stores/authentication";
 import {communicator} from "@/api/websockets";
+import AuthenticationObserver from "./components/AuthenticationObserver.vue";
 
 useHead({
     htmlAttrs: {

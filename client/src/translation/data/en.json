@@ -140,6 +140,10 @@
                 "failed": "Login failed. Make sure you entered correct account details.",
                 "wrong-email": "You entered wrong e-mail or there is already a request for login. Check your e-mail and try again.",
                 "wrong-code": "You entered wrong code. Check your e-mail and try again."
+            },
+            "expired": {
+                "title": "You have been logged out",
+                "description": "Your login has expired. Please log in again to continue working."
             }
         },
         "register": {
