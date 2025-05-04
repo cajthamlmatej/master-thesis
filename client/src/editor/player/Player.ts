@@ -80,7 +80,6 @@ export default class Player {
         const element = block.render();
         element.setAttribute("data-block-id", block.id);
 
-        // TODO: this is ugly
         this.element.querySelector(".player-content")!.appendChild(element);
 
         block.element = element;

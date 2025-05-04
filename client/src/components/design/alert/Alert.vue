@@ -27,8 +27,6 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
-
-    // TODO: Add support for custom icon
 });
 
 const visible = ref(true);

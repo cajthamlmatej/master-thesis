@@ -66,7 +66,8 @@ export abstract class PlayerBlock {
         group?: string;
     }
 
-    public playerStore: any; // TODO: add type
+    // note(Matej): sadly this has to be any type because it would cause circular dependency issues
+    public playerStore: any;
 
     public loaded: Promise<void>;
     private repeats: { timeouts: NodeJS.Timeout[], intervals: NodeJS.Timeout[] } = {timeouts: [], intervals: []};
@@ -124,8 +125,7 @@ export abstract class PlayerBlock {
         this.element.style.opacity = this.opacity.toString();
         this.element.style.zIndex = this.zIndex.toString();
 
-        if (this.interactivity && this.interactivity.filter(a => a.event == "CLICKED").length > 0) {
-            // TODO: add other ways to indicate interactivity
+        if (this.interactivity && this.interactivity.filter(a => a.event == "CLICKED" || a.event === "HOVER_START").length > 0) {
             this.element.classList.add("block--interactive");
         }
     }
@@ -428,14 +428,12 @@ export abstract class PlayerBlock {
             }
         }
 
-        // TODO: hotfix
+        // note(Matej): deep clone the object to avoid circular references and other issues
         serialized = JSON.parse(JSON.stringify(serialized));
 
         return serialized;
     }
-
-    // TODO: destroy method for cleanup (interactivity timeouts, intervals, etc.)
-
+    
     /**
      * Processes an event by calling all registered listeners for the event.
      * @param event The event to process.

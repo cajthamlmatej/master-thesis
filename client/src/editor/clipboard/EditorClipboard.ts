@@ -132,7 +132,7 @@ export class EditorClipboard {
      * @returns An array of deserialized and cloned EditorBlock instances.
      */
     private deserializeBlocks(blocks: any[]) {
-        const deserializer = new BlockRegistry(); // TODO: unify with others which use BlockRegistry
+        const deserializer = new BlockRegistry();
         return blocks.map(b => deserializer.deserializeEditor(b)).filter(b => b !== undefined).map(block => block.clone())
     }
 

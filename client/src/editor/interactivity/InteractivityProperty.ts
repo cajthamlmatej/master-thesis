@@ -171,7 +171,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                     <option value="HOVER_END">${$t("property.interactivity.event.HOVER_END")}</option>
                     <option value="TIMER">${$t("property.interactivity.event.TIMER")}</option>
                     <option value="SLIDE_LOAD">${$t("property.interactivity.event.SLIDE_LOAD")}</option>
-<!--                                <option disabled value="DRAG_START">Drag start</option>--> <!-- TODO: blocks dont yet have drag support -->
+<!--                                <option disabled value="DRAG_START">Drag start</option>-->
 <!--                                <option disabled value="DRAG_END">Drag end</option>-->
                 </select>
             </div>
@@ -358,7 +358,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
                 blocksPairs.push({
                     id: block.id,
-                    name: block.type + " " + seenTypes.get(type), // TODO: this needs overhaul
+                    name: block.type + " " + seenTypes.get(type),
                 });
             }
 

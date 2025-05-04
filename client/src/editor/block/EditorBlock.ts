@@ -148,7 +148,7 @@ export abstract class EditorBlock {
             }
         }
 
-        // TODO: hotfix
+        // note(Matej): deep clone the object to prevent circular references and other issues
         serialized = JSON.parse(JSON.stringify(serialized));
 
         return serialized;

@@ -506,7 +506,6 @@ const link = computed(() => {
                 material: materialStore.currentMaterial?.id,
                 language: translation.getLanguage(),
             },
-            // TODO: add password?
         })
 
         return new URL(url.href, domain).href

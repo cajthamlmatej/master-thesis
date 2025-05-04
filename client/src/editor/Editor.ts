@@ -216,7 +216,6 @@ export default class Editor {
         const element = block.render();
         element.setAttribute("data-block-id", block.id);
 
-        // TODO: this is ugly
         this.editorElement.querySelector(".editor-content")!.appendChild(element);
 
         block.element = element;

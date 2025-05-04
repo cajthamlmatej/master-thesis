@@ -17,7 +17,7 @@ export class LockAction extends SelectorAction {
         for (const block of param.selected) {
             block.lock();
         }
-        // TODO: should this be called here?
+        
         param.editor.events.BLOCK_LOCK_CHANGED.emit({
             blocks: param.selected,
             locked: true

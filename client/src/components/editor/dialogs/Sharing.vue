@@ -373,7 +373,6 @@ const exportFile = async (type: string) => {
     const response = await api.material.export(materialStore.currentMaterial!.id, type);
 
     if (!response || response.status !== 200) {
-        // TODO: notify
         exporting.value = false;
         return;
     }

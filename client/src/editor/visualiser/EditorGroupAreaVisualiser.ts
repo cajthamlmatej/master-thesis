@@ -62,7 +62,7 @@ export default class EditorGroupAreaVisualiser {
                 y: area.y,
                 width: area.width,
                 height: area.height,
-                color: interpolateColor(0.2, colorFromSeed(block.group), window.getComputedStyle(document.body).getPropertyValue("--color-primary")) // TODO: lepsi barvicky :)
+                color: interpolateColor(0.2, colorFromSeed(block.group), window.getComputedStyle(document.body).getPropertyValue("--color-primary"))
             });
         }
 

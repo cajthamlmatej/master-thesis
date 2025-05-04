@@ -74,8 +74,6 @@ export class MarkdownMaterialImporter extends MaterialImporter {
                         items: items
                     });
                 }
-
-                // TODO: Handle other block types
             }
         }
 

@@ -47,7 +47,6 @@ export class Repository {
                 body: ignoreContentType ? data : JSON.stringify(data)
             });
 
-            // TODO: check if is an error
             if (!finishedRequest.ok) {
                 return undefined;
             }

@@ -74,7 +74,10 @@ export class ShapePlayerBlock extends PlayerBlock {
                 change: (value: string, relative: boolean, {animate, duration, easing}) => {
                     let target = value;
 
-                    // TODO: validate if is color
+                    if(!/^#[0-9A-F]{6}$/i.test(target)) {
+                        console.error("[ShapePlayerBlock] Invalid color: " + target + ". Ignoring change.");
+                        return;
+                    }
 
                     if (animate) {
                         const content = this.element.querySelector(".block-content")! as HTMLElement;

@@ -97,8 +97,6 @@
         </template>
     </Navigation>
 
-    <!-- TODO:        <AuthenticationObserver />-->
-
     <router-view v-slot="{ Component, route }">
         <transition mode="out-in" name="fade-ease">
             <main :key="route.name?.toString()">

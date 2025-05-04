@@ -69,8 +69,6 @@ export class EditorProperty {
             const start = {x: e.clientX, y: e.clientY};
             const current = {x: e.clientX, y: e.clientY};
 
-            // TODO: save the position and loop it when the mouse is out of the screen
-
             const onMouseMove = (e: MouseEvent) => {
                 // Update `current` values
                 current.x += e.movementX;
