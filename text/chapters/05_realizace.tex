@@ -65,7 +65,7 @@ Tento přístup se ukázal jako výhodný pro počáteční vývoj, nicméně do
 
 Pro lepší orientaci v historii změn jsem používal sémantické zprávy. 
 Každá zpráva jasně popisuje, co se změnilo a v jaké části systému, což usnadňuje zpětné dohledávání konkrétních úprav. 
-V rámci vývoje vzniklo přes 600 samostatných balíčků změn (tzv. commit), které pokrývají vývoj nových funkcí, opravy chyb i refaktoring.
+V rámci vývoje vzniklo přes 700 samostatných balíčků změn (tzv. commit), které pokrývají vývoj nových funkcí, opravy chyb i refaktoring.
 
 Plánování probíhalo mimo samotné verzovací nástroje, především prostřednictvím služby ClickUp. 
 Tento nástroj sloužil ke správě úkolů, revizí a sledování pokroku ve vývoji. 
@@ -203,7 +203,7 @@ Tento přístup přináší některé výhody z hlediska vývoje a uživatelské
 Problém spočívá v tom, že většina obsahu se vykresluje až po načtení skriptů, což někteří roboti vyhledávačů nezohlední.
 
 Tento problém byl vyřešen pomocí techniky \textit{prerendering}.
-Při detekci specifického \textit{user-agenta} (typicky pro vyhledávací roboty) je požadavek přesměrován na službu \texttt{prerender}, která spustí virtuální prohlížeč, vykreslí cílovou stránku a vrátí její výsledný HTML výstup.
+Při detekci specifického \textit{user-agent} (typicky pro vyhledávací roboty) je požadavek přesměrován na službu \texttt{prerender}, která spustí virtuální prohlížeč, vykreslí cílovou stránku a vrátí její výsledný HTML výstup.
 Výsledkem je obsah, který lze snadno indexovat bez ohledu na způsob zobrazení na straně klienta.
 
 Z hlediska obsahu je pro SEO zásadní zejména přehrávač, který obsahuje samotné výukové materiály, a přihlašovací stránka. 
@@ -690,7 +690,7 @@ Uživatelé, resp. vývojáři, mohou pluginy jednoduše přidávat přímo v ap
 Rozšíření a jejich API jsou dokumentována v dokumentaci platformy.
 Pro lepší vývoj byly vytvořeny typy, které lze používat i v programování v jazyce JS.
 Ty napovídají v moderních vývojových prostředích vývojářům rozšíření s tím, co mohou za věci ve vytvořeném API používat.
-Ukázku typů lze najít v kódu~\ref{code:realizace/typy}, celý soubor typů lze najít v kódové příloze ve složce \verb|/platform/plugins/types.d.ts|.
+Ukázku typů lze najít v kódu~\ref{code:realizace/typy}, celé typy lze najít v kódové příloze v souboru \verb|/platform/plugins/types.d.ts|.
 
 
 \begin{listing}[ht!]
@@ -765,37 +765,6 @@ Pro editor a přehrávač (ne nutně pro oba) existují následující události
     \item[pluginRemoteMessage] Tato událost se volá tehdy, když blok vlastněný tímto rozšířením obdrží zprávu od vzdáleného bloku stejné instance. Více se o vzdálené komunikaci zmiňuji v sekci~\ref{text:realizace/vzdalenaKomunikace}. 
 \end{description}
 
-\begin{listing}[ht!]
-\caption[Ukázkový zápis rozšíření a registrace na událost]{Ukázkový zápis rozšíření a registrace na událost, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:registraceUdalosti}
-\begin{minted}{javascript}
-export const onPanelMessage = (message) => {
-  if (message !== "clicked") return;
-
-  // Zde se provádí akce po kliknutí na tlačítko
-  api.editor.addBlock({
-    type: "text",
-    // ... další vlastnosti bloku
-  });
-}
-
-export const initEditor = function () {
-  api.editor.on("panelMessage", onPanelMessage);
-  api.editor.on("panelRegister", () => {
-    // Zavolání např. api.fetch
-    return `<button>Click me</button>
-      <script>
-      document.querySelector("button").addEventListener("click", 
-        () => {
-            window.parent.postMessage({
-                target: "script", message: "clicked"
-            }, "*");
-        });
-      </script>`;
-  });
-}
-\end{minted}
-\end{listing}
-
 
 \subsection{Vykreslované bloky}
 
@@ -831,6 +800,37 @@ To umožňuje bezpečnou a efektivní výměnu zpráv mezi oddělenými kontexty
 V rámci vývoje pluginu je nezbytné definovat způsob, jakým panel odesílá a přijímá zprávy. 
 Aplikace poskytuje vlastní API, které nad rámec běžného \texttt{postMessage} rozšiřuje funkcionalitu o specifické události, zpracování chyb nebo obsluhu odpovědí. 
 Ukázka takové komunikace je uvedena v kódu~\ref{code:registraceUdalosti}, kde je demonstrována registrace obsluhy zpráv přicházejících z panelu.
+
+\begin{listing}[ht!]
+\caption[Ukázkový zápis rozšíření a registrace na událost]{Ukázkový zápis rozšíření a registrace na událost, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:registraceUdalosti}
+\begin{minted}{javascript}
+export const onPanelMessage = (message) => {
+  if (message !== "clicked") return;
+
+  // Zde se provádí akce po kliknutí na tlačítko
+  api.editor.addBlock({
+    type: "text",
+    // ... další vlastnosti bloku
+  });
+}
+
+export const initEditor = function () {
+  api.editor.on("panelMessage", onPanelMessage);
+  api.editor.on("panelRegister", () => {
+    // Zavolání např. api.fetch
+    return `<button>Click me</button>
+      <script>
+      document.querySelector("button").addEventListener("click", 
+        () => {
+            window.parent.postMessage({
+                target: "script", message: "clicked"
+            }, "*");
+        });
+      </script>`;
+  });
+}
+\end{minted}
+\end{listing}
 
 Z pohledu uživatele je panel obvykle přístupný prostřednictvím uživatelského rozhraní materiálu v podobě postranní navigace. 
 Její obsah je zcela v kompetenci pluginu, což umožňuje značnou míru přizpůsobení vzhledu i chování dle konkrétních potřeb.
@@ -1077,7 +1077,7 @@ Slouží jako demonstrace možností systému, jeho flexibility a využití při
 Rozšíření vytvořena (či testována) i dalšími uživateli, kteří se na vývoji platformy nepodíleli, jsou popsány v kapitole~\ref{text:testovani}.
 To umožnilo získat nezávislou zpětnou vazbu, podrobněji popsanou v sekci~\ref{text:testovani/rozsireni}. 
 Všechna rozšíření jsou dostupná v přiložené aplikaci a taktéž jako příloha práce.
-Rozšíření jsou dostupná v kódové příloze ve složce \verb|/platform/plugins|.
+Rozšíření jsou dostupná v kódové příloze ve složce \verb|/platform/plugins/|.
 
 \subsection{Zarovnávač}
 

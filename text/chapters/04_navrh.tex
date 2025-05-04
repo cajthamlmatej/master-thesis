@@ -302,7 +302,7 @@ Nějaké i z bakalářské práce, kterou jsem dále upravoval dle potřeb evolu
 Mezi další základní styly, které bude nutné implementovat, patří:
 
 \begin{itemize}
-    \item Typografii a různé zvýrazňovací prvky.
+    \item Typografie a různé zvýrazňovací prvky.
     \item Grid systém pro rozdělení stránky do jednotlivých sloupců.
     \item Pomocné třídy na odsazení a základní rozložení, jako je například flexbox.
 \end{itemize}
@@ -316,13 +316,13 @@ Obě možnosti by byly dobrým rozhodnutím pro budoucnost projektu a ze dřív�
 Ty jednodušeji dovolují měnit hodnoty za běhu a zároveň i dědičnost mezi prvky, což vytvoří systém, který reaguje na požadavky aplikace.
 To taktéž dovolí vytvořit systém motivů, který bude měnit jednotlivé barvy v proměnných do předpřipravených stylů, které bude moci uživatel vybírat.
 
-Přesto hodlám metajazyk Sass v práci používat, protože dovoluje například jednodušší vnořování jednotlivých selektorů či prosté cykly pro tvoření komplexních názvů, pro pomocné třídy.
+Přesto hodlám metajazyk Sass v práci používat, protože dovoluje například jednodušší vnořování jednotlivých selektorů či prosté cykly pro tvoření komplexních názvů pro pomocné třídy.
 Sass je nutné kompilovat, naštěstí to řeší rovnou spojení Vite společně s Vue za pomocí knihovny \texttt{sass}.
 
 Styly budu psát přímo ke komponentám a pomocné třídy do globálních souborů, které budou vždy načteny.
 
 Responzivitu komponent budu řešit jednotlivě a všechny pomocné třídy budou mít podpůrné třídy nebo automaticky nastavenou responzivitu.
-Responzivita bude fungovat na tzv. breakpoint (či zlomové body) mechaniku.
+Responzivita bude fungovat na tzv. breakpoint mechanice (či zlomové body).
 To zajišťuje, že stránka je responzivní vždy do určité šířky zařízení.
 Na webové stránce těchto zlomových bodů bude několik, což dovoluje přizpůsobení na většinu zařízení.
 Na obrovských (širokoúhlých) monitorech se stránka umístí doprostřed obrazovky a více se neadaptuje.
