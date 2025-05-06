@@ -805,7 +805,7 @@ onMounted(() => {
             const diff = Date.now() - time;
 
             const hours = Math.floor(diff / 3600000);
-            const minutes = Math.floor(diff / 60000);
+            const minutes = Math.floor((diff % 3600000) / 60000);
             const seconds = Math.floor((diff % 60000) / 1000);
 
             if (hours > 0) {
