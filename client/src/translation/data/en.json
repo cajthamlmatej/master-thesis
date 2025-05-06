@@ -803,6 +803,9 @@
         },
         "latex": {
             "name": "LaTeX"
+        },
+        "code": {
+            "name": "Code"
         }
     },
     "property": {

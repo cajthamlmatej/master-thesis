@@ -806,6 +806,9 @@
         },
         "latex": {
             "name": "LaTeX"
+        },
+        "code": {
+            "name": "Kód"
         }
     },
     "property": {

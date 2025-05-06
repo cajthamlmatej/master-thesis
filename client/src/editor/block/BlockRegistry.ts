@@ -32,6 +32,9 @@ import {ChatBlockDeserializer} from "@/editor/block/base/chat/ChatBlockDeseriali
 import {LatexEditorBlock} from "@/editor/block/base/latex/LatexEditorBlock";
 import {LatexPlayerBlock} from "@/editor/block/base/latex/LatexPlayerBlock";
 import {LatexBlockDeserializer} from "@/editor/block/base/latex/LatexBlockDeserializer";
+import {CodeEditorBlock} from "@/editor/block/base/code/CodeEditorBlock";
+import {CodePlayerBlock} from "@/editor/block/base/code/CodePlayerBlock";
+import {CodeBlockDeserializer} from "@/editor/block/base/code/CodeBlockDeserializer";
 // $ADD_BLOCK_REGISTRY_IMPORT
 
 // note(Matej): dont remove $ADD_BLOCK_REGISTRY_* comments, it is used by the generator
@@ -66,6 +69,7 @@ export class BlockRegistry {
         this.register("plugin", PluginEditorBlock, PluginPlayerBlock, PluginBlockDeserializer);
         this.register("chat", ChatEditorBlock, ChatPlayerBlock, ChatBlockDeserializer);
         this.register("latex", LatexEditorBlock, LatexPlayerBlock, LatexBlockDeserializer);
+        this.register("code", CodeEditorBlock, CodePlayerBlock, CodeBlockDeserializer);
         // $ADD_BLOCK_REGISTRY_ENTRY
     }
 
