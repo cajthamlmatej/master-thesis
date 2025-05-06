@@ -27,6 +27,13 @@ export class DeleteAction extends ContextAction {
                 altKey: 'NEVER',
                 mode: 'COULD_BE_VISIBLE'
             },
+            {
+                key: 'Backspace',
+                ctrlKey: 'NEVER',
+                shiftKey: 'NEVER',
+                altKey: 'NEVER',
+                mode: 'COULD_BE_VISIBLE'
+            }
         ]
     };
 }
