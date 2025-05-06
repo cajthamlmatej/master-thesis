@@ -931,6 +931,9 @@
             "label": "Velikost",
             "width": "Š",
             "height": "V"
+        },
+        "information": {
+            "label": "Informace o bloku"
         }
     }
 }

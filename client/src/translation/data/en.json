@@ -928,6 +928,9 @@
             "label": "Size",
             "width": "W",
             "height": "H"
+        },
+        "information": {
+            "label": "Information about the block"
         }
     }
 }

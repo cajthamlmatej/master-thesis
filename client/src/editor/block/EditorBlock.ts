@@ -26,6 +26,7 @@ import {ChangeBlockOpacityApiFeature} from "@/editor/plugin/editor/api/block/Cha
 import {SetBlockZIndexApiFeature} from "@/editor/plugin/editor/api/block/SetBlockZIndex";
 import {LockBlockApiFeature} from "@/editor/plugin/editor/api/block/LockBlock";
 import {UnlockBlockApiFeature} from "@/editor/plugin/editor/api/block/UnlockBlock";
+import {BlockInformationProperty} from "@/editor/property/base/BlockInformationProperty";
 
 @RegisterEditorBlockApiFeature(MoveBlockApiFeature)
 @RegisterEditorBlockApiFeature(RotateBlockApiFeature)
@@ -188,6 +189,7 @@ export abstract class EditorBlock {
      */
     public getProperties(): Property<this>[] {
         return [
+            new BlockInformationProperty(),
             new PositionProperty(),
             new SizeProperty(),
             new RotationProperty(),
