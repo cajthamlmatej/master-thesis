@@ -800,6 +800,9 @@
             "presenter": "Presenter",
             "message-example": "Messages will appear here.",
             "loading": "Loading..."
+        },
+        "latex": {
+            "name": "LaTeX"
         }
     },
     "property": {

@@ -44,6 +44,7 @@ import {IframeEditorBlock} from "@/editor/block/base/iframe/IframeEditorBlock";
 import {ChatEditorBlock} from "@/editor/block/base/chat/ChatEditorBlock";
 import {usePluginStore} from "@/stores/plugin";
 import {PluginCustomBlock} from "@/editor/plugin/PluginCustomBlock";
+import {LatexEditorBlock} from "@/editor/block/base/latex/LatexEditorBlock";
 
 const blocksMenu = ref(true);
 
@@ -191,6 +192,20 @@ const blocks: CreateBlockData[] = [
                     rotation: 0,
                     zIndex: 0,
                 });
+        }
+    },
+    {
+        icon: "equal",
+        type: "latex",
+        create: (x, y, width, height, smaller) => {
+            return new LatexEditorBlock(
+                {
+                    id: generateUUID(),
+                    position: {x: -100, y: -100},
+                    size: {width: smaller / 4, height: smaller / 4},
+                    rotation: 0,
+                    zIndex: 0,
+                }, "e = mc^2");
         }
     }
 ]

@@ -803,6 +803,9 @@
             "presenter": "Prezentující",
             "message-example": "Zde uvidíte zprávy.",
             "loading": "Načítání..."
+        },
+        "latex": {
+            "name": "LaTeX"
         }
     },
     "property": {
