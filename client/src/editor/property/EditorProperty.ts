@@ -2,36 +2,60 @@ import Editor from "@/editor/Editor";
 import type {EditorBlock} from "@/editor/block/EditorBlock";
 import {Property} from "@/editor/property/Property";
 
+/**
+ * Manages the properties of editor blocks and handles their interactions.
+ * This class is responsible for managing the UI and logic for displaying and interacting with properties
+ * of selected editor blocks. It also handles cursor locking and updates the property display dynamically
+ * based on the selected blocks.
+ */
 export class EditorProperty {
     private element!: HTMLElement;
     private editor: Editor;
-
     private activeProperties: Property[] = [];
-
     private cursorVisualElement!: HTMLElement;
     private propertiesElement!: HTMLElement;
 
+    /**
+     * Creates an instance of EditorProperty.
+     * @param {Editor} editor - The editor instance.
+     * @param {HTMLElement} element - The HTML element representing the editor property container.
+     */
     constructor(editor: Editor, element: HTMLElement) {
         this.editor = editor;
-
         this.element = element;
         this.setup();
 
         this.editor.getSelector().events.SELECTED_BLOCK_CHANGED.on((blocks: EditorBlock[]) => this.update(blocks));
-
         this.update(this.editor.getSelector().getSelectedBlocks());
     }
 
+    /**
+     * Gets the editor instance associated with this property manager.
+     * @returns {Editor} The editor instance.
+     */
     public getEditor() {
         return this.editor;
     }
 
+    /**
+     * Cleans up resources and removes elements associated with the property manager.
+     * This method ensures that all DOM elements created by the property manager are removed
+     * and any event listeners are cleaned up to prevent memory leaks.
+     */
     public destroy() {
         this.cursorVisualElement.remove();
         this.propertiesElement.remove();
         this.element.innerHTML = "";
     }
 
+    /**
+     * Locks the cursor on a specific element and tracks mouse movements for resizing or other interactions.
+     * This method enables pointer lock and visually tracks the cursor's position, allowing for precise
+     * interactions such as resizing or dragging elements.
+     * 
+     * @param {HTMLElement} element - The element to lock the cursor on.
+     * @param {(changeX: number, changeY: number, distance: number) => boolean} change - A callback function to handle changes based on mouse movement.
+     */
     public lockOnElement(element: HTMLElement, change: (changeX: number, changeY: number, distance: number) => boolean) {
         element.addEventListener('mousedown', (e) => {
             // Lock cursor
@@ -44,8 +68,6 @@ export class EditorProperty {
 
             const start = {x: e.clientX, y: e.clientY};
             const current = {x: e.clientX, y: e.clientY};
-
-            // TODO: save the position and loop it when the mouse is out of the screen
 
             const onMouseMove = (e: MouseEvent) => {
                 // Update `current` values
@@ -103,6 +125,11 @@ export class EditorProperty {
         });
     }
 
+    /**
+     * Sets up the initial DOM elements for the property manager.
+     * This method creates and appends the necessary DOM elements, such as the cursor visual
+     * and the properties container, to the appropriate locations in the document.
+     */
     private setup() {
         const cursorVisual = document.createElement('div');
         cursorVisual.classList.add('cursor-visual');
@@ -119,6 +146,13 @@ export class EditorProperty {
         document.body.appendChild(cursorVisual);
     }
 
+    /**
+     * Updates the properties displayed based on the selected blocks.
+     * This method dynamically generates and displays the properties of the currently selected blocks
+     * in the editor. It ensures that duplicate properties are removed and properties are sorted by priority.
+     * 
+     * @param {EditorBlock[]} blocks - The currently selected blocks.
+     */
     private update(blocks: EditorBlock[]) {
         this.propertiesElement.innerHTML = "";
         if (blocks.length === 0) {

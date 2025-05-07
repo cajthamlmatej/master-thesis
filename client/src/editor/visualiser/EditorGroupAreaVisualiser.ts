@@ -12,12 +12,19 @@ interface GroupArea {
     color: string;
 }
 
+/**
+ * Visualizes group areas in the editor to highlight grouped blocks.
+ */
 export default class EditorGroupAreaVisualiser {
     private editor: Editor;
 
     private element!: HTMLElement;
     private areas = new Map<string, GroupArea>();
 
+    /**
+     * Initializes the group area visualizer for the editor.
+     * @param editor The editor instance.
+     */
     constructor(editor: Editor) {
         this.editor = editor;
 
@@ -32,6 +39,9 @@ export default class EditorGroupAreaVisualiser {
         this.element = groupAreaElement;
     }
 
+    /**
+     * Recalculates the group areas based on the current block groups.
+     */
     public recalculate() {
         this.areas.clear();
 
@@ -52,17 +62,24 @@ export default class EditorGroupAreaVisualiser {
                 y: area.y,
                 width: area.width,
                 height: area.height,
-                color: interpolateColor(0.2, colorFromSeed(block.group), window.getComputedStyle(document.body).getPropertyValue("--color-primary")) // TODO: lepsi barvicky :)
+                color: interpolateColor(0.2, colorFromSeed(block.group), window.getComputedStyle(document.body).getPropertyValue("--color-primary"))
             });
         }
 
         this.visualise();
     }
 
+    /**
+     * Handles changes in block groups and updates the visualization.
+     * @param blocks The blocks whose groups have changed.
+     */
     private handleGroupsChanged(blocks: EditorBlock[]) {
         this.recalculate();
     }
 
+    /**
+     * Updates the visualization of group areas.
+     */
     private visualise() {
         if (this.areas.size === 0) {
             this.element.innerHTML = "";

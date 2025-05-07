@@ -14,6 +14,11 @@ import {EmailService} from "../email/email.service";
 import {EmailTemplates} from "../email/email.template";
 import {ConfigService} from "@nestjs/config";
 
+/**
+ * Service responsible for handling data export operations, including creating, processing,
+ * and removing expired data exports. It also manages the generation of ZIP files containing
+ * user-related data and sending email notifications upon completion.
+ */
 @Injectable()
 export class DataExportService {
     constructor(@InjectModel(DataExport.name) private dataExportModel: Model<DataExport>,
@@ -24,14 +29,20 @@ export class DataExportService {
                 private materialService: MaterialsService,
                 private emailService: EmailService,
                 private configService: ConfigService) {
+        // Periodically process pending data exports every 5 minutes.
         setInterval(() => {
             this.process();
         }, 1000 * 60 * 5);
+
+        // Periodically remove expired data exports every hour.
         setInterval(() => {
             this.removeExpired();
         }, 1000 * 60 * 60);
     }
 
+    /**
+     * Removes expired data exports from the database and deletes their associated files.
+     */
     async removeExpired() {
         const dataExports = await this.dataExportModel.find({
             expiresAt: {
@@ -50,6 +61,10 @@ export class DataExportService {
         }
     }
 
+    /**
+     * Processes the next pending data export by generating a ZIP file containing user data
+     * and marking the export as completed.
+     */
     async process() {
         const dataExport = await this.dataExportModel.findOne({
             completedAt: {$exists: false},
@@ -129,6 +144,11 @@ export class DataExportService {
         });
     }
 
+    /**
+     * Constructs the file path for the data export ZIP file for a given data export.
+     * @param dataExport The data export document.
+     * @returns The file path of the ZIP file.
+     */
     getPath(dataExport: HydratedDocument<DataExport>) {
         const folder = `./temp/data-export/${dataExport.user}`;
         const path = `${folder}/data-export.zip`;
@@ -136,6 +156,11 @@ export class DataExportService {
         return path;
     }
 
+    /**
+     * Retrieves the last valid data export for a user, either completed or pending.
+     * @param user The user document.
+     * @returns The last valid data export document, or null if none exists.
+     */
     async get(user: HydratedDocument<User>) {
         const lastValid = await this.dataExportModel.findOne({
             $or: [
@@ -156,6 +181,11 @@ export class DataExportService {
         return lastValid;
     }
 
+    /**
+     * Creates a new data export request for a user.
+     * @param user The user document.
+     * @returns The newly created data export document.
+     */
     async create(user: HydratedDocument<User>) {
         const dataExport = new this.dataExportModel({
             user: user,

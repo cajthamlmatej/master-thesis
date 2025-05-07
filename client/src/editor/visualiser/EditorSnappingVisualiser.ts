@@ -1,6 +1,9 @@
 import type Editor from "@/editor/Editor";
 import {getRotatedRectanglePoints} from "@/utils/spaceManipulation";
 
+/**
+ * Visualizes snapping lines in the editor to assist with block alignment.
+ */
 export default class EditorSnappingVisualiser {
     private editor: Editor;
 
@@ -11,8 +14,12 @@ export default class EditorSnappingVisualiser {
     } = {
         horizontal: new Set(),
         vertical: new Set()
-    }
+    };
 
+    /**
+     * Initializes the snapping visualizer for the editor.
+     * @param editor The editor instance.
+     */
     constructor(editor: Editor) {
         this.editor = editor;
 
@@ -37,10 +44,17 @@ export default class EditorSnappingVisualiser {
         this.recalculate();
     }
 
+    /**
+     * Returns the current snapping lines.
+     * @returns An object containing horizontal and vertical snapping lines.
+     */
     public getLines() {
         return this.lines;
     }
 
+    /**
+     * Recalculates the snapping lines based on the current blocks in the editor.
+     */
     public recalculate() {
         const selectedBlocks = this.editor.getSelector().getSelectedBlocks();
         const blockToConsider = this.editor.getBlocks().filter(b => !selectedBlocks.includes(b));
@@ -65,6 +79,10 @@ export default class EditorSnappingVisualiser {
         this.redraw();
     }
 
+    /**
+     * Toggles the visibility of the snapping lines.
+     * @param visible Whether the snapping lines should be visible.
+     */
     public processVisibility(visible: boolean) {
         if (visible) {
             this.element.classList.remove("editor-snapping--hidden");
@@ -73,6 +91,9 @@ export default class EditorSnappingVisualiser {
         }
     }
 
+    /**
+     * Redraws the snapping lines in the editor.
+     */
     public redraw() {
         const lines = this.element.querySelectorAll(".line");
 

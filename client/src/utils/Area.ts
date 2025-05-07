@@ -1,5 +1,8 @@
 import type Editor from "@/editor/Editor";
 
+/**
+ * Represents a rectangular area with x, y coordinates, width, and height.
+ */
 export interface Area {
     x: number;
     y: number;
@@ -7,6 +10,13 @@ export interface Area {
     height: number;
 }
 
+/**
+ * Calculates the bounding box of a set of elements within an editor.
+ * 
+ * @param elements The elements to calculate the bounding box for.
+ * @param editor The editor instance to use for coordinate transformations.
+ * @returns The bounding box as an `Area` object.
+ */
 export const boundingBoxOfElements = (elements: Element[], editor: Editor): Area => {
     let x = 0;
     let y = 0;

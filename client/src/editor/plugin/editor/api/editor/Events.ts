@@ -3,7 +3,17 @@ import {QuickJSHandle} from "quickjs-emscripten";
 import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
 import {EditorPluginEvent} from "@/editor/plugin/editor/EditorPluginEvent";
 
+/**
+ * Provides the "on" API feature for the editor plugin.
+ * This feature allows registering event listeners for editor events.
+ */
 export class EventsApiFeature extends EditorPluginApiFeature {
+    /**
+     * Registers the "on" function in the plugin API.
+     * 
+     * @param obj - The QuickJS object to which the function is added.
+     * @param data - The API data containing context, plugin, and editor references.
+     */
     register(obj: QuickJSHandle, data: EditorPluginApiData): void {
         const context = data.context;
         const editorPlugin = data.editorPlugin;

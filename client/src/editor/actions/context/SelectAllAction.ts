@@ -1,6 +1,10 @@
 import type {ActionKeybind, ActionParameters} from "@/editor/actions/EditorAction";
 import {ContextAction} from "@/editor/actions/ContextAction";
 
+/**
+ * Represents the action of selecting all blocks in the editor.
+ * This action is always available via its keybind but is not visible in the context menu.
+ */
 export class SelectAllAction extends ContextAction {
     constructor() {
         super("select-all");

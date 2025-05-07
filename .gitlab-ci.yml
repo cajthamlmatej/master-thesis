@@ -9,13 +9,9 @@ deploy:
     - mkdir -p ~/.ssh
     - echo "$SERVER_KEY" | base64 -d > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - head -n 5 ~/.ssh/id_rsa 
     - ssh-keyscan -H "$SERVER_IP" >> ~/.ssh/known_hosts
-    - ls -la ~/.ssh
   script:
-    - echo "Testing SSH connection..."
-    - ssh -i ~/.ssh/id_rsa -vvv $SERVER_USER@$SERVER_IP "echo 'SSH OK!'"
-    - echo "Starting rsync..."
+    - echo "Syncing files…"
     - rsync -avz -e "ssh -v" ./ $SERVER_USER@$SERVER_IP:/home/materalist/project
     - ssh -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_IP "
         cd /home/materalist/project &&

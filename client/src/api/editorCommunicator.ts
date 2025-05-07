@@ -322,4 +322,7 @@ export class EditorCommunicator {
 
         return !attendee.some((a) => a.selectedBlocks.includes(blockId));
     }
+    getMaterial(): Material {
+        return this.material;
+    }
 }

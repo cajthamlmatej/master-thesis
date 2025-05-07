@@ -4,6 +4,10 @@ import {UsersService} from "../users/users.service";
 import {ConfigService} from "@nestjs/config";
 import {WsException} from "@nestjs/websockets";
 
+/**
+ * Guard that ensures the user is authenticated by verifying the provided JWT token.
+ * Throws an UnauthorizedException if the token is invalid or missing.
+ */
 @Injectable()
 export class RequiresAuthenticationGuard implements CanActivate {
     constructor(
@@ -47,6 +51,11 @@ export class RequiresAuthenticationGuard implements CanActivate {
     }
 }
 
+/**
+ * Guard that optionally authenticates the user.
+ * If no token is provided, the request proceeds without authentication.
+ * If a token is provided, it is validated, and the user is attached to the request.
+ */
 @Injectable()
 export class OptionalAuthenticationGuard implements CanActivate {
     constructor(readonly usersService: UsersService,
@@ -89,6 +98,11 @@ export class OptionalAuthenticationGuard implements CanActivate {
 
 }
 
+/**
+ * WebSocket guard that optionally authenticates the user.
+ * If no token is provided in the WebSocket handshake, the connection proceeds without authentication.
+ * If a token is provided, it is validated, and the user is attached to the WebSocket client data.
+ */
 @Injectable()
 export class WSOptionalAuthenticationGuard implements CanActivate {
 

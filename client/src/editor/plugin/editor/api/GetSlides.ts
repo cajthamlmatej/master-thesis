@@ -3,7 +3,16 @@ import {usePlayerStore} from "@/stores/player";
 import {PluginApiFeature} from "@/editor/plugin/editor/api/Plugin";
 import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
 
+/**
+ * Represents a feature for retrieving slides from the player store.
+ */
 export class GetSlidesApiFeature extends PluginApiFeature {
+    /**
+     * Registers a `getSlides` function into the JavaScript context for retrieving slides.
+     * 
+     * @param obj - The QuickJS object to which the `getSlides` function will be added.
+     * @param data - The data containing the plugin and context information.
+     */
     register(obj: QuickJSHandle, data: EditorPluginApiData): void {
         const context = data.context;
 

@@ -41,6 +41,8 @@ describe('Import', () => {
 
         cy.get('[data-cy=import-material-process]').click();
 
+        cy.wait(500);
+
         cy.get('[data-cy=import-material-error]').should('not.exist');
 
         cy.get('[data-cy=import-material-modal]').should('not.exist');

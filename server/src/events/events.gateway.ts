@@ -32,17 +32,30 @@ export class EventsGateway {
     constructor(
         public readonly materialsService: MaterialsService,
         @Inject(forwardRef(() => MaterialsExportService)) public readonly materialsExportService: MaterialsExportService,
-    ) {
-    }
+    ) {}
 
+    /**
+     * Retrieves an editor room by its material ID.
+     * @param id - The ID of the material.
+     * @returns The corresponding EditorMaterialRoom or undefined if not found.
+     */
     public getEditorRoom(id: any) {
         return this.editorRooms.find(r => r.getMaterialId() === id);
     }
 
+    /**
+     * Removes a player material room from the list of active player rooms.
+     * @param param - The PlayerMaterialRoom to remove.
+     */
     public removePlayerMaterialRoom(param: PlayerMaterialRoom) {
         this.playerRooms = this.playerRooms.filter(r => r !== param);
     }
 
+    /**
+     * Handles a client joining an editor material room.
+     * @param materialId - The ID of the material to join.
+     * @param client - The WebSocket client.
+     */
     @SubscribeMessage('joinEditorMaterialRoom')
     public async handleJoinEditor(@MessageBody() materialId: string, @ConnectedSocket() client: Socket) {
         let room = this.editorRooms.find(r => r.getMaterialId() === materialId);
@@ -62,6 +75,7 @@ export class EventsGateway {
         }
 
         if (material.user.toString() !== client.data.user?._id.toString() && !material.attendees.map(a => a.toString()).includes(client.data.user?._id.toString())) {
+            client.emit("kicked");
             throw new WsException("You cannot start edit this material");
         }
 
@@ -71,6 +85,13 @@ export class EventsGateway {
             this.editorRooms.push(newRoom);
             room = newRoom;
         } else {
+            const result = room.canJoin(client);
+
+            if (result !== true) {
+                client.emit("kicked", result);
+                return;
+            }
+
             room.addListener(client);
         }
 
@@ -78,6 +99,11 @@ export class EventsGateway {
         console.log(`Client ${client.id} joined editor room ${materialId}`);
     }
 
+    /**
+     * Handles a client changing the slide in a room.
+     * @param slideId - The ID of the slide to change to.
+     * @param client - The WebSocket client.
+     */
     @SubscribeMessage('changeSlide')
     public async handleChangeSlide(@MessageBody() {slideId}: { slideId: string }, @ConnectedSocket() client: Socket) {
         const editorRoom = client.data.editorRoom as EditorMaterialRoom | undefined;
@@ -97,6 +123,11 @@ export class EventsGateway {
         editorRoom.changeAttendeeSlide(client, slideId);
     }
 
+    /**
+     * Handles a client changing the selected blocks in an editor room.
+     * @param selectedBlocks - The IDs of the selected blocks.
+     * @param client - The WebSocket client.
+     */
     @SubscribeMessage('changeSelectedBlocks')
     public async handleChangeSelectedBlocks(@MessageBody() {selectedBlocks}: {
         selectedBlocks: string[]
@@ -110,6 +141,11 @@ export class EventsGateway {
         editorRoom.changeAttendeeSelectedBlocks(client, selectedBlocks);
     }
 
+    /**
+     * Handles a client synchronizing a block in an editor room.
+     * @param block - The block data to synchronize.
+     * @param client - The WebSocket client.
+     */
     @SubscribeMessage('synchronizeBlock')
     public async handleSynchronizeBlock(@MessageBody() {block}: { block: any }, @ConnectedSocket() client: Socket) {
         const editorRoom = client.data.editorRoom as EditorMaterialRoom | undefined;
@@ -121,6 +157,11 @@ export class EventsGateway {
         editorRoom.synchronizeBlock(client, block);
     }
 
+    /**
+     * Handles a client removing a block in an editor room.
+     * @param blockId - The ID of the block to remove.
+     * @param client - The WebSocket client.
+     */
     @SubscribeMessage('removeBlock')
     public async handleRemoveBlock(@MessageBody() {blockId}: { blockId: string }, @ConnectedSocket() client: Socket) {
         const editorRoom = client.data.editorRoom as EditorMaterialRoom | undefined;
@@ -132,6 +173,11 @@ export class EventsGateway {
         editorRoom.removeBlock(client, blockId);
     }
 
+    /**
+     * Handles a client synchronizing material settings in an editor room.
+     * @param data - The material synchronization data.
+     * @param client - The WebSocket client.
+     */
     @SubscribeMessage('synchronizeMaterial')
     public async handleSynchronizeMaterial(@MessageBody() data: {
         plugins: { plugin: string; release: string }[];
@@ -150,6 +196,11 @@ export class EventsGateway {
         editorRoom.synchronizeMaterial(data);
     }
 
+    /**
+     * Handles a client synchronizing a slide in an editor room.
+     * @param data - The slide synchronization data.
+     * @param client - The WebSocket client.
+     */
     @SubscribeMessage('synchronizeSlide')
     public async handleSynchronizeSlide(@MessageBody() data: {
         slideId: string;
@@ -166,6 +217,11 @@ export class EventsGateway {
         editorRoom.synchronizeSlide(data);
     }
 
+    /**
+     * Handles a client removing a slide in an editor room.
+     * @param slideId - The ID of the slide to remove.
+     * @param client - The WebSocket client.
+     */
     @SubscribeMessage('removeSlide')
     public async handleRemoveSlide(@MessageBody() {slideId}: { slideId: string }, @ConnectedSocket() client: Socket) {
         const editorRoom = client.data.editorRoom as EditorMaterialRoom | undefined;
@@ -177,6 +233,10 @@ export class EventsGateway {
         editorRoom.removeSlide({slideId});
     }
 
+    /**
+     * Handles a client leaving an editor material room.
+     * @param client - The WebSocket client.
+     */
     @SubscribeMessage('leaveEditorMaterialRoom')
     public async handleLeaveEditor(@ConnectedSocket() client: Socket) {
         const room = client.data.editorRoom as EditorMaterialRoom | undefined;
@@ -187,7 +247,13 @@ export class EventsGateway {
         }
     }
 
-
+    /**
+     * Handles a client joining a player material room.
+     * @param materialId - The ID of the material to join.
+     * @param code - The room code.
+     * @param slideId - The ID of the slide to start on.
+     * @param client - The WebSocket client.
+     */
     @SubscribeMessage('joinPlayerMaterialRoom')
     public async handleJoinPlayer(@MessageBody() {materialId, code, slideId}: {
         materialId: string,
@@ -227,6 +293,11 @@ export class EventsGateway {
         console.log(`Client ${client.id} joined player room ${materialId}`);
     }
 
+    /**
+     * Handles a presenter synchronizing drawing content in a player room.
+     * @param content - The drawing content.
+     * @param client - The WebSocket client.
+     */
     @SubscribeMessage('synchronizeDraw')
     public async handleSynchronizeDraw(@MessageBody() {content}: {
         content: string
@@ -244,6 +315,10 @@ export class EventsGateway {
         playerRoom.synchronizeDraw(content);
     }
 
+    /**
+     * Handles a client leaving a player material room.
+     * @param client - The WebSocket client.
+     */
     @SubscribeMessage('leavePlayerMaterialRoom')
     public async handleLeavePlayer(@ConnectedSocket() client: Socket) {
         const room = client.data.playerRoom as PlayerMaterialRoom | undefined;
@@ -255,7 +330,10 @@ export class EventsGateway {
     }
 
     /**
-     * Client (not a presenter) send a message to the presenter.
+     * Handles a client sending a message to the presenter about a specific block.
+     * @param message - The message content.
+     * @param blockId - The ID of the block.
+     * @param client - The WebSocket client.
      */
     @SubscribeMessage('sendBlockMessage')
     public async handleSendBlockMessage(@MessageBody() {message, blockId}: {
@@ -276,7 +354,10 @@ export class EventsGateway {
     }
 
     /**
-     * Presenter send a message to the clients (attendees).
+     * Handles a presenter sending a message to attendees about a specific block.
+     * @param message - The message content.
+     * @param blockId - The ID of the block.
+     * @param client - The WebSocket client.
      */
     @SubscribeMessage('sendBlockMessageToAttendees')
     public async handleSendBlockMessageToAttendees(@MessageBody() {message, blockId}: {

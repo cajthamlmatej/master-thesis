@@ -30,7 +30,7 @@ body, body.theme--light {
 
 
     // BUTTONS
-    --color-button-primary-background: #cabbe8;
+    --color-button-primary-background: #b5a3d8;
     --color-button-primary-background-hover: var(--color-primary-dark);
     --color-button-primary-background-active: var(--color-primary-light);
     --color-button-primary-background-disabled: #2d2242;
@@ -96,10 +96,10 @@ body, body.theme--light {
     --color-alert-info-foreground: #1e3a8a;
     --color-alert-success-background: #ddf3dc;
     --color-alert-success-foreground: #047857;
-    --color-alert-warning-background: rgba(243, 238, 226, 0.46);
+    --color-alert-warning-background: rgba(232, 214, 172, 0.46);
     --color-alert-warning-foreground: #453411;
-    --color-alert-error-background: rgba(238, 197, 197, 0.35);
-    --color-alert-error-foreground: #742a2a;
+    --color-alert-error-background: rgba(235, 161, 161, 0.35);
+    --color-alert-error-foreground: #511313;
 
     // DIVIDER
     --color-divider: #bfb9d3;
@@ -118,13 +118,13 @@ body, body.theme--light {
 
     // TOOLTIP
     --color-tooltip-background: var(--color-primary);
-    --color-tooltip-text: #181818;
+    --color-tooltip-text: #ffffff;
 
     // CHECKBOX
     --color-checkbox-background: #fff;
     --color-checkbox-background-checked: var(--color-primary);
-    --color-checkbox-border: #e7e4e4;
-    --checkbox-border-width: 1px;
+    --color-checkbox-border: #a496c0c2;
+    --checkbox-border-width: 3px;
 
 
     // SELECT

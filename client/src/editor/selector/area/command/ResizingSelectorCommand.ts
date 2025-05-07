@@ -13,7 +13,15 @@ interface BlockInitialData {
     rotatedY: number;
 }
 
+/**
+ * Command for resizing the selection area and its associated blocks.
+ */
 export class ResizingSelectorCommand extends SelectorCommand {
+
+    /**
+     * Returns the HTML elements used for resizing handles.
+     * @returns {HTMLElement[]} The resizing handle elements.
+     */
     public getElements(): HTMLElement[] {
         return [
             createElementFromHTML(`<div class="resize resize--top-left"></div>`),
@@ -27,6 +35,12 @@ export class ResizingSelectorCommand extends SelectorCommand {
         ];
     }
 
+    /**
+     * Executes the resizing command when triggered by user interaction.
+     * @param event The mouse or touch event that triggered the command.
+     * @param element The HTML element associated with the resizing handle.
+     * @param selectorArea The selector area instance.
+     */
     public execute(
         event: MouseEvent | TouchEvent,
         element: HTMLElement,
@@ -245,7 +259,12 @@ export class ResizingSelectorCommand extends SelectorCommand {
         }
     }
 
-
+    /**
+     * Retrieves the editor coordinates from a mouse or touch event.
+     * @param selectorArea The selector area instance.
+     * @param event The mouse or touch event.
+     * @returns The x and y coordinates in editor space.
+     */
     private getPositionFromEvent(selectorArea: EditorSelectorArea, event: MouseEvent | TouchEvent) {
         let x = 0, y = 0;
 
@@ -262,7 +281,18 @@ export class ResizingSelectorCommand extends SelectorCommand {
         return selectorArea.getEditor().screenToEditorCoordinates(x, y);
     }
 
-
+    /**
+     * Handles collective resizing of multiple blocks.
+     * @param type The type of resizing handle.
+     * @param anchorX The horizontal anchor point.
+     * @param anchorY The vertical anchor point.
+     * @param isProportional Whether resizing should maintain aspect ratio.
+     * @param isProportionalX Whether resizing is proportional along the x-axis.
+     * @param isProportionalY Whether resizing is proportional along the y-axis.
+     * @param initialMouseX The initial x-coordinate of the mouse.
+     * @param initialMouseY The initial y-coordinate of the mouse.
+     * @param selectorArea The selector area instance.
+     */
     private handleCollectiveTransformation(
         type: string,
         anchorX: "left" | "center" | "right",

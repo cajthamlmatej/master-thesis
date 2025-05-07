@@ -1,52 +1,53 @@
 \chapter{Diskuze}\label{text:diskuze}
 
-Aplikace byla implementována a otestována podle návrhu, který vznikl v analytické fázi práce.
+Aplikace byla implementována a otestována podle návrhu, který vznikl v~analytické fázi práce.
 Hlavní funkce byly realizovány včetně podpory interaktivity a možnosti komunitních rozšíření.
-Platforma je v současném stavu použitelná pro běžné scénáře výuky, což potvrdilo i testování.
+Platforma je v~současném stavu použitelná pro běžné scénáře výuky, což potvrdilo i~testování.
 Z výsledků testování vyplynulo, že aplikace splňuje požadavky na použitelnost a odpovídá potřebám cílové skupiny.
 
 Veškeré navržené části systému aktuálně považuji za smysluplné a přínosné. 
 Nepředpokládám, že by bylo potřeba některou ze stávajících funkcí výrazně přepracovávat. 
-Architektura i návrhové principy se v praxi osvědčily.
+Architektura i~návrhové principy se v~praxi osvědčily.
 
-Přestože vývoj pokročil výrazně dál, než bylo původně plánováno, některé oblasti je nutné dále zmínit i mimo rozsah diplomové práce, aby mohly být v budoucnu zpracovány. 
+Přestože vývoj pokročil výrazně dál, než bylo původně plánováno, některé oblasti je nutné dále zmínit i~mimo rozsah diplomové práce, aby mohly být v~budoucnu zpracovány. 
 V této kapitole proto shrnuji vybrané směry dalšího vývoje, které by mohly přinést výrazné zlepšení platformy:
 
 \begin{description}
   \item[Bezpečnost rozšíření] Systém rozšíření je již implementován a aktivně používán. 
-  V tuto chvíli předpokládám, že základní architektura poskytuje dostatečnou izolaci, ale nebylo provedeno hlubší testování s důrazem na odolnost proti škodlivému chování. 
+  V~tuto chvíli předpokládám, že základní architektura poskytuje dostatečnou izolaci, ale nebylo provedeno hlubší testování s~důrazem na odolnost proti škodlivému chování. 
   Do budoucna by bylo vhodné zaměřit se na podrobnější analýzu bezpečnostních rizik, připravit možné reakce na útoky a zvážit například zavedení lepšího mechanismu pro kontrolované spouštění nedůvěryhodného kódu včetně jednoduché změny spouštěče.
 
   \item[Moderování a správa obsahu] Aplikace zatím neobsahuje administraci ani nástroje pro moderování. 
-  Veřejné materiály nelze mazat, rozšíření nelze odstraňovat z důvodu porušení pravidel a neexistuje možnost blokovat uživatele. 
-  K tomu by bylo potřeba navrhnout a implementovat systém rolí, například na bázi RBAC, který by umožňoval řídit přístup k těmto funkcím. To je klíčové pro zajištění kvality a bezpečnosti v případě, že platformu začne využívat širší komunita.
+  Veřejné materiály nelze mazat, rozšíření nelze odstraňovat z~důvodu porušení pravidel a neexistuje možnost blokovat uživatele. 
+  K~tomu by bylo potřeba navrhnout a implementovat systém rolí, například na bázi RBAC, který by umožňoval řídit přístup k~těmto funkcím. To je klíčové pro zajištění kvality a bezpečnosti v~případě, že platformu začne využívat širší komunita.
 
   \item[Kolaborace a synchronizace] Základní forma kolaborace je dostupná, ale má svá omezení.
-  Vylepšením by byla přesnější synchronizace bloků mezi uživateli (místo současného zamykání), možnost chatování v reálném čase a historie změn uložená na serveru. 
-  To by umožnilo vracet se zpět k předchozím verzím materiálů a zlepšilo by to přehled při skupinové práci.
+  Vylepšením by byla přesnější synchronizace bloků mezi uživateli (místo současného zamykání), možnost chatování v~reálném čase a historie změn uložená na serveru. 
+  To by umožnilo vracet se zpět k~předchozím verzím materiálů a zlepšilo by to přehled při skupinové práci.
 
   \item[Rozšíření bloků] Dostupné bloky pokrývají základní scénáře, ale chybí pokročilé možnosti úprav. 
-  Například textový blok neumožňuje nastavovat výšku řádku nebo pohodlně manipulovat s rozložením. 
-  Do budoucna by bylo vhodné přidat další typy bloků a zjednodušit práci s existujícími.
-  Užitečné by byly i bloky, které umožňují interaktivní odkrývání obsahu nebo dynamické přesouvání prvků na plátně.
+  Například textový blok neumožňuje nastavovat výšku řádku nebo pohodlně manipulovat s~rozložením. 
+  Do budoucna by bylo vhodné přidat další typy bloků a zjednodušit práci s~existujícími.
+  Užitečné by byly i~bloky, které umožňují interaktivní odkrývání obsahu nebo dynamické přesouvání prvků na plátně.
 
   \item[Offline režim] Aplikace je zatím závislá na internetovém připojení. 
-  Bylo by přínosné umožnit alespoň částečné použití v offline režimu, například prostřednictvím PWA nebo nativní aplikace. 
+  Bylo by přínosné umožnit alespoň částečné použití v~offline režimu, například prostřednictvím PWA nebo nativní aplikace. 
   Materiály by se mohly ukládat lokálně a synchronizovat později, což by rozšířilo možnosti použití mimo standardní prostředí.
 
-  \item[Import a export] V současné době je export omezen na formáty JSON a PDF. 
-  Pro větší kompatibilitu by bylo vhodné přidat podporu formátu PPTX, alespoň v základní podobě. 
+  \item[Import a export] V~současné době je export omezen pouze na formáty JSON a PDF. 
+  Pro větší kompatibilitu by bylo vhodné přidat podporu formátu PPTX, alespoň v~základní podobě. 
   To by umožnilo jednodušší přenos materiálů do jiných prezentačních nástrojů a zvýšilo srozumitelnost pro širší publikum.
 
-  \item[Režim prezentujícího] Prezentující v současnosti vidí stejné snímky jako sledující, pouze s několika drobnými úpravami. 
-  Užitečné by bylo přidat samostatné okno s poznámkami, které by nebyly součástí prezentace. 
+  \item[Režim prezentujícího] Prezentující v~současnosti vidí stejné snímky jako sledující, pouze s~několika drobnými úpravami. 
+  Užitečné by bylo přidat samostatné okno s~poznámkami, které by nebyly součástí prezentace. 
   Takový režim by zlepšil připravenost prezentujícího a umožnil mu lépe reagovat během výkladu.
 
   \item[Sdílení materiálů] Sdílení pomocí odkazu a kódu je funkční, ale zbytečně složité. 
   Do budoucna by bylo vhodné zavést možnost chráněného sdílení přes heslo nebo jednodušší autentizaci, která by umožnila například jednorázový přístup nebo skupinový přístup pomocí QR kódu.
-
-  \item[Podpora rozšíření] Rozšíření již teď mají k dispozici řadu přístupových bodů do API, ale pro lepší neomezenou práci s materiály by bylo lepši přidat další možnosti.
-  Mohlo by se jednat o lepší práci s materiály jako takovými (přístup k tvorbě snímků, úprav i mimo aktivní editor), přístup k více funkcionalitám bloků (interaktivita, animování) a obecně lepší reakce na uživatelské interakce.
+  Podobně by bylo dobré vytvořit profilové, školní či předmětové informační stránky, ze kterých by byl jednoduchý přístup k~jednotlivým materiálům a například i~pokyny.
+  
+  \item[Podpora rozšíření] Rozšíření již teď mají k~dispozici řadu přístupových bodů do API, ale pro lepší neomezenou práci s~materiály by bylo lepší přidat další možnosti.
+  Mohlo by se jednat o~lepší práci s~materiály jako takovými (přístup k~tvorbě snímků, úprav i~mimo aktivní editor), přístup k~více funkcionalitám bloků (interaktivita, animování) a obecně lepší reakce na uživatelské interakce.
 
   \item[Organizace materiálů] Uživatelská správa materiálů je nyní lineární, bez možnosti složek či jiné struktury. 
   To začíná být problém při větším množství dokumentů. 
@@ -66,15 +67,22 @@ V této kapitole proto shrnuji vybrané směry dalšího vývoje, které by mohl
   \item[Animace] Platforma postrádá pokročilé možnosti animace prvků.
   Jediný rozumný způsob jak animovat jednotlivé části je pomocí interaktivity, a to velmi strohým způsobem.
   Pro lepší využívání platformy by bylo vhodné implementovat třeba animace skrz snímky a nebo například možnosti dělení animačních sekvencí uvnitř jednoho snímku.
-  Do by dovolovalo pomocí tzv. fragmentů například postupně zobrazovat jednotlivé řádky či body v seznamech, což by vedlo k interaktivnějším materiálům.
+  To by dovolovalo pomocí tzv. fragmentů například postupně zobrazovat jednotlivé řádky či body v~seznamech, což by vedlo k~interaktivnějším materiálům.
 
-  \item[Generování náhledových obrázků] V sekci~\ref{text:testovani/vykon} jsem během výkonnostních testů zjistil, že hodně velké zpomalení aplikace je způsobeno tím, jak se generují náhledové obrázky jednotlivých snímků (a materiálu).
+  \item[Automatické testování] V~kapitole~\ref{text:testovani} jsem popsal, jak byla aplikace automaticky otestována pomocí E2E a jednotkových testů. 
+  Otestována byla řada funkcionalit ale některé nezbyl čas částečně nebo zcela sepsat.
+  Obecně se však jedná o~méně důležité funkce, ale v~budoucnu by to mohlo vést k~dalšímu neudržitelnému vývoji aplikace.
+  Největší problém je nejspíše E2E testy klientské části, které ke svému spuštěni vyžadují funkční server a není emulována komunikace s~API.
+  To nedovoluje automaticky testovat tuto část před nasazením v~cyklu CI/CD.
+  Na serveru chybí automatické testování nějakých modulů.
+
+  \item[Generování náhledových obrázků] V~sekci~\ref{text:testovani/vykon} jsem během výkonnostních testů zjistil, že hodně velké zpomalení aplikace je způsobeno tím, jak se generují náhledové obrázky jednotlivých snímků (a materiálů).
   Změna způsobu (tedy toho, že se spouští virtuální prohlížeč, který stránku načítá), není možná kvůli komplexitě vykreslovaného obsahu a komunitních rozšíření.
-  Do budoucna by bylo vhodné tedy vytvořit separátní službu, která by se zejména soustředila na vykreslování snímku, a server by pouze tuto službu obeznámil s tím, že je vhodné překreslit náhledový obrázek.
+  Do budoucna by bylo vhodné tedy vytvořit separátní službu, která by se zejména soustředila na vykreslování snímků, a server by pouze tuto službu obeznámil s~tím, že je vhodné překreslit náhledový obrázek.
 \end{description}
 
-Na projektu budu pracovat i nadále. 
+Na projektu budu pracovat i~nadále. 
 V příštím školním roce plánuji platformu nasadit ve všech předmětech, které učím na Smíchovské střední průmyslové škole a gymnáziu.
-Zároveň se pokusím zapojit další vyučující a komunitu kolem školy do vývoje rozšíření i samotné platformy.
-Postupně chci vytvořit širokou sadu výukových materiálů a rozšíření, které budou sloužit jako inspirace i základ pro další tvůrce. 
+Zároveň se pokusím zapojit další vyučující a komunitu kolem školy do vývoje rozšíření i~samotné platformy.
+Postupně chci vytvořit širokou sadu výukových materiálů a rozšíření, které budou sloužit jako inspirace i~základ pro další tvůrce. 
 Cílem je, aby kdokoliv mohl snadno vytvořit takové materiály, jaké si vymyslí.

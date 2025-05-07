@@ -15,7 +15,16 @@ import {EventsApiFeature} from "@/editor/plugin/editor/api/editor/Events";
 import {PanelMessageApiFeature} from "@/editor/plugin/editor/api/editor/PanelMessage";
 import {RegisterCustomBlockApiFeature} from "./editor/RegisterCustomBlock";
 
+/**
+ * Represents a feature for exposing editor-related functionality to the plugin.
+ */
 export class EditorApiFeature extends EditorPluginApiFeature {
+    /**
+     * Registers various editor-related API features into the JavaScript context.
+     * 
+     * @param obj - The QuickJS object to which the `editor` object will be added.
+     * @param data - The data containing the plugin and context information.
+     */
     register(obj: QuickJSHandle, data: EditorPluginApiData): void {
         const context = data.context;
 

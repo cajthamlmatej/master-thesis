@@ -5,6 +5,7 @@
                 :label="$t('editor.ui.plugin.manage')"
                 :tooltip-text="$t('editor.ui.plugin.manage')"
                 icon="package-variant"
+                data-cy="plugins-button"
                 @click="toggle"></NavigationButton>
         </template>
         <template #default>

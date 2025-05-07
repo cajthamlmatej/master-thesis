@@ -2,6 +2,9 @@ import {SelectorAction} from "@/editor/actions/SelectorAction";
 import type {ActionParameters} from "@/editor/actions/EditorAction";
 import {ImageEditorBlock} from "@/editor/block/base/image/ImageEditorBlock";
 
+/**
+ * Represents the action of fixing the aspect ratio of selected image blocks.
+ */
 export class ImageAspectRatioAction extends SelectorAction {
     constructor() {
         super("image-aspect-ratio", "Fix aspect ratio");

@@ -8,17 +8,37 @@ import {
 import {$t} from "@/translation/Translation";
 import {v4} from "uuid";
 
+/**
+ * Represents the interactivity property of an editor block.
+ * This class manages the setup, rendering, and event handling for interactivity configurations.
+ * 
+ * @template T - The type of the editor block.
+ */
 export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends Property<T> {
 
-
+    /**
+     * Returns the priority of this property.
+     * Higher priority properties are rendered earlier.
+     * 
+     * @returns {number} The priority value.
+     */
     getPriority(): number {
         return 1000;
     }
 
+    /**
+     * Determines if this property is visible.
+     * This property is only visible when exactly one block is selected.
+     * 
+     * @returns {boolean} True if visible, false otherwise.
+     */
     isVisible(): boolean {
         return this.blocks.length == 1;
     }
 
+    /**
+     * Sets up the interactivity property UI and event listeners.
+     */
     setup(): void {
         this.element.innerHTML = `
             <div class="header">
@@ -78,10 +98,17 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         this.render();
     }
 
+    /**
+     * Cleans up and destroys the interactivity property UI.
+     */
     destroy(): void {
         this.element.innerHTML = "";
     }
 
+    /**
+     * Renders the interactivity property UI.
+     * This includes all interactivity configurations for the selected block.
+     */
     private render() {
         const container = this.element.querySelector(".interactivity-container") as HTMLElement;
         container.innerHTML = "";
@@ -91,6 +118,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         }
     }
 
+    /**
+     * Renders the timer-specific event configuration for an interactivity object.
+     * 
+     * @param {BlockInteractivity} interactivity - The interactivity object.
+     * @returns {HTMLElement} The rendered timer event configuration element.
+     */
     private renderInteractivityEventTimer(interactivity: BlockInteractivity): HTMLElement {
         const element = document.createElement("div");
 
@@ -120,6 +153,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         return element;
     }
 
+    /**
+     * Renders the event configuration for an interactivity object.
+     * 
+     * @param {BlockInteractivity} interactivity - The interactivity object.
+     * @returns {HTMLElement} The rendered event configuration element.
+     */
     private renderInteractivityEvent(interactivity: BlockInteractivity): HTMLElement {
         const element = document.createElement("div");
 
@@ -132,7 +171,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
                     <option value="HOVER_END">${$t("property.interactivity.event.HOVER_END")}</option>
                     <option value="TIMER">${$t("property.interactivity.event.TIMER")}</option>
                     <option value="SLIDE_LOAD">${$t("property.interactivity.event.SLIDE_LOAD")}</option>
-<!--                                <option disabled value="DRAG_START">Drag start</option>--> <!-- TODO: blocks dont yet have drag support -->
+<!--                                <option disabled value="DRAG_START">Drag start</option>-->
 <!--                                <option disabled value="DRAG_END">Drag end</option>-->
                 </select>
             </div>
@@ -145,6 +184,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         return element;
     }
 
+    /**
+     * Renders the action type selector for an interactivity action.
+     * 
+     * @param {BlockInteractivityAction} action - The interactivity action.
+     * @returns {HTMLElement} The rendered action type selector element.
+     */
     private renderInteractivityActionAction(action: BlockInteractivityAction): HTMLElement {
         const element = document.createElement("div");
 
@@ -166,6 +211,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         return element;
     }
 
+    /**
+     * Renders the slide-specific configuration for an interactivity action.
+     * 
+     * @param {BlockInteractivityAction} action - The interactivity action.
+     * @returns {HTMLElement} The rendered slide configuration element.
+     */
     private renderInteractivityActionSlide(action: BlockInteractivityAction): HTMLElement {
         const element = document.createElement("div");
 
@@ -200,6 +251,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         return element;
     }
 
+    /**
+     * Renders the variable-specific configuration for an interactivity action.
+     * 
+     * @param {BlockInteractivityAction} action - The interactivity action.
+     * @returns {HTMLElement} The rendered variable configuration element.
+     */
     private renderInteractivityActionVariable(action: BlockInteractivityAction): HTMLElement {
         const actionElement = document.createElement("div");
 
@@ -221,6 +278,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         return actionElement;
     }
 
+    /**
+     * Renders the link-specific configuration for an interactivity action.
+     * 
+     * @param {BlockInteractivityAction} action - The interactivity action.
+     * @returns {HTMLElement} The rendered link configuration element.
+     */
     private renderInteractivityActionOpenLink(action: BlockInteractivityAction): HTMLElement {
         const actionElement = document.createElement("div");
 
@@ -235,6 +298,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         return actionElement;
     }
 
+    /**
+     * Renders the footer for an interactivity action, including delete and duplicate buttons.
+     * 
+     * @param {BlockInteractivityAction} action - The interactivity action.
+     * @returns {HTMLElement} The rendered footer element.
+     */
     private renderInteractivityActionFooter(action: BlockInteractivityAction): HTMLElement {
         const element = document.createElement("div");
         element.classList.add("footer");
@@ -247,6 +316,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         return element;
     }
 
+    /**
+     * Renders the property-specific configuration for an interactivity action.
+     * 
+     * @param {BlockInteractivityAction} action - The interactivity action.
+     * @returns {HTMLElement} The rendered property configuration element.
+     */
     private renderInteractivityActionProperty(action: BlockInteractivityAction): HTMLElement {
         const element = document.createElement("div");
         const editor = this.blocks[0].getEditor();
@@ -283,7 +358,7 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
 
                 blocksPairs.push({
                     id: block.id,
-                    name: block.type + " " + seenTypes.get(type), // TODO: this needs overhaul
+                    name: block.type + " " + seenTypes.get(type),
                 });
             }
 
@@ -416,6 +491,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         return element;
     }
 
+    /**
+     * Renders a single interactivity action.
+     * 
+     * @param {BlockInteractivityAction} action - The interactivity action.
+     * @returns {HTMLElement} The rendered action element.
+     */
     private renderInteractivityAction(action: BlockInteractivityAction): HTMLElement {
         const actionElement = document.createElement("div");
         actionElement.classList.add("action");
@@ -438,6 +519,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         return actionElement;
     }
 
+    /**
+     * Renders all actions for a given interactivity object.
+     * 
+     * @param {BlockInteractivity} interactivity - The interactivity object.
+     * @returns {HTMLElement} The rendered actions container element.
+     */
     private renderInteractivityActions(interactivity: BlockInteractivity): HTMLElement {
         const element = document.createElement("div");
 
@@ -463,6 +550,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         return element;
     }
 
+    /**
+     * Renders the timer-specific condition configuration for an interactivity object.
+     * 
+     * @param {BlockInteractivity} interactivity - The interactivity object.
+     * @returns {HTMLElement} The rendered timer condition configuration element.
+     */
     private renderInteractivityConditionTimer(interactivity: BlockInteractivity): HTMLElement {
         const element = document.createElement("div");
 
@@ -491,6 +584,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         return element;
     }
 
+    /**
+     * Renders the variable-specific condition configuration for an interactivity object.
+     * 
+     * @param {BlockInteractivity} interactivity - The interactivity object.
+     * @returns {HTMLElement} The rendered variable condition configuration element.
+     */
     private renderInteractivityConditionVariable(interactivity: BlockInteractivity): HTMLElement {
         const element = document.createElement("div");
 
@@ -522,6 +621,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         return element;
     }
 
+    /**
+     * Renders the condition configuration for an interactivity object.
+     * 
+     * @param {BlockInteractivity} interactivity - The interactivity object.
+     * @returns {HTMLElement} The rendered condition configuration element.
+     */
     private renderInteractivityCondition(interactivity: BlockInteractivity): HTMLElement {
         const element = document.createElement("div");
 
@@ -547,6 +652,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         return element;
     }
 
+    /**
+     * Renders the footer for an interactivity object, including move, delete, and duplicate buttons.
+     * 
+     * @param {BlockInteractivity} interactivity - The interactivity object.
+     * @returns {HTMLElement} The rendered footer element.
+     */
     private renderFooter(interactivity: BlockInteractivity): HTMLElement {
         const element = document.createElement("div");
 
@@ -563,6 +674,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         return element;
     }
 
+    /**
+     * Sets up reactivity for interactivity properties, ensuring UI changes are reflected in the data model.
+     * 
+     * @param {BlockInteractivity} interactivity - The interactivity object.
+     * @param {HTMLElement} element - The interactivity element.
+     */
     private setupPropertiesReactivity(interactivity: BlockInteractivity, element: HTMLElement) {
         for (const field of element.querySelectorAll("[data-property]") as unknown as HTMLElement[]) {
             const actionElement = field.closest(".action") as HTMLElement;
@@ -647,6 +764,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         }
     }
 
+    /**
+     * Sets up event listeners for interactivity object actions like delete, duplicate, and move.
+     * 
+     * @param {BlockInteractivity} interactivity - The interactivity object.
+     * @param {HTMLElement} element - The interactivity element.
+     */
     private setupInteractivityEvents(interactivity: BlockInteractivity, element: HTMLElement) {
         const index = this.blocks[0].interactivity.indexOf(interactivity);
 
@@ -683,6 +806,12 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         });
     }
 
+    /**
+     * Sets up event listeners for interactivity actions like adding, deleting, and duplicating actions.
+     * 
+     * @param {BlockInteractivity} interactivity - The interactivity object.
+     * @param {HTMLElement} element - The interactivity element.
+     */
     private setupActionsEvents(interactivity: BlockInteractivity, element: HTMLElement) {
         element.querySelector(".plus-action")?.addEventListener("click", () => {
             interactivity.actions.push({
@@ -735,10 +864,19 @@ export class InteractivityProperty<T extends EditorBlock = EditorBlock> extends 
         });
     }
 
+    /**
+     * Announces that the block content has changed, triggering any necessary updates.
+     */
     private announceChange() {
         this.blocks[0].getEditor().events.BLOCK_CONTENT_CHANGED.emit(this.blocks[0]);
     }
 
+    /**
+     * Renders a single interactivity object, including its event, actions, condition, and footer.
+     * 
+     * @param {BlockInteractivity} interactivity - The interactivity object.
+     * @returns {HTMLElement} The rendered interactivity element.
+     */
     private renderInteractivity(interactivity: BlockInteractivity): HTMLElement {
         const element = document.createElement("div");
         element.classList.add("interactivity");

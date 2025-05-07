@@ -140,6 +140,10 @@
                 "failed": "Přihlášení se nezdařilo. Zkontrolujte, zda jste zadali správné údaje o účtu.",
                 "wrong-email": "Zadali jste špatný e-mail nebo již existuje žádost o přihlášení. Zkontrolujte svůj e-mail a zkuste to znovu.",
                 "wrong-code": "Zadali jste špatný kód. Zkontrolujte svůj e-mail a zkuste to znovu."
+            },
+            "expired": {
+                "title": "Byl jste odhlášen",
+                "description": "Vaše přihlášení vypršelo. Pro pokračování v práci se prosím přihlaste znovu."
             }
         },
         "register": {
@@ -296,11 +300,21 @@
         "user-settings": {
             "user": {
                 "title": "Nastavení účtu",
-                "new-password": "Nové heslo",
                 "name": "Nové jméno",
-                "current": "Aktuální heslo",
+                "current": "Současné heslo",
                 "change": "Změnit údaje",
                 "error": "Údaje se nepodařilo změnit. Zkontrolujte, zda jste zadali správné heslo."
+            },
+            "change-email": {
+                "warning": "Změna e-mailu není kvůli bezpečnosti možná přímo v nastavení. Pokud chcete změnit e-mail, kontaktujte prosím tým podpory na e-mailu support@materalist.com."
+            },
+            "password": {
+                "title": "Změna hesla",
+                "new-password-repeat": "Nové heslo znovu",
+                "new-password": "Nové heslo",
+                "change": "Změnit heslo",
+                "error": "Údaje se nepodařilo změnit.",
+                "match": "Hesla se neshodují."
             },
             "export": {
                 "title": "Export osobních údajů",
@@ -410,7 +424,7 @@
         },
         "disconnected": {
             "title": "Byl jste odpojen",
-            "help": "Byl jste odpojen od serverů Materalist. Zkontrolujte prosím připojení k internetu a zkuste to znovu. Pokud problém přetrvává, zkuste stránku obnovit nebo se odhlásit a znovu přihlásit."
+            "help": "Byl jste odpojen od serverů Materalist. Zkontrolujte prosím připojení k internetu a zkuste to znovu. Pokud problém přetrvává, zkuste stránku obnovit nebo se odhlásit a znovu přihlásit. Pokusíme se tě zpět přihlásit, pokud to půjde."
         }
     },
     "editor": {
@@ -711,11 +725,16 @@
         },
         "attendees": {
             "title": "Účastníci",
-            "current": "Vy"
+            "current": "Vy",
+            "limit": "Po dosazení limitu účastníků se bude moci připojit jen majitel materiálu."
         },
         "disconnected": {
             "title": "Byl jste odpojen",
-            "help": "Byl jste odpojen od serverů Materalist. Zkontrolujte prosím připojení k internetu a zkuste to znovu. Pokud problém přetrvává, zkuste stránku obnovit nebo se odhlásit a znovu přihlásit."
+            "help": "Byl jste odpojen od serverů Materalist. Zkontrolujte prosím připojení k internetu a zkuste to znovu. Pokud problém přetrvává, zkuste stránku obnovit nebo se odhlásit a znovu přihlásit.  Pokusíme se tě zpět přihlásit, pokud to půjde."
+        },
+        "kicked": {
+            "title": "Byl jste vyhozen",
+            "help": "Byl jste vyhozen z materiálu. Místnost editoru je nejspíše plná (přístup k materiálu pak má jen majitel) nebo již nemáte přístup k materiálu."
         }
     },
     "blocks": {
@@ -784,6 +803,12 @@
             "presenter": "Prezentující",
             "message-example": "Zde uvidíte zprávy.",
             "loading": "Načítání..."
+        },
+        "latex": {
+            "name": "LaTeX"
+        },
+        "code": {
+            "name": "Kód"
         }
     },
     "property": {
@@ -906,6 +931,9 @@
             "label": "Velikost",
             "width": "Š",
             "height": "V"
+        },
+        "information": {
+            "label": "Informace o bloku"
         }
     }
 }

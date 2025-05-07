@@ -18,6 +18,11 @@ import {
 } from "@/editor/block/serialization/BlockPropertySerialize";
 import {communicator} from "@/api/websockets";
 
+/**
+ * Represents a block in the player environment. This abstract class provides
+ * the base functionality for rendering, synchronizing, and interacting with blocks
+ * in the player.
+ */
 export abstract class PlayerBlock {
     @BlockSerialize("id")
     public id: string;
@@ -61,7 +66,8 @@ export abstract class PlayerBlock {
         group?: string;
     }
 
-    public playerStore: any; // TODO: add type
+    // note(Matej): sadly this has to be any type because it would cause circular dependency issues
+    public playerStore: any;
 
     public loaded: Promise<void>;
     private repeats: { timeouts: NodeJS.Timeout[], intervals: NodeJS.Timeout[] } = {timeouts: [], intervals: []};
@@ -99,9 +105,13 @@ export abstract class PlayerBlock {
 
     /**
      * Renders the block element for the first time for the editor in the DOM.
+     * @returns The rendered HTMLElement.
      */
     public abstract render(): HTMLElement;
 
+    /**
+     * Synchronizes the block's DOM element with its properties.
+     */
     public synchronize() {
         if (!this.element) return;
 
@@ -115,12 +125,16 @@ export abstract class PlayerBlock {
         this.element.style.opacity = this.opacity.toString();
         this.element.style.zIndex = this.zIndex.toString();
 
-        if (this.interactivity && this.interactivity.filter(a => a.event == "CLICKED").length > 0) {
-            // TODO: add other ways to indicate interactivity
+        if (this.interactivity && this.interactivity.filter(a => a.event == "CLICKED" || a.event === "HOVER_START").length > 0) {
             this.element.classList.add("block--interactive");
         }
     }
 
+    /**
+     * Sets the player instance for the block.
+     * @param player The player instance to associate with the block.
+     * @throws Error if the block already has a player.
+     */
     public setPlayer(player: Player) {
         if (this.player) {
             throw new Error("Block already has an player.");
@@ -129,6 +143,10 @@ export abstract class PlayerBlock {
         this.player = player;
     }
 
+    /**
+     * Retrieves the interactivity properties of the block.
+     * @returns An array of interactivity properties.
+     */
     public getInteractivityProperties(): BlockInteractiveProperty[] {
         return [
             {
@@ -377,7 +395,8 @@ export abstract class PlayerBlock {
     }
 
     /**
-     * Serializes the block properties to an object, so it can be saved.
+     * Serializes the block properties to an object for saving.
+     * @returns A serialized object representing the block.
      */
     public serialize(): Object {
         let serialized: any = {};
@@ -409,20 +428,16 @@ export abstract class PlayerBlock {
             }
         }
 
-        // TODO: hotfix
+        // note(Matej): deep clone the object to avoid circular references and other issues
         serialized = JSON.parse(JSON.stringify(serialized));
 
         return serialized;
     }
-
-    // TODO: destroy method for cleanup (interactivity timeouts, intervals, etc.)
-
+    
     /**
-     * Calls all event listeners for the supplied event with the supplied arguments.
-     *
-     * Listeners are methods that are decorated with `@BlockEventListener(event: BlockEvent)`.
-     * @param event The event to call the listeners for.
-     * @param args The arguments to pass to the listeners.
+     * Processes an event by calling all registered listeners for the event.
+     * @param event The event to process.
+     * @param args Arguments to pass to the event listeners.
      */
     public processEvent(event: BlockEvent, ...args: any[]) {
         const instance = this as any;
@@ -450,6 +465,10 @@ export abstract class PlayerBlock {
         }
     }
 
+    /**
+     * Retrieves the API features available for the block.
+     * @returns An array of API feature entries.
+     */
     public getApiFeatures(): PlayerBlockApiFeatureEntry[] {
         const target = Object.getPrototypeOf(this).constructor;
         const keys = Reflect.getMetadataKeys(target);
@@ -472,6 +491,10 @@ export abstract class PlayerBlock {
         return apiFeatures;
     }
 
+    /**
+     * Sends a message to the player room associated with the block.
+     * @param message The message to send.
+     */
     public sendMessage(message: string) {
         const room = communicator.getPlayerRoom();
 
@@ -480,6 +503,10 @@ export abstract class PlayerBlock {
         room.sendBlockMessage(message, this.id);
     }
 
+    /**
+     * Checks if the block is in the player room.
+     * @returns A promise that resolves to a boolean indicating if the block is in the player room.
+     */
     public async isInPlayerRoom() {
         await this.loaded;
         await communicator.readyPromise;
@@ -492,6 +519,10 @@ export abstract class PlayerBlock {
         return true;
     }
 
+    /**
+     * Checks if the current user is the presenter in the player room.
+     * @returns A boolean indicating if the user is the presenter.
+     */
     public isPresenter() {
         const room = communicator.getPlayerRoom();
 
@@ -500,27 +531,47 @@ export abstract class PlayerBlock {
         return room.isPresenter;
     }
 
+    /**
+     * Loads the player store and resolves the `loaded` promise.
+     */
     private async loadPlayerStore() {
         const {usePlayerStore} = await import("@/stores/player");
         this.playerStore = usePlayerStore();
         this.resolveLoaded();
     }
 
+    /**
+     * Handles the click event on the block element.
+     * @param event The mouse event.
+     */
     private async handleClick(event: MouseEvent) {
         const result = this.tryProcessInteractivity("CLICKED");
         if (result) event.stopPropagation();
     }
 
+    /**
+     * Handles the mouse enter event on the block element.
+     * @param event The mouse event.
+     */
     private async handleMouseEnter(event: MouseEvent) {
         const result = this.tryProcessInteractivity("HOVER_START");
         if (result) event.stopPropagation();
     }
 
+    /**
+     * Handles the mouse leave event on the block element.
+     * @param event The mouse event.
+     */
     private async handleMouseLeave(event: MouseEvent) {
         const result = this.tryProcessInteractivity("HOVER_END");
         if (result) event.stopPropagation();
     }
 
+    /**
+     * Attempts to process interactivity for a specific event.
+     * @param event The event to process interactivity for.
+     * @returns A boolean indicating if any interactivity was processed.
+     */
     private tryProcessInteractivity(event: "CLICKED" | "HOVER_START" | "HOVER_END" | "SLIDE_LOAD") {
         let anyCompleted = false;
         for (const interactivity of this.interactivity) {
@@ -537,6 +588,11 @@ export abstract class PlayerBlock {
         return anyCompleted;
     }
 
+    /**
+     * Checks if the conditions for a specific interactivity are met.
+     * @param interactivity The interactivity to check.
+     * @returns A boolean indicating if the conditions are met.
+     */
     private checkInteractivityConditions(interactivity: BlockInteractivity) {
         let canContinue = false;
 
@@ -574,6 +630,10 @@ export abstract class PlayerBlock {
         return canContinue;
     }
 
+    /**
+     * Processes the actions associated with a specific interactivity.
+     * @param interactivity The interactivity to process.
+     */
     private processInteractivity(interactivity: BlockInteractivity) {
         for (let action of interactivity.actions) {
             switch (action.action) {

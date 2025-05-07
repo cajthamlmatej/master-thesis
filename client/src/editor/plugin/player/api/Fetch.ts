@@ -2,7 +2,16 @@ import {QuickJSHandle} from "quickjs-emscripten";
 import {PlayerPluginApiData} from "@/editor/plugin/player/PlayerPluginApi";
 import {PlayerPluginApiFeature} from "@/editor/plugin/player/PlayerPluginApiFeature";
 
+/**
+ * Represents the Fetch API feature that allows plugins to perform HTTP requests.
+ */
 export class FetchApiFeature extends PlayerPluginApiFeature {
+    /**
+     * Registers the Fetch API feature by setting the "fetch" property on the provided object.
+     * 
+     * @param obj - The QuickJS object to which the property will be added.
+     * @param data - The data containing the plugin and context information.
+     */
     register(obj: QuickJSHandle, data: PlayerPluginApiData): void {
         const context = data.context;
         const plugin = data.plugin;

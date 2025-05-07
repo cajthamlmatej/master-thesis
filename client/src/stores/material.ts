@@ -255,8 +255,8 @@ export const useMaterialStore = defineStore("material", () => {
             method: material.method,
             automaticTime: material.automaticTime,
             sizing: material.sizing,
-            visibility: material.visibility,
-            // TODO: ATTENDEES
+            visibility: material.visibility
+            // note(Matej): attendees is not a public
         });
     }
 

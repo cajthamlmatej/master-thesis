@@ -3,12 +3,12 @@
         <template #primary>
             <div ref="menu" class="menu editor-slides">
                 <div class="actions">
-                    <Button fluid icon="plus" @click="materialStore.newSlide">
+                    <Button fluid icon="plus" @click="materialStore.newSlide" data-cy="slides-add-button">
                         <span v-t>editor.panel.slides.add</span>
                     </Button>
                 </div>
 
-                <div class="slides">
+                <div class="slides" data-cy="slides-container">
                     <div v-for="(slide, i) in materialStore.slides"
                          :class="{'slide--active': slide.id === materialStore.getActiveSlide()?.id}"
                          class="slide"
@@ -51,6 +51,7 @@
                                    @click="copySlide(slide)"/>
                                 <i v-tooltip="$t('editor.panel.slides.action.delete')"
                                    :class="{disabled: canRemoveSlide}"
+                                   data-cy="delete-slide"
                                    class="mdi mdi-trash-can-outline" @click="removeSlide(slide)"/>
                             </div>
                         </div>

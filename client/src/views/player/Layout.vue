@@ -506,7 +506,6 @@ const link = computed(() => {
                 material: materialStore.currentMaterial?.id,
                 language: translation.getLanguage(),
             },
-            // TODO: add password?
         })
 
         return new URL(url.href, domain).href
@@ -750,6 +749,12 @@ const keydown = (e: KeyboardEvent) => {
     if (!current) return;
     if (material.value.method !== 'MANUAL') return;
 
+    const target = e.target as HTMLElement;
+
+    if(target && target.tagName === 'INPUT') {
+        return;
+    }
+
     if (["ArrowRight", "Enter", "Space", " ", "PageUp"].includes(e.key)) {
         nextSlide();
     } else if (["ArrowLeft", "PageDown", "Backspace"].includes(e.key)) {
@@ -800,7 +805,7 @@ onMounted(() => {
             const diff = Date.now() - time;
 
             const hours = Math.floor(diff / 3600000);
-            const minutes = Math.floor(diff / 60000);
+            const minutes = Math.floor((diff % 3600000) / 60000);
             const seconds = Math.floor((diff % 60000) / 1000);
 
             if (hours > 0) {

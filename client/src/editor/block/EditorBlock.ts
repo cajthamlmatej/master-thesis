@@ -26,6 +26,7 @@ import {ChangeBlockOpacityApiFeature} from "@/editor/plugin/editor/api/block/Cha
 import {SetBlockZIndexApiFeature} from "@/editor/plugin/editor/api/block/SetBlockZIndex";
 import {LockBlockApiFeature} from "@/editor/plugin/editor/api/block/LockBlock";
 import {UnlockBlockApiFeature} from "@/editor/plugin/editor/api/block/UnlockBlock";
+import {BlockInformationProperty} from "@/editor/property/base/BlockInformationProperty";
 
 @RegisterEditorBlockApiFeature(MoveBlockApiFeature)
 @RegisterEditorBlockApiFeature(RotateBlockApiFeature)
@@ -34,6 +35,11 @@ import {UnlockBlockApiFeature} from "@/editor/plugin/editor/api/block/UnlockBloc
 @RegisterEditorBlockApiFeature(SetBlockZIndexApiFeature)
 @RegisterEditorBlockApiFeature(LockBlockApiFeature)
 @RegisterEditorBlockApiFeature(UnlockBlockApiFeature)
+/**
+ * Represents a block in the editor environment. This abstract class provides
+ * the base functionality for rendering, synchronizing, and interacting with blocks
+ * in the editor.
+ */
 export abstract class EditorBlock {
     @BlockSerialize("id")
     public id: string;
@@ -99,16 +105,19 @@ export abstract class EditorBlock {
 
     /**
      * Renders the block element for the first time for the editor in the DOM.
+     * @returns The rendered HTMLElement.
      */
     public abstract render(): HTMLElement;
 
     /**
      * Returns a new instance of the block with the same properties.
+     * @returns A cloned instance of the block.
      */
     public abstract clone(): EditorBlock;
 
     /**
-     * Serializes the block properties to an object, so it can be saved.
+     * Serializes the block properties to an object for saving.
+     * @returns A serialized object representing the block.
      */
     public serialize(): Object {
         let serialized: any = {};
@@ -140,14 +149,15 @@ export abstract class EditorBlock {
             }
         }
 
-        // TODO: hotfix
+        // note(Matej): deep clone the object to prevent circular references and other issues
         serialized = JSON.parse(JSON.stringify(serialized));
 
         return serialized;
     }
 
     /**
-     * Returns the editor support for the block.
+     * Returns the editor support capabilities for the block.
+     * @returns An object describing the editor support capabilities.
      */
     public editorSupport(): {
         group: boolean;
@@ -173,8 +183,13 @@ export abstract class EditorBlock {
         }
     }
 
+    /**
+     * Retrieves the properties of the block.
+     * @returns An array of properties associated with the block.
+     */
     public getProperties(): Property<this>[] {
         return [
+            new BlockInformationProperty(),
             new PositionProperty(),
             new SizeProperty(),
             new RotationProperty(),
@@ -183,6 +198,10 @@ export abstract class EditorBlock {
         ]
     }
 
+    /**
+     * Retrieves the interactivity properties of the block.
+     * @returns An array of interactivity properties.
+     */
     public getInteractivityProperties(): Omit<BlockInteractiveProperty & {
         relative: boolean,
         animate: boolean
@@ -228,19 +247,27 @@ export abstract class EditorBlock {
 
     /**
      * Returns the content element of the block, if it has one.
-     * Can be used to
+     * @returns The content element or undefined.
      */
     public getContent(): HTMLElement | undefined {
         return undefined;
     }
 
     /**
-     * Returns the editor for the block.
+     * Returns the editor instance associated with the block.
+     * @returns The editor instance.
      */
     public getEditor() {
         return this.editor;
     }
 
+    /**
+     * Moves the block to a new position.
+     * @param x The new x-coordinate.
+     * @param y The new y-coordinate.
+     * @param skipSynchronization Whether to skip synchronization.
+     * @param manual Whether the move was manual.
+     */
     public move(x: number, y: number, skipSynchronization: boolean = false, manual: boolean = false) {
         this.position.x = Math.floor(x);
         this.position.y = Math.floor(y);
@@ -253,6 +280,12 @@ export abstract class EditorBlock {
         });
     }
 
+    /**
+     * Rotates the block to a new angle.
+     * @param rotation The new rotation angle in degrees.
+     * @param skipSynchronization Whether to skip synchronization.
+     * @param manual Whether the rotation was manual.
+     */
     public rotate(rotation: number, skipSynchronization: boolean = false, manual: boolean = false) {
         this.rotation = rotation;
 
@@ -264,6 +297,13 @@ export abstract class EditorBlock {
         if (!skipSynchronization) this.synchronize();
     }
 
+    /**
+     * Resizes the block to new dimensions.
+     * @param width The new width.
+     * @param height The new height.
+     * @param skipSynchronization Whether to skip synchronization.
+     * @param manual Whether the resize was manual.
+     */
     public resize(width: number, height: number, skipSynchronization: boolean = false, manual: boolean = false) {
         if (width < 1) width = 1;
         if (height < 1) height = 1;
@@ -279,12 +319,19 @@ export abstract class EditorBlock {
         if (!skipSynchronization) this.synchronize();
     }
 
+    /**
+     * Sets the z-index of the block.
+     * @param zIndex The new z-index value.
+     */
     public setZIndex(zIndex: number) {
         this.zIndex = Math.max(0, Math.min(1000, zIndex));
         this.synchronize();
         this.editor.events.BLOCK_CHANGED.emit(this);
     }
 
+    /**
+     * Increases the z-index of the block by 1.
+     */
     public zIndexUp() {
         this.zIndex = Math.max(0, Math.min(1000, this.zIndex + 1));
 
@@ -292,6 +339,9 @@ export abstract class EditorBlock {
         this.editor.events.BLOCK_CHANGED.emit(this);
     }
 
+    /**
+     * Decreases the z-index of the block by 1.
+     */
     public zIndexDown() {
         this.zIndex = Math.max(0, Math.min(1000, this.zIndex - 1));
 
@@ -299,6 +349,9 @@ export abstract class EditorBlock {
         this.editor.events.BLOCK_CHANGED.emit(this);
     }
 
+    /**
+     * Sets the z-index of the block to the lowest value among selectable blocks.
+     */
     public zIndexMaxDown() {
         const lowest = this.editor.getBlocks().filter(b => b.editorSupport().selection).reduce((acc, block) => Math.min(acc, block.zIndex), this.zIndex);
 
@@ -308,6 +361,9 @@ export abstract class EditorBlock {
         this.editor.events.BLOCK_CHANGED.emit(this);
     }
 
+    /**
+     * Sets the z-index of the block to the highest value among selectable blocks.
+     */
     public zIndexMaxUp() {
         const highest = this.editor.getBlocks().filter(b => b.editorSupport().selection).reduce((acc, block) => Math.max(acc, block.zIndex), this.zIndex);
 
@@ -318,7 +374,7 @@ export abstract class EditorBlock {
     }
 
     /**
-     * Locks the block element for the block to be uneditable.
+     * Locks the block, making it uneditable.
      */
     public lock() {
         this.locked = true;
@@ -326,13 +382,18 @@ export abstract class EditorBlock {
     }
 
     /**
-     * Unlocks the block element for the block to be editable.
+     * Unlocks the block, making it editable.
      */
     public unlock() {
         this.locked = false;
         this.synchronize();
     }
 
+    /**
+     * Changes the opacity of the block.
+     * @param value The new opacity value.
+     * @param manual Whether the change was manual.
+     */
     public changeOpacity(value: number, manual: boolean = false) {
         this.opacity = value;
         this.editor.events.BLOCK_OPACITY_CHANGED.emit({
@@ -343,10 +404,9 @@ export abstract class EditorBlock {
     }
 
     /**
-     * Sets the editor for the block.
-     *
-     * If the block already has an editor, an error is thrown.
-     * @param editor The editor to set.
+     * Sets the editor instance for the block.
+     * @param editor The editor instance to associate with the block.
+     * @throws Error if the block already has an editor.
      */
     public setEditor(editor: Editor) {
         if (this.editor) {
@@ -357,7 +417,7 @@ export abstract class EditorBlock {
     }
 
     /**
-     * Synchronizes the block element in DOM with the block properties.
+     * Synchronizes the block's DOM element with its properties.
      */
     public synchronize() {
         if (!this.element) return;
@@ -396,7 +456,7 @@ export abstract class EditorBlock {
     }
 
     /**
-     * Matches the width of the block with the rendered width of the block element.
+     * Matches the height of the block with the rendered height of its element.
      */
     public matchRenderedHeight() {
         this.size.height = this.element.clientHeight;
@@ -414,8 +474,9 @@ export abstract class EditorBlock {
     }
 
     /**
-     * Checks if supplied box range overlaps with this block including rotation.
+     * Checks if the block overlaps with a given range, including rotation.
      * @param range The range to check for overlap.
+     * @returns A boolean indicating if the block overlaps with the range.
      */
     public overlaps(range: { topLeft: { x: number, y: number }, bottomRight: { x: number, y: number } }) {
         const rotatedCorners = getRotatedRectanglePoints(this.position.x, this.position.y, this.size.width, this.size.height, this.rotation);
@@ -431,9 +492,9 @@ export abstract class EditorBlock {
     }
 
     /**
-     * After editorSupport() has been called, this method can be used to check if the block can currently do a certain action.
-     * The element could be in a state, that doesn't allow the action to be performed.
-     * @param action
+     * Checks if the block can currently perform a specific action.
+     * @param action The action to check.
+     * @returns A boolean indicating if the action can be performed.
      */
     public canCurrentlyDo(action: 'select' | 'move' | 'resize' | 'rotate') {
         if (this.locked && action !== 'select') {
@@ -444,11 +505,9 @@ export abstract class EditorBlock {
     }
 
     /**
-     * Calls all event listeners for the supplied event with the supplied arguments.
-     *
-     * Listeners are methods that are decorated with `@BlockEventListener(event: BlockEvent)`.
-     * @param event The event to call the listeners for.
-     * @param args The arguments to pass to the listeners.
+     * Processes an event by calling all registered listeners for the event.
+     * @param event The event to process.
+     * @param args Arguments to pass to the event listeners.
      */
     public processEvent(event: BlockEvent, ...args: any[]) {
         const instance = this as any;
@@ -476,6 +535,10 @@ export abstract class EditorBlock {
         }
     }
 
+    /**
+     * Retrieves the API features available for the block.
+     * @returns An array of API feature entries.
+     */
     public getApiFeatures(): EditorBlockApiFeatureEntry[] {
         const target = Object.getPrototypeOf(this).constructor;
         const keys = Reflect.getMetadataKeys(target);
@@ -498,10 +561,18 @@ export abstract class EditorBlock {
         return apiFeatures;
     }
 
+    /**
+     * Processes a data change and synchronizes the block.
+     * @param data The data to process.
+     */
     public processDataChange(data: any) {
         this.synchronize();
     }
 
+    /**
+     * Retrieves the base properties for cloning the block.
+     * @returns A BlockConstructor object with the base properties.
+     */
     protected getCloneBase(): BlockConstructor {
         return {
             id: generateUUID(),

@@ -2,6 +2,10 @@ import Event from "@/utils/Event";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import type {EditorMode} from "@/editor/EditorMode";
 
+/**
+ * The EditorEvents class manages and emits various events related to the editor's state and blocks.
+ * It provides a centralized mechanism for handling editor-related events.
+ */
 export default class EditorEvents {
 
     public EDITOR_DESTROYED = new Event<void>();
@@ -27,6 +31,9 @@ export default class EditorEvents {
         }
     } = {}
 
+    /**
+     * Constructs the EditorEvents instance and sets up event listeners for block-related changes.
+     */
     constructor() {
         [
             this.BLOCK_CONTENT_CHANGED,
@@ -55,6 +62,12 @@ export default class EditorEvents {
         })
     }
 
+    /**
+     * Attempts to emit a BLOCK_CHANGED event for the given block.
+     * Ensures that events are debounced to avoid excessive emissions.
+     * 
+     * @param block - The block for which the event is being emitted.
+     */
     private tryToEmit(block: EditorBlock) {
         if (this.blockDebounce[block.id]) {
             const diff = Date.now() - this.blockDebounce[block.id].createdAt;

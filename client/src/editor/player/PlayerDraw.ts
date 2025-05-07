@@ -8,6 +8,10 @@ enum DrawMode {
     ERASE = "erase"
 }
 
+/**
+ * The PlayerDraw class provides drawing and erasing functionality for the Player.
+ * It manages user interactions, drawing tools, and synchronization of drawing data.
+ */
 export class PlayerDraw {
     private player: Player;
     private element: HTMLElement;
@@ -20,6 +24,11 @@ export class PlayerDraw {
     private opacity: number = 100;
     private smoothing: number = 8;
 
+    /**
+     * Initializes the PlayerDraw instance and sets up event listeners.
+     * 
+     * @param player - The Player instance associated with this drawing tool.
+     */
     constructor(player: Player) {
         this.player = player;
 
@@ -35,17 +44,30 @@ export class PlayerDraw {
         });
     }
 
+    /**
+     * Retrieves the current drawing data from the canvas.
+     * 
+     * @returns The SVG content of the drawing canvas.
+     */
     public getData() {
         const canvas = this.element.querySelector(".player-draw-canvas") as HTMLElement;
         return canvas.innerHTML;
     }
 
+    /**
+     * Applies drawing data to the canvas.
+     * 
+     * @param data - The SVG content to be applied to the canvas.
+     */
     public applyData(data: string) {
         const canvas = this.element.querySelector(".player-draw-canvas") as HTMLElement;
 
         canvas.innerHTML = sanitizeSvg(data);
     }
 
+    /**
+     * Initializes the drawing canvas and navigation UI.
+     */
     private init() {
         this.element = document.createElement('div');
         this.element.classList.add('player-draw');
@@ -105,6 +127,9 @@ export class PlayerDraw {
         this.player.getElement().appendChild(this.element);
     }
 
+    /**
+     * Synchronizes the visibility and position of the drawing navigation UI.
+     */
     private synchronize() {
         this.element.classList.toggle("player-draw--active", this.active);
         this.element.classList.toggle("player-draw--visible", this.visible);
@@ -132,6 +157,9 @@ export class PlayerDraw {
         navigation.style.bottom = `${newY}px`;
     }
 
+    /**
+     * Resets the active drawing settings to their default state.
+     */
     private resetSettings() {
         this.element.querySelector(".player-draw-navigation-options-option--active")
             ?.classList.remove("player-draw-navigation-options-option--active");
@@ -151,6 +179,9 @@ export class PlayerDraw {
         this.activeSettings = null;
     }
 
+    /**
+     * Sets up event listeners for user interactions with the drawing tools.
+     */
     private setupUsage() {
         let mouseDown = this.mouseDownEvent.bind(this);
         let touchStart = this.mouseDownEvent.bind(this);
@@ -238,6 +269,11 @@ export class PlayerDraw {
         });
     }
 
+    /**
+     * Handles mouse or touch events to start drawing or erasing.
+     * 
+     * @param event - The mouse or touch event that triggered the action.
+     */
     private mouseDownEvent(event: MouseEvent | TouchEvent) {
         if (this.player.getMode() !== PlayerMode.DRAW) return;
 
@@ -247,6 +283,7 @@ export class PlayerDraw {
 
         if (["INPUT", "BUTTON", "SPAN"].includes(target.tagName)) return;
         if (target.classList.contains("player-draw-navigation-settings-content")) return;
+        if (!target.classList.contains("player-draw") && !target.classList.contains("player-container")) return;
 
         this.resetSettings();
         if (this.mode === DrawMode.ERASE) {
@@ -256,6 +293,12 @@ export class PlayerDraw {
         }
     }
 
+    /**
+     * Extracts the position from a mouse or touch event.
+     * 
+     * @param event - The mouse or touch event.
+     * @returns The position in editor coordinates.
+     */
     private getPositionFromEvent(event: MouseEvent | TouchEvent) {
         let x = 0, y = 0;
 
@@ -272,6 +315,11 @@ export class PlayerDraw {
         return this.player.screenToEditorCoordinates(x, y);
     }
 
+    /**
+     * Handles the drawing process based on user input.
+     * 
+     * @param event - The mouse or touch event that triggered the drawing.
+     */
     private draw(event: MouseEvent | TouchEvent) {
         const canvas = this.element.querySelector(".player-draw-canvas") as HTMLElement;
         const bufferSize = this.smoothing;
@@ -374,6 +422,11 @@ export class PlayerDraw {
         window.addEventListener("touchcancel", handleUp);
     }
 
+    /**
+     * Handles the erasing process based on user input.
+     * 
+     * @param event - The mouse or touch event that triggered the erasing.
+     */
     private erase(event: MouseEvent | TouchEvent) {
         const canvas = this.element.querySelector(".player-draw-canvas") as SVGSVGElement;
         if (!canvas) return;
@@ -424,6 +477,9 @@ export class PlayerDraw {
         window.addEventListener("touchcancel", handleUp);
     }
 
+    /**
+     * Synchronizes the drawing data with other attendees in a shared session.
+     */
     private synchronizeAttendees() {
         const canvas = this.element.querySelector(".player-draw-canvas") as HTMLElement;
 

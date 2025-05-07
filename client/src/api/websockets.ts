@@ -8,6 +8,8 @@ import Event from "@/utils/Event";
 export class WebSocketCommunicator {
     public socket: Socket;
     public DISCONNECTED = new Event<void>();
+    public KICKED = new Event<void>();
+    public RECONNECTED = new Event<void>();
     private resolveReadyPromise: () => void;
     public readyPromise: Promise<void> = new Promise<void>((resolve) => this.resolveReadyPromise = resolve);
     private editorRoom: EditorCommunicator | undefined;
@@ -29,9 +31,23 @@ export class WebSocketCommunicator {
 
         this.socket.on("connect", () => {
             this.resolveReadyPromise();
+
+            console.log("[WebSocket] (Re)connected to server.");
+            if(this.editorRoom) {
+                this.setupEditorRoom(this.editorRoom.getMaterial());
+            }
+            if(this.playerRoom) {
+                this.setupPlayerRoom(this.playerRoom.getMaterial(), this.playerRoom.getCode(), this.playerRoom.isPresenter, this.playerRoom.getSlideId());
+            }
+
+
+            this.RECONNECTED.emit();
         });
         this.socket.on("disconnect", () => {
             this.DISCONNECTED.emit();
+        });
+        this.socket.on("kicked", () => {
+            this.KICKED.emit();
         });
         this.socket.on("newThumbnails", async ({materialId, slides}: {
             materialId: string,

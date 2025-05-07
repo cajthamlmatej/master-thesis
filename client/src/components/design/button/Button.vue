@@ -192,6 +192,7 @@ const iconSize = computed(() => {
     text-decoration: none;
     color: var(--button-text-color);
     line-height: 1.4em;
+    box-shadow: var(--shadow-accent);
 
     transition: background-color 0.2s ease-out;
 
@@ -318,8 +319,12 @@ const iconSize = computed(() => {
             justify-content: center;
             align-items: center;
 
-            font-size: 1.65em;
             font-weight: 600;
+            
+            span {
+                margin-left: 0;
+                font-size: 1.5em;
+            }
         }
 
         &:hover {

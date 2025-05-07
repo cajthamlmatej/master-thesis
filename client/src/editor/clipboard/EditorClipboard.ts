@@ -3,12 +3,21 @@ import type {EditorBlock} from "@/editor/block/EditorBlock";
 import {BlockRegistry} from "@/editor/block/BlockRegistry";
 import {generateUUID} from "@/utils/Generators";
 
+/**
+ * Manages clipboard functionality for the editor, allowing blocks to be copied, pasted, and cleared.
+ * Synchronizes clipboard data with localStorage and listens for storage events.
+ */
 export class EditorClipboard {
     private readonly key;
     private editor: Editor;
     // Contains serialized blocks
     private clipboard: Object[] = [];
 
+    /**
+     * Initializes the EditorClipboard instance.
+     * @param editor - The editor instance this clipboard is associated with.
+     * @param key - The localStorage key used to store clipboard data.
+     */
     constructor(editor: Editor, key: string = "EDITOR_CLIPBOARD") {
         this.editor = editor;
         this.key = key;
@@ -18,16 +27,29 @@ export class EditorClipboard {
         window.addEventListener("storage", this.storageEvent.bind(this));
     }
 
+    /**
+     * Serializes and stores the provided blocks in the clipboard.
+     * @param blocks - The blocks to be copied to the clipboard.
+     */
     public markForCopy(blocks: EditorBlock[]) {
         this.clipboard = this.serializeBlocks(blocks);
 
         localStorage.setItem(this.key, JSON.stringify(this.clipboard));
     }
 
+    /**
+     * Checks if the clipboard contains any content.
+     * @returns True if the clipboard has content, false otherwise.
+     */
     public hasContent() {
         return this.clipboard.length > 0;
     }
 
+    /**
+     * Pastes the blocks from the clipboard into the editor at the specified position.
+     * If no position is provided, calculates a default target position.
+     * @param position - The position where the blocks should be pasted.
+     */
     public paste(position: { x: number, y: number } | undefined = undefined) {
         if (!this.hasContent()) return;
 
@@ -50,10 +72,17 @@ export class EditorClipboard {
         }
     }
 
+    /**
+     * Clears the clipboard content.
+     */
     public clear() {
         this.clipboard = [];
     }
 
+    /**
+     * Handles storage events to synchronize clipboard data across browser tabs.
+     * @param event - The storage event triggered when localStorage changes.
+     */
     private storageEvent(event: StorageEvent) {
         if (event.storageArea !== localStorage) {
             return;
@@ -70,6 +99,12 @@ export class EditorClipboard {
         this.clipboard = JSON.parse(event.newValue);
     }
 
+    /**
+     * Serializes the provided blocks for storage in the clipboard.
+     * Updates group IDs for grouped blocks to ensure uniqueness.
+     * @param blocks - The blocks to be serialized.
+     * @returns An array of serialized block objects.
+     */
     private serializeBlocks(blocks: EditorBlock[]) {
         const clonedBlocks = blocks.map(b => b.clone());
 
@@ -91,11 +126,22 @@ export class EditorClipboard {
         return clonedBlocks.map(b => b.serialize());
     }
 
+    /**
+     * Deserializes the blocks from the clipboard into EditorBlock instances.
+     * @param blocks - The serialized blocks to be deserialized.
+     * @returns An array of deserialized and cloned EditorBlock instances.
+     */
     private deserializeBlocks(blocks: any[]) {
-        const deserializer = new BlockRegistry(); // TODO: unify with others which use BlockRegistry
+        const deserializer = new BlockRegistry();
         return blocks.map(b => deserializer.deserializeEditor(b)).filter(b => b !== undefined).map(block => block.clone())
     }
 
+    /**
+     * Calculates the target position for pasting blocks.
+     * If blocks are selected, uses the center of the selection area; otherwise, uses the top-left block's position.
+     * @param blocks - The blocks to be pasted.
+     * @returns The calculated target position.
+     */
     private getTargetPosition(blocks: EditorBlock[]) {
         let position;
 
@@ -120,6 +166,11 @@ export class EditorClipboard {
         return position;
     }
 
+    /**
+     * Calculates the relative offset for each block based on the center of the pasted blocks.
+     * @param blocks - The blocks to be pasted.
+     * @returns An array of objects containing the relative offsets and the blocks.
+     */
     private getPastePositionWithRelativeOffset(blocks: EditorBlock[]) {
         const minX = blocks.reduce((prev, curr) => Math.min(prev, curr.position.x), blocks[0].position.x);
         const minY = blocks.reduce((prev, curr) => Math.min(prev, curr.position.y), blocks[0].position.y);

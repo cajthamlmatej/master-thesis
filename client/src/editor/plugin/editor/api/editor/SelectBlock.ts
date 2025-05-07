@@ -2,7 +2,17 @@ import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeat
 import {QuickJSHandle} from "quickjs-emscripten";
 import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
 
+/**
+ * Provides the "selectBlock" API feature for the editor plugin.
+ * This feature allows selecting a block in the editor.
+ */
 export class SelectBlockApiFeature extends EditorPluginApiFeature {
+    /**
+     * Registers the "selectBlock" function in the plugin API.
+     * 
+     * @param obj - The QuickJS object to which the function is added.
+     * @param data - The API data containing context, plugin, and editor references.
+     */
     register(obj: QuickJSHandle, data: EditorPluginApiData): void {
         const context = data.context;
         const plugin = data.plugin;

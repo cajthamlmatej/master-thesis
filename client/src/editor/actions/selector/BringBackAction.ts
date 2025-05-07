@@ -1,6 +1,9 @@
 import {SelectorAction} from "@/editor/actions/SelectorAction";
 import type {ActionParameters} from "@/editor/actions/EditorAction";
 
+/**
+ * Represents the action of bringing selected blocks back into the visible editor area.
+ */
 export class BringBackAction extends SelectorAction {
     constructor() {
         super("bring-back", "mdi mdi-adjust");
@@ -17,8 +20,6 @@ export class BringBackAction extends SelectorAction {
         for (const block of param.selected) {
             const newX = Math.max(0, Math.min(param.editor.getSize().width - block.size.width, block.position.x));
             const newY = Math.max(0, Math.min(param.editor.getSize().height - block.size.height, block.position.y));
-
-            // TODO: in future really move the block correctly by its position
 
             block.move(newX, newY, false, true);
         }

@@ -1,6 +1,9 @@
 import {SelectorAction} from "@/editor/actions/SelectorAction";
 import type {ActionParameters} from "@/editor/actions/EditorAction";
 
+/**
+ * Represents the action of locking selected blocks.
+ */
 export class LockAction extends SelectorAction {
     constructor() {
         super("lock", "mdi mdi-lock");
@@ -14,7 +17,7 @@ export class LockAction extends SelectorAction {
         for (const block of param.selected) {
             block.lock();
         }
-        // TODO: should this be called here?
+        
         param.editor.events.BLOCK_LOCK_CHANGED.emit({
             blocks: param.selected,
             locked: true

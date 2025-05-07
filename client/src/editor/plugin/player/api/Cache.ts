@@ -2,7 +2,16 @@ import {QuickJSHandle} from "quickjs-emscripten";
 import {PlayerPluginApiFeature} from "@/editor/plugin/player/PlayerPluginApiFeature";
 import {PlayerPluginApiData} from "@/editor/plugin/player/PlayerPluginApi";
 
+/**
+ * Represents the Cache API feature that provides caching capabilities for plugins.
+ */
 export class CacheApiFeature extends PlayerPluginApiFeature {
+    /**
+     * Registers the Cache API feature by setting the "cache" property on the provided object.
+     * 
+     * @param obj - The QuickJS object to which the property will be added.
+     * @param data - The data containing the plugin and context information.
+     */
     register(obj: QuickJSHandle, data: PlayerPluginApiData): void {
         const context = data.context;
         const plugin = data.plugin;

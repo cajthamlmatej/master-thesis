@@ -1,3 +1,11 @@
+/**
+ * Interpolates between two colors based on a factor.
+ * 
+ * @param f The interpolation factor (0 to 1).
+ * @param color1 The first color in hex format.
+ * @param color2 The second color in hex format.
+ * @returns The interpolated color in hex format.
+ */
 export const interpolateColor = (f: number, color1: string, color2: string) => {
     if (f > 1) f = 1;
     if (f < 0) f = 0;

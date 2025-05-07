@@ -1,6 +1,10 @@
 import type {ActionKeybind, ActionParameters} from "@/editor/actions/EditorAction";
 import {ContextAction} from "@/editor/actions/ContextAction";
 
+/**
+ * Represents the action of copying selected blocks to the clipboard.
+ * This action is visible when at least one block is selected and all selected blocks support selection.
+ */
 export class CopyAction extends ContextAction {
     constructor() {
         super("copy");

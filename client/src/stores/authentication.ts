@@ -115,7 +115,6 @@ export const useAuthenticationStore = defineStore("authentication", () => {
     const logout = async () => {
         token.value = undefined;
 
-        // TODO: probably should be handled somewhere else
         await router.push({name: "Authentication"});
     }
 

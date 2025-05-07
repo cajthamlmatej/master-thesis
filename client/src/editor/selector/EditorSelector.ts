@@ -6,7 +6,11 @@ import EditorSelectorArea from "@/editor/selector/area/EditorSelectorArea";
 import {BlockEvent} from "@/editor/block/events/BlockEvent";
 import {communicator} from "@/api/websockets";
 
-
+/**
+ * Manages block selection and related interactions in the editor.
+ * Handles selecting, deselecting, and querying selected blocks,
+ * as well as managing selection-related events and contexts.
+ */
 export class EditorSelector {
     public readonly events = new EditorSelectorEvents();
     private readonly editor: Editor;
@@ -14,6 +18,10 @@ export class EditorSelector {
     private readonly context: EditorSelectorContext;
     private selectedBlocks: EditorBlock[] = [];
 
+    /**
+     * Initializes the EditorSelector.
+     * @param editor The editor instance this selector belongs to.
+     */
     constructor(editor: Editor) {
         this.editor = editor;
 
@@ -26,22 +34,31 @@ export class EditorSelector {
         });
     }
 
+    /**
+     * Returns the editor instance associated with this selector.
+     */
     public getEditor() {
         return this.editor;
     }
 
+    /**
+     * Returns the context associated with this selector.
+     */
     public getContext() {
         return this.context;
     }
 
+    /**
+     * Returns the selection area associated with this selector.
+     */
     public getArea() {
         return this.area;
     }
 
     /**
      * Deselects a block.
-     * @param block to be deselected
-     * @param skipAnnouncement
+     * @param block The block to be deselected, identified by its instance or ID.
+     * @param skipAnnouncement Whether to skip emitting a deselection event.
      */
     public deselectBlock(block: EditorBlock | string, skipAnnouncement: boolean = false) {
         if (typeof block === "string") {
@@ -65,9 +82,9 @@ export class EditorSelector {
 
     /**
      * Selects a block.
-     * @param block to be selected
-     * @param addToSelection if the block should be added to the current selection, otherwise the current selection will be cleared
-     * @param event the event that will be passed to the block if it was already selected
+     * @param block The block to be selected, identified by its instance or ID.
+     * @param addToSelection Whether to add the block to the current selection.
+     * @param event The event triggering the selection, if applicable.
      */
     public selectBlock(block: EditorBlock | string, addToSelection: boolean = false, event?: MouseEvent) {
         if (this.editor.getMode() !== "select") return;
@@ -177,8 +194,8 @@ export class EditorSelector {
 
     /**
      * Checks if a block is selected.
-     * @param block to check
-     * @param soloOnly if is counted only if the block is the only selected block
+     * @param block The block to check, identified by its instance or ID.
+     * @param soloOnly Whether to check if the block is the only selected block.
      */
     public isSelected(block: EditorBlock | string, soloOnly: boolean = false) {
         if (typeof block === "string") {
@@ -199,7 +216,7 @@ export class EditorSelector {
     }
 
     /**
-     * Returns
+     * Returns the currently selected blocks.
      */
     public getSelectedBlocks() {
         return this.selectedBlocks;

@@ -2,7 +2,16 @@ import {EditorPluginApiFeature} from "@/editor/plugin/editor/EditorPluginApiFeat
 import {QuickJSHandle} from "quickjs-emscripten";
 import {EditorPluginApiData} from "@/editor/plugin/editor/EditorPluginApi";
 
+/**
+ * Represents a feature for managing a cache specific to the plugin.
+ */
 export class CacheApiFeature extends EditorPluginApiFeature {
+    /**
+     * Registers cache-related functions (`get`, `set`, `remove`) into the JavaScript context.
+     * 
+     * @param obj - The QuickJS object to which the `cache` object will be added.
+     * @param data - The data containing the plugin and context information.
+     */
     register(obj: QuickJSHandle, data: EditorPluginApiData): void {
         const context = data.context;
         const plugin = data.plugin;

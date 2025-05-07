@@ -21,7 +21,7 @@ describe('AuthController', () => {
         name: 'Test User',
         email: 'test@example.com',
         token: 'verify-token',
-        active: false
+        active: true
     } as any;
 
     beforeEach(async () => {
@@ -76,7 +76,7 @@ describe('AuthController', () => {
 
     describe('in()', () => {
         it('should initiate email request when no code provided and no valid request exists', async () => {
-            const dto: InAuthDTO = {email: mockUser.email, type: 'EMAIL'} as any;
+            const dto: InAuthDTO = {email: mockUser.email, type: 'EMAIL', active: true} as any;
             usersService.getByEmail.mockResolvedValue(mockUser);
             authService.hasUserValidRequest.mockResolvedValue(false);
             authService.createRequest.mockResolvedValue({code: '123456'} as any);
@@ -92,7 +92,7 @@ describe('AuthController', () => {
         });
 
         it('should throw if user has existing valid email request', async () => {
-            const dto: InAuthDTO = {email: mockUser.email, type: 'EMAIL'} as any;
+            const dto: InAuthDTO = {email: mockUser.email, type: 'EMAIL', active: true} as any;
             usersService.getByEmail.mockResolvedValue(mockUser);
             authService.hasUserValidRequest.mockResolvedValue(true);
 
@@ -101,7 +101,7 @@ describe('AuthController', () => {
         });
 
         it('should authenticate with code and return token', async () => {
-            const dto: InAuthDTO = {email: mockUser.email, type: 'EMAIL', code: '654321'} as any;
+            const dto: InAuthDTO = {email: mockUser.email, type: 'EMAIL', code: '654321', active: true} as any;
             usersService.getByEmail.mockResolvedValue(mockUser);
             authService.getValidByCode.mockResolvedValue({code: '654321', user: mockUser._id} as any);
             usersService.generateToken.mockResolvedValue('jwt-token');
@@ -112,7 +112,7 @@ describe('AuthController', () => {
         });
 
         it('should reject invalid code', async () => {
-            const dto: InAuthDTO = {email: mockUser.email, type: 'EMAIL', code: '000000'} as any;
+            const dto: InAuthDTO = {email: mockUser.email, type: 'EMAIL', code: '000000', active: true} as any;
             usersService.getByEmail.mockResolvedValue(mockUser);
             authService.getValidByCode.mockResolvedValue(null);
 
@@ -121,7 +121,7 @@ describe('AuthController', () => {
         });
 
         it('should authenticate with email and password', async () => {
-            const dto: InAuthDTO = {email: mockUser.email, type: 'EMAIL_PASSWORD', password: 'pass'} as any;
+            const dto: InAuthDTO = {email: mockUser.email, type: 'EMAIL_PASSWORD', password: 'pass', active: true} as any;
             usersService.getByEmail.mockResolvedValue(mockUser);
             usersService.comparePassword.mockResolvedValue(true);
             usersService.generateToken.mockResolvedValue('jwt-pass');
@@ -131,7 +131,7 @@ describe('AuthController', () => {
         });
 
         it('should reject missing password for EMAIL_PASSWORD', async () => {
-            const dto: InAuthDTO = {email: mockUser.email, type: 'EMAIL_PASSWORD'} as any;
+            const dto: InAuthDTO = {email: mockUser.email, type: 'EMAIL_PASSWORD', active: true} as any;
             usersService.getByEmail.mockResolvedValue(mockUser);
 
             await expect(controller.in(dto)).rejects.toThrow(BadRequestException);
@@ -139,7 +139,7 @@ describe('AuthController', () => {
         });
 
         it('should reject invalid password', async () => {
-            const dto: InAuthDTO = {email: mockUser.email, type: 'EMAIL_PASSWORD', password: 'wrong'} as any;
+            const dto: InAuthDTO = {email: mockUser.email, type: 'EMAIL_PASSWORD', password: 'wrong', active: true} as any;
             usersService.getByEmail.mockResolvedValue(mockUser);
             usersService.comparePassword.mockResolvedValue(false);
 
@@ -148,7 +148,7 @@ describe('AuthController', () => {
         });
 
         it('should reject unknown authentication type', async () => {
-            const dto = {email: mockUser.email, type: 'UNKNOWN'} as any;
+            const dto = {email: mockUser.email, type: 'UNKNOWN', active: true} as any;
             usersService.getByEmail.mockResolvedValue(mockUser);
 
             await expect(controller.in(dto)).rejects.toThrow(BadRequestException);
@@ -201,11 +201,11 @@ describe('AuthController', () => {
 
         it('should activate user and return success', async () => {
             const dto: ActivateAuthenticationDTO = {token: 'token'} as any;
-            usersService.getByVerifyToken.mockResolvedValue(mockUser);
+            usersService.getByVerifyToken.mockResolvedValue({...mockUser, active: false} as any);
 
             const result = await controller.activate(dto);
             expect(result).toEqual({success: true});
-            expect(usersService.activate).toHaveBeenCalledWith(mockUser);
+            expect(usersService.activate).toHaveBeenCalledWith({...mockUser, active: false} as any);
         });
     });
 });

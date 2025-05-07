@@ -140,6 +140,10 @@
                 "failed": "Login failed. Make sure you entered correct account details.",
                 "wrong-email": "You entered wrong e-mail or there is already a request for login. Check your e-mail and try again.",
                 "wrong-code": "You entered wrong code. Check your e-mail and try again."
+            },
+            "expired": {
+                "title": "You have been logged out",
+                "description": "Your login has expired. Please log in again to continue working."
             }
         },
         "register": {
@@ -296,11 +300,21 @@
         "user-settings": {
             "user": {
                 "title": "Account Settings",
-                "new-password": "New Password",
                 "name": "New Name",
                 "current": "Current Password",
                 "change": "Change Details",
                 "error": "Failed to change the details. Please check if you entered the correct password."
+            },
+            "change-email": {
+                "warning": "Changing email is not possible directly in the settings due to security reasons. If you want to change your email, please contact the support team at support@materalist.com."
+            },
+            "password": {
+                "title": "Change password",
+                "new-password-repeat": "New password again",
+                "new-password": "New password",
+                "change": "Change password",
+                "error": "Data could not be changed.",
+                "match": "Passwords do not match."
             },
             "export": {
                 "title": "Export Personal Data",
@@ -410,7 +424,7 @@
         },
         "disconnected": {
             "title": "You have been disconnected",
-            "help": "You have been disconnected from the Materalist servers. Please check your internet connection and try again. If the problem persists, try refreshing the page or logging out and logging back in."
+            "help": "You have been disconnected from the Materalist servers. Please check your internet connection and try again. If the problem persists, try refreshing the page or logging out and logging back in.  We'll try to log you back in if we can."
         }
     },
     "editor": {
@@ -707,11 +721,16 @@
         },
         "attendees": {
             "title": "Attendees",
-            "current": "You"
+            "current": "You",
+            "limit": "After the limit of participants is reached, only the owner of the material will be able to join."
         },
         "disconnected": {
             "title": "You have been disconnected",
-            "help": "You have been disconnected from the Materalist servers. Please check your internet connection and try again. If the problem persists, try refreshing the page or logging out and logging back in."
+            "help": "You have been disconnected from the Materalist servers. Please check your internet connection and try again. If the problem persists, try refreshing the page or logging out and logging back in.  We'll try to log you back in if we can."
+        },
+        "kicked": {
+            "title": "You've been kicked",
+            "help": "You've been kicked from the material. The editor room is probably full (only the owner has access to the material) or you no longer have access to the material."
         }
     },
     "blocks": {
@@ -781,6 +800,12 @@
             "presenter": "Presenter",
             "message-example": "Messages will appear here.",
             "loading": "Loading..."
+        },
+        "latex": {
+            "name": "LaTeX"
+        },
+        "code": {
+            "name": "Code"
         }
     },
     "property": {
@@ -903,6 +928,9 @@
             "label": "Size",
             "width": "W",
             "height": "H"
+        },
+        "information": {
+            "label": "Information about the block"
         }
     }
 }

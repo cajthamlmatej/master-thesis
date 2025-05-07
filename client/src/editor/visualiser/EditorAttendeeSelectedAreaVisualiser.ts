@@ -11,12 +11,19 @@ interface Area {
     name: string;
 }
 
+/**
+ * Visualizes the selected areas of attendees in a collaborative editor.
+ */
 export default class EditorAttendeeAreaVisualiser {
     private editor: Editor;
 
     private element!: HTMLElement;
     private areas = new Map<string, Area>();
 
+    /**
+     * Initializes the attendee area visualizer for the editor.
+     * @param editor The editor instance.
+     */
     constructor(editor: Editor) {
         this.editor = editor;
 
@@ -39,6 +46,9 @@ export default class EditorAttendeeAreaVisualiser {
         this.editor.events.BLOCK_REMOVED.on(() => this.recalculate());
     }
 
+    /**
+     * Recalculates the attendee areas based on their selected blocks.
+     */
     public recalculate() {
         this.areas.clear();
 
@@ -62,6 +72,9 @@ export default class EditorAttendeeAreaVisualiser {
         this.visualise();
     }
 
+    /**
+     * Updates the visualization of attendee areas.
+     */
     private visualise() {
         if (this.areas.size === 0) {
             this.element.innerHTML = "";

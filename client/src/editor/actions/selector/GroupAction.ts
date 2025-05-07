@@ -3,6 +3,9 @@ import type {ActionKeybind, ActionParameters} from "@/editor/actions/EditorActio
 import {EditorBlock} from "@/editor/block/EditorBlock";
 import {generateUUID} from "@/utils/Generators";
 
+/**
+ * Represents the action of grouping selected blocks into a single group.
+ */
 export class GroupAction extends SelectorAction {
     constructor() {
         super("group", "mdi mdi-group");

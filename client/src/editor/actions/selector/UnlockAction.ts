@@ -1,6 +1,9 @@
 import {SelectorAction} from "@/editor/actions/SelectorAction";
 import type {ActionParameters} from "@/editor/actions/EditorAction";
 
+/**
+ * Represents the action of unlocking selected blocks.
+ */
 export class UnlockAction extends SelectorAction {
     constructor() {
         super("unlock", "mdi mdi-lock-open");

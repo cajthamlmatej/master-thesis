@@ -8,6 +8,10 @@ interface KeybindMapping {
     isVisible: () => boolean;
 }
 
+/**
+ * The EditorKeybinds class manages keybindings for the editor.
+ * It listens for keyboard and mouse events, processes keybinds, and executes associated actions.
+ */
 export class EditorKeybinds {
     private readonly editor: Editor;
     private keybinds: KeybindMapping[] = [];
@@ -32,8 +36,8 @@ export class EditorKeybinds {
     }
 
     /**
-     * This method initializes the keybinds for the editor.
-     * This method can be called multiple times to reinitialize the keybinds (for example when actions are added or removed).
+     * Initializes the keybinds for the editor by mapping actions to key combinations.
+     * This method can be called multiple times to refresh the keybind mappings.
      */
     public initializeKeybinds() {
         for (let action of this.editor.getContext().getActions()) {
@@ -57,10 +61,20 @@ export class EditorKeybinds {
         }
     }
 
+    /**
+     * Retrieves the current list of keybind mappings.
+     * 
+     * @returns An array of keybind mappings.
+     */
     public getKeybinds(): KeybindMapping[] {
         return this.keybinds;
     }
 
+    /**
+     * Processes keyboard events and executes the corresponding actions if a keybind matches.
+     * 
+     * @param event - The keyboard event to process.
+     */
     private process(event: KeyboardEvent) {
         const positionInEditor = this.editor.screenToEditorCoordinates(this.mouse.x, this.mouse.y);
 
@@ -129,6 +143,11 @@ export class EditorKeybinds {
         }
     }
 
+    /**
+     * Tracks the current mouse position to determine the cursor's location in the editor.
+     * 
+     * @param event - The mouse event containing the cursor's position.
+     */
     private trackMouse(event: MouseEvent) {
         this.mouse.x = event.clientX;
         this.mouse.y = event.clientY;

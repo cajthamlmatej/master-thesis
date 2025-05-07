@@ -1,5 +1,5 @@
 <template>
-    <div class="player-container">
+    <div class="player-container" data-cy="player">
         <div v-once :key="'player'" ref="playerElement" class="player" v-html="''">
         </div>
     </div>

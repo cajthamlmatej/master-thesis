@@ -1,6 +1,10 @@
 import type {ActionKeybind, ActionParameters} from "@/editor/actions/EditorAction";
 import {ContextAction} from "@/editor/actions/ContextAction";
 
+/**
+ * Represents the action of deleting selected blocks.
+ * This action is visible when at least one block is selected, all selected blocks support selection, and none are locked.
+ */
 export class DeleteAction extends ContextAction {
     constructor() {
         super("delete");
@@ -23,6 +27,13 @@ export class DeleteAction extends ContextAction {
                 altKey: 'NEVER',
                 mode: 'COULD_BE_VISIBLE'
             },
+            {
+                key: 'Backspace',
+                ctrlKey: 'NEVER',
+                shiftKey: 'NEVER',
+                altKey: 'NEVER',
+                mode: 'COULD_BE_VISIBLE'
+            }
         ]
     };
 }

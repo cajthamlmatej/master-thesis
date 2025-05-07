@@ -1,7 +1,7 @@
 <template>
     <Navigation v-model:menu="visible" full-control shift side="right">
         <template #primary>
-            <div ref="menu" class="editor-property">
+            <div ref="menu" class="editor-property" data-cy="editor-property">
             </div>
             <div ref="resizer" class="editor-property-resizer" @mousedown.stop.prevent="resize"></div>
             <!--            <div class="editor-property-hider"-->
@@ -15,7 +15,7 @@
             'editor-property-hint--visible': canBeVisible && !visible
          }"
          class="editor-property-hint"
-         @click="visible = true">
+         @click="visible = true; touched = false">
         <span class="mdi mdi-chevron-right"></span>
     </div>
 </template>
@@ -28,6 +28,7 @@ import {useEditorStore} from "@/stores/editor";
 const onMobile = ref(false);
 const visible = ref(false);
 const canBeVisible = ref(false);
+const touched = ref(false);
 
 onMounted(() => {
     onMobile.value = window.innerWidth < 768;
@@ -65,6 +66,7 @@ const resize = (e: MouseEvent) => {
             parent.style.width = `${160}px`;
 
             visible.value = false;
+            touched.value = true;
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("mouseup", onMouseUp);
             return;
@@ -124,7 +126,7 @@ watch(() => materialStore.getEditor(), (value) => {
         debounce = setTimeout(() => {
             canBeVisible.value = blocks.length > 0;
 
-            if (canBeVisible.value && firstTime.value && !onMobile.value) {
+            if (canBeVisible.value && (firstTime.value || !touched.value) && !onMobile.value) {
                 visible.value = true;
                 firstTime.value = false;
                 return;

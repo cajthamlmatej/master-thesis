@@ -1,6 +1,9 @@
 import Editor from "@/editor/Editor";
 import {EditorBlock} from "@/editor/block/EditorBlock";
 
+/**
+ * Represents the state of the editor, including its configuration and blocks.
+ */
 export class EditorState {
 
     public editor: Object = {};
@@ -8,12 +11,19 @@ export class EditorState {
 
 }
 
+/**
+ * Manages the undo/redo history for the editor.
+ */
 export class EditorHistory {
 
     private editor: Editor;
     private forwardStack: EditorState[] = [];
     private backwardStack: EditorState[] = [];
 
+    /**
+     * Initializes the EditorHistory with the given editor instance.
+     * @param editor The editor instance to associate with this history manager.
+     */
     constructor(editor: Editor) {
         this.editor = editor;
 
@@ -22,6 +32,9 @@ export class EditorHistory {
         });
     }
 
+    /**
+     * Saves the current state of the editor to the history stack.
+     */
     public saveState() {
         const state = new EditorState();
 
@@ -37,6 +50,10 @@ export class EditorHistory {
         this.backwardStack = [];
     }
 
+    /**
+     * Applies a given editor state, restoring the editor to that state.
+     * @param state The editor state to apply.
+     */
     public applyState(state: EditorState) {
         const editor = state.editor as {
             size: { width: number; height: number; }
@@ -57,6 +74,9 @@ export class EditorHistory {
         this.editor.events.HISTORY_JUMP.emit();
     }
 
+    /**
+     * Undoes the last action by restoring the previous editor state.
+     */
     public undo() {
         if (this.forwardStack.length === 0) {
             return;
@@ -76,6 +96,9 @@ export class EditorHistory {
         this.applyState(state);
     }
 
+    /**
+     * Redoes the last undone action by restoring the next editor state.
+     */
     public redo() {
         if (this.backwardStack.length === 0) {
             return;
@@ -91,10 +114,18 @@ export class EditorHistory {
         this.applyState(state);
     }
 
+    /**
+     * Checks if there are states available to redo.
+     * @returns True if redo is possible, false otherwise.
+     */
     canRedo() {
         return this.backwardStack.length > 0;
     }
 
+    /**
+     * Checks if there are states available to undo.
+     * @returns True if undo is possible, false otherwise.
+     */
     canUndo() {
         return this.forwardStack.length > 0;
     }

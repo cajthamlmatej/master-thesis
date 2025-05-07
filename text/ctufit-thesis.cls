@@ -1,6 +1,8 @@
 %% This is the ctufit-thesis document class. It is used to produce theses
 %% for submission to Czech Technical University, Faculty of Information Technology.
 %%
+%% This is version 1.5.4, built 5. 5. 2025.
+%%
 %% Get the newest version from
 %% https://gitlab.fit.cvut.cz/theses-templates/FITthesis-LaTeX
 %%
@@ -35,21 +37,44 @@
 \DeclareOption{bachelor}{\def\@ctufitthesistype{B}}
 \DeclareOption{master}{\def\@ctufitthesistype{M}}
 \DeclareOption{dissertation}{\def\@ctufitthesistype{D}}
-\DeclareOption{bw}{\def\@ctufitthesisblackandwhite}
 \DeclareOption{czech}{
 	\AtBeginDocument{\selectlanguage{czech}}
 	\PassOptionsToPackage{english,main=czech}{babel}
 	\def\@ctufitlang{C}
+	\newcommand{\ctufitthesistypename}{
+		\if\@ctufitthesistype B(Bakalářská práce)%
+    		\else
+				\if\@ctufitthesistype M(Diplomová práce)%
+    			\else(Disertační práce)%
+    			\fi
+		\fi
+	}
 }
 \DeclareOption{english}{
 	\AtBeginDocument{\selectlanguage{english}}
 	\PassOptionsToPackage{czech,main=english}{babel}
 	\def\@ctufitlang{E}
+	\newcommand{\ctufitthesistypename}{
+		\if\@ctufitthesistype B(Bachelor's thesis)%
+    		\else
+				\if\@ctufitthesistype M(Masters's thesis)%
+    			\else(Dissertation thesis)%
+    			\fi
+		\fi
+	}
 }
 \DeclareOption{slovak}{
 	\AtBeginDocument{\selectlanguage{slovak}}
 	\PassOptionsToPackage{english,main=slovak}{babel}
 	\def\@ctufitlang{S}
+	\newcommand{\ctufitthesistypename}{
+		\if\@ctufitthesistype B(Bakalárska práca)%
+    		\else
+				\if\@ctufitthesistype M(Diplomová práca)%
+    			\else(Disertačná práca)%
+    			\fi
+		\fi
+	}
 }
 \DeclareOption{subsubsection}{
 	\def\@ctufitsecdepth{3}
@@ -57,17 +82,18 @@
 \DeclareOption{paragraph}{
 	\def\@ctufitsecdepth{4}
 }
+\DeclareOption{bw}{\def\@ctufitthesisblackandwhite}
 \PassOptionsToPackage{svgnames}{xcolor}
 \PassOptionsToPackage{newfloat}{minted}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
-\ExecuteOptions{unicode}
 \ExecuteOptions{subsubsection}
 \ProcessOptions\relax
 
 % main declarations, loading files
 \LoadClass[a4paper,11pt]{book}[2020/04/10]
 \RequirePackage{xcolor}[2023/11/15]
-\RequirePackage[a-1b]{pdfx}  % PDF/A-1b compliance
+\usepackage{silence}
+\WarningFilter{pdfx}{Setting all color commands to rgb}
 \RequirePackage{babel}[2021/03/03]
 \if@twoside
     \RequirePackage[top=4.6cm,bottom=4cm,footskip=4em,inner=4.7cm,outer=3.25cm]{geometry}[2020/01/02] %page layout
@@ -97,8 +123,6 @@
 \fi
 % colours end
 
-\RequirePackage{hyperref}[2020/05/15]
-
 \DeclareRobustCommand{\ctufittitle}[1]{
 	\def\thectufittitle{#1}
 	\title{#1}
@@ -120,6 +144,12 @@
 }
 \DeclareRobustCommand{\ctufitdepartment}[1]{
 	\def\thectufitdepartment{#1}
+}
+\DeclareRobustCommand{\ctufitprogram}[1]{
+	\def\thectufitprogram{#1}
+}
+\DeclareRobustCommand{\ctufitspecialisation}[1]{
+	\def\thectufitspecialisation{#1}
 }
 \DeclareRobustCommand{\ctufityear}[1]{
 	\def\thectufityear{#1}
@@ -148,12 +178,16 @@
 		\if\@ctufitlang C{Bakal{\' a}{\v r}sk{\' a} pr{\' a}ce}\else\if\@ctufitlang S{Bakal{\' a}rska pr{\' a}ca}\else{Bachelor's thesis}\fi\fi
 	}\else\if\@ctufitthesistype M{%
 		\if\@ctufitlang C{Diplomov{\' a} pr{\' a}ce}\else\if\@ctufitlang S{Diplomov{\' a} pr{\' a}ca}\else{Master's thesis}\fi\fi
-	}\else\if\@ctufitthesistype D{Dissertation thesis}\else{\ClassError{ctufit-thesis}{Thesis type not specified}{Add either `bachelor', `master', or `dissertation' option to this document class}}\fi\fi\fi
+	}\else\if\@ctufitthesistype D\if\@ctufitlang C{Disertačn{\' i} pr{\' a}ce}\else\if\@ctufitlang S{Disertačn{\' a} pr{\' a}ca}\else{Dissertation thesis}\fi\fi\else{\ClassError{ctufit-thesis}{Thesis type not specified}{Add either `bachelor', `master', or `dissertation' option to this document class}}\fi\fi\fi
 }
 
 \DeclareRobustCommand{\thectufituniversity}{\if\@ctufitlang C{{\v C}esk{\' e} vysok{\' e} u{\v c}en{\' i} technick{\' e} v~Praze}\else\if\@ctufitlang S{{\v C}esk{\' e} vysok{\' e} u{\v c}en{\' i} technick{\' e} v~Praze}\else{Czech Technical University in Prague}\fi\fi}
 
 \DeclareRobustCommand{\thectufitfaculty}{\if\@ctufitlang C{Fakulta informa{\v c}n{\' i}ch technologi{\' i}}\else\if\@ctufitlang S{Fakulta informa{\v c}n{\' i}ch technologi{\' i}}\else{Faculty of Information Technology}\fi\fi}
+
+\DeclareRobustCommand{\thectufitprogramlabelcapital}{\if\@ctufitlang C{Studijní program}\else\if\@ctufitlang S{Študijný program}\else{Study program}\fi\fi}
+
+\DeclareRobustCommand{\thectufitspecialisationlabelcapital}{\if\@ctufitlang C{Specializace}\else\if\@ctufitlang S{Špecializácia}\else{Specialisation}\fi\fi}
 
 \DeclareRobustCommand{\thectufitsupervisorlabelcapital}{\if\@ctufitlang C{Vedouc{\' i}}\else\if\@ctufitlang S{Ved\'uci}\else{Supervisor}\fi\fi}
 
@@ -163,27 +197,47 @@
 
 \DeclareRobustCommand{\thectufitlistinglabel}{\if\@ctufitlang C{V{\'y}pis k{\'o}du}\else\if\@ctufitlang S{V{\'y}pis k{\'o}du}\else{Code listing}\fi\fi}
 
-\DeclareRobustCommand{\thectufitlollabel}{\if\@ctufitlang C{Seznam v{\'y}pis{\r u} k{\'o}du}\else\if\@ctufitlang S{Zoznam v{\'y}pisov k{\'o}du}\else{List of code listings}\fi\fi}
+\DeclareRobustCommand{\thectufitlollabel}{\if\@ctufitlang C{Seznam v{\'y}pis{\r u} k{\'o}du}\else\if\@ctufitlang S{Zoznam v{\'y}pisov k{\'o}du}\else{List of Code listings}\fi\fi}
+
+\DeclareRobustCommand{\thectufitalgorithmlabel}{\if\@ctufitlang C{Pseudokód}\else\if\@ctufitlang S{Pseudokód}\else{Algorithm}\fi\fi}
+
+\DeclareRobustCommand{\thectufitloalabel}{\if\@ctufitlang C{Seznam pseudokódů}\else\if\@ctufitlang S{Zoznam pseudokódov}\else{List of Algorithms}\fi\fi}
 
 \DeclareRobustCommand{\thectufitdeclarationlabel}{\if\@ctufitlang C{Prohlášení}\else\if\@ctufitlang E{Declaration}\else{Vyhlásenie}\fi\fi}
 
 \DeclareRobustCommand{\thectufitabbreviationlabel}{\if\@ctufitlang C{Seznam zkratek}\else\if\@ctufitlang E{List of abbreviations}\else{Zoznam skratiek}\fi\fi}
 
-\DeclareRobustCommand{\thectufitcopyrighttext}{\if\@ctufitlang C{Tato pr{\' a}ce vznikla jako {\v s}koln{\' i} d{\' i}lo na {\v C}esk{\' e}m vysok{\' e}m u{\v c}en{\' i} technick{\' e}m v~Praze, Fakult{\v e} informa{\v c}n{\' i}ch technologi{\' i}. Pr{\' a}ce je chr{\' a}n{\v e}na pr{\' a}vn{\' i}mi p{\v r}edpisy a~mezin{\' a}rodn{\' i}mi {\' u}mluvami o~pr{\' a}vu autorsk{\' e}m a~pr{\' a}vech souvisej{\' i}c{\' i}ch s~pr{\' a}vem autorsk{\' y}m. K~jej\'\i{}mu u\v zit\'\i{}, s~v\'yjimkou bez\'uplatn\'ych z\'akonn\'ych licenc\'\i{} a nad r\'amec opr\'avn\v en\'\i{} uveden\'ych v~Prohl\'a\v sen\'\i{}, je nezbytn\'y souhlas autora.}\else\if\@ctufitlang S{T\'ato pr\'aca vznikla ako \v skolsk\'e dielo na  FIT \v CVUT v Prahe. Pr\'aca je chr\'anen\'a medzin\'arodn\'ymi predpismi a~zmluvami o~autorskom pr\'ave a~pr\'avach s\'uvisiacich s~autorsk\'ym pr\'avom. Na jej vyu\v zitie, s~v\'ynimkou bezplatn\'ych z\'akonn\'ych licenci\'\i, je nutn\'y s\'uhlas autora.}\else{This thesis is school work as defined by Copyright Act of the Czech Republic. It has been submitted at Czech Technical University in Prague, Faculty of Information Technology. The thesis is protected by the Copyright Act and its usage without author's permission is prohibited (with exceptions defined by the Copyright Act).}\fi\fi}
+\DeclareRobustCommand{\thectufitcopyrighttext}{\if\@ctufitlang C{Tato pr{\' a}ce vznikla jako {\v s}koln{\' i} d{\' i}lo na {\v C}esk{\' e}m vysok{\' e}m u{\v c}en{\' i} technick{\' e}m v~Praze, Fakult{\v e} informa{\v c}n{\' i}ch technologi{\' i}. Pr{\' a}ce je chr{\' a}n{\v e}na pr{\' a}vn{\' i}mi p{\v r}edpisy a~mezin{\' a}rodn{\' i}mi {\' u}mluvami o~pr{\' a}vu autorsk{\' e}m a~pr{\' a}vech souvisej{\' i}c{\' i}ch s~pr{\' a}vem autorsk{\' y}m. K~jej\'\i{}mu u\v zit\'\i{}, s~v\'yjimkou bez\'uplatn\'ych z\'akonn\'ych licenc\'\i{} a nad r\'amec opr\'avn\v en\'\i{} uveden\'ych v~Prohl\'a\v sen\'\i{}, je nezbytn\'y souhlas autora.}\else\if\@ctufitlang S{T\'ato pr\'aca vznikla ako \v skolsk\'e dielo na  FIT \v CVUT v~Prahe. Pr\'aca je chr\'anen\'a medzin\'arodn\'ymi predpismi a~zmluvami o~autorskom pr\'ave a~pr\'avach s\'uvisiacich s~autorsk\'ym pr\'avom. Na jej vyu\v zitie, s~v\'ynimkou bezplatn\'ych z\'akonn\'ych licenci\'\i, je nutn\'y s\'uhlas autora.}\else{This thesis is school work as defined by Copyright Act of the Czech Republic. It has been submitted at Czech Technical University in Prague, Faculty of Information Technology. The thesis is protected by the Copyright Act and its usage without author's permission is prohibited (with exceptions defined by the Copyright Act).}\fi\fi}
+
+% Generate metadata file
+\AtBeginDocument{%
+	\newwrite\metadatafile
+	\immediate\openout\metadatafile=\jobname.xmpdata
+	\immediate\write\metadatafile{\string\Title{\thectufittitle}}
+	\immediate\write\metadatafile{\string\Author{\thectufitauthorfull}}
+	\immediate\write\metadatafile{\string\Subject{\thectufittitle\ctufitthesistypename}}
+	\immediate\write\metadatafile{\string\Copyright{© \thectufityear\space  \thectufitauthorfull}}
+	\immediate\closeout\metadatafile
+}
 
 % title page
 \renewcommand{\maketitle}{\begin{titlepage}%
 \newgeometry{left=67mm,top=80mm,right=40mm}%\thispagestyle{empty}%
-\noindent{\large\noindent\thectufitthesistype}
-\vskip 3mm
+\noindent
+\includegraphics[width=3cm]{images/logoCVUT.pdf}
+\vskip 1.5cm
 \noindent{\noindent\huge\bfseries\color{black}\begin{flushleft}\begin{onehalfspace}\MakeUppercase{\thectufittitle}\end{onehalfspace}\end{flushleft}}
-\vskip 35mm
+\vskip 10mm
 \noindent{\large  \bfseries \thectufitauthorfull}
 
 \vfill
 
-\noindent{\thectufitfaculty\\
+\noindent{\thectufitthesistype\\
+\thectufitfaculty\\
+\thectufituniversity\\
 \thectufitdepartment\\
+\thectufitprogramlabelcapital: \thectufitprogram\\
+\thectufitspecialisationlabelcapital: \thectufitspecialisation\\
 \thectufitsupervisorlabelcapital: \thectufitsupervisor\\
 \today}\end{titlepage}
 \restoregeometry
@@ -290,13 +344,11 @@
 
 \setcounter{secnumdepth}{\@ctufitsecdepth} % numbering sections
 \newcommand{\stopTOCentries}{
-  \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
-\setcounter{tocdepth}{1}
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
 }
 
 \newcommand{\resumeTOCentries}{
   \addtocontents{toc}{\protect\setcounter{tocdepth}{1}} % table of content depth
-  \setcounter{tocdepth}{1}
 }
 % frontmatter headings end
 % frontmatter pseudochapters: named part without printing actual chapter heading
@@ -384,7 +436,7 @@
   \noindent\ignorespaces
 }{\vskip 1cm
 \noindent
-\if\@ctufitlang E{In}\else{V}\fi~\thectufitdeclarationplace{} \if\@ctufitlang C{dne}\else\if\@ctufitlang S{dňa}\else{on}\fi\fi~\thectufitdeclarationdate{}}
+\if\@ctufitlang E{In}\else{V}\fi~\thectufitdeclarationplace{} \if\@ctufitlang C{dne}\else\if\@ctufitlang S{dňa}\else{on}\fi\fi~\thectufitdeclarationdate{} \hspace{.36\textwidth} Bc. Matěj Cajthaml}
 % declaration page END
 
 % abstract page
@@ -480,9 +532,10 @@
 \theoremstyle{plain}
 \newtheorem{theorem}{\if\@ctufitlang C{Věta}\else\if\@ctufitlang E{Theorem}\else{Veta}\fi\fi}
 \newtheorem{lemma}[theorem]{\if\@ctufitlang C{Tvrzení}\else\if\@ctufitlang E{Lemma}\else{Tvrdenie}\fi\fi}
+\newtheorem{observation}[theorem]{\if\@ctufitlang C{Pozorování}\else\if\@ctufitlang E{Observation}\else{Pozorovanie}\fi\fi}
 \newtheorem{corollary}[theorem]{\if\@ctufitlang C{Důsledek}\else\if\@ctufitlang E{Corollary}\else{Dôsledok}\fi\fi}
 \newtheorem{proposition}[theorem]{\if\@ctufitlang C{Návrh}\else\if\@ctufitlang E{Proposition}\else{Návrh}\fi\fi}
-\newtheorem{definition}[theorem]{\if\@ctufitlang C{Definice}\else\if\@ctufitlang E{Definiton}\else{Definícia}\fi\fi}
+\newtheorem{definition}[theorem]{\if\@ctufitlang C{Definice}\else\if\@ctufitlang E{Definition}\else{Definícia}\fi\fi}
 \theoremstyle{definition}
 \newtheorem{example}[theorem]{\if\@ctufitlang C{Příklad}\else\if\@ctufitlang E{Example}\else{Príklad}\fi\fi}
 \theoremstyle{remark}
@@ -502,17 +555,19 @@
 
 \vskip 0.5cm
 
-{\noindent\color{heading}\bfseries Keywords\hspace{1em}}{\thectufitkeywords}}\else{%
+{\noindent\color{heading}\bfseries Keywords\hspace{1em}}{\thectufitkeywords}
+\vfill}\else{%
 \begin{abstrakt}%
 \thectufitabstrakt
 \end{abstrakt}
 
 \vskip 0.5cm
 
-{\noindent\color{heading}\bfseries Klíčová slova\hspace{1em}}{\thectufitklicovaslova}}\fi
+{\noindent\color{heading}\bfseries Klíčová slova\hspace{1em}}{\thectufitklicovaslova}\vfill}
+\fi
+\end{abstractpage}
 
-\vskip 1cm
-
+\begin{abstractpage}
 \if\@ctufitlang E{%
 \begin{abstrakt}%
 \thectufitabstrakt
@@ -520,14 +575,16 @@
 
 \vskip 0.5cm
 
-{\noindent\color{heading}\bfseries Klíčová slova\hspace{1em}}{\thectufitklicovaslova}}\else{
+{\noindent\color{heading}\bfseries Klíčová slova\hspace{1em}}{\thectufitklicovaslova}
+\vfill}\else{
 \begin{abstract}%
 \thectufitabstract
 \end{abstract}
 
 \vskip 0.5cm
 
-{\noindent\color{heading}\bfseries Keywords\hspace{1em}}{\thectufitkeywords}}\fi
+{\noindent\color{heading}\bfseries Keywords\hspace{1em}}{\thectufitkeywords}
+\vfill}\fi
 \end{abstractpage}
 }
 
@@ -554,4 +611,15 @@
 		\fi
 		\setmintedinline{bgcolor={}}
 	}{}%
+	\@ifpackageloaded{algorithm}{%
+		\numberwithin{algorithm}{chapter}%
+		\DeclareRobustCommand{\listalgorithmname}{\thectufitloalabel}%
+		\DeclareRobustCommand{\ALG@name}{\thectufitalgorithmlabel}%
+		\DeclareRobustCommand{\thectufitlistofalgorithmscommand}{\listofalgorithms}%
+	}{%
+		\DeclareRobustCommand{\thectufitlistofalgorithmscommand}{}%
+	}%
 }
+
+% Should be last beause of hyperref
+\RequirePackage[a-1b]{pdfx}  % PDF/A-1b compliance

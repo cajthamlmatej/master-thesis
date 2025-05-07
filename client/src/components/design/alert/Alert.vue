@@ -27,8 +27,6 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
-
-    // TODO: Add support for custom icon
 });
 
 const visible = ref(true);
@@ -51,9 +49,11 @@ const classes = computed(() => ({
     padding: 1rem;
     justify-content: space-between;
 
-    border-radius: 0.5rem;
-    background-color: var(--background-color);
+    border-radius: 1rem;
+    border: 3px solid color-mix(in srgb, var(--color), transparent 60%);
+    background-color: color-mix(in srgb, var(--background-color), transparent 35%);
     color: var(--color);
+    backdrop-filter: blur(18px);
 
     &--info {
         --background-color: var(--color-alert-info-background);

@@ -14,6 +14,13 @@
             <p v-t>{{ props.type }}.disconnected.help</p>
         </Card>
     </Dialog>
+    <Dialog v-model:value="kicked" persistent>
+        <Card dialog>
+            <p v-t class="title">{{ props.type }}.kicked.title</p>
+
+            <p v-t>{{ props.type }}.kicked.help</p>
+        </Card>
+    </Dialog>
 </template>
 
 <script lang="ts" setup>
@@ -28,12 +35,20 @@ const props = defineProps({
 });
 
 const disconnected = ref(false);
+const kicked = ref(false);
 const loading = ref(true);
 
 onMounted(async () => {
     console.log(props.type);
     communicator.DISCONNECTED.on(() => {
         disconnected.value = true;
+    });
+    communicator.KICKED.on(() => {
+        kicked.value = true;
+    });
+    communicator.RECONNECTED.on(() => {
+        disconnected.value = false;
+        kicked.value = false;
     });
     await communicator.readyPromise;
 

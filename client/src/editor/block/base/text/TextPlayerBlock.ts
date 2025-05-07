@@ -2,6 +2,7 @@ import {PlayerBlock} from "@/editor/block/PlayerBlock";
 import {BlockConstructorWithoutType} from "@/editor/block/BlockConstructor";
 import {BlockSerialize} from "@/editor/block/serialization/BlockPropertySerialize";
 import {BlockInteractiveProperty} from "@/editor/interactivity/BlockInteractivity";
+import { sanitizeTiptapEditorHTML } from "@/utils/Sanitize";
 
 export class TextPlayerBlock extends PlayerBlock {
     @BlockSerialize("content")
@@ -31,8 +32,7 @@ export class TextPlayerBlock extends PlayerBlock {
 
         content.classList.add("block-content");
 
-        // TODO: sanitize content?
-        content.innerHTML = this.content;
+        content.innerHTML = sanitizeTiptapEditorHTML(this.content);
 
         element.appendChild(content);
 

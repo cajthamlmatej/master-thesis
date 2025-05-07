@@ -16,6 +16,9 @@ import {$t} from "@/translation/Translation";
 import {ModeAction} from "@/editor/actions/context/ModeAction";
 import {FitCanvasToParentAction} from "@/editor/actions/context/FitCanvasToParentAction";
 
+/**
+ * Manages the context menu for the editor, including its actions and visibility.
+ */
 export class EditorContext {
     public element!: HTMLElement;
     public position: { x: number, y: number } = {x: 0, y: 0};
@@ -23,6 +26,10 @@ export class EditorContext {
     private active: boolean = false;
     private actions: ContextAction[] = [];
 
+    /**
+     * Initializes the EditorContext with the given editor instance.
+     * @param editor The editor instance to associate with this context.
+     */
     constructor(editor: Editor) {
         this.editor = editor;
         this.actions.push(new CopyAction());
@@ -45,6 +52,9 @@ export class EditorContext {
         this.setupContext();
     }
 
+    /**
+     * Updates the context menu's position and visibility based on the current state.
+     */
     public handleContext() {
         this.element.style.left = this.position.x + "px";
         this.element.style.top = this.position.y + "px";
@@ -78,14 +88,25 @@ export class EditorContext {
         }
     }
 
+    /**
+     * Checks if the context menu is currently active.
+     * @returns True if the context menu is active, false otherwise.
+     */
     public isActive() {
         return this.active;
     }
 
+    /**
+     * Retrieves the list of actions available in the context menu.
+     * @returns An array of context actions.
+     */
     public getActions() {
         return this.actions;
     }
 
+    /**
+     * Sets up the context menu's DOM structure and event listeners.
+     */
     private setupContext() {
         const contextElement = document.createElement("div");
 
@@ -123,6 +144,9 @@ export class EditorContext {
         this.setupEvents();
     }
 
+    /**
+     * Sets up global event listeners for context menu interactions.
+     */
     private setupEvents() {
         // Selecting blocks
         const contextMenuEvent = this.handleContextMenuEvent.bind(this);
@@ -137,6 +161,10 @@ export class EditorContext {
         })
     }
 
+    /**
+     * Handles click events to deactivate the context menu.
+     * @param event The mouse event triggered by a click.
+     */
     private handleClickEvent(event: MouseEvent) {
         if (event.button !== 0) return;
 
@@ -144,6 +172,10 @@ export class EditorContext {
         this.handleVisibility();
     }
 
+    /**
+     * Handles right-click (context menu) events to activate the context menu.
+     * @param event The mouse event triggered by a right-click.
+     */
     private handleContextMenuEvent(event: MouseEvent) {
         // If the element is not in the editor, do not do anything
         if (!this.editor.getEditorElement().contains(event.target as Node)) {
@@ -182,6 +214,9 @@ export class EditorContext {
         this.handleVisibility();
     }
 
+    /**
+     * Updates the visibility of the context menu based on its active state.
+     */
     private handleVisibility() {
         if (!this.active) {
             this.element.classList.remove("editor-context--active");
@@ -189,6 +224,4 @@ export class EditorContext {
             this.element.classList.add("editor-context--active");
         }
     }
-
-
 }

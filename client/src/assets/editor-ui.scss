@@ -200,6 +200,16 @@
                             background-color: var(--color-button-primary-background-hover);
                         }
                     }
+
+                    code {
+                        background-color: var(--color-background-accent);
+                        padding: 0.25rem 0.5rem;
+                        font-size: 0.9rem;
+                        color: var(--color-text);
+                        box-shadow: var(--shadow-accent);
+                        border-radius: 0.4rem;
+                        font-size: 0.9em;
+                    }
                 }
 
                 &--aggregator {
@@ -214,6 +224,8 @@
                     }
 
                 }
+
+
             }
 
             > .interactivity-container {
@@ -512,6 +524,8 @@
     border-top-right-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
     backdrop-filter: blur(18px);
+
+    box-shadow: var(--shadow-accent), var(--shadow-accent);
 
     padding-left: 10px;
 
