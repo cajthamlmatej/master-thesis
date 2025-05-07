@@ -88,10 +88,10 @@ V realizované aplikaci budou vrstvy pak dále děleny a bude vytvořena další
 Níže jsou naplánované veškeré vrstvy pro klientskou část.
 
 \begin{description}
-    \item[Komponenty] které zajišťují unifikované chování pro často opakující se prvky na stránce tak, aby jejich tvorba byla co nejrychlejší a dovolovala přehlednější kód. Komunikují se stránkami pomocí dvoucestných vazeb či událostí.
-    \item[Stránky] které seskupují komponenty a vlastní funkcionality do jednotlivých stránek aplikace. Předávají komponentám data a určují jim, jak se mají chovat či zobrazovat.
-    \item[Perzistence] které jsou často nazývané ve webovém inženýrství jako obchody (stores), které globálně ukládají data pro celou aplikaci, aby bylo jedno místo (či místa), kde je lze najít. Slouží k~tomu, aby se o~data nežádalo více, než je nutné (caching). Mohou dovolovat ukládat data zcela perzistentně i~mezi načtením stránky pro rychlejší prvotní načtení. Komunikují se serverem pomocí další vrstvy.
-    \item[Komunikace] zajišťuje komunikaci se serverem pomocí RESTful API serveru. Určují a kontrolují jaká data od serveru přijdou, určují lokální rozhraní pro CRUD operace s~danými zdroji a mapují je na lokální objekty.
+    \item[Komponenty] Zajišťují unifikované chování pro často opakující se prvky na stránce tak, aby jejich tvorba byla co nejrychlejší a dovolovala přehlednější kód. Komunikují se stránkami pomocí dvoucestných vazeb či událostí.
+    \item[Stránky] Seskupují komponenty a vlastní funkcionality do jednotlivých stránek aplikace. Předávají komponentám data a určují jim, jak se mají chovat či zobrazovat.
+    \item[Perzistence] Jinak nazývané ve webovém inženýrství jako obchody (stores), které globálně ukládají data pro celou aplikaci, aby bylo jedno místo (či místa), kde je lze najít. Slouží k~tomu, aby se o~data nežádalo více, než je nutné (caching). Mohou dovolovat ukládat data zcela perzistentně i~mezi načtením stránky pro rychlejší prvotní načtení. Komunikují se serverem pomocí další vrstvy.
+    \item[Komunikace] Zajišťuje komunikaci se serverem pomocí RESTful API serveru. Určují a kontrolují jaká data od serveru přijdou, určují lokální rozhraní pro CRUD operace s~danými zdroji a mapují je na lokální objekty.
 \end{description}
 
 \subsubsection{Editor a přehrávač}
@@ -131,7 +131,7 @@ Těmto objektům se říká Data Transfer Object (DTO).
 Tyto objekty dovolují jednoduše typovat data, která vstupují a vystupují z~REST API.
 
 Některé koncové body a zdroje API musí být zabezpečené pomocí autorizace a autentizace. 
-O zabezpečení budu mluvit v~pozdější sekci~\ref{text:navrh/auth}.
+O zabezpečení se budu zmiňovat v~pozdější sekci~\ref{text:navrh/auth}.
 Některé koncové body musí být limitované i~pomocí \verb|rate-limiter|, tedy že omezí počet volání daného koncového bodu pro konkrétního uživatele či globálně.
 Jedná se např. o~stránku s~registrací.
 
@@ -177,10 +177,10 @@ V realizované aplikaci budou vrstvy pak dále děleny a bude vytvořena další
 Níže jsou naplánované veškeré vrstvy pro serverovou část.
 
 \begin{description}
-    \item[Moduly] Ty sumarizují následující vrstvy do jednotlivých balíčků, se kterými se dá jednoduše pracovat. Definují co se má exportovat a importovat v~rámci DI.
-    \item[Služby] Ty sumarizují společné funkcionality do jednoho balíčku, aby se kód nemusel opakovat. Vztahují závislosti a agregují další služby a modely. Dají se sem počítat i~tzv. Guardy, které kontrolují zda bude požadavek potvrzen a v~aplikaci dále předáván do funkcí kontroleru.
-    \item[Kontroléry] Ty tvoří REST API, volají funkce služeb, určují vstupní a výstupní data včetně návratových kódů.
-    \item[Modely] Ty definují schéma databáze, respektive jednotlivých entit uvnitř.
+    \item[Moduly] Sumarizují následující vrstvy do jednotlivých balíčků, se kterými se dá jednoduše pracovat. Definují co se má exportovat a importovat v~rámci DI.
+    \item[Služby] Sumarizují společné funkcionality do jednoho balíčku, aby se kód nemusel opakovat. Vztahují závislosti a agregují další služby a modely. Dají se sem počítat i~tzv. Guardy, které kontrolují zda bude požadavek potvrzen a v~aplikaci dále předáván do funkcí kontroleru.
+    \item[Kontroléry] Tvoří REST API, volají funkce služeb, určují vstupní a výstupní data včetně návratových kódů.
+    \item[Modely] Definují schéma databáze, respektive jednotlivých entit uvnitř.
 \end{description}
 
 
@@ -251,7 +251,7 @@ V podstatě se jedná o~komplexní designový systém.
 Ten určuje, jaké komponenty aplikace obsahuje, jak vypadají, jaké mají parametry, ale hlavně jak spolu navzájem interagují. 
 Jako komponenty si lze představit tlačítka, vstupní pole, záložky a další, ale i~jejich stav, například zda jsou vypnuté, zda vypadají speciálně, jejich pozice a mnoho dalšího.
 
-Mezi známé designové systémy~\cite{tidwell_2019, kholmatova_2017, uzayr2022frontend} patří například Material Design od společnosti Google, který se používá nejen v~Google aplikacích a systémech. 
+Mezi známé designové systémy~\cite{uzayr2022frontend, kholmatova_2017, tidwell_2019} patří například Material Design od společnosti Google, který se používá nejen v~Google aplikacích a systémech. 
 Dále se používají například Apple Human Interface Guidelines, které jsou určeny pro aplikace v~ekosystému iOS a macOS, nebo Fluent Design System od Microsoftu, který se používá především v~aplikacích pro Windows.
 
 CSS frameworky jsou v~podstatě knihovny předpřipravených stylů a komponent, které usnadňují tvorbu konzistentního designu. 
@@ -352,21 +352,22 @@ Mezi ně patří:
     \item Přehrávač, malování.
 \end{itemize}
 
-Další stránky a rozložení budou tvořeny z~těchto základních návrhových obrazovek.
-Hlavní stránka aplikace bude tvořena v~podobném designu, ale rozložením se bude podobat úvodním stránkám jiných produktů.
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.95\textwidth,page=21]{media/04_navrh/navhoveObrazovky.pdf}
+    \includegraphics[width=0.9\textwidth,page=21]{media/04_navrh/navhoveObrazovky.pdf}
     \caption{Návrhová obrazovka editoru s~otevřeným vyskakovacím oknem s~aktivními rozšířeními}\label{fig:navrhovaObrazovkaRozsireni}
 \end{figure}
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.95\textwidth,page=12]{media/04_navrh/navhoveObrazovky.pdf}
+    \includegraphics[width=0.9\textwidth,page=12]{media/04_navrh/navhoveObrazovky.pdf}
     \caption{Návrhová obrazovka přihlašovací stránky v~záložce \enquote{E-mail s~potvrzením} po odeslání žádosti}\label{fig:navrhovaObrazovkaEmailAKod}
 \end{figure}
 
+
+Další stránky a rozložení budou tvořeny z~těchto základních návrhových obrazovek.
+Hlavní stránka aplikace bude tvořena v~podobném designu, ale rozložením se bude podobat úvodním stránkám jiných produktů.
 
 \section{Návrh editoru a přehrávače}\label{text:navrh/editor_player}
 
@@ -382,9 +383,9 @@ V rámci návrhu je definována sada základních bloků, které lze kombinovat 
 Základní typy bloků mimo jiné zahrnují:
 
 \begin{description}
-    \item[Textové bloky] Které dovolují formátování textu -- což zahrnuje změny velikosti, barvy, fontu a další.
-    \item[Obrazové a multimediální bloky] Dovolují vkládání a různou manipulaci s~obrázky, videi a dalším interaktivním obsahem
-    \item[Tvarové bloky] Které umožňují vložit předdefinované tvary a jejich modifikaci.
+    \item[Textové bloky] Dovolují vkládání a formátování komplexního textu -- což zahrnuje změny velikosti, barvy, fontu a mnoho dalšího.
+    \item[Obrazové a multimediální bloky] Dovolují vkládání a různou manipulaci s~obrázky, videi a dalším interaktivním obsahem.
+    \item[Tvarové bloky] Umožňují vložit předdefinované tvary a dovolují jejich modifikaci pomocí barev, typů a dalšího.
     \item[HTML blok] Umožňuje skoro neomezeně rozšiřovat funkcionality prezentace pomocí psaní si vlastního HTML kódu, který se bezpečně vykreslí pomocí tagu Iframe.
 \end{description}
 

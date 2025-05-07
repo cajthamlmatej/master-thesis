@@ -88,12 +88,6 @@ Celkem bylo vytvořeno \textbf{45} testovacích scénářů, které pokrývají 
 Všechny testy aktuálně procházejí bez chyb a pomáhají zajišťovat stabilitu i~při dalších změnách v~kódu.
 Na obrázku~\ref{fig:testovani/e2e} je spuštěn scénář testující editor.
 
-Obecně by bylo vhodné pokrýt další funkcionality editoru a přehrávače. 
-Obě dvě komponenty obsahují velice mnoho různých funkcionalit, které zabere hodně času otestovat díky komplexnímu propojení.
-Další věc, která by byla vhodná, je, že by byly použity různé techniky izolace od zadní části a API.
-Prozatím veškerá komunikace funguje jen se zapnutým serverem.
-To třeba limituje, jak je možné testovat aplikaci před nasazením, například v~CI/CD.
-
 
 \begin{figure}[ht!]
     \centering
@@ -101,6 +95,13 @@ To třeba limituje, jak je možné testovat aplikaci před nasazením, napříkl
     \caption{Spuštěný testovací scénář v~programu Cypress}
     \label{fig:testovani/e2e}
 \end{figure}
+
+
+Obecně by bylo vhodné pokrýt další funkcionality editoru a přehrávače. 
+Obě dvě komponenty obsahují velice mnoho různých funkcionalit, které zabere hodně času otestovat díky komplexnímu propojení.
+Další věc, která by byla vhodná, je, že by byly použity různé techniky izolace od zadní části a API.
+Prozatím veškerá komunikace funguje jen se zapnutým serverem.
+To třeba limituje, jak je možné testovat aplikaci před nasazením, například v~CI/CD.
 
 
 \subsection{Serverová část}
@@ -175,7 +176,7 @@ Testovací scénáře jsem rozdělil do tří kategorií:
 \begin{enumerate}[leftmargin=1.4cm]
     \item Uživatel nalezne tlačítko \verb|Nastavení| v~horní navigaci.
     \item Uživatel tlačítko zmáčkne a ve formuláři pro export si přečte informace.
-    \item Potom požádá o~export osobních údajů a dat stiskem na tlačítko \verb|Zažádat o~export|.
+    \item Potom požádá o~export osobních údajů a dat stiskem na tlačítko \verb|Zažádat o export|.
     \item Uživatel počká na zpracování a čeká ve své e-mailové schránce.
     \item Uživatel přistoupí na stejnou stránku a pomocí tlačítka \verb|Stáhnout| obdrží archív s~osobními údaji.
     \item Uživatel si na počítači archív otevře a prozkoumá jejich obsah.
@@ -629,7 +630,6 @@ U vyšších instancí bylo dle mého vhodné otestovat spuštění na více za�
 U největšího testu jsem testoval i~připojení ve dvou různých sítích.
 
 \begin{table}[ht!]
-    \caption{Výsledky výkonnostního testování}\label{tab:vysledkyTestovani}
     \centering
     \begin{tabular}{r|c|c|c|c}
         Počet uživatelů & Počet materiálů & Průměrná & Minimální & Maximální\\\hline\hline
@@ -643,6 +643,7 @@ U největšího testu jsem testoval i~připojení ve dvou různých sítích.
         1000 & 100 & 1100 ms & 136 ms & 3204 ms \\\hline\hline
         průměr & - & 281 ms & 75 ms & 3508 ms
     \end{tabular}
+    \caption{Výsledky výkonnostního testování}\label{tab:vysledkyTestovani}
 \end{table}
 
 Tyto výsledky mě moc nepřekvapily.
@@ -652,7 +653,7 @@ Proto jsem po testování v~jednom materiálu omezil počet lidí na 10.
 
 Z dalšího testování jsem zjistil, že hodně zpomalení je způsobeno tím, jak jsou pro jednotlivé materiály generovány náhledové snímky.
 Generování probíhá nárazově pouze několikrát do minuty pro jeden materiál, ale vzhledem k~tomu, že se otevírá virtuální prohlížeč, je to pro hostitelský počítač docela náročná operace.
-Stává se tedy to, že někdy uživatelský požadavek přijde tehdy, když se zrovna spouští okno či obecně generuje náhledový obrázek a to způsobí zpomalení.
+Stává se tedy to, že někdy uživatelský požadavek přijde tehdy, když se zrovna spouští okno či obecně generuje náhledový obrázek, a to způsobí zpomalení.
 O způsobu opravy diskutuji v~kapitole~\ref{text:diskuze}.
 Po opravě by bylo možné tento limit lidí v~jednom materiálu změnit.
 
@@ -722,7 +723,8 @@ Podobný problém jsem během výuky zaregistroval při kreslení na plátno.
 Znovu se objevil problém odpojování ze serveru.
 Detekoval jsem, že za to nejspíše může školní síť, a do platformy bude potřeba implementovat 
 
-Obecně jsem ale s~tímto testováním spokojenější, nestalo se nic katastrofálního.
+Obecně jsem ale s~tímto testováním spokojenější, nestalo se nic katastrofálního a studenti vypadali velmi nadšeně z tohoto projektu.
+Po hodině se mě někteří ptali, zda ji budu používat pro výuku další roky.
 
 \subsection{Souhrn}
 
@@ -732,5 +734,6 @@ Jen tak lze získat přesnější představu o~tom, kde má nástroj největší
 
 V dlouhodobém horizontu považuji za důležité nejen ladit jednotlivé funkce a rozhraní, ale především hledat cesty, jak platformu využívat jako skutečný nástroj pro lepší výuku -- ať už jde o~větší variabilitu typů aktivit, možnost větší individualizace, nebo snadnější integraci s~dalšími systémy běžně používanými ve školním prostředí.
 
-Chyby a návrhy od studentů jsem vzal v~potaz a všechno jsem dle svých možností implementoval a opravil.
-QR kód se tedy nyní po zapnutí sledování vždy zobrazuje na obrazovce (a jde skrýt najetím) a například aplikace nyní lépe reaguje na to, když se klientské zařízení odpojí od sledování (a to samé v~editoru).
+Chyby a návrhy od studentů jsem vzal v~potaz a všechno jsem dle svých možností implementoval, opravil a pokud ne, tak jsem takový stav zaznamenal do dalšího vývoje, viz kapitola~\ref{text:diskuze}.
+QR kód se tedy nyní po zapnutí sledování vždy zobrazuje na obrazovce (a lze skrýt najetím myši) a dále například aplikace nyní lépe reaguje na to, když se klientské zařízení odpojí od sledování (a to samé v~editoru).
+Aplikace se při odpojení snaží uživatele opět připojit, aby bylo zajištěno nepřerušované fungování.

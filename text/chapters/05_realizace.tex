@@ -172,7 +172,6 @@ Tento přístup zajišťuje přehlednost a snadnou údržbu jednotlivých jazyko
 
 
 \begin{listing}[ht!]
-\caption{Zápisu překladů}\label{code:zapisPrekladu}
 \begin{minted}{json}
 {
   "editor": {
@@ -185,6 +184,7 @@ Tento přístup zajišťuje přehlednost a snadnou údržbu jednotlivých jazyko
   }
 }
 \end{minted}
+\caption{Zápis překladů ve formátu JSON}\label{code:zapisPrekladu}
 \end{listing}
 
 K překladu textů v~rozhraní se využívají direktivy \texttt{v-t} a funkce \texttt{\$t}, které dovolují překlad.
@@ -245,15 +245,15 @@ Nejvíce úsilí vyžadovala klientská část, respektive vývoj editoru a pře
 Nest klade důraz na modularitu. Každá část aplikace je definována jako samostatný modul. V~projektu byly vytvořeny tyto moduly:
 
 \begin{description}
-    \item[materials] -- správa výukových materiálů a jejich export.
-    \item[auth] -- registrace, přihlašování a správa autentizace.
-    \item[email] -- odesílání e-mailů a jejich šablonování.
-    \item[data-export] -- zpracování a přijímání požadavků pro vygenerování balíčku osobních dat z~projektu.
-    \item[events] -- real-time komunikace, kolaborace na materiálech a sledování materiálů.
-    \item[plugin] -- správa rozšíření a jejich verzí.
-    \item[media] -- správa mediálního obsahu uživatelů. 
-    \item[preferences] -- správa uživatelského nastavení a personalizace.
-    \item[users] -- uživatelské účty a jejich metadata.
+    \item[materials] Správa výukových materiálů a jejich export.
+    \item[auth] Registrace, přihlašování a správa autentizace.
+    \item[email] Odesílání e-mailů a jejich šablonování.
+    \item[data-export] Zpracování a přijímání požadavků pro vygenerování balíčku osobních dat z~projektu.
+    \item[events] Real-time komunikace, kolaborace na materiálech a sledování materiálů.
+    \item[plugin] Správa rozšíření a jejich verzí.
+    \item[media] Správa mediálního obsahu uživatelů. 
+    \item[preferences] Správa uživatelského nastavení a personalizace.
+    \item[users] Uživatelské účty a jejich metadata.
 \end{description}
 
 Moduly \texttt{media}, \texttt{users}, \texttt{preferences} a další využívají knihovnu Mongoose pro práci s~databází MongoDB. 
@@ -280,7 +280,6 @@ To přispívá ke konzistenci a zajišťuje, že na server se nikdy nedostanou n
 
 
 \begin{listing}[ht!]
-\caption[DTO s~validací pro přihlášení]{DTO s~validací pro přihlášení, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:realizace/dto}
 \begin{minted}{typescript}
 export default class InAuthDTO {
     @IsIn(['EMAIL_PASSWORD', 'EMAIL'])
@@ -304,6 +303,7 @@ export default class InAuthDTO {
     code?: string;
 }
 \end{minted}
+\caption[DTO s~validací pro přihlášení]{DTO s~validací pro přihlášení, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:realizace/dto}
 \end{listing}
 
 \section{Editor a přehrávač}\label{text:realizace/editor}
@@ -331,13 +331,13 @@ Bloky reprezentují uživatelem vytvořená data, jako jsou texty, obrázky nebo
 Každý blok obsahuje základní sadu vlastností: 
 
 \begin{itemize}
-	\item Pozici na snímku
-	\item Velikost
-	\item Otočení
-	\item Průhlednost
-	\item Skupina
-	\item Z-index
-	\item Informace o~interaktivitě
+	\item Pozici na snímku.
+	\item Velikost.
+	\item Otočení.
+	\item Průhlednost.
+	\item Skupina.
+	\item Z-index.
+	\item Informace o~interaktivitě.
 \end{itemize}
 
 Z této základní třídy vycházejí všechny konkrétní typy bloků, které rozšiřují funkčnost podle svého určení.
@@ -477,15 +477,6 @@ Události spuštění:
   \item[TIMER] Spuštění po určitém čase, jednorázově nebo opakovaně.
 \end{description}
 
-
-\begin{figure}[ht!]
-    \centering
-    \includegraphics[width=0.8\textwidth]{media/05_realizace/interaktivita.png}
-    \caption{Rozhraní interaktivity na bloku v~Editoru}
-    \label{fig:interaktivita}
-\end{figure}
-
-
 Podmínky spuštění:
 \begin{description}
   \item[ALWAYS] Akce se spustí vždy.
@@ -509,6 +500,15 @@ Vlastnosti, které lze měnit, si každý blok definuje samostatně pomocí rozh
 
 Ukázka nastavené interaktivity na bloku lze vidět na obrázku~\ref{fig:interaktivita}.
 
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{media/05_realizace/interaktivita.png}
+    \caption{Rozhraní interaktivity na bloku v~Editoru}
+    \label{fig:interaktivita}
+\end{figure}
+
+
 Tyto interaktivity jsou zpracovávány přímo přehrávačem a mohou být snadno laděny pomocí ladícího režimu, který zobrazuje stav proměnných. 
 Pro jednodušší práci s~interaktivitou byl vytvořen i~speciální blok -- a to interaktivní oblast.
 Tento blok umožňuje definovat akce, které nejsou navázané na žádný konkrétní vizuální prvek, ale slouží jako neviditelný spouštěč událostí.
@@ -520,7 +520,6 @@ Uživatel má k~dispozici dvě základní cesty: buď využije integrované knih
 V obou případech lze multimédia vložit přímo do výukového materiálu jednoduchým kliknutím.
 
 \begin{listing}[ht!]
-\caption[Zápis registrace vlastnosti bloku tvaru pro editor]{Zápis registrace vlastnosti bloku tvaru pro editor, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:zapisVlastnostiEditor}
 \begin{minted}{javascript}
 public override getInteractivityProperties() {
   return [
@@ -533,12 +532,12 @@ public override getInteractivityProperties() {
   ];
 }
 \end{minted}
+\caption[Zápis registrace vlastnosti bloku tvaru pro editor]{Zápis registrace vlastnosti bloku tvaru pro editor, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:zapisVlastnostiEditor}
 \end{listing}
 
 
 
 \begin{listing}[ht!]
-\caption[Zápis registrace vlastnosti bloku tvaru pro přehrávač]{Zápis registrace vlastnosti bloku tvaru pro přehrávač, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:zapisVlastnostiPrehravac}
 \begin{minted}{javascript}
 public override getInteractivityProperties() {
   return [
@@ -562,6 +561,7 @@ public override getInteractivityProperties() {
   ]
 }
 \end{minted}
+\caption[Zápis registrace vlastnosti bloku tvaru pro přehrávač]{Zápis registrace vlastnosti bloku tvaru pro přehrávač, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:zapisVlastnostiPrehravac}
 \end{listing}
 
 Pro vyhledávání fotografií slouží napojení na fotobanku Pexels. 
@@ -704,7 +704,6 @@ Ukázku typů lze najít v~kódu~\ref{code:realizace/typy}, celé typy lze nají
 
 
 \begin{listing}[ht!]
-\caption[Část vytvořených typů pro platformu rozšíření]{Část vytvořených typů pro platformu rozšíření, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:realizace/typy}
 \begin{minted}{typescript}
 interface ApiPlayer {
     /**
@@ -729,6 +728,7 @@ interface ApiPlayer {
     // ...
 }
 \end{minted}
+\caption[Část vytvořených typů pro platformu rozšíření]{Část vytvořených typů pro platformu rozšíření, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:realizace/typy}
 \end{listing}
 
 \subsection{Spouštění kódu}
@@ -742,11 +742,11 @@ Přístup k~jakýmkoliv dalším zdrojům mimo tento rámec není možný ze zab
 Platforma poskytuje pluginům jasně definované globální API zahrnující funkce, jako je:
 
 \begin{description}
-    \item[fetch] která dovoluje volat požadavky přímo jako stránka editoru (tj. s~CORS) na povolených doménách z~manifestu.
-    \item[cache] která dovoluje rozšíření si pamatovat věci skrz spuštění.
-    \item[plugin] která dovoluje vědět, kdo je aktuálním spouštěčem skriptu.
-    \item[language] která dovoluje zjistit, jaký jazyk je aktuálně vybrán.
-    \item[log] která dovoluje vypisovat věci do konzole pro lepší vývoj.
+    \item[fetch] Dovoluje volat požadavky přímo jako stránka editoru (tj. s~CORS) na povolených doménách z~manifestu.
+    \item[cache] Dovoluje rozšíření si pamatovat věci skrz spuštění.
+    \item[plugin] Dovoluje vědět, kdo je aktuálním spouštěčem skriptu.
+    \item[language] Dovoluje zjistit, jaký jazyk je aktuálně vybrán.
+    \item[log] Dovoluje vypisovat věci do konzole pro lepší vývoj.
 \end{description}
 
 Dále mohou pluginy využívat API jednotlivých bloků, které umožňuje přístup k~jejich vlastnostem a metodám.
@@ -812,7 +812,6 @@ Aplikace poskytuje vlastní API, které nad rámec běžného \texttt{postMessag
 Ukázka takové komunikace je uvedena v~kódu~\ref{code:registraceUdalosti}, kde je demonstrována registrace obsluhy zpráv přicházejících z~panelu.
 
 \begin{listing}[ht!]
-\caption[Ukázkový zápis rozšíření a registrace na událost]{Ukázkový zápis rozšíření a registrace na událost, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:registraceUdalosti}
 \begin{minted}{javascript}
 export const onPanelMessage = (message) => {
   if (message !== "clicked") return;
@@ -840,6 +839,7 @@ export const initEditor = function () {
   });
 }
 \end{minted}
+\caption[Ukázkový zápis rozšíření a registrace na událost]{Ukázkový zápis rozšíření a registrace na událost, \textit{kód zkrácen a modifikován pro přehlednost}}\label{code:registraceUdalosti}
 \end{listing}
 
 Z pohledu uživatele je panel obvykle přístupný prostřednictvím uživatelského rozhraní materiálu v~podobě postranní navigace. 
@@ -881,8 +881,8 @@ Systém mu předá zprávu a identifikátor vzdáleného propojení v~protokolu 
 Tento systém dovoluje řadu způsobů komunikace, níže uvádím dle mého názoru dva nejdůležitější.
 
 \begin{description}
-    \item[Přeposílání] -- kde blok prezentujícího okamžitě odešle zprávu po obdržení všem připojeným sledujícím. Způsob lze použít např. na okamžité odpovědi, chat a další.
-    \item[Udržování] -- kde blok prezentujícího obdržené zprávy ponechává a odešle je najednou např. po časovém limitu. Tento způsob lze použít například na kvízy či na \enquote{čas pro přemýšlení}.
+    \item[Přeposílání] Kde blok prezentujícího okamžitě odešle zprávu po obdržení všem připojeným sledujícím. Způsob lze použít např. na okamžité odpovědi, chat a další.
+    \item[Udržování] Kde blok prezentujícího obdržené zprávy ponechává a odešle je najednou např. po časovém limitu. Tento způsob lze použít například na kvízy či na \enquote{čas pro přemýšlení}.
 \end{description}
 
 Komunikaci mohou používat všechny bloky a to dokonce i~bloky vytvořené pro rozšíření.
@@ -1000,6 +1000,10 @@ K nasazení používám nástroj \texttt{rsync} přes SSH.
 Sestavení obrazů probíhá až na serveru, což minimalizuje přenos dat a zjednodušuje ladění. 
 Nasazení je navrženo tak, aby probíhalo bez výpadků. 
 Citlivé proměnné jsou v~repozitáři maskované a server k~nim přistupuje přes zabezpečené prostředí.
+
+GitLab byl používán během procesu vývoje.
+K publikování kódu jsem zvolil GitHub.
+Repozitář je dostupný na: \url{https://github.com/cajthamlmatej/master-thesis}.c
 
 \subsection{Vývoj}
 

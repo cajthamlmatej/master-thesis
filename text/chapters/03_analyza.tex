@@ -145,7 +145,7 @@ Celkově si uživatelé chválí i~možnost modularity těchto snímků a že je
 \subsection{Beamer v~\LaTeX}
 
 Beamer~\cite{beamer} je třída v~sázecím systému \LaTeX, která se zaměřuje na vytváření snímkových prezentací.
-Nejvíce je Beamer společně s~\LaTeX~populární v~akademickém prostředí, zejména z~důvodu jednoduchého sazby matematických formulí a zápisu pomocí kódového jazyka, který leccos dovoluje. 
+Nejvíce je Beamer společně s~\LaTeX~populární v~akademickém prostředí, zejména z~důvodu jednoduché sazby matematických formulí a zápisu pomocí kódového jazyka, který leccos dovoluje. 
 
 Zápis je ale zároveň to nejvíce nenáviděné na \LaTeX~\cite{latex_reddit}, a to zejména z~důvodu kryptických kódových chyb a různých zastaralých zápisů.
 Vygenerované prezentace jsou taktéž statické a nedá se v~nich dělat jakákoliv interaktivita. 
@@ -217,7 +217,7 @@ Platforma tak poskytuje tvůrcům nástroje, které by jinak vyžadovaly~\cite{g
 Genially je však placená služba, což může představovat značnou překážku pro vzdělávací instituce a jednotlivce s~omezenými finančními zdroji. 
 Bezplatná verze nabízí pouze omezenou funkcionalitu a materiály vytvořené v~rámci této verze obsahují vodoznak.
 Dále je export obsahu možný pouze u~placených tarifů, a to v~různých formátech, jako jsou PDF nebo HTML. 
-Tato omezení mohou snižovat flexibilitu uživatele, který by chtěl svůj obsah sdílet, archivovat offline a nebo celkově více plánovat výuku. 
+Tato omezení mohou snižovat flexibilitu uživatele, který by chtěl svůj obsah sdílet, archivovat offline a~nebo celkově více plánovat výuku. 
 Zároveň nelze provádět vlastní úpravy kódu ani integrovat komunitní rozšíření, což je omezující pro uživatele, kteří by potřebovali pokročilé nebo zcela unikátní funkce.
 
 Je třeba zmínit, že Genially jako firma je formálně napojena na platformu Canva~\cite{genially}, viz sekce~\ref{text:canva}, a tyto dvě služby sdílejí základ vizuálního editoru. 
@@ -485,10 +485,10 @@ Platforma ale implementuje řadu věcí a prezentace jsou použitelné.
 Figma je velmi populární nástroj (viz sekce~\ref{text:figma}), který taktéž implementoval komunitní rozšíření~\cite{figma_website}.
 Přístup vývojářů ke komunitnímu rozšíření je velmi veřejný a díky jejich blogu~\cite{figma_plugins_blog} je vidět řadu důvodů ke zvážení každé možnosti.
 Figma svými tzv. pluginy zajišťuje rozšiřitelnost platformy, resp. zjednodušení používání aplikace.
-Mezi ukázky takových pluginů patří například různé možnosti vkládání ikon, šablon, ale i~komplexní systémy na práci uvnitř editoru, jako hlasování v~návrzích.
+Mezi ukázky takových pluginů patří například různé možnosti vkládání ikon, šablon, ale i~komplexní systémy na práci uvnitř editoru, jako je hlasování v~návrzích.
 
 Pluginy se zejména zaměřují na práci v~editoru, a proto některá rozhodnutí nejsou pro práci relevantní.
-Při implementaci~\cite{figma_plugins_blog} se zaměřili na různé aspekty práce a způsoby spouštění nedůvěryhodného kódu, o~kterých budu mluvit později.
+Při implementaci~\cite{figma_plugins_blog} se zaměřili na různé aspekty práce a způsoby spouštění nedůvěryhodného kódu, o~kterých se budu zmiňovat později.
 
 Mezi její zvažované přístupy patřilo Iframe, Realms, WebAssembly a další.
 Každý přístup měl pro a proti, proto se nakonec rozhodli z~dvou užších možností -- Realms a WebAssembly -- přistoupit na Realms.
@@ -497,8 +497,9 @@ To taktéž velmi rychle využili díky zranitelnosti Realms a i~když volání 
 Jediná velká nevýhoda Realms je právě to, že daný kód běží ve stejném okně jako zbytek stránky a třeba i~jeho zpomalení (nezáměrné i~záměrné) může způsobit zaseknutí celé stránky.
 Pro lepší bezpečnost je obecně počítat s~tím, že se ze systému, kde je kód uzavřen, může kód dostat.
 
-Mimo jiné platforma pro každou možnost zvažovala~\cite{figma_plugins_blog, figma_website} řadu kritérií a specifikací. 
-Níže je takový seznam, který může pomoci rozhodnout mezi správným přístupem:
+Mimo jiné platforma pro každou možnost velmi podrobně zvažovala různá kritéria a specifikace.
+Podrobnosti lze nalézt v odkazech~\cite{figma_plugins_blog, figma_website}.
+Níže je uveden takový seznam inspirovaný z těchto odkazů, který může pomoci rozhodnout mezi správným přístupem a já jej budu dále využívat:
 
 \begin{itemize}
     \item Bezpečnost takové implementace, rizika opuštění kontrolovaného prostředí.
@@ -519,7 +520,7 @@ Cílem této sekce je analyzovat možné způsoby spouštění nedůvěryhodnéh
 
 \subsection{Základní přístupy}
 
-Uvnitř webových stránek díky podpoře JavaScriptu ve všech prohlížečích se lze bavit o~základních přístupech k~spouštění neověřeného kódu.
+Uvnitř webových stránek díky podpoře JavaScriptu ve všech prohlížečích lze diskutovat o~základních přístupech k~spouštění neověřeného kódu.
 Jedná se o~evaluaci (\texttt{eval}) a o~domény (\texttt{Realms}).
 
 Přímá evaluace je funkce~\cite{eval} z~JS, která dovoluje spustit jakýkoliv napsaný JS kód a získat z~něj výsledek.
@@ -778,7 +779,6 @@ Vztahy a propojení s~jednotlivými aktéry jsou k~dispozici na obrázku~\ref{fi
 
 \begin{table}[ht!]
 \centering
-\caption[Matice pokrytí funkčních požadavků]{~Matice pokrytí funkčních požadavků}\label{tabular:maticePokryti}
 \begin{tabular}{l|c|c|c|c|c|c|c}
      ~         & F1 & F2 & F3 & F4 & F5 & F6 & F7 \\\hline\hline
      UC1       & \c &    &    &    &    &    &    \\\hline
@@ -798,6 +798,7 @@ Vztahy a propojení s~jednotlivými aktéry jsou k~dispozici na obrázku~\ref{fi
      UC15      & \c & \c &    & \c &    &    & \c \\\hline
      UC16      & \c & \c &    & \c &    &    & \c \\
 \end{tabular}
+\caption[Matice pokrytí funkčních požadavků]{~Matice pokrytí funkčních požadavků}\label{tabular:maticePokryti}
 \end{table}
 
 
