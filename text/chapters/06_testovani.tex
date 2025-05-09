@@ -21,16 +21,16 @@ Na straně backendu jsem používal nástroj \texttt{nodemon}, který automatick
 Jelikož jsem využíval framework \texttt{NestJS}, vše bylo integrováno přímo v~jeho ekosystému a vývoj backendu tak mohl probíhat bez zbytečných zdržení.
 Ke konci vývoje jsem již používal vytvořené pro vývoj kontejnery z~Docker, viz sekce~\ref{text:realizace/nasazeni}.
 
-Nové funkcionality jsem zpravidla nejdříve implementoval na serveru.
+Nové funkce jsem zpravidla nejdříve implementoval na serveru.
 Po přidání nové REST API cesty jsem její funkčnost ověřoval pomocí nástroje Postman, který umožňuje rychlé testování HTTP požadavků.
-Teprve po úspěšném ověření jsem přistoupil k~implementaci odpovídajících částí v~klientské aplikaci.
+Po úspěšném potvrzení jsem začal implementovat příslušné části v~klientské aplikaci.
 
 Na straně klienta jsem během vývoje nových částí vždy testoval funkčnost přímo v~rozhraní aplikace.
 Až později v~rámci práce vznikly systematické automatizované testy, které popisuji v~následujících sekcích.
 
 \subsection{Tým testerů}
 
-Během vývoje vzniklo \textbf{19} verzí aplikace včetně prototypu. 
+Během vývoje vzniklo \textbf{21} verzí aplikace včetně prototypu. 
 Každá z~těchto verzí byla nahrána na testovací prostředí, ke kterému měl přístup vedoucí práce a tým dobrovolných testerů -- především kolegové a přátelé z~okolí.
 
 Tento způsob testování odpovídá tzv. neformálnímu uživatelskému testování, často označovanému jako beta testování či nehlídané uživatelské testování. 
